@@ -657,6 +657,7 @@ void GUIDocument::createParamDialog()
 }
 
 
+extern void set_run_mode (bool isRuning);
 
 static void disposeFunct(void *dummy)
 {
@@ -667,7 +668,12 @@ static void disposeFunct(void *dummy)
      cerr <<  "Deleting the running network.\n"; 
      delete GUIDocument::runningNet;
      //gdk_threads_leave();
-     GUIDocument::runningNet=NULL; 
+     GUIDocument::runningNet=NULL;
+
+     gdk_threads_enter();
+     set_run_mode(false);
+     gdk_threads_leave();
+    
    }
   
 }
@@ -695,23 +701,21 @@ void GUIDocument::threadRun()
    }
 }
 
-extern void set_run_mode (bool isRuning);
+//extern void set_run_mode (bool isRuning);
 
 void GUIDocument::threadStop()
 {
-  cerr << "threadStop\n";
-  
-  //exiting (Dominic)
-  cerr<<"Setting exit status"<<endl;
+   static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
    
+   pthread_mutex_lock (&mutex);
+     
    if (isRunning) {
-     //cerr << "stopping...\n";
-     isRunning=false;
-     //runningNet->setExitStatus();
-     pthread_cancel(runThread);
-
-     set_run_mode(false);
+      cerr << "stopping...\n";
+      isRunning=false;
+      pthread_cancel(runThread);
    }
+
+   pthread_mutex_unlock (&mutex);
    
 
 }
@@ -813,9 +817,6 @@ void GUIDocument::run()
       //delete net;
       //runningNet=NULL;
    }
-   gdk_threads_enter();
-   set_run_mode(false);
-   gdk_threads_leave();
    
    pthread_cleanup_pop(1);
 
