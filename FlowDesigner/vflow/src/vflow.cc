@@ -94,8 +94,8 @@ void vflowGUI::copy(GUIDocument *doc) {
 void vflowGUI::paste (GUIDocument *doc) {
 
   //cerr<<"vflowGUI::paste called"<<endl;
-
   GUINetwork *net = dynamic_cast<GUINetwork*>(doc->getCurrentNet());
+  
 
   if (!net) return;
 
@@ -217,6 +217,17 @@ void vflowGUI::paste (GUIDocument *doc) {
       delete my_node;
     }
   }
+
+  if (clipboardMode == CLIPBOARD_COPY_MODE) {
+
+    clipboard.resize(0);
+    //clipboard should contain newly copied nodes.
+    for (map<GUINode*,GUINode*>::iterator iter = created_nodes.begin();
+	 iter != created_nodes.end(); iter++) {
+      clipboard.push_back((*iter).second);
+    }
+  }
+
 }
 
 void vflowGUI::cut(GUIDocument *doc) {
