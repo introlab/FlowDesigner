@@ -19,11 +19,21 @@
 
 #include <fftw.h>
 #include <rfftw.h>
+
+#ifdef NO_HASH_MAP
 #include <map>
+#else
+#include <hash_map>
+#endif
 
 class _FFTWrap {
+#ifdef NO_HASH_MAP
    typedef map<int, rfftw_plan> FFTPlanMap;
    typedef map<int, rfftw_plan> RFFTPlanMap;
+#else
+   typedef hash_map<int, rfftw_plan, hash<int> > FFTPlanMap;
+   typedef hash_map<int, rfftw_plan, hash<int> > RFFTPlanMap;
+#endif
    
    FFTPlanMap FFTPlans[2];
    RFFTPlanMap RFFTPlans[2];

@@ -19,12 +19,23 @@
 
 //#include "Vector.h"
 
+#ifdef NO_HASH_MAP
+#include <map>
+#else
+#include <hash_map>
+#endif
+
 template <class T>
 class VectorPool {
   protected:
    int max_stored;
 
+#ifdef NO_HASH_MAP
    map<int, vector <Vector<T> *> > stackList;
+#else
+   hash_map<int, vector <Vector<T> *>, hash<int> > stackList;
+#endif
+
   public:
    VectorPool(int _max_stored=50) 
       : max_stored(_max_stored)

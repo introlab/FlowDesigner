@@ -15,12 +15,11 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
-#include <fftw.h>
-#include <rfftw.h>
+#include "FFTWrap.h"
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>
@@ -28,21 +27,20 @@
 
 class MFCC;
 
-//DECLARE_NODE(MFCC)
 NODE_INFO(MFCC, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:WINDOW:SAMPLING:LOW:HIGH")
 
-class MFCC : public FrameOperation {
+class MFCC : public BufferedNode {
    
    int inputID;
+   int outputID;
    int inputLength;
+   int outputLength;
    vector<vector<float> > filters;
    vector<int> filterStart;
-   rfftw_plan plan;
    vector<float> window;
    int psLength;
    int melLength;
 
-   rfftw_plan dctPlan;
    float *inputCopy;
    float *outputCopy;
    float *tmpBuffer1;
@@ -53,26 +51,23 @@ class MFCC : public FrameOperation {
 
 public:
    MFCC(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
+      : BufferedNode(nodeName, params)
    {
       try {
          inputID = addInput("INPUT");
-         if (parameters.exist("INPUTLENGTH"))
-            inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-         else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+	 outputID = addOutput("OUTPUT");
+
+	 inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
+	 outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
          
          psLength = inputLength/2;
-         //if (parameters.exist("MELBANKS"))
-         //   melLength = dereference_cast<int> (parameters.get("MELBANKS"));
-         //else
-            melLength = outputLength;
+	 melLength = outputLength;
          
          filters.resize(outputLength);
          filterStart.resize(outputLength);
          window.resize(inputLength);
       } catch (BaseException *e)
       {
-         //e->print();
          throw e->add(new NodeException (NULL, "Exception caught in MFCC constructor", __FILE__, __LINE__));
       }
       
@@ -80,8 +75,6 @@ public:
 
    ~MFCC() 
    {
-      rfftw_destroy_plan(plan);
-      rfftw_destroy_plan(dctPlan);
       delete [] inputCopy;
       delete [] outputCopy;
       delete [] rNormalize;
@@ -94,7 +87,7 @@ public:
    {
       int i;
 
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
 
 
       String type = object_cast<String> (parameters.get("WINDOW"));
@@ -114,8 +107,6 @@ public:
 
       tmpBuffer1 = new float [inputLength];
       tmpBuffer2 = new float [inputLength];
-      plan = rfftw_create_plan (inputLength, FFTW_FORWARD, FFTW_ESTIMATE);
-
 
       float niquist = dereference_cast<int> (parameters.get("SAMPLING")) / 2.0;
       float high = dereference_cast<int> (parameters.get("HIGH"));
@@ -157,28 +148,31 @@ public:
       }
       rNormalize[0] /= sqrt(2);
 
-      dctPlan = rfftw_create_plan (melLength, FFTW_FORWARD, FFTW_ESTIMATE);
-      
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      
+      if (in.size() != inputLength)
+	 throw new NodeException(this, "Size of input != size of window", __FILE__, __LINE__);
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
 
       int i,j;
       for (i=0;i<inputLength;i++)
          tmpBuffer1[i]=in[i]*window[i];
 
-      rfftw_one (plan, tmpBuffer1, tmpBuffer2);
+      FFTWrap.rfft(tmpBuffer1, tmpBuffer2, inputLength);
 
       tmpBuffer2[0]=tmpBuffer2[0]*tmpBuffer2[0];
       for (i=1;i<psLength;i++)
@@ -209,8 +203,7 @@ public:
          inputCopy[j]=log(tmpBuffer1[i]+FLT_MIN);
       
 
-      rfftw_one(dctPlan, inputCopy, outputCopy);
-      
+      FFTWrap.rfft(inputCopy, outputCopy, melLength);
       
       for (i=1;i<melLength/2;i++)
       {
@@ -220,8 +213,6 @@ public:
 
       output[0]=outputCopy[0]*rNormalize[0];
       output[melLength/2] = outputCopy[melLength/2]*rNormalize[melLength/2];
-
-      output.status = Object::valid;
    }
 
 };

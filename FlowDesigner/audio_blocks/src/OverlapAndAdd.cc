@@ -15,50 +15,45 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 
 class OverlapAndAdd;
 
-//DECLARE_NODE(OverlapAndAdd)
-NODE_INFO(OverlapAndAdd, "Signal:Audio", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(OverlapAndAdd, "Signal:Audio", "INPUT", "OUTPUT", "")
 
-class OverlapAndAdd : public FrameOperation {
+class OverlapAndAdd : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
 
 public:
    OverlapAndAdd(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
       inputsCache[inputID].lookBack = 1;
       inputsCache[inputID].lookAhead = 1;
    }
 
-   ~OverlapAndAdd() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-   }
-
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+      int outputLength = inputLength >> 1;
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
 
       const Vector<float> *past;
       const Vector<float> *next;
@@ -66,7 +61,7 @@ public:
       bool can_look_ahead = false;
       if (count > 0)   
       {
-         ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-1);
+         ObjectRef pastInputValue = getInput(inputID, count-1);
          if (pastInputValue->status == Object::valid)
          {
             can_look_back=true;
@@ -74,14 +69,12 @@ public:
          }      
       }
       
-      ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+1);
+      ObjectRef nextInputValue = getInput(inputID, count+1);
       if (nextInputValue->status == Object::valid)
       {
 	 can_look_ahead=true;
 	 next = &object_cast<Vector<float> > (nextInputValue);
       }
-
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
 
 
       int before = (inputLength-outputLength)/2;
@@ -129,7 +122,6 @@ public:
       }
       
       */
-      output.status = Object::valid;
    }
 
 };

@@ -57,8 +57,9 @@ public:
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
+      int outputLength = end-start+1;
 
-      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
       if (inputLength <= end)

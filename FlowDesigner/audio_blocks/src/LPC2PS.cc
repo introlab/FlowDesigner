@@ -15,25 +15,22 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
-#include <fftw.h>
-#include <rfftw.h>
 #include <math.h>
+#include "FFTWrap.h"
 
 class LPC2PS;
 
-//DECLARE_NODE(LPC2PS)
-NODE_INFO(LPC2PS,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(LPC2PS,"Signal:DSP", "INPUT", "OUTPUT", "OUTPUTLENGTH")
 
-class LPC2PS : public FrameOperation {
+class LPC2PS : public BufferedNode {
    
    int inputID;
-   int inputLength;
-   rfftw_plan plan1;
-      //rfftw_plan plan2;
+   int outputID;
+   int outputLength;
    float *hamming;
    int SAMP_SIZE;
    int SAMP_SIZE_2;
@@ -43,62 +40,53 @@ class LPC2PS : public FrameOperation {
 
 public:
    LPC2PS(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
 
       SAMP_SIZE_2 = outputLength;
       SAMP_SIZE   = 2 * SAMP_SIZE_2;
 
       response=new float[SAMP_SIZE];
       ps=new float[SAMP_SIZE];
+      hamming = new float[SAMP_SIZE];
+      for (int i=0;i<SAMP_SIZE;i++)
+         hamming[i]= 0.54 - 0.46*cos(2*M_PI*i/float(SAMP_SIZE));
 
    }
 
       ~LPC2PS() 
       {
-	 rfftw_destroy_plan(plan1); 
-         //rfftw_destroy_plan(plan2); 
 	 delete [] hamming;
 	 delete [] response;
 	 delete [] ps;
       }
 
-   virtual void specificInitialize()
-   {
-      plan1 = rfftw_create_plan (SAMP_SIZE, FFTW_FORWARD, FFTW_ESTIMATE);
-      //plan2 = rfftw_create_plan (SAMP_SIZE, FFTW_BACKWARD, FFTW_ESTIMATE);
-      this->FrameOperation::specificInitialize();
-      hamming = new float[SAMP_SIZE];
-      for (int i=0;i<SAMP_SIZE;i++)
-         hamming[i]= 0.54 - 0.46*cos(2*M_PI*i/float(SAMP_SIZE));
-   }
-
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      //float response[SAMP_SIZE];
-      //float ps[SAMP_SIZE];
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
 
       for (int i=0;i<min(int(in.size()),SAMP_SIZE);i++)
          response[i]=in[i];
       for (int i=in.size();i<SAMP_SIZE;i++)
          response[i]=0;
 
-      rfftw_one(plan1, response, ps);
+      FFTWrap.rfft(response, ps, SAMP_SIZE);
       
       ps[0]=ps[0]*ps[0];
       for (int i=1;i<SAMP_SIZE_2;i++)
@@ -107,9 +95,6 @@ public:
          ps[i]=0.0;
       for (int i=0;i<SAMP_SIZE_2;i++)
          output[i]=1/ps[i];
-
-
-      output.status = Object::valid;
 
    }
 

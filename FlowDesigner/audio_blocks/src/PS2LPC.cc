@@ -15,26 +15,25 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "lpc.h"
 #include <stdlib.h>
-#include <fftw.h>
-#include <rfftw.h>
 #include <math.h>
+#include "FFTWrap.h"
 
 class PS2LPC;
 
-//DECLARE_NODE(PS2LPC)
 NODE_INFO(PS2LPC,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
-class PS2LPC : public FrameOperation {
+class PS2LPC : public BufferedNode {
    
    int inputID;
+   int outputID;
    int inputLength;
-   //rfftw_plan plan1;
-   rfftw_plan plan2;
+   int outputLength;
+
    float *hamming;
    int SAMP_SIZE;
    int SAMP_SIZE_2;
@@ -44,12 +43,12 @@ class PS2LPC : public FrameOperation {
    float *rc;
 public:
    PS2LPC(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+      inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
 
       SAMP_SIZE_2 = inputLength;
       SAMP_SIZE   = 2 * SAMP_SIZE_2;
@@ -62,8 +61,6 @@ public:
 
    ~PS2LPC() 
    {
-      //rfftw_destroy_plan(plan1); 
-      rfftw_destroy_plan(plan2); 
       delete [] hamming;
       delete [] rc;
       delete [] response;
@@ -72,9 +69,7 @@ public:
 
    virtual void specificInitialize()
    {
-      //plan1 = rfftw_create_plan (SAMP_SIZE, FFTW_FORWARD, FFTW_ESTIMATE);
-      plan2 = rfftw_create_plan (SAMP_SIZE, FFTW_BACKWARD, FFTW_ESTIMATE);
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
       hamming = new float[SAMP_SIZE];
       for (int i=0;i<SAMP_SIZE;i++)
          hamming[i]= 0.54 - 0.46*cos(2*M_PI*i/float(SAMP_SIZE));
@@ -82,19 +77,19 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      //float response[SAMP_SIZE];
-      //float ps[SAMP_SIZE];
+      if (inputLength != in.size())
+	 throw new NodeException(this, "Input length mismatch", __FILE__, __LINE__);
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
 
 
       for (int i=0;i<SAMP_SIZE_2;i++)
@@ -102,19 +97,14 @@ public:
       for (int i=SAMP_SIZE_2;i<SAMP_SIZE;i++)
          ps[i]=0.0;
 
-
-      rfftw_one(plan2, ps, response);
-
+      FFTWrap.rfft(ps, response, SAMP_SIZE);
       
       float er=0;
-      //float rc[outputLength];
+
       response[0] *= 1.0001;
       wld(output.begin(), response, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
         output[i] *= pow(.99,i);
-
-      output.status = Object::valid;
-
    }
 
 };

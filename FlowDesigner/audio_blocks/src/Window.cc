@@ -15,50 +15,47 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
 
 class Window;
 
-//DECLARE_NODE(Window)
 NODE_INFO(Window, "Signal:DSP", "INPUT", "OUTPUT", "LENGTH:WINDOW")
 
-class Window : public FrameOperation {
+class Window : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
+   int length;
    vector<float> window;
 
 public:
    Window(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
-      , window(outputLength)
+      : BufferedNode(nodeName, params)
 
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+      length = dereference_cast<int> (parameters.get("LENGTH"));
    }
-
-   ~Window() {}
 
    virtual void specificInitialize()
    {
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
       int i;
+      window.resize(length);
       String type = object_cast<String> (parameters.get("WINDOW"));
       
       if (type == "HANNING")
       {
-         for (i=0;i<inputLength;i++)
-            window[i]=.5-.5*cos((2*M_PI*i)/inputLength);
+         for (i=0;i<length;i++)
+            window[i]=.5-.5*cos((2*M_PI*i)/length);
       } else if (type == "HAMMING")
       {
-         for (i=0;i<inputLength;i++)
-            window[i]=.54-.46*cos((2*M_PI*i)/inputLength);
+         for (i=0;i<length;i++)
+            window[i]=.54-.46*cos((2*M_PI*i)/length);
       } else 
       {
          throw new GeneralException("Unknown window type",__FILE__,__LINE__);
@@ -68,23 +65,23 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
-      int i;
-      int size=window.size();
-      for (i=0;i<size;i++)
-         output[i]=in[i]*window[i];
+      if (in.size() != length)
+	 throw new NodeException(this, "Size of input != size of window", __FILE__, __LINE__);
+
+      Vector<float> &output = *Vector<float>::alloc(length);
+      out[count] = &output;
       
-      output.status = Object::valid;
+      for (int i=0;i<length;i++)
+         output[i]=in[i]*window[i];
    }
 
 };
