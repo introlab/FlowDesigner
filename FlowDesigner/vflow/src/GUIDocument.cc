@@ -667,6 +667,19 @@ static void disposeFunct(void *dummy)
      GUIDocument::isRunning = false;
      doc->threadStop();
      //}
+
+     cerr<<"updating buttons"<<endl;
+     gdk_threads_enter();
+     GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
+     gtk_widget_set_sensitive(w,true);
+     w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
+     gtk_widget_set_sensitive(w,false);
+     gdk_threads_leave();
+     
+     //delete net;
+     cerr <<  "Deleting the running network.\n"; 
+     delete GUIDocument::runningNet; 
+     //runningNet=NULL; 
    }
   
 }
@@ -682,8 +695,14 @@ void GUIDocument::threadRun()
    if (!isRunning)
    {
       isRunning=true;
-      pthread_create(&runThread, NULL, (void * (*)(void *))threadFunct, this);
+
+      pthread_attr_t tattr;
+      pthread_attr_init(&tattr);
+      pthread_attr_setdetachstate(&tattr,PTHREAD_CREATE_DETACHED);
+      pthread_create(&runThread, &tattr, (void * (*)(void *))threadFunct, this);
       //pthread_detach(runThread); //Dominic
+
+      
    }
 }
 
@@ -697,28 +716,10 @@ void GUIDocument::threadStop()
    if (isRunning) {
      //cerr << "stopping...\n";
      isRunning=false;
-     runningNet->setExitStatus();
+     //runningNet->setExitStatus();
      pthread_cancel(runThread);
    }
-   else {
-     cerr<<"updating buttons"<<endl;
-     gdk_threads_enter();
-     GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
-     gtk_widget_set_sensitive(w,true);
-     w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
-     gtk_widget_set_sensitive(w,false);
-     gdk_threads_leave();
-
-     if (runningNet != NULL) {
-       //delete net;
-       cerr << "Deleting the running network.\n";
-       delete runningNet; 
-       runningNet=NULL; 
-     }
-   }
-
-  
-   cerr<<"end threadStop"<<endl;
+   
 
 }
 
@@ -771,21 +772,22 @@ void GUIDocument::run()
       }
       //cerr << "building net...\n";
       //parameters.print();
-      runningNet = build("MAIN", parameters);
+      Network *net = build("MAIN", parameters);
+      runningNet = net;
       //Ptr<Network> net(build("MAIN", parameters));
       cerr << "initializing...\n";
-      runningNet->initialize();
+      net->initialize();
       cerr << "running...\n";
       
       // Getting all the network outputs.
       for (int k=0; ;k++) {
-	if (runningNet->hasOutput(k)) {
+	if (net->hasOutput(k)) {
 	   char str[1000];
 	   strstream execOut(str, 999);
 	   
-	   cerr<<"before main getOutput"<<endl;
-	   execOut << *runningNet->getOutput(k,0);
-	   cerr<<"after main getOutput"<<endl;
+	   //cerr<<"before main getOutput"<<endl;
+	   execOut << *net->getOutput(k,0);
+	   //cerr<<"after main getOutput"<<endl;
 
 	   gdk_threads_enter();
 	   less_print(str);
