@@ -370,14 +370,39 @@ void open_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
 /**********************************************************************************************************
 
 **********************************************************************************************************/
-void close_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
+gint close_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
    
    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
    
    if (!doc)
-      return;
+      return -1;
+   if (!doc->isModified())
+   {
+      delete doc;
+      return 1;
+   }
+
+   string question("Do you want to save changes to ");
+   question += doc->getName();
+   question += "?";
    
-   doc->closeRequest();
+   switch (close_save_dialog(question.c_str()))
+   {
+   case GTK_RESPONSE_CANCEL:
+      return 0;
+      break;
+   case GTK_RESPONSE_NO:
+      delete doc;
+      return 1;      
+      break;
+   case GTK_RESPONSE_ACCEPT:
+      //doc->save();
+      save_doc_event(NULL, vflow);
+      delete doc;
+      return 1;
+      break;
+   }
+   //doc->closeRequest();
 }
 
 
@@ -710,7 +735,7 @@ void build_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
 **********************************************************************************************************/
 void exit_event  (GtkMenuItem  *menuitem, vflowGUI *vflow) 
 {
-   vflow = vflowGUI::instance();
+   /*vflow = vflowGUI::instance();
    
    GUIDocument *doc;
    while (doc = vflow->getCurrentDoc())
@@ -718,7 +743,17 @@ void exit_event  (GtkMenuItem  *menuitem, vflowGUI *vflow)
       if (!doc->closeRequest())
          return;
    }
-   
+   */
+
+   while (1)
+   {
+      int close = close_doc_event(NULL, vflow);
+      if (close==0)
+         return;
+      else if (close==-1)
+         break;
+   }
+
    gtk_main_quit();
 }
 /**********************************************************************************************************
