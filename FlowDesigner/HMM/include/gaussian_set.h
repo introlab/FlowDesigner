@@ -25,7 +25,7 @@
 class GaussianSet : public Object {
 protected:
    int nb_gaussians;
-   Vector<Ptr<Gaussian> > gaussians;
+   Vector<RCPtr<Gaussian> > gaussians;
 public:
    /**Default Constructor*/
    GaussianSet() 
@@ -33,10 +33,10 @@ public:
    {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
-   int getIDFor(Ptr<Gaussian>);
+   int getIDFor(RCPtr<Gaussian>);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<Gaussian> getPtrFor(int id) const;
+   RCPtr<Gaussian> getPtrFor(int id) const;
 
    /**convert all elements to using IDs (before saving)*/
    void toIDs(MeanSet & means, CovarianceSet & covariances);

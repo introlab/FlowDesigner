@@ -106,7 +106,7 @@ public:
    virtual void invert()=0;
 
    /**Substract mean^2, before the covariance can be inverted*/
-   virtual void processMean(Ptr<Mean> mean)=0;
+   virtual void processMean(RCPtr<Mean> mean)=0;
 
    friend class GMM;
 };
@@ -180,7 +180,7 @@ public:
    void invert();
 
    /**Substract mean^2, before the covariance can be inverted*/
-   void processMean(Ptr<Mean> mean);
+   void processMean(RCPtr<Mean> mean);
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;

@@ -19,7 +19,7 @@
 
 DECLARE_TYPE(GMMSet)
 
-int GMMSet::getIDFor(Ptr<GMM> cov)
+int GMMSet::getIDFor(RCPtr<GMM> cov)
 {
    for (int i=0;i<nb_gmms;i++)
    {
@@ -32,7 +32,7 @@ int GMMSet::getIDFor(Ptr<GMM> cov)
    return nb_gmms-1;
 }
 
-Ptr<GMM> GMMSet::getPtrFor(int id)
+RCPtr<GMM> GMMSet::getPtrFor(int id)
 {
    if (id>=nb_gmms)
       throw new GeneralException("Invalid gmm ID", __FILE__, __LINE__);

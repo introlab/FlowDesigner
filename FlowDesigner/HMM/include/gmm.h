@@ -53,7 +53,7 @@ protected:
    
    /**STL vector containing all the gaussians in the GMM*/
    //vector<Gaussian *>  gaussians;
-   vector<Ptr<Gaussian> >  gaussians;
+   vector<RCPtr<Gaussian> >  gaussians;
 
    /**STL vector containing all the apriori weights of the gaussians*/
    vector<float>       apriori;
@@ -80,7 +80,7 @@ public:
    /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
       covariance pseudo-factory*/
    GMM(int nb_gauss, int dim, Covariance *(*cov_new)(int)) 
-      : gaussians(vector<Ptr<Gaussian> >(nb_gauss))
+      : gaussians(vector<RCPtr<Gaussian> >(nb_gauss))
       //: gaussians(vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
       , apriori (vector<float>(nb_gauss,0.0)) 
       , nb_gaussians (nb_gauss)
@@ -90,12 +90,12 @@ public:
       , using_gaussianIDs(false)
    {
       for (int i=0;i<nb_gauss;i++)
-         gaussians[i] = Ptr<Gaussian> (new Gaussian (dim, cov_new));
+         gaussians[i] = RCPtr<Gaussian> (new Gaussian (dim, cov_new));
    }
 
    GMM ()
    //: gaussians(vector<Gaussian *>(1,(Gaussian *)NULL))
-      : gaussians(vector<Ptr<Gaussian> >())
+      : gaussians(vector<RCPtr<Gaussian> >())
       , apriori (vector<float>(1,0.0))
       , nb_gaussians (1)
       , mode(accum)

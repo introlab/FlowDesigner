@@ -19,7 +19,7 @@
 
 DECLARE_TYPE(MeanSet)
 
-int MeanSet::getIDFor(Ptr<Mean> cov)
+int MeanSet::getIDFor(RCPtr<Mean> cov)
 {
    for (int i=0;i<nb_means;i++)
    {
@@ -32,7 +32,7 @@ int MeanSet::getIDFor(Ptr<Mean> cov)
    return nb_means-1;
 }
 
-Ptr<Mean> MeanSet::getPtrFor(int id) const
+RCPtr<Mean> MeanSet::getPtrFor(int id) const
 {
    if (id>=nb_means)
       throw new GeneralException("Invalid mean ID", __FILE__, __LINE__);

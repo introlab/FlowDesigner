@@ -28,7 +28,7 @@ class Array : public Vector<T>
 {
 public:
    Array() : Vector<T>() {}
-   Array(int n, const T &x = T()) : Vector<T>(n, x) {}
+   explicit Array(int n, const T &x = T()) : Vector<T>(n, x) {}
    void printOn(ostream &out) const
    {
       out << *static_cast<const vector<T> *> (this);

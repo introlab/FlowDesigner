@@ -27,7 +27,7 @@ public:
       , lookBack(0)
    {}
 
-   Ptr<Buffer> buffer;
+   RCPtr<Buffer> buffer;
    int lookAhead;
    int lookBack;
 };

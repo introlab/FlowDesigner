@@ -798,7 +798,7 @@ void GUIDocument::run()
       if (net->getInputNode())
 	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       runningNet = net;
-      //Ptr<Network> net(build("MAIN", parameters));
+      //RCPtr<Network> net(build("MAIN", parameters));
       //cerr << "initializing...\n";
       net->initialize();
       //cerr << "running...\n";

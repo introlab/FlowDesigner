@@ -30,8 +30,8 @@
 #include <string>
 
 /** 
-    The PtrCastException occurs when we are unable to cast a Ptr<T>
-    to a Ptr<U>
+    The PtrCastException occurs when we are unable to cast a RCPtr<T>
+    to a RCPtr<U>
     @author Jean-Marc Valin.
     @version 1.0
  */
@@ -48,8 +48,8 @@ public:
    /**The print method*/
    virtual void print(ostream &out = cerr) 
    {
-      out << "Cast error: Trying to cast Ptr <" << typeid(T).name() << "> (" 
-          << type << ") into Ptr<" << typeid(U).name() << ">" << endl;
+      out << "Cast error: Trying to cast RCPtr <" << typeid(T).name() << "> (" 
+          << type << ") into RCPtr<" << typeid(U).name() << ">" << endl;
    }
 };
 
@@ -76,7 +76,7 @@ public:
     @version 1.0
  */
 template <class X>
-class Ptr
+class RCPtr
 {
 public:
    typedef X element_type;
@@ -88,7 +88,7 @@ protected:
    //size_type *count;
    
 public:
-   explicit Ptr(X* p=0) : ptr(p)
+   explicit RCPtr(X* p=0) : ptr(p)
    {
       //count=new size_type(1);
    }
@@ -96,35 +96,35 @@ public:
    bool isNil() {return ptr != 0;}
 
    template <class Z>
-   Ptr(const Ptr<Z> &r)
+   RCPtr(const RCPtr<Z> &r)
    {
       ptr=dynamic_cast<X*> (r.ptr);
       if (!ptr) 
          {
-            //throw "Ptr<X>: Illegal pointer conversion in copy constructor";
+            //throw "RCPtr<X>: Illegal pointer conversion in copy constructor";
             if (!ptr) throw new PtrCastException<Z,X>(r.ptr);
          }
       //count=r.count;
       acquire();
    }
    
-   Ptr(const Ptr<X> &r)
+   RCPtr(const RCPtr<X> &r)
    {
       ptr=r.ptr;
       //count=r.count;
       acquire();
    }
    
-   ~Ptr() { release(); }
+   ~RCPtr() { release(); }
    
 
    template <class Z>
-   Ptr& operator= (const Ptr<Z> &r)
+   RCPtr& operator= (const RCPtr<Z> &r)
    {
       if ((int) this != (int) (&r))
       {
          X *tmp=dynamic_cast<X*> (r.ptr);
-         //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
+         //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
          if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
          release();
          ptr=tmp;
@@ -134,7 +134,7 @@ public:
       return *this;
    }
 
-   Ptr& operator= (const Ptr<X> &r)
+   RCPtr& operator= (const RCPtr<X> &r)
    {
       if (this != &r)
       {
@@ -147,12 +147,12 @@ public:
    }
 
    template <class Z>
-   Ptr& operator= (Z *r)
+   RCPtr& operator= (Z *r)
    {
       if ((int) ptr != (int) (r))
       {
          X *tmp=dynamic_cast<X*> (r);
-         //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
+         //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
          if (!tmp) throw new PtrCastException<Z,X>(r);
          release();
          ptr=tmp;
@@ -161,7 +161,7 @@ public:
       return *this;
    }
 
-   Ptr& operator= (X *r)
+   RCPtr& operator= (X *r)
    {
       if (ptr != r)
       {
@@ -222,7 +222,7 @@ protected:
    }
 
    template <class Z>
-   friend class Ptr;
+   friend class RCPtr;
 };
 
 

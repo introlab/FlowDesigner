@@ -93,7 +93,7 @@ void GMM::split1()
       }
    }
    //cout << "spliting " << max_gauss << endl;
-   gaussians[nb_gaussians]= Ptr<Gaussian> (new Gaussian(*(gaussians[max_gauss])));
+   gaussians[nb_gaussians]= RCPtr<Gaussian> (new Gaussian(*(gaussians[max_gauss])));
    vector <float> &mean = gaussians[nb_gaussians]->getMean();
    for (unsigned int j=0;j<mean.size();j++)
       mean[j]+=.00001*(rand()%100-49.5);
@@ -108,7 +108,7 @@ void GMM::binary_split()
    apriori.resize(nb_gaussians);
    for (int i=0;i<old_size;i++)
    {
-      gaussians[i+old_size]= Ptr<Gaussian> (new Gaussian(*(gaussians[i])));
+      gaussians[i+old_size]= RCPtr<Gaussian> (new Gaussian(*(gaussians[i])));
       vector <float> &mean = gaussians[i+old_size]->getMean();
       for (unsigned int j=0;j<mean.size();j++)
       {

@@ -59,6 +59,8 @@ class NLMS : public BufferedNode {
    float alpha;
    float beta;
    float E;
+      //Vector<float> w;
+      //Vector<float> grad;
 public:
    NLMS(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
@@ -72,13 +74,15 @@ public:
       alpha = dereference_cast<float> (parameters.get("ALPHA"));
       beta = dereference_cast<float> (parameters.get("BETA"));
       a.resize(size,0.0);
+      //w.resize(size,1.0);
+      //grad.resize(size,0.0);
       inputsCache[inputID].lookBack=1;
    }
 
    void specificInitialize()
    {
       for (int j=0;j<size;j++)
-	 a[j] = 1.0/size;
+	 a[j] = 0;//1.0/size;
       E=1e-6;
       BufferedNode::specificInitialize();
    }
@@ -87,7 +91,7 @@ public:
    {
       BufferedNode::reset();
       for (int j=0;j<size;j++)
-	 a[j] = 1.0/size;
+	 a[j] = 0;//1.0/size;
       E=1e-6;
    }
 
@@ -161,6 +165,22 @@ public:
 	 norm = alpha*err/E;
 	 for (int j=0;j<size;j++)
 	    a[j] += norm*x[i-j];
+	 /*
+	 for (int j=0;j<size;j++)
+	 {
+	    float deriv=w[j]*norm*x[i-j];
+	    if (deriv*grad[j] < 0)
+	       w[j] *= .98;
+	    else
+	       w[j] *= 1.01;
+	    a[j] += deriv;
+	    if (w[j] > 10)
+	       w[j] = 10;
+	    if (w[j] < .01)
+	       w[j] = .01;
+	    grad[j] = deriv;
+	 }
+	 */
       }
       /*for (int j=0;j<size;j++)
 	 cout << a[j] << "\t";

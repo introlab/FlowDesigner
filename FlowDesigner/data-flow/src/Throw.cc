@@ -57,7 +57,7 @@ public:
    ObjectRef getOutput(int output_id, int count)
    {
       //throw new FlowException(getInput(inputID, count));
-      throw Ptr<FlowException> (new FlowException(getInput(inputID, count)));
+      throw RCPtr<FlowException> (new FlowException(getInput(inputID, count)));
    }
 
 };

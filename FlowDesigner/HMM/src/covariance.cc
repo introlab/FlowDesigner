@@ -21,7 +21,7 @@
 
 DECLARE_TYPE(DiagonalCovariance)
 
-void DiagonalCovariance::processMean(Ptr<Mean> mean)
+void DiagonalCovariance::processMean(RCPtr<Mean> mean)
 {
    if (mode == inverted) return;
    if (mode != accum) throw string("DiagonalCovariance::processMean");

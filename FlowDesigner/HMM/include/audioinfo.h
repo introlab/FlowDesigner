@@ -30,9 +30,9 @@ protected:
    int gaussianID;
 
    bool using_IDs;
-   //Ptr<Gaussian> gaussian;
-   //Ptr<State> state;
-   //Ptr<Phone> phone;
+   //RCPtr<Gaussian> gaussian;
+   //RCPtr<State> state;
+   //RCPtr<Phone> phone;
 public:
    Tag() 
       : begin(0)

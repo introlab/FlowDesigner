@@ -39,7 +39,7 @@ DECLARE_TYPE(CovarianceSet)
    }*/
 
 
-int CovarianceSet::getIDFor(Ptr<Covariance> cov)
+int CovarianceSet::getIDFor(RCPtr<Covariance> cov)
 {
    for (int i=0;i<nb_covariances;i++)
    {
@@ -52,7 +52,7 @@ int CovarianceSet::getIDFor(Ptr<Covariance> cov)
    return nb_covariances-1;
 }
 
-Ptr<Covariance> CovarianceSet::getPtrFor(int id) const
+RCPtr<Covariance> CovarianceSet::getPtrFor(int id) const
 {
    if (id>=nb_covariances)
       throw new GeneralException("Invalid covariance ID", __FILE__, __LINE__);

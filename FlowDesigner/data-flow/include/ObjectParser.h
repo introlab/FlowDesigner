@@ -149,7 +149,7 @@ public:
 };
 
 template <class T>
-inline istream &operator >> (istream &in, Ptr<T> &o)
+inline istream &operator >> (istream &in, RCPtr<T> &o)
 {
    char ch;
    in >> ch;

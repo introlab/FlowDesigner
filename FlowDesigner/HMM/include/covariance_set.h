@@ -24,7 +24,7 @@
 class CovarianceSet : public Object {
 protected:
    int nb_covariances;
-   Vector<Ptr<Covariance> > covariances;
+   Vector<RCPtr<Covariance> > covariances;
 public:
    /**Default Constructor*/
    CovarianceSet() 
@@ -38,13 +38,13 @@ public:
    int size() {return nb_covariances;}
 
    /**Indexing operator, returns the Ptr to the specified ID*/
-   Ptr<Covariance> operator [] (int id) {return covariances[id];}
+   RCPtr<Covariance> operator [] (int id) {return covariances[id];}
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
-   int getIDFor(Ptr<Covariance>);
+   int getIDFor(RCPtr<Covariance>);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<Covariance> getPtrFor(int id) const;
+   RCPtr<Covariance> getPtrFor(int id) const;
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;

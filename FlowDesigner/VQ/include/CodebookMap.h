@@ -31,7 +31,7 @@ ostream &operator << (ostream &out, const CodebookMap &cell);
 
 class CodebookMap : public Object {
 protected:
-   Ptr<VQ> mapIn;
+   RCPtr<VQ> mapIn;
    
    Vector<Vector<float> > mapOut;
 
@@ -43,7 +43,7 @@ public:
    
    CodebookMap (const CodebookMap &) {cerr << "don't call the CodebookMap copy constructor\n"; exit(1);}
 
-   CodebookMap(const Ptr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length);
+   CodebookMap(const RCPtr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length);
 
    ~CodebookMap()
    {

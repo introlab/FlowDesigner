@@ -27,7 +27,7 @@ class Model {
    string name;
 
    /**Set of states for the model*/
-   vector<Ptr<State> > states;
+   vector<RCPtr<State> > states;
 
 };
 

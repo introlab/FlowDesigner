@@ -29,7 +29,7 @@ class Vector : public vector<T>, public Object
 {
 public:
    Vector() : vector<T>() {}
-   Vector(int n, const T &x = T()) : vector<T>(n, x) {}
+   explicit Vector(int n, const T &x = T()) : vector<T>(n, x) {}
    void printOn(ostream &out) const
    {
       out << *static_cast<const vector<T> *> (this);

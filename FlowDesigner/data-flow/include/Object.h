@@ -27,7 +27,7 @@ class Object;
     @author Jean-Marc Valin
     @version 1.0
  */
-typedef Ptr<Object> ObjectRef;
+typedef RCPtr<Object> ObjectRef;
 
 class _ObjectFactory;
 

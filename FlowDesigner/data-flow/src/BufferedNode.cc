@@ -45,7 +45,7 @@ void BufferedNode::initializeBuffers()
 {
    for (int i=0;i<outputs.size();i++)
    {
-      outputs[i].buffer = Ptr<Buffer>(new Buffer (outputs[i].lookAhead+outputs[i].lookBack+1));
+      outputs[i].buffer = RCPtr<Buffer>(new Buffer (outputs[i].lookAhead+outputs[i].lookBack+1));
    }
 }
 

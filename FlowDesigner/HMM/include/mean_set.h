@@ -24,8 +24,8 @@
 class MeanSet : public Object {
 protected:
    int nb_means;
-   //Vector<Ptr<Vector<float> > > means;
-   Vector<Ptr<Mean> > means;
+   //Vector<RCPtr<Vector<float> > > means;
+   Vector<RCPtr<Mean> > means;
 public:
    /**Default Constructor*/
    MeanSet() 
@@ -33,16 +33,16 @@ public:
    {};
 
    /**Indexing operator, returns the Ptr to the specified ID*/
-   Ptr<Mean> operator [] (int id) {return means[id];}
+   RCPtr<Mean> operator [] (int id) {return means[id];}
 
    /**Returns the number of elements*/
    int size() {return nb_means;}
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
-   int getIDFor(Ptr<Mean>);
+   int getIDFor(RCPtr<Mean>);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<Mean> getPtrFor(int id) const;
+   RCPtr<Mean> getPtrFor(int id) const;
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;

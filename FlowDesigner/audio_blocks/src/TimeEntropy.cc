@@ -104,7 +104,7 @@ public:
       int inputLength;
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
       {
-         //Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
+         //RCPtr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
          ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
          if (inputValue->status != Object::valid)
          {

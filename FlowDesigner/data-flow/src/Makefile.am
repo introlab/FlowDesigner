@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.40 2001/03/06 02:50:31 maestro Exp $
+# $Id: Makefile.am,v 1.41 2001/03/06 19:57:28 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -92,8 +92,8 @@ bin_PROGRAMS = batchflow
 batchflow_SOURCES = \
 	batchflow.cc
 
-batchflow_LDADD = $(GNOME_XML_LIB) libflow.la 
+batchflow_LDADD = $(GNOME_XML_LIB) libflow.la $(LIB_FFTW)
 
-LDFLAGS = 
+batchflow_LDFLAGS = $(FFTW_LDFLAGS)
 
 INCLUDES = -I$(top_srcdir)/data-flow/include $(GNOME_XML_INCLUDE) 

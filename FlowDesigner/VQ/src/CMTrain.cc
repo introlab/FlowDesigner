@@ -133,7 +133,7 @@ public:
 
 
 	       //FFNet *net = new FFNet( topo ); 
-	       Ptr<VQ> vq = netValue;
+	       RCPtr<VQ> vq = netValue;
 	       
 	       currentNet = ObjectRef(new CodebookMap(vq,in,out,object_cast <Vector<float> > (outBuff[0]).size()));
                //vq.traincg(in, out, maxEpoch);

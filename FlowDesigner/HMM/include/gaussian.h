@@ -33,11 +33,11 @@ class Gaussian : public Object
 {
 protected:
    /**The mean of the gaussian stored as an STL vector of float*/
-   Ptr<Mean> mean;
-   //Ptr<Vector<float> > mean;
+   RCPtr<Mean> mean;
+   //RCPtr<Vector<float> > mean;
 
    /**The covariance of the gaussian is a pointer to abstract class Covariance*/
-   Ptr<Covariance> covariance;
+   RCPtr<Covariance> covariance;
 
    /**number of frames aligned (accumulated) to the covariance*/
    int            accum_count;

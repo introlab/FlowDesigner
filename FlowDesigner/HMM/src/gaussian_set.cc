@@ -19,7 +19,7 @@
 
 DECLARE_TYPE(GaussianSet)
 
-int GaussianSet::getIDFor(Ptr<Gaussian> cov)
+int GaussianSet::getIDFor(RCPtr<Gaussian> cov)
 {
    for (int i=0;i<nb_gaussians;i++)
    {
@@ -32,7 +32,7 @@ int GaussianSet::getIDFor(Ptr<Gaussian> cov)
    return nb_gaussians-1;
 }
 
-Ptr<Gaussian> GaussianSet::getPtrFor(int id) const
+RCPtr<Gaussian> GaussianSet::getPtrFor(int id) const
 {
    if (id>=nb_gaussians)
       throw new GeneralException("Invalid gaussian ID", __FILE__, __LINE__);

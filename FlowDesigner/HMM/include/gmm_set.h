@@ -25,7 +25,7 @@
 class GMMSet : public Object {
 protected:
    int nb_gmms;
-   Vector<Ptr<GMM> > gmms;
+   Vector<RCPtr<GMM> > gmms;
 public:
    /**Default Constructor*/
    GMMSet() 
@@ -33,10 +33,10 @@ public:
    {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
-   int getIDFor(Ptr<GMM>);
+   int getIDFor(RCPtr<GMM>);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<GMM> getPtrFor(int id);
+   RCPtr<GMM> getPtrFor(int id);
 
    /**convert all elements to using IDs (before saving)*/
    void toIDs(GaussianSet & gauss);

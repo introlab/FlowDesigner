@@ -34,7 +34,7 @@ public:
 /**State class*/
 class State {
    /**Corresponding GMM*/
-   Ptr<GMM> mixture;
+   RCPtr<GMM> mixture;
 
    ///Log probability for transition to next state
    //vector<Transition> transitions;

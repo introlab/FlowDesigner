@@ -90,7 +90,7 @@ public:
 	 {
 	    ObjectRef inputValue = getInput(inputID, count);
 	    return inputValue;
-	 } catch (Ptr<FlowException> e)
+	 } catch (RCPtr<FlowException> e)
 	 {
 	    isInside = true;
 	    currentException = e->getObject();

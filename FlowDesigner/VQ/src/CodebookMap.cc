@@ -19,7 +19,7 @@
 DECLARE_TYPE(CodebookMap)
 
 
-CodebookMap::CodebookMap(const Ptr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length)
+CodebookMap::CodebookMap(const RCPtr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length)
    : mapIn(_mapIn)
    , mapOut(_mapIn->nbClasses(),Vector<float> (length,0))
 {
