@@ -118,9 +118,9 @@ public:
 
    static void loadAllInfo();
    
-   virtual UINetwork *newNetwork(UIDocument *_doc, const string &_name, UINetwork::Type type);
+   virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
    
-   virtual UINetwork *newNetwork(UIDocument *_doc, xmlNodePtr _net);
+   virtual UINetwork *newNetwork(xmlNodePtr _net);
    
    Network *build(const string &_name, const ParameterSet &params);
 

@@ -549,16 +549,16 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
 
 
 
-UINetwork *UIDocument::newNetwork(UIDocument *_doc, const string &_name, UINetwork::Type type)
+UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
    //cerr << "UIDocument::newNetwork\n";
-   return new UINetwork(_doc, _name, type);
+   return new UINetwork(this, _name, type);
 }
 
-UINetwork *UIDocument::newNetwork(UIDocument *_doc, xmlNodePtr _net)
+UINetwork *UIDocument::newNetwork(xmlNodePtr _net)
 {
    //cerr << "UIDocument::newNetwork\n";
-   return new UINetwork(_doc, _net);
+   return new UINetwork(this, _net);
 }
 
 
@@ -567,7 +567,7 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
    //cerr << "UIDocument::addNetwork (type = " << typeid(this).name() << ")" << endl;
    
    //UINetwork *newNet = new GUINetwork(this, name, iter);
-   UINetwork *newNet = newNetwork(this, name, type);
+   UINetwork *newNet = newNetwork(name, type);
    for (int i=0;i<networks.size();i++)
    {
       networks[i]->newNetNotify("Subnet",name);
@@ -581,7 +581,7 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
 UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
 {
    //cerr << "creating...\n";
-   UINetwork *newNet = newNetwork(this, xmlNet);
+   UINetwork *newNet = newNetwork(xmlNet);
    //cerr << "created\n";
    //cerr << "newNet = " << newNet << endl;
    //cerr << "network created in UIDocument::addNetwork\n";

@@ -17,7 +17,9 @@
 #ifndef VECTOR_POOL_H
 #define VECTOR_POOL_H
 
-
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 //#include "Vector.h"
 //#define NO_HASH_MAP
 

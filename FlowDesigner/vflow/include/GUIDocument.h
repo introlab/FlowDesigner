@@ -63,9 +63,9 @@ public:
 
    void removeCurrentNet ();
 
-   UINetwork *newNetwork(UIDocument *_doc, const string &_name, UINetwork::Type type);
+   UINetwork *newNetwork(const string &_name, UINetwork::Type type);
    
-   UINetwork *newNetwork(UIDocument *_doc, xmlNodePtr _net);
+   UINetwork *newNetwork(xmlNodePtr _net);
 
    virtual void setFullPath(const string &fullpath);
 

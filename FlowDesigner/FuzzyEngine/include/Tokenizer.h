@@ -4,6 +4,8 @@
 #include <string>
 #include <algorithm>
 
+using namespace std;
+
 
 #ifndef NL_SYS_STRING_TO_TOKEN_H
 #define NL_SYS_STRING_TO_TOKEN_H

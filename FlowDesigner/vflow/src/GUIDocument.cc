@@ -267,16 +267,16 @@ void GUIDocument::removeCurrentNet()
 
 
 
-UINetwork *GUIDocument::newNetwork(UIDocument *_doc, const string &_name, UINetwork::Type type)
+UINetwork *GUIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
    //cerr << "GUIDocument::newNetwork\n";
-   return new GUINetwork(_doc, _name, type);
+   return new GUINetwork(this, _name, type);
 }
 
-UINetwork *GUIDocument::newNetwork(UIDocument *_doc, xmlNodePtr _net)
+UINetwork *GUIDocument::newNetwork(xmlNodePtr _net)
 {
    //cerr << "GUIDocument::newNetwork\n";
-   return new GUINetwork(_doc, _net);
+   return new GUINetwork(this, _net);
 }
 
 

@@ -52,6 +52,9 @@
 #undef HAVE_STPCPY
 #undef ENABLE_NLS
 #undef HAVE_FFTW
+#undef NO_HASH_MAP
+#undef HAVE_EXT_HASH_MAP
+#undef HAVE_HASH_MAP
 
 /* Define if you have the __argz_count function.  */
 #undef HAVE___ARGZ_COUNT
@@ -100,6 +103,12 @@
 
 /* Define if you have the <argz.h> header file.  */
 #undef HAVE_ARGZ_H
+
+/* Define if you have the <ext/hash_map> header file.  */
+#undef HAVE_EXT_HASH_MAP
+
+/* Define if you have the <hash_map> header file.  */
+#undef HAVE_HASH_MAP
 
 /* Define if you have the <limits.h> header file.  */
 #undef HAVE_LIMITS_H
