@@ -13,15 +13,15 @@ DECLARE_NODE(SeparChannels)
  * @description No description available
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Stero frame (encoded as left, right, left, right, ...)
  *
  * @output_name LEFT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Frame for the left channel
  *
  * @output_name RIGHT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Frame for the right channel
  *
 END*/

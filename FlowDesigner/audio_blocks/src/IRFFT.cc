@@ -18,11 +18,11 @@ DECLARE_NODE(IRFFT)
  * @description Inverse FFT, half complex to real vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<complex>
  * @input_description Half complex vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Real inverse FFT output
  *
 END*/

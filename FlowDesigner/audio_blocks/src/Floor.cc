@@ -14,11 +14,11 @@ DECLARE_NODE(Floor)
  * @description Floors vector values
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Output vector (after flooring)
  *
  * @parameter_name THRESH

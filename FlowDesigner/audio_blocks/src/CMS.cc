@@ -16,11 +16,11 @@ DECLARE_NODE(CMS)
  * @description Window-type Cepstram Mean Subtraction (CMS)
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input frames (cepstrum)
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description CMS output frames
  *
  * @parameter_name LENGTH

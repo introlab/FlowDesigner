@@ -15,11 +15,11 @@ DECLARE_NODE(Pow)
  * @description Raises the input vector to a certain power
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Result: INPUT.^EXP
  *
  * @parameter_name EXP

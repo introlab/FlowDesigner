@@ -13,11 +13,11 @@ DECLARE_NODE(GCMS)
  * @description Growing-Window Cepstral Mean Subtraction
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input frames
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description CMS output
  *
  * @parameter_name LENGTH

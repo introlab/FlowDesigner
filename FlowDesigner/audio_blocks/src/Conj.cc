@@ -15,11 +15,11 @@ DECLARE_NODE(Conj)
  * @description Computes the complex conjugate of a vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<complex>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<complex>
  * @output_description Conjugate vector
  *
 END*/

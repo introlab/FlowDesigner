@@ -16,15 +16,15 @@ DECLARE_NODE(ILTF)
  * @description Inverse (all-pole) long-term (comb) filter
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input frame
  *
  * @input_name FILTER
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Filter params as [gain, period]
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Filtered signal
  *
 END*/

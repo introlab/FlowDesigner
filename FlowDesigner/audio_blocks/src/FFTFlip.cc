@@ -14,11 +14,11 @@ DECLARE_NODE(FFTFlip)
  * @description Flips a half-spectrum to produce a symetric spectrum
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Half spectrum (real)
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Symetric spectrum
  *
 END*/

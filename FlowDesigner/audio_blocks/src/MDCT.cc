@@ -18,11 +18,11 @@ DECLARE_NODE(MDCT)
  * @description MDCT implementation (taken from Vorbis)
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input frame
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description MDCT result
  *
  * @parameter_name LENGTH

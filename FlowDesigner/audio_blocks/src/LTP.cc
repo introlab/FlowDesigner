@@ -20,11 +20,11 @@ DECLARE_NODE(LTP)
  * @description Long-term predictor, finds best correlation (pitch) within (START <= sample delay <= END)
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input frame
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description [pitch gain, pitch period]
  *
  * @parameter_name START

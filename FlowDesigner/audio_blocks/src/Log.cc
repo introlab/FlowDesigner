@@ -20,11 +20,11 @@ DECLARE_NODE(Log)
  * @description Computes the natural logarithm of a vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description The input of the log
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Result of the log
  *
  * @parameter_name FAST

@@ -17,7 +17,7 @@ DECLARE_NODE(FDSaveFrame)
  * @description Writes audio frames to the sound card (or any other) file descriptor (deplaced by WriteAudio)
  *
  * @input_name OBJECT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Audio frames
  *
  * @input_name FD
@@ -25,7 +25,7 @@ DECLARE_NODE(FDSaveFrame)
  * @input_description (Sound card) File descriptor
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Returning the input audio frames
  *
  * @parameter_name LEAD_IN

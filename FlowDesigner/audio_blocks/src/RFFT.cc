@@ -18,11 +18,11 @@ DECLARE_NODE(RFFT)
  * @description Computes the FFT of a real input vector and output a complex result
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Real vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<complex>
  * @output_description Complex FFT output
  *
 END*/

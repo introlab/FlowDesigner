@@ -12,15 +12,15 @@ DECLARE_NODE(OffsetMatrix)
  *
  * @name OffsetMatrix
  * @category DSP:Manip
- * @description Applies a gain to a vector
+ * @description Returns a matrix of frames with offset
  *
  * @input_name INPUT
- * @input_type Vector
- * @input_description Input vector
+ * @input_type Vector<float>
+ * @input_description Input frame
  *
  * @output_name OUTPUT
- * @output_type Vector
- * @output_description Output vector (after gain)
+ * @output_type Matrix<float>
+ * @output_description Matrix (ready for SVD, ...)
  *
  * @parameter_name COLUMNS
  * @parameter_type int

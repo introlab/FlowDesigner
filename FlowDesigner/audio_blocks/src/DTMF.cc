@@ -15,11 +15,11 @@ DECLARE_NODE(DTMF)
  * @description Generates a DTMF signal
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<int>
  * @input_description DTMF vectors (line/column, starting at 0)
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description DTMF frames
  *
  * @parameter_name LENGTH

@@ -16,11 +16,11 @@ DECLARE_NODE(Exp)
  * @description Computes the exponential (base-e) of a vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description The input of the exponential
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Result of the exponential
  *
  * @parameter_name FAST
