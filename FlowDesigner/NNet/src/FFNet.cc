@@ -343,7 +343,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    double *out = new double [topo[topo.size()-1]];
    double SSE;
    int k=1;
-   double sigma = .01;
+   double sigma = .1;
    double lambda = 1;
    double lambdaBar = 0;
    double sigmak;
@@ -434,6 +434,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
 	 if (k%nbWeights == 0)
 	 {
 	    pk = rk;
+	    k = 1;
 	    continue;
 	 } else {
 	    double bk = rk.norm2() - rk*oldR;
