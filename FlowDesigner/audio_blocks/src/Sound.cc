@@ -83,8 +83,6 @@ protected:
    /**The ID of the 'value' output*/
    int outputID;
 
-   bool init;
-
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -100,9 +98,6 @@ public:
    {
       Node::specificInitialize();
 
-      if (init)
-	 return;
-      init = true;
       int speed=44100;
       int stereo=0;
       //int audio_fd;
