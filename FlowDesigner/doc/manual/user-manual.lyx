@@ -3,6 +3,7 @@
 \textclass book
 \begin_preamble
 \usepackage{graphicx}
+\usepackage{hyperref}
 \end_preamble
 \language default
 \inputencoding latin1
@@ -54,7 +55,13 @@ Dominic Létourneau
 Introduction
 \layout Standard
 
-Overflow is a free (GPL/LGPL) "data flow oriented" development environment.
+
+\latex latex 
+
+\backslash 
+href{http://freespeech.sourceforge.net/overflow.html}{Overflow}
+\latex default 
+ is a free (GPL/LGPL) "data flow oriented" development environment.
  It can be use to build complex applications by combining small, reusable
  building blocks.
  In some way, it has similarities with Simulink and LabView, although it
@@ -310,6 +317,10 @@ Static linkage: This will copy all the required Overflow files in the same
 Generate makefile: Un-implemented yet 
 \layout Standard
 
-Note: the VFLOW_SOURCE environment variable must be set to your Overflow
- source directory in order for the "static linkage" option to work.
+Note: the 
+\family typewriter 
+VFLOW_SOURCE
+\family default 
+ environment variable must be set to your Overflow source directory in order
+ for the "static linkage" option to work.
 \the_end
