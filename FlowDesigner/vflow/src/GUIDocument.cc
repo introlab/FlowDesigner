@@ -123,21 +123,26 @@ void GUIDocument::load()
    //cerr << "this = " << this << endl;
    UIDocument::load();
    //cerr << "almost loaded\n";
+   cerr << "doc loaded\n";
    for (int i=0;i<networks.size();i++)
    {
       dynamic_cast<GUINetwork *> (networks[i])->updateScroll();
    }
+   cerr << "aa\n";
+   //BUG I guess we should delete this, but it screws up with the threads
    if (docproperty)
    {
       gtk_widget_destroy(docproperty);
    }
-
+   cerr << "bb\n";
    createParamDialog();
+   cerr << "cc\n";
 
    for (int i=0;i<params.size();i++)
    {
       insertLoadedParam(&(params[i]), params[i].type, params[i].value);
    }
+   cerr << "doc load updated\n";
 }
 
 
@@ -569,16 +574,7 @@ void GUIDocument::createParamDialog()
 
 }
 
-//#include <X11/Xlib.h>
-/*struct Display;
-extern "C" {
-void     gdk_threads_enter                (void);
-void     gdk_threads_leave                (void);
-void XUnlockDisplay(Display*);
-void XLockDisplay(Display*);
-}
-extern Display *gdk_display;
-*/
+
 
 static void disposeFunct(void *dummy)
 {
@@ -588,25 +584,19 @@ static void disposeFunct(void *dummy)
    delete GUIDocument::runningNet; 
    GUIDocument::runningNet=NULL;
 
-   //cerr << "display = " << gdk_display << endl;
-   //XLockDisplay(gdk_display);
-   //gdk_threads_enter();
-   //GDK_THREADS_ENTER();
-   /*GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
+   gdk_threads_enter();
+
+   GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
    gtk_widget_set_sensitive(w,true);
    w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
-   gtk_widget_set_sensitive(w,false);*/
-   //GDK_THREADS_LEAVE();
-   //gdk_threads_leave();
-   //XUnlockDisplay(gdk_display);
+   gtk_widget_set_sensitive(w,false);
 
-   //pthread_cleanup_push(routine,arg) 
+   gdk_threads_leave();
 }
 
 static void threadFunct(GUIDocument *doc)
 {
    doc->run();
-   // pthread_cleanup_push(disposeFunct, NULL);
 }
 
 void GUIDocument::threadRun()
@@ -625,7 +615,6 @@ void GUIDocument::threadStop()
    {
       isRunning=false;
       pthread_cancel(runThread);
-      //pthread_create(&runThread, NULL, threadFunct, this);
    }
 
 }
@@ -634,7 +623,9 @@ void GUIDocument::threadStop()
 void GUIDocument::run()
 {
    //cerr << "GUIDocument::run\n";
+   
    pthread_cleanup_push(disposeFunct, NULL);
+
    try{
       ParameterSet parameters;
       {
@@ -693,6 +684,7 @@ void GUIDocument::run()
       e.print();
       
    }
+   
    pthread_cleanup_pop(1);
 
 }
