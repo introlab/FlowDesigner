@@ -294,14 +294,13 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
 }
 
 
-/*void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, float sigma, float lambda)
+void FFNet::trainSCG(vector<float *> tin, vector<float *> tout, int iter, float sigma, float lambda)
 {
+
+
    int i,j;
-   //float *in = new float [topo[0]];
-   //float *out = new float [topo[topo.size()-1]];
-   float SSE;
+   double SSE;
    int k=1;
-   //float sigma = .03;
    float lambda_init = lambda;
    float lambdaBar = 0;
    float sigmak;
@@ -313,7 +312,9 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
       nbWeights += layers[i]->getNbWeights();
    }
 
+   cerr << "WARNING: This is still experimental" << endl;
    cerr << "found " << nbWeights << " weights\n";
+
 
    Array<float> pk(nbWeights);
    Array<float> rk(nbWeights);
@@ -322,12 +323,21 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
    Array<float> dEk(nbWeights);
    Array<float> dEp(nbWeights);
    Array<float> nextdE(nbWeights);
-   float nextE;
+
+   Array<double> tmp(nbWeights);
+
+   double nextE;
    float deltak;
 
-   getWeights(&wk[0]);
+   vec_copy(weights, &wk[0], nbWeights);
 
-   calcGradient(tin, tout, wk, dEk, SSE);
+
+   calcGradient(tin, tout, wk, tmp, SSE);
+   for (int i=0;i<nbWeights;i++)
+      dEk[i] = tmp[i];
+
+
+
    pk=-dEk;
    rk=-dEk;
    while (k < iter)
@@ -340,8 +350,13 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
       if (success)
       {
 	 sigmak = sigma / norm;
-	 float dummy = 0;
-	 calcGradient(tin, tout, wk+pk*sigmak, dEp, dummy);
+	 double dummy = 0;
+
+	 calcGradient(tin, tout, wk+pk*sigmak, tmp, dummy);
+	 for (int i=0;i<nbWeights;i++)
+	    dEp[i] = tmp[i];
+
+
 	 sk = (dEp - dEk)*(1/sigmak);
 	 deltak = pk*sk;
       }
@@ -368,7 +383,10 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
       //pk = -rk;
 
       //6. Comparison
-      calcGradient(tin, tout, wk+pk*ak, nextdE, nextE);
+      calcGradient(tin, tout, wk+pk*ak, tmp, nextE);
+      for (int i=0;i<nbWeights;i++)
+	 nextdE[i] = tmp[i];
+
       float DK = 2*deltak*(SSE -  nextE) / (uk*uk);
 
       //cerr << SSE << " " << nextE << " " << ak << " " << uk << " " << norm << endl;
@@ -412,9 +430,9 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
 	 break;
       //k++;
    }
-   setWeights(&wk[0]);
+   vec_copy(&wk[0], weights, nbWeights);
 }
-*/
+
 
 float FFNet::totalError(vector<float *> tin, vector<float *> tout)
 {
