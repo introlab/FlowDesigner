@@ -1,4 +1,4 @@
-AC_INIT(src/main.cc)
+AC_INIT(src/vflow.cc)
 
 AM_CONFIG_HEADER(config.h)
 
