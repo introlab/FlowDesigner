@@ -14,7 +14,8 @@ DECLARE_NODE(Socket)
  * @description Create a network socket of any type
  *
  * @parameter_name TYPE
- * @parameter_type String
+ * @parameter_type string
+ * @parameter_value TCP_STREAM
  * @parameter_description Type of socket : BROADCAST, TCP_STREAM, etc.
  *
  * @parameter_name PORT
