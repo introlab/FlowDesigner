@@ -216,7 +216,7 @@ REGISTER_CONVERSION_TEMPLATE(Matrix<complex<float> >, Matrix<complex<float> >, M
 REGISTER_CONVERSION_TEMPLATE(Matrix<complex<float> >, Matrix<complex<double> >, MatrixMatrixConversion);
 REGISTER_CONVERSION_TEMPLATE(Matrix<complex<double> >, Matrix<complex<double> >, MatrixMatrixConversion);
 
-//NilObject to Matrx<T> returns nilObject...
+//NilObject to Matrix<T> returns nilObject...
 REGISTER_CONVERSION(NilObject, Matrix<int>, ReturnNilObject);
 REGISTER_CONVERSION(NilObject, Matrix<float>, ReturnNilObject);
 REGISTER_CONVERSION(NilObject, Matrix<double>, ReturnNilObject);
