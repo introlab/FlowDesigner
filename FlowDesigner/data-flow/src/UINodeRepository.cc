@@ -784,7 +784,9 @@ void UINodeRepository::updateNetInfo(UINetwork *net)
    net->insertNetParams(ninfo->params);
 
    ninfo->category = "Subnet";
-   ninfo->description = "subnet";
+
+   //Description is now stored in a network definition
+   ninfo->description = net->getDescription();
    
    //cerr<<"updated network info for "<<net->getName()<<endl;
    info[net->getName()] = ninfo;
