@@ -1813,6 +1813,10 @@ ude so when you try compiling a newer version, g++ sees the old includes
 Node Documentation
 \layout Standard
 
+This documentation is generated automatically from the comments included
+ in the Overflow C++ source code.
+\layout Standard
+
 
 \begin_inset Include \input{nodes.tex}
 
