@@ -35,5 +35,5 @@ class ExternalApp {
   protected:
   public:
    static int addAppFactory(string name, AppFactory *f) {factories()[name] = f;}
-   
+   static ExternalApp *startApp(string name) {return factories()[name]->create();}
 };
