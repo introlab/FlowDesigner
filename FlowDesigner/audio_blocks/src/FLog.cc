@@ -27,10 +27,6 @@ DECLARE_NODE(FLog)
  * @output_type Vector
  * @output_description Result of the log
  *
- * @parameter_name FAST
- * @parameter_type bool
- * @parameter_description Should we use fast log approximation?
- *
 END*/
 
 
