@@ -18,6 +18,9 @@
 #include "net_types.h"
 #include "Object.h"
 
+#include <iostream>
+using namespace std;
+
 DECLARE_NODE(Save)
 /*Node
  *
@@ -72,7 +75,12 @@ ObjectRef Save::getOutput(int output_id, int count)
 	    ObjectRef streamValue = streamInput.node->getOutput(streamInput.outputID,i);
 	    Stream &stream = object_cast<Stream> (streamValue);
 	    
-	    stream << object << endl;
+	    //stream << object << endl;
+            //FIXME: this is a kludge
+	    stream << object;
+            ostream &tmp = stream;
+	    tmp << endl;
+
 	    stream.flush();
 	    
 	 }
