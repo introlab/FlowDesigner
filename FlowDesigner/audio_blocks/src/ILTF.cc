@@ -89,7 +89,7 @@ public:
       }      
       
       //int size = filter.size();
-      int delay = floor(.5+filter[1]);
+      int delay = int(floor(.5+filter[1]));
       //filter[0]=1;
 
       for (int i=0;i<length;i++)

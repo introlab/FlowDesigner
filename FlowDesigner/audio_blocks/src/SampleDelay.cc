@@ -78,7 +78,7 @@ public:
 	 ObjectRef delayValue = getInput(delayID, count);
 	 if (delayValue->status == Object::valid)
 	 {
-	    delay = (object_cast<Vector<float> > (delayValue))[0];
+	    delay = int((object_cast<Vector<float> > (delayValue))[0]);
 	    //delay = dereference_cast<float> (delayValue);
 	 }
       }
