@@ -21,20 +21,23 @@ class SeparChannels;
 
 DECLARE_NODE(SeparChannels)
 /*Node
-
+ *
  * @name SeparChannels
  * @category Signal:Audio
  * @description No description available
-
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Stero frame (encoded as left, right, left, right, ...)
+ *
  * @output_name LEFT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Frame for the left channel
+ *
  * @output_name RIGHT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Frame for the right channel
+ *
 END*/
 
 

@@ -24,17 +24,19 @@ class Sqrt;
 
 DECLARE_NODE(Sqrt)
 /*Node
-
+ *
  * @name Sqrt
  * @category Signal:Base
- * @description No description available
-
+ * @description Square root of a vector
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Result vector of square root
+ *
 END*/
 
 

@@ -25,19 +25,23 @@ DECLARE_NODE(Select)
  *
  * @name Select
  * @category Signal:Manip
- * @description No description available
+ * @description Selects an index range in an input vector 
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Output vector (size = END-START+1)
  *
  * @parameter_name START
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Start index (inculded)
  *
  * @parameter_name END
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description End index (included)
  *
 END*/
 
