@@ -12,7 +12,7 @@ static GnomeMDIChildClass *parent_class = NULL;
 
 bool GUIDocument::isRunning=false;
 pthread_t GUIDocument::runThread;
-Network * GUIDocument::runningNet;
+Network * GUIDocument::runningNet=NULL;
 
 
 void create_net(gchar * str, GUIDocument *doc)
@@ -573,6 +573,7 @@ static void disposeFunct(void *dummy)
    cerr << "deleting\n";
    GUIDocument::isRunning=false;
    delete GUIDocument::runningNet; 
+   runningNet=NULL;
    //pthread_cleanup_push(routine,arg) 
 }
 
@@ -647,6 +648,7 @@ void GUIDocument::run()
       cerr << "initializing...\n";
       net->initialize();
       cerr << "running...\n";
+      runningNet=net;
       cout << *net->getOutput(0,0) << endl;
 
       //delete net;
