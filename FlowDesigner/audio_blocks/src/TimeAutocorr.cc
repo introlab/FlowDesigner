@@ -19,6 +19,7 @@
 #include "Vector.h"
 #include <strstream>
 #include <values.h>
+#include "vec.h"
 
 class TimeAutocorr;
 
@@ -105,10 +106,7 @@ public:
       
       for (int i=0;i<output.size();i++)
       {
-	 output[i]=0;
-	 int j=0;
-	 for (int k=0;k<inputLength;k++)
-	    output[i] += (*inVect[j])[k]*(*inVect[j+i])[k];
+	 output[i] = vec_inner_prod(&(*inVect[0])[0], &(*inVect[i])[0], inputLength);
       }
    }
 
