@@ -70,7 +70,9 @@ include_HEADERS = Array.h \
 	conversion.h \
 	Complex.h \
 	Stream.h \
-	URLHandler.h
+	URLHandler.h \
+  BinaryAND.h \
+  BinaryOR.h
 	
 noinst_HEADERS = \
 	Pack.h \
