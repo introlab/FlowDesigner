@@ -48,7 +48,7 @@ gflow_SOURCES = \
 	GtkPlotProbe.cc \
 	vflow_pref.cc
 
-LDFLAGS = $(FFTW_LDFLAGS) `sdl-config --libs`
+LDFLAGS = $(FFTW_LDFLAGS)
 
 LDADD = @PACKAGE_LIBS@ $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \
