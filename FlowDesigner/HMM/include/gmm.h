@@ -27,7 +27,7 @@ public:
    float score;
    int gaussian_id;
    Frame *frame;
-   GMM *gmm;
+   const GMM *gmm;
 public:
    friend class GMM;
 };

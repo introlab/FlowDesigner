@@ -20,7 +20,7 @@
 #include <iostream.h>
 #include <fstream.h>
 
-void Gaussian::print_mean(ostream &out = cout, string separ = " ") const
+void Gaussian::print_mean(ostream &out , string separ ) const
 {
    for (unsigned int i=0;i<mean->size();i++)
    {
@@ -28,7 +28,7 @@ void Gaussian::print_mean(ostream &out = cout, string separ = " ") const
    }
    out << endl;
 }
-void Gaussian::print_covar(ostream &out = cout, string separ = " ") const
+void Gaussian::print_covar(ostream &out , string separ ) const
 {
    for (unsigned int i=0;i<covariance->size();i++)
    {
