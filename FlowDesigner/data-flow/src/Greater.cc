@@ -56,10 +56,7 @@ public:
    {
       input1ID = addInput ("INPUT1");
       input2ID = addInput ("INPUT2");
-      outputID = addOutput ("OUTPUT");
-
-      trueObject = ObjectRef (new Bool(true));
-      falseObject = ObjectRef (new Bool(false));
+      outputID = addOutput ("OUTPUT"); 
    }
    
 

@@ -45,7 +45,13 @@ REGISTER_DOUBLE_VTABLE(divVtable, divFloatFloat, Float, Float);
 
 ObjectRef smallerFloatFloat(ObjectRef x, ObjectRef y)
 {
-   return ObjectRef(new Bool(dereference_cast<float> (x) < (dereference_cast<float> (y))));
+
+  if (dereference_cast<float> (x) < (dereference_cast<float> (y))) {
+    return TrueObject;
+  }
+  else {
+    return FalseObject;
+  }
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerFloatFloat, Float, Float);
 
@@ -78,7 +84,12 @@ REGISTER_DOUBLE_VTABLE(divVtable, divIntInt, Int, Int);
 
 ObjectRef smallerIntInt(ObjectRef x, ObjectRef y)
 {
-   return ObjectRef(new Bool(dereference_cast<int> (x) < (dereference_cast<int> (y))));
+  if (dereference_cast<int> (x) < (dereference_cast<int> (y))) {
+    return TrueObject;
+  }
+  else {
+    return FalseObject;
+  }
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntInt, Int, Int);
 
@@ -110,7 +121,12 @@ REGISTER_DOUBLE_VTABLE(divVtable, divIntFloat, Int, Float);
 
 ObjectRef smallerIntFloat(ObjectRef x, ObjectRef y)
 {
-   return ObjectRef(new Bool(dereference_cast<int> (x) < (dereference_cast<float> (y))));
+  if (dereference_cast<int> (x) < (dereference_cast<float> (y))) {
+    return TrueObject;
+  }
+  else {
+    return FalseObject;
+  }
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntFloat, Int, Float);
 
@@ -143,7 +159,12 @@ REGISTER_DOUBLE_VTABLE(divVtable, divFloatInt, Float, Int);
 
 ObjectRef smallerFloatInt(ObjectRef x, ObjectRef y)
 {
-   return ObjectRef(new Bool(dereference_cast<float> (x) < (dereference_cast<int> (y))));
+  if (dereference_cast<float> (x) < (dereference_cast<int> (y))) {
+    return TrueObject;
+  }
+  else {
+    return FalseObject;
+  }
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerFloatInt, Float, Int);
 

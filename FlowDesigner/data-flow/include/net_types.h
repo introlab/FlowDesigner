@@ -169,6 +169,10 @@ typedef NetCType<unsigned long> U_long;
 typedef NetCType<bool> Bool;
 typedef NetCType<FILE *> FILEPTR;
 
+
+ObjectRef TrueObject(new Bool(true));
+ObjectRef FalseObject(new Bool(false));
+
 ///STL types
 //typedef PrintableGenericType<string> String;
 //typedef GenericType<ifstream> ISFtream;
