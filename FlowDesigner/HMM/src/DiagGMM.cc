@@ -18,7 +18,6 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
 {
    float sum=0;
    __asm__ __volatile__ (
-   "
    push %%eax
    push %%esi
    push %%edi
@@ -95,7 +94,6 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
    pop %%edi
    pop %%esi
    pop %%eax
-   "
    : : "a" (a), "S" (c), "D" (b), "c" (len), "d" (&sum)
    : "memory"
    );
