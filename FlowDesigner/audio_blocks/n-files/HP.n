@@ -1,11 +1,12 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="DSP:Filter">
+<Document category="DSP:Filter">
+  <Network type="subnet" name="MAIN">
     <Node name="node1" type="FIR" x="-84.000000" y="90.000000">
       <Parameter name="CONTINUOUS" type="int" value="1"/>
       <Parameter name="NONCAUSAL" type="subnet_param" value="DELAY"/>
     </Node>
-    <Node name="node2" type="LPFilter" x="-224.000000" y="98.000000">
+    <Node name="node2" type="LPFilter" x="-238.000000" y="99.000000">
       <Parameter name="LENGTH" type="subnet_param" value="FILTER_LENGTH"/>
       <Parameter name="THETA" type="subnet_param" value="FREQ"/>
       <Parameter name="HP" type="int" value="1"/>

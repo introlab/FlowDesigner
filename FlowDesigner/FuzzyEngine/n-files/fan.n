@@ -1,3 +1,4 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
@@ -25,7 +26,7 @@
       <Parameter name="IF" type="string" value="TEMPERATURE:MEDIUM HUMIDITY:HIGH"/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM"/>
     </Node>
-    <Node name="node7" type="FuzzyRule" x="-2100.000000" y="-360.000000">
+    <Node name="node7" type="FuzzyRule" x="-2108.000000" y="-359.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:HIGH HUMIDITY:LOW"/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM"/>
     </Node>
@@ -125,11 +126,15 @@
     <Node name="node17" type="Concat" x="-1659.000000" y="-46.000000"/>
     <Node name="node23" type="Concat" x="-1660.000000" y="47.000000"/>
     <Node name="node35" type="Concat" x="-1402.000000" y="-8.000000"/>
-    <Node name="node37" type="Save" x="-840.000000" y="-240.000000"/>
+    <Node name="node37" type="Save" x="-840.000000" y="-240.000000">
+      <Parameter name="PRETTY_PRINT" type="bool" value="false"/>
+    </Node>
     <Node name="node40" type="Constant" x="-1126.000000" y="-118.000000">
       <Parameter name="VALUE" type="string" value="FuzzyModel.txt"/>
     </Node>
-    <Node name="node41" type="OutputStream" x="-1015.000000" y="-118.000000"/>
+    <Node name="node41" type="OutputStream" x="-1015.000000" y="-118.000000">
+      <Parameter name="TYPE" type="string" value=""/>
+    </Node>
     <Link from="node38" output="VALUE" to="node36" input="INPUT">-1407 -104 -1322 -105 -1322 -215 -1288 -216.5 </Link>
     <Link from="node13" output="SET" to="node36" input="CONSEQUENT_SETS">-1528 -160 -1480 -231 -1288 -231.5 </Link>
     <Link from="node3" output="RULE" to="node39" input="INPUT1"/>

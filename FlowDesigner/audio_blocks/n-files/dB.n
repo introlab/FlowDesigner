@@ -1,9 +1,12 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="DSP:Base">
-    <Node name="node1" type="Log" x="-149.000000" y="100.000000"/>
+<Document category="DSP:Base">
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Log" x="-241.000000" y="113.000000">
+      <Parameter name="FAST" type="bool" value=""/>
+    </Node>
     <Node name="node2" type="Mul" x="-24.000000" y="121.000000"/>
-    <Node name="node3" type="Constant" x="-146.000000" y="151.000000">
+    <Node name="node3" type="Constant" x="-163.000000" y="128.000000">
       <Parameter name="VALUE" type="float" value="4.3429"/>
     </Node>
     <Link from="node1" output="OUTPUT" to="node2" input="INPUT1"/>

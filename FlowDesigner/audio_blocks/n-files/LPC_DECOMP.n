@@ -1,18 +1,22 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="DSP:Adaptive">
+<Document category="DSP:Adaptive">
+  <Network type="subnet" name="MAIN">
     <Node name="node1" type="LPC" x="-474.000000" y="178.000000">
       <Parameter name="OUTPUTLENGTH" type="subnet_param" value="LPC_SIZE"/>
+      <Parameter name="RADIUS" type="float" value=""/>
       <Parameter name="LAG_THETA" type="subnet_param" value="LAG_THETA"/>
     </Node>
     <Node name="node2" type="Window" x="-576.000000" y="179.000000">
       <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE2"/>
       <Parameter name="WINDOW" type="string" value="HANNING"/>
+      <Parameter name="SYMETRIC" type="bool" value=""/>
     </Node>
     <Node name="node3" type="FIR" x="-343.000000" y="127.000000">
       <Parameter name="CONTINUOUS" type="int" value="1"/>
+      <Parameter name="NONCAUSAL" type="int" value=""/>
     </Node>
-    <Node name="node4" type="NOP" x="-773.000000" y="118.000000"/>
+    <Node name="node4" type="NOP" x="-791.000000" y="118.000000"/>
     <Node name="node5" type="Overlap" x="-665.000000" y="179.000000">
       <Parameter name="OUTPUTLENGTH" type="subnet_param" value="FRAME_SIZE2"/>
     </Node>
@@ -20,7 +24,7 @@
     <Link from="node1" output="OUTPUT" to="node3" input="FILTER"/>
     <Link from="node4" output="OUTPUT" to="node3" input="INPUT"/>
     <Link from="node5" output="OUTPUT" to="node2" input="INPUT"/>
-    <Link from="node4" output="OUTPUT" to="node5" input="INPUT">-760 118 -727 119 -726 179 -691 179 </Link>
+    <Link from="node4" output="OUTPUT" to="node5" input="INPUT">-771.5 118 -727 119 -726 179 -693.5 179 </Link>
     <NetOutput name="LPC" node="node1" terminal="OUTPUT"/>
     <NetOutput name="EXC" node="node3" terminal="OUTPUT"/>
     <NetInput name="INPUT" node="node4" terminal="INPUT"/>

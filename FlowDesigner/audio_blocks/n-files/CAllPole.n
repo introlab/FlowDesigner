@@ -1,8 +1,8 @@
 #!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="ZDeprecated">
-    <Node name="node_IIR_1" type="IIR" x="-130.000000" y="102.000000"/>
+<Document category="ZDeprecated">
+  <Network type="subnet" name="MAIN">
+    <Node name="node_IIR_1" type="IIR" x="-125.000000" y="97.000000"/>
     <NetInput name="INPUT" node="node_IIR_1" terminal="INPUT"/>
     <NetInput name="FILTER" node="node_IIR_1" terminal="FILTER"/>
     <NetOutput name="OUTPUT" node="node_IIR_1" terminal="OUTPUT"/>
