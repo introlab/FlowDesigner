@@ -71,7 +71,11 @@ public:
 	 if (currStart != currEnd+1)
 	    throw new NodeException (this, "Start and end label don't fit",__FILE__, __LINE__);
 	 file >> currEnd;
-	 file >> *currentTag;
+	 //This had to be changed, not sure why
+	 //file >> *currentTag;
+	 string tmp;
+	 file >> tmp;
+	 *currentTag = tmp;
       }
 
       out[count] = currentTag;
