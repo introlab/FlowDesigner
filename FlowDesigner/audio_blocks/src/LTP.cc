@@ -108,6 +108,16 @@ public:
 	 float score = corr*corr/(energy+.000000001);
 	 scores[lag]=score;
 	 //cout << corr/energy << " ";
+	 if (score > best)
+	 {
+	    //prevents period doubling
+	    if (1 || score/best > 1.6 || abs(lag-2*best_T) > 5)
+	    {
+	       best = score;
+	       best_T = lag;
+	       best_gain = corr/(energy+.00000001);
+	    } //else {cerr << "doubling\n";}
+	 }
       }
 
       for (int i=4;i>=2;i--)
