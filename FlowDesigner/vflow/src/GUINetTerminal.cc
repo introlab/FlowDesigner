@@ -66,8 +66,11 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    //BUG: Is this dangerous? I don't know
    if (name == "")
    {
+      cerr << "aborted\n";
       terminal->getNode()->getNetwork()->removeTerminal(this);
+      cerr << "disconnecting\n";
       terminal->disconnectNetTerminal();
+      cerr << "throwing\n";
       throw false;
       //BUG, there's a leak here
    }
