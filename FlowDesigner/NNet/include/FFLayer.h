@@ -97,7 +97,11 @@ inline void deriv_sigmoid(double *x, double *y, int len)
 
 }
 
+#ifdef __GNUC__
+inline void tansig(double *__restrict__ x, double *__restrict__ y, int len)
+#else
 inline void tansig(double *x, double *y, int len)
+#endif
 {
    for (int i=0;i<len;i++)
    {
@@ -116,8 +120,11 @@ inline void tansig(double *x, double *y, int len)
       //*y++ = 2/(1+exp(-2*xx)) - 1;
    }
 }
-
+#ifdef __GNUC__
+inline void deriv_tansig(double *__restrict__ x, double *__restrict__ y, int len)
+#else
 inline void deriv_tansig(double *x, double *y, int len)
+#endif
 {
    /*for (int i=0;i<len;i++)
    {
@@ -213,9 +220,13 @@ class FFLayer : public Object {
       {
 	 for (int i=0;i<nbNeurons;i++)
 	 {
-	    double *w=weights + i*(nbInputs+1);
-	    
+#ifdef __GNUC__
+	    double *__restrict__ w=weights + i*(nbInputs+1);	    
+	    const double *__restrict__ p=previous;
+#else
+	    double *w=weights + i*(nbInputs+1);	    
 	    const double *p=previous;
+#endif
 	    const double *end=p+nbInputs;
 	    value[i]=0;
 

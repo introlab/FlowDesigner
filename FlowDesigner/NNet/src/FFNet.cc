@@ -84,7 +84,11 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
       double *delta = currentLayer->getError();
       for (int i=0;i<layerSize;i++)
       {
+#ifdef __GNUC__
+	 double *__restrict__ w = currentLayer->getGradient(i);
+#else
 	 double *w = currentLayer->getGradient(i);
+#endif
 	 //cerr << k << endl;
 	 if (k==outputLayer)
 	 {
@@ -97,7 +101,11 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
 	 else
 	 {
 	    delta[i] = 0;
+#ifdef __GNUC__
+	    double *__restrict__ outErr = layers[k+1]->getError();
+#else
 	    double *outErr = layers[k+1]->getError();
+#endif
 	    /*
 	    for (int j=0;j<topo[k+2];j++)
 	    {
@@ -128,7 +136,11 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
 	 w[layerInputs] += delta[i];
          */
 	 //This section is an optimized version of the commented one
+#ifdef __GNUC__
+         double *__restrict__ p=previousValue;
+#else
          double *p=previousValue;
+#endif
          double d=delta[i];
          double *end=w+layerInputs;
 
