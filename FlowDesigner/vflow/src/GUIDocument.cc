@@ -230,7 +230,7 @@ GUIDocument::GUIDocument(string _name)
 
    create();
 
-   createParamDialog();
+   //createParamDialog();
 }
 
 
