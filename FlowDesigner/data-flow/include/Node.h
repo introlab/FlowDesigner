@@ -149,7 +149,7 @@ public:
 
    ObjectRef getInput(int inputID, int count)
    {
-      NodeInput input = inputs[inputID];
+      NodeInput &input = inputs[inputID];
       return input.node->getOutput(input.outputID, count);
    }
    

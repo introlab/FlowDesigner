@@ -1,3 +1,7 @@
+//This file is a copy used for static linking of Overflow applications. If it is
+//part of the Overflow code base, then it is released under the LGPL license.
+//For more information, see the COPYING file in the Overflow source directory.
+
 // Copyright (C) 1999 Jean-Marc Valin
 
 #include "BufferedNode.h"
@@ -114,6 +118,7 @@ protected:
    /**Default constructor, should not be used*/
    InputStream() {throw new GeneralException("InputStream copy constructor should not be called",__FILE__,__LINE__);}
 
+NO_ORDER_NODE_SPEEDUP(InputStream)
 };
 
 

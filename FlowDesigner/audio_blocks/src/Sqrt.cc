@@ -1,3 +1,7 @@
+//This file is a copy used for static linking of Overflow applications. If it is
+//part of the Overflow code base, then it is released under the LGPL license.
+//For more information, see the COPYING file in the Overflow source directory.
+
 // Copyright (C) 1999 Jean-Marc Valin
 
 #include "BufferedNode.h"
@@ -52,4 +56,5 @@ public:
       vec_sqrt(&in[0], &output[0], inputLength);
    }
 
+NO_ORDER_NODE_SPEEDUP(Sqrt)
 };
