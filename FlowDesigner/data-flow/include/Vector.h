@@ -20,24 +20,31 @@ using namespace std;
 */
 class BaseVector  : public Object {
   protected:
-   size_t obj_size;
-   size_t obj_capacity;
+
   public:
-   BaseVector(size_t _obj_size, size_t _obj_capacity)
-      : obj_size(_obj_size)
-      , obj_capacity(_obj_capacity)
-      {}
+  
+   ///constructor
+   BaseVector(){}
 
-   size_t vsize() const {return obj_size;}
+   ///return vector size 
+   virtual size_t vsize() const = 0;
    
-   virtual size_t vector_size() const = 0;
+   ///return true if vector empty
+   virtual bool vempty() const = 0;
 
-   bool vempty() const {return vsize()==0;}
-
-   size_t vcapacity() {return obj_capacity;}
-   
+   /** 
+   	Returns a new vector (in an ObjectRef) with a range of indexes of the same type.
+	\param startInd start index
+	\param endInd end indix
+	\return new vector in an ObjectRef
+   */
    virtual ObjectRef range(size_t startInd, size_t endInd)=0;
-   
+      
+   /**
+   	Returns an element (in an ObjectRef) of the vector
+	\param pos the position of the element
+	\return ObjectRef the newly created Object
+   */
    virtual ObjectRef index(int pos) {
    	throw new GeneralException(string("index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
@@ -56,13 +63,13 @@ public:
 
    ///Default constructor, size of the vector is 0.
    Vector()
-      : BaseVector(0,0)
+      : BaseVector()
       , vector<T> ()
    {}
 
    ///Copy constructor
    Vector(const Vector<T> &v)
-      : BaseVector(v.obj_size,v.obj_size)
+      : BaseVector()
       , vector<T> (v)
    {
    }
@@ -73,7 +80,7 @@ public:
       \param x the initialization value
    */
    explicit Vector(size_t n, const T &x = T())
-      : BaseVector(0,0)
+      : BaseVector()
       , vector<T> (n, x)
    {}
 
@@ -82,7 +89,9 @@ public:
    {
    }
  
-   virtual size_t vector_size() const {return size();}
+   virtual size_t vsize() const {return size();}
+   
+   virtual bool vempty() const {return empty();}
    
    /**
       Formatted output (only values) for Vectors <br>

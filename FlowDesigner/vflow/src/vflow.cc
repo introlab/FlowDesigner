@@ -1424,6 +1424,7 @@ int main (int argc, char *argv[])
       else {
 	vflow->create_empty_document();
       }
+      //Fixes bad window placement code
       gtk_widget_show (vflowGUI::instance()->get_mdi());
 
       //starting GTK loop

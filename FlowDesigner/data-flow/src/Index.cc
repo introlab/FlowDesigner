@@ -59,7 +59,7 @@ public:
    {
      RCPtr<BaseVector> in = getInput(inputID,count);
 
-     int inputLength = in->vector_size();
+     int inputLength = in->vsize();
      int ind;
 
      if (index->val() == -1)
