@@ -19,3 +19,9 @@ allow to change the thread stack size
 fix segfaults on "no condition" and "input not connected"
 
 catch exceptions on DL opening modules at startup
+
+parameter exceptions in node constructor causes an abort (why?)
+
+*write logging system (eg. error curves in NNet)
+
+*create value class that supports operators using double dispatching

@@ -69,7 +69,10 @@ public:
       
       for (int i=0;i<outputLength;i++)
       {
-         output[i]=pow(in[i],exponent);
+         if (in[i] > 0)
+	    output[i]=pow(in[i],exponent);
+	 else
+	    output[i]=0;
       }
       
       output.status = Object::valid;
