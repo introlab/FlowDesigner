@@ -329,7 +329,16 @@ void GUIDocument::setFullPath(const string &fullpath)
 {
    // call the non-gui code in UIDocument
    UIDocument::setFullPath(fullpath);
-   gtk_label_set_text(GTK_LABEL(label1), (gchar*)fullpath.c_str());
+
+   int pos = fullpath.rfind("/");
+
+   if (pos != string::npos) {
+     gtk_label_set_text(GTK_LABEL(label1), (gchar*)(&fullpath.c_str()[pos + 1]));
+   }
+   else {
+      gtk_label_set_text(GTK_LABEL(label1), (gchar*)fullpath.c_str());
+   }
+
 }
 
 

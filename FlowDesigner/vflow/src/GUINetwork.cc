@@ -34,7 +34,7 @@ GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
    , zoom(1)
    , tooltip(NULL)
 {
-   //cerr << "GUINetwork::GUINetwork\n";
+   cerr << "GUINetwork::GUINetwork\n";
    create();
 }
 

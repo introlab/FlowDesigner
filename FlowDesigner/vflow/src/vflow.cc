@@ -81,7 +81,7 @@ void vflowGUI::create_empty_document() {
 **********************************************************************************************************/
 void vflowGUI::load_document (const string fname) {
 
-  GUIDocument *doc = new GUIDocument("Untitled");
+  GUIDocument *doc = new GUIDocument(fname);
 
   doc->setFullPath(fname);
   try {
