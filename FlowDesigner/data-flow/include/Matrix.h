@@ -99,10 +99,10 @@ public:
       out << ">\n";
    }
    
-   virtual void rawWrite(ostream &out) const
+   /*virtual void rawWrite(ostream &out) const
    {
       //out.write ((const unsigned char*) begin(), size()*sizeof(T));
-   }
+      }*/
    
    void readFrom(istream &in=cin);
 

@@ -20,17 +20,30 @@ class SymbolSet {
 	 return sym->second;
       }
    }
+
    int get (char *str)
    {
       return get(string(str));
    }
+
+   string reverseLookup (int ID)
+   {
+      map<string,int>::iterator it = translationMap.begin();
+      while (it!=translationMap.end())
+      {
+	 if (it->second == ID)
+	    return it->first;
+      }
+      return string("");
+   }
 };
 
-extern SymbolSet* symbols;
 
 
 class VirtualMethods {
   protected:
+   SymbolSet* symbols;
+
    typedef ObjectRef (*funct_ptr0) (ObjectRef x);
    typedef ObjectRef (*funct_ptr1) (ObjectRef x, ObjectRef a);
    typedef ObjectRef (*funct_ptr2) (ObjectRef x, ObjectRef a, ObjectRef b);
@@ -46,7 +59,17 @@ class VirtualMethods {
    vector<vtableType2> tables2;
    vector<vtableType3> tables3;
   public:
-   void registerFunct0(funct_ptr0 ptr, const type_info *x, string name)
+   int lookup(const string &str)
+   {
+      return symbols->get(str);
+   }
+
+   int lookup (char *str)
+   {
+      return symbols->get(str);
+   }
+
+   int registerFunct0(funct_ptr0 ptr, const type_info *x, string name)
    {
       int id = symbols->get(name);
       if (id >= tables0.size())
@@ -54,7 +77,7 @@ class VirtualMethods {
       tables0[id][x] = ptr;
    }
 
-   void registerFunct1(funct_ptr1 ptr, const type_info *x, string name)
+   int registerFunct1(funct_ptr1 ptr, const type_info *x, string name)
    {
       int id = symbols->get(name);
       if (id >= tables1.size())
@@ -62,7 +85,7 @@ class VirtualMethods {
       tables1[id][x] = ptr;
    }
 
-   void registerFunct2(funct_ptr2 ptr, const type_info *x, string name)
+   int registerFunct2(funct_ptr2 ptr, const type_info *x, string name)
    {
       int id = symbols->get(name);
       if (id >= tables2.size())
@@ -70,7 +93,7 @@ class VirtualMethods {
       tables2[id][x] = ptr;
    }
 
-   void registerFunct3(funct_ptr3 ptr, const type_info *x, string name)
+   int registerFunct3(funct_ptr3 ptr, const type_info *x, string name)
    {
       int id = symbols->get(name);
       if (id >= tables3.size())
@@ -86,7 +109,8 @@ class VirtualMethods {
       {
 	 return v1->second(x);
       } else {
-	 throw new GeneralException("Virtual function error", __FILE__, __LINE__);
+	 x->doesNotUnderstand(symbols->reverseLookup(id));
+	 //throw new GeneralException("Virtual function error", __FILE__, __LINE__);
       }
    }
 
@@ -98,15 +122,17 @@ class VirtualMethods {
       {
 	 return v1->second(x,y);
       } else {
-	 throw new GeneralException("Virtual function error", __FILE__, __LINE__);
+	 x->doesNotUnderstand(symbols->reverseLookup(id));
+	 //throw new GeneralException("Virtual function error", __FILE__, __LINE__);
       }
    }
    
 };
 
 
-extern VirtualMethods* vmethod;
+//extern VirtualMethods* vmethod;
+VirtualMethods* vmethod();
 
-#define REGISTER_VTABLE0(klass, func, type) \
-        int dummy_vtable_init_for ## klass ## _ ## func ## type =\
-        vmethod->registerFunct0(func, &typeid(type), name);
+#define REGISTER_VTABLE0(name, type, func, id) \
+        static int dummy_vtable_init_for ## _ ## name ## id =\
+        vmethod()->registerFunct0(func, &typeid(type), # name);

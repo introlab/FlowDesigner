@@ -33,10 +33,11 @@ public:
    {
       out << *static_cast<const vector<T> *> (this);
    }
-   virtual void rawWrite(ostream &out) const
+
+   /*virtual void rawWrite(ostream &out) const
    {
       out.write ((const char*) &operator[](0), size()*sizeof(T));
-   }
+      }*/
    
    void readFrom(istream &in=cin);
    

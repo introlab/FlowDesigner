@@ -77,10 +77,25 @@ public:
       delete this;
    }
 
-   /**raw (binary) output method*/
-   virtual void rawWrite(ostream &out) const
+   /*raw (binary) output method*/
+   /*virtual void rawWrite(ostream &out) const
    {
       throw new GeneralException("Object doesn't know how to rawWrite itself", __FILE__, __LINE__);
+      }*/
+
+   virtual void serialize(ostream &out) const
+   {
+      throw new GeneralException("Object doesn't know how to serialize itself", __FILE__, __LINE__);
+   }
+
+   virtual void unserialize(ostream &out) const
+   {
+      throw new GeneralException("Object doesn't know how to unserialize itself", __FILE__, __LINE__);
+   }
+
+   virtual void doesNotUnderstand(string method)
+   {
+      throw new GeneralException("Object Does Not Understand method: " + method, __FILE__, __LINE__);
    }
 
    /**Generic print function*/

@@ -37,7 +37,7 @@ protected:
    T value;
 
 public:
-
+   typedef T basicType;
    ///cast operator
    /*operator T() {
       return value;
