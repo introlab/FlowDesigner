@@ -10,6 +10,4 @@ allow to change the thread stack size
 
 implement tooltips
 
-Have node coments do something meaningful...
-
 Generate API doc using DOC++ of KDOC (update)
