@@ -26,7 +26,6 @@ noinst_HEADERS = Node.h \
 	NetworkLogger.h \
 	Node.h \
 	NodeFactory.h \
-	NodeHeaders.h \
 	OR.h \
 	Object.h \
 	ObjectParser.h \
