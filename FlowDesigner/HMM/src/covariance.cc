@@ -45,7 +45,7 @@ float DiagonalCovariance::mahalanobisDistance(const float *x1, const float *x2) 
 void DiagonalCovariance::compute_determinant() const
 {
    if (mode != inverted) throw string ("DiagonalCovariance::compute_determinant");
-   determinant=1;
+   determinant=0;
 
    /*for (unsigned int i=0;i<dimension;i++)
       determinant *= data[i];

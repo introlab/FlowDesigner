@@ -128,9 +128,9 @@ vector<Score> GMM::minDistance(vector <float * > fr) const
    Covariance *cov = new DiagonalCovariance (dimensions);
    for (j=0;j<dimensions;j++)
    {
-      (*cov)[j]=1;
+      (*cov)[j]=0;
    }
-   if (1){
+   if (1) {
    for (i=0;i<nb_gaussians;i++)
       for (j=0;j<dimensions;j++)
       {
@@ -177,8 +177,8 @@ Score GMM::minDistance(float * fr,Covariance *cov) const
    for (j=0;j<nb_gaussians;j++)
    {
       
-      //float dist = gaussians[j]->euclidian(fr);
-      float dist = gaussians[j]->mahalanobis(fr,cov);
+      float dist = gaussians[j]->euclidian(fr);
+      //float dist = gaussians[j]->mahalanobis(fr,cov);
       if (dist < min_dist)
       {
          min_dist=dist;
@@ -202,6 +202,7 @@ Score GMM::score(float * fr) const
    for (int j=0;j<nb_gaussians;j++)
    {
       float dist = gaussians[j]->mahalanobis(fr)-apriori[j];
+      //cerr << "apriori[j]: " << apriori[j] << endl;
       if (dist < min_dist)
       {
          min_dist=dist;
