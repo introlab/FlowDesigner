@@ -26,16 +26,19 @@ DECLARE_NODE(Gain)
  *
  * @name Gain
  * @category Signal:Base
- * @description No description available
+ * @description Applies a gain to a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Output vector (after gain)
  *
  * @parameter_name GAIN
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Value of the gain
  *
 END*/
 

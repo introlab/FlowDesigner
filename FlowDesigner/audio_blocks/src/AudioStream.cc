@@ -215,48 +215,40 @@ public:
 	 return;
       }
       
-      
-      if (count>0 && out[count-1]->status == Object::valid 
-	  && advance < outputLength)
+
+      if (count == 0)
       {
-	 Vector<float> &previous = object_cast<Vector<float> > (out[count-1]);
-	 for (int i=0;i<outputLength-advance;i++)
-	    output[i]=previous[i+advance];
+	 char buff[itemSize*outputLength];
+	 if (!readStream(buff, outputLength, inputValue))
+	 {
+	    out[count] = Object::past_endObject;
+	    return;
+	 }
+	 raw2Float (buff, &output[0], outputLength, encoding);
       } else {
-	 for (int i=0;i<outputLength-advance;i++)  
-	    output[i]=0;
-      }
       
-      if (strType == cpp)
-      {
-	 Stream &file = object_cast<Stream> (inputValue);
-	 file.read(tmpBuffer,itemSize*advance);
-	 if (file.eof())
+	 if (count>0 && out[count-1]->status == Object::valid 
+	     && advance < outputLength)
+	 {
+	    Vector<float> &previous = object_cast<Vector<float> > (out[count-1]);
+	    for (int i=0;i<outputLength-advance;i++)
+	       output[i]=previous[i+advance];
+	 } else {
+	    for (int i=0;i<outputLength-advance;i++)  
+	       output[i]=0;
+	 }
+	 
+	 
+	 if (!readStream(tmpBuffer, advance, inputValue))
 	 {
 	    out[count] = Object::past_endObject;
-	    return;
+	    return;	 
 	 }
-      } else if (strType == fptr)
-      {
-	 FILE *file = dereference_cast<FILE *> (inputValue);
-	 fread (tmpBuffer, 1, itemSize*advance, file);
-	 if (feof(file))
-	 {
-	    out[count] = Object::past_endObject;
-	    return;
-	 }
-      } else if (strType == fd)
-      {
-	 int file = dereference_cast<int> (inputValue);
-	 if (read (file, tmpBuffer, itemSize*advance) != itemSize*advance)
-	 {
-	    out[count] = Object::past_endObject;
-	    return;
-	 }
+	 int convert = min(advance, outputLength);
+	 int outSz = output.size();
+	 raw2Float (tmpBuffer, &output[outSz] - convert, convert, encoding);
       }
-      int convert = min(advance, outputLength);
-      int outSz = output.size();
-      raw2Float (tmpBuffer, &output[outSz] - convert, convert, encoding);
+
       
    }
 
@@ -285,6 +277,35 @@ public:
 	 default:
 	    throw new NodeException(this, "Unimplemented encoding type",__FILE__, __LINE__);
       }
+   }
+
+   bool readStream(char *buffer, int length, ObjectRef inputValue)
+   {
+      if (strType == cpp)
+      {
+	 Stream &file = object_cast<Stream> (inputValue);
+	 file.read(buffer,itemSize*length);
+	 if (file.eof())
+	 {
+	    return false;
+	 }
+      } else if (strType == fptr)
+      {
+	 FILE *file = dereference_cast<FILE *> (inputValue);
+	 fread (buffer, 1, itemSize*length, file);
+	 if (feof(file))
+	 {
+	    return false;
+	 }
+      } else if (strType == fd)
+      {
+	 int file = dereference_cast<int> (inputValue);
+	 if (read (file, buffer, itemSize*length) != itemSize*length)
+	 {
+	    return false;
+	 }
+      }
+      return true;
    }
 
 };

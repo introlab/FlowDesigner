@@ -18,33 +18,33 @@
 #include "Buffer.h"
 #include "Vector.h"
 
-class Sum;
+class Float2Vect;
 
-DECLARE_NODE(Sum)
+DECLARE_NODE(Float2Vect)
 /*Node
  *
- * @name Sum
- * @category Math
- * @description Sum of all the elements of a vector
+ * @name Float2Vect
+ * @category Vector
+ * @description Converts a float value to a vector of 1 element
  *
  * @input_name INPUT
- * @input_description The input vector 
- * @input_type Vector
+ * @input_description The input float 
+ * @input_type float
  *
  * @output_name OUTPUT
- * @output_description The sum
- * @output_type float
+ * @output_description The vector
+ * @output_type Vector
  *
 END*/
 
 
-class Sum : public BufferedNode {
+class Float2Vect : public BufferedNode {
    
    int inputID;
    int outputID;
 
 public:
-   Sum(string nodeName, ParameterSet params)
+   Float2Vect(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
@@ -60,16 +60,11 @@ public:
 	 out[count] = inputValue;
          return;
       }
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();      
+      const float &in = dereference_cast<float> (inputValue);
 
-      float val = 0;
-      for (int i=0;i<inputLength;i++)
-      {
-         val+=in[i];
-      }
-      
-      out[count] = new Float (val);
+      Vector<float> &output = *Vector<float>::alloc(1);
+      out[count] = &output;
+      output[0] = in;
 
       
    }
