@@ -42,11 +42,24 @@ public:
       }
       
    }
+   
+   int translateInput (string inputName)
+   {
+      for (unsigned int i=0; i< inputs.size(); i++) {
+         if (inputs[i].name == inputName) {
+            return i;
+         }
+      }  
+      return addInput(inputName);
+   }
 
    ObjectRef getOutput(int output_id, int count)
    {
-      NodeInput input = inputs[inputID];
-      input.node->getOutput(input.outputID,count);
+      for (unsigned int i=0; i< inputs.size(); i++)
+      {
+        getInput(i, count);
+      }
+      
       return nilObject;
    }
 
