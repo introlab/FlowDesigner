@@ -1,39 +1,61 @@
-#include "gaussian.h"
+// Copyright (C) 1998-1999  Jean-Marc Valin & Daniel Kiecza
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, write to the Free Software Foundation,
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.#include "gaussian.h"
 
 #include "covariance.h"
+#include "gaussian.h"
 #include <assert.h>
 #include <iostream.h>
 #include <fstream.h>
 
-Gaussian::Gaussian()
+void Gaussian::print_mean(ostream &out = cout, string separ = " ") const
 {
-  mean       = 0;
-  covariance = 0;
-  dimension  = 0;
+   for (unsigned int i=0;i<mean->size();i++)
+   {
+      out << (*mean)[i] << separ;
+   }
+   out << endl;
+}
+void Gaussian::print_covar(ostream &out = cout, string separ = " ") const
+{
+   for (unsigned int i=0;i<covariance->size();i++)
+   {
+      out << (*covariance)[i] << separ;
+   }
+   out <<  endl;
 }
 
 
-Gaussian::Gaussian(int _dimension, float *_mean, float *_covariance, int _type)
+void Gaussian::to_real()
 {
-  dimension = _dimension;
-  setMean(_dimension, _mean, 1);
-  setCovariance(_dimension, _covariance, _type, 1);
-}
-
-
-Gaussian::Gaussian(const Gaussian &_gaussian)
-{
-  dimension = _gaussian.getDimension();  
-  setMean(dimension, _gaussian.getMean(), 1);
-  if (covariance != 0)
-    delete covariance;
-  covariance = new Covariance(_gaussian.getCovariance());
+   unsigned int i;
+   float accum_1 = 1/(float(accum_count));
+   for( i = 0; i < mean->size(); i++ )
+   {
+      (*mean)[i] *= accum_1;
+   }
+#ifdef DEBUG
+   cerr << "accum_1: " << accum_1 <<endl;
+#endif
+   covariance->to_real(accum_1  , mean);
 }
 
 
 Gaussian::~Gaussian()
 {
-  if (mean != 0)
+   if (mean != 0)
   {
     delete mean;
     mean       = 0;
@@ -46,44 +68,8 @@ Gaussian::~Gaussian()
   }
 }
 
-
-void Gaussian::setMean(int _dimension, float *_mean, int _fromConstructor=0)
-{
-  assert(dimension == _dimension);
-  
-  if (!_fromConstructor && mean != 0)
-  {
-    delete mean;
-    mean       = 0;
-  }
-  
-  mean       = new float[dimension];
-  for (int i=0; i<dimension; i++)
-    mean[i] = _mean[i];
-}
-
-
-void Gaussian::setCovariance(int _dimension, float *_covariance, int _type, int _fromConstructor=0)
-{
-  assert(dimension == _dimension);
-
-  if (!_fromConstructor && covariance != 0)
-  {
-    delete covariance;
-    covariance = 0;
-  }
-
-  covariance = new Covariance(_dimension, _covariance, _type);
-}
-
-
-float Gaussian::probability(const Frame &f)
-{
-  return(0.5);
-}
-
-
-void Gaussian::print()
+/*
+void Gaussian::print() const
 {
   if (dimension != 0)
   {
@@ -101,24 +87,4 @@ void Gaussian::print()
   }
 }
 
-
-void Gaussian::save(ofstream &file)
-{
-  file.write((char*) &dimension, sizeof(dimension));
-  file.write((char*) mean,      sizeof(float)*dimension);
-  covariance->save(file);
-}
-
-
-void Gaussian::load(ifstream &file)
-{
-  file.read((char*) &dimension, sizeof(dimension));
-  if (mean != 0)
-    delete mean;
-  mean = new float[dimension];
-  file.read((char*) mean, sizeof(float)*dimension);
-  if (covariance != 0)
-    delete covariance;
-  covariance = new Covariance();
-  covariance->load(file);
-}
+*/
