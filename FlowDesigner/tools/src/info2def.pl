@@ -91,7 +91,10 @@ while (<>)
     if ($in_comment == 1) {
 
       # look for a '* @something info', then we need to process the item.
-      if (/\* (@[a-zA-Z:_0-9]+) ([a-zA-Z:_0-9 .]+)/) {  
+      if (/\* (@[a-zA-Z:_0-9]+) ([\<\>a-zA-Z:_0-9 .,;\/\*\+\-\(\)\[\]\{\}]+)/) {
+	#$pname = $1;
+	#$pval = $2;
+	#$pval =~ s/</&lt;/g;
 	if ($1 eq '@name') {
 	  #print '@name : ', $1, "\n";
 	  $node_info{substr($1, 1)} = $2;
