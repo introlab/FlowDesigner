@@ -48,44 +48,63 @@ void UINodeParameters::insertLoadedParam(ParameterText *param, string type, stri
   //cerr<<"UINodeParameters::insertLoadedParam"<<endl;
 }
 
-void UINodeParameters::load(xmlNodePtr node)
+void UINodeParameters::load(xmlNodePtr xml_node)
 {
-   //cerr << "node = " << node << endl;
-   xmlNodePtr par = node->children;
+   //cerr << "xml_node = " << xml_node << endl;
+   xmlNodePtr par = xml_node->children;
    //cerr << "par = " << par << endl;
    
    while (par)
    {
      //cerr<<"par->name "<<par->name<<endl;
       if (string((char*)par->name) == "Parameter")
-      {
-	
-
+      {       
 	 char *str_name = (char *) xmlGetProp(par, (xmlChar *)"name");
 	 char *str_type = (char *) xmlGetProp(par, (xmlChar *)"type");
 	 char *str_value = (char *) xmlGetProp(par, (xmlChar *)"value");
+	 char *str_description = (char *) xmlGetProp(par, (xmlChar *)"description");
+
          string name = string (str_name);
          string type = string (str_type);
          string value = string (str_value);
+	 string description;
+
+	 if (str_description) {
+	   description = str_description;
+	 }
 
 	 //cerr<<"name :"<<name<<endl;
 	 //cerr<<"type :"<<type<<endl;
 	 //cerr<<"value : "<<value<<endl;
+	 //cerr<<"description : "<<description<<endl;
 	 
-	 free(str_name); 
-	 free(str_type); 
-	 free(str_value);
-         
+	 if (str_name) 
+	   free(str_name); 
+	 if (str_type) 
+	   free(str_type); 
+	 if (str_value) 
+	   free(str_value);
+	 if (str_description)
+	   free(str_description);
+	          
          ParameterText *param = getParamNamed(name);
 	 if (param)
 	 {
 	    param->type = type;
 	    param->value = value;
+	    param->description = description;
+
+	    //Not used anymore ? (DL), please delete!
 	    //cerr<<"insertLoadedParam"<<endl;
-	    insertLoadedParam(param, type, value);
+	    //insertLoadedParam(param, type, value);
 	    //cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
 	 } else {
-	    cerr << "param " << name << " no longer used\n";
+	   if (node) {
+	     cerr << node->getName() <<" : param " << name << " no longer used\n";
+	   }
+	   else {
+	     cerr <<" : param " << name << " no longer used\n";
+	   }
 	 }
       } else if (string((char*)par->name) == "Comments")
       {
@@ -95,7 +114,7 @@ void UINodeParameters::load(xmlNodePtr node)
 	 free(str);
       } else if (!xmlIsBlankNode(par)) {
          
-	 cerr << "unknown param tag\n";
+	 cerr << "UINodeParameter::unknown param tag\n";
       }
       par = par->next;
       
@@ -117,6 +136,7 @@ void UINodeParameters::saveXML(xmlNode *root)
          xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)textParams[i]->name.c_str());
          xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)textParams[i]->type.c_str());
          xmlSetProp(tree, (xmlChar *)"value", (xmlChar *)textParams[i]->value.c_str());
+	 xmlSetProp(tree, (xmlChar *)"description", (xmlChar *)textParams[i]->description.c_str());
       }
    }
 }
