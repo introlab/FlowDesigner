@@ -4,6 +4,7 @@
 #include "ParameterSet.h"
 #include "Network.h"
 #include <pthread.h>
+//#include <gdk/gdk.h>
 
 //UIDocument *UIDocument::currentDocument;
 extern GnomeMDI *mdi;
@@ -568,6 +569,17 @@ void GUIDocument::createParamDialog()
 
 }
 
+//#include <X11/Xlib.h>
+/*struct Display;
+extern "C" {
+void     gdk_threads_enter                (void);
+void     gdk_threads_leave                (void);
+void XUnlockDisplay(Display*);
+void XLockDisplay(Display*);
+}
+extern Display *gdk_display;
+*/
+
 static void disposeFunct(void *dummy)
 {
    //delete net;
@@ -576,10 +588,17 @@ static void disposeFunct(void *dummy)
    delete GUIDocument::runningNet; 
    GUIDocument::runningNet=NULL;
 
-   GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
+   //cerr << "display = " << gdk_display << endl;
+   //XLockDisplay(gdk_display);
+   //gdk_threads_enter();
+   //GDK_THREADS_ENTER();
+   /*GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
    gtk_widget_set_sensitive(w,true);
    w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
-   gtk_widget_set_sensitive(w,false);
+   gtk_widget_set_sensitive(w,false);*/
+   //GDK_THREADS_LEAVE();
+   //gdk_threads_leave();
+   //XUnlockDisplay(gdk_display);
 
    //pthread_cleanup_push(routine,arg) 
 }
