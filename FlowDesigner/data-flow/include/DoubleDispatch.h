@@ -3,6 +3,7 @@
 #ifndef DOUBLE_DISPATCH_H
 #define DOUBLE_DISPATCH_H
 
+#include "typemap.h"
 #include "ObjectRef.h"
 #include "BaseException.h"
 
@@ -32,8 +33,11 @@ class DoubleDispatch {
   protected:
    string name;
 //#ifdef NO_HASH_MAP
-   typedef map<const type_info *, funct_ptr> vtable1Type;
-   typedef map<const type_info *, vtable1Type > vtable2Type;
+   //typedef map<const type_info *, funct_ptr> vtable1Type;
+   //typedef map<const type_info *, vtable1Type > vtable2Type;
+
+   typedef TypeMap<funct_ptr> vtable1Type;
+   typedef TypeMap<vtable1Type> vtable2Type;
 //#else
 //   typedef hash_map<const type_info *, funct_ptr> vtable1Type;
 //   typedef hash_map<const type_info *, vtable1Type > vtable2Type;

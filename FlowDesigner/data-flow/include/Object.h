@@ -3,6 +3,7 @@
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
 
+#include "typemap.h"
 #include "rc_ptrs.h"
 #include <string>
 #include <map>
@@ -127,7 +128,8 @@ public:
 #endif
 
    static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
-   static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
+   static TypeMap<_ObjectFactory*>& TypeidDictionary();
+   //static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
 };
 
 
@@ -166,8 +168,8 @@ public:
 template<class T>
 string ObjectGetClassName()
 {
-   map<const type_info *, _ObjectFactory*> &m = Object::TypeidDictionary();
-   map<const type_info *, _ObjectFactory*>::iterator found = m.find(&typeid(T));
+   static TypeMap<_ObjectFactory*> &m = Object::TypeidDictionary();
+   static TypeMap<_ObjectFactory*>::iterator found = m.find(&typeid(T));
    if (found != m.end())
       return found->second->getName();
    else
