@@ -64,4 +64,46 @@ ObjectRef divMatrixFunction(ObjectRef op1, ObjectRef op2) {
 }
 REGISTER_ALL_MATRIX_VTABLE(divVtable, divMatrixFunction);
 
+ObjectRef divVectorObjectRef(ObjectRef op1, ObjectRef op2) {
+
+  RCPtr<Vector<ObjectRef> > op1Value = op1;
+  RCPtr<Vector<ObjectRef> > op2Value = op1;
+
+  if (op1Value->size() != op2Value->size()) {
+    throw new GeneralException("DivVectorFunction : Vector size mismatch ",__FILE__,__LINE__);
+  }
+
+  //creating new vector
+  RCPtr<Vector<ObjectRef> > resultValue(new Vector<ObjectRef>(op1Value->size()));
+
+  for (int i = 0; i < resultValue->size(); i++) {    
+    (*resultValue)[i] = (*op1Value)[i] / (*op2Value)[i];
+  }
+
+  return resultValue;
+}
+REGISTER_DOUBLE_VTABLE(divVtable,divVectorObjectRef,Vector<ObjectRef>,Vector<ObjectRef>);
+
+ObjectRef divMatrixObjectRef(ObjectRef op1, ObjectRef op2) {
+
+  RCPtr<Matrix<ObjectRef> > op1Value = op1;
+  RCPtr<Matrix<ObjectRef> > op2Value = op1;
+
+  if (op1Value->nrows() != op2Value->nrows() || op1Value->ncols() != op2Value->ncols()) {
+    throw new GeneralException("DivMatrixFunction : Matrix size mismatch ",__FILE__,__LINE__);
+  }
+
+  //creating new Matrix
+  RCPtr<Matrix<ObjectRef> > resultValue(new Matrix<ObjectRef>(op1Value->nrows(), op1Value->ncols()));
+
+  for (int i = 0; i < resultValue->nrows(); i++) {    
+    for (int j = 0; j < resultValue->ncols(); j++) {      
+      (*resultValue)(i,j) = (*op1Value)(i,j) / (*op2Value)(i,j);    
+    }
+  }
+  return resultValue;
+}
+REGISTER_DOUBLE_VTABLE(divVtable,divMatrixObjectRef,Matrix<ObjectRef>,Matrix<ObjectRef>);
+
+
 #endif
