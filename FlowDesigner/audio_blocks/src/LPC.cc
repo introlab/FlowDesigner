@@ -21,11 +21,12 @@
 #include "lpc.h"
 #include <stdlib.h>
 #include <math.h>
+#include "misc.h"
 
 class LPC;
 
 //DECLARE_NODE(LPC)
-NODE_INFO(LPC,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(LPC,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:RADIUS:LAG_THETA")
 
 class LPC : public FrameOperation {
    
@@ -33,6 +34,9 @@ class LPC : public FrameOperation {
    int inputLength;
    float *r;
    float *rc;
+   float radius;
+   float *lag_window;
+
 public:
    LPC(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
@@ -41,11 +45,25 @@ public:
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+ 
+      if (parameters.exist("RADIUS"))
+	 radius = dereference_cast<float> (parameters.get("RADIUS"));
+      else radius=.99;
       r=new float[outputLength];
       rc=new float[outputLength];
+      lag_window=new float[outputLength];
+
+      if (parameters.exist("LAG_THETA"))
+      {
+	 for (int i=0;i<outputLength;i++)
+	    lag_window[i]=exp(-.5*sqr(2*M_PI*i*dereference_cast<float> (parameters.get("LAG_THETA"))));
+      } else {
+	 for (int i=0;i<outputLength;i++)
+	    lag_window[i]=1;
+      }
    }
 
-   ~LPC() {delete [] r; delete [] rc;}
+   ~LPC() {delete [] r; delete [] rc; delete [] lag_window;}
 
    virtual void specificInitialize()
    {
@@ -69,11 +87,13 @@ public:
       //vector<float> filter(outputLength+1,0.0);
       autocorr(in.begin(), r, outputLength-1, in.size());
       float er=0;
+      for (int i=0;i<outputLength;i++)
+	 r[i] *= lag_window[i];
       r[0] *= 1.0001;
       r[0] += 1; //just in case of a null frame
       wld(output.begin(), r, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
-        output[i] *= pow(.97,i);
+        output[i] *= pow(radius,i);
       output.status = Object::valid;
    }
 
