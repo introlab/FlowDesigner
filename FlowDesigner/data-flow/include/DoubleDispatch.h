@@ -93,4 +93,79 @@ class DoubleDispatch {
         int dummy_vtable_init_for ## klass ## _ ## func =\
         klass::reg(func, &typeid(type1), &typeid(type2));
 
+//
+//Maybe it should be called something else and moved somewhere else
+//(DL)
+//
+class SingleDispatch;
+
+class SingleDispatchException : public BaseException {
+  protected:
+   SingleDispatch *table;
+   string type1;
+  public:
+   SingleDispatchException(SingleDispatch *_table, string _type1);
+   virtual void print(ostream &out = cerr);
+   
+};
+
+
+class SingleDispatch {
+  public:
+   typedef ObjectRef (*single_funct_ptr) (ObjectRef x);
+
+  protected:
+
+   string name;
+
+   typedef TypeMap<single_funct_ptr> vtable1Type;
+
+
+   vtable1Type vtable;
+
+  public:
+   SingleDispatch(string _name) : name(_name) {}
+
+   const string &getName() {return name;}
+
+   void registerFunct(single_funct_ptr ptr, const type_info *x) {
+     vtable[x]= ptr;
+   }
+
+   ObjectRef call(ObjectRef x) {
+
+      const type_info *t1 = &typeid(*x);
+
+      vtable1Type::iterator v1 = vtable.find(t1);
+      if (v1!=vtable.end()) {
+	return v1->second(x);
+      } else {
+	 throw new SingleDispatchException(this, t1->name());
+      }
+   }
+};
+
+#define DEFINE_SINGLE_VTABLE(klass) class klass {                                   \
+  public:                                                                           \
+   static SingleDispatch &vtable() {static SingleDispatch table(# klass); return table;}  \
+   static ObjectRef perform(ObjectRef x)                                            \
+   {                                                                                \
+      return vtable().call(x);                                                      \
+   }                                                                                \
+   static int reg(SingleDispatch::single_funct_ptr ptr, const type_info *x)                \
+   {                                                                                \
+      vtable().registerFunct(ptr,x);                                                \
+      return 0;                                                                     \
+   }                                                                                \
+};
+
+#define REGISTER_SINGLE_VTABLE(klass, func, type1) \
+        int dummy_vtable_init_for ## klass ## _ ## func =\
+        klass::reg(func, &typeid(type1));
+
+
+
+
+
+
 #endif

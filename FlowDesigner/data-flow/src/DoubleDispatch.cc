@@ -13,5 +13,17 @@ DoubleDispatchException::DoubleDispatchException(DoubleDispatch *_table, string 
 
 void DoubleDispatchException::print(ostream &out) 
 {
-   out << "Vtable error: no match for " << table->getName() << "(" << type1 << ", " << type2 << ")" << endl;
+   out << "DoubleDispatch Vtable error: no match for " << table->getName() << "(" << type1 << ", " << type2 << ")" << endl;
+}
+
+
+
+SingleDispatchException::SingleDispatchException(SingleDispatch *_table, string _type1)
+   : table(_table)
+   , type1(_type1) {
+
+}
+
+void SingleDispatchException::print(ostream &out) {
+   out << "SingleDisptach Vtable error: no match for " << table->getName() << "(" << type1 << ")" << endl;
 }
