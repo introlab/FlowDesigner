@@ -56,7 +56,7 @@ Probe::Probe(string nodeName, ParameterSet params)
    sem_init(&sem, 0, 0);
 
    traceEnable=true;
-   displayEnable=false;
+   displayEnable=true;
 
    skip = 1;
    breakAt=0;
@@ -144,6 +144,7 @@ void Probe::specificInitialize()
    gtk_widget_ref (button16);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button16", button16,
 			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_button_set_relief(GTK_BUTTON(button16), GTK_RELIEF_NONE);
    gtk_widget_show (button16);
    
    gtk_signal_connect (GTK_OBJECT (button16), "clicked",
@@ -163,6 +164,7 @@ void Probe::specificInitialize()
    gtk_widget_ref (button17);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button17", button17,
 			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_button_set_relief(GTK_BUTTON(button17), GTK_RELIEF_NONE);
    gtk_widget_show (button17);
    
    if (traceEnable)
@@ -183,6 +185,7 @@ void Probe::specificInitialize()
    gtk_widget_ref (button18);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button18", button18,
 			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_button_set_relief(GTK_BUTTON(button18), GTK_RELIEF_NONE);
    gtk_widget_show (button18);
    
    gtk_signal_connect (GTK_OBJECT (button18), "clicked",
@@ -208,6 +211,7 @@ void Probe::specificInitialize()
    gtk_widget_ref (button19);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button19", button19,
 			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_button_set_relief(GTK_BUTTON(button19), GTK_RELIEF_NONE);
    gtk_widget_show (button19);
 
    gtk_signal_connect (GTK_OBJECT (button19), "clicked",
