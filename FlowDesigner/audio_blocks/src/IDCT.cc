@@ -34,8 +34,6 @@ class IDCT : public BufferedNode {
    int outputID;
    int length;
 
-   vector<float> inputCopy;
-   vector<float> outputCopy;
    vector<float> rNormalize;
    vector<float> iNormalize;
 
@@ -48,8 +46,6 @@ public:
       outputID = addOutput("OUTPUT");
       length = dereference_cast<int> (parameters.get("LENGTH"));
 
-      inputCopy.resize(length);
-      outputCopy.resize(length);
       rNormalize.resize(length);
       iNormalize.resize(length);
       float sqrt2n=sqrt(2.0/length);
@@ -79,6 +75,8 @@ public:
             
       int i,j;
 
+      DYN_VEC(float, length, inputCopy);
+      DYN_VEC(float, length, outputCopy);
       inputCopy[0]=rNormalize[0]*in[0];
       
       for (i=1;i<(length+1)>>1;i++)
@@ -89,15 +87,7 @@ public:
       if (!(length&1))
 	 inputCopy[length>>1] = rNormalize[length>>1]*in[length>>1];
 
-      for (i=0;i<length;i++)
-	 cout << inputCopy[i] << " ";
-      cout << endl;
-
-      FFTWrap.irfft(&inputCopy[0], &outputCopy[0], length);
-
-      for (i=0;i<length;i++)
-	 cout << outputCopy[i] << " ";
-      cout << endl;
+      FFTWrap.irfft(inputCopy, outputCopy, length);
 
       for (i=0, j=0 ;i<length ; i+=2, j++)
          output[i]=outputCopy[j];

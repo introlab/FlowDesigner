@@ -35,8 +35,6 @@ class DCT : public BufferedNode {
    int outputID;
    int length;
 
-   vector<float> inputCopy;
-   vector<float> outputCopy;
    vector<float> rNormalize;
    vector<float> iNormalize;
 
@@ -48,8 +46,6 @@ public:
       outputID = addOutput("OUTPUT");
       length = dereference_cast<int> (parameters.get("LENGTH"));
 
-      inputCopy.resize(length);
-      outputCopy.resize(length);
       rNormalize.resize(length);
       iNormalize.resize(length);
       float sqrt2n=sqrt(2.0/length);
@@ -76,6 +72,8 @@ public:
       Vector<float> &output = *Vector<float>::alloc(length);
       out[count] = &output;
       
+      DYN_VEC(float, length, inputCopy);
+      DYN_VEC(float, length, outputCopy);
       int i,j;
       for (i=0, j=0 ;i<length ; i+=2, j++)
          inputCopy[j]=in[i];
@@ -83,13 +81,7 @@ public:
       for (j=length-1,i=1;i<length;i+=2,j--)
 	 inputCopy[j]=in[i];
 
-      for (int i=0;i<length;i++)
-	 cerr << inputCopy[i] << " ";
-      cerr << endl;
-      FFTWrap.rfft(&inputCopy[0], &outputCopy[0], length);
-      for (int i=0;i<length;i++)
-	 cerr << outputCopy[i] << " ";
-      cerr << endl;
+      FFTWrap.rfft(inputCopy, outputCopy, length);
 
       output[0]=outputCopy[0]*rNormalize[0];
       for (i=1;i<(length+1)>>1;i++)
