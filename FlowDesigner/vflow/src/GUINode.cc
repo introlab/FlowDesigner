@@ -76,58 +76,58 @@ void GUINode::draw()
    {
       double xx1=x1-15.0;
       double xx2=x2+15.0;
-      vector<string> inputname;
-      vector<string> outputname;
+      vector<ItemInfo *> inputname;
+      vector<ItemInfo *> outputname;
       /*_NodeFactory *factory = Node::getFactoryNamed(type);
       if (factory)
       {
-	 inputname = factory->getInputs();
-	 outputname = factory->getOutputs();
-	 } else*/ {
-	 inputname = net->getDocument()->getNetInputs(type); 
-	 outputname = net->getDocument()->getNetOutputs(type); 
-	 //cerr << "UINode::draw factory not found in simple nodes\n";
+     inputname = factory->getInputs();
+     outputname = factory->getOutputs();
+     } else*/ {
+     inputname = net->getDocument()->getNetInputs(type); 
+     outputname = net->getDocument()->getNetOutputs(type); 
+     //cerr << "UINode::draw factory not found in simple nodes\n";
       }
       if (inputname.size() > 1)
-	 for (int i=0;i<inputname.size();i++)
-	 {
-	    double tx1,ty1,tx2,ty2;
-	    item1 = gnome_canvas_item_new(group,
+     for (int i=0;i<inputname.size();i++)
+     {
+        double tx1,ty1,tx2,ty2;
+        item1 = gnome_canvas_item_new(group,
                                           gnome_canvas_text_get_type(),
                                           "x", xx1,
                                           "y", 0.0,
-                                          "text", inputname[i].c_str(),
+                                          "text", inputname[i]->name.c_str(),
                                           "anchor", GTK_ANCHOR_EAST ,
                                           "fill_color", "blue",
                                           "font", "fixed",
                                           NULL);
-	    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(inputname.size()-1)-i));
-	    gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	    //tx2*=.33;
-	    x1=min(x1,tx1);
-	    y1=min(y1,ty1);
-	    y2=max(y2,ty2);
-	 }
+        gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(inputname.size()-1)-i));
+        gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
+        //tx2*=.33;
+        x1=min(x1,tx1);
+        y1=min(y1,ty1);
+        y2=max(y2,ty2);
+     }
       if (outputname.size() > 1)
-	 for (int i=0;i<outputname.size();i++)
-	 {
-	    double tx1,ty1,tx2,ty2;
-	    item1 = gnome_canvas_item_new(group,
+     for (int i=0;i<outputname.size();i++)
+     {
+        double tx1,ty1,tx2,ty2;
+        item1 = gnome_canvas_item_new(group,
                                           gnome_canvas_text_get_type(),
                                           "x", xx2,
                                           "y", 0.0,
-                                          "text", outputname[i].c_str(),
+                                          "text", outputname[i]->name.c_str(),
                                           "anchor", GTK_ANCHOR_WEST ,
                                           "fill_color", "blue",
                                           "font", "fixed",
                                           NULL);
-	    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(outputname.size()-1)-i));
-	    gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	    //tx2=.33;
-	    x2=max(x2,tx2);
-	    y1=min(y1,ty1);
-	    y2=max(y2,ty2);
-	 }
+        gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(outputname.size()-1)-i));
+        gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
+        //tx2=.33;
+        x2=max(x2,tx2);
+        y1=min(y1,ty1);
+        y2=max(y2,ty2);
+     }
 
       //This is a kludge, but it almost works... NOT!
       /*double zoom = dynamic_cast<GUINetwork *> (net)->getZoom();
@@ -136,30 +136,31 @@ void GUINode::draw()
       y1=y1*zoom;
       y2=y2*zoom;*/
       item2 = gnome_canvas_item_new(group,
-				    gnome_canvas_rect_get_type(),
-				    "x1", x1-5,
-				    "y1", y1-5,
-				    "x2", x2+5,
-				    "y2", y2+5,
-				    "fill_color_rgba", 0x3cb37120,
-				    "outline_color", "black",
-				    "width_units", 2.0,
-				    NULL);
+                    gnome_canvas_rect_get_type(),
+                    "x1", x1-5,
+                    "y1", y1-5,
+                    "x2", x2+5,
+                    "y2", y2+5,
+                    "fill_color_rgba", 0x3cb37120,
+                    "outline_color", "black",
+                    "width_units", 2.0,
+                    NULL);
       gnome_canvas_item_lower_to_bottom(item2);
       nodeRect=item2;  
       //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
       //cerr << "creating terminals\n";
       for (int i=0;i<inputname.size();i++)
-         inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
+         inputs.insert(inputs.end(), new GUITerminal (inputname[i]->name, this, true, x1-5.0, 
                                                      -15.0*(.5*(inputname.size()-1)-i)));
       for (int i=0;i<outputname.size();i++)
-         outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2+5.0, 
+         outputs.insert(outputs.end(), new GUITerminal (outputname[i]->name, this, false, x2+5.0, 
                                                      -15.0*(.5*(outputname.size()-1)-i)));
    }
    gtk_signal_connect(GTK_OBJECT(group), "event",
                       (GtkSignalFunc) node_handler,
                       this);
 }
+
 
 
 GUINode::~GUINode()
@@ -290,8 +291,8 @@ gint GUINode::event(GdkEvent *event)
          if (event->button.state & GDK_SHIFT_MASK)
          {
             //dynamic_cast<GUINodeParameters *> (parameters)->show();
-	    delete this;
-	    return true;
+        delete this;
+        return true;
          }
          else 
          {
@@ -360,7 +361,7 @@ gint GUINode::event(GdkEvent *event)
          gnome_canvas_item_ungrab(item, event->button.time);
          dragging = FALSE;
          dynamic_cast<GUINetwork *> (net)->updateScroll();
-	 net->setModified();
+     net->setModified();
       }
       break;
    case GDK_2BUTTON_PRESS:
