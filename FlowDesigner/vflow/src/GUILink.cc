@@ -54,6 +54,16 @@ GUILink::GUILink(UITerminal *_from, UITerminal *_to, char *points_str)
                       (GtkSignalFunc) link_handler,
                       this);
 
+   //link object type checking
+   if (from != NULL && to !=NULL) {
+     if (from->getType() != "any" &&
+	 to->getType () != "any" &&
+	 from->getType() != to->getType()) {
+       //wrong types, changing link color!
+       gnome_canvas_item_set(item,"fill_color","red",NULL);
+     }
+   }
+
 }
 
 GUILink::~GUILink()
@@ -327,17 +337,6 @@ gint GUILink::event(GdkEvent *event)
                from = term;
                term->connect(this);
                complete = true;
-
-	       //link object type checking
-	       if (from->getType() != "any" &&
-		   to->getType () != "any" &&
-		   from->getType() != to->getType()) {
-		 //wrong types, changing link color!
-		 gnome_canvas_item_set(item,"fill_color","red",NULL);
-	       }
-
-
-
             } else {
                /*committing suicide*/
 
@@ -358,15 +357,6 @@ gint GUILink::event(GdkEvent *event)
                }
                term->connect(this);
                complete = true;
-
-	       //link object type checking
-	       if (from->getType() != "any" &&
-		   to->getType () != "any" &&
-		   from->getType() != to->getType()) {
-		 //wrong types, changing link color!
-		 gnome_canvas_item_set(item,"fill_color","red",NULL);
-	       }
-
             } else {
                /*committing suicide*/
 
@@ -376,6 +366,16 @@ gint GUILink::event(GdkEvent *event)
          }
          net->addLink(this);
          complete = true;
+
+	 //link object type checking
+	 if (from != NULL && to !=NULL) {
+	   if (from->getType() != "any" &&
+	       to->getType () != "any" &&
+	       from->getType() != to->getType()) {
+	     //wrong types, changing link color!
+	     gnome_canvas_item_set(item,"fill_color","red",NULL);
+	   }
+	 }
       }
       else {
 
