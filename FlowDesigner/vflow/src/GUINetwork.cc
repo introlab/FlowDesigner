@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "GUINetwork.h"
 #include "GUIDocument.h"
 #include "GUINode.h"

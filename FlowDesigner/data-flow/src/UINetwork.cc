@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "UINetwork.h"
 #include "UIDocument.h"
 #include "UINode.h"

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 /********************************************************************
  *                                                                  *
  * THIS FILE IS PART OF THE Ogg Vorbis SOFTWARE CODEC SOURCE CODE.  *
@@ -12,7 +14,7 @@
  ********************************************************************
 
  function: window functions
- last mod: $Id: window.h,v 1.1 2000/07/06 04:01:19 jmvalin Exp $
+ last mod: $Id: window.h,v 1.2 2000/07/06 05:55:37 jmvalin Exp $
 
  ********************************************************************/
 

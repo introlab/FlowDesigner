@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef UINETWORK_H
 #define UINETWORK_H
 

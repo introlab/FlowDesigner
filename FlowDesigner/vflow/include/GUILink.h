@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUILINK_H
 #define GUILINK_H
 

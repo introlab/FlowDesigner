@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUIDOCUMENT_H
 #define GUIDOCUMENT_H
 

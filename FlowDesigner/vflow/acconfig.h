@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #undef PACKAGE
 #undef VERSION
 #undef HAVE_LIBSM

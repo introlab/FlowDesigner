@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "GUINetTerminal.h"
 #include "GUITerminal.h"
 #include "GUINode.h"

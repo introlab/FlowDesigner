@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef TEXTPROBE_H
 #define TEXTPROBE_H
 

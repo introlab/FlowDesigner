@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef KEYPAD_H
 #define KEYPAD_H
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include <locale.h>
 #include "UIDocument.h"
 #include <string>

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "NNetSet.h"
 
 DECLARE_TYPE(NNetSet)

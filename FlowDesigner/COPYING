@@ -1,6 +1,9 @@
 This package is released under the version 2.1 of the GNU Lesser General
 Public License, with the following exception: 
-it is allowed to distribute a new module in binary-only form, provided that 
-this modules does not require modifications to the base system or other 
-toolboxes. This exception is meant to be equivalent to the Linux binary-only
-kernel modules.
+It is allowed to distribute a new module in binary-only form, provided that 
+the rest of the code can compile and run properly without the binary module.
+Note that Overflow also links with the GPL library FFTW. If you ship a 
+binary-only Overflow module, it is up to you to make sure you don't infringe 
+the FFTW license, or the license of any other library that's linked by 
+Overflow. If you cannot do that, then you cannot distribute your bonary-only
+module.

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef _THREADED_ITERATOR_CC_
 #define _THREADED_ITERATOR_CC_
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "path.h"
 #include <tree.h>
 #include <parser.h>

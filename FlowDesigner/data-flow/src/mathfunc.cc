@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "vmethod.h"
 #include "net_types.h"
 #include <math.h>

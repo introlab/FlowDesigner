@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "UINodeParameters.h"
 #include <tree.h>
 #include "Node.h"

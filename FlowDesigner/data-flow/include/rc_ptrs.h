@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef __RC_PTRS_H
 #define __RC_PTRS_H
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include <string>
 #include <map>
 #include "Object.h"

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUINETPOPUP_H
 #define GUINETPOPUP_H
 

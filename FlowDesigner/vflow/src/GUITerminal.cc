@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "GUITerminal.h"
 #include "GUINode.h"
 #include "GUILink.h"

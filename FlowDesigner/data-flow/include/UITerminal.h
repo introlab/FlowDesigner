@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef UITERMINAL_H
 #define UITERMINAL_H
 

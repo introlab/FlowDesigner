@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUINETWORK_H
 #define GUINETWORK_H
 

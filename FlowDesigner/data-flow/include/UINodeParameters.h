@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef UINODEPARAMETERS_H
 #define UINODEPARAMETERS_H
 

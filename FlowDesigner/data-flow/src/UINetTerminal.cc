@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "UINetTerminal.h"
 #include "UITerminal.h"
 #include "UINode.h"

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef UIDOCUMENT_H
 #define UIDOCUMENT_H
 

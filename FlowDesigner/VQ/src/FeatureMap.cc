@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "FeatureMap.h"
 #include <string>
 #include "ObjectParser.h"

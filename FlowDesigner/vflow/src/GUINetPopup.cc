@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "GUINetPopup.h"
 #include "GUINetwork.h"
 #include "UIDocument.h"

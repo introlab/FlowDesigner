@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Dominic Letourneau (doumdi@yahoo.com)
+
 #include <strstream> //used for strstream
 #include "Tokenizer.h"
 

@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GRUNCONTEXT_H
 #define GRUNCONTEXT_H
 

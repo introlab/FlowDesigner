@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 /* WARNING: These routines are mostly untested, and I don't know
    for sure how fast and how accurate they are. Use at your own risks
 */

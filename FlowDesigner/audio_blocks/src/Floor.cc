@@ -1,5 +1,4 @@
 // Copyright (C) 2001 LocusDialog 
-// Author: Jean-Marc Valin
 
 #include "BufferedNode.h"
 #include "Vector.h"

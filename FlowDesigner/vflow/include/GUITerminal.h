@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUITERMINAL_H
 #define GUITERMINAL_H
 

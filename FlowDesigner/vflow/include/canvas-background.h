@@ -1,12 +1,4 @@
-/* Image item type for GnomeCanvas widget
- *
- * GnomeCanvas is basically a port of the Tk toolkit's most excellent canvas widget.  Tk is
- * copyrighted by the Regents of the University of California, Sun Microsystems, and other parties.
- *
- * Copyright (C) 1998 The Free Software Foundation
- *
- * Author: Federico Mena <federico@nuclecu.unam.mx>
- */
+/* Copyright (C) 2001 Jean-Marc Valin */
 
 #ifndef GNOME_CANVAS_BACKGROUND_H
 #define GNOME_CANVAS_BACKGROUND_H

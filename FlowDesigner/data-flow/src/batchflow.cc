@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "UIDocument.h"
 #include <string>
 #include "ParameterSet.h"

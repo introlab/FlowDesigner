@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "net_types.h"
 #include <stdio.h>
 #include <unistd.h>

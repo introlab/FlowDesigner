@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUINODEPARAMETERS_H
 #define GUINODEPARAMETERS_H
 

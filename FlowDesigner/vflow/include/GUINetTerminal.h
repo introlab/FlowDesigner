@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #ifndef GUINETTERMINAL_H
 #define GUINETTERMINAL_H
 

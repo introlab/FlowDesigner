@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 //#include <gnome.h>
 extern "C" {
 //#include "controls.h"

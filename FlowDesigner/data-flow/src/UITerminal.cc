@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 #include "UITerminal.h"
 #include "UINode.h"
 #include "UILink.h"

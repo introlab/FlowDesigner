@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Jean-Marc Valin
+
 // Written by Jezar at Dreampoint, June 2000
 // http://www.dreampoint.co.uk
 // This code is public domain

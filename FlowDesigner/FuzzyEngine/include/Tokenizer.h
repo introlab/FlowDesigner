@@ -1,3 +1,5 @@
+// Copyright (C) 2001 Dominic Letourneau (doumdi@yahoo.com)
+
 #include <iterator.h>
 #include <vector.h>
 #include <fstream.h>
