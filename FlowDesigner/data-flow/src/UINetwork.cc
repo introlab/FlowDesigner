@@ -25,7 +25,6 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
    , type (_type)
    , buildRecurs(false)
 {
-   cerr<<"UINetwork, mytype : "<<(typeid ((this)).name())<<endl;
    //create();
 }
 
@@ -355,15 +354,15 @@ UINode *UINetwork::newNode(UINetwork* _net, string _name, string _type,
                            double _x, double _y, bool doInit)
 {
   
-  cerr<<"UINetwork::newNode"<<endl;
-    return new UINode(_net, _name, _type, _x, _y, doInit);
+  //cerr<<"UINetwork::newNode"<<endl;
+  return new UINode(_net, _name, _type, _x, _y, doInit);
 }
 
 UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
 {
    //cerr << "UINetwork::newNode\n";
-  cerr<<"UINetwork::newNode (XML)"<<endl;
-   return new UINode(_net, def);
+  //cerr<<"UINetwork::newNode (XML)"<<endl;
+  return new UINode(_net, def);
 }
 
 /*UITerminal *UINetwork::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
@@ -374,14 +373,14 @@ UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
 UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
 {
    //BUG HERE (GUI instead of UI)
-   cerr << "UINetwork::newLink\n";
+   //cerr << "UINetwork::newLink\n";
    return new UILink (_from, _to, str);
 }
 
 UINetTerminal *UINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
 {
    //BUG HERE
-   cerr << "UINetwork::newNetTerminal\n";
+   //cerr << "UINetwork::newNetTerminal\n";
    return new UINetTerminal (_terminal, _type, _name);
 }
 
@@ -705,24 +704,7 @@ void UINetwork::removeTerminal(UINetTerminal *term)
 void UINetwork::interfaceChangeNotify()
 {
   if (!destroyed) {
-    
     doc->updateNetInfo(this);
-
-
-    vector<UINode*> my_nodes = getNodes();
-
-
-
-
-
-
-
-
-
-
-
-
-
   }
 }
 
@@ -805,28 +787,13 @@ void UINetwork::updateAllSubnetParameters(const string _nettype, NodeInfo * _inf
 
     for (unsigned int i = 0; i < nodes.size(); i++) {
 
-
        if (nodes[i]->getType() == _nettype) {
 
-	 cerr<<"found a node in the subnet if type "<<_nettype<<endl;
+	 //cerr<<"found a node in the subnet if type "<<_nettype<<endl;
 	 if (_info) {
-
-
-	   cerr<<"valind info ptr"<<endl;
 	   nodes[i]->updateNetParams(_info->params);
-
-	   for (int j = 0; j < _info->params.size(); j++) {
-	     cerr<<"param name : "<<_info->params[j]->name<<endl;
-	     cerr<<"param type : "<<_info->params[j]->type<<endl;
-	     cerr<<"param value : "<<_info->params[j]->value<<endl;
-	     cerr<<"param description : "<<_info->params[j]->description<<endl;
-	   }
 	 }
-
-
        }
-
-
     }//for all nodes
   }//if not destroyed
 

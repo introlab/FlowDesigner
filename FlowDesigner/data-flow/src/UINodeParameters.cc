@@ -146,12 +146,12 @@ ParameterText *UINodeParameters::getParamNamed(string n)
 
 void UINodeParameters::insertNetParams(vector<ItemInfo *> &par)
 {
-  cerr<<"UINodeParameters::insertNetParams"<<endl;
+  //cerr<<"UINodeParameters::insertNetParams"<<endl;
 
    for (unsigned int i=0;i<textParams.size();i++) {
 
-     cerr<<"textParams[i]->value "<<textParams[i]->value<<endl;
-     cerr<<"textParams[i]->type "<<textParams[i]->type<<endl;
+     //cerr<<"textParams[i]->value "<<textParams[i]->value<<endl;
+     //cerr<<"textParams[i]->type "<<textParams[i]->type<<endl;
 
       if (textParams[i]->value != "" && textParams[i]->type == "subnet_param") {
 
@@ -178,18 +178,12 @@ void UINodeParameters::insertNetParams(vector<ItemInfo *> &par)
 //Must be careful not to erase what the user entered (things that are still valid)
 void UINodeParameters::updateNetParams(vector<ItemInfo *> &par) {
 
-  cerr<<"UINodeParameters::updateNetParams called"<<endl;
+  //cerr<<"UINodeParameters::updateNetParams called"<<endl;
   
-  //string name;
-  //string type;
-  //string value;
-  //string description;
-
-
   //add new parameters	
   for (int i = 0; i < par.size(); i++) {
     if (!getParamNamed(par[i]->name)) {
-      cerr<<"adding a parameter : "<<par[i]->name<<endl;
+      //cerr<<"adding a parameter : "<<par[i]->name<<endl;
       addParameterText(par[i]->name, par[i]->type, par[i]->value, par[i]->description);
     }
   }
@@ -208,7 +202,7 @@ void UINodeParameters::updateNetParams(vector<ItemInfo *> &par) {
 
     if (!found) {
       //delete this parameter
-      cerr<<"removing parameter : "<<textParams[i]->name<<endl;
+      //cerr<<"removing parameter : "<<textParams[i]->name<<endl;
       removeParameterText(textParams[i]->name);
     }
   }

@@ -270,13 +270,13 @@ void UIDocument::loadXML(xmlNodePtr root)
 
 UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
-   cerr << "UIDocument::newNetwork\n";
+   //cerr << "UIDocument::newNetwork\n";
    return new UINetwork(this, _name, type);
 }
 
 UINetwork *UIDocument::newNetwork(xmlNodePtr _net)
 {
-   cerr << "UIDocument::newNetwork\n";
+   //cerr << "UIDocument::newNetwork\n";
    return new UINetwork(this, _net);
 }
 
@@ -656,8 +656,6 @@ void UIDocument::updateNetInfo(UINetwork *net) {
 
   //change our net information
   subnetInfo.updateNetInfo(net);
-
-  //TODO : move this code somewhere else? (DL)
 
   //update "networks parameters that included this net as a node"
   for (int i = 0; i < networks.size(); i++) {
