@@ -42,6 +42,10 @@ class ThreadedIterator : public Iterator {
   /** Stops the working thread */
   void stop_thread();
 
+  /** initialize function */
+  virtual void specificInitialize();
+
+
   /** Destructor */
   ~ThreadedIterator () {
 

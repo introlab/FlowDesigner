@@ -30,6 +30,7 @@
 Iterator::Iterator (string nodeName, ParameterSet params) 
    : Network(nodeName, params), output(new Object(Object::nil)) {
    translator = NULL;
+   conditionNode = NULL;
 }
 /***************************************************************************/
 /*

@@ -3,8 +3,8 @@
 
 #include "ThreadedIterator.h"
 #include <pthread.h>
-#include "Constant.h"
 #include <time.h>
+#include <unistd.h>
 
 const int ThreadedIterator::STATUS_RUNNING = 1;
 const int ThreadedIterator::STATUS_STOPPED = 0;
@@ -17,8 +17,9 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
 {  
 
   try {
-    rate_per_second = dereference_cast<int>(parameters.get("RATE_PER_SECOND"));
-    
+    //rate_per_second = dereference_cast<int>(parameters.get("RATE_PER_SECOND"));
+    rate_per_second = 10;
+    cout<<"ThreadedIterator constructor..."<<endl;
     
     if (rate_per_second <=0 ) {
       throw NodeException (this, "RATE_PER_SECOND IN THREADED ITERATOR MUST BE GREATER THAN ZERO.",__FILE__,__LINE__);
@@ -27,13 +28,7 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
     
     pthread_mutex_init(& mutex, NULL);
     
-    //creating the constant node
-    
-    ParameterSet p;
-    p.add("VALUE", ObjectRef(new Bool(true)));
-    Constant *c = new Constant("TRUE_CONSTANT", p);
-    addNode(*c);
-    setConditionNode(c);
+
   }
   catch (GenericCastException &e) {
     //We had a problem casting, our inputs are invalid?
@@ -135,6 +130,11 @@ void ThreadedIterator::stop_thread() {
 
 }
 
+void ThreadedIterator::specificInitialize() {
+
+   this->Network::specificInitialize();
+   
+}
 
 void * workloop (void *param) {
   
@@ -148,6 +148,7 @@ void * workloop (void *param) {
 
   while (1) {
 
+    cout<<"lock..."<<endl;
     ptr->iterator_lock();
   
     time_t begin =  time(NULL);
@@ -181,6 +182,7 @@ void * workloop (void *param) {
       throw NodeException (ptr,string("Error in ThreadedIterator::getOutput workloop"), __FILE__,__LINE__);
     }
 
+    cout<<"unlock"<<endl;
     ptr->iterator_unlock();
 
     time_t end = time(NULL);
@@ -194,7 +196,7 @@ void * workloop (void *param) {
       //usleep ((period - (end - begin)) * 1000); 
     }
 
-   
+    //usleep(100000);
 
   }
   
