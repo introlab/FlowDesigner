@@ -118,7 +118,7 @@ class _FFTWrap {
 	 plan = &plan_pair->second;
       }
       
-      rfftw_one (*plan, const_cast <float *> (in), out);
+      rfftw_one (*plan, const_cast <FFTW_REAL *> (in), out);
       for (int i=0;i<size;i++)
 	 fout[i]=out[i];
    }
@@ -139,7 +139,7 @@ class _FFTWrap {
 	 plan = &plan_pair->second;
       }
       
-      rfftw_one (*plan, const_cast <float *> (in), out);
+      rfftw_one (*plan, const_cast <FFTW_REAL *> (in), out);
       for (int i=0;i<size;i++)
 	 fout[i]=out[i];
 
