@@ -8,6 +8,6 @@
 
 bin_SCRIPTS = overflow-config
 
-EXTRA_DIST = Overflow.spec
+EXTRA_DIST = Overflow.spec nflow.dtd
 
 SUBDIRS = data-flow @modules@ tools examples
