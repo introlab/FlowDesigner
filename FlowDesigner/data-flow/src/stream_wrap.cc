@@ -1,6 +1,7 @@
 #include "stream_wrap.h"
 #include <string>
 
+//@implements core
 
 fileptr_streambuf::fileptr_streambuf(FILE *_file, bool _owner)
    : file(_file)

@@ -1,7 +1,7 @@
 // Copyright (C) 1998-1999 Jean-Marc Valin
 
 #include "covariance.h"
-#include "math.h"
+#include <math.h>
 #include "misc.h"
 #include <string>
 

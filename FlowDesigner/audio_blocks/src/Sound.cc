@@ -42,7 +42,7 @@ DECLARE_NODE(Sound)
  * @parameter_name DEVICE
  * @parameter_type string
  * @parameter_value /dev/dsp
- * @parameter_description Path to the sound devide
+ * @parameter_description Path to the sound device
  *
  * @parameter_name RATE
  * @parameter_type int
@@ -174,7 +174,7 @@ public:
 
 #endif
 
-      //value = ObjectRef(new Stream(&cout));      
+      //FIXME: Theoretically, we should choose the type of stream according to "MODE"
       value = ObjectRef(new IOStream(new fd_iostream(audio_fd, true)));      
    }
       

@@ -218,7 +218,7 @@ void UINodeParameters::genCode(ostream &out)
       {
 	 out << "   value = ObjectParam::stringParam(\"" << curr->type << "\", \"" 
 	     << curr->value << "\", const_cast<ParameterSet &> (params));\n";
-	 out << "   if (value->status == Object::valid)\n";
+	 out << "   if (!value->isNil())\n";
 	 out << "      parameters.add(\"" << curr->name << "\", value);\n";
       }
    }

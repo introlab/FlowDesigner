@@ -208,7 +208,7 @@ extern ObjectRef FalseObject;
 /**Base Overflow String type, wraps a C++ string
    @author Jean-Marc Valin
 */
-class String : virtual public string, virtual public Object
+class String : public string, public Object
 {
 public:
    String() : string() {}
