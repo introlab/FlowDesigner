@@ -50,7 +50,7 @@ ObjectRef UnPack::getOutput(int output_id, int count)
       ObjectRef inputValue = input.node->getOutput(input.outputID,0);
       
       Vector<ObjectRef> &packed = object_cast <Vector<ObjectRef> > (inputValue);
-      if (count < packed.size())
+      if (count < int(packed.size()))
       {
          //cerr << packed[count] << endl;
          return packed[count];

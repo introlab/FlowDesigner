@@ -14,9 +14,9 @@ const int ThreadedIterator::STATUS_STOPPED = 0;
 
 ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params) 
    : Iterator(nodeName, params)
+  , m_in_getOutput(false)
   , internal_pc(0)
   , thread_status(STATUS_STOPPED)
-  , m_in_getOutput(false)
 {  
 
   try {

@@ -151,6 +151,7 @@ class _ObjectFactory {
    string typeName;
 public:
    _ObjectFactory(const string &_name) : typeName(_name) {}
+   virtual ~_ObjectFactory() {}
    virtual ObjectRef create() = 0;
    const string &getName() {return typeName;}
 };

@@ -27,7 +27,7 @@ using namespace std;
 template <class T>
 class VectorPool {
   protected:
-   int max_stored;
+   size_t max_stored;
 
    vector<vector <Vector<T> *> > smallList;
 #ifdef NO_HASH_MAP

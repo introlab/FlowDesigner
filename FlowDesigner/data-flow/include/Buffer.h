@@ -32,8 +32,8 @@ public:
    /**Constructor, requires the buffer length (bLength)*/
    Buffer(int bLength)
       : data(bLength)
-      , bufferLength (bLength)
       , flags(bLength,0)
+      , bufferLength (bLength)
    {
       //for (int i=0;i<bLength;i++) 
       //   data[i]=Object::nilObject;

@@ -119,6 +119,7 @@ public:
    {
       //cerr << "In runThread\n";
       ((ParallelThread*) node)->threadLoop();
+      return NULL;
    }
 
    void threadLoop()

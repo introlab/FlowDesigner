@@ -106,16 +106,16 @@ public:
       }
    
    virtual ~ExceptionStack() 
-      {for (int i=0;i<stack.size();i++) delete stack[i];}
+      {for (size_t i=0;i<stack.size();i++) delete stack[i];}
    ///The print method that prints on stderr by default
    virtual void print(ostream &out = cerr) {
-      for (int i=0;i<stack.size();i++)
+      for (unsigned int i=0;i<stack.size();i++)
 	 stack[i]->print(out);
    }
 
    virtual void freeze()
    {
-      for (int i=0;i<stack.size();i++)
+      for (unsigned int i=0;i<stack.size();i++)
 	 stack[i]->freeze();
    }
 };

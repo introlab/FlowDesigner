@@ -101,7 +101,7 @@ int Node::addOutput(const string &output_name) {
    
    //We should check if the output already exists
 
-   for (int in = 0; in < outputNames.size(); in++) {
+   for (unsigned int in = 0; in < outputNames.size(); in++) {
       if (outputNames[in] == output_name) {
          throw new NodeException(this,string("Output already defined : ") + output_name, __FILE__, __LINE__);
          //just in case
@@ -122,7 +122,7 @@ int Node::addOutput(const string &output_name) {
  */
 /***************************************************************************/
 bool Node::hasOutput (int output_id) const {
-   return (output_id < outputNames.size());
+   return (output_id < int(outputNames.size()));
 }
 
 
@@ -157,7 +157,7 @@ void Node::verifyConnect()
 int Node::translateOutput (string output_name) {
 
    //We should check if the output exists
-   for (int in = 0; in < outputNames.size(); in++) {
+   for (unsigned int in = 0; in < outputNames.size(); in++) {
       if (outputNames[in] == output_name) {
          return in;
       }      
@@ -179,7 +179,7 @@ int Node::translateInput (string input_name) {
    
    //We should check if the input exists
    
-   for (int in = 0; in < inputs.size(); in++) {
+   for (unsigned int in = 0; in < inputs.size(); in++) {
       if (inputs[in].name == input_name) {
          return in;
       }      

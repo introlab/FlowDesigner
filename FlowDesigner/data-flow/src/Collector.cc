@@ -27,7 +27,7 @@ Collector::Collector(string nodeName, ParameterSet params)
 
 ObjectRef Collector::getOutputNamed (const string &outputName, int count) {
    
-   for (int i=0; i< inputs.size(); i++) {
+   for (unsigned int i=0; i< inputs.size(); i++) {
       if (inputs[i].name == outputName) {
          return getOutput(i,count);
       }
@@ -48,7 +48,7 @@ void Collector::specificInitialize()
 int Collector::translateInput (string inputName)
 {
 
-   for (int i=0; i< inputs.size(); i++) {
+   for (unsigned int i=0; i< inputs.size(); i++) {
       if (inputs[i].name == inputName) {
          return i;
       }
@@ -66,7 +66,7 @@ int Collector::translateOutput (string outputName)
 
 bool Collector::hasOutput(int output_id) const
 {
-  return(inputs.size() > output_id);
+  return(int(inputs.size()) > output_id);
 }
 
 ObjectRef Collector::getOutput(int output_id, int count)

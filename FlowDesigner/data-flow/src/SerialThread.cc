@@ -201,6 +201,7 @@ public:
    static void *runThread(void *node)
    {
       ((SerialThread*) node)->threadLoop();
+      return NULL;
    }
 
    void startThread()

@@ -37,7 +37,7 @@ AND::AND(string nodeName, ParameterSet params)
 
 ObjectRef AND::getOutput (int output_id, int count) {
    
-   int i;
+   unsigned int i;
    int true_count = 0;
    int false_count = 0;
 

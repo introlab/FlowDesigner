@@ -58,7 +58,7 @@ template <class T>
 inline void _vector_printOn(const Vector<T> &v, ostream &out)
 {
    out << "<" << v.className();
-   for (int i=0; i < v.size(); i++)
+   for (unsigned int i=0; i < v.size(); i++)
    {
       out << " " << v[i];
    }
@@ -71,7 +71,7 @@ template <class T>
 inline void _vector_printOn(const Vector<T*> &v, ostream &out)
 {
    out << "<" << v.className();
-   for (int i=0; i < v.size(); i++)
+   for (unsigned int i=0; i < v.size(); i++)
    {
       out << " " << *(v[i]);
    }
@@ -171,7 +171,7 @@ struct VecBinary<T,TTraits::Object> {
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
-      for (int i=0;i<v.size();i++)
+      for (unsigned int i=0;i<v.size();i++)
       {
 	 v[i].serialize(out);
       }
@@ -183,7 +183,7 @@ struct VecBinary<T,TTraits::Object> {
       string expected = Vector<T>::GetClassName();
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
-      for (int i=0;i<v.size();i++)
+      for (unsigned int i=0;i<v.size();i++)
       {
 	 if (!isValidType(in, expected))
 	    throw new ParsingException("Expected type " + expected);
@@ -202,7 +202,7 @@ struct VecBinary<T,TTraits::ObjectPointer> {
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
-      for (int i=0;i<v.size();i++)
+      for (unsigned int i=0;i<v.size();i++)
       {
 	 v[i]->serialize(out);
       }
@@ -213,7 +213,7 @@ struct VecBinary<T,TTraits::ObjectPointer> {
       int tmp;
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
-      for (int i=0;i<v.size();i++)
+      for (unsigned int i=0;i<v.size();i++)
       {
 	 in >> v[i];
       }

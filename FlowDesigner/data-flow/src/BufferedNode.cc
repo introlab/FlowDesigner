@@ -12,7 +12,7 @@ BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
 
 int BufferedNode::addInput (const string &inputName)
 {
-   int inID = this->Node::addInput(inputName);
+   unsigned int inID = this->Node::addInput(inputName);
    if (inID >= inputsCache.size())
       inputsCache.resize(inID+1);
    return inID;
@@ -21,7 +21,7 @@ int BufferedNode::addInput (const string &inputName)
 int BufferedNode::addOutput(const string &output_name)
 {
    /*handle output buffers here*/
-   int outID = this->Node::addOutput(output_name);
+   unsigned int outID = this->Node::addOutput(output_name);
    if (outID >= outputs.size())
       outputs.resize(outID+1);
    return outID;
@@ -31,7 +31,7 @@ void BufferedNode::initializeBuffers()
 {
    //cerr << typeid(*this).name() << " " << outputs[0].lookAhead << " " << outputs[0].lookBack << endl;
 
-   for (int i=0;i<outputs.size();i++)
+   for (unsigned int i=0;i<outputs.size();i++)
    {
       outputs[i].buffer = RCPtr<Buffer>(new Buffer (outputs[i].lookAhead+outputs[i].lookBack+1));
    }
@@ -39,15 +39,14 @@ void BufferedNode::initializeBuffers()
 
 void BufferedNode::performRequests ()
 {
-   int i;
    int outputLookAhead=0, outputLookBack=0;
-   for (i=0;i<outputs.size();i++)
+   for (unsigned i=0;i<outputs.size();i++)
    {
       outputLookAhead=max(outputLookAhead, outputs[i].lookAhead);
       outputLookBack =max(outputLookBack, outputs[i].lookBack);
    }
    
-   for (i=0;i<inputsCache.size();i++)
+   for (unsigned i=0;i<inputsCache.size();i++)
    {
       ParameterSet req;
       //cerr << inputsCache[i].lookAhead+outputLookAhead << endl;
@@ -84,7 +83,7 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
       inOrder = true;
    this->Node::request(outputID,req);
 
-   Node *ptr=this;
+   //Node *ptr=this;
    //cerr << "request caught in " << name << " " << typeid(*ptr).name() << endl;
    //cerr << "lookahead = " << outputs[outputID].lookAhead << " lookback = " << outputs[outputID].lookBack << endl;
    //cerr << "--\n";

@@ -37,7 +37,6 @@ OR::OR(string nodeName, ParameterSet params)
 
 ObjectRef OR::getOutput (int output_id, int count) {
    
-   int i;
    int true_count = 0;
    int false_count = 0;
 
@@ -46,7 +45,7 @@ ObjectRef OR::getOutput (int output_id, int count) {
    if (count != processCount) {
       //We are updating our output only if needed
       
-      for (i = 0; i< inputs.size(); i++) {
+      for (unsigned i = 0; i< inputs.size(); i++) {
          try {
             
             //getting all data from our inputs.
