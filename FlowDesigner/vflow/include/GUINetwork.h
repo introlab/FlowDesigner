@@ -21,7 +21,13 @@ protected:
    list<GUINode*> selectedNodes;
    GUINodeTooltip *tooltip;
 
+   double x_last_click;
+   double y_last_click;
+
 public:
+
+   //useful to know where we clicked on the canvas.
+   void get_last_click(double &x, double &y) {x = x_last_click; y = y_last_click;}
 
    void emptySelectedNodes();
 

@@ -303,8 +303,18 @@ gint GUINode::event(GdkEvent *event)
          if (event->button.state & GDK_SHIFT_MASK)
          {
             //dynamic_cast<GUINodeParameters *> (parameters)->show();
-        delete this;
-        return true;
+	   //delete this;
+	   
+	   //cloning...
+	   //creating new node
+	   GUINetwork *my_net = dynamic_cast<GUINetwork*>(net);
+
+	   GUINode *my_node = dynamic_cast<GUINode*>(my_net->addNode(getType(),item_x,item_y));
+
+	   //copying parameters
+	   my_node->setNodeParameters(getParameters());
+
+	   return true;
          }
          else 
          {

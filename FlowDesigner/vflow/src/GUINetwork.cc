@@ -211,17 +211,20 @@ UINode * GUINetwork::addNode (string type, double xx, double yy)
    gint ix,iy;
    //cerr << "my name is " ;
    //cerr << name << endl;
-   gnome_canvas_window_to_world(canvas, xx,yy,&x,&y);
+   //why?
+   //gnome_canvas_window_to_world(canvas, xx,yy,&x,&y);
+
    //x=xx;
    //y=yy;
-   gnome_canvas_item_w2i(GNOME_CANVAS_ITEM(group)->parent, &x, &y);
+   //why?
+   //gnome_canvas_item_w2i(GNOME_CANVAS_ITEM(group)->parent, &x, &y);
 
-   char newName[20];
+   char newName[256];
    int id=0;
    while (1) {
       id++;
       bool unique = true;
-      sprintf (newName,"node%d", id);
+      sprintf (newName,"node_%s_%d",type.c_str(),id);
       for (int i=0;i<nodes.size();i++)
       {
          if (nodes[i]->getName() == newName) 
@@ -230,7 +233,7 @@ UINode * GUINetwork::addNode (string type, double xx, double yy)
       if (unique)
          break;
    }
-   UINode *newNode = new GUINode (this, newName, type, x, y);
+   UINode *newNode = new GUINode (this, newName, type, xx, yy);
    nodes.insert(nodes.end(), newNode);
    updateScroll();
 
@@ -247,11 +250,19 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
   
   item_x = event->button.x;
   item_y = event->button.y;
+  
+ 
 
 
    switch (event->type) {
 
+   
    case GDK_BUTTON_PRESS:
+
+     //keeping last click
+     x_last_click = item_x;
+     y_last_click = item_y;
+     
      switch(event->button.button) {
        
      case 1:
@@ -276,6 +287,10 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
        break;
        
      case 3:
+
+
+
+
        popup->popup(event);
        return TRUE;
        break;

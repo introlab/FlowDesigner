@@ -18,10 +18,20 @@ extern int theTime;
 static void new_node_event(GtkMenuItem     *menuitem,
                            UINetwork * net)
 {
-   gchar *name = (gchar*)gtk_object_get_user_data(GTK_OBJECT(menuitem));
-   dynamic_cast<GUINetwork *>(net)->addNode((char *)name, 100.0,100.0);
-   //cerr << "adding node " << name << " to " << net->getName() << "\n";
-   //currentNetwork->addNode((char *)user_data, 100.0,100.0);
+
+  //should add a node where we clicked!
+  GUINetwork *my_net = dynamic_cast<GUINetwork*>(net);
+
+  double x, y;
+
+  my_net->get_last_click(x,y);
+
+  gchar *name = (gchar*)gtk_object_get_user_data(GTK_OBJECT(menuitem));
+
+  //dynamic_cast<GUINetwork *>(net)->addNode((char *)name, 100.0,100.0);
+  dynamic_cast<GUINetwork *>(net)->addNode((char *)name, x, y);
+
+
 }
 
 static void zoomin(GtkMenuItem     *menuitem,
