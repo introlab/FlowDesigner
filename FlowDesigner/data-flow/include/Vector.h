@@ -24,7 +24,6 @@ public:
    typedef T* iterator;
    typedef const T* const_iterator;
 protected:
-  public:
    T *data;
    size_t obj_size;
    int capacity;
@@ -231,9 +230,7 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
    out << "<" << v.className();
    for (unsigned int i=0; i < v.size(); i++)
    {
-      T f=v.data[i];
-      out << " " << f;
-      //out << " " << v[i];
+      out << " " << v[i];
    }
    out << " > ";
 }
