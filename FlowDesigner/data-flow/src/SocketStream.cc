@@ -407,12 +407,13 @@ void network_socket::socket_accept() {
   //set the socket non blocking?
   
   //sending Overflow identification banner
+  /*
   cerr<<"send banner"<<endl;
 
   unsigned char banner[] = {'O','V','E','R','F','L','O','W'};
 
   send_packet(&banner[0],FLOWDESIGNER_IDENT_STRLEN);
-
+  */
   cerr<<"accept done!"<<endl;
 }
 
