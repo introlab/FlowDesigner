@@ -848,7 +848,18 @@ void GUIDocument::run()
       runningNet = net;
       //verifyConnect done by UIDocument
       //net->verifyConnect();
-      net->initialize();
+      
+      //processing buffer requests
+      for (int i = 0; ;i++) {
+	 if (!net->hasOutput(i)) break;
+
+	 ParameterSet req;
+	 net->request(i,req);
+      }
+      
+      //initializing
+      net->specificInitialize();
+
       //cerr << "running...\n";
       
       // Getting all the network outputs.

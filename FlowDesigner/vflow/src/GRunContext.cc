@@ -111,7 +111,17 @@ void GRunContext::run()
       //cerr << "initializing...\n";
       //verifyConnect done by UIDocument
       //net->verifyConnect();
-      net->initialize();
+
+      //processing buffer requests
+      for (int i = 0; ;i++) {
+	 if (!net->hasOutput(i)) break;
+
+	 ParameterSet req;
+	 net->request(i,req);
+      }
+      
+      //initializing
+      net->specificInitialize();
       //cerr << "running (UIDocument)...\n";
 	    
       for (int i = 0; ;i++) {
