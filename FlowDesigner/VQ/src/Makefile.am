@@ -1,11 +1,14 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.6 2000/03/18 03:43:40 jmvalin Exp $
+# $Id: Makefile.am,v 1.7 2000/05/21 20:49:24 chapmanb Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libvq.la
+
+install:
+	(cd $(prefix)/lib; rm -f vq.tlb; ln -s libvq.so vq.tlb)
 
 # Sources for compilation in the library
 libvq_la_SOURCES = kmeans.cc \

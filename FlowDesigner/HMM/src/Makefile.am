@@ -1,11 +1,14 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.10 2000/02/23 04:53:41 jmvalin Exp $
+# $Id: Makefile.am,v 1.11 2000/05/21 20:49:55 chapmanb Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libhmm.la
+
+install:
+	(cd $(prefix)/lib; rm -f hmm.tlb; ln -s libhmm.so hmm.tlb)
 
 # Sources for compilation in the library
 libhmm_la_SOURCES =	gmm.cc covariance.cc gaussian.cc \
