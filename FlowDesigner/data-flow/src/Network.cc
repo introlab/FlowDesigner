@@ -33,6 +33,7 @@ Network::Network (string nodeName, ParameterSet params)
    sinkNode = NULL;
    inputNode = NULL;
    debugMode = false;
+   exit_status = false;
 }
 /***************************************************************************/
 /*
@@ -53,6 +54,22 @@ void Network::setDebugMode() {
    }
 
 }
+void Network::setExitStatus() {
+
+   map<string,Node*>::iterator nodeIter;
+   Node *node = NULL;
+  
+   cerr<<"setting exit_status (Network)"<<endl;
+   exit_status = true;
+   
+   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
+      node = (*nodeIter).second;
+      node->setExitStatus();
+   }
+
+}
+
+
 /***************************************************************************/
 /*
   resetDebugMode(...)
@@ -71,6 +88,21 @@ void Network::resetDebugMode() {
       node->resetDebugMode();
    }
 }
+void Network::resetExitStatus() {
+  
+   map<string,Node*>::iterator nodeIter;
+   Node *node = NULL;
+   
+   exit_status = false;
+   
+   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
+      node = (*nodeIter).second;
+      node->resetExitStatus();
+   }
+}
+
+
+
 /***************************************************************************/
 /*
   ~Network()

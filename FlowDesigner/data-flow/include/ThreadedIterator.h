@@ -20,6 +20,8 @@ class ThreadedIterator : public Iterator {
   friend void * workloop (void *param);
 
  public:
+  
+  //virtual void setExitStatus() {thread_status = STATUS_STOPPED; this->Network::setExitStatus();}
 
   /** The constructor with a nodeName and parameters */
   ThreadedIterator (string nodeName, ParameterSet params);
@@ -50,9 +52,7 @@ class ThreadedIterator : public Iterator {
   ~ThreadedIterator () {
 
     if (status != STATUS_STOPPED) {
-      cout<<"Stopping the Iterator thread...";
       stop_thread();
-      cout<<"Done!"<<endl;
     }
 
     //destroying the mutex
@@ -66,6 +66,9 @@ class ThreadedIterator : public Iterator {
     :Iterator (string("DUMMY"), new ParameterSet()) {
     throw new NodeException (NULL,"The default constructor should not be called from ThreadedIterator",__FILE__,__LINE__);
   }*/
+
+  bool  m_in_getOutput;
+
    
   void* loop(void *param);
 

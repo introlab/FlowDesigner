@@ -660,23 +660,15 @@ void GUIDocument::createParamDialog()
 
 static void disposeFunct(void *dummy)
 {
-   //cerr << "disposeFunct called\n";
-   GUIDocument::isRunning=false;
-   if (GUIDocument::runningNet != NULL) {
-     //delete net;
-     cerr << "Deleting the running network.\n";
-     delete GUIDocument::runningNet; 
-     GUIDocument::runningNet=NULL;     
+   cerr << "disposeFunct called\n";
+   if (dummy != NULL) {
+     //if (GUIDocument::isRunning) {
+     GUIDocument *doc = (GUIDocument*) dummy;
+     GUIDocument::isRunning = false;
+     doc->threadStop();
+     //}
    }
-
-   gdk_threads_enter();
-
-   GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
-   gtk_widget_set_sensitive(w,true);
-   w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
-   gtk_widget_set_sensitive(w,false);
-
-   gdk_threads_leave();
+  
 }
 
 static void threadFunct(GUIDocument *doc)
@@ -691,19 +683,42 @@ void GUIDocument::threadRun()
    {
       isRunning=true;
       pthread_create(&runThread, NULL, (void * (*)(void *))threadFunct, this);
-      pthread_detach(runThread);
+      //pthread_detach(runThread); //Dominic
    }
 }
 
 void GUIDocument::threadStop()
 {
-   //cerr << "threadStop\n";
-   if (isRunning)
-   {
-      //cerr << "stopping...\n";
-      isRunning=false;
-      pthread_cancel(runThread);
+  cerr << "threadStop\n";
+  
+  //exiting (Dominic)
+  cerr<<"Setting exit status"<<endl;
+   
+   if (isRunning) {
+     //cerr << "stopping...\n";
+     isRunning=false;
+     runningNet->setExitStatus();
+     pthread_cancel(runThread);
    }
+   else {
+     cerr<<"updating buttons"<<endl;
+     gdk_threads_enter();
+     GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
+     gtk_widget_set_sensitive(w,true);
+     w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
+     gtk_widget_set_sensitive(w,false);
+     gdk_threads_leave();
+
+     if (runningNet != NULL) {
+       //delete net;
+       cerr << "Deleting the running network.\n";
+       delete runningNet; 
+       runningNet=NULL; 
+     }
+   }
+
+  
+   cerr<<"end threadStop"<<endl;
 
 }
 
@@ -712,7 +727,7 @@ void GUIDocument::run()
 {
    //cerr << "GUIDocument::run\n";
    
-   pthread_cleanup_push(disposeFunct, NULL);
+   pthread_cleanup_push(disposeFunct, this);
    //Network *net;
    try{
       ParameterSet parameters;
@@ -768,8 +783,9 @@ void GUIDocument::run()
 	   char str[1000];
 	   strstream execOut(str, 999);
 	   
-	   
+	   cerr<<"before main getOutput"<<endl;
 	   execOut << *runningNet->getOutput(k,0);
+	   cerr<<"after main getOutput"<<endl;
 
 	   gdk_threads_enter();
 	   less_print(str);

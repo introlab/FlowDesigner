@@ -100,6 +100,10 @@ public:
    /**Exiting debug mode*/
    virtual void resetDebugMode();
 
+   virtual void setExitStatus();
+
+   virtual void resetExitStatus();
+
    /** resets the Network and all the internal nodes */
    virtual void reset();
    
@@ -148,7 +152,8 @@ protected:
    /**The debug mode flag*/
    bool debugMode;
  
-
+   //The exit status
+   bool exit_status;
 
 
    

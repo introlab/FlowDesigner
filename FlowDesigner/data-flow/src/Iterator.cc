@@ -78,7 +78,7 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          int conditionID = conditionNode->translateOutput("OUTPUT");
 
          int pc = 0;
-         while(1)
+         while(!exit_status)
          {
             if (doWhile)
             {

@@ -96,6 +96,9 @@ class Node {
    friend class Iterator;
 
 protected:
+
+   bool exit_status;
+   
    /**Node's name*/
    string name;
 
@@ -182,6 +185,12 @@ public:
 
    /**Sets the node to debug mode*/
    virtual void setDebugMode(){debugMode = true;}
+
+   virtual void setExitStatus(){exit_status = true;}
+
+   bool isExitStatus() {return exit_status;}
+
+   virtual void resetExitStatus() {exit_status = false;}
 
    /**Resets debug mode*/
    virtual void resetDebugMode(){debugMode = false;}

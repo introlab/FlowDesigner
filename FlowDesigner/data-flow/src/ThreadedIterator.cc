@@ -14,11 +14,12 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
    : Iterator(nodeName, params)
   , internal_pc(0)
   , thread_status(STATUS_STOPPED)
+  , m_in_getOutput(false)
 {  
 
   try {
     //rate_per_second = dereference_cast<int>(parameters.get("RATE_PER_SECOND"));
-    rate_per_second = 10;
+    rate_per_second = 1;
     cout<<"ThreadedIterator constructor..."<<endl;
     
     if (rate_per_second <=0 ) {
@@ -40,16 +41,20 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
 }
 
 ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
-   
-   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
-   if (thread_status == ThreadedIterator::STATUS_STOPPED) {
-     //We must start the thread
-     start_thread();
-   }
- 
+  if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
+  
+  m_in_getOutput = true;
+  
    iterator_lock();
    
+   //if (thread_status == ThreadedIterator::STATUS_STOPPED) {
+     //We must start the thread
+     //start_thread();
+   //}
+
+   //cerr<<"getOutput begin!"<<endl;
+
    //ObjectRef output;
 
    if (processCount != count) {
@@ -77,7 +82,10 @@ ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
       processCount = count;
    }
 
+   //cerr<<"getOutput end!"<<endl;
    iterator_unlock();
+
+    m_in_getOutput = false;
 
    return output[output_id];   
 }
@@ -98,6 +106,8 @@ void ThreadedIterator::reset() {
 
 void ThreadedIterator::start_thread() {
 
+  cerr<<"start_thread"<<endl;
+
   internal_pc = 0;
 
   thread_status = ThreadedIterator::STATUS_RUNNING;
@@ -108,28 +118,34 @@ void ThreadedIterator::start_thread() {
 
 void ThreadedIterator::stop_thread() {
 
-  iterator_lock();
+  cerr<<"stop_thread"<<endl;
 
+  if (thread_status == STATUS_RUNNING) {
 
-  cout<<"Setting the stop status"<<endl;
-  thread_status = ThreadedIterator::STATUS_STOPPED;
+    cerr<<"Setting the stop status"<<endl;
+    thread_status = ThreadedIterator::STATUS_STOPPED;
 
-  iterator_unlock();
+    //to avoid any deadlocks
+    iterator_unlock();
 
-  //wait for the thread
+    //wait for the thread
 
-  void **return_status;
+    void **return_status;
 
-  cout<<"join"<<endl;
-  pthread_join (work_thread,return_status);
+    cerr<<"join thread"<<endl;
+    pthread_join (work_thread,return_status);
 
-  cout<<"join successfull"<<endl;
-
+    cerr<<"join successfull"<<endl;
+  }
+  else {
+    thread_status = ThreadedIterator::STATUS_STOPPED;
+  }
 }
 
 void ThreadedIterator::specificInitialize() {
 
-   this->Network::specificInitialize();
+  start_thread();
+  this->Network::specificInitialize();
    
 }
 
@@ -141,15 +157,14 @@ void * workloop (void *param) {
 
   ThreadedIterator *ptr = (ThreadedIterator *) param;
 
-  cout<<"Starting the workloop."<<endl;
+  cerr<<"Starting the workloop."<<endl;
 
-  while (1) {
+  while (ptr->thread_status == ThreadedIterator::STATUS_RUNNING) {
 
+    cerr<<"status : "<<ptr->thread_status<<endl;
     ptr->iterator_lock();
   
     time_t begin =  time(NULL);
-
-    if (ptr->thread_status != ThreadedIterator::STATUS_RUNNING) break;
     
     try {
 
@@ -193,12 +208,12 @@ void * workloop (void *param) {
       //to be verified...
       //usleep ((period - (end - begin)) * 1000); 
     }
-
-    //usleep(100000);
+    
+    usleep((int)((float)ptr->rate_per_second / (float) 0.000001));
 
   }
   
-  cout<<"Exiting ThreadedIterator loop"<<endl;
+  cerr<<"Exiting ThreadedIterator loop"<<endl;
   
   return NULL;
 }
