@@ -275,6 +275,8 @@ _NodeFactory* Node::getFactoryNamed (const string &name) {
 /*
   Node::addFactory()
   Dominic Letourneau
+  We should not throw exceptions here, as there is no way to catch it if the
+  toolbox is being dynamically loaded
  */
 /***************************************************************************/
 int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
@@ -289,7 +291,7 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
       }
    }
    else {
-      throw new NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
+      cerr << "The factory already exists. Ignoring the new one." << endl;
    }
    return 0;
 };

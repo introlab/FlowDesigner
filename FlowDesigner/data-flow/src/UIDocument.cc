@@ -580,44 +580,33 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
 
 void UIDocument::scanDL()
 {
-   try {
-      vector<string> dirs=envList("VFLOW_PATH");
-      if (dirs.size() == 0)
-      {
-	 cerr << "Cannot find any toolbox. Exiting\n";
-	 exit(1);
-      }
-      for (int i = 0; i<dirs.size();i++)
-      {
-     DIR *my_directory = opendir (dirs[i].c_str());
-     if (!my_directory)
-        continue;
-     struct dirent *current_entry;
-     for (current_entry = readdir(my_directory); 
-          current_entry != NULL; current_entry = readdir(my_directory)) 
-     {
-        if (!strstr(current_entry->d_name, ".tlb"))
-        {
-           //cerr << current_entry->d_name << " is not a shared library\n";
-           continue;
-        }
-        string fullname = dirs[i] + "/" + current_entry->d_name;
-        if (!dlopen(fullname.c_str(), RTLD_LAZY))
-           cerr << "Toolbox load error: " << dlerror() << endl;
-     }
-     
-     closedir(my_directory);
-      }
-      //UIDocument::loadExtDocInfo(files);
-   } catch (BaseException *e)
+   vector<string> dirs=envList("VFLOW_PATH");
+   if (dirs.size() == 0)
    {
-      e->print();
-      delete e;
-   } catch (...)
-   {
-      cerr << "unknown exception caught\n";
+      cerr << "Cannot find any toolbox. Exiting\n";
+      exit(1);
    }
-   
+   for (int i = 0; i<dirs.size();i++)
+   {
+      DIR *my_directory = opendir (dirs[i].c_str());
+      if (!my_directory)
+	 continue;
+      struct dirent *current_entry;
+      for (current_entry = readdir(my_directory); 
+	   current_entry != NULL; current_entry = readdir(my_directory)) 
+      {
+	 if (!strstr(current_entry->d_name, ".tlb"))
+	 {
+	    //cerr << current_entry->d_name << " is not a shared library\n";
+	    continue;
+	 }
+	 string fullname = dirs[i] + "/" + current_entry->d_name;
+	 if (!dlopen(fullname.c_str(), RTLD_LAZY))
+	    cerr << "Toolbox load error: " << dlerror() << endl;
+      }
+      
+      closedir(my_directory);
+   }
 }
 
 

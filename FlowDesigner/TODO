@@ -1,8 +1,6 @@
 implement variable number of inputs/outputs
 
-implement Matrix class
-
-debug BREAT_AT in probes
+(debug BREAT_AT in probes)
 
 manage to handle subnet dependencies
 
@@ -10,14 +8,8 @@ vflow preferences...
 
 allow to change the thread stack size
 
-catch exceptions on DL opening modules at startup
-
 *write logging system (eg. error curves in NNet)
 
-*create value class that supports operators using double dispatching
+implement tooltips
 
-
-For JM:
-
-- Clean variable inputs/outputs
-
+Have node coments do something meaningful...
