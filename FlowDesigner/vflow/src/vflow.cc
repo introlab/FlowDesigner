@@ -93,17 +93,32 @@ void vflowGUI::paste (GUIDocument *doc) {
   //emptying selected nodes
   net->emptySelectedNodes();
 
+  double x1,y1,x2,y2;
+  double delta_x = 0;
+  double delta_y = 0;
+  int c1,c2;
+
+
+  net->get_scroll_region(x1,y1,x2,y2);                                 
+  //printf("scroll region (%f,%f) : (%f,%f)\n",x1,y1,x2,y2);
+
+  net->get_scroll_offsets(c1,c2);   
+  //printf("scroll offsets (%i, %i)\n",c1,c2);
+
+
+
   //copying
   for (list<GUINode*>::iterator iter = clipboard.begin();
        iter != clipboard.end(); iter++) {
     
     double x, y;
+
     (*iter)->getPos(x,y);
-    
+
     string type = (*iter)->getType();
     
     //creating new node
-    GUINode *my_node = dynamic_cast<GUINode*>(net->addNode(type,x,y));
+    GUINode *my_node = dynamic_cast<GUINode*>(net->addNode(type,x + delta_x, y + delta_y));
 
     //new node aliases
     created_nodes.insert(make_pair((*iter),my_node));    

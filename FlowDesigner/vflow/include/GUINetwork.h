@@ -81,6 +81,16 @@ public:
    void popTooltip(GUINode *node);
 
    void redraw() {gtk_widget_queue_draw(GTK_WIDGET(canvas));}
+
+   void get_scroll_region(double &x1, double &y1, double &x2, double &y2) { 
+     gnome_canvas_get_scroll_region  (GNOME_CANVAS(canvas),&x1,&y1,&x2,&y2);
+   }
+   
+   void get_scroll_offsets(int &c1, int &c2) {
+     gnome_canvas_get_scroll_offsets (GNOME_CANVAS(canvas),&c1,&c2);
+   }
+
+
 };
 
 #endif
