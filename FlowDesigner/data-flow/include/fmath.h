@@ -42,6 +42,7 @@ inline void build_flog_table()
 	 m.i = (i<<FLOGLOOKUP2SHIFT) | 0x3f800000;
 	 logtable2[i]=log(m.f);
       }
+      init=true;
    }
 }
 

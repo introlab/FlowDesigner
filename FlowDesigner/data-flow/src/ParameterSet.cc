@@ -51,7 +51,7 @@ void ParameterSet::add(string param, ObjectRef value)
 void ParameterSet::print (ostream &out) const
 {
    for (ParameterSet::const_iterator it=begin(); it!=end();it++)
-      out << it->first << " -> " << typeid(*(it->second.first)).name() << endl;
+      out << it->first << " -> " << it->second.first << endl;
 }
 
 
