@@ -4,6 +4,7 @@
 
 #include "GRunContext.h"
 #include <sstream>
+#include "vflow_pref.h"
 
 gboolean delete_window      (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
@@ -77,11 +78,16 @@ void GRunContext::run()
 	    
       for (int i = 0; ;i++) {
 	 if (!net->hasOutput(i)) break;
-	 stringstream execOut;
-	 execOut << *net->getOutput(i,0);
-	 gdk_threads_enter();
-	 less_print(execOut.str());
-	 gdk_threads_leave();
+	 if (VFlowPref::getBool("PrintOutput"))
+	 {
+	    stringstream execOut;
+	    execOut << *net->getOutput(i,0);
+	    gdk_threads_enter();
+	    less_print(execOut.str());
+	    gdk_threads_leave();
+	 } else {
+	    net->getOutput(i,0);
+	 }
       }
       delete net;
       gdk_threads_enter();

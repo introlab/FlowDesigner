@@ -9,7 +9,7 @@
 #include "GUILink.h"
 #include "GUINetTerminal.h"
 #include "GUINodeTooltip.h"
-
+#include "vflow_pref.h"
 #include <math.h>
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
@@ -74,7 +74,7 @@ void GUINode::draw()
    vector<ItemInfo *> inputname = net->getDocument()->getNetInputs(type);
    vector<ItemInfo *> outputname = net->getDocument()->getNetOutputs(type);
    
-   if (inputname.size() > 1)
+   if (inputname.size() > 1 || VFlowPref::getBool("ShowAllInOut"))
       for (int i=0;i<inputname.size();i++)
       {
 	 double tx1,ty1,tx2,ty2;
@@ -94,7 +94,7 @@ void GUINode::draw()
 	 y1=min(y1,ty1);
 	 y2=max(y2,ty2);
       }
-   if (outputname.size() > 1)
+   if (outputname.size() > 1 || VFlowPref::getBool("ShowAllInOut"))
       for (int i=0;i<outputname.size();i++)
       {
 	 double tx1,ty1,tx2,ty2;
@@ -583,7 +583,7 @@ void GUINode::redraw() {
 
   //finding max size for text + input terminal
 
-  if (inSize > 1) {
+  if (inSize > 1 || VFlowPref::getBool("ShowAllInOut")) {
     for (int i = 0; i < inSize; i++) {
       max_inputs = max(max_inputs,dynamic_cast<GUITerminal*>(inputs[i])->getWidth() + 10.0);    
     }
@@ -591,7 +591,7 @@ void GUINode::redraw() {
 
   
   //finding max size for text + output terminal
-  if (outSize > 1) {
+  if (outSize > 1 || VFlowPref::getBool("ShowAllInOut")) {
     for (int i = 0; i < outSize; i++) {
       max_outputs = max(max_outputs,dynamic_cast<GUITerminal*>(outputs[i])->getWidth() + 10.0);
     }
@@ -601,7 +601,7 @@ void GUINode::redraw() {
   //let's position the inputs
   for (int i = 0; i < inSize; i++) { 
 
-    if (inSize > 1) {
+    if (inSize > 1 || VFlowPref::getBool("ShowAllInOut")) {
       dynamic_cast<GUITerminal*>(inputs[i])->showName();
     }
     else {
@@ -616,7 +616,7 @@ void GUINode::redraw() {
   //let's find the maximum width of the output
   for (int i = 0; i < outSize; i++) {
 
-    if (outSize > 1) {
+    if (outSize > 1 || VFlowPref::getBool("ShowAllInOut")) {
       dynamic_cast<GUITerminal*>(outputs[i])->showName();
     }
     else {

@@ -20,7 +20,7 @@ class VFlowPref {
 	  int regularCol;
 	  int highliteCol;
 	  int errorCol;*/
-   
+   int modified;
    map<string,string> params;
 
    static VFlowPref pref;

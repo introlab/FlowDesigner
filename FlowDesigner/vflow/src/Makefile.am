@@ -44,7 +44,8 @@ gflow_SOURCES = \
 	TextProbe.cc \
 	PlotProbe.cc \
 	KeyPad.cc \
-	GRunContext.cc
+	GRunContext.cc \
+	vflow_pref.cc
 
 LDFLAGS = $(FFTW_LDFLAGS)
 

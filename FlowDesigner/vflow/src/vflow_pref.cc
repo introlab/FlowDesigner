@@ -25,7 +25,10 @@ VFlowPref::VFlowPref()
    filename += "/.vflowrc";
    ifstream prefFile(filename.c_str());
    if (prefFile.fail())
+   {
+      modified=true;
       return;
+   }
    while (1)
    {
       string key;
@@ -43,18 +46,21 @@ VFlowPref::VFlowPref()
       }
       prefFile >> value;
       params[key]   = value;
-      cerr << key << "->" << value << endl;
+      //cerr << key << "->" << value << endl;
    }
+   modified=false;
 }
 
 VFlowPref::~VFlowPref()
 {
-   save();
+   if (modified)
+      save();
 }
 
 bool VFlowPref::getBool(const string &str)
 {
    string val = pref.params[str];
+   //cerr << "str = " << val << endl;
    if (val=="yes" || val=="YES" || val=="true" || val=="TRUE")
       return true;
    else
@@ -75,6 +81,7 @@ void VFlowPref::save()
       prefFile << p->first << "=" << p->second << endl;
       p++;
    }
+   modified=false;
    //cerr << "pref save\n";
 }
 
