@@ -1644,7 +1644,29 @@ unless you're really desperate, as the binaries might take up to 600 MB
  
 \layout Section*
 
-Installing the software
+Configure options
+\layout Itemize
+
+--with-libtool-ld=<c++ compiler> You need to specify this option if libtool
+ tries to use ld to link the C++ libraries and executables.
+ These need to be linked with the C++ compiler (e.g.
+ g++) because of initializations that must be performed before the main()
+ starts (On linux you most likely don't need that).
+\layout Itemize
+
+--with-fftw-dir=<fftw path> If FFTW is not installed in a standard path,
+ you will need to specify this option.
+\layout Itemize
+
+--disable-static This option is required.
+ Overflow does not work with static libraries (because it uses dlopen).
+\layout Itemize
+
+--disable-package Doesn't build a certain package (e.g.
+ HMM, VQ, ...) 
+\layout Section*
+
+Compiling & Installing the software
 \layout Standard
 
 To compile, type:
