@@ -10,18 +10,18 @@ class VarLoad;
 
 DECLARE_NODE(VarLoad)
 /*Node
-
+ *
  * @name VarLoad
  * @category General
  * @description Load a variable
-
+ *
  * @output_name OUTPUT
  * @output_description The variable value
-
+ *
  * @parameter_name VARIABLE
  * @parameter_description The name of the variable
  * @parameter_type string
-
+ *
 END*/
 
 

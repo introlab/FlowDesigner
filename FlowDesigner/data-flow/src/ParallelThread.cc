@@ -203,7 +203,9 @@ public:
 	 //cerr << "caught\n";
 	 out2[count] = 
 	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
-      } catch (...)
+      } 
+      //FIXME: Should catch FlowException and handle transparently
+      catch (...)
       {
 	 out2[count] = 
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));

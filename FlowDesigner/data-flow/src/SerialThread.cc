@@ -181,7 +181,9 @@ public:
 	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = new ExceptionObject(e->add(new GeneralException ("Exception caught in SerialThread", __FILE__, __LINE__)));
 	    pthread_mutex_unlock(&bufferLock);
-	 } catch (...)
+	 } 
+	 //FIXME: Should catch FlowException and handle transparently
+	 catch (...)
 	 {
 	    if (!inside_lock)
 	       pthread_mutex_lock(&bufferLock);

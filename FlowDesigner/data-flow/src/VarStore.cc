@@ -10,21 +10,21 @@ class VarStore;
 
 DECLARE_NODE(VarStore)
 /*Node
-
+ *
  * @name VarStore
  * @category General
  * @description Store a variable (named)
-
+ *
  * @input_name INPUT
  * @input_description The value of the variable 
-
+ *
  * @output_name OUTPUT
  * @output_description The value of the variable
-
+ *
  * @parameter_name VARIABLE
  * @parameter_description The variable name
  * @parameter_type string
-
+ *
 END*/
 
 
