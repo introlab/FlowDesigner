@@ -253,11 +253,6 @@ void Network::specificInitialize() {
    
    map<string,Node*>::iterator iter;
 
-   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) 
-   {
-      (*iter).second->verifyConnect();
-   }
-
 
    map<string,Node*> connectionMap;
    

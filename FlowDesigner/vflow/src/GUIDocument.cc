@@ -800,6 +800,7 @@ void GUIDocument::run()
       runningNet = net;
       //RCPtr<Network> net(build("MAIN", parameters));
       //cerr << "initializing...\n";
+      net->verifyConnect();
       net->initialize();
       //cerr << "running...\n";
       
