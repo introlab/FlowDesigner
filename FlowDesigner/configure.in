@@ -78,9 +78,39 @@ AC_MSG_RESULT([])
 AC_MSG_RESULT([$PACKAGE will be built on a $build system to run])
 AC_MSG_RESULT([on a $host system, with the following options:])
 AC_MSG_RESULT([])
-if test "x$enable_effects" = "xyes"; then
+
+if test "$audio_blocks" = "audio_blocks"; then
+	AC_MSG_RESULT([$PACKAGE will build audio_blocks toolkit])
+fi
+
+if test "$effects" = "effects"; then
 	AC_MSG_RESULT([$PACKAGE will build effects toolkit])
 fi
+
+if test "$NNet" = "NNet"; then
+	AC_MSG_RESULT([$PACKAGE will build NNet toolkit])
+fi
+
+if test "$HMM" = "HMM"; then
+	AC_MSG_RESULT([$PACKAGE will build HMM toolkit])
+fi
+
+if test "$VQ" = "VQ"; then
+	AC_MSG_RESULT([$PACKAGE will build VQ toolkit])
+fi
+
+if test "$FuzzyEngine" = "FuzzyEngine"; then
+	AC_MSG_RESULT([$PACKAGE will build FuzzyEngine toolkit])
+fi
+
+if test "$lapackflow" = "lapackflow"; then
+	AC_MSG_RESULT([$PACKAGE will build lapackflow toolkit])
+fi
+
+if test "$vflow" = "vflow"; then
+	AC_MSG_RESULT([$PACKAGE will build vflow toolkit])
+fi
+
 AC_MSG_RESULT([])
 AC_MSG_RESULT([*************************************************************])
 AC_MSG_RESULT([$PACKAGE will be installed in $prefix])
