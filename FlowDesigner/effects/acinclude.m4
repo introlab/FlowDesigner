@@ -178,18 +178,19 @@ if test "x$G_THREAD_LIBS" = xerror; then
      	G_THREAD_LIBS="-lc_r")
 fi
 if test "x$G_THREAD_LIBS" = xerror; then
-     AC_CHECK_FUNC(pthread_attr_init, G_THREAD_LIBS="")
+     AC_CHECK_FUNC(pthread_attr_init, 
+        G_THREAD_LIBS="")
 fi
 dnl ********** DG/UX ************
 if test "x$G_THREAD_LIBS" = xerror; then
      AC_CHECK_LIB(thread, __d10_pthread_attr_init,
-     G_THREAD_LIBS="-lthread"
+        G_THREAD_LIBS="-lthread"
      G_THREAD_CFLAGS="_POSIX4A_DRAFT10_SOURCE")
 fi
 dnl ********* HPUX 11 ***********
 if test "x$G_THREAD_LIBS" = xerror; then
      AC_CHECK_LIB(pthread, __pthread_attr_init_system,
-     G_THREAD_LIBS="-lpthread")
+        G_THREAD_LIBS="-lpthread")
 fi
 if test "x$G_THREAD_LIBS" = xerror; then
    if test $OS="FREEBSD"; then
@@ -200,8 +201,7 @@ if test "x$G_THREAD_LIBS" = xerror; then
 fi
 
 SEM_LIBS=error
-AC_CHECK_LIB(pthread, sem_init,
-     SEM_LIBS="")
+AC_CHECK_FUNC(pthread_attr_init, SEM_LIBS="")
 if test "x$SEM_LIBS" = xerror; then
      AC_CHECK_LIB(rt, sem_init,
      	SEM_LIBS="-lpthreads")
