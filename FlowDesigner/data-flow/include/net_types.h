@@ -255,6 +255,7 @@ class IStream : virtual public Stream {
       , int_istream(_str)
       {}
    IStream &read (char *ch, int len) {int_istream->read(ch,len); return *this;}
+   int gcount() {return int_istream->gcount();}
    int eof() {return int_istream->eof();}
    int fail() {return int_istream->fail();}
    IStream &getline (char *ch, int len) {int_istream->getline(ch,len); return *this;}

@@ -94,6 +94,12 @@ public:
       return out;
    }
 
+   /**Makes a (deep) copy of the object*/
+   virtual ObjectRef clone()
+   {
+      throw new GeneralException("Method clone() not implemented for this object", __FILE__, __LINE__);
+   }
+
    /**Returns the name of the class of the Object*/
    virtual string className() const;
       
