@@ -20,6 +20,7 @@
 #include <stream.h>
 #include <iostream.h>
 #include "Object.h"
+#include "Vector.h"
 
 class Tag {
 protected:
@@ -29,7 +30,7 @@ protected:
    int stateID;
    int gaussianID;
 
-   using_Ids;
+   bool using_IDs;
    //Ptr<Gaussian> gaussian;
    //Ptr<State> state;
    //Ptr<Phone> phone;
@@ -52,7 +53,7 @@ protected:
    bool fine_endpointed;
    int fine_start;
    int fine_end;
-   Vector<Tag> tags;
+   //Vector<Tag> tags;
 
 public:
    /**Full constructor*/
