@@ -12,6 +12,7 @@ static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer d
 
 GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, double _x, double _y)
    : UITerminal(terminalInfo, _node, _isInput, _x, _y)
+   , hidden (false)
 {
 
   

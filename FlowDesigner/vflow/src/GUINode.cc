@@ -551,8 +551,8 @@ void GUINode::redraw() {
   
   double tx1,ty1,tx2,ty2;
   double rx1,ry1,rx2,ry2;
-  double max_inputs = 10;
-  double max_outputs = 10;
+  double max_inputs = 5;
+  double max_outputs = 5;
   double start_y1;
   double start_y2;
 
