@@ -112,7 +112,7 @@ dnl AC_PROG_RANLIB
 dnl Checks for libraries.
 AC_CHECK_HEADERS(semaphore.h)
 AC_HASH_MAP
-
+AC_CHECK_HEADER(sstream, rm -f $srcdir/data-flow/include/sstream, cp -f $srcdir/data-flow/include/sstream.unused $srcdir/data-flow/include/sstream)
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 AC_CHECK_LIB(dl, dlopen)
