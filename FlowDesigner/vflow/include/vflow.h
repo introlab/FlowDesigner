@@ -41,7 +41,7 @@ class vflowGUI {
   friend gint remove_doc_cb (GnomeMDI *mdi, GnomeMDIChild *child);
   friend void overflow_doc_event(GtkMenuItem *menuitem, vflowGUI *vflow);
   friend void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow);
-  friend void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow);
+  friend void abou_event  (GtkMenuItem *menuitem, vflowGUI *vflow);
 
  public:
 
@@ -60,6 +60,8 @@ class vflowGUI {
 
   void cut(GUIDocument *doc);
 
+  void clear(GUIDocument *doc);
+
   ~vflowGUI();
 
   GnomeMDI* get_mdi() {return mdi;}
@@ -67,6 +69,7 @@ class vflowGUI {
 
   static const int CLIPBOARD_COPY_MODE;
   static const int CLIPBOARD_CUT_MODE;
+  static const int CLIPBOARD_NONE_MODE;
 
  private:
 

@@ -13,7 +13,7 @@ vflowGUI* vflowGUI::vflowApp = NULL;
 
 const int vflowGUI::CLIPBOARD_COPY_MODE = 0;
 const int vflowGUI::CLIPBOARD_CUT_MODE = 1;
-
+const int vflowGUI::CLIPBOARD_NONE_MODE = 2;
 
 /**********************************************************************************************************
 
@@ -105,8 +105,8 @@ void vflowGUI::paste (GUIDocument *doc) {
   net->emptySelectedNodes();
 
   double x1,y1,x2,y2;
-  double delta_x = 0;
-  double delta_y = 0;
+  double delta_x = 10;
+  double delta_y = 10;
   int c1,c2;
 
 
@@ -230,6 +230,25 @@ void vflowGUI::cut(GUIDocument *doc) {
     //cerr<<"clipboard size : "<<clipboard.size()<<endl;    
   }
 }
+
+void vflowGUI::clear(GUIDocument *doc) {
+  //cerr<<"vflowGUI::clear called"<<endl;
+  if (doc) {
+
+    GUINetwork *net = dynamic_cast<GUINetwork*>(doc->getCurrentNet());
+
+    if (net) {
+      net->clearSelectedNodes();
+    }
+
+    clipboard.resize(0);
+    
+    clipboardMode = CLIPBOARD_NONE_MODE;
+  }
+}
+
+
+
 
 
 /**********************************************************************************************************

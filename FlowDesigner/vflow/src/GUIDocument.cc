@@ -65,9 +65,8 @@ static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
 
   GUINetwork *net = dynamic_cast<GUINetwork*>(doc->getCurrentNet());
 
-  if (net) {
-    net->clearSelectedNodes();
-  }
+  //calling application clear
+  vflowGUI::instance()->clear(doc);
 
 }
 
