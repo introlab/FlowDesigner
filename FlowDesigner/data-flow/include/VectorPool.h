@@ -14,13 +14,22 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "Vector.h"
+#ifndef VECTOR_POOL_H
+#define VECTOR_POOL_H
+
+//#include "Vector.h"
 
 template <class T>
 class VectorPool {
   protected:
+   int max_stored;
+
    map<int, vector <Vector<T> *> > stackList;
   public:
+   VectorPool(int _max_stored=50) 
+      : max_stored(_max_stored)
+   {}
+
    //vector <Vector<T> *> &operator [] 
    Vector<T> *newVector (int size)
    {
@@ -34,6 +43,7 @@ class VectorPool {
 	 int sz = stack.size();
 	 Vector<T> *ret = stack[sz-1];
 	 stack.resize(sz-1);
+	 ret->ref();
 	 return ret;
 	 
       }
@@ -42,6 +52,14 @@ class VectorPool {
    {
       //cerr << "send on stack\n";
       vector <Vector<T> *> &stack = stackList[vec->size()];
-      stack.insert(stack.end(), vec);
+      if (stack.size() > max_stored)
+      {
+	 delete vec;
+      } else {
+	 vec->status = Object::valid;
+	 stack.insert(stack.end(), vec);
+      }
    }
 };
+
+#endif

@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
@@ -24,53 +24,50 @@
 #include <float.h>
 #endif
 
-
 class Log;
 
-//DECLARE_NODE(Log)
-NODE_INFO(Log,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(Log,"Signal:Base", "INPUT", "OUTPUT", "")
 
-class Log : public FrameOperation {
+class Log : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
+      //int inputLength;
 
 public:
    Log(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
    }
 
-   ~Log() {}
+      /*~Log() {}
 
    virtual void specificInitialize()
    {
-      this->FrameOperation::specificInitialize();
-   }
+      this->BufferedNode::specificInitialize();
+      }*/
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = new Object(inputValue->status);
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      for (int i=0;i<outputLength;i++)
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      for (int i=0;i<inputLength;i++)
       {
          output[i]=log(in[i]+FLT_MIN);
       }
-      
-      output.status = Object::valid;
    }
 
 };

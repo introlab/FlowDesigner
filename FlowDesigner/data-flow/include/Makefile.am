@@ -28,7 +28,8 @@ include_HEADERS = Array.h \
 	GrowingFrameBuffer.h \
 	RotatingFrameBuffer.h \
 	variables.h \
-	ExternalApp.h
+	ExternalApp.h \
+	VectorPool.h
 	
 noinst_HEADERS = \
 	InputStream.h \

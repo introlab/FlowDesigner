@@ -85,14 +85,16 @@ public:
 
 protected:
    X* ptr;
-   size_type *count;
+   //size_type *count;
    
 public:
    explicit Ptr(X* p=0) : ptr(p)
    {
-      count=new size_type(1);
+      //count=new size_type(1);
    }
-   
+
+   bool isNil() {return ptr != 0;}
+
    template <class Z>
    Ptr(const Ptr<Z> &r)
    {
@@ -102,14 +104,14 @@ public:
             //throw "Ptr<X>: Illegal pointer conversion in copy constructor";
             if (!ptr) throw new PtrCastException<Z,X>(r.ptr);
          }
-      count=r.count;
+      //count=r.count;
       acquire();
    }
    
    Ptr(const Ptr<X> &r)
    {
       ptr=r.ptr;
-      count=r.count;
+      //count=r.count;
       acquire();
    }
    
@@ -126,7 +128,7 @@ public:
          if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
          release();
          ptr=tmp;
-         count = r.count;
+         //count = r.count;
          acquire();
       }
       return *this;
@@ -138,41 +140,41 @@ public:
       {
          release();
          ptr = r.ptr;
-         count = r.count;
+         //count = r.count;
          acquire();
       }
       return *this;
    }
 
    template <class Z>
-   Ptr& operator= (const Z *r)
+   Ptr& operator= (Z *r)
    {
-      if ((int) this != (int) (r))
+      if ((int) ptr != (int) (r))
       {
          X *tmp=dynamic_cast<X*> (r);
          //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
-         if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
+         if (!tmp) throw new PtrCastException<Z,X>(r);
          release();
          ptr=tmp;
-         count=new size_type(1);
+         //count=new size_type(1);
       }
       return *this;
    }
 
-   Ptr& operator= (const X *r)
+   Ptr& operator= (X *r)
    {
-      if (this != &r)
+      if (ptr != r)
       {
          release();
          ptr = r;
-         count=new size_type(1);
+         //count=new size_type(1);
       }
       return *this;
    }
 
 #ifdef RT_DEBUG
-   X& operator* () const {if (ptr) return *ptr; else throw new PtrException("dereferencing NULL pointer in *");}
-   X* operator->() const {if (ptr) return  ptr; else throw new PtrException("dereferencing NULL pointer in ->");}
+   X& operator* () const {if (ptr) return *ptr; else throw new PtrException("dereferencing NULL pointer in operator*");}
+   X* operator->() const {if (ptr) return  ptr; else throw new PtrException("dereferencing NULL pointer in operator->");}
 #else
    X& operator* () const {	return *ptr; }
    X* operator->() const {	return  ptr; }
@@ -181,18 +183,16 @@ public:
 
    bool unique () const
    {
-      return *count==1;
+      return (ptr && ptr->getCount() == 1);
    }
 
    X *detach () 
    {
-      if (count)
+      if (ptr)
       {
-         if (*count==1) 
+         if (ptr->getCount() == 1) 
          {
             X *tmp = ptr;
-            delete count;
-            count = 0;
             ptr = 0;
             return tmp;
          } else {
@@ -206,18 +206,19 @@ public:
 protected:
    void release()
    {
-      if (count && --(*count)==0)
-      {
-         delete ptr;
-         delete count;
-      }
+      if (ptr)
+	 ptr->unref();
+      //else
+      // cerr << "crisse de grosse erreur\n";
       ptr = 0;
-      count = 0;
    }
 
    void acquire()
    {
-      ++(*count);
+      if (ptr)
+	 ptr->ref();
+      //else
+      // cerr << "crisse de vraiment grosse erreur\n";
    }
 
    template <class Z>

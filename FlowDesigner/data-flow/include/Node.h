@@ -183,6 +183,12 @@ public:
    /**Is the node in debug mode?*/
    bool isDebugMode() {return debugMode;}
 
+   ObjectRef getInput(int inputID, int count)
+   {
+      NodeInput input = inputs[inputID];
+      return input.node->getOutput(input.outputID, count);
+   }
+
    /**Sets the node to debug mode*/
    virtual void setDebugMode(){debugMode = true;}
 

@@ -36,23 +36,46 @@ class _ObjectFactory;
     @author Dominic Letourneau & Jean-Marc Valin
 */
 class Object {
-
+  protected:
+   
+   int ref_count;
+   
 public:
 
    /**The status of an object*/
    enum ObjectStatus {valid=0, before_beginning, erased, past_end, compute_error, wait, nil};
 
    /**default constructor*/
-   Object() :status(valid){}
+   Object() :status(valid){ref_count=1;}
 
    /**constructor with a status*/
-   Object(ObjectStatus st) :status(st){}
+   Object(ObjectStatus st) :status(st){ref_count=1;}
 
    /**destructor*/
    virtual ~Object() { }
 
    /**The current status*/
    ObjectStatus status;
+
+   void ref() 
+   {
+      ref_count++;
+   }
+
+   void unref()
+   {
+      if (--ref_count==0)
+      {
+	 destroy();
+      }
+   }
+
+   int getCount () {return ref_count;}
+
+   virtual void destroy()
+   {
+      delete this;
+   }
 
    /**raw (binary) output method*/
    virtual void rawWrite(ostream &out) const

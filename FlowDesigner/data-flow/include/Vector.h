@@ -21,6 +21,7 @@
 #include <vector>
 #include "ObjectParser.h"
 
+
 template<class T>
 class Vector : public vector<T>, public Object
 {
@@ -37,6 +38,10 @@ public:
    }
    
    void readFrom(istream &in=cin);
+
+   virtual void destroy();
+
+   static Vector<T> *alloc(int size);
 
 };
 
@@ -69,6 +74,32 @@ inline void Vector<FFLayer*>::readFrom(istream &in)
    cerr << "fuck off!\n";
 }
 
+template <class T>
+inline void Vector<T>::destroy()
+{
+   delete this;
+}
 
+
+#include "VectorPool.h"
+extern VectorPool<float> floatVectorPool;
+
+template <>
+inline void Vector<float>::destroy()
+{
+   floatVectorPool.release(this);
+}
+
+template <class T>
+inline Vector<T> *Vector<T>::alloc(int size)
+{
+   return new Vector<T> (size);
+}
+
+template <>
+inline Vector<float> *Vector<float>::alloc(int size)
+{
+   return floatVectorPool.newVector(size);
+}
 
 #endif
