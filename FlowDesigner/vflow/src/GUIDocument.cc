@@ -228,7 +228,7 @@ void GUIDocument::load()
 
    for (int i=0;i<params.size();i++)
    {
-      insertLoadedParam(&(params[i]), textParams[i].type, textParams[i].value);
+      insertLoadedParam(&(params[i]), textParams[i]->type, textParams[i]->value);
    }
    //cerr << "doc load updated\n";
 }
@@ -420,10 +420,10 @@ void GUIDocument::applyParams()
    {
       //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
       GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
-      textParams[i].type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
+      textParams[i]->type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
 
       GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
-      textParams[i].value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
+      textParams[i]->value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
       
       //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
    }
@@ -562,7 +562,7 @@ void GUIDocument::createParamDialog()
   
   for (i=0;i<params.size();i++)
   {
-     params[i].label = gtk_label_new (textParams[i].name.c_str());
+     params[i].label = gtk_label_new (textParams[i]->name.c_str());
      gtk_widget_ref (params[i].label);
      gtk_object_set_data_full (GTK_OBJECT (docproperty), "label", params[i].label,
                                (GtkDestroyNotify) gtk_widget_unref);
@@ -747,37 +747,37 @@ void GUIDocument::run()
 	 //cerr << "there are " << params.size() << " params\n";
 	 for (int i=0;i<params.size();i++)
 	 {
-	    DocParameterDataText &curr = textParams[i];
-	    if (curr.value == "")
+	    DocParameterDataText *curr = textParams[i];
+	    if (curr->value == "")
 	       continue;
 	    ObjectRef value;
-	    if (curr.type == "int")
+	    if (curr->type == "int")
 	    {
-	       int val = atoi (curr.value.c_str());
+	       int val = atoi (curr->value.c_str());
 	       value = ObjectRef(new Int(val));
 	    } 
-	    else if (curr.type == "bool")
+	    else if (curr->type == "bool")
 	    {
-	       if (curr.value == "true")
+	       if (curr->value == "true")
 		  value = ObjectRef(new Bool(true));
 	       else 
 		  value = ObjectRef(new Bool(false));
 	    } 
-	    else if (curr.type == "float")
+	    else if (curr->type == "float")
 	    {
-	       float val = atof (curr.value.c_str());
+	       float val = atof (curr->value.c_str());
 	       value = ObjectRef(new Float(val)); 
 	    } 
-	    else if (curr.type == "string")
+	    else if (curr->type == "string")
 	    {
 	       //cerr << "string\n";
-	       value = ObjectRef(new String(curr.value));	 	 
+	       value = ObjectRef(new String(curr->value));	 	 
 	    }
 	    else {
-	       cerr << "UNKNOWN PARAM TYPE: \"" << curr.type << "\"" << endl;
+	       cerr << "UNKNOWN PARAM TYPE: \"" << curr->type << "\"" << endl;
 	    }
 	    
-	    parameters.add(curr.name,value);
+	    parameters.add(curr->name,value);
 	 }
 
       }
