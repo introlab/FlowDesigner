@@ -11,6 +11,7 @@ using namespace std;
 
 #include "path.h"
 #include <map>
+#include <vector>
 #include <string>
 #include <stdio.h>
 
@@ -125,6 +126,22 @@ public:
 
 };
 
+class ToolboxData {
+   string fullname;
+   DL_HANDLE_TYPE handle;
+  public:
+   ToolboxData() {}
+   ToolboxData(string _fullname, DL_HANDLE_TYPE _handle)
+      : fullname(_fullname)
+      , handle(_handle)
+      {}
+};
+
+class ToolboxList {
+   static map<string, ToolboxData> loadedToolboxes;
+  public:
+   static vector<string> load(const vector<string> &list, int debug);
+};
 
 
 
