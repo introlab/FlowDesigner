@@ -92,7 +92,7 @@ public:
       int delay = floor(.5+filter[1]);
       //filter[0]=1;
 
-      for (int i=0;i<outputLength;i++)
+      for (int i=0;i<length;i++)
          output[i]=in[i];
 
       if (can_look_back)
@@ -103,7 +103,7 @@ public:
       }
       
       
-      for (int i=delay;i<outputLength;i++)
+      for (int i=delay;i<length;i++)
 	 //output[i] -= in[i-delay];
 	 output[i] += filter[0]*output[i-delay];
             
