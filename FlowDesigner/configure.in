@@ -85,31 +85,7 @@ dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(pthread, pthread_create)
-#AC_CHECK_LIB(fftw, fftw_one)
-#AC_CHECK_LIB(rfftw, rfftw_one)
-
-dnl test for SGI audio library (required by SndLib) and define LIBS
 AC_PATH_FFTW
-#AC_CHECK_LIB(fftw, main)
-#AC_CHECK_LIB(rfftw, main)
-#AC_CHECK_LIB(network, main)
-
-dnl Checks for header files.
-
-dnl AC_HEADER_STDC
-dnl AC_CHECK_HEADERS(fcntl.h limits.h unistd.h)
-
-dnl Checks for typedefs, structures, and compiler characteristics.
-
-dnl AC_C_BIGENDIAN
-dnl AC_CHECK_SIZEOF(char)
-dnl AC_CHECK_SIZEOF(short)
-dnl AC_CHECK_SIZEOF(int)
-dnl AC_CHECK_SIZEOF(long)
-dnl AC_CHECK_SIZEOF(float)
-dnl AC_CHECK_SIZEOF(double)
-dnl AC_C_CONST
-dnl AC_TYPE_SIZE_T
 
 dnl Checks for library functions.
 
