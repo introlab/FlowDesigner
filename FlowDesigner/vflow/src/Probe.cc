@@ -22,18 +22,32 @@
 //DECLARE_NODE(Probe)
 NODE_INFO(Probe, "IO", "INPUT", "OUTPUT", "")
 
+   static void next_click (GtkButton *button, Probe *pr)
+{
+  cerr << "got " << pr << endl;
+   cerr << "In next_click\n";
+   pr->next();
+}
+
 Probe::Probe(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
 {
    outputID = addOutput("OUTPUT");
    inputID = addInput("INPUT");
+
+   sem_init(&sem, 0, 0);
 }
 
 Probe::~Probe()
 {
    cerr << "Probe destructor\n";
+
+   gdk_threads_enter(); 
    gtk_widget_destroy (window1);
-} 
+   gdk_threads_leave(); 
+
+   sem_destroy(&sem);
+}
 
 void Probe::specificInitialize()
 {
@@ -47,8 +61,8 @@ void Probe::specificInitialize()
   GtkWidget *handlebox2;
   GtkWidget *toolbar2;
   GtkWidget *tmp_toolbar_icon;
-  GtkWidget *button16;
-  GtkWidget *button17;
+  //GtkWidget *button16;
+  //GtkWidget *button17;
   GtkWidget *button18;
   GtkWidget *button19;
   GtkWidget *scrolledwindow2;
@@ -92,6 +106,13 @@ void Probe::specificInitialize()
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (button16);
 
+  gtk_signal_connect (GTK_OBJECT (button16), "clicked",
+		      GTK_SIGNAL_FUNC (next_click),
+		      this);
+
+  gtk_widget_set_sensitive(button16, false);
+  //cerr << "registered " << this << endl;
+
   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_STOP);
   button17 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
                                 GTK_TOOLBAR_CHILD_BUTTON,
@@ -103,6 +124,9 @@ void Probe::specificInitialize()
   gtk_object_set_data_full (GTK_OBJECT (window1), "button17", button17,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (button17);
+
+  //gtk_widget_set_sensitive(button17, false);
+
 
   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_EXEC);
   button18 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
@@ -128,7 +152,10 @@ void Probe::specificInitialize()
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (button19);
 
-  scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
+
+
+
+/*  scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_ref (scrolledwindow2);
   gtk_object_set_data_full (GTK_OBJECT (window1), "scrolledwindow2", scrolledwindow2,
                             (GtkDestroyNotify) gtk_widget_unref);
@@ -147,12 +174,15 @@ void Probe::specificInitialize()
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), canvas2);
   gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas2), 0, 0, 100, 100);
   
+*/
+
+
   gtk_widget_show(window1);
 
   gdk_threads_leave(); 
 
   //sleep (1);
-  while(1);
+  //while(1);
   //return window1;
 
 }
@@ -162,8 +192,31 @@ void Probe::reset()
    this->Node::reset();
 }
 
+void Probe::next()
+{
+   cerr << "In Probe::next\n";
+   sem_post(&sem);
+}
+
+void Probe::trace()
+{
+   cerr << "In Probe::trace\n";
+   gdk_threads_enter(); 
+   gtk_widget_set_sensitive(button16, true);
+   gtk_widget_set_sensitive(button17, false);
+   gdk_threads_leave(); 
+
+   sem_wait(&sem);
+
+   gdk_threads_enter(); 
+   gtk_widget_set_sensitive(button17, true);
+   gdk_threads_leave(); 
+}
+
 ObjectRef Probe::getOutput(int output_id, int count)
 {
+   trace();
+   return Object::nilObject;
    if (output_id==outputID)
    {
       if (count != processCount)

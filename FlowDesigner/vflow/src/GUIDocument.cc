@@ -580,7 +580,7 @@ void GUIDocument::createParamDialog()
 
 static void disposeFunct(void *dummy)
 {
-
+   cerr << "disposeFunct called\n";
    GUIDocument::isRunning=false;
    if (GUIDocument::runningNet != NULL) {
      //delete net;
@@ -616,8 +616,10 @@ void GUIDocument::threadRun()
 
 void GUIDocument::threadStop()
 {
+   cerr << "threadStop\n";
    if (isRunning)
    {
+      cerr << "stopping...\n";
       isRunning=false;
       pthread_cancel(runThread);
    }
