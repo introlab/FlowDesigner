@@ -1,7 +1,86 @@
+// Copyright (C) 2001 Jean-Marc Valin
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this file.  If not, write to the Free Software Foundation,
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+
+//This file contains vector primitives and supports 3DNow! and SSE (incomplete) optimization
 #ifndef VEC_H
 #define VEC_H
 
 #include <math.h>
+
+
+/* Prefetch routines, may be used on any type (not only float and SSE2 double) */
+
+#ifdef _USE_3DNOW /*This means we're likely to have 64-byte cache lines (unless it's a K6-II)*/
+
+#ifndef CACHE_LINES
+#define CACHE_LINES 64
+#endif /*CACHE_LINES */
+
+#ifndef MAX_PREFETCH
+#define MAX_PREFETCH 8192  /* The Athlon L1 size is 64 kB */
+#endif /*MAX_PREFETCH*/
+
+#else /*_USE_3DNOW*/
+
+#ifndef CACHE_LINES
+#define CACHE_LINES 32
+#endif /*CACHE_LINES */
+
+#ifndef MAX_PREFETCH
+#define MAX_PREFETCH 2096  /* The PIII L1 size is only 16 kB */
+#endif /*MAX_PREFETCH*/
+
+#endif
+
+#if defined(_USE_SSE) || defined(_USE_3DNOW) || defined (_USE_PREFETCH)
+
+template <class T>
+void vec_prefetchnta(T *a, int len)
+{
+   int size=sizeof(T)*len;
+   if (size > MAX_PREFETCH)
+      return;
+   __asm__ __volatile__ (
+   "
+   push %%eax
+   push %%ecx
+
+prefetch_loop$=
+   prefetchnta %%eax
+   sub $CACHE_LINES %%ecx
+   ja prefetch_loop$=
+
+   pop %%ecx
+   pop %%eax
+   "
+   : : "a" (a), "c" (size)
+   );
+}
+
+#else
+
+template <class T>
+void vec_prefetchnta(T *a, int len)
+{
+}
+
+#endif
+
+
 
 template <class T>
 inline void vec_copy(const T *x, T *y, int len)
@@ -334,6 +413,11 @@ inline void vec_sqrt(const T *a, T *b, int len)
     }
 }
 
+template <class T>
+inline void vec_corr(const T *a, T *b, int len)
+{
+}
+
 #ifdef _USE_3DNOW
 
 #define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
@@ -356,7 +440,7 @@ inline float vec_inner_prod<float>(const float *a, const float *b, int len)
   //jb mul4_skip
   jb .+47
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
   movq 8(%%eax), %%mm2
@@ -370,8 +454,8 @@ inline float vec_inner_prod<float>(const float *a, const float *b, int len)
 
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-39
+  jae mul4_loop%=
+  //jae .-39
 
   pfadd %%mm5,%%mm4
 
@@ -1139,9 +1223,9 @@ inline float vec_inner_prod<float>(const float *a, const float *b, int len)
   //jmp cond1
 
   sub $8, %%ecx
-  jb mul8_skip
+  jb mul8_skip%=
 
-mul8_loop:
+mul8_loop%=:
   movups (%%eax), %%xmm0
   movups (%%edi), %%xmm1
   movups 16(%%eax), %%xmm5
@@ -1155,14 +1239,14 @@ mul8_loop:
 
   sub $8,  %%ecx
 
-  jae mul8_loop
+  jae mul8_loop%=
 
-mul8_skip:
+mul8_skip%=:
 
   addps %%xmm4, %%xmm3
 
   add $4, %%ecx
-  jl mul4_skip
+  jl mul4_skip%=
 
   movups (%%eax), %%xmm0
   movups (%%edi), %%xmm1
@@ -1173,14 +1257,14 @@ mul8_skip:
 
   sub $4,  %%ecx
 
-mul4_skip:
+mul4_skip%=:
 
 
   add $4, %%ecx
 
-  jmp cond1
+  jmp cond1%=
 
-mul1_loop:
+mul1_loop%=:
   movss (%%eax), %%xmm0
   movss (%%edi), %%xmm1
   add $4, %%eax
@@ -1188,9 +1272,9 @@ mul1_loop:
   mulss %%xmm0, %%xmm1
   addss %%xmm1, %%xmm3
 
-cond1:
+cond1%=:
   sub $1, %%ecx
-  jae mul1_loop
+  jae mul1_loop%=
 
   movhlps %%xmm3, %%xmm4
   addps %%xmm4, %%xmm3
