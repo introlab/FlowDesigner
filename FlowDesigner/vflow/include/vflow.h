@@ -2,6 +2,8 @@
 // main interface re-written / cleaned.
 // Dominic Letourneau (20/08/2001)
 
+#ifndef VFLOW_H
+#define VFLOW_H
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -84,3 +86,4 @@ class vflowGUI {
 
 };
 
+#endif

@@ -1,5 +1,6 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include "vflow.h"
 #include "GUIDocument.h"
 #include "GUINetwork.h"
 #include <typeinfo>
@@ -10,7 +11,6 @@
 #include <sstream>
 #include "object_param.h"
 
-#include "vflow.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
