@@ -319,13 +319,51 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 
 void UINodeRepository::LoadExtDocInfo(const string &path, const string &name)
 {
-   string fullname = path + "/" + name;
-   xmlDocPtr doc = xmlParseFile(fullname.c_str());
+   string fullpath = path + "/" + name;
    string basename = string(name.begin(), name.end()-2);
+
+
+   ifstream docFile(fullpath.c_str());
+   if (docFile.fail())
+   {
+      cerr << "load: error loading " << fullpath << "\n";
+      return;
+   }
+   char ch;
+   docFile >> ch;
+   if (ch=='#') 
+   {
+      while (ch != '<')
+      {
+	 docFile >> ch;
+	 if (docFile.fail())
+	 {
+	    cerr << "ERROR\n";
+	    return;
+	 }
+      }
+   }
+   docFile.putback(ch);
+   string docStr;
+   while(1)
+   {
+      char buff[1025];
+      docFile.read(buff, 1024);
+      buff[1024]=0;
+      if (docFile.fail())
+      {
+	 docStr.append(buff, docFile.gcount());
+	 break; 
+      }
+      docStr.append(buff, 1024);
+   }
+
+   xmlDocPtr doc = xmlParseMemory (const_cast<char *> (docStr.c_str()), docStr.size());
+   //xmlDocPtr doc = xmlParseFile(fullname.c_str());
 
    if (!doc || !doc->root || !doc->root->name)
    {
-      cerr << "ExtDoc: error loading " << fullname << "\n";
+      cerr << "ExtDoc: error loading " << fullpath << "\n";
       xmlFreeDoc (doc);
       return;
    }

@@ -77,7 +77,7 @@ public:
    virtual void loadXML(xmlNodePtr root);
 
    /**Loads the document from memory*/
-   virtual void loadFromMemory(char *mem, int size);
+   virtual void loadFromMemory(const char *mem, int size);
    
    /**Sets the 'modified' flag*/
    void setModified() {modified=true;}
