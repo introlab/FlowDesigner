@@ -25,7 +25,8 @@ class DocParameterDataText {
    string type;
 };
 
-/**GUI-independent memory representation for an XML Overflow document
+/**
+   GUI-independent memory representation for an XML FlowDesigner document
    @author: Jean-Marc Valin
 */
 class UIDocument : public Object {
@@ -160,6 +161,21 @@ public:
 
    /**Generate C++ code for building the document, instead of using XML*/
    set<string> genCode(ostream &out, const string &functName, bool localIncludes=false);
+
+   /** Export a network into XML (for future import) 
+      @author Dominic Letourneau (August 9 2004)
+      \param networkName The name of the network to export
+      \param fileName The name of the file to create, will be in XML format
+   */
+   void exportNetwork(const std::string &networkName, const std::string &fileName);
+
+   
+   /** Import a network from XML file
+       @author Dominic Letourneau (August 9 2004)
+       \param fileName The file containing the exported XML network
+   */
+   void importNetwork(const std::string &fileName);
+
 
    static Network *buildExternal(const string &type, const string &_name, const ParameterSet &params);
 

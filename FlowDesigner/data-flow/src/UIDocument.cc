@@ -333,21 +333,34 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
 
 UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
 {
-   //cerr << "creating...\n";
-   UINetwork *newNet = newNetwork(xmlNet);
-   //cerr << "created\n";
-   //cerr << "newNet = " << newNet << endl;
-   //cerr << "network created in UIDocument::addNetwork\n";
-   for (unsigned int i=0;i<networks.size();i++)
-   {
+
+  //cerr << "creating...\n";
+  UINetwork *newNet = newNetwork(xmlNet);
+  
+  //look for existing network before adding
+  UINetwork *tmp_net = getNetworkNamed(newNet->getName());
+  
+  if (tmp_net != NULL) {
+    string netName = newNet->getName();
+    delete newNet;
+    throw new GeneralException(string("Network (") + netName + string(") already exists"),__FILE__,__LINE__);
+  }
+ 
+ 
+  //cerr << "created\n";
+  //cerr << "newNet = " << newNet << endl;
+  //cerr << "network created in UIDocument::addNetwork\n";
+  
+  for (unsigned int i=0;i<networks.size();i++)
+    {
       networks[i]->newNetNotify("Subnet",newNet->getName());
       newNet->newNetNotify("Subnet",networks[i]->getName());
-   }
-   //cerr << "newNet = " << newNet << endl;
-   networks.insert(networks.end(), newNet);
-
-   modified = true;
-   return newNet;
+    }
+  //cerr << "newNet = " << newNet << endl;
+  networks.insert(networks.end(), newNet);
+  
+  modified = true;
+  return newNet;
 }
 
 //This function looks useless. Is it?
@@ -737,4 +750,110 @@ void UIDocument::updateAllSubnetTerminals(const string _nettype, const string _t
       if (networks[i])
          networks[i]->updateAllSubnetTerminals(_nettype, _terminalname, _terminaltype, _remove);
    }
+}
+
+void UIDocument::exportNetwork(const std::string &networkName, const std::string &fileName) {
+
+  UINetwork *net = getNetworkNamed(networkName);
+
+  if (net) {
+
+    int save_fd = open(fileName.c_str(), O_CREAT|O_WRONLY|O_TRUNC, 00755);
+    if (save_fd == -1) {
+	error("UIDocument::exportNetwork : Error while saving file: cannot open");
+	return; 
+    }
+    fd_ostream outFile(save_fd);
+    if (outFile.fail()) {
+      error("UIDocument::exportNetwork : Error while saving file");
+      return;
+    }
+    
+    xmlDocPtr doc;
+    doc = xmlNewDoc((xmlChar *)"1.0");
+    doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
+    
+
+    //Export network  
+    net->saveXML(doc->children);
+
+    char *mem = NULL;
+    int size = 0;
+
+    //Dump to memory
+    xmlDocDumpFormatMemory(doc,(xmlChar **)&mem,&size, 1);
+    xmlFreeDoc(doc);
+
+    //Write to file
+    outFile.write(mem, size);
+    if (outFile.fail()) {
+	free(mem);
+	error("UIDocument::exportNetwork : Error while saving file");
+	return;
+    }
+    
+    //Free memory
+    free(mem);
+  }
+  else {
+    //TODO throw an exception ?
+    throw new GeneralException(string("Network does not exist :") + networkName,__FILE__,__LINE__);
+  }
+}
+
+   
+   
+void UIDocument::importNetwork(const std::string &fileName) {
+ 
+  string docStr;
+
+  ifstream inputFile(fileName.c_str());
+
+  if (!inputFile.fail()) {
+    //read all data from file
+    while(1) {
+      char buff[1025];
+      inputFile.read(buff, 1024);
+      buff[1024]=0;
+      if (inputFile.fail()) {
+	docStr.append(buff, inputFile.gcount());
+	break; 
+      }
+      docStr.append(buff, 1024);
+    }
+
+    try {
+      //loading document
+      xmlDocPtr doc = xmlParseMemory (const_cast<char *> (docStr.c_str()), docStr.size());
+
+      if (!doc || !doc->children || !doc->children->name) {
+	throw new GeneralException(string("Corrupted XML in file ") + fileName,__FILE__,__LINE__);
+      }
+            
+      xmlNodePtr net = doc->children->children;
+
+      if (net) {
+ 
+	//loading all networks
+	while (net != NULL) {	
+	  if (string((char*)net->name) == "Network")
+	    addNetwork (net);
+	  net = net->next;
+	}
+      }
+
+      //free XML data
+      xmlFreeDoc(doc);
+      
+      //the network is modified
+      setModified();
+    }
+    catch (BaseException *e) {
+       throw e->add(new GeneralException(string("Unable to import from file ") + fileName,__FILE__,__LINE__));
+    }
+
+  }
+  else {
+    throw new GeneralException(string("File does not exist : ") + fileName,__FILE__,__LINE__);
+  }
 }
