@@ -52,7 +52,7 @@ FuzzySet::FuzzySet(string nodeName, ParameterSet params)
   : BufferedNode(nodeName,params) {
   
   
-  m_name = dereference_cast<string>(parameters.get("NAME"));
+  m_name = object_cast<String>(parameters.get("NAME"));
   
   //the inputID
   m_functionID = addInput("FUNCTIONS");

@@ -77,8 +77,16 @@ private:
 
 
 
-inline void Vector<FuzzyFunction*>::readFrom(istream &in)
-{
+inline void Vector<FuzzyFunction*>::printOn(ostream &out) const {
+
+  cerr<<"PrintOn called"<<endl;
+  
+  for (int i = 0; i < size(); i++) {
+    operator[](i)->printOn(out);
+  }
+}
+
+inline void Vector<FuzzyFunction*>::readFrom(istream &in) {
 
 }
 

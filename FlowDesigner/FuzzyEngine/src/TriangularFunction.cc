@@ -55,7 +55,7 @@ TriangularFunction::TriangularFunction(string nodeName, ParameterSet params)
   m_a  = dereference_cast<float>(parameters.get("A"));
   m_b  = dereference_cast<float>(parameters.get("B"));
   m_c  = dereference_cast<float>(parameters.get("C"));
-  m_name = dereference_cast<string>(parameters.get("NAME"));
+  m_name = object_cast<String>(parameters.get("NAME"));
   
 }
 

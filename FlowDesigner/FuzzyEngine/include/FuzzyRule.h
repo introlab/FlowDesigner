@@ -10,6 +10,7 @@
 #include <vector>
 #include "BufferedNode.h"
 #include "Object.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -76,7 +77,11 @@ public:
   int m_ruleID;
 };
 
-
+inline void Vector<FuzzyRule*>::printOn(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    operator[](i)->printOn(out);
+  }
+}
 
 
 #endif 

@@ -44,6 +44,12 @@ public:
 	//cloning capability
 	virtual FuzzyFunction* clone();
 	
+	virtual void printOn(ostream &out=cout) {
+	  out<<"TrapezoidalFunction ("<<m_name<<") "<<m_a<<" "<<m_b<<" "<<m_c<<" "<<m_d<<endl;
+	}
+
+	
+
 private:
 
 	//function limits

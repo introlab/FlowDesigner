@@ -62,7 +62,8 @@ TrapezoidalFunction::TrapezoidalFunction(string nodeName, ParameterSet params)
   m_b  = dereference_cast<float>(parameters.get("B"));
   m_c  = dereference_cast<float>(parameters.get("C"));
   m_d  = dereference_cast<float>(parameters.get("D"));
-  m_name = dereference_cast<string>(parameters.get("NAME"));
+  m_name = object_cast<String>(parameters.get("NAME"));
+  
 
 }
 //////////////////////////////////////////////////////////////////////
