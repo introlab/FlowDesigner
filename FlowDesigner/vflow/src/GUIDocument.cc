@@ -526,7 +526,20 @@ void GUIDocument::applyParams()
       
       //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
    }
-   //cerr << "apply\n";
+
+   //updating category
+   GtkCombo *combo = GTK_COMBO(gtk_object_get_data(GTK_OBJECT(docproperty), "category_combo"));
+   string entry_text(gtk_entry_get_text(GTK_ENTRY(combo->entry))); //get entry text
+   setCategory(entry_text);
+
+
+   //updating comments
+   GtkTextView *text1 = GTK_TEXT_VIEW(gtk_object_get_data(GTK_OBJECT(docproperty), "text1"));
+   GtkTextBuffer* buffer = gtk_text_view_get_buffer(text1);
+   GtkTextIter start, end;
+   gtk_text_buffer_get_bounds(buffer, &start, &end);   
+   setComments(gtk_text_buffer_get_text (buffer, &start, &end, TRUE));
+
    setModified();
 }
 
@@ -784,13 +797,25 @@ void GUIDocument::createParamDialog()
 
   text1 = gtk_text_view_new ();
   gtk_widget_ref (text1);
+
+  //text view properties
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (text1), TRUE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text1), GTK_WRAP_WORD);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text1), TRUE);	 
+
+  //set the comments		   
+  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (text1)),
+			    getComments().c_str(), -1);
+
   gtk_object_set_data_full (GTK_OBJECT (docproperty), "text1", text1,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (text1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), text1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(text1),TRUE);
 
-
+  //comments signal handler
+  g_object_connect (G_OBJECT (gtk_text_view_get_buffer(GTK_TEXT_VIEW(text1))), "signal::changed",
+		    GTK_SIGNAL_FUNC(document_comments_changed_event), this,NULL);
 
   label13 = gtk_label_new (_("Comments"));
   gtk_widget_ref (label13);
@@ -805,13 +830,21 @@ void GUIDocument::createParamDialog()
 
 }
 
+void document_comments_changed_event (GtkTextBuffer *textbuffer, GUIDocument *document) {  
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(document->docproperty),TRUE);
+}
+
 void document_category_changed_event (GtkEntry *entry, GUIDocument *document) {
 
   //get the entry text
   string entry_text(gtk_entry_get_text(entry));   
 
   //change the category
-  document->setCategory(entry_text);
+  //will be changed when apply is pressed
+  //document->setCategory(entry_text);
+  
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(document->docproperty),TRUE);
+  
 }
 
 static void threadFunct(GUIDocument *doc)
