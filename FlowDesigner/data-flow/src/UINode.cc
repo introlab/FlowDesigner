@@ -65,6 +65,7 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    : net(_net)
    , destroyed(false)
 {
+   //FIXME: Need to check that all properties are there
    name = string((char *)xmlGetProp(def, (CHAR *)"name"));
    type = string((char *)xmlGetProp(def, (CHAR *)"type"));
    x = atof((char *)xmlGetProp(def, (CHAR *)"x"));

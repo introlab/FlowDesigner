@@ -75,10 +75,16 @@ void CodeGenState::ok()
       {
 	 out << "\n\n";
 	 if (!copyDepend)
+	 {
 	    out << "#include <path.h>\n\n";
+	    out << "#include <iextensions.h>\n\n";
+	 } else {
+	    out << "#include \"iextensions.h\"\n\n";
+	 }
 	 out << "int main(int argc, char **argv)\n";
 	 out << "{\n\n";
 	 out << "   try {\n";
+	 out << "      IExtensions::detect();\n";
 	 if (!copyDepend)
 	    out << "      scanDL();\n";
 	 out << "      ParameterSet param;\n";
