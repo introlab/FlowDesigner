@@ -4,9 +4,9 @@
 #define MATRIX_H
 
 #include "Object.h"
-//#include <vector>
 #include "ObjectParser.h"
-
+#include "typetraits.h"
+#include "binio.h"
 
 template<class T>
 class Matrix : public Object
@@ -131,6 +131,13 @@ public:
    
    void readFrom(istream &in=cin);
 
+   //(DL) 11/02/2004
+   /** Returns the size of the matrix */
+   int size() {
+     return (cols * rows);
+   }
+
+
 };
 
 template <class T>
@@ -182,5 +189,172 @@ inline Matrix<T> operator * (Matrix<T> A, Matrix<T> B)
 }
 */
 
+/*The following code requires template partial specialization*/
+#ifndef BROKEN_TEMPLATES
+
+//FIXME: Serialize problems with (Object *)
+template<class T, int I>
+struct MatrixBinary {
+   static inline void serialize(const Matrix<T> &v, ostream &out)
+   {
+      throw new GeneralException("MatrixBinary default serialize should never be called", __FILE__, __LINE__);
+   }
+   static inline void unserialize(Matrix<T> &v, istream &in)
+   {
+      throw new GeneralException("MatrixBinary default unserialize should never be called", __FILE__, __LINE__);
+   }
+};
+
+template<class T>
+struct MatrixBinary<T,TTraits::Object> {
+
+  static inline void serialize(const Matrix<T> &m, ostream &out) {
+    out << "{" << m.className() << endl;
+    out << "|";
+    
+    //writing nb rows
+    BinIO::write(out, m.nrows(), 1);
+    
+    //writing nb cols
+    BinIO::write(out, m.ncols(), 1);
+    
+    //serializing object(s)
+    for (size_t i=0;i<m.nrows();i++) {
+      for (size_t j=0;j < m.ncols(); j++) {
+	m(i,j).serialize(out);
+      }
+    }
+    out << "}";
+  }
+  
+  static inline void unserialize(Matrix<T> &m, istream &in)
+   {
+     int ncols, nrows;
+     string expected = Matrix<T>::GetClassName();
+     
+     //reading matrix dimensions
+     BinIO::read(in, &nrows, 1);
+     BinIO::read(in, &ncols, 1);
+
+     //resize matrix
+     m.resize(nrows,ncols);
+
+     //read every object
+     for (size_t i=0;i<m.nrows();i++) {
+       for (size_t j=0;j<m.ncols();j++) {
+	 if (!isValidType(in, expected))
+	   throw new ParsingException("Expected type " + expected);
+	 m(i,j).unserialize(in);
+       }
+     }
+
+     //reading ending "}"
+     char ch;
+     in >> ch;
+   }
+};
+
+
+template<class T>
+struct MatrixBinary<T,TTraits::ObjectPointer> {
+   static inline void serialize(const Matrix<T> &m, ostream &out)
+   {
+      out << "{" << m.className() << endl;
+      out << "|";
+     
+      //writing nb rows
+      BinIO::write(out, m.nrows(), 1);
+      
+      //writing nb cols
+      BinIO::write(out, m.ncols(), 1);
+
+      //serializing object(s)
+      for (size_t i=0;i<m.nrows();i++) {
+	for (size_t j=0;j < m.ncols(); j++) {
+	  m(i,j)->serialize(out);
+	}
+      }
+
+      out << "}";
+   }
+
+   static inline void unserialize(Matrix<T> &m, istream &in)
+   {
+     int nrows,ncols;
+     
+     //reading matrix dimensions
+     BinIO::read(in, &nrows, 1);
+     BinIO::read(in, &ncols, 1);
+
+     //resize matrix
+     m.resize(nrows,ncols);
+
+     for (size_t i=0;i<m.nrows();i++) {
+       for (size_t j=0;j<m.ncols();j++) {
+	 in >> v(i,j);
+       }
+     }
+
+     char ch;
+     in >> ch;
+   }
+};
+
+
+template<class T>
+struct MatrixBinary<T,TTraits::Basic> {
+   static inline void serialize(const Matrix<T> &m, ostream &out)
+   {
+      out << "{" << v.className() << endl;
+      out << "|";
+
+      //writing nb rows
+      BinIO::write(out, m.nrows(), 1);
+      
+      //writing nb cols
+      BinIO::write(out, m.ncols(), 1);
+
+      //writing all data at once
+      BinIO::write(out, &(const_cast<Matrix<T> &>(m))[0], m.size());
+
+      out << "}";
+   }
+   static inline void unserialize(Matrix<T> &m, istream &in)
+   {
+     int nrows,ncols;
+
+     //reading matrix dimensions
+     BinIO::read(in, &nrows, 1);
+     BinIO::read(in, &ncols, 1);
+     
+     //resize matrix
+     m.resize(nrows,ncols);
+
+     //reading all data at once
+     BinIO::read(in, &(const_cast<Matrix<T> &>(m))[0], m.size());
+     char ch;
+     in >> ch;
+   }
+};
+
+
+template<class T>
+struct MatrixBinary<T,TTraits::Unknown> {
+  static inline void serialize(const Matrix<T> &m, ostream &out)
+   {
+      throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
+				 + ")", __FILE__, __LINE__);
+   }
+   static inline void unserialize(Matrix<T> &m, istream &in)
+   {
+      throw new GeneralException(string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
+				 + ")", __FILE__, __LINE__);
+   }
+};
+
+
+
+
+#endif //BROKEN TEMPLATES
 
 #endif

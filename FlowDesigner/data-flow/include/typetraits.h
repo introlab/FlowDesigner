@@ -38,6 +38,8 @@ struct TypeTraits {
 
 //#define _DEF_UNKNOWN_TYPE(type) template<>struct TypeTraits<type> {enum {isBasic=2};};
 
+//Those traits definitions are useful for Vectors & Matrixes (I/O)
+
 _DEF_C_TYPE(int)
 _DEF_C_TYPE(float)
 _DEF_C_TYPE(double)
