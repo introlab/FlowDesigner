@@ -45,6 +45,7 @@ void PlotProbe::specificInitialize()
 
    gdk_threads_enter(); 
 
+   try {
    GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
    gtk_widget_ref (scrolledwindow1);
    gtk_object_set_data_full (GTK_OBJECT (vbox2), "scrolledwindow1", scrolledwindow1,
@@ -109,6 +110,11 @@ void PlotProbe::specificInitialize()
 
    //gtk_box_pack_start (GTK_BOX (vbox2), scrolledwindow2, TRUE, TRUE, 0);
 
+   } catch (BaseException *e)
+   {
+      throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
+   }
+   
    gdk_threads_leave(); 
 
 }

@@ -225,7 +225,7 @@ void Node::initialize ()
             in->node->initialize();
 	    } catch (BaseException *e)
 	    {
-	       e->add(new NodeException(this, "Exception caught in node initialization", __FILE__, __LINE__));
+	       throw e->add(new NodeException(this, "Exception caught in node initialization", __FILE__, __LINE__));
 	    }
          }
      }

@@ -96,7 +96,7 @@ void Probe::specificInitialize()
    
    gdk_threads_enter(); 
    
-   
+   try {   
    //GtkWidget *window1;
    //GtkWidget *vbox2;
    GtkWidget *handlebox2;
@@ -230,6 +230,10 @@ void Probe::specificInitialize()
 
    gtk_widget_show(window1);
 
+   } catch (BaseException *e)
+   {
+      throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
+   }
    gdk_threads_leave(); 
 
 }
