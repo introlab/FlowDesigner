@@ -334,6 +334,8 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
    for (i=0;i<layers.size();i++)
       layers[i]->loadWeights();
 
+   delete [] in;
+   delete [] out;
 }
 
 void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double sigma, double lambda)
