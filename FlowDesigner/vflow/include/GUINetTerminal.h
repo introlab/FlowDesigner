@@ -26,6 +26,7 @@ public:
    ~GUINetTerminal();
    gint event(GdkEvent *event);
    string find_unique_name(const string &_name, NetTermType _type);
+   void setAbsPos(double x, double y);
 
 };
 

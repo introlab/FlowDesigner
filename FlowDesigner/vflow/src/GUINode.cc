@@ -559,6 +559,14 @@ void GUINode::redraw() {
   
     //position text & terminal
     dynamic_cast<GUITerminal*>(inputs[i])->setAbsPos(tx1 - max_inputs, start_y1 + 15 * (i));
+
+    //reposition netTerminal
+    if (inputs[i]->getNetTerminal()) {
+      //TODO reposition net terminal
+      //DL 1 Feb 2002
+      dynamic_cast<GUINetTerminal*>(inputs[i]->getNetTerminal())->setAbsPos(tx1 - max_outputs - 10, start_y1 + 15 * (i));
+    }
+
   }//inputs
 
 
@@ -573,6 +581,14 @@ void GUINode::redraw() {
     }
     //position text & terminal
     dynamic_cast<GUITerminal*>(outputs[i])->setAbsPos(tx2 + max_outputs, start_y2 + 15 * (i));
+
+    //reposition netTerminal
+    if (outputs[i]->getNetTerminal()) {
+      //TODO reposition net terminal
+      //DL 1 Feb 2002
+      dynamic_cast<GUINetTerminal*>(outputs[i]->getNetTerminal())->setAbsPos(tx2 + max_outputs + 10, start_y2 + 15 * (i));
+    }
+
 
 
   }//outputs

@@ -206,3 +206,7 @@ string GUINetTerminal::find_unique_name(const string &_name, NetTermType _type) 
   sprintf(&name_id[0],"_%i",duplicate_count);
   return string(_name + string(name_id));
 }
+
+void GUINetTerminal::setAbsPos(double x, double y) {
+  gnome_canvas_item_set(item,"x",x,"y",y,NULL);
+}
