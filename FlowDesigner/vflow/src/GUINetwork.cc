@@ -4,7 +4,7 @@
 #include "GUITerminal.h"
 #include <tree.h>
 #include "GUILink.h"
-#include "UINetPopup.h"
+#include "GUINetPopup.h"
 #include "Node.h"
 #include "GUINetTerminal.h"
 #include "canvas-background.h"
@@ -162,7 +162,7 @@ void GUINetwork::create()
                                                       "x", 0.0,
                                                       "y", 0.0,
                                                       NULL));
-   popup = new UINetPopup(doc,this);
+   popup = new GUINetPopup(doc,this);
 
    /* gtk_signal_connect (GTK_OBJECT (canvas), "button_press_event",
                        GTK_SIGNAL_FUNC (net_canvas_event),
