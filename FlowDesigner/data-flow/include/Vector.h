@@ -222,8 +222,6 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
 template <>
 inline void _vector_printOn(const Vector<string> &v, ostream &out);
 
-/*The following code doesn't compile on MSVC++*/
-#ifndef BROKEN_TEMPLATES
 template <class T>
 inline void _vector_printOn(const Vector<T*> &v, ostream &out)
 {
@@ -234,7 +232,6 @@ inline void _vector_printOn(const Vector<T*> &v, ostream &out)
    }
    out << " > ";
 }
-#endif
 
 template <class T>
 void Vector<T>::printOn(ostream &out) const
@@ -290,8 +287,7 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
 template <>
 inline void _vector_readFrom(Vector<string> &v, istream &in);
 
-/*The following code doesn't compile on MSVC++*/
-#ifndef BROKEN_TEMPLATES
+
 template <class T>
 inline void _vector_readFrom(Vector<T*> &v, istream &in)
 {
@@ -319,16 +315,12 @@ inline void _vector_readFrom(Vector<T*> &v, istream &in)
    }
 }
 
-#endif
 
 template <class T>
 inline void Vector<T>::readFrom(istream &in)
 {
    _vector_readFrom(*this, in);
 }
-
-/*The following code requires template partial specialization*/
-#ifndef BROKEN_TEMPLATES
 
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
@@ -385,7 +377,7 @@ struct VecMethod<T,TTraits::Object> {
    static inline ObjectRef getIndex(Vector<T> &v, int pos) 
    {
      if (pos < 0 || pos >= v.size()) {
-       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+       throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }
      return ObjectRef(v[pos].clone());
    }   
@@ -393,7 +385,7 @@ struct VecMethod<T,TTraits::Object> {
    static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
    {
      if (pos < 0 || pos >= v.size()) {
-       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+       throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }
      RCPtr<T> obj = val;
      v[pos] = *obj;
@@ -430,7 +422,7 @@ struct VecMethod<T,TTraits::ObjectPointer> {
    static inline ObjectRef getIndex(Vector<T> &v, int pos) 
    {
      if (pos < 0 || pos >= v.size()) {
-       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+       throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }
      return v[pos];
    }   
@@ -438,7 +430,7 @@ struct VecMethod<T,TTraits::ObjectPointer> {
    static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
    {
      if (pos < 0 || pos >= v.size()) {
-       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+       throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }
      v[pos] = val;
    }
@@ -469,7 +461,7 @@ struct VecMethod<T,TTraits::Basic> {
    static inline ObjectRef getIndex(Vector<T> &v, int pos) 
    {
      if (pos < 0 || pos >= v.size()) {
-       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+       throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }     
      return ObjectRef( NetCType<T>::alloc(v[pos]));
    }   
@@ -477,7 +469,7 @@ struct VecMethod<T,TTraits::Basic> {
    static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
    {
      if (pos < 0 || pos >= v.size()) {
-       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+       throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }  
      RCPtr<NetCType<T> > obj = val;     
      v[pos] = *obj;   
@@ -509,33 +501,6 @@ struct VecMethod<T,TTraits::Unknown> {
 				+ ")", __FILE__, __LINE__);
    }
 };
-
-#else /* #ifndef BROKEN_TEMPLATES */
-
-/* This is for broken compilers */
-template<class T, int I>
-struct VecMethod {
-   static inline void serialize(const Vector<T> &v, ostream &out)
-   {
-      throw new GeneralException("Binary IO not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);
-   }
-   static inline void unserialize(Vector<T> &v, istream &in)
-   {
-      throw new GeneralException("Binary IO not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);
-   }
-
-   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
-   {
-     throw new GeneralException("getIndex not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);   				
-   }
-   
-   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
-   {
-     throw new GeneralException("getIndex not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);   				
-   }
-};
-
-#endif
 
 template <class T>
 inline void Vector<T>::serialize(ostream &out) const

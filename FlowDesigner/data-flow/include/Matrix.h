@@ -8,6 +8,7 @@
 #include "ObjectParser.h"
 #include "typetraits.h"
 #include "binio.h"
+#include "net_types.h"
 
 class BaseMatrix : public Object {
 
@@ -346,35 +347,29 @@ inline void Matrix<T>::readFrom(istream &in)
 
 }
 
-
-/*
-template <class T>
-inline Matrix<T> operator * (Matrix<T> A, Matrix<T> B)
-{
-   if (A.nlines() != B.ncols())
-      throw new GeneralException("Matrix<T>::operator *= A.nlines() != B.ncols()" __FILE__, __LINE__);
-   
-}
-*/
-
-/*The following code requires template partial specialization*/
-#ifndef BROKEN_TEMPLATES
-
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
-struct MatrixBinary {
+struct MatrixMethod {
    static inline void serialize(const Matrix<T> &m, ostream &out)
    {
-      throw new GeneralException("MatrixBinary default serialize should never be called", __FILE__, __LINE__);
+      throw new GeneralException("MatrixMethod default serialize should never be called", __FILE__, __LINE__);
    }
    static inline void unserialize(Matrix<T> &m, istream &in)
    {
-      throw new GeneralException("MatrixBinary default unserialize should never be called", __FILE__, __LINE__);
+      throw new GeneralException("MatrixMethod default unserialize should never be called", __FILE__, __LINE__);
+   }
+   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   {
+     throw new GeneralException("MatrixMethod getIndex should never be called", __FILE__, __LINE__);   				
+   }   
+   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   {
+     throw new GeneralException("MatrixMethod setIndex should never be called", __FILE__, __LINE__);   				
    }
 };
 
 template<class T>
-struct MatrixBinary<T,TTraits::Object> {
+struct MatrixMethod<T,TTraits::Object> {
 
   static inline void serialize(const Matrix<T> &m, ostream &out) {
     out << "{" << m.className() << endl;
@@ -422,11 +417,32 @@ struct MatrixBinary<T,TTraits::Object> {
      char ch;
      in >> ch;
    }
+
+   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   {
+     if (_row < 0 || _row >= m.nrows() ||
+	 _col < 0 || _col >= m.ncols() ) {
+       throw new GeneralException("Matrix getIndex : index out of bound",__FILE__,__LINE__);
+     }
+
+     return ObjectRef(m(_row,_col).clone());
+   }   
+   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   {
+
+     if (_row < 0 || _row >= m.nrows() ||
+	 _col < 0 || _col >= m.ncols() ) {
+       throw new GeneralException("Matrix setIndex : index out of bound",__FILE__,__LINE__);
+     }
+     RCPtr<T> obj = val;
+     m(_row,_col) = *obj;
+   }
+
 };
 
 
 template<class T>
-struct MatrixBinary<T,TTraits::ObjectPointer> {
+struct MatrixMethod<T,TTraits::ObjectPointer> {
    static inline void serialize(const Matrix<T> &m, ostream &out)
    {
       out << "{" << m.className() << endl;
@@ -470,11 +486,31 @@ struct MatrixBinary<T,TTraits::ObjectPointer> {
      char ch;
      in >> ch;
    }
+
+   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col)        
+   {
+     if (_row < 0 || _row >= m.nrows() ||
+	 _col < 0 || _col >= m.ncols() ) {
+       throw new GeneralException("Matrix getIndex : index out of bound",__FILE__,__LINE__);
+     }
+     return m(_row,_col);
+
+   }   
+   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   {
+     
+     if (_row < 0 || _row >= m.nrows() ||
+	 _col < 0 || _col >= m.ncols() ) {
+       throw new GeneralException("Matrix setIndex : index out of bound",__FILE__,__LINE__);
+     }
+     m(_row,_col) = val;
+   }
+
 };
 
 
 template<class T>
-struct MatrixBinary<T,TTraits::Basic> {
+struct MatrixMethod<T,TTraits::Basic> {
    static inline void serialize(const Matrix<T> &m, ostream &out)
    {
       out << "{" << m.className() << endl;
@@ -509,11 +545,32 @@ struct MatrixBinary<T,TTraits::Basic> {
      char ch;
      in >> ch;
    }
+   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   {
+     if (_row < 0 || _row >= m.nrows() ||
+	 _col < 0 || _col >= m.ncols() ) {
+       throw new GeneralException("Matrix getIndex : index out of bound",__FILE__,__LINE__);
+     }
+
+     return ObjectRef(NetCType<T>::alloc(m(_row,_col)));
+   }   
+   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   {
+
+     if (_row < 0 || _row >= m.nrows() ||
+	 _col < 0 || _col >= m.ncols() ) {
+       throw new GeneralException("Matrix setIndex : index out of bound",__FILE__,__LINE__);
+     }
+
+     RCPtr<NetCType<T> > obj = val;
+     m(_row,_col) = *obj;
+   }
+
 };
 
 
 template<class T>
-struct MatrixBinary<T,TTraits::Unknown> {
+struct MatrixMethod<T,TTraits::Unknown> {
   static inline void serialize(const Matrix<T> &m, ostream &out)
    {
       throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
@@ -524,23 +581,42 @@ struct MatrixBinary<T,TTraits::Unknown> {
       throw new GeneralException(string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
+   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   {
+     throw new GeneralException(string("Sorry, can't getIndex this kind of object (") + typeid(T).name()
+			       + ")", __FILE__, __LINE__);
+   }   
+   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   {
+     throw new GeneralException(string("Sorry, can't setIndex this kind of object (") + typeid(T).name()
+				+ ")", __FILE__, __LINE__);
+   }
 };
 
 
 template <class T>
 inline void Matrix<T>::serialize(ostream &out) const
 {
-   MatrixBinary<T, TypeTraits<T>::kind>::serialize(*this, out);
+   MatrixMethod<T, TypeTraits<T>::kind>::serialize(*this, out);
 }
 
 template <class T>
 inline void Matrix<T>::unserialize(istream &in)
 {
-   MatrixBinary<T, TypeTraits<T>::kind>::unserialize(*this, in);
+   MatrixMethod<T, TypeTraits<T>::kind>::unserialize(*this, in);
 }
 
+template <class T>
+inline ObjectRef Matrix<T>::getIndex(int _row, int _col)
+{
+  return MatrixMethod<T, TypeTraits<T>::kind>::getIndex(*this,_row,_col);
+}
 
+template <class T>
+inline void Matrix<T>::setIndex(int _row, int _col, ObjectRef val)
+{
+  MatrixMethod<T,TypeTraits<T>::kind>::setIndex(*this,_row,_col,val);
+}
 
-#endif //BROKEN TEMPLATES
 
 #endif
