@@ -1,6 +1,6 @@
 UTOMAKE_OPTIONS = no-dependencies
 
-noinst_HEADERS = covariance.h \
+include_HEADERS = covariance.h \
 	gaussian.h \
 	gmm.h \
 	hmm.h \
