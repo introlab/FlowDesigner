@@ -24,21 +24,25 @@
       REAL D(N)
       REAL E(N)
       REAL TAU(N-1)
-      REAL WORK(18*N)
+      REAL WORK(28*N)
       INTEGER INFO
       REAL FDUMMY
       INTEGER IDUMMY
       INTEGER IDUMMY2
+c      INTEGER IDUMMY3
       REAL ISUPPZ(2*N)
       INTEGER IWORK(10*N)
-      call SSYTRD('U', N, A, N, D, E, TAU, WORK, 18*N, INFO)
-      call SORGTR('U', N, A, N, TAU, WORK, 18*N, INFO)
+c      call SSYTRD('U', N, A, N, D, E, TAU, WORK, 18*N, INFO)
+c      call SORGTR('U', N, A, N, TAU, WORK, 18*N, INFO)
 c      print A(1,1), A(1,2), A(1,3)
-      call SSTEGR('V', 'A', N, D, E, FDUMMY, FDUMMY, IDUMMY, IDUMMY, 
-     *0, IDUMMY2, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
+c      call SSTEGR('V', 'A', N, D, E, FDUMMY, FDUMMY, IDUMMY, IDUMMY, 
+c     *0, IDUMMY2, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
 
-c     ssyev
-
+c      CALL SSYEV('V', 'U', N, A, N, D, WORK, 18*N, INFO)
+      CALL SSYEVR('V', 'A', 'U', N, A, N, FDUMMY, FDUMMY, IDUMMY, 
+     *IDUMMY, DLAMCH, IDUMMY2, D, V, N, ISUPPZ, WORK, 28*N, IWORK, 10*N,
+     *INFO)
+c      print INFO
 c     *DLAMCH, IDUMMY, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
       RETURN
       END
