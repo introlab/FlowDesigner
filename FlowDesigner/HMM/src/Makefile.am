@@ -1,13 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.27 2001/07/31 17:12:04 jmvalin Exp $
+# $Id: Makefile.am,v 1.28 2001/08/01 15:57:30 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libhmm.la
 
-install:
+install-data-local:
 	(cd $(libdir); rm -f hmm.tlb; ln -s libhmm.so hmm.tlb)
 	mkdir -p $(datadir)/toolbox/hmm
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/hmm/hmm.def)

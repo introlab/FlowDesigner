@@ -1,13 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.37 2001/07/31 17:12:05 jmvalin Exp $
+# $Id: Makefile.am,v 1.38 2001/08/01 15:57:30 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libnnet.la
 
-install:
+install-data-local:
 	(cd $(libdir); rm -f nnet.tlb; ln -s libnnet.so nnet.tlb)
 	mkdir -p $(datadir)/toolbox/nnet
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/nnet/nnet.def)

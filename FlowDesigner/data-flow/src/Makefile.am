@@ -1,11 +1,11 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.101 2002/01/16 14:48:58 jmvalin Exp $
+# $Id: Makefile.am,v 1.102 2002/01/24 05:57:44 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
-install:
+install-data-local:
 	mkdir -p $(datadir)/toolbox/data-flow
 	(cd $(top_srcdir); perl tools/src/info2def.pl data-flow/src/*.cc data-flow/include/*.h > $(datadir)/toolbox/data-flow/data-flow.def)
 
