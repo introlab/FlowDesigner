@@ -149,7 +149,7 @@ void FlowPref::save()
    xmlDocPtr doc;
    doc = xmlNewDoc((CHAR *)"1.0");
    doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Preferences", NULL);
-   xmlSetProp(doc->root, (CHAR *)"version", (CHAR *)VERSION);
+   xmlSetProp(doc->root, (CHAR *)"version", (CHAR *)OVERFLOW_VERSION);
 
    xmlNodePtr tree;
 
