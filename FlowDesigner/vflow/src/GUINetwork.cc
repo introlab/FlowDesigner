@@ -306,6 +306,8 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
        }
 
        
+       selectedNodes.resize(0);
+
        double ibx1,iby1,ibx2,iby2;
        gnome_canvas_item_get_bounds (item,
 				     &ibx1,
@@ -335,7 +337,7 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 	       ny1 >= iby1 &&
 	       ny2 <= iby2) {
 
-
+	     selectedNodes.push_back(nodePtr);
 	     //cerr<<"node inside"<<endl;
 
 	     //node inside rectangle
@@ -363,8 +365,10 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 
    case GDK_BUTTON_RELEASE:
      //destroying the rectangle
+
      if (item) {
 
+       /*
        double ibx1,iby1,ibx2,iby2;
        gnome_canvas_item_get_bounds (item,
 				     &ibx1,
@@ -405,7 +409,7 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 	   }
 	 }
        }
-
+       */
 
 
 
@@ -498,4 +502,21 @@ UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
 UINetTerminal *GUINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
 {
    return new GUINetTerminal (_terminal, _type, _name);
+}
+
+void GUINetwork::moveSelectedNodes(double dx, double dy) {
+
+  for (int i = 0; i < selectedNodes.size(); i++) {
+    selectedNodes[i]->selectedMove(dx,dy);
+  }
+
+}
+
+bool GUINetwork::isNodeSelected(GUINode *node) {
+
+  for (int i = 0; i < selectedNodes.size(); i++) {
+    if (selectedNodes[i] == node) return true;
+  }
+
+  return false;
 }

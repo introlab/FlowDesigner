@@ -4,6 +4,7 @@
 #define GUINETWORK_H
 
 #include "UINetwork.h"
+#include "GUINode.h"
 #include <gnome.h>
 
 class UIDocument;
@@ -16,7 +17,19 @@ protected:
    GnomeCanvasGroup *group;
    GUINetPopup *popup;
    double zoom;
+
+   vector<GUINode*> selectedNodes;
+
+   GUINode *movedFrom;
+
 public:
+
+   vector<GUINode*>& getSelectedNodes(){return selectedNodes;}
+
+   void moveSelectedNodes(double dx, double dy);
+
+   bool isNodeSelected(GUINode *node);
+
    GUINetwork(UIDocument *_doc, string _name, Type _type);
 
    GUINetwork(UIDocument *_doc, xmlNodePtr net);

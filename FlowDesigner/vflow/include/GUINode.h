@@ -58,6 +58,8 @@ public:
    void doGrab();
   
    void move (double dx,double dy);
+
+   void selectedMove(double dx,double dy);
   
    void propertiesShow();
   

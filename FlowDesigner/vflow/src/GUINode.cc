@@ -364,13 +364,31 @@ gint GUINode::event(GdkEvent *event)
 
 void GUINode::move(double dx, double dy)
 {
-   int i;
-   gnome_canvas_item_move(GNOME_CANVAS_ITEM(group), dx, dy);
-   for (i=0;i<inputs.size();i++)
+  GUINetwork *my_net = dynamic_cast<GUINetwork *>(net);
+
+  if (my_net->isNodeSelected(this)) {
+    my_net->moveSelectedNodes(dx,dy);
+  }
+  else {
+    int i;
+    gnome_canvas_item_move(GNOME_CANVAS_ITEM(group), dx, dy);
+    for (i=0;i<inputs.size();i++)
       dynamic_cast<GUITerminal *>(inputs[i])->move(dx, dy);
-   for (i=0;i<outputs.size();i++)
+    for (i=0;i<outputs.size();i++)
       dynamic_cast<GUITerminal *>(outputs[i])->move(dx, dy);
+  }
 }
+
+void GUINode::selectedMove(double dx,double dy) {
+  int i;
+  gnome_canvas_item_move(GNOME_CANVAS_ITEM(group), dx, dy);
+  for (i=0;i<inputs.size();i++)
+    dynamic_cast<GUITerminal *>(inputs[i])->move(dx, dy);
+  for (i=0;i<outputs.size();i++)
+    dynamic_cast<GUITerminal *>(outputs[i])->move(dx, dy);
+}
+
+
 
 /*UITerminal *GUINode::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
 {
