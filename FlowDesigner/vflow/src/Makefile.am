@@ -45,17 +45,10 @@ batchflow_SOURCES = \
 	UINetTerminal.h UINetTerminal.cc
 
 vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
-	$(top_srcdir)/../audio_blocks/src/libablocks.la \
-	$(top_srcdir)/../HMM/src/libhmm.la \
-	$(top_srcdir)/../VQ/src/libvq.la \
 	$(top_srcdir)/../data-flow/src/libnetwork.la \
-	$(LIB_FFTW) 
+	$(LIB_FFTW)
 
 
 
 batchflow_LDADD = $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
-	$(top_srcdir)/../audio_blocks/src/libablocks.la \
-	$(top_srcdir)/../HMM/src/libhmm.la \
-	$(top_srcdir)/../VQ/src/libvq.la \
-	$(top_srcdir)/../data-flow/src/libnetwork.la \
-	$(LIB_FFTW)
+	$(top_srcdir)/../data-flow/src/libnetwork.la
