@@ -88,9 +88,14 @@ gint GUILink::event(GdkEvent *event)
             return TRUE;
          }
          break;
+      case 2:
+	if (event->button.state & GDK_SHIFT_MASK) {
+	  cerr<<"We should add a new input or output!"<<endl;
+	}
+	break;
          
       default:
-         break;
+	break;
       }
       break;
      

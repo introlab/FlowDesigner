@@ -32,6 +32,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   GtkWidget *hseparator4;
   GtkWidget *hseparator5;
   GtkWidget *hseparator6;
+  GtkWidget *hseparator7;
   GtkWidget *glade_menuitem;
   
 
@@ -39,6 +40,11 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   GtkWidget *scrolledwindow2;
   GtkWidget *text1;
   GtkWidget *label13;
+  GtkWidget *label_nb_outputs;
+  GtkWidget *label_nb_inputs;
+  GtkWidget *input_text;
+  GtkWidget *output_text;
+
 
   nodeproperty = gnome_property_box_new ();
   gnome_dialog_close_hides (GNOME_DIALOG(nodeproperty), TRUE);
@@ -49,7 +55,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   gtk_object_set_data (GTK_OBJECT (nodeproperty), "notebook2", notebook2);
   gtk_widget_show (notebook2);
 
-  table2 = gtk_table_new (2+params.size(), 3, FALSE);
+  table2 = gtk_table_new (3+params.size(), 3, FALSE);
   gtk_widget_ref (table2);
   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "table2", table2,
                             (GtkDestroyNotify) gtk_widget_unref);
@@ -109,8 +115,6 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   gtk_table_attach (GTK_TABLE (table2), hseparator6, 2, 3, 1, 2,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-
 
   
   for (i=0;i<params.size();i++)
@@ -175,9 +179,69 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
                          GTK_SIGNAL_FUNC(entry_changed), this);
   }
   
+  /* NUMBER OF INPUTS AND OUTPUTS */
+  
+  /*
+  hseparator7 = gtk_hseparator_new ();
+  gtk_widget_ref (hseparator7);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "hseparator7", hseparator7,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (hseparator7);
+  gtk_table_attach (GTK_TABLE (table2), hseparator7, 0, 1, 2 + params.size(), 3 + params.size(),
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  */
+
+  label_nb_inputs = gtk_label_new (_("INPUT COUNT"));
+  gtk_widget_ref (label_nb_inputs);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "nb_inputs", label_nb_inputs,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (label_nb_inputs);
+  gtk_table_attach (GTK_TABLE (table2), label_nb_inputs, 0, 1, 3 + params.size(), 
+		    4 + params.size(),
+                    (GtkAttachOptions) (0),
+                    (GtkAttachOptions) (0), 0, 0);
 
 
+  input_text = gtk_entry_new();
+  gtk_widget_ref (input_text);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "nb_inputs", input_text,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (input_text);
+  gtk_table_attach (GTK_TABLE (table2), input_text,2, 3, 3 + params.size(), 
+		    4 + params.size(),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
 
+  gtk_entry_set_editable (GTK_ENTRY(input_text), FALSE);
+
+ 
+
+  label_nb_outputs = gtk_label_new (_("OUTPUT COUNT"));
+  gtk_widget_ref (label_nb_outputs);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "nb_outputs", label_nb_outputs,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (label_nb_outputs);
+  gtk_table_attach (GTK_TABLE (table2), label_nb_outputs, 0,1, 4 + params.size(), 
+		    5 + params.size(),
+                    (GtkAttachOptions) (0),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  
+  output_text = gtk_entry_new();
+  gtk_widget_ref (output_text);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "nb_outputs", output_text,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (output_text);
+  gtk_table_attach (GTK_TABLE (table2), output_text,2, 3, 4 + params.size(), 
+		    5 + params.size(),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  gtk_entry_set_editable (GTK_ENTRY(output_text), FALSE);
+
+  /* END NUMBER OF INPUTS AND OUTPUTS */
+  
 
 
 
