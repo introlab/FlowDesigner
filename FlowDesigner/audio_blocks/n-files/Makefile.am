@@ -1,6 +1,6 @@
 #AUTOMAKE_OPTIONS = no-dependencies
 
-toolboxdir = $(prefix)/toolbox/audio_blocks
+toolboxdir = $(datadir)/toolbox/audio_blocks
 
 toolbox_DATA = LP.n HP.n LPC_DECOMP.n dB.n undB.n
 

@@ -2,6 +2,9 @@ dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
 AC_INIT(data-flow/include/Node.h)
 
+includedir=$includedir/overflow
+datadir=$datadir/overflow
+
 FREESPEECH_MAJOR_VERSION=0
 FREESPEECH_MINOR_VERSION=5
 FREESPEECH_MICRO_VERSION=0
@@ -117,8 +120,7 @@ dnl Output the makefiles and version.h.
 AC_OUTPUT([Makefile \
 	data-flow/Makefile \
 	data-flow/src/Makefile data-flow/include/Makefile \
-	data-flow/doc/Makefile data-flow/doc/html/Makefile \
-	data-flow/doc/html/images/Makefile data-flow/n-files/Makefile \
+	data-flow/n-files/Makefile \
 	tools/Makefile tools/src/Makefile tools/m/Makefile examples/Makefile \
 	overflow-config Overflow.spec \
 	])

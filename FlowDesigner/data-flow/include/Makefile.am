@@ -8,7 +8,6 @@ include_HEADERS = Array.h \
 	Constant.h \
 	DLManager.h \
 	Exception.h \
-	GrowingBuffer.h \
 	Network.h \
 	Node.h \
 	NodeFactory.h \
@@ -20,10 +19,8 @@ include_HEADERS = Array.h \
 	misc.h \
 	net_types.h \
 	rc_ptrs.h \
-        BaseException.h \
+	BaseException.h \
 	ThreadedIterator.h \
-	GrowingFrameBuffer.h \
-	RotatingFrameBuffer.h \
 	variables.h \
 	ExternalApp.h \
 	VectorPool.h \

@@ -2,7 +2,9 @@ dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
 AC_INIT(include/fortran.h)
 
-dnl Stolen from gtk+:
+includedir=$includedir/overflow
+datadir=$datadir/overflow
+libdir=$datadir/lib
 
 
 FREESPEECH_MAJOR_VERSION=0

@@ -2,7 +2,9 @@ dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
 AC_INIT(include/gmm.h)
 
-dnl Stolen from gtk+:
+includedir=$includedir/overflow
+datadir=$datadir/overflow
+libdir=$datadir/lib
 
 
 FREESPEECH_MAJOR_VERSION=0
@@ -87,6 +89,6 @@ dnl Checks for library functions.
 
 dnl Output the makefiles and version.h.
 
-AC_OUTPUT([Makefile include/Makefile src/Makefile doc/Makefile doc/html/Makefile
+AC_OUTPUT([Makefile include/Makefile src/Makefile 
 	])
 

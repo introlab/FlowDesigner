@@ -4,6 +4,11 @@ AM_CONFIG_HEADER(config.h)
 
 AM_INIT_AUTOMAKE(VFlow, 0.5.0)
 
+includedir=$includedir/overflow
+datadir=$datadir/overflow
+libdir=$datadir/lib
+
+
 AM_MAINTAINER_MODE
 
 AM_ACLOCAL_INCLUDE(macros)

@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
 install:
-	mkdir -p $(prefix)/toolbox/vflow
-	perl $(top_srcdir)/../tools/src/info2def.pl $(top_srcdir)/src/*.cc > $(prefix)/toolbox/vflow/vflow.def
+	mkdir -p $(datadir)/toolbox/vflow
+	perl $(top_srcdir)/../tools/src/info2def.pl $(top_srcdir)/src/*.cc > $(datadir)/toolbox/vflow/vflow.def
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \

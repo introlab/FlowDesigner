@@ -14,8 +14,8 @@ vector<string> envList(char *envName)
    char *home = getenv("VFLOW_HOME");
    if (home && strcmp(home, "")!=0)
       prefix=home;
-   list.insert(list.end(), prefix+ "/toolbox");
-   list.insert(list.end(), prefix+ "/lib");
+   list.insert(list.end(), prefix+ "/share/overflow/toolbox");
+   list.insert(list.end(), prefix+ "/share/overflow/lib");
    char *strPath = getenv(envName);
    if (!strPath)
       return list;

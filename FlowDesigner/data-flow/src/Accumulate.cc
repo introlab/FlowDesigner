@@ -1,7 +1,7 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
 #include "Node.h"
-#include "GrowingFrameBuffer.h"
+#include "Vector.h"
 
 class Accumulate;
 

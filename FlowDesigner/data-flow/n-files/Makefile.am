@@ -1,6 +1,6 @@
 #AUTOMAKE_OPTIONS = no-dependencies
 
-toolboxdir = $(prefix)/toolbox/data-flow
+toolboxdir = $(datadir)/toolbox/data-flow
 
 toolbox_DATA = LoadFile.n SaveAs.n SerializeAs.n
 

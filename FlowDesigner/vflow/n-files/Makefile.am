@@ -1,6 +1,6 @@
 #AUTOMAKE_OPTIONS = no-dependencies
 
-toolboxdir = $(prefix)/toolbox/vflow
+toolboxdir = $(datadir)/toolbox/vflow
 
 toolbox_DATA = SpectrumProbe.n
 

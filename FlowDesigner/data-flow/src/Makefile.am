@@ -1,13 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.69 2001/06/11 15:36:01 jmvalin Exp $
+# $Id: Makefile.am,v 1.70 2001/06/11 19:41:15 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 install:
-	mkdir -p $(prefix)/toolbox/data-flow
-	perl $(top_srcdir)/tools/src/info2def.pl $(top_srcdir)/data-flow/src/*.cc > $(prefix)/toolbox/data-flow/data-flow.def
+	mkdir -p $(datadir)/toolbox/data-flow
+	perl $(top_srcdir)/tools/src/info2def.pl $(top_srcdir)/data-flow/src/*.cc > $(datadir)/toolbox/data-flow/data-flow.def
 
 lib_LTLIBRARIES = libflow.la
 
@@ -60,7 +60,6 @@ libflow_la_SOURCES = Node.cc \
 	Mul.cc \
 	Div.cc \
 	Length.cc \
-	FrameAccumulator.cc \
 	UIDocument.cc \
 	UILink.cc \
 	UINetTerminal.cc \
