@@ -27,6 +27,8 @@ class Probe : public Node {
    GtkWidget *entry1;
 
    pthread_mutex_t mutex;
+   pthread_cond_t cond;
+   int nbClick;
    //sem_t sem;
 
    int breakAt;

@@ -76,8 +76,10 @@ Probe::Probe(string nodeName, ParameterSet params)
    inputID = addInput("INPUT");
 
    //sem_init(&sem, 0, 0);
+   pthread_cond_init(&cond, NULL);
    pthread_mutex_init(&mutex, NULL);
-   pthread_mutex_lock(&mutex);
+   nbClick = 0;
+   //pthread_mutex_lock(&mutex);
    
    traceEnable=true;
    displayEnable=true;
@@ -111,6 +113,7 @@ Probe::~Probe()
    gdk_threads_leave(); 
 
    //sem_destroy(&sem);
+   pthread_cond_destroy(&cond);
    pthread_mutex_destroy(&mutex);
 }
 
@@ -273,7 +276,11 @@ void Probe::next()
 {
    //cerr << "In Probe::next\n";
    //sem_post(&sem);
+   
+   pthread_mutex_lock(&mutex);
+   nbClick++;
    pthread_mutex_unlock(&mutex);
+   pthread_cond_signal(&cond);
 }
 
 void Probe::cont()
@@ -330,6 +337,15 @@ void Probe::trace()
 
    //sem_wait(&sem);
    pthread_mutex_lock(&mutex);
+   if (nbClick)
+   {
+      nbClick--;
+      pthread_mutex_unlock(&mutex);
+   } else {
+      pthread_cond_wait(&cond, &mutex);
+      nbClick--;
+      pthread_mutex_unlock(&mutex);
+   }
    
    gdk_threads_enter(); 
    //gtk_widget_set_sensitive(button17, true);
