@@ -22,14 +22,24 @@ public:
    virtual bool mempty() const = 0;
       
    /**
-   	Returns an element (in an ObjectRef) of the vector
-	\param pos the position of the element
+   	Returns an element (in an ObjectRef) of the matrix
+	\param _row the row of the element
+	\param _col the col of the element
 	\return ObjectRef the newly created Object
    */
    virtual ObjectRef getIndex(int _row, int _col) {
    	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 	
+   /**
+   	Sets an element (in an ObjectRef) of the matrix
+	\param _row the row of the element
+	\param _col the col of the element
+	\param val the new value of the element
+   */
+   virtual void setIndex(int _row, int _col, ObjectRef val) {
+   	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
+   }
 
 };
 
@@ -269,6 +279,7 @@ public:
    */
    virtual void unserialize(istream &in);
 
+   ///returns the class name
    static string GetClassName()
    {
       string name = ObjectGetClassName<Matrix<T> >();
@@ -278,8 +289,22 @@ public:
 	 return name;
    }
    
-   ///Return matrix element at _row, _col
+   /**
+   	Returns an element (in an ObjectRef) of the matrix
+	\param _row the row of the element
+	\param _col the col of the element
+	\return ObjectRef the newly created Object
+   */
    virtual ObjectRef getIndex(int _row, int _col);
+   
+   
+   /**
+   	Sets an element (in an ObjectRef) of the matrix
+	\param _row the row of the element
+	\param _col the col of the element
+	\param val the new value of the element
+   */
+   virtual void setIndex(int _row, int _col, ObjectRef val);
 
 };
 

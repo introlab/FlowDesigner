@@ -78,3 +78,60 @@ ObjectRef Matrix<string>::getIndex(int _row, int _col) {
 	*new_string = (*this)(_row,_col);
 	return ObjectRef(new_string);
 }
+
+//setIndex implementation for Matrix<bool>
+void Matrix<bool>::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<Bool> v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
+//setIndex implementation for Matrix<int>
+void Matrix<int>::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<Int> v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
+//setIndex implementation for Matrix<float>
+void Matrix<float>::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<Float> v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
+//setIndex implementation for Matrix<double>
+void Matrix<double>::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<Double> v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+   
+//setIndex implementation for Matrix<complex<float> >
+void Matrix<complex<float> >::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<Complex<float> > v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
+//setIndex implementation for Matrix<complex<double> >
+void Matrix<complex<double> >::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<Complex<double> > v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
+//setIndex implementation for Matrix<string>
+void Matrix<string>::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<String> v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
+//setIndex implementation for Matrix<String>
+void Matrix<String>::setIndex(int _row, int _col, ObjectRef val) {
+	//look for range ?
+	RCPtr<String> v = val;
+	(*this)(_row,_col) = static_cast<basicType>(v->val());	
+}
+
