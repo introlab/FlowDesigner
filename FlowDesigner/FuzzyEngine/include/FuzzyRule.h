@@ -40,6 +40,8 @@ public:
   FuzzyRule(const FuzzyRule& cpy);
   
   FuzzyRule(string nodeName, ParameterSet params);
+
+  FuzzyRule(istream &in) {readFrom(in);}
   
   //destructor
   virtual ~FuzzyRule();

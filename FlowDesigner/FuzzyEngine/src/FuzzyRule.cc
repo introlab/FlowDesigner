@@ -12,6 +12,7 @@
 
 
 DECLARE_NODE(FuzzyRule)
+DECLARE_TYPE(FuzzyRule)
 /*Node
  *
  * @name FuzzyRule
@@ -190,18 +191,61 @@ void FuzzyRule::printOn(ostream &out) const {
   out <<"<AntecedantSize "<<m_antecedant.size()<<" >"<<endl;
   out <<"<ConsequentSize "<<m_consequent.size()<<" >"<<endl;
   for (int i = 0; i < m_antecedant.size(); i++) {
-    out<<m_antecedant[i].first<<" "<<m_antecedant[i].second<<" ";
+    out<<"<Antecedant "<<m_antecedant[i].first<<" "<<m_antecedant[i].second<<" >"<<endl;
   }
-  out<<endl;
-
   for (int i = 0; i < m_consequent.size(); i++) {
-    out<<m_consequent[i].first<<" "<<m_consequent[i].second<<" ";
+    out<<"<Consequent "<<m_consequent[i].first<<" "<<m_consequent[i].second<<" >"<<endl;
   }
-  out<<endl;
-
   out <<" >\n";
 }
 
 void FuzzyRule::readFrom(istream &in) {
 
+
+   string tag;
+   int antecedant_size;
+   int consequent_size;
+
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+
+      else if (ch != '<') {
+       throw new ParsingException ("Parse error: '<' expected");
+      }
+      in >> tag;
+
+      if (tag == "Number") {
+         in >> m_rule_number;
+      }
+      else if (tag == "AntecedantSize") {
+	in >> antecedant_size;
+      }
+      else if (tag == "ConsequentSize") {
+	in >> consequent_size;
+      }
+      else if (tag == "Antecedant") {
+	string first,second;
+	in >>first;
+	in >>second;
+	m_antecedant.push_back(make_pair(first,second));
+      }
+      else if (tag == "Consequent") {
+	string first,second;
+	in >>first;
+	in >>second;
+	m_consequent.push_back(make_pair(first,second));
+      }
+      else {
+	throw new ParsingException ("unknown argument: " + tag);
+      }
+
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+
+      in >> tag;
+      if (tag != ">") 
+         throw new ParsingException ("Parse error: '>' expected ");
+   }
 }

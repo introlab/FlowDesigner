@@ -5,6 +5,7 @@
 #include "FuzzyOperators.h"
 
 DECLARE_NODE(TriangularFunction)
+DECLARE_TYPE(TriangularFunction)
 /*Node
  *
  * @name TriangularFunction
@@ -137,6 +138,40 @@ void TriangularFunction::printOn(ostream &out) const {
 
 
 void TriangularFunction::readFrom(istream &in) {
-
-
+  
+  string tag;
+  
+  while (1) {
+    char ch;
+    in >> ch;
+    if (ch == '>') break;
+    
+    else if (ch != '<') {
+      throw new ParsingException ("Parse error: '<' expected");
+    }
+    in >> tag;
+    
+    if (tag == "Name") {
+      in >> m_name;
+    }
+    else if (tag == "A") {
+      in >> m_a;
+    }
+    else if (tag == "B") {
+      in >> m_b;
+    }
+    else if (tag == "C") {
+      in >> m_c;
+    }
+    else {
+      throw new ParsingException ("unknown argument: " + tag);
+    }
+    
+    if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+    
+    in >> tag;
+    if (tag != ">") 
+      throw new ParsingException ("Parse error: '>' expected ");
+  }
+  
 }

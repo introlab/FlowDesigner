@@ -9,6 +9,7 @@
 #include "FuzzyOperators.h"
 
 DECLARE_NODE(TrapezoidalFunction)
+DECLARE_TYPE(TrapezoidalFunction)
 /*Node
  *
  * @name TrapezoidalFunction
@@ -161,5 +162,42 @@ void TrapezoidalFunction::printOn(ostream &out) const {
 
 void TrapezoidalFunction::readFrom(istream &in) {
 
+   string tag;
+   
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
 
+      else if (ch != '<') {
+       throw new ParsingException ("Parse error: '<' expected");
+      }
+      in >> tag;
+
+      if (tag == "Name") {
+         in >> m_name;
+      }
+      else if (tag == "A") {
+	in >> m_a;
+      }
+      else if (tag == "B") {
+	in >> m_b;
+      }
+      else if (tag == "C") {
+	in >> m_c;
+      }
+      else if (tag == "D") {
+	in >> m_d;
+      }
+      else {
+	throw new ParsingException ("unknown argument: " + tag);
+      }
+
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+
+      in >> tag;
+      if (tag != ">") 
+         throw new ParsingException ("Parse error: '>' expected ");
+   }
 }

@@ -14,6 +14,7 @@
 #include "FuzzyOperators.h"
 
 DECLARE_NODE(FuzzySet)
+DECLARE_TYPE(FuzzySet)
 /*Node
  *
  * @name FuzzySet
@@ -268,13 +269,64 @@ void FuzzySet::printOn(ostream &out) {
   out << "<Size "<<m_functions.size()<<" >"<<endl;
 
   for (int i = 0; i < m_functions.size(); i++) {
+    out<<"< "<<m_functions[i]->get_type()<<endl;
     m_functions[i]->printOn(out);
-    out<<endl;
+    out<<" >"<<endl;
   }
   out <<" >\n";
 }
 
 void FuzzySet::readFrom(istream &in) {
 
+   string tag;
+   int size;
+
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+
+      else if (ch != '<') {
+       throw new ParsingException ("Parse error: '<' expected");
+      }
+      in >> tag;
+
+      if (tag == "Name") {
+         in >> m_name;
+      }
+      else if (tag == "Size") {
+         in >> size;
+	 m_evaluation.resize(size);
+      }
+      else if (tag == "Triangular") {
+
+	if (!isValidType(in, "TriangularFunction")) {
+	  throw new ParsingException ("Parse error trying to build " + tag);
+	}
+
+
+	m_functions.push_back(new TriangularFunction(in));
+      }
+      else if (tag == "Trapezoidal") {
+
+	if (!isValidType(in, "TrapezoidalFunction")) {
+	  throw new ParsingException ("Parse error trying to build " + tag);
+	}
+       
+	m_functions.push_back(new TrapezoidalFunction(in));
+      }
+      else {
+	throw new ParsingException ("unknown argument: " + tag);
+      }
+
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+
+      in >> tag;
+      if (tag != ">") 
+         throw new ParsingException ("Parse error: '>' expected ");
+   }
+
+   
 
 }

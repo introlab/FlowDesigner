@@ -9,6 +9,7 @@
 
 
 DECLARE_NODE(GenericModel)
+DECLARE_TYPE(GenericModel)
 /*Node
  *
  * @name GenericModel
@@ -172,32 +173,91 @@ FuzzyModel* GenericModel::clone() {
 void GenericModel::printOn(ostream &out) const {
 
   out << "<GenericModel "<<endl; 
-  out << "<RuleSize "<<m_rules.size()<<" >"<<endl;
   out << "<InputSetSize "<<m_input_set.size()<<" >"<<endl;
   out << "<OutputSetSize "<<m_output_set.size()<<" >"<<endl;
-
-  //rules
-  for (int i = 0; i < m_rules.size(); i++) {
-    m_rules[i]->printOn(out);
-    out<<endl;
-  }
+  out << "<RuleSize "<<m_rules.size()<<" >"<<endl;
   
   //inputset
   for (int i = 0; i < m_input_set.size(); i++) {
+    out<<"<InputSet ";
     m_input_set[i]->printOn(out);
-    out<<endl;
+    out<<" >"<<endl;
   }
   
   //outputset
   for (int i = 0; i < m_output_set.size(); i++) {
+    out<<"<OutputSet ";
     m_output_set[i]->printOn(out);
-    out<<endl;
+    out<<" >"<<endl;
   }
+
+  //rules
+  for (int i = 0; i < m_rules.size(); i++) {
+    out<<"<Rule ";
+    m_rules[i]->printOn(out);
+    out<<" >"<<endl;    
+  }
+
 
   out <<" >\n";
 }
 	
 void GenericModel::readFrom(istream &in) {
 
+   string tag;
+   int rule_size;
+   int input_set_size;
+   int output_set_size;
+
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+
+      else if (ch != '<') {
+       throw new ParsingException ("Parse error: '<' expected");
+      }
+      in >> tag;
+
+      if (tag == "RuleSize") {
+         in >> rule_size;
+      }
+      else if (tag == "InputSetSize") {
+	in >> input_set_size;
+      }
+      else if (tag == "OutputSetSize") {
+	in >> output_set_size;
+      }
+
+      else if (tag == "InputSet") {
+	if (!isValidType(in, "FuzzySet")) {
+	  throw new ParsingException ("Parse error trying to build " + tag);
+	}	
+	add_fuzzy_set(new FuzzySet(in),FuzzyModel::FUZZY_INPUT_SET);
+
+      }
+      else if (tag == "OutputSet") {
+	if (!isValidType(in, "FuzzySet")) {
+	  throw new ParsingException ("Parse error trying to build " + tag);
+	}
+	add_fuzzy_set(new FuzzySet(in), FuzzyModel::FUZZY_OUTPUT_SET);
+      }
+      else if (tag == "Rule") {
+	if (!isValidType(in, "FuzzyRule")) {
+	  throw new ParsingException ("Parse error trying to build " + tag);
+	}
+	add_fuzzy_rule(new FuzzyRule(in));
+      }
+      else {
+	throw new ParsingException ("unknown argument: " + tag);
+      }
+
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+
+      in >> tag;
+      if (tag != ">") 
+         throw new ParsingException ("Parse error: '>' expected ");
+   }
 
 }
