@@ -264,13 +264,14 @@ void Probe::initialize()
    if (!traceEnable)
       gtk_widget_set_sensitive(button18, false);
 
+   /*
    const char *hide_name;
    if (displayEnable)
       hide_name=_("Hide");
    else 
       hide_name=_("Show");
 
-   /*tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_CLOSE);
+   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_CLOSE);
    button19 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
@@ -282,6 +283,14 @@ void Probe::initialize()
                                         "gtk-close",
                                         "gtk-close",
                                         NULL, NULL, NULL, -1);
+   if(displayEnable)
+   {
+      rename_button(button19, "Show");
+   }
+   else
+   {
+      rename_button(button19, "Hide");
+   }
    
    gtk_widget_ref (button19);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button19", button19,
@@ -364,13 +373,13 @@ void Probe::setBreak()
 void Probe::show_hide()
 {
    displayEnable = !displayEnable;
-   if (displayEnable)
+   if(displayEnable)
    {
-      rename_button(button19, "Hide");
+      rename_button(button19, "Show");
    }   
    else
    {
-      rename_button(button19, "Show");
+      rename_button(button19, "Hide");
    }  
 }
 
