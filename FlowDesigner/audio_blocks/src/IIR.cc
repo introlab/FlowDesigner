@@ -9,7 +9,7 @@ class IIR;
 
 DECLARE_NODE(IIR)
 /*Node
-
+ *
  * @name IIR
  * @category DSP:Filter
  * @description All-pole (IIR) filter
