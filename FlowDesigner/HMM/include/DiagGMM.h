@@ -23,6 +23,12 @@ class DiagGaussian {
    int size;
    int accum;
 public:
+   DiagGauss()
+      : ptr(NULL)
+      , meanCov(NULL)
+      , size(0)
+      , accum(0)
+      {}
    DiagGauss(int _size)
       : size(_size)
       , ptr(malloc (2*_size*sizeof(float)+CACHE_LINE))
@@ -41,12 +47,22 @@ public:
    float mdist(const vector<float *> &in, vector<float> &out)
    {
    }
-
+   
+   void invert()
+   {
+      if (accum==0)
+	 throw new GeneralException("Cannot invert empty gaussian", __FILE__, __LINE__);
+      for (int i=0;i<size;i++)
+	 ;
+   }
 };
 
 class DiagGMM {
+   int length;
    vector<DiagGaussian *> gauss;
 public:
-   train(vector<float *> in, int length, int nbGauss);
-   
+   DiagGMM() {}
+   void train(const vector<float *> &in, int length, int nbGauss);
+   void kmeansPass(const vector<float *> &in);
+   float score(const float *vec);
 };
