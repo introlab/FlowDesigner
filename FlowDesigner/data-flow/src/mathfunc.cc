@@ -47,3 +47,4 @@ REGISTER_VTABLE0(sin, Int, sinObj<Int>, 2)
 
 REGISTER_VTABLE0(cos, Float, cosObj<Float>, 1)
 REGISTER_VTABLE0(cos, Int, cosObj<Int>, 2)
+

@@ -16,6 +16,7 @@ class SymbolSet {
       if (sym == translationMap.end())
       {
 	 translationMap.insert(make_pair(str, currentID++));
+	 return currentID-1;
       } else {
 	 return sym->second;
       }
@@ -33,6 +34,7 @@ class SymbolSet {
       {
 	 if (it->second == ID)
 	    return it->first;
+	 ++it;
       }
       return string("");
    }
@@ -59,6 +61,11 @@ class VirtualMethods {
    vector<vtableType2> tables2;
    vector<vtableType3> tables3;
   public:
+   VirtualMethods() 
+   {
+      symbols=new SymbolSet;
+   }
+
    int lookup(const string &str)
    {
       return symbols->get(str);
