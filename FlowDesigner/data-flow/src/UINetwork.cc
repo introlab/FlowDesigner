@@ -755,8 +755,20 @@ void UINetwork::updateAllSubnetTerminals(const string _nettype, const string _te
 	}
 	else {
 	  // Adds a terminal to a node
-	  nodes[i]->addTerminal(_terminalname,_terminaltype);
-      }
+	  switch(_terminaltype) {
+	  case UINetTerminal::INPUT:
+	    if (!nodes[i]->getInputNamed(_terminalname))
+	      nodes[i]->addTerminal(_terminalname,_terminaltype);
+	    break;
+	  case UINetTerminal::OUTPUT:
+	    if (!nodes[i]->getOutputNamed(_terminalname))
+	      nodes[i]->addTerminal(_terminalname,_terminaltype);
+	    break;
+	  default:
+	    throw new GeneralException("Invalid terminal type",__FILE__,__LINE__);
+	    break;
+	  }
+	}
       }
     }
   }
