@@ -19,28 +19,64 @@
 #include "UIDocument.h"
 #include "Network.h"
 #include "ParameterSet.h"
+#include "IntfNode.h"
 
 OFWrapper::OFWrapper()
-{
-}
-
-OFWrapper::~OFWrapper()
+   : doc(NULL)
+   , net(NULL)
+   , count(0)
+   , intf(NULL)
 {
 }
 
 OFWrapper::OFWrapper(string name)
+   : doc(NULL)
+   , net(NULL)
+   , count(0)
+   , intf(NULL)
 {
+   open(name);
+}
+
+OFWrapper::~OFWrapper()
+{
+   if (net)
+   {
+      net->cleanupNotify();
+      delete net;
+   }
+   if (intf)
+      delete intf;
+   if (doc)
+      delete doc;
 }
 
 void OFWrapper::open(string name)
 {
+   if (net)
+   {
+      net->cleanupNotify();
+      delete net;
+   }
+   if (intf)
+      delete intf;
+   if (doc)
+      delete doc;
+   doc = new UIDocument(name);
+   doc->load();
 }
 
 void OFWrapper::init(const ParameterSet &params)
 {
+   net = doc->build("wrapper", params);
+   intf=new IntfNode("interface", ParameterSet());
+   net->connectToNode("INPUT", intf, "OUTPUT");
+   net->initialize();
 }
 
 ObjectRef OFWrapper::process(ObjectRef in)
 {
+   intf->setValue(count, in);
+   return net->getOutput(0,count++);
 }
 

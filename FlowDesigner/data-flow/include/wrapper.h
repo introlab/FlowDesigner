@@ -22,11 +22,13 @@ using namespace std;
 #include "UIDocument.h"
 #include "Network.h"
 #include "ParameterSet.h"
+#include "IntfNode.h"
 
 class OFWrapper {
    UIDocument *doc;
    Network *net;
-
+   int count;
+   IntfNode *intf;
 public:
    OFWrapper();
    ~OFWrapper();
