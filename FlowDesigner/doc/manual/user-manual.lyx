@@ -1,0 +1,181 @@
+#LyX 1.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 2.16
+\textclass book
+\language default
+\inputencoding latin1
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\paperorientation portrait
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+
+\layout Standard
+
+
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset 
+
+
+\layout Chapter
+
+Introduction
+\layout Chapter
+
+Getting Started
+\layout Standard
+
+If called with no argument, the 
+\emph on 
+vflow
+\emph default 
+ program will start with a new empty Overflow document.
+ It will already have a network named "MAIN".
+ It is important that every "program" contain a network called "MAIN", which
+ is equivalent to the 
+\emph on 
+main()
+\emph default 
+ function in a C program.
+ You can add more sub-networks (equivalent of sub-routines) from the menu
+ 
+\emph on 
+Networks->Add Network
+\emph default 
+.
+ 
+\layout Standard
+
+You can then add nodes to your network by clicking on the right button in
+ the background, select 
+\emph on 
+New Node
+\emph default 
+ and the type of node you want.
+ The node inputs are displayed as a dot on the left side of each node, while
+ the outputs are displayed on the right side.
+ Inputs and outputs are called terminals.
+ You can connect two nodes by clicking on a terminal and dragging the mouse
+ to another terminal.
+ Note that you cannot connect two outputs together, nor can you connect
+ two inputs together.
+ Except by using the 
+\emph on 
+Feedback
+\emph default 
+ node ("advanced" feature), you should not have feedback loops in your network.
+ Links can be deleted by clicking on them with the SHIFT modifier on.
+ 
+\layout Standard
+
+Right-clicking on a node brings up the node menu.
+ Selecting "Properties" in the node menu brings a dialog with parameters
+ used by the node.
+ Each parameter has a name a type and a value.
+ Some of the parameters are mandatory, while some others are optional.
+ See the node documentation for a description of all the parameters.
+ 
+\layout Standard
+
+All networks must have at least one output.
+ Any network that is not a toplevel network (MAIN) may also have inputs.
+ Inputs and outputs can be added by left clicking on a terminal with the
+ SHIFT modifier on.
+ You will be asked to provide the input/output name.
+\layout Section
+
+Using sub-networks (subnets) and iterators
+\layout Standard
+
+In order to simplify programming, you can create sub-networks (main menu
+ Network->Add network) that can contain several nodes connected together.
+ That way, you can reuse those networks as subnets in a higher level network.
+ It is very important to name the newly created network a different name
+ than "MAIN" for obvious reasons.
+ Those networks must absolutely have "named" inputs and outputs in order
+ to be used in higher level networks as explained in the previous section.
+ 
+\layout Standard
+
+Another useful type of network you can create is the Iterator (main menu
+ Network->Add iterator).
+ An iterator, is a control structure that performs a loop.
+ It stops looping when a certain "control condition" is met.
+ The condition is a boolean value the iterator gets from a node.
+ To define the iterator's condition, left click on a node output while holding
+ the CONTROL (or ALT) modifier.
+ Note that there is a bug in some versions of gnome for which CONTROL does
+ not work with the canvas, so you'll have to use ALT.
+\layout Standard
+
+For now, Threaded Iterators are experimental.
+ You should not use them, unless you REALLY know what you are doing.
+\layout Section
+
+Executing an Overflow program
+\layout Standard
+
+When your program is complete, you can execute it by clicking "Run" in the
+ toolbar.
+ If an error occurs, the program will abort and the error will be printed
+ in the text box in the bottom pane.
+ Node that as of 0.6.0, the created documents have execute permission and
+ can be executed as a like a script, provided that the batchflow executable
+ is in the path.
+\layout Chapter
+
+Automatic Code Generation
+\layout Standard
+
+Is is now possible to generate C++ code from an Overflow .n file.
+ You can do that by clicking the "Build" button on the toolbar.
+ Doing so brings up the code generation dialog.
+\layout Standard
+
+The "Build function name" is the name given to the function that will return
+ the network (
+\family typewriter 
+Network *
+\family default 
+) corresponding to the XML file.
+ You will only care if you want to build a library or if you want multiple
+ networks.
+ The "Output file name" option specifies the name of the C++ file that builds
+ the network.
+ Of course, "Directory" specifies where to put all that.
+ 
+\layout Standard
+
+There are 3 code generation options: 
+\layout Itemize
+
+Generate main: Check that if you want to build an application (as opposed
+ to a library) 
+\layout Itemize
+
+Static linkage: This will copy all the required Overflow files in the same
+ directory.
+ This will allow to build an application/library without linking to Overflow.
+ Note that the Overflow license (LGPL) still applies to the copied files.
+ 
+\layout Itemize
+
+Generate makefile: Un-implemented yet 
+\layout Standard
+
+Note: the VFLOW_SOURCE environment variable must be set to your Overflow
+ source directory in order for the "static linkage" option to work.
+\the_end
