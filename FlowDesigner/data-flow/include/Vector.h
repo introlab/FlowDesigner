@@ -91,6 +91,7 @@ public:
 	 memcpy(data, v.data, obj_size*sizeof(T));
 #endif
       }
+      return *this;
    }
 
    inline void resize(int new_size, const T &x = T());
