@@ -1,15 +1,9 @@
 #include "fmath.h"
 
-int build_table()
+int build_flog_table()
 {
    float f;
    int *cas=(int *)(&f);
-   for (int i=0;i<256;i++)
-   {
-      int tmp=i<<23;
-      (*cas)=tmp;
-      logtable1[i]=log(f);
-   }
    
    for (int i=0;i<FLOGLOOKUP2SIZE;i++)
    {
@@ -20,7 +14,28 @@ int build_table()
    return 0;
 }
 
-static int tmp_dummt_flog = build_table();
+static int tmp_dummy_flog = build_flog_table();
 
-float logtable1[256];
 float logtable2[FLOGLOOKUP2SIZE];
+
+
+
+
+int build_fexp_table()
+{
+   float f;
+   int *cas=(int *)(&f);
+   
+   for (int i=0;i<FEXPSIZE;i++)
+   {
+      int tmp = i<<FEXPSHIFT;
+      (*cas)=tmp;
+      exptable[i]=exp(f);
+   }
+   return 0;
+}
+
+static int tmp_dummy_fexp = build_fexp_table();
+
+float exptable[FEXPSIZE];
+
