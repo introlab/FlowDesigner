@@ -21,8 +21,17 @@
 
 ///State class
 class State {
+   
+   struct TransitionProbability {
+      State *state;
+      float probability;
+   };
+
    ///Corresponding GMM
    GMM *mixture;
+   
+   ///All possible transitions to other states
+   vector<TransitionProbability> transitions;
 };
 
 
