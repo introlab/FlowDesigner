@@ -44,7 +44,7 @@ class KeyPad : public Node {
   int selected_line;
   int selected_pad;
   char pad_description;
-  bool changed;
+  bool active;
 
   //outputs
   int keypadID;

@@ -63,7 +63,7 @@ const int KeyPad::pad_C_number = 14;
 const int KeyPad::pad_D_number =15;
 
 KeyPad::KeyPad(string nodeName, ParameterSet params) 
-  : Node(nodeName,params), changed(false), selected_line(-1), selected_column(-1), selected_pad(-1) {
+  : Node(nodeName,params), active(false), selected_line(-1), selected_column(-1), selected_pad(-1) {
 
   //adding outputs
   keypadID = addOutput("KEYPAD");
@@ -103,7 +103,7 @@ void KeyPad::specificInitialize() {
    gtk_signal_connect (GTK_OBJECT (window1), "delete-event",
 		       GTK_SIGNAL_FUNC (ignore_delete),this);
 
-   
+   gtk_window_set_default_size (GTK_WINDOW(window1),280,150);
    //creating vbox
    vbox1 = gtk_vbox_new (FALSE, 0);
    gtk_widget_ref (vbox1);
@@ -468,7 +468,7 @@ void KeyPad::specificInitialize() {
 
 void KeyPad::reset() {
 
-  changed = false;
+  active = false;
 
 }
 
@@ -477,7 +477,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
   if (output_id == keypadID) {
     
     
-    if (changed) {
+    if (active) {
       Vector<int> *my_output = new Vector<int>(2);
       
       (*my_output)[0] = selected_line;
@@ -492,7 +492,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
     
   }//keypadID
   else if (output_id == keypadIdID) {
-    if (changed) {
+    if (active) {
       return ObjectRef(new Int(selected_pad));
     }
     else {
@@ -501,7 +501,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
 
   }
   else if (output_id == keypadNameID) {
-    if (changed) {
+    if (active) {
       return ObjectRef(new Char(pad_description));
     }
     else {
@@ -522,66 +522,82 @@ void KeyPad::update_values(int pad_number) {
   case pad_0_number:
     selected_line = 3;
     selected_column = 1;
+    pad_description = '0';
     break;
   case pad_1_number:
     selected_line = 0;
     selected_column = 0;
+    pad_description = '1';
     break;
   case pad_2_number:
     selected_line = 0;
     selected_column = 1;
+    pad_description = '2';
     break;
   case pad_3_number:
     selected_line = 0;
     selected_column = 2;
+    pad_description = '3';
     break;
   case pad_4_number:
     selected_line = 1;
     selected_column = 0;
+    pad_description = '4';
     break;
   case pad_5_number:
     selected_line = 1;
     selected_column = 1;
+    pad_description = '5';
     break;
   case pad_6_number:
     selected_line = 1;
     selected_column = 2;
+    pad_description = '6';
     break;
   case pad_7_number:
     selected_line = 2;
     selected_column = 0;
+    pad_description = '7';
     break;
   case pad_8_number:
     selected_line = 2;
     selected_column = 1;
+    pad_description = '8';
     break;
   case pad_9_number:
     selected_line = 2;
     selected_column = 2;
+    pad_description = '9';
     break;
   case pad_star_number:
     selected_line = 3;
     selected_column = 0;
+    pad_description = '*';
     break;
   case pad_hash_number:
     selected_line = 3;
     selected_column = 2;
+    pad_description = '#';
     break;
   case pad_A_number:
     selected_line = 0;
     selected_column = 3;
+    pad_description = 'A';
     break;
   case pad_B_number:
     selected_line = 1;
     selected_column = 3;
+    pad_description = 'B';
     break;
   case pad_C_number:
     selected_line = 2;
     selected_column = 3;
+    pad_description = 'C';
     break;
   case pad_D_number:
     selected_line = 3;
     selected_column = 3;
+    pad_description = 'D';
     break;
     
   default:
@@ -590,7 +606,7 @@ void KeyPad::update_values(int pad_number) {
 
   }
 
-  changed = true;
+  active = true;
 
 
 }
@@ -616,7 +632,7 @@ void keypad_button_pressed(GtkButton  *button, KeyPad *keypad) {
 
 void keypad_button_released(GtkButton  *button, KeyPad *keypad) {
 
-  keypad->changed = false;
+  keypad->active = false;
 
 }
 

@@ -11,7 +11,9 @@
       <Parameter name="SAMPLING" type="int" value="8000"/>
       <Parameter name="GAIN" type="float" value="2000"/>
     </Node>
-    <Node name="node6" type="PlotProbe" x="393.000000" y="105.000000"/>
+    <Node name="node6" type="PlotProbe" x="392.000000" y="104.000000">
+      <Parameter name="BREAK_AT" type="int" value="-1"/>
+    </Node>
     <Link from="node1" output="KEYPAD" to="node5" input="INPUT"/>
     <Link from="node6" output="OUTPUT" to="node3" input="OBJECT"/>
     <Link from="node5" output="OUTPUT" to="node6" input="INPUT"/>

@@ -4,28 +4,25 @@
     <Node name="node2" type="Constant" x="183.000000" y="41.000000">
       <Parameter name="VALUE" type="bool" value="true"/>
     </Node>
-    <Node name="node1" type="KeyPad" x="97.000000" y="100.000000">
-      <Parameter name="BREAK_AT" type="int" value="-1"/>
-      <Parameter name="SHOW" type="bool" value="true"/>
-      <Parameter name="HOLD" type="int" value="1000"/>
-    </Node>
-    <Node name="node4" type="Constant" x="-42.000000" y="100.000000">
-      <Parameter name="VALUE" type="int" value="1"/>
-    </Node>
+    <Node name="node1" type="KeyPad" x="58.000000" y="157.000000"/>
     <Node name="node5" type="TextProbe" x="265.000000" y="140.000000">
       <Parameter name="BREAK_AT" type="int" value="-1"/>
       <Parameter name="SHOW" type="bool" value="true"/>
     </Node>
-    <Node name="node3" type="TextProbe" x="276.000000" y="81.000000">
+    <Node name="node3" type="TextProbe" x="256.000000" y="203.000000">
       <Parameter name="BREAK_AT" type="int" value="-1"/>
       <Parameter name="SHOW" type="bool" value="true"/>
     </Node>
-    <Link from="node4" output="VALUE" to="node1" input="INPUT"/>
+    <Node name="node4" type="TextProbe" x="264.000000" y="169.000000">
+      <Parameter name="BREAK_AT" type="int" value="-1"/>
+    </Node>
     <Link from="node1" output="KEYPAD" to="node5" input="INPUT"/>
-    <Link from="node1" output="OUTPUT" to="node3" input="INPUT"/>
+    <Link from="node1" output="KEYPAD_NAME" to="node3" input="INPUT"/>
+    <Link from="node1" output="KEYPAD_ID" to="node4" input="INPUT"/>
     <NetCondition name="CONDITION" node="node2" terminal="VALUE"/>
     <NetOutput name="OUTPUT2" node="node5" terminal="OUTPUT"/>
     <NetOutput name="OUTPUT1" node="node3" terminal="OUTPUT"/>
+    <NetOutput name="OUTPUT3" node="node4" terminal="OUTPUT"/>
   </Network>
   <Parameter name="DOWHILE" type="" value=""/>
 </Document>
