@@ -18,6 +18,7 @@
 #include <fstream>
 #include <fcntl.h>
 #include "stream_wrap.h"
+#include "object_param.h"
 
 //@implements UIClasses
 
@@ -148,7 +149,7 @@ void UIDocument::load()
 	 docFile >> ch;
 	 if (docFile.fail())
 	 {
-	    error("Error: this doesn't look like an Overflow document");
+	    error("Error: this doesn't look like an FlowDesigner document");
 	    addNetwork("MAIN", UINetwork::subnet);
 	    resetModified();
 	    return;
@@ -156,7 +157,7 @@ void UIDocument::load()
       }
    } else if (ch!='<')
    {
-      error("Error: this doesn't look like an Overflow document");
+      error("Error: this doesn't look like an FlowDesigner document");
       addNetwork("MAIN", UINetwork::subnet);
       resetModified();
       return;
@@ -165,7 +166,7 @@ void UIDocument::load()
    docFile >> xmlStr;
    if (xmlStr != "?xml")
    {
-      error("Error: this doesn't look like an Overflow document");
+      error("Error: this doesn't look like an FlowDesigner document");
       addNetwork("MAIN", UINetwork::subnet);
       resetModified();
       return;      
@@ -263,14 +264,14 @@ void UIDocument::loadXML(xmlNodePtr root)
 	 free(str_name); free(str_type); free(str_value);
          
          for (unsigned int i=0;i<textParams.size();i++)
-     {
-        if (textParams[i]->name == name)
-        {
-           textParams[i]->type = type;
-           textParams[i]->value = value;
-           //insertLoadedParam(param, type, value);
-        }
-     }
+	   {
+	     if (textParams[i]->name == name)
+	       {
+		 textParams[i]->type = type;
+		 textParams[i]->value = value;
+		 //insertLoadedParam(param, type, value);		 
+	       }
+	   }
          //cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
       }
       par = par->next;
@@ -517,10 +518,14 @@ Network *UIDocument::buildExternal(const string &type, const string &_name, cons
    doc.load();
    
    UINetwork *net = doc.getNetworkNamed("MAIN");
-   if (net)
-      return net->build(_name, params);
+   if (net) 
+   {
+     return net->build(_name, params);     
+   }
    else
-      throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
+   {
+     throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
+   }
 }
 
 
@@ -531,7 +536,21 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
       UINetwork *uinet = getNetworkNamed("MAIN");
       if (!uinet)
 	 throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
-      net = uinet->build(_name, params);
+
+      //copy params
+      ParameterSet myParams = params;
+
+      //adding document params           
+      for (int i = 0; i < textParams.size(); i++) 
+      {
+	//create object
+	ObjectRef param_value = ObjectParam::stringParam(textParams[i]->type,textParams[i]->value,myParams);
+	
+	//adding param
+	myParams.add(textParams[i]->name,param_value);	
+      }
+
+      net = uinet->build(_name, myParams);
       net->verifyConnect();
       return net;
    } catch (BaseException *e)
