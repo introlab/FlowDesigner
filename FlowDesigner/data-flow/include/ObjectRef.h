@@ -81,5 +81,4 @@ inline bool &object_has_type (const ObjectRef &ref)
 }
 
 
-
 #endif
