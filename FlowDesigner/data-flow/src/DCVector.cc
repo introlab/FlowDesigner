@@ -1,4 +1,5 @@
-// Copyright (C) 2001 Locus Dialog (author: Jean-Marc Valin)
+//Copyright (C) 2001 Locus Dialog 
+//Author: Jean-Marc Valin
 
 
 #include "Node.h"
@@ -54,7 +55,7 @@ public:
       value = ObjectRef(new Vector<float>);
       Vector<float> &val = object_cast<Vector<float> > (value);
       
-      val.resize(dereference_cast<int> (parameters.get("VALUE")), 
+      val.resize(dereference_cast<int> (parameters.get("LENGTH")), 
 		 dereference_cast<float> (parameters.get("VALUE")));
    }
 

@@ -73,6 +73,14 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
       obj >> val;
       return val;
    } 
+   else if (type == "expr")
+   {
+      throw new GeneralException("Expressions not supported yet in params", __FILE__, __LINE__);
+      /*istringstream obj(value);
+      ObjectRef val;
+      obj >> val;
+      return val;*/
+   } 
    else if (type == "subnet_param")
    {
       if (param.exist(value))

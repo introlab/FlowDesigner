@@ -196,10 +196,13 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
       ParameterText *curr = textParams[i];
 
       //FIXME: Shouldn't have to use const_cast
-      ObjectRef value = ObjectParam::stringParam(curr->type, curr->value, const_cast<ParameterSet &> (par));
-      
-      if (value->status == Object::valid)
-	 parameters->add(curr->name,value);
+      if (curr->value != "")
+      {
+	 ObjectRef value = ObjectParam::stringParam(curr->type, curr->value, const_cast<ParameterSet &> (par));
+	 
+	 if (value->status == Object::valid)
+	    parameters->add(curr->name,value);
+      }
    }
    return parameters;
 }
