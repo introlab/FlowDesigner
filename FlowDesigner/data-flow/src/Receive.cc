@@ -20,10 +20,17 @@
 #include <stream.h>
 #include <strstream.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
+#include <string.h>
+
 class Receive;
 
 //DECLARE_NODE(Receive)
-NODE_INFO(Receive,"General", "", "OUTPUT", "VALUE")
+NODE_INFO(Receive,"IO", "", "OUTPUT", "VALUE")
 
 /** A constant node contains a value that will never changes. */
 class Receive : public Node
@@ -36,6 +43,10 @@ protected:
 
    /**The ID of the 'value' output*/
    int outputID;
+
+    int sock;
+    struct sockaddr_in addr;
+
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -45,13 +56,35 @@ public:
    {
       outputID = addOutput("OUTPUT");
       
+      cerr << "setting addr\n";
+      addr.sin_family = AF_INET;
+      addr.sin_port = htons (5248);
+      struct hostent *hostinfo;
+      hostinfo = gethostbyname ("localhost");
+      addr.sin_addr = *(struct in_addr *) hostinfo->h_addr;
+      
+      cerr << "creating socket\n";
+      sock = socket (AF_INET, SOCK_STREAM, 6);
+
+      cerr << "calling bind\n";
+      if (bind(sock, (struct sockaddr *) &addr, sizeof(addr)))
+      {
+	 perror ("error opening socket");
+      }
+
+      cerr << "calling connect\n";
+      if (connect(sock, (struct sockaddr *) &addr, sizeof(addr)))
+      {
+	 perror ("error opening socket");
+      }
+      cerr << "socket opened\n";
    }
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
    {
-      if (output_id==outputID) return value;
+      if (output_id==outputID) return Object::nilObject;
       else throw new NodeException (this, "Receive: Unknown output id", __FILE__, __LINE__);
    }
 
