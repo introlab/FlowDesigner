@@ -18,50 +18,50 @@
 #include "Node.h"
 #include "ObjectRef.h"
 #include "NNetSet.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 
 class NNetSetTrainDBD;
 
 DECLARE_NODE(NNetSetTrainDBD)
 /*Node
-
+ *
  * @name NNetSetTrainDBD
  * @category NNet
  * @description No description available
-
+ *
  * @input_name TRAIN_IN
  * @input_description No description available
-
+ *
  * @input_name TRAIN_OUT
  * @input_description No description available
-
+ *
  * @input_name TRAIN_ID
  * @input_description No description available
-
+ *
  * @input_name NNET
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name MAX_EPOCH
  * @parameter_description No description available
-
+ *
  * @parameter_name LEARN_RATE
  * @parameter_description No description available
-
+ *
  * @parameter_name MOMENTUM
  * @parameter_description No description available
-
+ *
  * @parameter_name INCREASE
  * @parameter_description No description available
-
+ *
  * @parameter_name DECREASE
  * @parameter_description No description available
-
+ *
  * @parameter_name BATCH_SETS
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -184,9 +184,9 @@ public:
 	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
 
 	       cerr << "inputs calculated\n";
-	       Buffer &inBuff = object_cast<Buffer> (trainInValue);
-	       Buffer &outBuff = object_cast<Buffer> (trainOutValue);
-	       Buffer &idBuff = object_cast<Buffer> (trainIDValue);
+	       GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
+	       GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
+	       GrowingBuffer &idBuff = object_cast<GrowingBuffer> (trainIDValue);
 
 	       cerr << "inputs casted\n";
 	       vector <float *> in(inBuff.getCurrentPos());

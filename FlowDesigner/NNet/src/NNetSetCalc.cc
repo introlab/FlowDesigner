@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "NNetSet.h"
@@ -24,104 +24,89 @@ class NNetSetCalc;
 
 DECLARE_NODE(NNetSetCalc)
 /*Node
-
+ *
  * @name NNetSetCalc
  * @category NNet
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name ID
  * @input_description No description available
-
+ *
  * @input_name NNET
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class NNetSetCalc : public FrameOperation {
+class NNetSetCalc : public BufferedNode {
    
    int inputID;
    int netInputID;
    int IDInputID;
-   int inputLength;
+   int outputID;
+   int outputLength;
 
 public:
    NNetSetCalc(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       netInputID = addInput("NNET");
       IDInputID = addInput("ID");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH")); 
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
+      outputID = addOutput("OUTPUT");
 
-   ~NNetSetCalc() {}
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
+      
 
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      NodeInput netInput = inputs[netInputID];
-      NodeInput idInput = inputs[IDInputID];
 
-      ObjectRef netValue = netInput.node->getOutput(netInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (netValue->status != Object::valid)
-      {
-         output.status = netValue->status;
-         return;
-      }
-
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
 
-      ObjectRef idValue = idInput.node->getOutput(idInput.outputID, count);
-
+      ObjectRef netValue = getInput(netInputID, count);
+      if (netValue->status != Object::valid)
+      {
+	 out[count] = netValue;
+         return;
+      }
+      NNetSet &net = object_cast<NNetSet> (netValue);
+      
+      ObjectRef idValue = getInput(IDInputID, count);
       if (idValue->status != Object::valid)
       {
-         output.status = idValue->status;
+	 out[count] = idValue;
          return;
       }
-
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      NNetSet &net = object_cast<NNetSet> (netValue);
       const Vector<float> &id = object_cast<Vector<float> > (idValue);
-      
-      //int classID = vq.getClassID(in.begin());
-      //const vector<float> &mean = vq[classID];
-      double tmp[in.size()];
-      for (int i=0;i<in.size();i++)
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
+      double tmp[inputLength];
+      for (int i=0;i<inputLength;i++)
 	 tmp[i]=in[i];
       double *netOut = net.calc(int(floor(id[0])), tmp);
       
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];
-       
-      output.status = Object::valid;
    }
 
 };
