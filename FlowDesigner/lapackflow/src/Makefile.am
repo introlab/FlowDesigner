@@ -1,8 +1,8 @@
 lib_LTLIBRARIES = liblapackflow.la 
 
 install-data-local:
-	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.so lapackflow.tlb)
 	mkdir -p $(datadir)/toolbox/lapackflow
+	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.so lapackflow.tlb)
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.f src/*.cc include/*.h > $(datadir)/toolbox/lapackflow/lapackflow.def)
 
 liblapackflow_la_SOURCES = lapackflow.cc \
