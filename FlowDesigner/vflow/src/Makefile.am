@@ -31,7 +31,8 @@ vflow_SOURCES = \
 	GUINetTerminal.cc \
 	GUINetPopup.cc \
 	GRunContext.cc \
-	KeyPad.cc
+	KeyPad.cc \
+	codegen.cc
 
 gflow_SOURCES = \
 	gflow.cc \

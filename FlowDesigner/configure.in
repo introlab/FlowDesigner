@@ -45,7 +45,7 @@ AC_MODULE_OPT(NNet, yes)
 AC_MODULE_OPT(HMM, yes)
 AC_MODULE_OPT(VQ, yes)
 AC_MODULE_OPT(video_blocks, no)
-AC_MODULE_OPT(FuzzyEngine, no)
+AC_MODULE_OPT(FuzzyEngine, yes)
 AC_MODULE_OPT(lapackflow, no)
 
 modules="$vflow $audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine $effects $lapackflow"
