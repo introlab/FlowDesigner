@@ -42,7 +42,7 @@ void ParameterSet::defaultParam(string param, ObjectRef value)
 
 void ParameterSet::add(string param, ObjectRef value)
 {
-   cerr<<"adding parameter : "<<param<<endl;
+   //cerr<<"adding parameter : "<<param<<endl;
    (operator[](param))=pair<ObjectRef,bool> (value,false);
 }
 

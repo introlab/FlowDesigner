@@ -89,7 +89,7 @@ int Node::addInput (const string &input_name) {
 
    //Creating a new NodeInput.
 
-   cerr<<"Creating a new input named : "<<input_name<<endl;
+   //cerr<<"Creating a new input named : "<<input_name<<endl;
    inputs[position] = NodeInput(input_name);
 
    return position;

@@ -1,4 +1,4 @@
-// Copyright (C) 1998-1999  Jean-Marc Valin & Daniel Kiecza
+// Copyright (C) 1998-1999  Jean-Marc Valin
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "ObjectParser.h"
 #include "misc.h"
 
+class GMM; 
 class ifstream;
 class ofstream;
 
@@ -92,6 +93,7 @@ public:
    ///Converts from accumulate mode to real
    virtual void to_invert(const float accum_1, const vector<float> *mean)=0;
 
+   friend class GMM;
 };
 
 

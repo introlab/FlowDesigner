@@ -36,7 +36,6 @@ public:
 
    ///Pointer to the GMM used when scoring
    const GMM *gmm;
-
 public:
 
    ///Friend of GMM class
@@ -66,6 +65,9 @@ protected:
    ///Number of frames aligned to (used to train) the GMM
    int                 nb_frames_aligned;
 
+   ///Number of dimensions
+   int dimensions;
+
 public:
    /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
       covariance pseudo-factory*/
@@ -75,6 +77,7 @@ public:
       , nb_gaussians (nb_gauss)
       , mode(accum)
       , nb_frames_aligned(0)
+      , dimensions (dim)
    {
       for (int i=0;i<nb_gauss;i++)
          gaussians[i] = new Gaussian (dim, cov_new);
@@ -86,6 +89,7 @@ public:
       , nb_gaussians (1)
       , mode(accum)
       , nb_frames_aligned(0)
+      , dimensions(1)
    {
       gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
    }
@@ -127,7 +131,7 @@ public:
 
    /**Score a frame against the GMM without using the covariances 
       (nearest euclidian distance)*/
-   Score minDistance(float * fr) const;
+   Score minDistance(float * fr, Covariance *cov) const;
 
    /**Score a frame against the GMM*/
    Score score(float * fr) const;

@@ -1,4 +1,4 @@
-// Copyright (C) 1998-1999 Jean-Marc Valin & Daniel Kiecza
+// Copyright (C) 1998-1999 Jean-Marc Valin
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ void DiagonalCovariance::to_invert(const float accum_1, const vector<float> *mea
 #endif
    for(unsigned int i = 0; i < data.size(); i++ )
    {
-      data[i] = /*1.0 */ (.001 + data[i] * accum_1 - sqr( (*mean)[i] ) );
+      data[i] = 1.0 / (.001 + data[i] * accum_1 - sqr( (*mean)[i] ) );
    }
    mode = inverted;
 }
@@ -38,17 +38,23 @@ float DiagonalCovariance::mahalanobisDistance(const float *x1, const float *x2) 
    if (mode != inverted) throw string ("DiagonalCovariance::mahalanobisDistance");
    float dist=0;
    for (int i=0;i<dimension;i++)
-      dist += sqr(x1[i]-x2[i]) / data[i];
-   return dist+getDeterminant();
+      dist += sqr(x1[i]-x2[i]) * data[i];
+   return dist-getDeterminant();
 }
 
 void DiagonalCovariance::compute_determinant() const
 {
    if (mode != inverted) throw string ("DiagonalCovariance::compute_determinant");
    determinant=1;
-   for (unsigned int i=0;i<dimension;i++)
+
+   /*for (unsigned int i=0;i<dimension;i++)
       determinant *= data[i];
    determinant = .5*log(determinant);
+   */
+
+   for (unsigned int i=0;i<dimension;i++)
+      determinant += .5*log(data[i]);
+
    determinant_is_valid = true;
 }
 

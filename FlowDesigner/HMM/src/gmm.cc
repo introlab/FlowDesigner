@@ -89,7 +89,7 @@ void GMM::split1()
    gaussians[nb_gaussians]=new Gaussian(*(gaussians[max_gauss]));
    vector <float> &mean = gaussians[nb_gaussians]->getMean();
    for (unsigned int j=0;j<mean.size();j++)
-      mean[j]+=.01;
+      mean[j]+=.00001*(rand()%100-49.5);
    ++nb_gaussians;
 }
 
@@ -104,7 +104,10 @@ void GMM::binary_split()
       gaussians[i+old_size]=new Gaussian(*(gaussians[i]));
       vector <float> &mean = gaussians[i+old_size]->getMean();
       for (unsigned int j=0;j<mean.size();j++)
-         mean[j]+=.001;
+      {
+         mean[j]+=.000001*(rand()%100-49.5);
+         //mean[j]+=.0001;
+      }
    }
 }
 
@@ -121,11 +124,35 @@ void GMM::to_real()
 
 vector<Score> GMM::minDistance(vector <float * > fr) const
 {
-   vector<Score> scores(fr.size());
-   for (unsigned int i=0;i<fr.size();i++)
+   unsigned int i,j;
+   Covariance *cov = new DiagonalCovariance (dimensions);
+   for (j=0;j<dimensions;j++)
    {
-      scores[i]=minDistance(fr[i]);
+      (*cov)[j]=1;
    }
+   if (1){
+   for (i=0;i<nb_gaussians;i++)
+      for (j=0;j<dimensions;j++)
+      {
+         (*cov)[j]+=1/(*(gaussians[i]->covariance))[j];
+      }
+   for (j=0;j<dimensions;j++)
+   {
+      (*cov)[j]=nb_gaussians/((*cov)[j]);
+      cerr << (*cov)[j] << " ";
+   }
+   cerr << endl;
+   } 
+   cov->mode = (Covariance::inverted);
+
+
+   vector<Score> scores(fr.size());
+   for (i=0;i<fr.size();i++)
+   {
+      scores[i]=minDistance(fr[i],cov);
+   }
+
+   delete cov;
    return scores;
    
 }
@@ -141,15 +168,17 @@ vector<Score> GMM::score(vector <float * > fr) const
    
 }
 
-Score GMM::minDistance(float * fr) const
+Score GMM::minDistance(float * fr,Covariance *cov) const
 {
+   int i,j;
    float min_dist = FLT_MAX ;
    int min_gauss = 0;
    Score frame_score;
-   for (int j=0;j<nb_gaussians;j++)
+   for (j=0;j<nb_gaussians;j++)
    {
-      float dist = gaussians[j]->euclidian(fr);
-      //float dist = gaussians[j]->mahalanobis(fr);
+      
+      //float dist = gaussians[j]->euclidian(fr);
+      float dist = gaussians[j]->mahalanobis(fr,cov);
       if (dist < min_dist)
       {
          min_dist=dist;
@@ -177,7 +206,7 @@ Score GMM::score(float * fr) const
          min_dist=dist;
          min_gauss = j;
       }
-      //cerr << "mean " << j << ": " << dist << endl;
+      //cerr << "mean " << j << ": " << dist << " " << apriori[j] << endl;
    }
    frame_score.score = min_dist;
    frame_score.gaussian_id = min_gauss;
@@ -193,6 +222,7 @@ void GMM::printOn(ostream &out) const
    out << "<nb_gaussians " << nb_gaussians << ">" << endl;
    out << "<mode " << mode << ">" << endl;
    out << "<nb_frames_aligned " << nb_frames_aligned << ">" << endl;
+   out << "<dimensions " << dimensions << ">" << endl;
    out << "<apriori " << apriori << ">" << endl;
    out << "<gaussians " << gaussians << ">" << endl;
    out << ">\n";
@@ -216,6 +246,8 @@ istream &operator >> (istream &in, GMM &gmm)
          in >> gmm.nb_gaussians;
       else if (tag == "apriori")
          in >> gmm.apriori;
+      else if (tag == "dimensions")
+         in >> gmm.dimensions;
       else if (tag == "gaussians")
          in >> gmm.gaussians;
       else if (tag == "mode")

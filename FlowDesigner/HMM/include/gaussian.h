@@ -1,4 +1,4 @@
-// Copyright (C) 1998-1999  Jean-Marc Valin & Daniel Kiecza
+// Copyright (C) 1998-1999  Jean-Marc Valin
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "covariance.h"
 #include "ObjectParser.h"
 #include "misc.h"
+
+class GMM;
 
 /**Gaussian class*/
 class Gaussian : public Object
@@ -82,15 +84,13 @@ public:
    /**Returns the mahalanobis distance between the gaussian and a frame*/
    float mahalanobis(const float * fr) const
    {
-      /*float dist=0;
-      for (unsigned int i=0;i<dimension;i++)
-      {
-         dist+=sqr(fr[i]-(*mean)[i]);// /(*covariance)[i];
-      }
-      //cerr << "det: " << covariance->getDeterminant() << endl;
-      return dist;// + covariance->getDeterminant();
-      */
       return covariance->mahalanobisDistance(fr,mean->begin());
+   }
+
+   /**Returns the mahalanobis distance between the gaussian and a frame*/
+   float mahalanobis(const float * fr, Covariance *cov) const
+   {
+      return cov->mahalanobisDistance(fr,mean->begin());
    }
 
    /**Returns the euclidian distance between the gaussian and a frame*/
@@ -130,6 +130,7 @@ public:
    void printOn(ostream &out = cout) const;
 
    friend istream &operator >> (istream &in, Gaussian &gauss);
+   friend class GMM;
 };
 
 istream &operator >> (istream &in, Gaussian &gauss);

@@ -13,11 +13,7 @@
 /***************************************************************************/
 Iterator::Iterator (string nodeName, ParameterSet params) 
    : Network(nodeName, params), output(new Object(Object::nil)) {
-
-   //let's add our translator node
-   translator = new InputTranslator("ITERATOR_TRANSLATOR",ParameterSet());  
-   addNode (*translator);   
-
+   translator = NULL;
 }
 /***************************************************************************/
 /*
@@ -49,8 +45,11 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
 
          }
          //We are doing a little trick for the translator (real inputNode)
+         //if it exists
+         if (translator) {
+            translator->setProcessCount(count);
+         }
 
-         translator->setProcessCount(count);
          int conditionID = conditionNode->translateOutput("OUTPUT");
 
          int pc = 0;
@@ -61,6 +60,7 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
                output = sinkNode->getOutput(output_id,pc);
             }
             ObjectRef condition = conditionNode->getOutput(conditionID,pc);
+            
             if (dereference_cast<bool>(condition)==false) break;
             if (!doWhile)
             {
@@ -94,9 +94,15 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
  */
 /***************************************************************************/
 void Iterator::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
-   cerr << "Iterator::connectToNode 1\n";
+ 
    if (!inputNode) 
       throw NodeException(this,"Trying to connect without input node",__FILE__,__LINE__);
+
+   if (!translator) {
+      //let's add our translator node
+      translator = new InputTranslator("ITERATOR_TRANSLATOR",ParameterSet());  
+      addNode (*translator);   
+   }
 
    int translator_out = translator->addInput(this->getInputs()[in].name);
 
@@ -120,6 +126,7 @@ void Iterator::specificInitialize() {
    }
 
    // We must initialize the conditionNode before
+
    conditionNode->initialize();
 
    this->Network::specificInitialize();
