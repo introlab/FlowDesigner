@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="NOP" x="-393.000000" y="107.000000"/>
+    <Node name="node2" type="Feedback" x="-625.000000" y="113.000000">
+      <Parameter name="DELAY" type="int" value="1"/>
+    </Node>
+    <Node name="node3" type="Delay" x="-478.000000" y="122.000000">
+      <Parameter name="DELAY" type="int" value="-2"/>
+    </Node>
+    <Link from="node2" output="DELAY" to="node3" input="INPUT"/>
+    <Link from="node2" output="OUTPUT" to="node1" input="INPUT"/>
+    <Link from="node3" output="OUTPUT" to="node2" input="INPUT">-459 122 -420 122 -420 147 -696 146 -695 114 -654 113 </Link>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>

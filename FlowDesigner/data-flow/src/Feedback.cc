@@ -34,6 +34,7 @@ protected:
    int outputID;
    bool insideRequest;
    int delay;
+   int delayRecurs;
 
 public:
    Feedback(string nodeName, ParameterSet params)
@@ -52,7 +53,7 @@ public:
          //e->print();
          throw e->add(new NodeException (NULL, "Exception caught in Feedback constructor", __FILE__, __LINE__));
       }
-      
+      delayRecurs=-1;
    }
 
    void specificInitialize()
@@ -91,7 +92,14 @@ public:
       {
 	 if (count-delay < 0)
 	    return Object::before_beginningObject;
-	 return getInput(inputID, count-delay);
+	 //cerr << delayRecurs << endl;
+	 if (delayRecurs != -1 && count-delay >= delayRecurs)
+	    throw new NodeException (this, "Infinite loop detected, breaking out", __FILE__, __LINE__);
+	 if (count-delay > delayRecurs)
+	    delayRecurs=count-delay;
+	 ObjectRef ret = getInput(inputID, count-delay);
+	 delayRecurs=-1;
+	 return ret;
       } else {
 	 throw new NodeException (this, "Output not found", __FILE__, __LINE__);
       }
