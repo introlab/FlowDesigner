@@ -353,7 +353,7 @@ Networks->Add Network
 \begin_inset Float figure
 placement htbp
 wide false
-collapsed false
+collapsed true
 
 \layout Standard
 \align center 
@@ -474,6 +474,31 @@ Constant
 \layout Section
 
 I/O
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 100 100
+file overflow_IO
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+I/O with Overflow
+\end_inset 
+
+
 \layout Section
 
 IF/conditions
@@ -1247,6 +1272,232 @@ Although this header is mostly a C++ comment, it is parsed by a PERL script
  The DECLARE_NODE(MyNode) macro is used to register the node in a dictionary
  when the toolbox is loaded.
  
+\layout Section
+
+Example: VAdd.cc
+\layout Standard
+
+
+\shape italic 
+Most nodes must include BufferedNode.h.
+ Also, since this node deals with vectors, we need Vector.h
+\layout LyX-Code
+
+#include "BufferedNode.h" 
+\layout LyX-Code
+
+#include "Vector.h"
+\layout Standard
+
+
+\shape italic 
+forward declaration of class VAdd for use with the DECLARE_NODE macro
+\layout LyX-Code
+
+class VAdd;
+\layout Standard
+
+
+\shape italic 
+Declaration of the node.
+ This definition is transformed into XML data for the GUI, as well as documentat
+ion for the node
+\layout LyX-Code
+
+DECLARE_NODE(VAdd) 
+\layout LyX-Code
+
+/*Node  
+\layout LyX-Code
+
+*  
+\layout LyX-Code
+
+* @name VAdd  
+\layout LyX-Code
+
+* @category DSP:Base  
+\layout LyX-Code
+
+* @description Adds two vectors of same length  
+\layout LyX-Code
+
+*  
+\layout LyX-Code
+
+* @input_name INPUT1  
+\layout LyX-Code
+
+* @input_type Vector<float>  
+\layout LyX-Code
+
+* @input_description First vector  
+\layout LyX-Code
+
+*  
+\layout LyX-Code
+
+* @input_name INPUT2  
+\layout LyX-Code
+
+* @input_type Vector<float>  
+\layout LyX-Code
+
+* @input_description Second vector  
+\layout LyX-Code
+
+*  
+\layout LyX-Code
+
+* @output_name OUTPUT  
+\layout LyX-Code
+
+* @output_type Vector<float>  
+\layout LyX-Code
+
+* @output_description Result vector  
+\layout LyX-Code
+
+* END*/
+\layout Standard
+
+
+\shape italic 
+Class definition/implementation.
+ Note that because we won't need to derive from this class, we don't need
+ a header file (.h) and we can put everything in the .cc.
+ Our node, like most other nodes, derives from BufferedNode.
+\layout LyX-Code
+
+class VAdd : public BufferedNode {
+\layout LyX-Code
+
+   int input1ID;
+\layout LyX-Code
+
+   int input2ID;
+\layout LyX-Code
+
+   int outputID;
+\layout LyX-Code
+
+public:
+\layout LyX-Code
+
+   VAdd(string nodeName, ParameterSet params)
+\layout LyX-Code
+
+   : BufferedNode(nodeName, params)
+\layout LyX-Code
+
+   {
+\layout Standard
+
+
+\shape italic 
+In the constructor, we create both the inputs and outputs.
+\layout LyX-Code
+
+      input1ID = addInput("INPUT1");
+\layout LyX-Code
+
+      input2ID = addInput("INPUT2");
+\layout LyX-Code
+
+      outputID = addOutput("OUTPUT");
+\layout LyX-Code
+
+   }
+\layout Standard
+
+
+\shape italic 
+This is the main method for the node, it is called from the BufferedNode
+ class each time a result needs to be calculated.
+\layout LyX-Code
+
+   void calculate(int output_id, int count, Buffer &out)
+\layout LyX-Code
+
+   {
+\layout Standard
+
+
+\shape italic 
+Get input data from previous node(s).
+\layout LyX-Code
+
+      ObjectRef input1Value = getInput(input1ID, count);
+\layout LyX-Code
+
+      ObjectRef input2Value = getInput(input2ID, count);
+\layout Standard
+
+
+\shape italic 
+We cast the generic objects (received through ObjectRefs) into a reference
+ to a Vector<float>.
+ If the cast fails, an exception will automatically be thrown.
+\layout LyX-Code
+
+      const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
+\layout LyX-Code
+
+      const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
+\layout Standard
+
+
+\shape italic 
+Check that the size of the two vectors match.
+ Otherwise, throw an exception.
+ Here __FILE__ and __LINE__ are pre-processor macros that will print the
+ file and line where this exception was thrown.
+\layout LyX-Code
+
+     if (in1.size() != in2.size())
+\layout LyX-Code
+
+         throw new NodeException(this, "Input vectors must be of same length"
+\layout LyX-Code
+
+                                 , __FILE__, __LINE__);
+\layout LyX-Code
+
+      int inputLength = in1.size();
+\layout Standard
+
+
+\shape italic 
+Allocate a new Vector<float> from the pool of free vectors (that's why we
+ don't use new).
+\layout LyX-Code
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+\layout Standard
+
+
+\shape italic 
+Put the new Vector<float> in the return buffer.
+\layout LyX-Code
+
+      out[count] = &output;
+\layout Standard
+
+
+\shape italic 
+Compute the result of the sum.
+\layout LyX-Code
+
+      for (int i=0;i<inputLength;i++)
+\layout LyX-Code
+
+         output[i]=in1[i]+in2[i];
+\layout LyX-Code
+
+   }
+\layout LyX-Code
+
+}; 
 \layout Section
 
 Creating New Operators
