@@ -64,8 +64,6 @@ include_HEADERS = Array.h \
 	rtc.h
 	
 noinst_HEADERS = \
-	NetExec.h \
-	PathList.h \
 	Pack.h \
 	UnPack.h \
 	sstream.unused

@@ -90,10 +90,13 @@ public:
    /**Constructor, takes the name of the node and a set of parameters*/
    Sound(string nodeName, ParameterSet params)
       : Node(nodeName, params)
-  {
+   {
       outputID = addOutput("OUTPUT");
       
    }
+
+   /**Do nothing for requests since we have no inputs*/
+   virtual void request(int outputID, const ParameterSet &req) {}
 
    void specificInitialize()
    {

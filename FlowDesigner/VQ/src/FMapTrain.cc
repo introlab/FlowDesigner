@@ -1,7 +1,7 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
 
-#include "Node.h"
+#include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "FeatureMap.h"
 #include "Vector.h"
@@ -34,7 +34,7 @@ DECLARE_NODE(FMapTrain)
 END*/
 
 
-class FMapTrain : public Node {
+class FMapTrain : public BufferedNode {
 
 protected:
    
@@ -50,17 +50,12 @@ protected:
    /**The ID of the 'frames' input*/
    int framesInputID;
 
-   /**Reference to the current stream*/
-   ObjectRef currentNet;
-
    int levels;
-     
-   int processCount;
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    FMapTrain(string nodeName, ParameterSet params)
-      : Node(nodeName, params)
+      : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
       trainInID = addInput("TRAIN_IN");
@@ -70,74 +65,40 @@ public:
       
    }
       
-   /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize()
-   {
-      processCount = -1;
-      NodeInput trainInInput = inputs[trainInID];
-      cerr << "in name = " << trainInInput.outputID << endl ;
-      
-      NodeInput trainOutInput = inputs[trainOutID];
-      cerr << "out name = " << trainOutInput.outputID << endl;
-      this->Node::specificInitialize();
-   }
-      
-   /**Class reset routine.
-      Each class will call its superclass reset() method*/
-   virtual void reset()
-   {
-      processCount = -1;
-      this->Node::reset();
-   }
-
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count)
-      {
-	 if (output_id==outputID)
-	 {
-	    if (count != processCount)
-	    {
-	       cerr << "getOutput in FMapTrain\n";
-	       int i,j;
-	       NodeInput trainInInput = inputs[trainInID];
-	       ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
+   virtual void calculate(int output_id, int count, Buffer &out)
+   {
+      cerr << "getOutput in FMapTrain\n";
+      int i,j;
+      NodeInput trainInInput = inputs[trainInID];
+      ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
 
-	       NodeInput trainOutInput = inputs[trainOutID];
-	       ObjectRef trainOutValue = trainOutInput.node->getOutput(trainOutInput.outputID,count);
+      NodeInput trainOutInput = inputs[trainOutID];
+      ObjectRef trainOutValue = trainOutInput.node->getOutput(trainOutInput.outputID,count);
 
-	       cerr << "inputs calculated\n";
-	       Vector<ObjectRef> &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
-	       Vector<ObjectRef> &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
+      cerr << "inputs calculated\n";
+      Vector<ObjectRef> &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
+      Vector<ObjectRef> &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
 
-	       cerr << "inputs converted\n";
-	       vector <float *> in(inBuff.size());
-	       for (i=0;i<inBuff.size();i++)
-		  in[i]=&object_cast<Vector<float> > (inBuff[i])[0];
+      cerr << "inputs converted\n";
+      vector <float *> in(inBuff.size());
+      for (i=0;i<inBuff.size();i++)
+         in[i]=&object_cast<Vector<float> > (inBuff[i])[0];
 
-	       vector <float *> out(outBuff.size());
-	       for (i=0;i<outBuff.size();i++)
-		  out[i]=&object_cast<Vector<float> > (outBuff[i])[0];
+      vector <float *> vout(outBuff.size());
+      for (i=0;i<outBuff.size();i++)
+         vout[i]=&object_cast<Vector<float> > (outBuff[i])[0];
 
 
-	       FeatureMap *fmap = new FeatureMap(object_cast <Vector<float> > (inBuff[0]).size(), object_cast <Vector<float> > (outBuff[0]).size()); 
+      FeatureMap *fmap = new FeatureMap(object_cast <Vector<float> > (inBuff[0]).size(), object_cast <Vector<float> > (outBuff[0]).size()); 
 	       
-	       fmap->recursiveSplit(in, out, levels);
-	       //net->train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
-	       //net->trainlm(in, out, maxEpoch);
+      fmap->recursiveSplit(in, vout, levels);
+      //net->train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
+      //net->trainlm(in, out, maxEpoch);
 
-	       currentNet = ObjectRef(fmap);
-	       //exit(1);
-	    }
-	    return currentNet;
-	 }
-	 else 
-	    throw new NodeException (this, "FMapTrain: Unknown output id", __FILE__, __LINE__);
-      }
+      out[count] = ObjectRef(fmap);
+   }
 
-protected:
-   /**Default constructor, should not be used*/
-   FMapTrain() {throw new GeneralException("FMapTrain copy constructor should not be called",__FILE__,__LINE__);}
 
 };

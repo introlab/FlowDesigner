@@ -3,7 +3,7 @@
 #include "net_types.h"
 #include "RBF.h"
 #include "Vector.h"
-#include "Node.h"
+#include "BufferedNode.h"
 #include <strstream>
 
 class RBFTrain;
@@ -26,7 +26,7 @@ DECLARE_NODE(RBFTrain)
 END*/
 
 
-class RBFTrain : public Node {
+class RBFTrain : public BufferedNode {
       
   protected:
       
@@ -36,18 +36,13 @@ class RBFTrain : public Node {
    /**The ID of the 'frames' input*/
    int framesInputID;
 
-   /**Reference to the current object*/
-   ObjectRef current;
-
    /**Number of means to train model*/
    int nb_gaussians;
-
-   int processCount;
 
   public:
 
    RBFTrain(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
+   : BufferedNode(nodeName, params)
    { 
       try {
 	 //cerr << "RBFTrain initialize\n";
@@ -64,57 +59,35 @@ class RBFTrain : public Node {
       }
    }
 
-   void specificInitialize()
-   {
-      processCount=-1;
-      this->Node::specificInitialize();
-   }
 
-   void reset()
+   /**Ask for the node's output which ID (number) is output_id 
+      and for the 'count' iteration */
+   virtual void calculate(int output_id, int count, Buffer &out)
    {
-      processCount=-1;
-      this->Node::reset();
-   }
+      bool binary = false;
+      if (parameters.exist("BINARY"))
+         binary = dereference_cast<bool> (parameters.get("BINARY"));
+      int i;
+      NodeInput framesInput = inputs[framesInputID];
+	    
+      cerr << "getting frames..." << endl;
+      ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
+      cerr << "got frames..." << endl;
+      Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
+	    
+      RBF *rbf = new RBF();
+	    
+      vector <float *> data(mat.size());
+      for (i=0;i<mat.size();i++)
+         data[i]= &object_cast <Vector<float> > (mat[i])[0];
+      int length = object_cast <Vector<float> > (mat[0]).size();
+	    
+      cerr << "training..." << endl;
+      rbf->train(nb_gaussians, data,length,binary);
+      cerr << "training complete." << endl;
 
-   ObjectRef getOutput(int output_id, int count)
-   {
-      //cerr << "Getting output in RBFTrain\n";
-      if (output_id==outputID)
-      {
-	 if (count != processCount)
-	 {
-	    bool binary = false;
-	    if (parameters.exist("BINARY"))
-	       binary = dereference_cast<bool> (parameters.get("BINARY"));
-	    int i;
-	    NodeInput framesInput = inputs[framesInputID];
-	    
-	    cerr << "getting frames..." << endl;
-	    ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
-	    cerr << "got frames..." << endl;
-	    Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
-	    
-	    RBF *rbf = new RBF();
-	    
-	    vector <float *> data(mat.size());
-	    for (i=0;i<mat.size();i++)
-	       data[i]= &object_cast <Vector<float> > (mat[i])[0];
-	    int length = object_cast <Vector<float> > (mat[0]).size();
-	    
-	    cerr << "training..." << endl;
-	    rbf->train(nb_gaussians, data,length,binary);
-	    cerr << "training complete." << endl;
-
-	    current = ObjectRef(rbf);
-	 }
-	 return current;
-      }
-      else 
-	 throw new NodeException (this, "RBFTrain: Unknown output id", __FILE__, __LINE__);
+      out[count] = ObjectRef(rbf);
    }
       
-  protected:
-   /**Default constructor, should not be used*/
-   RBFTrain() {throw new GeneralException("RBFTrain copy constructor should not be called",__FILE__,__LINE__);}
 
 };
