@@ -126,7 +126,7 @@ void PlotProbe::display()
 
    gdk_threads_enter();
    
-   cerr << "length = " << length << endl;
+   //cerr << "length = " << length << endl;
 
    Vector<float> &data = object_cast<Vector<float> > (inputValue);
    points = gnome_canvas_points_new(data.size());
@@ -152,7 +152,7 @@ void PlotProbe::display()
 
    gnome_canvas_points_unref(points);
    
-   cerr << "plot done...\n";
+   //cerr << "plot done...\n";
 
    gdk_threads_leave();
 

@@ -22,6 +22,11 @@
 //DECLARE_NODE(Probe)
 NODE_INFO(Probe, "Probe", "INPUT", "OUTPUT", "")
 
+static void rename_button(GtkWidget *button, char *str)
+{
+   gtk_label_set_text(GTK_LABEL(g_list_last(gtk_container_children(GTK_CONTAINER(GTK_BIN(button)->child)))->data), str);
+}
+
 static void next_click (GtkButton *button, Probe *pr)
 {
    pr->next();
@@ -79,7 +84,7 @@ void Probe::specificInitialize()
    GtkWidget *tmp_toolbar_icon;
    //GtkWidget *button16;
    //GtkWidget *button17;
-   GtkWidget *button19;
+   
    GtkWidget *scrolledwindow2;
    GtkWidget *canvas2;
    
@@ -170,7 +175,7 @@ void Probe::specificInitialize()
    button19 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
-					  _("Show/Hide"),
+					  _("Hide"),
 					  NULL, NULL,
 					  tmp_toolbar_icon, NULL, NULL);
    gtk_widget_ref (button19);
@@ -246,12 +251,24 @@ void Probe::setBreak()
    //gdk_threads_enter(); 
    gtk_widget_set_sensitive(button17, false);
    gtk_widget_set_sensitive(button18, true);
+   //gtk_label_set_text(GTK_LABEL(GTK_BIN(button18)->child), "tata");
+   //gtk_label_set_text(GTK_LABEL(g_list_last(gtk_container_children(GTK_CONTAINER(GTK_BIN(button18)->child)))->data), "tata");
    //gdk_threads_leave(); 
 }
+
+
 
 void Probe::show_hide()
 {
    displayEnable = !displayEnable;
+   if (displayEnable)
+   {
+      rename_button(button19, "Hide");
+   }   
+   else
+   {
+      rename_button(button19, "Show");
+   }  
 }
 
 void Probe::display()
