@@ -60,7 +60,7 @@ typedef void *DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
    //cerr << "opening lib " << path.c_str() << endl;
-   DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY);
+   DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY|RTLD_GLOBAL);
    if (!library) 
       cerr << "Toolbox load error: " << dlerror() << endl;
 
