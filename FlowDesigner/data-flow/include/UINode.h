@@ -88,6 +88,9 @@ public:
    /**Rename a node (when network included as a subnet)*/
    virtual void rename (const string &newName);
 
+   /**Adds a new terminal to a node*/
+   virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
+
    /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
 

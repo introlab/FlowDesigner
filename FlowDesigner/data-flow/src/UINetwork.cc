@@ -96,8 +96,13 @@ void UINetwork::load (xmlNodePtr net)
 	 char *points=NULL;
 	 if (node->childs)
 	    points = (char *)node->childs->content;
-	 if (getNodeNamed(fromnode) && getNodeNamed(tonode) && getNodeNamed(fromnode)->getOutputNamed(out) && getNodeNamed(tonode)->getInputNamed(in))
+	 if (getNodeNamed(fromnode) && getNodeNamed(tonode))
 	 {
+            if (!getNodeNamed(tonode)->getInputNamed(in))
+               getNodeNamed(tonode)->addTerminal(string(in), UINetTerminal::INPUT);
+            if (!getNodeNamed(fromnode)->getOutputNamed(out))
+               getNodeNamed(fromnode)->addTerminal(string(out), UINetTerminal::OUTPUT);
+
 	    newLink(getNodeNamed(fromnode)->getOutputNamed(out),
 	        getNodeNamed(tonode)->getInputNamed(in), points);
 	 } else {

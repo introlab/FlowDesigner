@@ -222,6 +222,37 @@ Node *UINode::build(const ParameterSet &params)
    
 }
 
+void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) 
+{
+
+   double x1=0,y1=0,x2=0,y2=0;
+   ItemInfo info;
+   
+   info.name = _name;
+   
+   switch (_type) {
+
+   case UINetTerminal::INPUT:
+
+      inputs.insert(inputs.end(), new UITerminal (&info, this, true, x1, y1));
+    
+      break;
+
+   case UINetTerminal::OUTPUT:
+
+      outputs.insert(outputs.end(), new UITerminal (&info, this, false, x2,y2 ));
+    
+      break;
+
+   default:
+      break;
+
+   }
+  
+
+}
+
+
 void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
 {
    int bakID=id;
