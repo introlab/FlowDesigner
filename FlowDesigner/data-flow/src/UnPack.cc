@@ -19,6 +19,8 @@
 #include "Vector.h"
 #include "multithread.h"
 
+DECLARE_NODE(UnPack)
+
 UnPack::UnPack(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
 {

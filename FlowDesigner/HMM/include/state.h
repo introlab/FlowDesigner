@@ -19,10 +19,26 @@
 
 #include "gmm.h"
 
+class Transition {
+protected:
+   /**The log probability of transition*/
+   float probability;
+
+   /**Transition going to ... (NULL means out)*/
+   State *state;
+
+public:
+};
+
+
 ///State class
 class State {
    ///Corresponding GMM
    GMM *mixture;
+
+   ///Log probability for transition to next state
+   vector<Transition> transitions;
+   
 };
 
 

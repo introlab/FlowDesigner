@@ -33,7 +33,7 @@
 #include <pthread.h>
 #endif
 
-///Definition of the type we need for the dictionaries
+/**Definition of the type we need for the dictionaries*/
 typedef map<string, Node*>::value_type nodeEntry;
 typedef map<string, _NodeFactory*>::value_type factoryEntry; 
 
@@ -87,7 +87,7 @@ private:
 */
 class Node { 
 
-   ///A network can have access to private members of Node
+   /**A network can have access to private members of Node*/
    friend class Network;
    friend class Iterator;
 
@@ -223,10 +223,10 @@ public:
    }
 #endif
 
-   ///Adding a factory into the static dictionary
+   /**Adding a factory into the static dictionary*/
    static int addFactory (const string &factoryName, _NodeFactory* const factory);
 
-   ///The factory lookup function
+   /**The factory lookup function*/
    static _NodeFactory* getFactoryNamed (const string &name);
 
 private:
@@ -248,7 +248,7 @@ protected:
    /**symbolic to numeric translation for output names*/
    virtual int translateOutput(string inputName);
 
-   ///The node instance factory
+   /**The node instance factory*/
    static map<string,_NodeFactory*> &factoryDictionary();
    
 };
@@ -297,14 +297,14 @@ class NodeException : public BaseException {
 
 public:
 
-   ///The constructor with a message a file name and a line number
+   /**The constructor with a message a file name and a line number*/
    NodeException( Node *_node, string _message, char *_file, int _line) 
       : message(_message)
       , node(_node)
       , file(_file)
       , line(_line)
    {}   
-   ///the print method
+   /**the print method*/
    virtual void print(ostream &out = cerr) 
    {
       if (node)

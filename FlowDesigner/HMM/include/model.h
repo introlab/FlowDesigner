@@ -17,16 +17,14 @@
 #define MODEL_H
 
 #include <vector>
-#include "gmm.h"
+#include "state.h"
+
 
 ///Base model class, can be used for phonemes, allophones, ...
 class Model {
    ///Set of states for the model
-   vector<State> state;
-   ///Log probability of "no transition"
-   vector<State> loopback_weights;
-   ///Log probability for transition to next state
-   vector<State> transition_weights;
+   vector<State *> states;
+
 };
 
 

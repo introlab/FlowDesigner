@@ -17,6 +17,8 @@
 #include "OutputStream.h"
 #include "net_types.h"
 
+DECLARE_NODE(OutputStream)
+
 OutputStream::OutputStream(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
 {

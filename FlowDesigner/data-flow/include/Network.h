@@ -20,7 +20,7 @@
 #include <map>
 #include <string>
 #include "NodeFactory.h"
-#include "NodeHeaders.h"
+//#include "NodeHeaders.h"
 #include "Exception.h"
 #include "Node.h"
 
@@ -42,17 +42,13 @@ class Network : public Node {
 
 public:
 
-   //@name public methods
-   //@{
 
-   ///Subnet: NetworkNode constructor
+   /**Subnet: NetworkNode constructor*/
    Network (string nodeName, ParameterSet params);
 
-   ///default destructor
+   /**default destructor*/
    ~Network ();
    
-   ///initialize factories known by the default network
-   static void initializeFactories();
 
    /**
       Returns the associated Node pointer from a lookup dictionary with the node name.
@@ -67,29 +63,29 @@ public:
    /** Adding a already constructed node. WATCHOUT , THE NODE IS NOT COPIED AT THE MOMENT */
    void addNode (Node &node);
 
-   ///connecting two nodes. We are using the node names.
+   /**connecting two nodes. We are using the node names.*/
    virtual void connect (const string &currentNodeName,const string &inputName, 
                  const string &inputNodeName, const string &outputName);
  
-   ///removing a node. We are using the node name.
+   /**removing a node. We are using the node name.*/
    Node* removeNode (const string &nodeName);
    
-   ///Returns the name of the node (the same as in the node dictionary)
+   /**Returns the name of the node (the same as in the node dictionary)*/
    string getName() {return name;}
 
-   ///Naming the current network
+   /**Naming the current network*/
    void setName(const string &my_name) {name = my_name;}
 
-   ///Returns the sinkNode
+   /**Returns the sinkNode*/
    Node* getSinkNode () {return sinkNode;}
 
-   ///Setting the sink node (unique)
+   /**Setting the sink node (unique)*/
    virtual void setSinkNode (Node* node) {sinkNode = node;} 
  
-   ///Returns the inputNode pointer
+   /**Returns the inputNode pointer*/
    Node* getInputNode () {return inputNode;}
 
-   ///Setting the input node (unique)
+   /**Setting the input node (unique)*/
    virtual void setInputNode (Node* node) {inputNode = node;}
 
    /**Returns the inputs vector */
@@ -98,10 +94,10 @@ public:
       return inputNode->getInputs();
    }
 
-   ///Setting the debug mode
+   /**Setting the debug mode*/
    virtual void setDebugMode();
 
-   ///Exiting debug mode
+   /**Exiting debug mode*/
    virtual void resetDebugMode();
 
    /** resets the Network and all the internal nodes */
@@ -110,13 +106,13 @@ public:
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(const ParameterSet &req) {sinkNode->request(req);}
 
-   ///Subnet : NetworkNode specific initialize
+   /**Subnet : NetworkNode specific initialize*/
    virtual void specificInitialize();
 
-   ///Subnet : NetworkNode returns the output of the SubNet (from the sinkNode)
+   /**Subnet : NetworkNode returns the output of the SubNet (from the sinkNode)*/
    virtual ObjectRef getOutput (int output_id, int count);
 
-   ///Subnet : checks if the sinkNode has the desired output
+   /**Subnet : checks if the sinkNode has the desired output*/
    virtual bool hasOutput (int output_id) const;
 
    /**Subnet : The connectToNode method overloaded from Node */
@@ -126,43 +122,40 @@ public:
       }
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
    }
-   //@}
+   
 
 protected: 
 
    
-   //@name protected methods 
-   //@{
-
-   ///Subnet : getting the related number of the input description
+   /**Subnet : getting the related number of the input description*/
    virtual int translateInput (string   inputName);
 
-   ///Subnet : getting the related number of the output description
+   /**Subnet : getting the related number of the output description*/
    virtual int translateOutput (string outputName);
   
-   ///Subnet : Connect an input node using numeric (integer) input/output names
+   /**Subnet : Connect an input node using numeric (integer) input/output names*/
    virtual void connectToNode(unsigned int in, Node *inNode, unsigned int out);
 
-   ///The number of nodes in the network
+   /**The number of nodes in the network*/
    int numNodes;
 
-   ///The node dictionary
+   /**The node dictionary*/
    map<string,Node*> nodeDictionary;
-   ///The sink node
+   /**The sink node*/
    Node *sinkNode;
-   ///The input node
+   /**The input node*/
    Node *inputNode;
-   ///The debug mode flag
+   /**The debug mode flag*/
    bool debugMode;
  
 
 
 
    
-   ///default constructor should never be used
+   /**default constructor should never be used*/
    Network () {
      throw NodeException (NULL,"The default constructor should not be called from Network",__FILE__,__LINE__);
    } 
-   //@}
+   
 };
 #endif

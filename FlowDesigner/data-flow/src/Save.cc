@@ -18,6 +18,8 @@
 #include "net_types.h"
 #include "Object.h"
 
+DECLARE_NODE(Save)
+
 Save::Save(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
 {

@@ -32,24 +32,24 @@ void Network::initializeFactories() {
    try {
       //Node::addFactory ("Constant", new ConstantNodeFactory);
       //Node::addFactory ("COLLECTOR", new CollectorNodeFactory);
-      Node::addFactory ("MUX", new MuxNodeFactory);
-      Node::addFactory ("EXEC", new ExecNodeFactory);
-      Node::addFactory ("PATHLIST", new PathListFactory);
-      Node::addFactory ("ISVALID", new IsValidFactory);
-      Node::addFactory ("SUM", new NodeFactory<Sum>);
-      Node::addFactory ("VSUM", new NodeFactory<VSum>);
-      Node::addFactory ("VNSUM", new NodeFactory<VNSum>);
-      Node::addFactory ("SAVE", new NodeFactory<Save>);
-      Node::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
-      Node::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
-      Node::addFactory ("SWITCH", new NodeFactory<Switch>);
-      Node::addFactory ("NOTDONE", new NodeFactory<NotDone>);
-      Node::addFactory ("OR",new NodeFactory<ORNode>);
-      Node::addFactory ("AND" , new NodeFactory<ANDNode>);
-      Node::addFactory ("NOT", new NodeFactory<NOTNode>);
-      Node::addFactory ("LIST", new NodeFactory<List>);
-      Node::addFactory ("PACK", new NodeFactory<Pack>);
-      Node::addFactory ("UNPACK", new NodeFactory<UnPack>);
+      //Node::addFactory ("MUX", new MuxNodeFactory);
+      //Node::addFactory ("EXEC", new ExecNodeFactory);
+      //Node::addFactory ("PATHLIST", new PathListFactory);
+      //Node::addFactory ("ISVALID", new IsValidFactory);
+      //Node::addFactory ("SUM", new NodeFactory<Sum>);
+      //Node::addFactory ("VSUM", new NodeFactory<VSum>);
+      //Node::addFactory ("VNSUM", new NodeFactory<VNSum>);
+      //Node::addFactory ("SAVE", new NodeFactory<Save>);
+      //Node::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
+      //Node::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
+      //Node::addFactory ("SWITCH", new NodeFactory<Switch>);
+      //Node::addFactory ("NOTDONE", new NodeFactory<NotDone>);
+      //Node::addFactory ("OR",new NodeFactory<ORNode>);
+      //Node::addFactory ("AND" , new NodeFactory<ANDNode>);
+      //Node::addFactory ("NOT", new NodeFactory<NOTNode>);
+      //Node::addFactory ("LIST", new NodeFactory<List>);
+      //Node::addFactory ("PACK", new NodeFactory<Pack>);
+      //Node::addFactory ("UNPACK", new NodeFactory<UnPack>);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;

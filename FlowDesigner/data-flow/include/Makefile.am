@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-noinst_HEADERS = ANDNode.h \
+noinst_HEADERS = Node.h \
 	Buffer.h \
 	Collector.h \
 	Constant.h \
@@ -13,14 +13,13 @@ noinst_HEADERS = ANDNode.h \
 	FileParserKeys.h \
 	GrowingBuffer.h \
 	InputStream.h \
-	IsValid.h \
 	Iterator.h \
 	List.h \
 	Load.h \
-	MuxNode.h \
-	NOTNode.h \
-	NetExecNode.h \
-	NetPathList.h \
+	Mux.h \
+	NOT.h \
+	NetExec.h \
+	PathList.h \
 	Network.h \
 	NetworkBuilder.h \
 	NetworkBuilderException.h \
@@ -28,8 +27,7 @@ noinst_HEADERS = ANDNode.h \
 	Node.h \
 	NodeFactory.h \
 	NodeHeaders.h \
-	NotDone.h \
-	ORNode.h \
+	OR.h \
 	Object.h \
 	ObjectParser.h \
 	ObjectRef.h \

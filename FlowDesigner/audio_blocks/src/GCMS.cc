@@ -20,6 +20,8 @@
 #include "Buffer.h"
 #include "RotatingBuffer.h"
 
+DECLARE_NODE(GCMS)
+
 GCMS::GCMS(string nodeName, const ParameterSet &params) 
    : FrameOperation(nodeName, params) 
    , sum(outputLength, float ())

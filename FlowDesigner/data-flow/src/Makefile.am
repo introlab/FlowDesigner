@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.2 1999/09/05 03:13:31 jmvalin Exp $
+# $Id: Makefile.am,v 1.3 1999/09/06 01:38:30 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 AUTOMAKE_OPTIONS = no-dependencies
@@ -22,9 +22,10 @@ libnetwork_la_SOURCES = Node.cc \
         FP_node_info_container.cc \
         FP_network_info_container.cc \
         NetworkBuilderException.cc \
-        MuxNode.cc \
-        NetExecNode.cc \
-        NetPathList.cc \
+	NotDone.cc \
+        Mux.cc \
+        NetExec.cc \
+        PathList.cc \
         Iterator.cc \
         InputStream.cc \
         OutputStream.cc \
@@ -32,9 +33,10 @@ libnetwork_la_SOURCES = Node.cc \
         Sum.cc \
         VSum.cc \
         VNSum.cc \
-        ORNode.cc \
-        ANDNode.cc \
-        NOTNode.cc \
+        OR.cc \
+	IsValid.cc \
+        AND.cc \
+        NOT.cc \
         Object.cc \
         List.cc \
         Pack.cc \
