@@ -151,6 +151,13 @@ void vflowGUI::paste (GUIDocument *doc) {
 
     //adding the new node to the selected list
     net->addSelectedNode(my_node);
+
+    //remove the copied node from the selected list
+    GUINetwork *source_network = dynamic_cast<GUINetwork*>((*iter)->getNetwork());
+    
+    if (source_network != net && source_network != NULL) {
+      source_network->removeSelectedNode(*iter);
+    }
     
   }
   

@@ -33,6 +33,8 @@ public:
 
    void addSelectedNode(GUINode *node);
 
+   void removeSelectedNode(GUINode *node);
+
    list<GUINode*>& getSelectedNodes(){return selectedNodes;}
 
    void moveSelectedNodes(double dx, double dy);

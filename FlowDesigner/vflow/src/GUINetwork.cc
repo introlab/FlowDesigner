@@ -505,8 +505,35 @@ void GUINetwork::emptySelectedNodes() {
 }
 
 void GUINetwork::addSelectedNode(GUINode *node) {
-  selectedNodes.push_back(node);
+
+  bool found = false;
+
+  //prevent adding selectedNode twice
+  for (list<GUINode*>::iterator iter = selectedNodes.begin(); 
+       iter != selectedNodes.end(); iter++) {
+    if ((*iter) == node) found = true;
+  }
+
+  if (!found) {
+    selectedNodes.push_back(node);
+  }
+
 }
+
+
+
+void GUINetwork::removeSelectedNode(GUINode *node) {
+
+  for (list<GUINode*>::iterator iter = selectedNodes.begin(); 
+       iter != selectedNodes.end(); iter++) {
+    if ((*iter) == node) {
+      (*iter)->unselect();
+      selectedNodes.erase(iter);
+      break;
+    }
+  }
+}
+
 
 void GUINetwork::popTooltip(GUINode *node)
 {
