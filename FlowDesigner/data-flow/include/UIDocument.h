@@ -45,59 +45,90 @@ class DocParameterDataText {
 };
 
 /**GUI-independent memory representation for an XML Overflow document
-   author: Jean-Marc Valin
+   @author: Jean-Marc Valin
 */
 class UIDocument {
    
 protected:
+   /**Pointers to all networks included (defined) in the document*/
    vector<UINetwork *> networks;
+
+   /**Flag is set to true anytime there's a change that hasn't been saved*/
    bool modified;
    
-
+   /**Info about all internal networks that can be included as nodes - I think (should be cleaned up)*/
    map<string, SubnetInfo *> preloadInfo;
+
+   /**Document parameters (should be re-written)*/
    vector<DocParameterDataText *> textParams;
 
+   /**Input for the document if used as an external node*/
    vector<ParameterText *> docInputs;
+
+   /**Output for the document if used as an external node*/
    vector<ParameterText *> docOutputs;
+
+   /**Parameters for the document if used as an external node*/
    vector<ParameterText *> docParams;
 
+   /**File name (no path)*/
    string docName;
+   
+   /**Document path*/
    string path;
+   
+   /**True if document has no real name yet*/
    bool untitled;
 
 public:
    static map<string, SubnetInfo *> externalDocInfo;
 
+   /**Document constructor with name, DOES NOT load the document (document created as untitled)*/
    UIDocument(string _name);
 
+   /**Virtual destructor*/
    virtual ~UIDocument();
 
+   /**Explicitly loads a document using the name specified at construction*/
    virtual void load();
 
+   /**Loads the document from a parsed XML tree*/
    virtual void loadXML(xmlNodePtr root);
 
+   /**Loads the document from memory*/
    virtual void loadFromMemory(char *mem, int size);
    
+   /**Sets the 'modified' flag*/
    void setModified() {modified=true;}
    
+   /**Resets the 'modified' flag*/
    void resetModified() {modified=false;}
    
+   /**Has the document been modified since last saved?*/
    bool isModified() {return modified;}
    
+   /**Add a network to the document*/
    UINetwork *addNetwork(string name, UINetwork::Type type);
    
+   /**Add a network to the document from an XML node (used in load())*/
    UINetwork *addNetwork(xmlNodePtr xmlNet);
    
+   /**Remove and destroy network from the document*/
    void removeNetwork(UINetwork *toRemove);
    
+   /**Is the document untitled?*/
    bool isUntitled() {return untitled;}
    
+   /**Document name (no path*/
    virtual const string &getName() {return docName;}
    
+   /**Document path*/
    const string &getPath() {return path;}
    
+   /**Save the document to file specified in internal variables 'path' and 'docName'*/
    void save();
    
+   /**Save in old Overflow format (deprecated*/
    void export2net();
    
    void addParameterText(string name, string value, string type);
@@ -143,6 +174,10 @@ public:
    virtual void setFullPath(const string &fullpath);
    
    vector<string> getAvailableNodes();
+
+ protected:
+   
+   virtual void error(char *err);
 
  private:
    

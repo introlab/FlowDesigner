@@ -22,9 +22,6 @@ UIDocument::UIDocument(string _name)
    , untitled(true)
    , modified(false)
 {
-   //cerr << "created doc with name " << docName << endl;
-   //gnome_mdi_child_set_name (GNOME_MDI_CHILD(this), (gchar *)name.c_str());
-   //create();
 }
 
 UIDocument::~UIDocument()
@@ -622,6 +619,11 @@ void UIDocument::removeNetwork(UINetwork *toRemove)
    setModified();
 }
 
+void UIDocument::error(char *err)
+{
+   cerr << err << endl;
+}
+
 void UIDocument::save()
 {
    xmlDocPtr doc;
@@ -642,7 +644,12 @@ void UIDocument::save()
    }
 
    string fullname = path+docName;
-   xmlSaveFile(fullname.c_str(), doc);
+   if (xmlSaveFile(fullname.c_str(), doc)==-1)
+   {
+      error("Error while saving file");
+   } else {
+      resetModified();
+   }
 
    xmlFreeDoc(doc);
 }

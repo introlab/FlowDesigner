@@ -819,3 +819,17 @@ string GUIDocument::getNewNetName(UINetwork::Type type)
    }
    return newName;
 }
+
+void error_dismiss(GtkWidget *widget, gpointer user_data)
+{
+   gtk_widget_destroy(widget);
+   //cerr << "called\n";
+}
+
+void GUIDocument::error(char *err)
+{
+   GtkWidget *errDialog = gnome_error_dialog ("Error while saving file");
+
+   gtk_signal_connect (GTK_OBJECT ( errDialog ), "close",
+		       GTK_SIGNAL_FUNC( error_dismiss), NULL);
+}

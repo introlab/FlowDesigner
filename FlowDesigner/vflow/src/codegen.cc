@@ -43,7 +43,7 @@ void CodeGenState::ok()
       bool compile = false;
       if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radiobutton1)))
       {
-	 cerr << "func only\n";
+	 //cerr << "func only\n";
       } else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radiobutton2)))
       {
 	 generateMain=true;

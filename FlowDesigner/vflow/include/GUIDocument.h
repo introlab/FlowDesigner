@@ -93,6 +93,11 @@ public:
    friend class GUINetPopup;
 
    static void threadStop();
+
+  protected:
+
+   virtual void error(char *err);
+
 };
 
 

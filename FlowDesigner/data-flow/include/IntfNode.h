@@ -17,7 +17,7 @@ public:
    void reset();
    ObjectRef getOutput(int output_id, int count);
 
-   void IntfNode::request(int outputID, const ParameterSet &req);
+   void request(int outputID, const ParameterSet &req);
    void init();
    void setValue(int count, ObjectRef val);
    
