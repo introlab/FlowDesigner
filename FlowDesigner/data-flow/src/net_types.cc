@@ -12,12 +12,8 @@ DECLARE_TYPE2(Int, 0)
 DECLARE_TYPE2(Bool, 1)
 DECLARE_TYPE2(Float, 2)
 DECLARE_TYPE2(Double, 3)
+DECLARE_TYPE2(String, 4)
 
-//vector<GenericType<int> *> ObjectPool<GenericType<int> >::stack;
-//vector<GenericType<double> *> ObjectPool<GenericType<double> >::stack;
-//vector<GenericType<float> *> ObjectPool<GenericType<float> >::stack;
-//vector<GenericType<FILE *> *> ObjectPool<GenericType<FILE *> >::stack;
-//vector<GenericType<bool> *> ObjectPool<GenericType<bool> >::stack;
 vector<Int *> ObjectPool<Int>::stack;
 vector<Bool *> ObjectPool<Bool>::stack;
 vector<Float *> ObjectPool<Float>::stack;

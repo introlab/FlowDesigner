@@ -34,6 +34,16 @@ public:
 
    static Vector<T> *alloc(int size);
 
+   static string GetClassName() 
+   {
+      string name = Object::GetClassName<Vector<T> >();
+      if (name == "unknown")
+	 return string("Vector");
+      //return string("Vector<") + Object::GetClassName<T>() + ">";
+      else
+	 return name;
+   }
+   string getClassName() {return GetClassName();}
 };
 
 /*template <class T>
@@ -164,11 +174,13 @@ struct VecBinary<T,TTraits::Object> {
    static inline void unserialize(Vector<T> &v, istream &in)
    {
       int tmp;
+      string expected = Vector<T>::GetClassName();
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
       for (int i=0;i<v.size();i++)
       {
-	 if (!isValidType(in, v.className())) return in;
+	 if (!isValidType(in, expected))
+	    throw new ParsingException("Expected type " + expected);
 	 v[i].unserialize(in);
       }
       char ch;
@@ -297,58 +309,43 @@ inline Vector<double> *Vector<double>::alloc(int size)
 {
    return doubleVectorPool.newVector(size);
 }
-/*
-inline bool isValidVectorType (istream &in, const string &className, bool binary=false)
+
+inline bool isValidVectorType (istream &in, string type, const string &className)
 {
-   char ch;
-   in >> ch;
-   if ((ch == '<' && !binary) || (ch == '{' && binary))
-   {
-      string type;
-      in >> type;
-      if (type != "Vector" && type != className)
-	 throw new ParsingException ("Parser expected type Vector<Type> and got " + type);
-      return binary;
-   } else {
-      throw new GeneralException ("Vector type validation failed", __FILE__, __LINE__);
-      in.putback(ch);
-      in.clear(ios::failbit);
+   if (type != "Vector" && type != className)
       return false;
-   }
    return true;
 }
-*/
 
-//FIXME: should check type
+
 template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
 {
-   /*if (validateVectorType(in, vec.className()))
-      vec.readFrom(in);
-   else
-      vec.unserialize(in);
-   return in;
-   */
-
    char ch;
    in >> ch;
+
+   string expected = Object::GetClassName<Vector<T> >();
 
    if (ch == '<')
    {
       string type;
       in >> type;
+      if (!isValidVectorType(in, type, expected))
+	 throw new ParsingException ("Parser expected type " + expected + " and got " + type);
       vec.readFrom(in);
    } else if (ch == '{')
    {
       string type;
       in >> type;
+      if (!isValidVectorType(in, type, expected))
+	 throw new ParsingException ("Parser expected type " + expected + " and got " + type);
       char dummy;
       do {
          in >> dummy;
       } while(dummy != '|');
       vec.unserialize(in);
    } else {
-      in.putback(ch);
+      throw new ParsingException ("Parser expected < or { while parsing type " + expected);
    }
    return in;
 }

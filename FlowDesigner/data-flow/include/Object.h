@@ -100,10 +100,10 @@ public:
    }
 
    /**Returns the name of the class of the Object*/
-   const string &className() const;
+   virtual string className() const;
    
    template<class T>
-   static const string &GetClassName();
+   static string GetClassName();
 
    static const ObjectRef nilObject;
    static const ObjectRef before_beginningObject;
@@ -148,15 +148,19 @@ public:
 
 
 template<class T>
-const string &Object::GetClassName()
+string Object::GetClassName()
 {
    map<const type_info *, _ObjectFactory*> &m = TypeidDictionary();
    map<const type_info *, _ObjectFactory*>::iterator found = m.find(&typeid(T));
    if (found != m.end())
       return found->second->getName();
    else
-      throw GeneralException ("Object::GetClassName() failed, object type is not registered",
-			      __FILE__, __LINE__);
+   {
+      //throw GeneralException ("Object::GetClassName() failed, object type is not registered",
+      //		      __FILE__, __LINE__);
+      //static const string unknown("unknown");
+      return "unknown";
+   }
 }
 
 

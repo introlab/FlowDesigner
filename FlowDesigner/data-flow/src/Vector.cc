@@ -19,6 +19,8 @@ DECLARE_TYPE2(Vector<int>, 2)
 DECLARE_TYPE2(Vector<ObjectRef>, 3)
 DECLARE_TYPE3("Vector<complex<float>>", Vector<complex<float> >, 4)
 DECLARE_TYPE3("Vector<complex<double>>", Vector<complex<double> >, 5)
+DECLARE_TYPE2(Vector<string>, 7)
+DECLARE_TYPE2(Vector<String>, 8)
 
 VectorPool<float> floatVectorPool;
 

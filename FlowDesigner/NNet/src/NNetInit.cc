@@ -53,7 +53,7 @@ protected:
 
    Vector<int> topo;
       
-   vector<string> functions;
+   Vector<string> functions;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetInit(string nodeName, ParameterSet params)

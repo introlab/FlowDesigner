@@ -12,7 +12,7 @@ using namespace std;
 #include <stdio.h>
 #include "ObjectPool.h"
 #include "ObjectParser.h"
-
+#include "typetraits.h"
 
 /** This is a generic type that Overflow will handle. Subclass GenericType if
     you want to add specific operations and operators */
@@ -236,6 +236,10 @@ public:
    {}
    
 };
+
+
+_DEF_OBJECT_TYPE(String)
+
 
 /**Base Overflow Stream type, wraps a C++ stream
    @author Jean-Marc Valin
