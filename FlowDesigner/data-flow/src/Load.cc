@@ -93,7 +93,7 @@ inline ObjectRef Load::getOutput(int output_id, int count)
       {
          NodeInput streamInput = inputs[streamInputID];
          ObjectRef streamRef = streamInput.node->getOutput(streamInput.outputID,count);
-         IStream &stream = object_cast<IStream> (streamRef);
+         Stream &stream = object_cast<Stream> (streamRef);
          
          //T *loadedObject = new T;
          //stream >> *loadedObject;

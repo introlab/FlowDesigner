@@ -70,7 +70,7 @@ ObjectRef Save::getOutput(int output_id, int count)
 	    
 	    NodeInput streamInput = inputs[streamInputID];
 	    ObjectRef streamValue = streamInput.node->getOutput(streamInput.outputID,i);
-	    OStream &stream = object_cast<OStream> (streamValue);
+	    Stream &stream = object_cast<Stream> (streamValue);
 	    
 	    stream << object << endl;
 	    stream.flush();

@@ -225,7 +225,7 @@ public:
       
       if (strType == cpp)
       {
-	 IStream &file = object_cast<IStream> (inputValue);
+	 Stream &file = object_cast<Stream> (inputValue);
 	 file.read(tmpBuffer,itemSize*advance);
 	 if (file.eof())
 	 {

@@ -19,17 +19,17 @@
 
 DECLARE_NODE(InputStream)
 /*Node
-
+ *
  * @name InputStream
  * @category IO
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 

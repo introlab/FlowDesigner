@@ -187,8 +187,72 @@ public:
    
 };
 
+class Stream : public Object
+{
+  protected:
+   ios *int_stream;
+  public:
+   Stream(ios *_str)
+      : int_stream(_str)
+      {}
+   virtual void printOn(ostream &out) const {out << "<Stream>";}
+   int eof() {return int_stream->eof();}
+   int fail() {return int_stream->fail();}
+   void flush() {dynamic_cast<ostream *> (int_stream)->flush();}
+   
+   Stream &read (char *ch, int len) {dynamic_cast<istream *> (int_stream)->read(ch,len); return *this;}
+   Stream &write (char *ch, int len) {dynamic_cast<ostream *> (int_stream)->write(ch,len); return *this;}
+   Stream &getline (char *ch, int len) {dynamic_cast<istream *> (int_stream)->getline(ch,len); return *this;}
+   Stream &seekg (int pos, ios::seek_dir dir) {dynamic_cast<iostream *> (int_stream)->seekg(pos, dir); return *this;}
+   
+   operator istream &() {return *dynamic_cast<istream *> (int_stream);}
+   operator ostream &() {return *dynamic_cast<ostream *> (int_stream);}
+   
+   template <class T>
+      Stream &operator >> (T &obj) {*dynamic_cast<istream *> (int_stream) >> obj; return *this;}
+   template <class T>
+      Stream &operator << (T &obj) {*dynamic_cast<ostream *> (int_stream) << obj; return *this;}
+   virtual ~Stream() {}
+   
 
-class IStream : virtual public istream, virtual public Object
+};
+
+class IFStream : public Stream {
+  public:
+   IFStream() 
+      : Stream(new ifstream())
+      {}
+   IFStream(const char * name) 
+      : Stream(new ifstream(name))
+      {}
+   void open(const char * name) 
+   {
+      dynamic_cast<ifstream *>(int_stream)->open(name);
+   }
+   void printOn(ostream &out) const {out << "<IFStream>";}
+   ~IFStream() {delete dynamic_cast<ifstream *>(int_stream);}
+
+};
+
+class OFStream : public Stream {
+  public:
+   OFStream() 
+      : Stream(new ofstream())
+      {}
+   OFStream(const char * name) 
+      : Stream(new ofstream(name))
+      {}
+   void open(const char * name) 
+   {
+      dynamic_cast<ofstream *>(int_stream)->open(name);
+   }
+   void printOn(ostream &out) const {out << "<OFStream>";}
+   ~OFStream() {delete dynamic_cast<ofstream *>(int_stream);}
+
+};
+
+
+/*class IStream : virtual public istream, virtual public Object
 {
 public:
    IStream() : istream() {}
@@ -233,6 +297,7 @@ public:
       out << "<OFStream>";
    }
 };
+*/
 
 
 //@}
