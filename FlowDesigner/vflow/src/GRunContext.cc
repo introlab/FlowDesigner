@@ -5,6 +5,10 @@
 #include "GRunContext.h"
 #include <sstream>
 
+gboolean delete_window      (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+   exit(0);
+}
 
 GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
    : doc(_doc)
@@ -12,6 +16,8 @@ GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
 {
    //cerr << "opening...\n";
    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+   gtk_signal_connect (GTK_OBJECT (win), "delete-event", GTK_SIGNAL_FUNC(delete_window), NULL);
+
    gtk_window_set_title (GTK_WINDOW (win), _("GFlow"));
 	 
    GtkWidget *vbox = gtk_vbox_new (FALSE, 0);
