@@ -18,7 +18,10 @@ ObjectRef addVectorFloat(ObjectRef x, ObjectRef y)
    Vector<float> &v1 = object_cast<Vector<float> > (x);
    Vector<float> &v2 = object_cast<Vector<float> > (y);
    if (v1.size() != v2.size())
+   {
+      cerr << v1.size() << " != " << v2.size() << endl;
       throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
+   }
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
