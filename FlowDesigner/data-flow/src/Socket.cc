@@ -2,7 +2,7 @@
 
 #include "BufferedNode.h"
 #include "operators.h"
-#include "NetworkSocket.h"
+#include "SocketStream.h"
 
 class Socket;
 
@@ -44,15 +44,20 @@ public:
      
      m_socketRef = nilObject;
 
-     cerr<<"got socketType : "<<socketType<<endl;
-
      if (socketType == "BROADCAST") {
-       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::BROADCAST_TYPE, port));
+
+       socket_iostream *my_socket = new socket_iostream(network_socket::BROADCAST_TYPE, port);
+
+       m_socketRef = ObjectRef(new IOStream(my_socket,true));
+
      }
 
      if (socketType == "TCP_STREAM") {
-       cerr<<"creating TCP_STREAM socket"<<endl;
-       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::TCP_STREAM_TYPE, port));
+
+       socket_iostream *my_socket = new socket_iostream(network_socket::TCP_STREAM_TYPE, port);
+
+       m_socketRef = ObjectRef(new IOStream(my_socket,true));
+
      }
 
      outputID = addOutput("OUTPUT");

@@ -52,6 +52,7 @@ include_HEADERS = Array.h \
 	typemap.h \
 	stream_io.h \
 	NetworkSocket.h \
+	SocketStream.h \
 	stream_wrap.h \
 	iextensions.h
 	
