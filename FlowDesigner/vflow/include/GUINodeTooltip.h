@@ -17,6 +17,7 @@ class GUINodeTooltip {
 
   public:
    GUINodeTooltip(GUINode *_node);
+   ~GUINodeTooltip();
 };
 
 

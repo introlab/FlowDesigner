@@ -11,6 +11,7 @@
 #include "GUINetTerminal.h"
 #include "canvas-background.h"
 #include "misc.h"
+#include "GUINodeTooltip.h"
 
 /*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
@@ -30,6 +31,7 @@ static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, GUINetwo
 GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
    : UINetwork(_doc, _name, _type)
    , zoom(1)
+   , tooltip(NULL)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    create();
@@ -38,6 +40,7 @@ GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
 GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
    : UINetwork(_doc, net, false)
    , zoom(1)
+   , tooltip(NULL)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    name = string((char *)xmlGetProp(net, (CHAR *)"name"));
@@ -486,4 +489,11 @@ void GUINetwork::emptySelectedNodes() {
 
 void GUINetwork::addSelectedNode(GUINode *node) {
   selectedNodes.push_back(node);
+}
+
+void GUINetwork::popTooltip(GUINode *node)
+{
+   if (tooltip)
+      delete tooltip;
+   tooltip = new GUINodeTooltip(node);
 }

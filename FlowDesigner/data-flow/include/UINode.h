@@ -138,6 +138,7 @@ public:
    vector <UITerminal *> getOutputs() {return outputs;}
    UINodeParameters * getParameters() {return parameters;}
    string getDescription() {return description;}
+   string getComments() const;
 
    friend class UINetwork;
 //   friend GUINetwork;

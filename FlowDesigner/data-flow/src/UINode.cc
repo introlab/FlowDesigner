@@ -284,3 +284,9 @@ void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
 
    out << "}\n\n";
 }
+
+
+string UINode::getComments() const 
+{
+   return parameters->getComments();
+}

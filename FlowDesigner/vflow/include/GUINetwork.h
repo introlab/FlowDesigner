@@ -9,7 +9,7 @@
 
 class UIDocument;
 class GUINetPopup;
-
+class GUINodeTooltip;
 
 class GUINetwork : public UINetwork {
 protected:
@@ -19,6 +19,7 @@ protected:
    double zoom;
 
    list<GUINode*> selectedNodes;
+   GUINodeTooltip *tooltip;
 
 public:
 
@@ -70,6 +71,10 @@ public:
 
    double getZoom() {return zoom;}
    //virtual void tata() {};
+
+   void popTooltip(GUINode *node);
+
+   void redraw() {gtk_widget_queue_draw(GTK_WIDGET(canvas));}
 };
 
 #endif
