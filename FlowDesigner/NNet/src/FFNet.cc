@@ -5,6 +5,19 @@
 
 DECLARE_TYPE(FFNet)
 
+FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
+   : topo(_topo)
+   , layers(topo.size()-1)
+{
+   //topo = _topo;
+   for (int i=0;i<topo.size()-1;i++)
+   {
+      layers[i]=new FFLayer(topo[i+1],topo[i], functions[i]);
+      layers[i]->init(1.0);
+   }
+}
+
+
 FFNet::FFNet(const Vector<int> &_topo)
    : topo(_topo)
    , layers(topo.size()-1)
@@ -20,11 +33,8 @@ FFNet::FFNet(const Vector<int> &_topo)
       layers[i]->init(1.0);
    }
    layers[0]->init(5);
-
-   /*double *f=layers[0]->getWeights(0);
-   f[0]=2;f[1]=-1;
-   f[2]=1;*/
 }
+
 
 double *FFNet::calc(const double *input)
 {
