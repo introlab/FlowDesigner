@@ -5,42 +5,42 @@ AC_INIT(data-flow/include/Node.h)
 AC_CONFIG_SUBDIRS(vflow)
 
 AC_MODULE_OPT(visix)
-if test $visix = visix; then
+if test "$visix" = visix; then
 AC_CONFIG_SUBDIRS(visix)
 fi
 
 AC_MODULE_OPT(audio_blocks)
-if test $audio_blocks = audio_blocks; then
+if test "$audio_blocks" = audio_blocks; then
 AC_CONFIG_SUBDIRS(audio_blocks)
 fi
 
 AC_MODULE_OPT(effects)
-if test $effects = effects; then
+if test "$effects" = effects; then
 AC_CONFIG_SUBDIRS(effects)
 fi
 
 AC_MODULE_OPT(NNet)
-if test $NNet = NNet; then
+if test "$NNet" = NNet; then
 AC_CONFIG_SUBDIRS(NNet)
 fi
 
 AC_MODULE_OPT(HMM)
-if test $HMM = HMM; then
+if test "$HMM" = HMM; then
 AC_CONFIG_SUBDIRS(HMM)
 fi
 
 AC_MODULE_OPT(VQ)
-if test $VQ = VQ; then
+if test "$VQ" = VQ; then
 AC_CONFIG_SUBDIRS(VQ)
 fi
 
 AC_MODULE_OPT(video_blocks)
-if test $video_blocks = video_blocks; then
+if test "$video_blocks" = video_blocks; then
 AC_CONFIG_SUBDIRS(video_blocks)
 fi
 
 AC_MODULE_OPT(FuzzyEngine)
-if test $FuzzyEngine = FuzzyEngine; then
+if test "$FuzzyEngine" = FuzzyEngine; then
 AC_CONFIG_SUBDIRS(FuzzyEngine)
 fi
 
