@@ -15,7 +15,6 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "net_types.h"
-#include "GrowingBuffer.h"
 #include "RBF.h"
 #include "Vector.h"
 #include "Node.h"
@@ -107,12 +106,12 @@ class RBFTrain : public Node {
 	    cerr << "getting frames..." << endl;
 	    ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
 	    cerr << "got frames..." << endl;
-	    GrowingBuffer &mat = object_cast<GrowingBuffer> (matRef);
+	    Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
 	    
 	    RBF *rbf = new RBF();
 	    
-	    vector <float *> data(mat.getCurrentPos()+1);
-	    for (i=0;i<=mat.getCurrentPos();i++)
+	    vector <float *> data(mat.size());
+	    for (i=0;i<mat.size();i++)
 	       data[i]= &object_cast <Vector<float> > (mat[i])[0];
 	    int length = object_cast <Vector<float> > (mat[0]).size();
 	    

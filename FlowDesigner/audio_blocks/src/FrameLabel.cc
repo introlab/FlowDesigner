@@ -91,14 +91,9 @@ public:
 	 currentTag = new String();
 	 file >> currStart;
 	 if (currStart != currEnd+1)
-	 {
-	    cerr << currEnd << " "<< currStart << endl;
 	    throw new NodeException (this, "Start and end label don't fit",__FILE__, __LINE__);
-	    
-	 }
 	 file >> currEnd;
 	 file >> *currentTag;
-	 cerr << *currentTag << endl;
       }
 
       out[count] = currentTag;

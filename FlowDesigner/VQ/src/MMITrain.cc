@@ -16,7 +16,6 @@
 
 #include "MMITrain.h"
 #include "net_types.h"
-#include "GrowingBuffer.h"
 #include "Cell.h"
 #include "Vector.h"
 
@@ -28,7 +27,7 @@ DECLARE_NODE(MMITrain)
  * @description Train Maximum Mutual Information (MMI) Tree
  *
  * @input_name FRAMES
- * @input_type GrowingBuffer
+ * @input_type Vector<ObjectRef> 
  * @input_description No description available
  *
  * @output_name OUTPUT
@@ -77,7 +76,7 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
 
          Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
 
-         int dimensions = object_cast<vector<float> >((object_cast <GrowingBuffer> (mat[0])[0])).size();
+         int dimensions = object_cast<vector<float> >((object_cast <Vector<ObjectRef> > (mat[0])[0])).size();
          //cerr << "Dimensions = " << dimensions << endl;
          //cerr << "Number of Classes: " << mat.size() << endl;
          Cell *mmi = new Cell(dimensions, mat.size()); 
@@ -88,9 +87,9 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
          for (i=0;i< mat.size();i++)
          {
 	    cerr << i << endl;
-            GrowingBuffer &speaker = object_cast <GrowingBuffer> (mat[i]);
-	    //cerr << "class " << i << " has " << speaker.getCurrentPos() << " members\n";
-            for (j=0;j<speaker.getCurrentPos(); j++)
+            Vector<ObjectRef>  &speaker = object_cast <Vector<ObjectRef> > (mat[i]);
+	    //cerr << "class " << i << " has " << speaker.size() << " members\n";
+            for (j=0;j<speaker.size(); j++)
             {
                data.insert (data.end(), 
                             make_pair<int, float *> (i, &object_cast <Vector<float> > (speaker[j])[0]));

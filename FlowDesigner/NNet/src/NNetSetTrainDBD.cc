@@ -18,7 +18,6 @@
 #include "Node.h"
 #include "ObjectRef.h"
 #include "NNetSet.h"
-#include "GrowingBuffer.h"
 
 class NNetSetTrainDBD;
 
@@ -188,21 +187,21 @@ public:
 	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
 
 	       cerr << "inputs calculated\n";
-	       GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
-	       GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
-	       GrowingBuffer &idBuff = object_cast<GrowingBuffer> (trainIDValue);
+	       Vector<ObjectRef>  &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
+	       Vector<ObjectRef>  &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
+	       Vector<ObjectRef>  &idBuff = object_cast<Vector<ObjectRef> > (trainIDValue);
 
 	       cerr << "inputs casted\n";
-	       vector <float *> in(inBuff.getCurrentPos());
-	       for (i=0;i<inBuff.getCurrentPos();i++)
+	       vector <float *> in(inBuff.size());
+	       for (i=0;i<inBuff.size();i++)
 		  in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
 
-	       vector <float *> out(outBuff.getCurrentPos());
-	       for (i=0;i<outBuff.getCurrentPos();i++)
+	       vector <float *> out(outBuff.size());
+	       for (i=0;i<outBuff.size();i++)
 		  out[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
-	       vector <int> id(idBuff.getCurrentPos());
-	       for (i=0;i<idBuff.getCurrentPos();i++)
+	       vector <int> id(idBuff.size());
+	       for (i=0;i<idBuff.size();i++)
 		  id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
 
 	       cerr << "vectors filled\n";

@@ -16,7 +16,6 @@
 
 #include "VQTrain.h"
 #include "net_types.h"
-#include "GrowingBuffer.h"
 #include "kmeans.h"
 #include "Vector.h"
 
@@ -86,12 +85,12 @@ ObjectRef VQTrain::getOutput(int output_id, int count)
          cerr << "getting frames..." << endl;
          ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
          cerr << "got frames..." << endl;
-         GrowingBuffer &mat = object_cast<GrowingBuffer> (matRef);
+         Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
 
          KMeans *vq = new KMeans;
 
-         vector <float *> data(mat.getCurrentPos()+1);
-         for (i=0;i<=mat.getCurrentPos();i++)
+         vector <float *> data(mat.size());
+         for (i=0;i<mat.size();i++)
             data[i]= &object_cast <Vector<float> > (mat[i])[0];
          int length = object_cast <Vector<float> > (mat[0]).size();
 

@@ -1117,6 +1117,74 @@ FP_DIRTY
 
 
 
-#endif /* ifdef USE_3DNOW */
+#endif /* ifdef _USE_3DNOW */
+
+
+#ifdef _USE_SSE
+
+#define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
+
+template <>
+inline float vec_inner_prod<float>(const float *a, const float *b, int len)
+{
+  //float sum=0;
+  float sum[4];
+  __asm__ __volatile__ (
+  "
+  push %%eax
+  push %%edi
+  push %%ecx
+  xorps %%xmm3, %%xmm3
+
+  //jmp cond1
+
+  sub $4, %%ecx
+  jb mul4_skip
+
+mul4_loop:
+  movups (%%eax), %%xmm0
+  movups (%%edi), %%xmm1
+  add $16, %%eax
+  add $16, %%edi
+  mulps %%xmm0, %%xmm1
+  addps %%xmm1, %%xmm3
+
+  sub $4,  %%ecx
+
+  jae mul4_loop
+
+mul4_skip:
+
+  add $4, %%ecx
+  jmp cond1
+
+mul1_loop:
+  movss (%%eax), %%xmm0
+  movss (%%edi), %%xmm1
+  add $4, %%eax
+  add $4, %%edi
+  mulss %%xmm0, %%xmm1
+  addss %%xmm1, %%xmm3
+
+cond1:
+  sub $1, %%ecx
+  jae mul1_loop
+
+  movups %%xmm3, (%%edx)
+
+  pop %%ecx
+  pop %%edi
+  pop %%eax
+  emms
+  "
+  : : "a" (a), "D" (b), "c" (len), "d" (sum)
+FP_DIRTY
+  );
+    
+  return sum[0]+sum[1]+sum[2]+sum[3];
+}
+
+#endif
+
 
 #endif /* ifndef VEC_H*/

@@ -54,6 +54,7 @@ public:
    NewAccumulator(string nodeName, ParameterSet params)
       : Node(nodeName, params) 
    {
+      outputID = addOutput("OUTPUT");
    }
 
    void specificInitialize()

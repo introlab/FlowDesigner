@@ -16,7 +16,6 @@
 
 #include "GMMTrain.h"
 #include "net_types.h"
-#include "GrowingBuffer.h"
 #include "covariance.h"
 #include "gmm.h"
 #include "Vector.h"
@@ -69,12 +68,12 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
 
          ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
 
-         GrowingBuffer &mat = object_cast<GrowingBuffer> (matRef);
+         Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
 
          GMM *gmm = new GMM(1, object_cast <Vector<float> > (mat[0]).size(), NewDiagonalCovariance);
-         //cerr << "mat.getCurrentPos(): " << mat.getCurrentPos() << endl;
-         vector <float *> data(mat.getCurrentPos());
-         for (i=0;i<mat.getCurrentPos();i++)
+         //cerr << "mat.size(): " << mat.getCurrentPos() << endl;
+         vector <float *> data(mat.size());
+         for (i=0;i<mat.size();i++)
             data[i]=&object_cast <Vector<float> > (mat[i])[0];
          gmm->init(data);
          gmm->to_real();

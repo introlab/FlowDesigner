@@ -18,7 +18,6 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
-#include "GrowingBuffer.h"
 #include <sstream>
 #include "ObjectParser.h"
 #include "Vector.h"
@@ -107,16 +106,16 @@ public:
 
       int i,j;
 
-      GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
-      GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
+      Vector<ObjectRef> &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
+      Vector<ObjectRef> &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
       
       //cerr << "inputs converted\n";
-      vector <float *> tin(inBuff.getCurrentPos());
-      for (i=0;i<inBuff.getCurrentPos();i++)
+      vector <float *> tin(inBuff.size());
+      for (i=0;i<inBuff.size();i++)
 	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
       
-      vector <float *> tout(outBuff.getCurrentPos());
-      for (i=0;i<outBuff.getCurrentPos();i++)
+      vector <float *> tout(outBuff.size());
+      for (i=0;i<outBuff.size();i++)
 	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
       
       /*Vector<int> topo(4);

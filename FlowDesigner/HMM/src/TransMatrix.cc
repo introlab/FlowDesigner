@@ -18,7 +18,6 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "Matrix.h"
-#include "GrowingBuffer.h"
 #include "Vector.h"
 
 class TransMatrix;
@@ -72,7 +71,7 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef statesValue = getInput(inputID, count);
-      GrowingBuffer &states = object_cast<GrowingBuffer> (statesValue);
+      Vector<ObjectRef>  &states = object_cast<Vector<ObjectRef> > (statesValue);
 
       Matrix<float> &trans = *new Matrix<float> (nbStates, nbStates);
       out[count] = ObjectRef(&trans);
@@ -81,7 +80,7 @@ public:
       for (int i=0;i<nbStates;i++)
 	 sums[i] = 0;
       
-      for (int i=0;i<states.getCurrentPos()-1;i++)
+      for (int i=0;i<states.size()-1;i++)
       {
 	 Vector<float> &from = object_cast<Vector<float> > (states[i]);
 	 Vector<float> &to = object_cast<Vector<float> > (states[i+1]);

@@ -22,7 +22,6 @@
 #include "ObjectRef.h"
 #include "path.h"
 #include "Network.h"
-#include "GrowingBuffer.h"
 #include "Vector.h"
 #include "wrapper.h"
 
@@ -74,8 +73,8 @@ int overflowProcessAudioFile(void *vdoc, char **argv, int *length, int *nbFeatur
 	 if (!net->hasOutput(i)) 
 	    break;
 	 ObjectRef result = net->getOutput(i,0);
-	 GrowingBuffer &buff = object_cast<GrowingBuffer> (result);
-	 *length = buff.getCurrentPos()+1;
+	 Vector<ObjectRef>  &buff = object_cast<Vector<ObjectRef> > (result);
+	 *length = buff.size();
 	 *nbFeatures = object_cast<Vector<float> > (buff[0]).size();
 	 *data = (float*)malloc(*length**nbFeatures*sizeof(float));
 	 for (int i=0;i<*length;i++)

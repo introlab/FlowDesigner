@@ -57,3 +57,9 @@ inline ObjectRef operator>(ObjectRef x, ObjectRef y)
 }
 
 
+DEFINE_DOUBLE_VTABLE(equalVtable);
+
+inline ObjectRef operator==(ObjectRef x, ObjectRef y)
+{
+   return equalVtable::perform(x,y);
+}

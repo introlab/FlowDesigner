@@ -105,22 +105,19 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
        inputStd[j] = sqrt(inputStd[j]/tin.size() - inputMeans[j]*inputMeans[j]);
    
    for (int i=0;i<tout.size();i++)
-   {
       for (int j=0;j<topo[topo.size()-1];j++)
-      {
 	 outputMeans[j] += tout[i][j];
-	 outputStd[j] += tout[i][j]*tout[i][j];
-      }
-   }
-   
+
    for (int j=0;j<topo[topo.size()-1];j++)
-   {
       outputMeans[j] /= tout.size();
-      //cerr << outputMeans[j] << " ";
-   }
+
+   for (int i=0;i<tout.size();i++)
+      for (int j=0;j<topo[topo.size()-1];j++)
+	 outputStd[j] += (tout[i][j]-outputMeans[j]);
+   
    //cerr << endl;
    for (int j=0;j<topo[topo.size()-1];j++)
-      outputStd[j] = sqrt(outputStd[j]/tout.size() - outputMeans[j]*outputMeans[j]);
+      outputStd[j] = sqrt(outputStd[j]/tout.size());
    
    
    for (int i=0;i<topo.size()-1;i++)
@@ -188,7 +185,8 @@ void FFNet::learn(float *input, float *output, double *gradient, double *err, fl
 
    if (err)
    {
-      *err += vec_dist2(calc_out,output, topo.size()-1);
+      *err += vec_dist2(calc_out,output, topo[topo.size()-1]);
+      //cout << calc_out[0] << " " << output[0] << " " << vec_dist2(calc_out,output, topo[topo.size()-1]) << endl;
    }
    
    //start with the output layer, towards the input

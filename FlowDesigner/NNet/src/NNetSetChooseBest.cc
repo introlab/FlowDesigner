@@ -18,7 +18,6 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "NNetSet.h"
-#include "GrowingBuffer.h"
 #include <sstream>
 #include "ObjectParser.h"
 #include "Vector.h"
@@ -98,21 +97,21 @@ public:
 
       int i,j;
 
-      GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
-      GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
-      GrowingBuffer &idBuff = object_cast<GrowingBuffer> (trainIDValue);
+      Vector<ObjectRef>  &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
+      Vector<ObjectRef>  &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
+      Vector<ObjectRef>  &idBuff = object_cast<Vector<ObjectRef> > (trainIDValue);
       
       //cerr << "inputs converted\n";
-      vector <float *> tin(inBuff.getCurrentPos());
-      for (i=0;i<inBuff.getCurrentPos();i++)
+      vector <float *> tin(inBuff.size());
+      for (i=0;i<inBuff.size();i++)
 	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
       
-      vector <float *> tout(outBuff.getCurrentPos());
-      for (i=0;i<outBuff.getCurrentPos();i++)
+      vector <float *> tout(outBuff.size());
+      for (i=0;i<outBuff.size();i++)
 	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
-      vector <int> id(idBuff.getCurrentPos());
-      for (i=0;i<idBuff.getCurrentPos();i++)
+      vector <int> id(idBuff.size());
+      for (i=0;i<idBuff.size();i++)
 	 id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
       
       //srand(6827375);
