@@ -76,6 +76,7 @@ hpux*) OS=HPUX ;;
 dnl mv libtool libtool-bak  
 dnl cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$CXX\"/; print' > libtool;;
 linux*) OS=LINUX ;;
+freebsd*) OS=FREEBSD ;;
 esac
 AC_DEFINE_UNQUOTED(${OS})
 dnl Initialize libtool.

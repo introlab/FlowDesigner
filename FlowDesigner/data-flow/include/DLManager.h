@@ -59,7 +59,7 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 #endif
 
 
-#if defined (LINUX) || defined(SOLARIS)
+#if defined (LINUX) || defined(SOLARIS) || defined(FREEBSD)
 #include <dlfcn.h>
 
 /**The pointer to library type (OS dependent)*/

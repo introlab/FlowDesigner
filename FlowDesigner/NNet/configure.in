@@ -44,6 +44,7 @@ AM_PROG_LIBTOOL
 case "$host_os" in 
 hpux*) OS=HPUX ;;
 linux*) OS=LINUX ;;
+freebsd*) OS=FREEBSD ;;
 esac
 AC_DEFINE_UNQUOTED(${OS})
 dnl Initialize libtool.

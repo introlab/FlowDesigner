@@ -90,7 +90,13 @@ inline istream &operator >> (istream &in, vector<T*> &v)
    {
       T *tmp = new T;
       in >> *tmp;
-      if (in.fail()) break;
+      if (in.fail()) 
+      {
+	 //cerr << "end of vector\n";
+	 delete tmp;
+	 break;
+      }
+      //cerr << "found one\n";
       items_found++;
       v.resize(items_found);
       v[items_found-1]=tmp;

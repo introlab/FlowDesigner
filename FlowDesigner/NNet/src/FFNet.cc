@@ -107,10 +107,29 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
    double last_error=FLT_MAX;
    double alpha = learnRate;
    double momentum=mom;
+   double errRatio2=errRatio;
+
+   int i,j;
+
+   min_error=0;
+   for (i=0;i<tin.size();i++)
+   {
+      double in[topo[0]];
+      double out[topo[topo.size()-1]];
+      for (j=0;j<topo[0];j++)
+	 in[j]=tin[i][j];
+      for (j=0;j<topo[topo.size()-1];j++)
+	 out[j]=tout[i][j];
+      
+      double *netOut = calc (in);
+      for (j=0;j<topo[topo.size()-1];j++)
+	 min_error += (netOut[j]-out[j])*(netOut[j]-out[j]);
+   }
+
+   last_error=min_error;
 
    while (iter)
    {
-      int i,j;
 
 	 
       //error = 0;
@@ -160,12 +179,14 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
 	 //if (alpha > .0000015) alpha = .0000015;
 	 error = SSE;
 	 min_error=error;
-      } else if (SSE<last_error) 
+	 errRatio2=errRatio;
+      } else if (SSE<=last_error) 
       { 
 	 error=SSE;
 	 
-      } else if (SSE/errRatio > min_error)
+      } else if (SSE/errRatio2 > min_error)
       {
+	 errRatio2 *= 1.0001;
 	 cerr << SSE-last_error << endl;
 	 momentum=0;
 	 alpha *= decrease;
@@ -181,7 +202,7 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
       }
 
 
-      cout << (error/tin.size()/topo[topo.size()-1]) << "\t" << alpha << endl;
+      cout << (error/tin.size()/topo[topo.size()-1]) << "\t" << alpha << "\t" << tin.size() << endl;
 
       last_error = error;
    }

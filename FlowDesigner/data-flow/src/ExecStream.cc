@@ -22,11 +22,6 @@
 #include <strstream.h>
 
 #include <stdio.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <sys/soundcard.h>
-#include <unistd.h>
 
 class ExecStream;
 
