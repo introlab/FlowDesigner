@@ -1731,6 +1731,61 @@ So here are the settings you need for Overflow.
 \layout Chapter
 
 Troubleshooting
+\layout Subsection*
+
+1) The binary distribution I downloaded crashes on startup
+\layout Standard
+
+There can be many causes of that.
+ The most common is that you have a different libstdc++ than the one Overflow
+ was compiled with.
+ Another cause could be that you have FFTW compiled without --enable-float,
+ while Overflow was linked with a float version of FFTW.
+ Overflow has no way to detect that so it crashes.
+ In both cases, the best thing to do is to build Overflow yourself.
+\layout Subsection*
+
+2) Overflow tells me it cannot find libflow.so
+\layout Standard
+
+This can happen if you compile Overflow and then move the installation directory
+ (It can sometimes happen for other reasons).
+ You can set the LD_LIBRARY_PATH to <overflow install dir>/lib.
+ Note that if you moved the Overflow directory, you'll also need to set
+ VFLOW_HOME.
+\layout Subsection*
+
+3) The 
+\begin_inset Quotes eld
+\end_inset 
+
+New Node
+\begin_inset Quotes erd
+\end_inset 
+
+ menu is empty
+\layout Standard
+
+You probably moved the Overflow install directory, see 2).
+\layout Subsection*
+
+4) Overflow doesn't compile on my box
+\layout Standard
+
+First, make sure you have the latest release version.
+ If it doesn't work, you should try the CVS version.
+ If it fails too, please contact us and we'll do our best to make Overflow
+ compile on your platforms.
+\layout Subsection*
+
+5) I downloaded a more recent version and it doesn't even compile
+\layout Standard
+
+This can be due to the fact that you installed an earlier version in a path
+ like /usr or /usr/local.
+ The problem is that the old Overflow includes ended up somewhere like /usr/incl
+ude and when you try compiling a newer version, g++ sees the old includes
+ (because they are in the include path) instead of the new ones.
 \layout Chapter
 
 Node Documentation
