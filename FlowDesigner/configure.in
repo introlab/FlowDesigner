@@ -106,6 +106,7 @@ AC_CHECK_LIB(pthread, pthread_create)
 dnl AC_PATH_FFTW
 
 dnl Checks for library functions.
+AC_CHECK_FUNCS(pthread_cancel)
 
 dnl Output the makefiles and version.h.
 
