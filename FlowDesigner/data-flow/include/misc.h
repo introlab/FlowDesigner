@@ -53,7 +53,8 @@ inline T vec_norm(T *x, int len)
    while (len)
    {
       sum1 += *x* *x;
-      x++;      
+      x++;
+      len--;
    }
 
    return sqrt((sum1+sum2)+(sum3+sum4));
@@ -79,7 +80,8 @@ inline T vec_norm2(T *x, int len)
    while (len)
    {
       sum1 += *x* *x;
-      x++;      
+      x++;
+      len--;
    }
 
    return (sum1+sum2)+(sum3+sum4);
@@ -101,6 +103,7 @@ inline T vec_dot_prod(T *x, T *y, int len)
    while (len)
    {
       sum1 += *x++* *y++;
+      len--;
    }
 
    return (sum1+sum2)+(sum3+sum4);
@@ -121,6 +124,7 @@ inline void vec_prod_scalar(T *x, T a, T *y, int len)
    while (len)
    {
       *y++ = *x++ * a;
+      len--;
    }
 }
 
@@ -139,6 +143,7 @@ inline void vec_add(T *x1, T *x2, T *y, int len)
    while (len)
    {
       *y++ = *x1++ + *x2++;
+      len--;
    }
 }
 
@@ -157,6 +162,7 @@ inline void vec_copy(T *x, T *y, int len)
    while (len)
    {
       *y++ = *x++;
+      len--;
    }
 }
 

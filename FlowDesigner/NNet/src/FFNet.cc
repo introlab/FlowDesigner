@@ -281,10 +281,14 @@ void FFNet::getGradient(double *ptr)
 
 void FFNet::getWeights(double *ptr)
 {
+   double *tata = ptr;
    for (int i=0;i<layers.size();i++)
    {
       int layerWeights = layers[i]->getNbWeights();
       vec_copy(layers[i]->getWeights(0), ptr, layerWeights);
+      //vec_copy(tata, tata, layerWeights);
+      //vec_copy(tata, tata, 12);
+      //vec_copy(layers[i]->getWeights(0), tata, layerWeights);
       ptr += layerWeights;
    }
 }
@@ -308,7 +312,7 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
       layers[i]->saveWeights();
 
    //if (weights)
-   //   setWeights(weights);
+      setWeights(weights.begin());
    
    err=0;
    for (i=0;i<layers.size();i++)
@@ -340,7 +344,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    double SSE;
    int k=1;
    double sigma = .01;
-   double lambda = .5;
+   double lambda = 1;
    double lambdaBar = 0;
    double sigmak;
    bool success = true;
@@ -350,6 +354,8 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    {
       nbWeights += layers[i]->getNbWeights();
    }
+
+   cerr << "found " << nbWeights << " weights\n";
 
    Array<double> pk(nbWeights);
    Array<double> rk(nbWeights);
@@ -363,19 +369,20 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
 
    getWeights(wk.begin());
 
-   //pk = rk = gradient;
    calcGradient(tin, tout, wk, dEk, SSE);
    pk=dEk;
    rk=dEk;
-
    while (k < iter)
    {
       double norm2 = pk.norm2();
       double norm = sqrt(norm2);
+
+      //2. If success
       if (success)
       {
 	 sigmak = sigma / norm;
-	 calcGradient(tin, tout, wk+pk*sigmak, dEp, SSE);
+	 double dummy = 0;
+	 calcGradient(tin, tout, wk+pk*sigmak, dEp, dummy);
 	 sk = (dEp - dEk)*(1/sigmak);
 	 deltak = pk*sk;
       }
@@ -387,6 +394,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       //4. Hessian
       if (deltak <= 0)
       {
+	 cerr << "RESCALING\n";
 	 sk += pk*(lambda - 2*deltak/norm2);
 	 lambdaBar = 2*(lambda - deltak/norm2);
 	 deltak = -deltak + lambda*norm2;
@@ -401,11 +409,14 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       calcGradient(tin, tout, wk+pk*ak, nextdE, nextE);
       double DK = 2*deltak*(SSE -  nextE) / (uk*uk);
 
+      //cerr << SSE << " " << nextE << " " << ak << " " << uk << " " << norm << endl;
+
       //7. Can we reduce the error
       if (DK >= 0)
       {
 	 wk += pk*ak;
 	 Array<double> oldR = rk;
+	 SSE=nextE;
 	 rk = -nextdE;
 	 lambdaBar = 0;
 	 success = true;
@@ -428,15 +439,12 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       if (DK < .25)
 	 lambda *= 4;
       
-      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << endl;
+      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << deltak << "\t" << uk << "\t" << endl;
 
       //9. Have we found the minimum
       if (rk.norm() == 0)
-      {
-	 k++;
-	 continue;
-      } else 
 	 break;
+      k++;
    }
 }
 
