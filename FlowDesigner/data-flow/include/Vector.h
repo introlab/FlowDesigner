@@ -209,9 +209,22 @@ public:
    virtual ObjectRef clone();
 };
 
+
+///clone default implementation
+template <class T>
+inline ObjectRef Vector<T>::clone() {
+  Vector<T> *cpy = Vector<T>::alloc(this->size());
+  
+  for (int i = 0; i < this->size(); i++) {
+    (*cpy)[i] = (*this)[i];
+  }
+  return ObjectRef(cpy);
+}
+
+
 ///clone implementation with Vector<ObjectRef>
 template <>
-ObjectRef Vector<ObjectRef>::clone() {
+inline ObjectRef Vector<ObjectRef>::clone() {
   
   Vector<ObjectRef> *cpy = new Vector<ObjectRef>(this->size());
   
@@ -220,17 +233,6 @@ ObjectRef Vector<ObjectRef>::clone() {
     (*cpy)[i] = (*this)[i]->clone();
   }
 
-  return ObjectRef(cpy);
-}
-
-///clone default implementation
-template <class T>
-ObjectRef Vector<T>::clone() {
-  Vector<T> *cpy = Vector<T>::alloc(this->size());
-  
-  for (int i = 0; i < this->size(); i++) {
-    (*cpy)[i] = (*this)[i];
-  }
   return ObjectRef(cpy);
 }
 
