@@ -392,7 +392,8 @@ UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::Ne
    return new GUINetTerminal (_terminal, _type, _name);
 }
 
-void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) {
+void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) 
+{
 
   double x1=0,y1=0,x2=0,y2=0;
   

@@ -91,6 +91,9 @@ public:
    /**Adds a new terminal to a node*/
    virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
 
+   /**Removes a terminal from a node*/
+   virtual void removeTerminal(const string &_name, UINetTerminal::NetTermType _type);
+
    /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
 
@@ -110,9 +113,11 @@ public:
    /**Changes the position (not too sure it should be used*/
    void setPos (double new_x, double new_y)
    {
-	   x = new_x;
-	   y = new_y;
+      x = new_x;
+      y = new_y;
    }
+
+   virtual void redraw() {}
 
    void setNodeParameters(UINodeParameters *params);   
    

@@ -13,6 +13,7 @@ extern "C" {
 
 #include "ParameterSet.h"
 #include "Network.h"
+#include <algorithm>
 
 //@implements UIClasses
 
@@ -249,7 +250,42 @@ void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type)
 
    }
   
+   redraw();
+}
 
+
+void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _type)
+{
+   vector<UITerminal*>::iterator term;
+   switch (_type) {
+      
+   case UINetTerminal::INPUT:
+      
+      term = find(inputs.begin(), inputs.end(), getInputNamed(_name));
+      if (term!=inputs.end())
+      {
+         delete *term;
+         inputs.erase(term);
+      }
+
+      break;
+      
+   case UINetTerminal::OUTPUT:
+
+      term = find(outputs.begin(), outputs.end(), getOutputNamed(_name));
+      if (term!=outputs.end())
+      {
+         delete *term;
+         outputs.erase(term);
+      }
+
+      break;
+      
+   default:
+      break;
+      
+   }
+   redraw();
 }
 
 

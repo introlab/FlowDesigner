@@ -45,7 +45,7 @@ public:
    
    GUITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
-   ~GUITerminal() {}
+   ~GUITerminal();
 
    gint event(GdkEvent *event);
 
@@ -62,7 +62,7 @@ public:
    }
 
    /**returns the position in world coord*/
-   void getPos(double &wx, double &wy)
+   void getPos(double &wx, double &wy) const
    {
       wx=x;
       wy=y;

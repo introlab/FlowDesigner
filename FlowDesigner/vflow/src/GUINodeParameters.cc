@@ -115,10 +115,9 @@ void GUINodeParameters::removeInput()
       return;
    }
    char *input_name = (char *)gtk_object_get_data(GTK_OBJECT(inputSelect),"label");
-   cerr << "removing input: " << input_name << endl;
    GList *lis = g_list_append (NULL, inputSelect);
    gtk_list_remove_items(GTK_LIST(list1), lis);
-   cerr << "not implemented...\n";
+   node->removeTerminal(string(input_name), UINetTerminal::INPUT);
 }
 
 void GUINodeParameters::removeOutput()
@@ -129,10 +128,9 @@ void GUINodeParameters::removeOutput()
       return;
    }
    char *output_name = (char *)gtk_object_get_data(GTK_OBJECT(outputSelect),"label");
-   cerr << "removing output: " << output_name << endl;
    GList *lis = g_list_append (NULL, outputSelect);
    gtk_list_remove_items(GTK_LIST(list2), lis);
-   cerr << "not implemented...\n";
+   node->removeTerminal(string(output_name), UINetTerminal::OUTPUT);
 }
 
 static void node_add_input (GtkButton *button, GUINodeParameters *node_param)

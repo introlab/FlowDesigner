@@ -14,6 +14,11 @@ static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer d
    return ((GUITerminal *)(data))->event(event);
 }
 
+GUITerminal::~GUITerminal()
+{
+   gtk_object_destroy(GTK_OBJECT(item));
+   gtk_object_destroy(GTK_OBJECT(item_text));
+}
 
 GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, double _x, double _y)
    : UITerminal(terminalInfo, _node, _isInput, _x, _y)

@@ -31,7 +31,6 @@ protected:
    GnomeCanvasItem *nodeText;
 
    void initialize_widgets();
-   void redraw();
    GUINodeParameters *guiParams;
 
 public:
@@ -75,6 +74,8 @@ public:
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
   
    virtual void notifyError(const string &message);
+
+   void redraw();
 
    friend class GUINetwork;
 

@@ -50,11 +50,11 @@ public:
    virtual ~UITerminal();
 
 
-   UINode *getNode() {return node;}
+   UINode *getNode() const {return node;}
 
 
    /**returns the position in world coord*/
-   virtual void getPos(double &wx, double &wy)
+   virtual void getPos(double &wx, double &wy) const
    {
       wx=x;
       wy=y;
@@ -62,7 +62,7 @@ public:
    }
 
    /**returns the position in item coord*/
-   void getItemPos(double &wx, double &wy)
+   void getItemPos(double &wx, double &wy) const 
    {
       wx=x;
       wy=y;
@@ -97,14 +97,14 @@ public:
    /**connect to a network terminal*/
    void disconnectNetTerminal();
 
-   const string &getName() {return name;}
-   const string &getType() {return type;}
-   const string &getDescription() {return description;}
-   bool isInputTerminal() {return isInput;}
+   const string &getName() const {return name;}
+   const string &getType() const {return type;}
+   const string &getDescription() const {return description;}
+   bool isInputTerminal() const {return isInput;}
    
-   bool isConnected() {return connections.size()!=0 || netTerminal;}
+   bool isConnected() const {return connections.size()!=0 || netTerminal;}
    
-   vector<UILink *> getConnections() {return connections;}
+   vector<UILink *> getConnections() const {return connections;}
 
 };
 
