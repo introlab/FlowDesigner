@@ -39,13 +39,11 @@ AC_MODULE_OPT(effects, yes)
 AC_MODULE_OPT(NNet, yes)
 AC_MODULE_OPT(HMM, yes)
 AC_MODULE_OPT(VQ, yes)
-AC_MODULE_OPT(video_blocks, no)
 AC_MODULE_OPT(FuzzyEngine, yes)
 AC_MODULE_OPT(lapackflow, no)
-AC_MODULE_OPT(visix, no)
 AC_MODULE_OPT(vflow, yes)
 
-modules="$audio_blocks $VQ $HMM $NNet $video_blocks $FuzzyEngine $effects $lapackflow $visix $vflow"
+modules="$audio_blocks $VQ $HMM $NNet $FuzzyEngine $effects $lapackflow $vflow"
 AC_SUBST(modules)
 AC_CONFIG_SUBDIRS($modules)
 
