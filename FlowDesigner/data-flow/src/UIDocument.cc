@@ -729,33 +729,72 @@ void UIDocument::export2net()
 
 Network *UIDocument::buildExternal(const string &type, const string &_name, const ParameterSet &params)
 {
-   string filename = "";
+
    vector<string> pathlist = envList("VFLOW_PATH");
-   for (int i=0;i<pathlist.size();i++)
-   {
-      string fullname = pathlist[i]+"/"+type+".n";
-      struct stat buf;
-      //cerr << "trying " << fullname << endl;
-      if (stat(fullname.c_str() , &buf) == 0)
-      {
-     //cerr << "found!\n";
-     filename = fullname;
-     break;
-      }
+   Network *net;
+
+   for (int i=0;i<pathlist.size();i++) {
+
+     net = buildExternalRecursive(pathlist[i],type,_name, params);
+
+     if (net) break;
+     
    }
-   if (filename == "")
-   {
-      cerr << "error loading: " << type << " not found\n";
-      return NULL;
-   }
-   UIDocument doc(filename);
-   doc.load();
-   Network *net = doc.getNetworkNamed("MAIN")->build(_name, params);
-   //cerr << "net = " << net << endl;
+
    return net;
-   //cerr << "UIDocument::build\n";
-   //return getNetworkNamed("MAIN")->build(_name, params);
+
 }
+
+Network *UIDocument::buildExternalRecursive(const string &path, const string &type, 
+					    const string &_name, const ParameterSet &params) {
+
+  Network *net = NULL;
+  struct stat my_stat;
+  DIR *my_directory = opendir (path.c_str());
+
+  if (!my_directory) return NULL;
+
+  struct dirent *current_entry;
+
+  for (current_entry = readdir(my_directory); 
+       current_entry != NULL; current_entry = readdir(my_directory)) {
+    
+    string name = current_entry->d_name;
+    string fullpath = path + string("/") + name;
+
+    if (stat(fullpath.c_str(), &my_stat) < 0) {
+      cerr<<"stat error"<<endl;
+      continue;
+    }
+    
+    if (S_ISDIR(my_stat.st_mode)) {
+      //it is a directory, let's doing it recursively
+      if (name != string("..") && name != string(".")) {
+	return buildExternalRecursive(fullpath,type, _name, params);
+      }
+    }
+    else {
+       
+      if (name == (type + string(".n"))) {
+	//found the network
+	UIDocument doc(fullpath);
+	
+	cout<<"loading : "<<fullpath<<endl;
+	doc.load();
+	
+	net = doc.getNetworkNamed("MAIN")->build(_name, params);
+	
+	return net;
+      }
+    }
+  }
+
+  closedir(my_directory);
+
+  return net;
+
+}
+
 
 Network *UIDocument::build(const string &_name, const ParameterSet &params)
 {
