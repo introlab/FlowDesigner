@@ -172,4 +172,15 @@ inline void Matrix<T>::readFrom(istream &in)
 }
 
 
+/*
+template <class T>
+inline Matrix<T> operator * (Matrix<T> A, Matrix<T> B)
+{
+   if (A.nlines() != B.ncols())
+      throw new GeneralException("Matrix<T>::operator *= A.nlines() != B.ncols()" __FILE__, __LINE__);
+   
+}
+*/
+
+
 #endif

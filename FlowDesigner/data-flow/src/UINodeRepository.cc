@@ -390,6 +390,14 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
    
 
    xmlNodePtr root=doc->children;
+
+   xmlChar *category = xmlGetProp(root, (xmlChar *)"category");
+   if (category)
+   {
+      info->category = string((char *)category);
+      free (category);
+   }
+
    xmlNodePtr net = root->children;
    
    while (net != NULL)
@@ -402,9 +410,6 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
 	 if (netName == "MAIN")
 	 {
 	    
-	    xmlChar *category = xmlGetProp(net, (xmlChar *)"category");
-	    if (category)
-	       info->category = string((char *)category);
 
 	    //loadNetInfo(net, externalDocInfo, basename);
 	   

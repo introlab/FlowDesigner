@@ -1,7 +1,10 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="IO">
-    <Node name="node1" type="Save" x="-239.000000" y="100.000000"/>
+<Document category="IO">
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Save" x="-178.000000" y="116.000000">
+      <Parameter name="PRETTY_PRINT" type="bool" value="false"/>
+    </Node>
     <Node name="node2" type="Stdout" x="-352.000000" y="125.000000"/>
     <Link from="node2" output="OUTPUT" to="node1" input="STREAM"/>
     <NetInput name="INPUT" node="node1" terminal="OBJECT"/>

@@ -65,6 +65,8 @@ protected:
    /**True if the object has already been destroyed (by superclass destructor)*/
    bool destroyed;
 
+   string category;
+
 public:
 
    /**Document constructor with name, DOES NOT load the document (document created as untitled)*/
@@ -82,6 +84,10 @@ public:
    /**Loads the document from memory*/
    virtual void loadFromMemory(const char *mem, int size);
    
+   void setCategory(const string &cat) {category = cat;}
+
+   const string &getCategory() {return category;}
+
    /**Sets the 'modified' flag*/
    void setModified() {modified=true;}
    

@@ -269,6 +269,7 @@ void UINetwork::removeLink(UILink *link)
 void UINetwork::saveXML(xmlNode *root)
 {
    xmlNodePtr tree;
+   //tree = xmlNewChild(root, NULL, (xmlChar *)"",  (xmlChar*)"toto");
    tree = xmlNewChild(root, NULL, (xmlChar *)"Network", NULL);
    switch (type)
    {

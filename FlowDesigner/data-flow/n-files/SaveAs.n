@@ -1,11 +1,16 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="IO">
-    <Node name="node1" type="Constant" x="-535.000000" y="15.000000">
+<Document category="IO">
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Constant" x="-546.000000" y="13.000000">
       <Parameter name="VALUE" type="subnet_param" value="FILENAME"/>
     </Node>
-    <Node name="node2" type="OutputStream" x="-425.000000" y="14.000000"/>
-    <Node name="node3" type="Save" x="-281.000000" y="-32.000000"/>
+    <Node name="node2" type="OutputStream" x="-425.000000" y="14.000000">
+      <Parameter name="TYPE" type="string" value=""/>
+    </Node>
+    <Node name="node3" type="Save" x="-248.000000" y="-30.000000">
+      <Parameter name="PRETTY_PRINT" type="bool" value="false"/>
+    </Node>
     <Link from="node2" output="OUTPUT" to="node3" input="STREAM"/>
     <Link from="node1" output="VALUE" to="node2" input="INPUT"/>
     <NetInput name="INPUT" node="node3" terminal="OBJECT"/>

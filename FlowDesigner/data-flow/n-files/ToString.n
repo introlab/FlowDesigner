@@ -1,3 +1,21 @@
 #!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document><Network type="subnet" name="MAIN" category="Conversion"><Node name="node_VMethod_1" type="VMethod" x="45.000000" y="223.000000"><Parameter name="METHOD" type="string" value="toString"/></Node><Node name="node_IF_1" type="IF" x="166.000000" y="208.000000"><Parameter name="PULL_ANYWAY" type="bool" value=""/></Node><Node name="node_NOP_1" type="NOP" x="-127.000000" y="209.000000"/><Node name="node_isNil_1" type="isNil" x="-33.000000" y="193.000000"/><Link from="node_isNil_1" output="OUTPUT" to="node_IF_1" input="COND"/><Link from="node_NOP_1" output="OUTPUT" to="node_IF_1" input="THEN"/><Link from="node_NOP_1" output="OUTPUT" to="node_isNil_1" input="INPUT"/><Link from="node_VMethod_1" output="OUTPUT" to="node_IF_1" input="ELSE"/><Link from="node_NOP_1" output="OUTPUT" to="node_VMethod_1" input="INPUT">-107.5 209 -51 222 14.5 223 </Link><NetInput name="INPUT" node="node_NOP_1" terminal="INPUT"/><NetOutput name="OUTPUT" node="node_IF_1" terminal="OUTPUT"/></Network></Document>
+<Document category="Conversion">
+  <Network type="subnet" name="MAIN">
+    <Node name="node_VMethod_1" type="VMethod" x="45.000000" y="223.000000">
+      <Parameter name="METHOD" type="string" value="toString"/>
+    </Node>
+    <Node name="node_IF_1" type="IF" x="170.000000" y="208.000000">
+      <Parameter name="PULL_ANYWAY" type="bool" value=""/>
+    </Node>
+    <Node name="node_NOP_1" type="NOP" x="-127.000000" y="209.000000"/>
+    <Node name="node_isNil_1" type="isNil" x="-33.000000" y="193.000000"/>
+    <Link from="node_isNil_1" output="OUTPUT" to="node_IF_1" input="COND"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_IF_1" input="THEN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_isNil_1" input="INPUT"/>
+    <Link from="node_VMethod_1" output="OUTPUT" to="node_IF_1" input="ELSE"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_VMethod_1" input="INPUT">-107.5 209 -51 222 14.5 223 </Link>
+    <NetInput name="INPUT" node="node_NOP_1" terminal="INPUT"/>
+    <NetOutput name="OUTPUT" node="node_IF_1" terminal="OUTPUT"/>
+  </Network>
+</Document>

@@ -1,24 +1,24 @@
 #!/usr/bin/env batchflow
 <?xml version="1.0"?>
-<Document>
-  <Network type="subnet" name="MAIN" category="Flow">
-    <Node name="node_IterCount_1" type="IterCount" x="-453.000000" y="-59.000000"/>
-    <Node name="node_IF_1" type="IF" x="237.000000" y="-28.000000">
+<Document category="Flow">
+  <Network type="subnet" name="MAIN">
+    <Node name="node_IterCount_1" type="IterCount" x="-467.000000" y="-95.000000"/>
+    <Node name="node_IF_1" type="IF" x="298.000000" y="-28.000000">
       <Parameter name="PULL_ANYWAY" type="bool" value="false"/>
     </Node>
     <Node name="node_Div_1" type="Div" x="-338.000000" y="-52.000000"/>
     <Node name="node_Sub_1" type="Sub" x="-118.000000" y="-53.000000"/>
-    <Node name="node_Constant_1" type="Constant" x="-553.000000" y="-24.000000">
+    <Node name="node_Constant_1" type="Constant" x="-575.000000" y="-25.000000">
       <Parameter name="VALUE" type="int" value="2"/>
     </Node>
-    <Node name="node_Constant_2" type="Constant" x="-553.000000" y="24.000000">
+    <Node name="node_Constant_2" type="Constant" x="-577.000000" y="31.000000">
       <Parameter name="VALUE" type="subnet_param" value="Rate"/>
     </Node>
     <Node name="node_Mul_1" type="Mul" x="-231.000000" y="-45.000000"/>
-    <Node name="node_Constant_3" type="Constant" x="79.000000" y="-27.000000">
+    <Node name="node_Constant_3" type="Constant" x="98.000000" y="-29.000000">
       <Parameter name="VALUE" type="subnet_param" value="Start value"/>
     </Node>
-    <Node name="node_NOT_1" type="NOT" x="151.000000" y="-12.000000"/>
+    <Node name="node_NOT_1" type="NOT" x="185.000000" y="2.000000"/>
     <Node name="node_Smaller_1" type="Smaller" x="13.000000" y="-44.000000"/>
     <Node name="node_Mul_2" type="Mul" x="-434.000000" y="-16.000000"/>
     <Link from="node_Smaller_1" output="OUTPUT" to="node_IF_1" input="COND"/>
@@ -26,7 +26,7 @@
     <Link from="node_NOT_1" output="OUTPUT" to="node_IF_1" input="ELSE"/>
     <Link from="node_IterCount_1" output="OUTPUT" to="node_Div_1" input="NUM"/>
     <Link from="node_Mul_2" output="OUTPUT" to="node_Div_1" input="DEN"/>
-    <Link from="node_IterCount_1" output="OUTPUT" to="node_Sub_1" input="INPUT1">-422 -59 -348 -96 -177 -60.5 </Link>
+    <Link from="node_IterCount_1" output="OUTPUT" to="node_Sub_1" input="INPUT1">-431.5 -95 -348 -96 -195.5 -60.5 </Link>
     <Link from="node_Mul_1" output="OUTPUT" to="node_Sub_1" input="INPUT2"/>
     <Link from="node_Div_1" output="OUTPUT" to="node_Mul_1" input="INPUT1"/>
     <Link from="node_Mul_2" output="OUTPUT" to="node_Mul_1" input="INPUT2"/>

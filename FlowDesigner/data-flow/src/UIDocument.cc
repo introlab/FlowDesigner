@@ -210,6 +210,13 @@ void UIDocument::loadXML(xmlNodePtr root)
    subnetInfo.clean();
    subnetInfo.loadAllSubnetInfo(root->children);
 
+   xmlChar *cat = xmlGetProp(root, (xmlChar *)"category");
+   if (cat)
+   {
+      category = string((char *)cat);
+      free (cat);
+   }
+
    xmlNodePtr net = root->children;
    //cerr << "parsing...\n";
    while (net != NULL)
@@ -392,6 +399,8 @@ char *UIDocument::saveToMemory(int &size)
    xmlDocPtr doc;
    doc = xmlNewDoc((xmlChar *)"1.0");
    doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
+   if (category!="")
+      xmlSetProp(doc->children, (xmlChar *)"category", (xmlChar *)category.c_str());
    for (unsigned int i=0;i<networks.size();i++)
    {
       networks[i]->saveXML(doc->children);
@@ -407,7 +416,7 @@ char *UIDocument::saveToMemory(int &size)
    }
    
    char *mem;
-   xmlDocDumpMemory(doc,(xmlChar **)&mem,&size);
+   xmlDocDumpFormatMemory(doc,(xmlChar **)&mem,&size, 1);
 
    xmlFreeDoc(doc);
    return mem;
