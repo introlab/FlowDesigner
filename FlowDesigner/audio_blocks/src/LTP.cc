@@ -102,7 +102,7 @@ public:
 	       corr += in[i] * (*past)[inputLength+i-lag];
 	       energy += (*past)[inputLength+i-lag] * (*past)[inputLength+i-lag];
 	    } 
-	 float score = corr*corr/energy;
+	 float score = corr*corr/(energy+.000000001);
 	 //cout << corr/energy << endl;
 	 if (score > best)
 	 {
@@ -111,8 +111,8 @@ public:
 	    {
 	       best = score;
 	       best_T = lag;
-	       best_gain = corr/energy;
-	    } else {cerr << "doubling\n";}
+	       best_gain = corr/(energy+.00000001);
+	    } //else {cerr << "doubling\n";}
 	 }
       }
 
