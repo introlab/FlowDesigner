@@ -71,6 +71,6 @@ dnl Checks for library functions.
 
 dnl Output the makefiles and version.h.
 
-AC_OUTPUT([Makefile include/Makefile src/Makefile 
+AC_OUTPUT([Makefile include/Makefile src/Makefile m/Makefile
 	])
 

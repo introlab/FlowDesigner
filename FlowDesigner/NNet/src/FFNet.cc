@@ -147,6 +147,7 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
       {
 	 momentum = mom;
 	 alpha *= increase;
+	 if (alpha > .0000015) alpha = .0000015;
 	 error = SSE;
 	 min_error=error;
       } else if (SSE<last_error) 

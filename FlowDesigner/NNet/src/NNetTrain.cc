@@ -22,7 +22,7 @@
 
 class NNetTrain;
 
-NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT", "OUTPUT", "HIDDEN:MAX_EPOCH:LEARN_RATE:MOMENTUM:INCREASE:DECREASE:ERR_RATIO")
+NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT:NNET", "OUTPUT", "MAX_EPOCH:LEARN_RATE:MOMENTUM:INCREASE:DECREASE:ERR_RATIO")
 
 class NNetTrain : public Node {
 
@@ -37,14 +37,12 @@ protected:
    /**The ID of the 'output' output*/
    int outputID;
 
-   /**The ID of the 'frames' input*/
-   int framesInputID;
+   /**The ID of the 'nnet' input*/
+   int netInputID;
 
    /**Reference to the current stream*/
    ObjectRef currentNet;
 
-   int hidden;
-      
    int maxEpoch;
       
    double learnRate;
@@ -63,9 +61,9 @@ public:
       : Node(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
+      netInputID = addInput("NNET");
       trainInID = addInput("TRAIN_IN");
       trainOutID = addInput("TRAIN_OUT");
-      hidden = dereference_cast<int> (parameters.get("HIDDEN"));
       
       if (parameters.exist("MAX_EPOCH"))
 	 maxEpoch = dereference_cast<int> (parameters.get("MAX_EPOCH"));
@@ -129,11 +127,14 @@ public:
 	       NodeInput trainOutInput = inputs[trainOutID];
 	       ObjectRef trainOutValue = trainOutInput.node->getOutput(trainOutInput.outputID,count);
 
-	       cerr << "inputs calculated\n";
+	       NodeInput netInput = inputs[netInputID];
+	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
+
+	       //cerr << "inputs calculated\n";
 	       Buffer &inBuff = object_cast<Buffer> (trainInValue);
 	       Buffer &outBuff = object_cast<Buffer> (trainOutValue);
 
-	       cerr << "inputs converted\n";
+	       //cerr << "inputs converted\n";
 	       vector <float *> in(inBuff.getCurrentPos());
 	       for (i=0;i<inBuff.getCurrentPos();i++)
 		  in[i]=object_cast <Vector<float> > (inBuff[i]).begin();
@@ -143,23 +144,12 @@ public:
 		  out[i]=object_cast <Vector<float> > (outBuff[i]).begin();
 
 
-	       //Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
-
-	       Vector<int> topo(3);
-	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
-	       topo[1]=hidden;
-	       topo[2]=object_cast <Vector<float> > (outBuff[0]).size();
-	       /*
-	       Vector<int> topo(2);
-	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
-	       topo[1]=object_cast <Vector<float> > (outBuff[0]).size();
-	       */
-	       FFNet *net = new FFNet( topo ); 
-	       
-	       net->train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
+	       //FFNet *net = new FFNet( topo ); 
+	       FFNet &net = object_cast<FFNet> (netValue);
+	       net.train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
 	       //net->trainlm(in, out, maxEpoch);
 
-	       currentNet = ObjectRef(net);
+	       currentNet = netValue;
 	       //exit(1);
 	    }
 	    return currentNet;

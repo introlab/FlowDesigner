@@ -119,7 +119,7 @@ void FFLayer::readFrom (istream &in)
 	 deriv = new double [nbNeurons];
 	 value = new double [nbNeurons];
 	 error = new double [nbNeurons];
-	 
+	 momentum = new double [nbNeurons*(nbInputs+1)];
 	 
       }
       else
