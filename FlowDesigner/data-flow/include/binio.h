@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stdlib.h>
 
+using namespace std;
+
 class BinIO {
 public:
    static void _read(istream &in, void* data, size_t typeSize, size_t length);
