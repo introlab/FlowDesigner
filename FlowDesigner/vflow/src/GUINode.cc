@@ -315,13 +315,12 @@ gint GUINode::event(GdkEvent *event)
          }
          return TRUE;
          break;
-
       case 2:
-         gnome_popup_menu_do_popup_modal (popupMenu,NULL,NULL,&(event->button),NULL);
-         return TRUE;
+         //return TRUE;
          break;
+
       case 3:
-         cerr << "button 3 on node\n";
+         gnome_popup_menu_do_popup_modal (popupMenu,NULL,NULL,&(event->button),NULL);
          return TRUE;
          break;
       default:

@@ -13,17 +13,17 @@ template<class T>
 T abs(T x) {return x < 0 ? -x : x;}
 
 
-static gboolean net_canvas_event   (GtkWidget       *widget,
+/*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
                                      GUINetwork      *net)
 {
    return net->buttonEvent(event);
-}
+   }*/
 
-static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
+static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, GUINetwork      *net)
 {
-   cerr << "caught button\n";
-   return TRUE;
+   //cerr << "caught button\n";
+   return net->buttonEvent(event);
    //return ((GUINetTerminal *)(data))->event(event);
 }
 
@@ -142,14 +142,15 @@ void GUINetwork::create()
    gtk_notebook_append_page(GTK_NOTEBOOK(dynamic_cast<GUIDocument *>(doc)->getNotebook()), scrolledwindow1, label1);
 
 
-/*   GnomeCanvasItem *background = gnome_canvas_item_new(gnome_canvas_root(canvas),
+   GnomeCanvasItem *background = gnome_canvas_item_new(gnome_canvas_root(canvas),
+						       gnome_canvas_background_get_type(),
 						       NULL);
 
    gtk_signal_connect(GTK_OBJECT(background), "event",
                       (GtkSignalFunc) background_handler,
                       this);
 
-*/
+
 
    //group = gnome_canvas_root(canvas);
    group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (gnome_canvas_root(canvas),
@@ -159,11 +160,11 @@ void GUINetwork::create()
                                                       NULL));
    popup = new UINetPopup(doc,this);
 
-    gtk_signal_connect (GTK_OBJECT (canvas), "button_press_event",
+   /* gtk_signal_connect (GTK_OBJECT (canvas), "button_press_event",
                        GTK_SIGNAL_FUNC (net_canvas_event),
                        this);
    
-
+   */
 
 
 }
@@ -241,8 +242,25 @@ UINode * GUINetwork::addNode (string type, double xx, double yy)
 }
 
 
-gboolean GUINetwork::buttonEvent(GdkEventButton *event)
+gboolean GUINetwork::buttonEvent(GdkEvent *event)
 {
+
+   switch (event->type) 
+   {
+      case GDK_BUTTON_PRESS:
+	 switch(event->button.button) 
+	 {
+	    case 3:
+	       popup->popup(event);
+	       return TRUE;
+	       break;
+	       
+	    default:
+	       break;
+	 }
+	 break;
+   }
+   /*
    switch (event->button) {
     case 1:
        //printf ("button 1\n");
@@ -258,7 +276,7 @@ gboolean GUINetwork::buttonEvent(GdkEventButton *event)
        //addNode("PS", 100.0,100.0);
        //UIDocument::currentDocument->popupNodeMenu(event);
     break;
-  }
+    }*/
   return FALSE;
 }
 

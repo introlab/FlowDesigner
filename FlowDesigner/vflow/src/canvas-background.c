@@ -190,6 +190,7 @@ static double
 gnome_canvas_background_point (GnomeCanvasItem *item, double x, double y,
                           int cx, int cy, GnomeCanvasItem **actual_item)
 {
+   *actual_item=item;
    return 0.0;
 }
 
