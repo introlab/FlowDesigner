@@ -15,59 +15,50 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 
 class DownSample;
 
-//DECLARE_NODE(DownSample)
-NODE_INFO(DownSample,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:FACTOR")
+NODE_INFO(DownSample,"Signal:DSP", "INPUT", "OUTPUT", "FACTOR")
 
-class DownSample : public FrameOperation {
+class DownSample : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    int factor;
 
 public:
    DownSample(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
       factor = dereference_cast<int> (parameters.get("FACTOR"));
-   }
-
-   ~DownSample() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+      int outputLength = inputLength/factor;
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
       
       int i,j;
       for (i=0,j=0;i<outputLength;i++,j+=factor)
       {
          output[i]=in[j];
       }
-      
-      output.status = Object::valid;
    }
 
 };

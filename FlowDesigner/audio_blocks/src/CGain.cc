@@ -15,76 +15,64 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 
 class CGain;
 
-//DECLARE_NODE(CGain)
-NODE_INFO(CGain,"Signal:Base", "INPUT:GAIN", "OUTPUT", "LENGTH")
+NODE_INFO(CGain,"Signal:Base", "INPUT:GAIN", "OUTPUT", "")
 
-class CGain : public FrameOperation {
+class CGain : public BufferedNode {
    
    int inputID;
+   int outputID;
    int gainID;
-
-   int inputLength;
-      //float gain;
 
 public:
    CGain(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       gainID = addInput("GAIN");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-      //   gain = dereference_cast<float> (parameters.get("GAIN"));
-   }
-
-   ~CGain() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      NodeInput gainInput = inputs[gainID];
-      ObjectRef gainValue = gainInput.node->getOutput(gainInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      ObjectRef gainValue = getInput(gainID, count);
+
       if (gainValue->status != Object::valid)
       {
-         output.status = gainValue->status;
+	 for (int i=0;i<inputLength;i++)
+	    output[i] = 0;
          return;
       }
 
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const Vector<float> &gain = object_cast<Vector<float> > (gainValue);
 
       float g=gain[0];
 
-      if (g>10) g=10;
-      if (g<-10) g=-10;
+      //if (g>10) g=10;
+      //if (g<-10) g=-10;
 
-      for (int i=0;i<outputLength;i++)
+      for (int i=0;i<inputLength;i++)
       {
-         output[i]=gain[0]*in[i];
+         output[i]=g*in[i];
       }
-      
-      output.status = Object::valid;
    }
 
 };

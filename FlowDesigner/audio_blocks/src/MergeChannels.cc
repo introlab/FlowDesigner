@@ -15,67 +15,66 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 
 class MergeChannels;
 
-//DECLARE_NODE(MergeChannels)
-NODE_INFO(MergeChannels, "Signal:Audio", "LEFT:RIGHT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(MergeChannels, "Signal:Audio", "LEFT:RIGHT", "OUTPUT", "")
 
-class MergeChannels : public FrameOperation {
+class MergeChannels : public BufferedNode {
    
    int input1ID;
    int input2ID;
-   int inputLength;
+   int outputID;
 
 public:
    MergeChannels(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       input1ID = addInput("LEFT");
       input2ID = addInput("RIGHT");
-      inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-   }
-
-   ~MergeChannels() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input1 = inputs[input1ID];
-      ObjectRef input1Value = input1.node->getOutput(input1.outputID, count);
+      ObjectRef input1Value = getInput(input1ID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (input1Value->status != Object::valid)
       {
-         output.status = input1Value->status;
+	 out[count] = input1Value;
          return;
       }
 
-      NodeInput input2 = inputs[input2ID];
-      ObjectRef input2Value = input2.node->getOutput(input2.outputID, count);
+      ObjectRef input2Value = getInput(input2ID, count);
+
       if (input2Value->status != Object::valid)
       {
-         output.status = input2Value->status;
+	 out[count] = input2Value;
          return;
       }
 
       const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
       const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
       
+      if (in1.size() != in2.size())
+      {
+	 //cerr << in1.size() << " " << in2.size() << endl;
+	 throw new NodeException (this, "Channels have different length", __FILE__, __LINE__);
+      }
+      int inputLength = in1.size();
+      int outputLength = inputLength << 1;
+      
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
       for (int i=0;i<inputLength;i++)
       {
 	 output[2*i] = in1[i];
 	 output[2*i+1] = in2[i];
       }
-      
-      output.status = Object::valid;
    }
 
 };

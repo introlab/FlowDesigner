@@ -15,69 +15,62 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
 
 class Overlap;
 
-//DECLARE_NODE(Overlap)
-NODE_INFO(Overlap,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(Overlap,"Signal:DSP", "INPUT", "OUTPUT", "OUTPUTLENGTH")
 
-   //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
-
-class Overlap : public FrameOperation {
+class Overlap : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    int filterID;
-   int noncausal;
-   bool continuous;
+   int outputLength;
 
 public:
    Overlap(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-
-
- 
+      outputID = addOutput("OUTPUT");
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
    }
-
-   ~Overlap() {}
 
    virtual void specificInitialize()
    {
       inputsCache[inputID].lookBack=1;
       inputsCache[inputID].lookAhead=1;
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
       
       
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
       const Vector<float> *past;
       const Vector<float> *next;
       bool can_look_back = false;
       bool can_look_ahead = false;
       if (count > 0)   
       {
-         ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-1);
+         ObjectRef pastInputValue = getInput(inputID, count-1);
          if (pastInputValue->status == Object::valid)
          {
             can_look_back=true;
@@ -85,7 +78,7 @@ public:
          }      
       }
       
-      ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+1);
+      ObjectRef nextInputValue = getInput(inputID, count+1);
       if (nextInputValue->status == Object::valid)
       {
 	 can_look_ahead=true;
@@ -115,9 +108,6 @@ public:
       {
 	 output[i+before]=in[i];
       }
-            
-
-      output.status = Object::valid;
    }
 
 };

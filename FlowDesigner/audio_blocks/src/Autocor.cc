@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
@@ -23,56 +23,49 @@
 
 class Autocor;
 
-//DECLARE_NODE(Autocor)
-NODE_INFO(Autocor,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:START:END")
+NODE_INFO(Autocor,"Signal:DSP", "INPUT", "OUTPUT", "START:END")
 
-class Autocor : public FrameOperation {
+class Autocor : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    int start;
    int end;
 
 public:
    Autocor(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+
       start = dereference_cast<int> (parameters.get("START"));
       end = dereference_cast<int> (parameters.get("END"));
       
       inputsCache[inputID].lookBack=1;
-
-   }
-
-   ~Autocor() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+      int outputLength = end-start+1;
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
 
       const Vector<float> *past;
       bool can_look_back = false;
       if (count > 0)   
       {
-         ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-1);
+         ObjectRef pastInputValue =  getInput(inputID, count-1);
          if (pastInputValue->status == Object::valid)
          {
             can_look_back=true;
@@ -86,24 +79,9 @@ public:
       float energy=0;
       for (int i=0;i<inputLength;i++)
       {
-	 energy += in[i]*in[i];}/*
-	 if (i<end)
-	 {
-	    for (int j=start;j<=i;j++)
-	       output[j-start]+=in[i]*in[i-j];
-	    if (can_look_back)
-	    {
-	       for (int j=max(i+1,start);j<=end;j++)
-		 output[j-start]+=in[i]*(*past)[i-j+inputLength]; 
-	    }
-	 } else {
-	    for (int j=start;j<=end;j++)
-	    {
-	       output[j-start]+=in[i]*in[i-j];
-	    }
-	 }
+	 energy += in[i]*in[i];
       }
-				*/
+				
       for (int i=start;i<=end;i++)
       {
 	 for (int j=i;j<inputLength;j++)
@@ -118,8 +96,6 @@ public:
 
       for (int i=0;i<outputLength;i++)
 	 output[i] /= energy;
-      
-      output.status = Object::valid;
    }
 
 };

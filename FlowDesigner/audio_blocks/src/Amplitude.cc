@@ -15,51 +15,43 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
 
 class Amplitude;
 
-//DECLARE_NODE(Amplitude)
-NODE_INFO(Amplitude, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(Amplitude, "Signal:DSP", "INPUT", "OUTPUT", "")
 
-class Amplitude : public FrameOperation {
+class Amplitude : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
 
 public:
    Amplitude(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
-
-   ~Amplitude() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(1);
+      out[count] = &output;
+
       float energy=0;
       for (int i=0;i<inputLength;i++)
       {
@@ -67,8 +59,6 @@ public:
       }
 
       output[0]=sqrt(energy+.0001);
-      
-      output.status = Object::valid;
    }
 
 };

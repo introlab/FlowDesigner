@@ -23,16 +23,13 @@
 
 class SeparChannels;
 
-//DECLARE_NODE(SeparChannels)
-NODE_INFO(SeparChannels, "Signal:Audio", "INPUT", "LEFT:RIGHT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(SeparChannels, "Signal:Audio", "INPUT", "LEFT:RIGHT", "")
 
 class SeparChannels : public BufferedNode {
    
    int inputID;
    int output1ID;
    int output2ID;
-   int inputLength;
-   int outputLength;
 
 public:
    SeparChannels(string nodeName, ParameterSet params)
@@ -41,45 +38,23 @@ public:
       inputID = addInput("INPUT");
       output1ID = addOutput("LEFT");
       output2ID = addOutput("RIGHT");
-      inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
-   }
-
-   ~SeparChannels() {}
-
-   void SeparChannels::initializeBuffers()
-   {
-      for (int i=0;i<outputs.size();i++)
-      {
-	 if (outputs[i].cacheAll)
-	 {
-	    outputs[i].buffer = ObjectRef(new GrowingFrameBuffer<float> (outputLength, outputs[i].lookAhead+outputs[i].lookBack+1));
-	 } else {
-	    outputs[i].buffer = ObjectRef(new RotatingFrameBuffer<float> (outputLength, outputs[i].lookAhead+outputs[i].lookBack+1));
-	 }
-      }
-      //output=outputs[outputID].buffer;
-      
-   }
-
-   virtual void specificInitialize()
-   {
-      this->BufferedNode::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
-
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+      int outputLength = inputLength>>1;
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
       
       int channel;
       if (output_id == output1ID)
@@ -90,8 +65,6 @@ public:
       {
 	 output[i] = in[2*i+channel];
       }
-      
-      output.status = Object::valid;
    }
 
 };

@@ -15,58 +15,49 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 
 class Gain;
 
-//DECLARE_NODE(Gain)
-NODE_INFO(Gain,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:GAIN")
+NODE_INFO(Gain,"Signal:Base", "INPUT", "OUTPUT", "GAIN")
 
-class Gain : public FrameOperation {
+class Gain : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    float gain;
 
 public:
    Gain(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-         gain = dereference_cast<float> (parameters.get("GAIN"));
-   }
-
-   ~Gain() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
+      gain = dereference_cast<float> (parameters.get("GAIN"));
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      for (int i=0;i<outputLength;i++)
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      for (int i=0;i<inputLength;i++)
       {
          output[i]=gain*in[i];
       }
       
-      output.status = Object::valid;
    }
 
 };
