@@ -82,6 +82,8 @@ class ThreadedIterator : public Iterator {
 
   static const int STATUS_STOPPED;
 
+  int status;
+
   pthread_mutex_t mutex;
 
   pthread_t work_thread;

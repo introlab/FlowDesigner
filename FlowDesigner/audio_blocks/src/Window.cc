@@ -75,6 +75,10 @@ public:
       {
          for (i=0;i<length;i++)
             window[i]=.54-.46*cos((2*M_PI*i)/length);
+      } else if (type == "HALF_HANNING")
+      {
+         for (i=0;i<length;i++)
+            window[i]=.5+.5*cos((M_PI*i)/length);
       } else 
       {
          throw new GeneralException("Unknown window type",__FILE__,__LINE__);

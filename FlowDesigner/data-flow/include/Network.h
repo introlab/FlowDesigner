@@ -94,12 +94,6 @@ public:
       return inputNode->getInputs();
    }
 
-   /**Setting the debug mode*/
-   virtual void setDebugMode();
-
-   /**Exiting debug mode*/
-   virtual void resetDebugMode();
-
    virtual void setExitStatus();
 
    virtual void resetExitStatus();
@@ -149,8 +143,6 @@ protected:
    Node *sinkNode;
    /**The input node*/
    Node *inputNode;
-   /**The debug mode flag*/
-   bool debugMode;
  
    //The exit status
    bool exit_status;

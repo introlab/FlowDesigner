@@ -49,7 +49,6 @@ Node::Node(string nodeName, const ParameterSet &params)
    : name (nodeName)
    , inputs (vector<NodeInput>(0))
    , initialized (false)
-   , debugMode (false)
    , processCount(-1)
    , outputInitializeCount (0)
    , parameters(params)
@@ -68,9 +67,6 @@ Node::Node(string nodeName, const ParameterSet &params)
 void Node::connectToNode(unsigned int in, Node *inputNode, unsigned int out)
 {
 
-   if (debugMode) {
-      cout<<"Adding input: "<<inputNode->name<<" to: "<<name<<endl;
-   }
 
    if (inputs.size() <= in) {
       //the old method was used for adding inputs
@@ -204,9 +200,6 @@ void Node::initialize ()
    if (initialized) return;
    if (--outputInitializeCount <=0)
    {
-      if (debugMode) {
-         cout<<"DEBUG : initialize for node : "<<name<<endl;
-      }
       
       specificInitialize();
       //parameters.checkUnused();

@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)/intl \
 	$(GNOME_INCLUDEDIR) \
 	$(GNOME_XML_INCLUDE) \
+	$(FFTW_INCLUDES) \
 	$(GNOME_GTHR_INCLUDE) \
 	-I$(top_srcdir)/../data-flow/include \
 	-I$(top_srcdir)/include

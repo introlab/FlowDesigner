@@ -32,28 +32,9 @@ Network::Network (string nodeName, ParameterSet params)
    numNodes = 0;
    sinkNode = NULL;
    inputNode = NULL;
-   debugMode = false;
    exit_status = false;
 }
-/***************************************************************************/
-/*
-  setDebugMode(...)
-  Dominic Letourneau
- */
-/***************************************************************************/
-void Network::setDebugMode() {
 
-   map<string,Node*>::iterator nodeIter;
-   Node *node = NULL;
-   
-   debugMode = true;
-   
-   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
-      node = (*nodeIter).second;
-      node->setDebugMode();
-   }
-
-}
 void Network::setExitStatus() {
 
    map<string,Node*>::iterator nodeIter;
@@ -70,24 +51,7 @@ void Network::setExitStatus() {
 }
 
 
-/***************************************************************************/
-/*
-  resetDebugMode(...)
-  Dominic Letourneau
- */
-/***************************************************************************/ 
-void Network::resetDebugMode() {
-  
-   map<string,Node*>::iterator nodeIter;
-   Node *node = NULL;
-   
-   debugMode = false;
-   
-   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
-      node = (*nodeIter).second;
-      node->resetDebugMode();
-   }
-}
+
 void Network::resetExitStatus() {
   
    map<string,Node*>::iterator nodeIter;
@@ -111,21 +75,6 @@ void Network::resetExitStatus() {
 /***************************************************************************/
 Network::~Network() {
 
-   //deleting all factory in the dictionary
-   //_NodeFactory* factory = NULL;
-   //map<string, _NodeFactory*>::iterator factoryIter;
- 
-
-   /*while (factoryDictionary().size() > 0) {
-
-      factoryIter = factoryDictionary().begin();
-      if (debugMode) {
-         cout<<"Deleting factory : "<<(*factoryIter).first<<endl;
-      }
-      factory = (*factoryIter).second;
-      factoryDictionary().erase((*factoryIter).first);  
-      delete factory;
-      }*/
 
    //deleting all nodes in the dictionary
    Node* node = NULL;
@@ -133,9 +82,7 @@ Network::~Network() {
    
    while (nodeDictionary.size() > 0)  {
       nodeIter = nodeDictionary.begin();
-      if (debugMode) {
-         cout<<"Deleting node : "<<(*nodeIter).first<<endl;
-      }
+
       node = (*nodeIter).second;
       nodeDictionary.erase((*nodeIter).first);
       delete node;
@@ -263,11 +210,6 @@ void Network::connect (const string &currentNodeName,const string &inputName,
    Node* inputNode = getNodeNamed(inputNodeName);
    
    if (currentNode && inputNode) {
-
-      if (debugMode) {
-         cout<<"Network "<<name<<" : Connecting "<<currentNodeName<<" ["<<inputName<<"]"
-             <<" to "<<inputNodeName<<" ["<<outputName<<"]"<<endl;
-      }
 
      currentNode->connectToNode(inputName,inputNode,outputName);
    }
@@ -397,9 +339,6 @@ void Network::reset() {
     map<string,Node*>::iterator iter;   
 
    for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-      if (debugMode) {
-         cout<<"DEBUG : Network is now resetting node "<<(*iter).second->getName()<<endl;
-      }
       (*iter).second->reset();
    }
 }

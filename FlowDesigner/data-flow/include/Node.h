@@ -114,9 +114,6 @@ protected:
    /**Whether the node has been initialized*/
    bool initialized;
    
-   /**Is the node in debug Mode*/
-   bool debugMode;
-
    /**Internal processing counter for synchronization.
       This counter is used to find out whether the output of the node
       needs to be updated */
@@ -125,10 +122,7 @@ protected:
    /**Used during initialization.
       Becomes zero when all the node's outputs have been initialized*/
    int outputInitializeCount;
-   
-   /**Node's status*/
-   long status;
-   
+      
    /**Parameters given to the node at construction time*/
    ParameterSet parameters;
 
@@ -183,26 +177,17 @@ public:
    /**Has the node been initialized?*/
    bool isInitialized() {return initialized;}
 
-   /**Is the node in debug mode?*/
-   bool isDebugMode() {return debugMode;}
-
    ObjectRef getInput(int inputID, int count)
    {
       NodeInput input = inputs[inputID];
       return input.node->getOutput(input.outputID, count);
    }
 
-   /**Sets the node to debug mode*/
-   virtual void setDebugMode(){debugMode = true;}
-
    virtual void setExitStatus(){exit_status = true;}
 
    bool isExitStatus() {return exit_status;}
 
    virtual void resetExitStatus() {exit_status = false;}
-
-   /**Resets debug mode*/
-   virtual void resetDebugMode(){debugMode = false;}
 
    /**Resets the node internal values and buffers*/
    virtual void reset();

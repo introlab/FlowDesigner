@@ -25,7 +25,7 @@ DECLARE_NODE(MatProduct)
 /*Node
  *
  * @name MatProduct
- * @category Signal:Base
+ * @category Math
  * @description Matrix x vector product
  *
  * @input_name INPUT

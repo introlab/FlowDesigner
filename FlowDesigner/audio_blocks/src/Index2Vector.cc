@@ -24,7 +24,7 @@ DECLARE_NODE(Index2Vector)
 /*Node
  *
  * @name Index2Vector
- * @category Signal:Base
+ * @category Signal:Manip
  * @description No description available
  *
  * @input_name INPUT

@@ -14,10 +14,9 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <strstream>
 #include <values.h>
 
 #ifdef HAVE_FLOAT_H
@@ -28,36 +27,30 @@ class TimeEntropy;
 
 DECLARE_NODE(TimeEntropy)
 /*Node
-
+ *
  * @name TimeEntropy
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
- * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name LOOKAHEAD
  * @parameter_description No description available
-
+ *
  * @parameter_name LOOKBACK
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class TimeEntropy : public FrameOperation {
+class TimeEntropy : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
 
    int numberFrames;
    vector<Vector<float> *> frames;
@@ -65,31 +58,21 @@ class TimeEntropy : public FrameOperation {
 
 public:
    TimeEntropy(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
+      : BufferedNode(nodeName, params)
 
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
       
-      //if (parameters.exist("LOOKAHEAD"))
-         inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
-      //if (parameters.exist("LOOKBACK"))
-         inputsCache[inputID].lookBack = dereference_cast<int> (parameters.get("LOOKBACK"));
+
+      inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
+      inputsCache[inputID].lookBack = dereference_cast<int> (parameters.get("LOOKBACK"));
       
       numberFrames=inputsCache[inputID].lookBack+inputsCache[inputID].lookAhead+1;
       frames.resize(numberFrames);
       min.resize(numberFrames);
    }
 
-   ~TimeEntropy() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-      
-   }
 
    static inline float dist (float *in1, float *in2, int length)
    {
@@ -106,27 +89,31 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      Vector<float> &output = *Vector<float>::alloc(1);
+      out[count] = &output;
+
+
       if (count < inputsCache[inputID].lookBack)
       {
-         output.status = Object::before_beginning;
+         output[0]=0.0;
          return;
       }
       NodeInput input = inputs[inputID];
 
       int i,j;
-
+      int inputLength;
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
       {
-         Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
-         //ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
+         //Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
+         ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
          if (inputValue->status != Object::valid)
          {
-            output.status = inputValue->status;
+            output[0]=0.0;
             return;
          }
-         frames[j] = inputValue.get();
-         //frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
+         //frames[j] = inputValue.get();
+         frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
+	 inputLength = frames[j]->size();
       }      
       
       //cerr << numberFrames << " " << (*(frames[0]))[0] << " " ; 
@@ -149,8 +136,6 @@ public:
       output[0] = accum/numberFrames;
       //cerr << output[0] << endl;
 
-
-      output.status = Object::valid;
    }
 
 };

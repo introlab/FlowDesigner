@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <strstream>
@@ -29,69 +29,49 @@ class Entropy;
 
 DECLARE_NODE(Entropy)
 /*Node
-
+ *
  * @name Entropy
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
- * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
- * @parameter_name LOOKAHEAD
- * @parameter_description No description available
-
- * @parameter_name LOOKBACK
- * @parameter_description No description available
-
+ *
 END*/
 
 
-class Entropy : public FrameOperation {
+class Entropy : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
 
 public:
    Entropy(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
+      : BufferedNode(nodeName, params)
 
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
-
-   ~Entropy() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-      
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(1);
+      out[count] = &output;
+
       float s2=0;
       float entr=0;
       for (int i=0;i<inputLength;i++)
@@ -105,10 +85,8 @@ public:
 	 if (in[i] != 0)
 	    entr -= s2*in[i]*in[i] * log(s2*in[i]*in[i]);
       }
-      cout << entr << endl;
+      //cout << entr << endl;
       output[0] = entr;
-
-      output.status = Object::valid;
    }
 
 };

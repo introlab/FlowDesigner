@@ -24,7 +24,7 @@ DECLARE_NODE(HistoVect)
 /*Node
 
  * @name HistoVect
- * @category Signal:Misc
+ * @category Signal:Manip
  * @description No description available
 
  * @input_name INPUT

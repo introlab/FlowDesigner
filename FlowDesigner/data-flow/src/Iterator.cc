@@ -62,9 +62,6 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          if (processCount != -1) {
 
             for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-               if (debugMode) {
-                  cout<<"DEBUG : Iterator is now resetting node "<<(*iter).second->getName()<<endl;
-               }
                (*iter).second->reset();
             }
 
