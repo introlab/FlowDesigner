@@ -132,7 +132,7 @@ public:
       if (!parameters.exist("DUMMY"))
       {
 	 //int arg=0x7fff0004;
-	 int arg=0x0004000a;
+	 int arg=0x7fff000a;
 	 if (parameters.exist("BUFFER"))
 	 {
 	    unsigned int buffLen = dereference_cast<int> (parameters.get("BUFFER"));
@@ -145,7 +145,7 @@ public:
 	    }
 	    if (arg < 4)
 	       arg=4;
-	    arg |= 0x00040000;
+	    arg |= 0x7fff0000;
 	    //cerr << "arg = " << arg << endl;
 	 }      
 	 ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
