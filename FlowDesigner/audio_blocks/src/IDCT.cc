@@ -102,8 +102,8 @@ public:
       for (i=0, j=0 ;i<length ; i+=2, j++)
          output[i]=outputCopy[j];
 
-      for (i = length-1; i>=0 ; i-=2, j++)
-         output[i]=outputCopy[j];
+      for (j=length-1,i=1;i<length;i+=2,j--)
+	 output[i]=outputCopy[j];
    }
 
 };
