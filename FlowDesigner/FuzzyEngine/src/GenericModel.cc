@@ -182,29 +182,23 @@ void GenericModel::calculate(int output_id, int count, Buffer &out) {
   ObjectRef Input = getInput(m_InputID, count);
 
 
-  cerr<<"got all input"<<endl;
-
   //First add antecedant sets
   Vector<FuzzySet*> &vect_sets = object_cast<Vector<FuzzySet*> >(ASets);
   for (int i = 0; i < vect_sets.size(); i++) {
     add_fuzzy_set(vect_sets[i],FuzzyModel::FUZZY_INPUT_SET);
   }
-  cerr<<"added input sets"<<endl;
-
 
   //Then add consequent sets
   vect_sets = object_cast<Vector<FuzzySet*> >(CSets);
   for (int i = 0; i < vect_sets.size(); i++) {
     add_fuzzy_set(vect_sets[i],FuzzyModel::FUZZY_OUTPUT_SET);
   }
-  cerr<<"added output sets"<<endl;
   
   //Finally add rules
   Vector<FuzzyRule*> &vect_rules = object_cast<Vector<FuzzyRule*> >(Rules);
   for (int i = 0; i < vect_rules.size(); i++) {
     add_fuzzy_rule(vect_rules[i]);
   }
-  cerr<<"added rules"<<endl;
 
   //verify rule consistency
   verify_rules();
@@ -212,7 +206,14 @@ void GenericModel::calculate(int output_id, int count, Buffer &out) {
 
   //calculate output
   Vector<float> &vect_value = object_cast<Vector<float> >(Input);  
+
+  for (int i = 0; i <   vect_value.size(); i++) {
+    cerr<<"got input : "<<vect_value[i]<<endl;
+  }
+
   vector<float>& calc_output = evaluate(vect_value);
+
+
   Vector<float> *my_output = new Vector<float>(calc_output.size());
 
   for (int i = 0; i < calc_output.size(); i++) {

@@ -107,6 +107,9 @@ vector<float> & FuzzySet::get_all_membership_evaluation(float x) {
   
   for (int i = 0; i < m_functions.size(); i++) {
     m_evaluation[i] = m_functions[i]->evaluate(x);
+
+    cerr<<"Set "<<m_name<<" Evaluating function : "
+	<<m_functions[i]->get_name()<<" to value "<<m_evaluation[i]<<endl;
     
     m_string_value_map.insert(
 			      pair<string,float>(m_functions[i]->get_name(),m_evaluation[i]));

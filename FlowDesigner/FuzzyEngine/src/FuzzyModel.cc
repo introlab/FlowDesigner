@@ -78,7 +78,9 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
 
   rule->set_rule_number(rule_number);
   
-  
+  rule->print_rule(cerr);
+
+
   //let's verify this rule
   vector<pair<string,string> >&consequent = rule->get_consequent_part();
   vector<pair<string,string> >&antecedant = rule->get_antecedant_part();
@@ -325,8 +327,14 @@ vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
     
     for (iter_input = m_input_names[x].begin();
 	 iter_input != m_input_names[x].end(); iter_input++) {
-      
+
       conjunction_values[y] = m_input_set[y]->get_value_with_name((*iter_input));
+
+      cerr<<"input set "<<m_input_set[y]->get_name()<<endl;
+      cerr<<"input name "<<(*iter_input)<<endl;
+      cerr<<"getting conjunction_value "<<conjunction_values[y]<<endl;
+
+
       y++;
     }//for every antecedant of the rule
     
@@ -335,6 +343,10 @@ vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
     //applying conjunction operator
     for (iter = m_output_functions[x].begin();
 	 iter != m_output_functions[x].end(); iter++) {
+      
+      cerr<<"Pushing inference value of "<<conjunction(conjunction_values)
+	  <<" for output function "<<(*iter)->get_name()<<endl;
+
       (*iter)->push_inference_value(conjunction(conjunction_values));			
     }
     
