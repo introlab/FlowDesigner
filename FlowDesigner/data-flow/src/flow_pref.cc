@@ -14,17 +14,17 @@ FlowPref FlowPref::pref;
 
 FlowPref::FlowPref()
 {
-   params["ShowAllInOut"] = "no";
-   params["ShowTooltips"] = "yes";
-   params["PrintOutput"]  = "yes";
-   params["RunProcess"]   = "no";
-   params["RegularColor"] = "0x8cd0afff";
+   params["VFLOW"]["ShowAllInOut"] = "no";
+   params["VFLOW"]["ShowTooltips"] = "yes";
+   params["VFLOW"]["PrintOutput"]  = "yes";
+   params["VFLOW"]["RunProcess"]   = "no";
+   params["VFLOW"]["RegularColor"] = "0x8cd0afff";
    //params["SelectedColor"]= "0x8ca0af20";
    //params["SelectedColor"]= "0x8087c020";
-   params["SelectedColor"]= "0xa8b2fcff";
+   params["VFLOW"]["SelectedColor"]= "0xa8b2fcff";
    //params["ErrorColor"]   = "0xc02020ff";
-   params["ErrorColor"]   = "0xfc9595ff";
-
+   params["VFLOW"]["ErrorColor"]   = "0xfc9595ff";
+   /*
    string filename = getenv("HOME");
    filename += "/.vflowrc";
    ifstream prefFile(filename.c_str());
@@ -53,6 +53,7 @@ FlowPref::FlowPref()
       params[key]   = value;
       //cerr << key << "->" << value << endl;
    }
+   */
    modified=false;
 }
 
@@ -62,9 +63,9 @@ FlowPref::~FlowPref()
    //   save();
 }
 
-bool FlowPref::getBool(const string &str)
+bool FlowPref::getBool(const string &cat, const string &str)
 {
-   string val = pref.params[str];
+   string val = pref.params[cat][str];
    //cerr << "str = " << val << endl;
    if (val=="yes" || val=="YES" || val=="true" || val=="TRUE")
       return true;
@@ -72,18 +73,18 @@ bool FlowPref::getBool(const string &str)
       return false;
 }
 
-void FlowPref::setBool(const string &str, bool val)
+void FlowPref::setBool(const string &cat, const string &str, bool val)
 {
    if (val)
-      pref.params[str] = "yes";
+      pref.params[cat][str] = "yes";
    else
-      pref.params[str] = "no";
+      pref.params[cat][str] = "no";
    pref.modified=true;
 }
 
-unsigned int FlowPref::getColor(const string &str)
+unsigned int FlowPref::getColor(const string &cat, const string &str)
 {
-   string val = pref.params[str];
+   string val = pref.params[cat][str];
    istringstream valStr(val);
    char ch1, ch2;
    unsigned int col=0;
@@ -107,7 +108,7 @@ unsigned int FlowPref::getColor(const string &str)
    return col;
 }
 
-void FlowPref::setColor(const string &str, unsigned int col)
+void FlowPref::setColor(const string &cat, const string &str, unsigned int col)
 {
    char colStr[11];
    colStr[10]=0;
@@ -122,7 +123,7 @@ void FlowPref::setColor(const string &str, unsigned int col)
 	 colStr[9-i]=dhex-10+'a';
       col>>=4;
    }
-   pref.params[str]=colStr;
+   pref.params[cat][str]=colStr;
 }
 
 
@@ -133,18 +134,18 @@ void FlowPref::Save()
 
 void FlowPref::save()
 {
-   string filename = getenv("HOME");
+  /*string filename = getenv("HOME");
    filename += "/.vflowrc";
    //cerr << "save " << filename << endl;
    ofstream prefFile(filename.c_str());
    if (prefFile.fail())
       return;
-   map<string,string>::iterator p = params.begin();
+   map<string, map<string,string> >::iterator p = params.begin();
    while (p != params.end())
    {
       prefFile << p->first << "=" << p->second << endl;
       p++;
-   }
+      }*/
    modified=false;
    //cerr << "pref save\n";
 }

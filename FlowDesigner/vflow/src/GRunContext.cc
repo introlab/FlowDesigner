@@ -78,7 +78,7 @@ void GRunContext::run()
 	    
       for (int i = 0; ;i++) {
 	 if (!net->hasOutput(i)) break;
-	 if (FlowPref::getBool("PrintOutput"))
+	 if (FlowPref::getBool("VFLOW", "PrintOutput"))
 	 {
 	    stringstream execOut;
 	    execOut << *net->getOutput(i,0);

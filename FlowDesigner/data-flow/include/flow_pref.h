@@ -8,7 +8,7 @@
 
 class FlowPref {
    int modified;
-   map<string,string> params;
+   map<string, map<string,string> > params;
 
    static FlowPref pref;
   public:
@@ -17,11 +17,11 @@ class FlowPref {
    void load();
    void save();
 
-   static bool getBool(const string &str);
-   static void setBool(const string &str, bool val);
+   static bool getBool(const string &cat, const string &str);
+   static void setBool(const string &cat, const string &str, bool val);
 
-   static unsigned int getColor(const string &str);
-   static void setColor(const string &str, unsigned int col);
+   static unsigned int getColor(const string &cat, const string &str);
+   static void setColor(const string &cat, const string &str, unsigned int col);
 
    static void Save();
 };
