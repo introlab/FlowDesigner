@@ -12,6 +12,8 @@
 #include "object_param.h"
 #include "UserException.h"
 
+#include "misc_gui.h"
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -276,15 +278,6 @@ void GUIDocument::removeCurrentNet()
    networks.resize(networks.size()-1);
 }
 
-void rename_net(gchar * str, UINetwork *net)
-{
-   
-  if (str)
-    net->rename(str);
-  
-  //update tab
-  
-}
 
 void GUIDocument::renameCurrentNet()
 {
@@ -295,7 +288,12 @@ void GUIDocument::renameCurrentNet()
    UINetwork *net = networks[netID];
    string message;
    message = string("Rename network ") + net->getName();
-   GtkWidget *dialog = gnome_request_dialog (FALSE, message.c_str(), "", 20, (GnomeStringCallback)rename_net, net, NULL);
+   
+   string newName = ask_string_dialog(message.c_str(), "");
+   if (newName != "")
+      net->rename(newName);
+   
+//GtkWidget *dialog = gnome_request_dialog (FALSE, message.c_str(), "", 20, (GnomeStringCallback)rename_net, net, NULL);
   
 }
 

@@ -8,4 +8,6 @@ using namespace std;
 
 string ask_string_dialog (const char *question, const char *default_str);
 
+gint close_save_dialog (const char *question);
+
 #endif

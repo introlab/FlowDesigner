@@ -29,7 +29,7 @@ class vflowGUI {
   friend void new_doc_event  (GtkMenuItem *menuitem, vflowGUI *vflow);
   friend void file_open_ok_sel(GtkWidget *w, vflowGUI *vflow);
   friend void open_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow);
-  friend void close_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow);
+  friend gint close_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow);
   friend void file_saveas_ok_sel (GtkWidget *w, vflowGUI *vflow);
   friend void saveas_doc_event (GtkWidget *widget, vflowGUI *vflow);
   friend void save_doc_event (GtkWidget *widget, vflowGUI *vflow);
