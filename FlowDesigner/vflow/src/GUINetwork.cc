@@ -81,7 +81,7 @@ GUINetwork::~GUINetwork()
 
    delete popup;
    gtk_object_destroy(GTK_OBJECT(group));
-   gtk_widget_destroy(GTK_WIDGET(canvas));
+   gtk_widget_destroy(GTK_WIDGET(scrolledwindow1));
 
 }
 
@@ -90,12 +90,12 @@ void GUINetwork::create()
    //cerr << "GUINetwork::create()\n";
    GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getNotebook();
    //cerr << "GUINetwork::create()\n";
-   gtk_widget_show (notebook1);
+   //gtk_widget_show (notebook1);
 
-   GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+   scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
    gtk_widget_ref (scrolledwindow1);
-   gtk_object_set_data_full (GTK_OBJECT (notebook1), "scrolledwindow1", scrolledwindow1,
-                             (GtkDestroyNotify) gtk_widget_unref);
+   //gtk_object_set_data_full (GTK_OBJECT (notebook1), "scrolledwindow1", scrolledwindow1,
+   //                          (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (scrolledwindow1);
    //gtk_container_add (GTK_CONTAINER (notebook1), scrolledwindow1);
 
@@ -103,6 +103,9 @@ void GUINetwork::create()
    gtk_widget_push_visual (gdk_rgb_get_visual ());
    gtk_widget_push_colormap (gdk_rgb_get_cmap ());
    GtkWidget *canvas1 = gnome_canvas_new ();
+   gtk_object_set_data_full (GTK_OBJECT (scrolledwindow1), "canvas1", canvas1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+
    gtk_widget_pop_colormap ();
    gtk_widget_pop_visual ();
 
@@ -168,7 +171,6 @@ void GUINetwork::create()
    */
 
      gtk_notebook_set_current_page (GTK_NOTEBOOK(notebook1), -1);
-
 }
 
 

@@ -14,6 +14,7 @@ class GUINodeTooltip;
 class GUINetwork : public UINetwork {
 protected:
    GnomeCanvas *canvas;
+   GtkWidget *scrolledwindow1;
    GnomeCanvasGroup *group;
    GUINetPopup *popup;
    double zoom;

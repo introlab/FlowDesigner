@@ -127,10 +127,12 @@ GUIDocument::~GUIDocument()
    //Copy of the UIDocument destructor
    if (!destroyed)
    {
-      //cerr << "destroying UIDocument " << name << endl;
       for (unsigned int i=0;i<networks.size();i++)
+      {
          delete networks[i];
-      
+         networks[i]=NULL;
+      }
+
       for (unsigned int i=0;i<textParams.size();i++)
          delete textParams[i];
       
@@ -144,10 +146,9 @@ GUIDocument::~GUIDocument()
          delete docParams[i];
       destroyed=true;
    }
-
    GtkNotebook *notebook = GTK_NOTEBOOK(vflowGUI::instance()->get_notebook());
    gtk_notebook_remove_page (notebook, gtk_notebook_get_current_page (notebook));
-   //gtk_widget_destroy(vbox2);
+   gtk_widget_destroy(vbox2);
 }
 
 GtkWidget *create_close_dialog (const char *close_str)
