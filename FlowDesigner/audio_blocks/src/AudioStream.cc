@@ -139,6 +139,7 @@ public:
 	 else if (object_cast<String> (parameters.get("STREAM_TYPE")) == "stream")
 	    strType = cpp;
       }
+
    }
 
    ~AudioStream() {delete [] tmpBuffer;}
@@ -161,6 +162,7 @@ public:
    
    virtual void specificInitialize()
    {
+      outputs[outputID].lookBack += 1;
       this->FrameOperation::specificInitialize();
 
       //cerr << "output lookback = " << outputs[outputID].lookBack << endl;

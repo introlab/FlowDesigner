@@ -23,3 +23,5 @@ manage to handle subnet dependencies
 vflow preferences...
 
 allow to change the thread stack size
+
+fix segfaults on "no condition" and "input not connected"
