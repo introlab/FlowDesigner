@@ -10,7 +10,14 @@ bin_SCRIPTS = flowdesigner-config
 
 EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd
 
+#Fools KDevelop into finding all the files
+if TRUE
 SUBDIRS = data-flow @modules@ tools examples
+else
+SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow vflow tools examples
+endif
+
+DIST_SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow vflow tools examples
 
 rpm: dist
 	rpmbuild -ta ${PACKAGE}-${VERSION}.tar.gz
