@@ -12,6 +12,7 @@
 #include "GUINetwork.h"
 #include "GUILink.h"
 #include "GUINode.h"
+#include "GUINodeParameters.h"
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -68,7 +69,7 @@ GUIDocument *vflowGUI::getCurrentDoc()
       return NULL;
    } else {
 
-     cerr<<"Current page of the notebook : "<<curr<<endl;
+     //cerr<<"Current page of the notebook : "<<curr<<endl;
       GtkWidget *page = gtk_notebook_get_nth_page (GTK_NOTEBOOK(notebook1), curr);
       return (GUIDocument*)gtk_object_get_data(GTK_OBJECT(page), "doc");
    }
@@ -166,7 +167,7 @@ void vflowGUI::paste (GUIDocument *doc) {
     //copying parameters
     UINodeParameters *params_source = (*iter)->getParameters();
     
-    UINodeParameters *params_destination = new UINodeParameters(my_node,(*iter)->getType());
+    UINodeParameters *params_destination = new GUINodeParameters(my_node,(*iter)->getType());
     
     params_destination->copyParameterText(params_source);
     
