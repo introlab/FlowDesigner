@@ -25,7 +25,7 @@ DECLARE_NODE(Equal)
  *
  * @name Equal
  * @category Math
- * @description Equals two input values and returns the result
+ * @description Returns true if two input values are equal, false otherwise
  *
  * @input_name INPUT1
  * @input_description First value
@@ -34,7 +34,8 @@ DECLARE_NODE(Equal)
  * @input_description Second value
  *
  * @output_name OUTPUT
- * @output_description Result of the addition
+ * @output_type Bool
+ * @output_description True or false
  *
 END*/
 
