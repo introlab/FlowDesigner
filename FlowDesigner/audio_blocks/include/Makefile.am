@@ -6,4 +6,5 @@ noinst_HEADERS = lpc.h \
 	window.h \
 	mdct.h \
 	FFTWrap.h \
-	fft_3dnow.h
+	fft_3dnow.h \
+	lsp.h
