@@ -31,9 +31,9 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    for (int i=0;i<params.size();i++)
    {
       if (params[i]->value != "")
-	 tooltext << endl << params[i]->name << ": " << params[i]->value << " (" << params[i]->type << ")";
+	tooltext << endl << params[i]->name << ": " << params[i]->value << " (" << params[i]->type << "); " << params[i]->description;
       else
-	 tooltext << endl << params[i]->name << ":"; 
+	 tooltext << endl << params[i]->name << ": (" << params[i]->type << "); " << params[i]->description; 
    }
    if (node->getComments() != "")
    {
