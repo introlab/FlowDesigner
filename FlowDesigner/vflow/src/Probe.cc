@@ -296,7 +296,9 @@ ObjectRef Probe::getOutput(int output_id, int count)
       inputValue = input.node->getOutput(input.outputID,count);
       if (displayEnable)
 	 display();
-      if (traceEnable && count >= breakAt)
+      if (count==breakAt)
+	 traceEnable = true;
+      if (traceEnable)
 	 trace();
       return inputValue;
       
