@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Feedback" x="-240.000000" y="100.000000">
+      <Parameter name="DELAY" type="int" value="0"/>
+    </Node>
+    <Link from="node1" output="DELAY" to="node1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>

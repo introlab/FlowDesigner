@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Constant" x="-240.000000" y="100.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector 0 1 2"/>
+    </Node>
+    <NetOutput name="OUTPUT" node="node1" terminal="VALUE"/>
+  </Network>
+</Document>
