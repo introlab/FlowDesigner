@@ -89,7 +89,9 @@ public:
    void get_scroll_offsets(int &c1, int &c2) {
      gnome_canvas_get_scroll_offsets (GNOME_CANVAS(canvas),&c1,&c2);
    }
-
+   
+   virtual void rename(string newName);
+   
 
 };
 

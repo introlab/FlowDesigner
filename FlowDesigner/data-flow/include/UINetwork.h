@@ -136,7 +136,7 @@ public:
    vector<UILink *> getLinks() {return links;}
    vector<UINetTerminal *> getTerminals() {return terminals;}
    
-   void rename(string newName);
+   virtual void rename(string newName);
 
    void interfaceChangeNotify();
    

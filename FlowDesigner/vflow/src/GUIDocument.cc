@@ -349,8 +349,14 @@ void GUIDocument::removeCurrentNet()
 void rename_net(gchar * str, UINetwork *net)
 {
    
+  cerr<<"rename_net called with str"<<str<<endl;
+
    if (str)
       net->rename(str);
+
+   
+
+
 }
 
 void GUIDocument::renameCurrentNet()
@@ -363,7 +369,7 @@ void GUIDocument::renameCurrentNet()
    string message;
    message = string("Rename network ") + net->getName();
    GtkWidget *dialog = gnome_request_dialog (FALSE, message.c_str(), "", 20, (GnomeStringCallback)rename_net, net, NULL);
-   gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
+  
 }
 
 UINetwork* GUIDocument::getCurrentNet() {
