@@ -42,6 +42,13 @@ public:
    /**Constructor, takes the name of the node and a set of parameters*/
    GMMScore(string nodeName, ParameterSet params);
 
+   /**Standard request-passing method between nodes during initialization*/
+   virtual void request(int outputID, const ParameterSet &req)
+   {
+      inputs[gmmInputID].node->request(inputs[gmmInputID].outputID,req);
+      inputs[framesInputID].node->request(inputs[framesInputID].outputID,req);
+   }
+
    /**Class specific initialization routine.
       Each class will call its superclass specificInitialize() method*/
    virtual void specificInitialize();
