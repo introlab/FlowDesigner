@@ -221,7 +221,9 @@ void GUIDocument::load()
 void GUIDocument::removeCurrentNet()
 {
    int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
-   cerr << "netID = " << netID << endl;
+   //cerr << "netID = " << netID << endl;
+   if (netID == -1) 
+      return;
    gtk_notebook_remove_page (GTK_NOTEBOOK(notebook1), netID);
    delete networks[netID];
    for (int i=netID;i<networks.size()-1;i++)
@@ -661,17 +663,18 @@ extern void set_run_mode (bool isRuning);
 
 static void disposeFunct(void *dummy)
 {
-   cerr << "disposeFunct called\n";
+   //cerr << "disposeFunct called\n";
    if (dummy != NULL) {
      GUIDocument *doc = (GUIDocument*) dummy;
      GUIDocument::isRunning = false;
-     cerr <<  "Deleting the running network.\n"; 
+     //cerr <<  "Deleting the running network.\n"; 
      delete GUIDocument::runningNet;
      //gdk_threads_leave();
      GUIDocument::runningNet=NULL;
 
      gdk_threads_enter();
      set_run_mode(false);
+     //doc->less_print("Cancelled");
      gdk_threads_leave();
     
    }
@@ -710,9 +713,10 @@ void GUIDocument::threadStop()
    pthread_mutex_lock (&mutex);
      
    if (isRunning) {
-      cerr << "stopping...\n";
+      //cerr << "stopping...\n";
       isRunning=false;
       pthread_cancel(runThread);
+      //less_print("Stopping " + docName);
    }
 
    pthread_mutex_unlock (&mutex);
@@ -771,15 +775,15 @@ void GUIDocument::run()
       Network *net = build("MAIN", parameters);
       runningNet = net;
       //Ptr<Network> net(build("MAIN", parameters));
-      cerr << "initializing...\n";
+      //cerr << "initializing...\n";
       net->initialize();
-      cerr << "running...\n";
+      //cerr << "running...\n";
       
       // Getting all the network outputs.
       for (int k=0; ;k++) {
 	if (net->hasOutput(k)) {
-	   char str[1000];
-	   strstream execOut(str, 999);
+	   char str[3000];
+	   strstream execOut(str, 2999);
 	   
 	   //cerr<<"before main getOutput"<<endl;
 	   execOut << *net->getOutput(k,0);
@@ -795,6 +799,9 @@ void GUIDocument::run()
 	}
       }
       
+      gdk_threads_enter();
+      less_print("Exited normally");
+      gdk_threads_leave();
       //delete net;
       //ask for params and desired output
       
@@ -817,6 +824,7 @@ void GUIDocument::run()
       //delete net;
       //runningNet=NULL;
    }
+     
    
    pthread_cleanup_pop(1);
 
