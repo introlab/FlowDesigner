@@ -75,11 +75,14 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
             inputs.insert(inputs.end(), newInfo);
       }
      
-   } else if (preloadInfo.find(netName) != preloadInfo.end()) {
+   } else if (subnetInfo.findNode(netName))
+      return subnetInfo.findNode(netName)->inputs;
+
+/*else if (preloadInfo.find(netName) != preloadInfo.end()) {
       inputs = preloadInfo[netName]->inputs;
    } else 
       if (UINodeRepository::Find(netName))
-	 return UINodeRepository::Find(netName)->inputs;
+      return UINodeRepository::Find(netName)->inputs;*/
 
    return inputs;
 }
@@ -98,11 +101,14 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
             outputs.insert(outputs.end(), newInfo);
       }
        
-   } else if (preloadInfo.find(netName) != preloadInfo.end()) {
+   } else if (subnetInfo.findNode(netName))
+      return subnetInfo.findNode(netName)->outputs;
+
+    /*else if (preloadInfo.find(netName) != preloadInfo.end()) {
       outputs = preloadInfo[netName]->outputs;
    } else 
       if (UINodeRepository::Find(netName))
-	 return UINodeRepository::Find(netName)->outputs;
+      return UINodeRepository::Find(netName)->outputs;*/
 
    return outputs;
 }
@@ -114,12 +120,15 @@ vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
    if (net)
    {
       net->insertNetParams(params);
-   } else if (preloadInfo.find(netName) != preloadInfo.end()) 
+   } else if (subnetInfo.findNode(netName))
+      return subnetInfo.findNode(netName)->params;
+
+   /*else if (preloadInfo.find(netName) != preloadInfo.end()) 
    {
       params = preloadInfo[netName]->params;
    } else 
       if (UINodeRepository::Find(netName))
-	 return UINodeRepository::Find(netName)->params;
+      return UINodeRepository::Find(netName)->params;*/
 
    return params;
 }
@@ -142,7 +151,7 @@ void UIDocument::addParameterText(string name, string value, string type)
     textInfo->type = type;
     textParams.insert(textParams.end(), textInfo);
 }
-    
+/*
 void UIDocument::loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, string netName)
 {
    if (netName == "")
@@ -229,14 +238,14 @@ void UIDocument::loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, s
    }
  
 }
-
+*/
 void UIDocument::printOn(ostream &out) const
 {
    out << "<UIDocument" << endl;
    out << "<name " << docName << " >" << endl;
    out << ">" << endl;
 }
-
+/*
 void UIDocument::loadAllSubnetInfo(xmlNodePtr net)
 {
    //cerr << "UIDocument::loadNetInfo\n";
@@ -253,6 +262,7 @@ void UIDocument::loadAllSubnetInfo(xmlNodePtr net)
       net = net->next;
    }
 }
+*/
 
 void UIDocument::load()
 {
@@ -289,7 +299,8 @@ void UIDocument::loadFromMemory(char *mem, int size)
 
 void UIDocument::loadXML(xmlNodePtr root)
 {
-   loadAllSubnetInfo(root->childs);
+   //loadAllSubnetInfo(root->childs);
+   subnetInfo.loadAllSubnetInfo(root->childs);
 
    xmlNodePtr net = root->childs;
    //cerr << "parsing...\n";
@@ -707,19 +718,13 @@ void UIDocument::setFullPath(const string &fullpath)
  * separated with :'s
  * -> type is the unique description of the node type
  */
+/*
 vector<string> UIDocument::getAvailableNodes()
 {
 	vector<string> allNodes;
 	string nextItem;
 	// first look at the externalDocInfo 
-	/*map<string, NodeInfo *>::iterator iter = externalDocInfo.begin();
 	
-	while (iter != externalDocInfo.end()) {
-		nextItem = string((*iter).second->category) + "***" + 
-				   string((*iter).first);
-		allNodes.insert(allNodes.end(), nextItem);
-		iter++;
-		}*/
 	allNodes = UINodeRepository::Available();
 
 	// now look at the preloadInfo
@@ -736,3 +741,4 @@ vector<string> UIDocument::getAvailableNodes()
 }
 											
 
+*/

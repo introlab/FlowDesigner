@@ -38,7 +38,8 @@ protected:
    bool modified;
    
    /**Info about all internal networks that can be included as nodes - I think (should be cleaned up)*/
-   map<string, NodeInfo *> preloadInfo;
+   //map<string, NodeInfo *> preloadInfo;
+   UINodeRepository subnetInfo;
 
    /**Document parameters (should be re-written)*/
    vector<DocParameterDataText *> textParams;
@@ -126,9 +127,9 @@ public:
    /**A UIDocument can print itself*/
    void printOn(ostream &out=cout) const;
 
-   static void loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, string netName = "");
+   //static void loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, string netName = "");
 
-   void loadAllSubnetInfo(xmlNodePtr net);
+   //void loadAllSubnetInfo(xmlNodePtr net);
 
    vector<UINetwork *> get_networks() {return networks;}
    vector<DocParameterDataText *> get_textParams() {return textParams;}
@@ -150,7 +151,7 @@ public:
 
    virtual void setFullPath(const string &fullpath);
    
-   vector<string> getAvailableNodes();
+   //vector<string> getAvailableNodes();
 
    static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true, bool fullPathOutput=true);
 

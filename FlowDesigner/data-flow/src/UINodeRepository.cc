@@ -18,6 +18,12 @@
 
 //@implements UIClasses
 
+UINodeRepository::UINodeRepository(const UINodeRepository &)
+{
+   throw new GeneralException("I wouldn't try copying a UINodeRepository if I were you", __FILE__, __LINE__);
+}
+
+
 UINodeRepository &UINodeRepository::GlobalRepository()
 {
    static UINodeRepository rep;
@@ -48,7 +54,7 @@ void UINodeRepository::Scan()
    
    for (unsigned int i=0;i<dirs.size();i++) 
    {
-      loadAllInfoRecursive(dirs[i]);
+      LoadAllInfoRecursive(dirs[i]);
    }
 }
 
@@ -103,7 +109,7 @@ NodeInfo *UINodeRepository::findNode(const string &name)
    return NULL;
 }
 
-void UINodeRepository::loadNodeDefInfo(const string &path, const string &name)
+void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 {
 
    string fullname = path + "/" + name;
@@ -111,7 +117,7 @@ void UINodeRepository::loadNodeDefInfo(const string &path, const string &name)
    
    if (!doc || !doc->root || !doc->root->name)
    {
-      cerr << "loadNodeDefInfo: error loading " << fullname << "\n";
+      cerr << "LoadNodeDefInfo: error loading " << fullname << "\n";
       xmlFreeDoc (doc);
       return;
    }
@@ -275,7 +281,7 @@ void UINodeRepository::loadNodeDefInfo(const string &path, const string &name)
    
 }
 
-void UINodeRepository::loadExtDocInfo(const string &path, const string &name)
+void UINodeRepository::LoadExtDocInfo(const string &path, const string &name)
 {
    string fullname = path + "/" + name;
    xmlDocPtr doc = xmlParseFile(fullname.c_str());
@@ -288,6 +294,11 @@ void UINodeRepository::loadExtDocInfo(const string &path, const string &name)
       return;
    }
 
+   GlobalRepository().loadDocInfo(doc, basename);
+}
+
+void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
+{
    map<string, NodeInfo *> &externalDocInfo = GlobalRepository().info;
 
    if (externalDocInfo.find(basename) != externalDocInfo.end())
@@ -372,7 +383,7 @@ void UINodeRepository::loadExtDocInfo(const string &path, const string &name)
 
 
 
-void UINodeRepository::loadAllInfoRecursive(const string &path) {
+void UINodeRepository::LoadAllInfoRecursive(const string &path) {
 
   struct stat my_stat;
   DIR *my_directory = opendir (path.c_str());
@@ -396,7 +407,7 @@ void UINodeRepository::loadAllInfoRecursive(const string &path) {
     if (S_ISDIR(my_stat.st_mode)) {
       //it is a directory, let's doing it recursively
       if (name != string("..") && name != string(".")) {
-	loadAllInfoRecursive(fullpath);
+	LoadAllInfoRecursive(fullpath);
       }
     }
     else {
@@ -406,14 +417,14 @@ void UINodeRepository::loadAllInfoRecursive(const string &path) {
        if (len > 2 && strcmp(".n", current_entry->d_name + len-2)==0)
        {
 	  //cout<<"Loading network : "<<fullpath<<endl;
-	  loadExtDocInfo(path, name);
+	  LoadExtDocInfo(path, name);
        }
        
        //loading toolbox
        if (len > 4 && strcmp(".def", current_entry->d_name + len-4)==0)
        {
 	  //cout<<"Loading toolbox : "<<fullpath<<endl;
-	  loadNodeDefInfo(path, name);
+	  LoadNodeDefInfo(path, name);
        }
        
     }
@@ -424,6 +435,106 @@ void UINodeRepository::loadAllInfoRecursive(const string &path) {
 
 
 
+void UINodeRepository::loadAllSubnetInfo(xmlNodePtr net)
+{
+   while (net != NULL)
+   {
+      if (string((char*)net->name) == "Network")
+      {
+	 
+	 loadNetInfo(net);
+	 
+      }
+      net = net->next;
+   }
+}
+
+
+void UINodeRepository::loadNetInfo(xmlNodePtr net)
+{
+   string netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
+   
+   CHAR *category = xmlGetProp(net, (CHAR *)"category");
+   
+   
+   if (info.find(netName) != info.end())
+   {
+      cerr << "error: net " << netName << " already existed\n";
+      return;
+   }
+   //cerr << "new subnet info with name: " << netName << "\n";
+   NodeInfo *ninfo = new NodeInfo;
+   info[netName] = ninfo;
+   
+   if (category)
+      ninfo->category = string((char *)category);
+   
+   //cerr << "scan all nodes\n";
+   xmlNodePtr node = net->childs;
+   while (node != NULL)
+   {
+      if (string((char*)node->name) == "Node")
+      {
+	 
+	 
+	 xmlNodePtr par = node->childs;
+	 //cerr << "par = " << par << endl;
+	 while (par)
+	 {
+	    if (string((char*)par->name) == "Parameter")
+	    {
+	       string paramName = string ((char *) xmlGetProp(par, (CHAR *)"value"));
+	       string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
+	       if (type == "subnet_param")
+	       {
+		  bool alreadyPresent = false;
+		  for (unsigned int j=0;j<ninfo->params.size();j++)
+		     if (ninfo->params[j]->name == paramName)
+			alreadyPresent=true;
+		  if (!alreadyPresent)
+		  {
+		     ItemInfo *newInfo = new ItemInfo;
+		     newInfo->name = paramName;
+		     //FIXME: This always sets the type to subnet_info, which is incorrect
+		     newInfo->type = type;
+		     ninfo->params.insert (ninfo->params.end(), newInfo);
+		  }
+	       }          
+	    }
+	    par = par->next;
+	    
+	 }
+	 
+	 
+	 
+	 //check for params
+      }
+      node = node->next;
+   }
+   
+   //scan all net inputs/outputs
+   node = net->childs;
+   while (node != NULL)
+   {
+      if (string((char*)node->name) == "NetInput")
+      {
+	 string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 ItemInfo *newInfo = new ItemInfo;
+	 newInfo->name = termName;
+	 ninfo->inputs.insert (ninfo->inputs.end(), newInfo);
+	 
+      } else if (string((char*)node->name) == "NetOutput")
+      {
+	 string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 ItemInfo *newInfo = new ItemInfo;
+	 newInfo->name = termName;
+	 ninfo->outputs.insert (ninfo->outputs.end(), newInfo);
+	 
+      }
+      node = node->next;
+   }
+ 
+}
 
 
 

@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <tree.h>
 
 class ItemInfo {
   public:
@@ -49,16 +50,26 @@ class UINodeRepository {
    /**List of all headers required for each file*/
    static map<string, set<string> > &HeaderDepend();
 
-   static void loadAllInfoRecursive(const string &path);
-   static void loadNodeDefInfo(const string &path, const string &name);
-   static void loadExtDocInfo(const string &path, const string &name);
+   static void LoadAllInfoRecursive(const string &path);
+   static void LoadNodeDefInfo(const string &path, const string &name);
+   static void LoadExtDocInfo(const string &path, const string &name);
    //NodeInfo *&operator[] (const string &name) {return info[name];}
   public:
-   
+
+   UINodeRepository() {}
+
+   UINodeRepository(const UINodeRepository &);
+
    iterator begin() {return info.begin();}
    iterator end() {return info.end();}
 
    NodeInfo *findNode(const string &name);
+
+   void loadDocInfo(xmlDocPtr doc, const string &basename);
+
+   void loadAllSubnetInfo(xmlNodePtr net);
+      
+   void loadNetInfo(xmlNodePtr net);
 
    static iterator Begin() {return GlobalRepository().info.begin();}
    static iterator End() {return GlobalRepository().info.end();}
