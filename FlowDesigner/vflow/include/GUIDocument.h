@@ -38,6 +38,7 @@ protected:
    GtkWidget *vbox2;
    GtkWidget *notebook1;
    GtkWidget *less2;
+   GtkWidget *scrolledwindow1;
    string less_text;
 
    vector<DocParameterData> params;

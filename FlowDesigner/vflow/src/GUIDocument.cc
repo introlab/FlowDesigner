@@ -84,7 +84,7 @@ GUIDocument::GUIDocument(string _name)
   //gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
 
   
-  GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+  scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow1);
   gtk_widget_set_size_request(GTK_WIDGET(scrolledwindow1), -1, 100);
   gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
@@ -842,20 +842,26 @@ void GUIDocument::less_print(const string &message)
   {
      gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
                                less_text.c_str(), -1);
+
+     GtkAdjustment* adj = gtk_scrolled_window_get_vadjustment
+                                   (GTK_SCROLLED_WINDOW(scrolledwindow1));
+     gtk_adjustment_set_value(adj, adj->upper);
+     gtk_adjustment_value_changed(adj);
   }
   
 }
 
 void GUIDocument::less_print(const char *message) 
 {
-  less_text += string(message) + string("\n");
+   /*less_text += string(message) + string("\n");
 
   if (less2) 
   {
      gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
                                less_text.c_str(), -1);
   }
-  
+   */
+   less_print(string(message));
 }
 
 void GUIDocument::less_clear() 
