@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Socket" x="-3450.000000" y="208.000000">
+      <Parameter name="TYPE" type="string" value="TCP_STREAM"/>
+      <Parameter name="PORT" type="int" value="10000"/>
+    </Node>
+    <Node name="node2" type="Listen" x="-3269.000000" y="210.000000">
+      <Parameter name="BACKLOG" type="int" value="1"/>
+      <Parameter name="BLOCKING" type="bool" value="true"/>
+    </Node>
+    <Node name="node4" type="Accept" x="-3106.000000" y="209.000000"/>
+    <Node name="node5" type="ExecStream" x="-3121.000000" y="288.000000">
+      <Parameter name="COMMAND" type="string" value="mpg123 --stdout "/>
+    </Node>
+    <Node name="node6" type="Constant" x="-3291.000000" y="288.000000">
+      <Parameter name="VALUE" type="string" value="/home/dominic/song.mp3"/>
+    </Node>
+    <Node name="node_SEND_LOOP_1" type="SEND_LOOP" x="-2901.000000" y="235.000000"/>
+    <Link from="node1" output="OUTPUT" to="node2" input="SOCKET"/>
+    <Link from="node2" output="SOCKET" to="node4" input="SOCKET"/>
+    <Link from="node6" output="VALUE" to="node5" input="INPUT"/>
+    <Link from="node4" output="SOCKET" to="node_SEND_LOOP_1" input="SOCKET"/>
+    <Link from="node5" output="OUTPUT" to="node_SEND_LOOP_1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node_SEND_LOOP_1" terminal="OUTPUT"/>
+  </Network>
+  <Network type="iterator" name="SEND_LOOP">
+    <Node name="node6" type="AudioStream" x="-1246.000000" y="119.000000">
+      <Parameter name="LENGTH" type="int" value="1024"/>
+      <Parameter name="ADVANCE" type="int" value=""/>
+      <Parameter name="ENCODING" type="string" value="LIN16"/>
+      <Parameter name="STREAM_TYPE" type="string" value="STREAM"/>
+      <Parameter name="REWIND" type="bool" value=""/>
+    </Node>
+    <Node name="node_Serialize_1" type="Serialize" x="-908.000000" y="120.000000"/>
+    <Link from="node6" output="AUDIO" to="node_Serialize_1" input="OBJECT"/>
+    <NetCondition name="CONDITION" node="node6" terminal="NOT_EOF"/>
+    <NetInput name="INPUT" node="node6" terminal="INPUT"/>
+    <NetInput name="SOCKET" node="node_Serialize_1" terminal="STREAM"/>
+    <NetOutput name="OUTPUT" node="node_Serialize_1" terminal="OUTPUT"/>
+  </Network>
+</Document>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Socket" x="-216.000000" y="106.000000">
+      <Parameter name="TYPE" type="string" value="TCP_STREAM"/>
+      <Parameter name="PORT" type="int" value="10000"/>
+    </Node>
+    <Node name="node2" type="Constant" x="-309.000000" y="119.000000">
+      <Parameter name="VALUE" type="string" value="laborius1"/>
+    </Node>
+    <Node name="node3" type="Connect" x="32.000000" y="112.000000"/>
+    <Node name="node5" type="Sound" x="-61.000000" y="158.000000">
+      <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
+      <Parameter name="RATE" type="int" value="44100"/>
+      <Parameter name="STEREO" type="int" value="1"/>
+      <Parameter name="MODE" type="string" value="W"/>
+      <Parameter name="BUFFER" type="int" value="40000"/>
+      <Parameter name="DUMMY" type="int" value=""/>
+    </Node>
+    <Node name="node4" type="RECV_LOOP" x="248.000000" y="121.000000"/>
+    <Link from="node1" output="OUTPUT" to="node3" input="SOCKET"/>
+    <Link from="node2" output="VALUE" to="node3" input="HOST"/>
+    <Link from="node3" output="SOCKET" to="node4" input="SOCKET"/>
+    <Link from="node5" output="OUTPUT" to="node4" input="DSP"/>
+    <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
+    <NetOutput name="AUDIO" node="node4" terminal="AUDIO"/>
+  </Network>
+  <Network type="iterator" name="RECV_LOOP">
+    <Node name="node3" type="Constant" x="151.000000" y="19.000000">
+      <Parameter name="VALUE" type="bool" value="true"/>
+    </Node>
+    <Node name="node4" type="WriteAudio" x="175.000000" y="121.000000">
+      <Parameter name="LEAD_IN" type="int" value="100"/>
+    </Node>
+    <Node name="node_SpectrumProbe_1" type="SpectrumProbe" x="-11.000000" y="109.000000">
+      <Parameter name="BREAK_AT" type="int" value=""/>
+      <Parameter name="SHOW" type="bool" value="true"/>
+      <Parameter name="SKIP" type="int" value=""/>
+      <Parameter name="SQRT" type="bool" value="false"/>
+      <Parameter name="LOG" type="bool" value="true"/>
+    </Node>
+    <Node name="node_Load_1" type="Load" x="-195.000000" y="65.000000"/>
+    <Link from="node_SpectrumProbe_1" output="OUTPUT" to="node4" input="OBJECT"/>
+    <Link from="node_Load_1" output="OUTPUT" to="node_SpectrumProbe_1" input="INPUT"/>
+    <NetCondition name="CONDITION" node="node3" terminal="VALUE"/>
+    <NetOutput name="AUDIO" node="node4" terminal="OUTPUT"/>
+    <NetInput name="DSP" node="node4" terminal="DEVICE"/>
+    <NetInput name="SOCKET" node="node_Load_1" terminal="STREAM"/>
+    <NetOutput name="OUTPUT" node="node_Load_1" terminal="OUTPUT"/>
+  </Network>
+</Document>
