@@ -28,7 +28,7 @@ class FFNet : public Object {
 
    double calcError(const vector<float *> &tin, const vector<float *> &tout);
 
-   void learn(double *input, double *output);
+   void learn(double *input, double *output, double *err=NULL);
    //void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
 
    void train(vector<float *> in, vector<float *> out, int iter, double learnRate=.00001, double mom=.9, 

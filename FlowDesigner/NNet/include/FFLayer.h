@@ -6,37 +6,74 @@
 #include "Object.h"
 #include <stdlib.h>
 
-inline double sigmoid(double x)
+
+static double *calc_tansig_table()
 {
-   if (x>10)
-      return 1.0;
-   else if (x<-10)
-      return 0;
-   return 1/(1+exp(-x));
+   double *table = new double [2001];
+   for (int i=0;i<2001;i++)
+   {
+      double xx = .01*i - 10;
+      table[i] = 2/(1+exp(-2*xx)) - 1;
+   }
+   
+   return table;
 }
 
-inline double deriv_sigmoid(double x)
+static double *tansig_table = calc_tansig_table();
+
+
+inline void sigmoid(double *x, double *y, int len)
 {
-   //return 20*(.05*x+.5)*(1 - (.05*x+.5));
-   return x*(1-x);
+   for (int i=0;i<len;i++)
+   {
+      double xx=*x++;
+
+      if (xx>10)
+	 xx=10;
+      else if (xx<-10)
+	 xx=-10;
+      *y++ = 1/(1+exp(-xx));
+   }
 }
 
-inline double tansig(double x)
+inline void deriv_sigmoid(double *x, double *y, int len)
 {
-   if (x>10)
-      return 1.0;
-   else if (x<-10)
-      return 0;
-   return 2/(1+exp(-2*x)) - 1;
+   for (int i=0;i<len;i++)
+   {
+      *y++ = *x * (1-*x);
+      x++;
+   }
 }
 
-inline double deriv_tansig(double x)
+inline void tansig(double *x, double *y, int len)
 {
-   //return 20*(.05*x+.5)*(1 - (.05*x+.5));
-   return 1-x*x;
+   for (int i=0;i<len;i++)
+   {
+      double xx=*x++;
+
+      if (xx>9.9)
+	 xx=9.9;
+      else if (xx<-9.9)
+	 xx=-9.9;
+      
+      double n = xx*100+1000;
+      int n1 = int(floor(n));
+      double f = n - n1;
+      *y++ = (1-f)*tansig_table[n1] + f*tansig_table[n1+1];
+      //*y++ = 2/(1+exp(-2*xx)) - 1;
+   }
 }
 
-inline double deriv_tanh(double x)
+inline void deriv_tansig(double *x, double *y, int len)
+{
+   for (int i=0;i<len;i++)
+   {
+      *y++ = (1- (*x)*(*x));
+      x++;
+   }
+}
+
+/*inline double deriv_tanh(double *x, double *y, int len)
 {
    //float c=cosh(x);
    //return 1/(c*c);
@@ -47,15 +84,18 @@ inline double deriv_tanh(double x)
    return 1/(c*c);
    //return 1/(x*x);
 }
+*/
 
-inline double lin(double x)
+inline void lin(double *x, double *y, int len)
 {
-   return x;
+   for (int i=0;i<len;i++)
+      *y++ = *x++;
 }
 
-inline double deriv_lin(double x)
+inline void deriv_lin(double *x, double *y, int len)
 {
-   return 1;
+   for (int i=0;i<len;i++)
+      *y++ = 1;
 }
 
 //#define func(x) sigmoid(x)
@@ -66,8 +106,8 @@ inline double deriv_lin(double x)
 
 class FFLayer : public Object {
   public:
-   double (*func) (double);
-   double (*deriv_func) (double);
+   void (*func) (double *, double *, int);
+   void (*deriv_func) (double *, double *, int);
    double *gradient;
    double *saved_weights;
    double *deriv;
@@ -113,9 +153,11 @@ class FFLayer : public Object {
 	    for (int j=0;j<nbInputs;j++)
 	    value[i] += w[j]*previous[j];
 	    */
-	    value[i]=func(value[i]);
-	    deriv[i]=deriv_func(value[i]);
+	    //value[i]=func(value[i]);
+	    //deriv[i]=deriv_func(value[i]);
 	 }
+	 func(value, value, nbNeurons);
+	 deriv_func(value, deriv, nbNeurons);
       }
    void saveWeights()
       {

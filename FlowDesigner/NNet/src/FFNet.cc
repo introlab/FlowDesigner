@@ -49,11 +49,15 @@ double *FFNet::calc(const double *input)
 }
 */
 
-void FFNet::learn(double *input, double *output)
+void FFNet::learn(double *input, double *output, double *err)
 {
    int outputLayer = topo.size()-2;
-   calc(input);
-
+   double *calc_out = calc(input);
+   if (err)
+   {
+      for (int i=0;i<topo[topo.size()-1];i++)
+	 *err += (calc_out[i]-output[i]) * (calc_out[i]-output[i]);
+   }
    //start with the output layer, towards the input
    for (int k=outputLayer;k>=0;k--)
    {
@@ -366,8 +370,12 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 {
 
    int i,j;
-   double in[topo[0]];
-   double out[topo[topo.size()-1]];
+   //double in[topo[0]];
+   //double out[topo[topo.size()-1]];
+   
+   //we should get 8-byte alignment
+   double *in = new double [topo[0]];
+   double *out = new double [topo[topo.size()-1]];
 
    for (i=0;i<layers.size();i++)
    {
@@ -381,6 +389,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
       //error = 0;
       //cerr << "iter...\n";
       //int nbSets = 10;
+      double SSE = 0;
 
       for (int batchSet=0; batchSet < nbSets; batchSet++)
       {
@@ -396,7 +405,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 	       in[j]=tin[i][j];
 	    for (j=0;j<topo[topo.size()-1];j++)
 	       out[j]=tout[i][j];
-	    learn (in, out);
+	    learn (in, out, &SSE);
 	    
 	 }
 
@@ -409,7 +418,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
       }
 
       iter--;
-
+/*
       double SSE = 0;
       for (i=0;i<tin.size();i++)
       {
@@ -425,11 +434,14 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 	    SSE += (netOut[j]-out[j])*(netOut[j]-out[j]);
       }
       
-
+*/
       cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
 
 
    }
+
+   delete [] in;
+   delete [] out;
 }
 
 

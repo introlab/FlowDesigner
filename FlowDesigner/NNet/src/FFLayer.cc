@@ -22,11 +22,11 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    {
       func = tansig;
       deriv_func = deriv_tansig;
-   } else if (funcType == "tanh")
+   } /*else if (funcType == "tanh")
    {
       func = tanh;
       deriv_func = deriv_tanh;
-   }
+      }*/
    weights = new double [nbNeurons*(nbInputs+1)];
    /*for (int i=0;i<nbNeurons*(nbInputs+1);i++)
    {
@@ -102,11 +102,11 @@ void FFLayer::readFrom (istream &in)
 	 {
 	    func = tansig;
 	    deriv_func = deriv_tansig;
-	 } else if (funcType == "tanh")
+	 } /*else if (funcType == "tanh")
 	 {
 	    func = tanh;
 	    deriv_func = deriv_tanh;
-	 }
+	    }*/
       } else if (tag == "weights")
       {
 	 //cerr << "weights\n";
