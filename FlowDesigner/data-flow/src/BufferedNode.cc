@@ -118,8 +118,8 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
       {
 	 if (inOrder)
 	 {
-	    cerr << "in order\n";
-	    for (int i=processCount;i<=count;i++)
+	    //cerr << "in order\n";
+	    for (int i=processCount+1;i<=count;i++)
 	       calculate (output_id, i, outBuffer);
 	 } else
 	 {

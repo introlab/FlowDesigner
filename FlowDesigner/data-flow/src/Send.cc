@@ -95,7 +95,8 @@ public:
        int size;
 
        cout<<"accept"<<endl;
-       int conn = accept (m_socket,(struct sockaddr *) &m_clientname,&size);
+       int conn;
+       //conn = accept (m_socket,(struct sockaddr *) &m_clientname,&size);
 
 
        cout<<"recv"<<endl;
