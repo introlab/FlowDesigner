@@ -75,7 +75,7 @@ AC_SUBST(GNOME_XML_INCLUDE)
 
 
 dnl test for SGI audio library (required by SndLib) and define LIBS
-dnl AC_PATH_FFTW
+AC_PATH_FFTW
 
 dnl Checks for library functions.
 

@@ -17,8 +17,6 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <fftw.h>
-#include <rfftw.h>
 
 class Select;
 

@@ -124,6 +124,7 @@ else
   
   fftw_libraries="$ac_fftw_libraries"
   fftw_includes="$ac_fftw_includes"
+  AC_DEFINE(HAVE_FFTW)
 fi
 
 dnl if test ! "$fftw_libs_given" = "yes"; then

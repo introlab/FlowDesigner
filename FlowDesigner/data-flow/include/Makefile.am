@@ -60,5 +60,6 @@ noinst_HEADERS = \
 	operators.h \
 	FlowException.h \
 	vec.h \
+	FFTWrap.h \
 	iotraits.h  sstream  sstream.cc  sstream.h
 

@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-include_HEADERS = FFTWrap.h
+include_HEADERS = 
 
 noinst_HEADERS = AudioFile.h \
 	GCMS.h \

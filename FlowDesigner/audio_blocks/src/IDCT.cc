@@ -47,8 +47,8 @@ class IDCT : public BufferedNode {
    int outputID;
    int length;
 
-   fftw_complex *inputCopy;
-   fftw_complex *outputCopy;
+   fft_complex *inputCopy;
+   fft_complex *outputCopy;
    float *rNormalize;
    float *iNormalize;
 
@@ -66,8 +66,8 @@ public:
 	 throw NodeException(NULL, "IDCT only implemented for even sizes", __FILE__, __LINE__);
       }
 
-      inputCopy = new fftw_complex [length];
-      outputCopy =new fftw_complex [length];
+      inputCopy = new fft_complex [length];
+      outputCopy =new fft_complex [length];
       rNormalize =new float [length];
       iNormalize =new float [length];
       float sqrt2n=sqrt(2.0/length);

@@ -69,7 +69,7 @@ dnl AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(pthread, pthread_create)
 
 dnl test for SGI audio library (required by SndLib) and define LIBS
-dnl AC_PATH_FFTW
+AC_PATH_FFTW
 
 GNOME_XML_LIB=`gnome-config --libs xml`
 GNOME_XML_INCLUDE=`gnome-config --cflags xml`
