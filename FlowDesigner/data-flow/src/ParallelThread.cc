@@ -17,7 +17,6 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include <pthread.h>
-//#include <semaphore.h>
 #include "ExceptionObject.h"
 
 class ParallelThread;
@@ -78,14 +77,14 @@ class ParallelThread : public BufferedNode {
    void destroyThread()
    {
       resetState = true;
+      pthread_mutex_lock(&lock);
+      calcCount = 1;
+      pthread_mutex_unlock(&lock);
       pthread_cond_signal(&sendSem);
-      //sem_post(&sendSem);
       pthread_join (thread, NULL);
       pthread_cond_destroy(&sendSem);
       pthread_cond_destroy(&recSem);
-      pthread_mutex_init(&lock, NULL);
-      //sem_destroy(&sendSem);
-      //sem_destroy(&recSem);
+      pthread_mutex_destroy(&lock);
       resetState = false;
    }
 
@@ -94,15 +93,14 @@ class ParallelThread : public BufferedNode {
    {
       pthread_cond_init(&sendSem,NULL);
       pthread_cond_init(&recSem,NULL);
-      pthread_mutex_destroy(&lock);
-      //sem_init(&sendSem, 0, 0);
-      //sem_init(&recSem, 0, 0);
+      pthread_mutex_init(&lock, NULL);
    }
 
 public:
    ParallelThread(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
       , resetState(false)
+      , calcCount(-1)
    {
       input1ID = addInput("INPUT1");
       input2ID = addInput("INPUT2");
@@ -132,11 +130,24 @@ public:
    {
       while (1)
       {
-	 pthread_cond_wait(&sendSem, &lock);
+	 pthread_mutex_lock(&lock);
+	 if (calcCount == -1)
+	 {
+	    pthread_cond_wait(&sendSem, &lock);
+	    //cerr << "wait: " << calcCount << endl;
+	    pthread_mutex_unlock(&lock);
+	 } else {
+	    //cerr << "nowait: " << calcCount << endl;
+	    pthread_mutex_unlock(&lock);
+	 }
 	 if (resetState)
 	    break;
+	 //cerr << calcCount << endl;
 	 calc();
-	 pthread_cond_signal(&recSem);	 
+	 pthread_mutex_lock(&lock);
+	 calcCount = -1;
+	 pthread_cond_signal(&recSem);
+	 pthread_mutex_unlock(&lock);
       }
    }
 
@@ -160,37 +171,45 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      //pthread_mutex_lock(&lock);
+      pthread_mutex_lock(&lock);
       calcCount = count;
+      //cerr << calcCount << endl;
       pthread_cond_signal(&sendSem);	 
+      pthread_mutex_unlock(&lock);
 
       try {
-	 ObjectRef input2Value = getInput(input2ID, calcCount);
-	 (*outputs[output2ID].buffer)[calcCount] = input2Value;
+	 ObjectRef input2Value = getInput(input2ID, count);
+	 (*outputs[output2ID].buffer)[count] = input2Value;
       } catch (BaseException *e)
       {
 	 //cerr << "caught\n";
-	 (*outputs[output2ID].buffer)[calcCount] = 
+	 (*outputs[output2ID].buffer)[count] = 
 	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
       } catch (...)
       {
-	 (*outputs[output2ID].buffer)[calcCount] = 
+	 (*outputs[output2ID].buffer)[count] = 
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
-      pthread_cond_wait(&recSem, &lock);
-      perror("sem_wait(&recSem) ");
+      pthread_mutex_lock(&lock);
+      if (calcCount != -1)
+      {
+	 pthread_cond_wait(&recSem, &lock);
+	 pthread_mutex_unlock(&lock);
+      } else {
+	 pthread_mutex_unlock(&lock);
+      }
       //cerr << "calculate\n";
 
-      if (typeid(*(*outputs[output1ID].buffer)[calcCount]) == typeid(ExceptionObject))
+      if (typeid(*(*outputs[output1ID].buffer)[count]) == typeid(ExceptionObject))
       {
 	 //cerr << "throwing1\n";
-	 object_cast<ExceptionObject> ((*outputs[output1ID].buffer)[calcCount]).doThrow();
+	 object_cast<ExceptionObject> ((*outputs[output1ID].buffer)[count]).doThrow();
       }
-      if (typeid(*(*outputs[output2ID].buffer)[calcCount]) == typeid(ExceptionObject))
+      if (typeid(*(*outputs[output2ID].buffer)[count]) == typeid(ExceptionObject))
       {
 	 //cerr << "throwing2\n";
-	 object_cast<ExceptionObject> ((*outputs[output2ID].buffer)[calcCount]).doThrow();
+	 object_cast<ExceptionObject> ((*outputs[output2ID].buffer)[count]).doThrow();
       }
    }
 
