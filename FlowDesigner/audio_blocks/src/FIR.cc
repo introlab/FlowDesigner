@@ -26,22 +26,27 @@ DECLARE_NODE(FIR)
  *
  * @name FIR
  * @category Signal:DSP
- * @description No description available
+ * @description Finite Impulse Response (FIR) filter
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input frame
  *
  * @input_name FILTER
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Filter coefficients
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Filtered output
  *
  * @parameter_name CONTINUOUS
- * @parameter_description No description available
+ * @parameter_type bool
+ * @parameter_description Should the frames be considered continuous (filter with memory). Default is true
  *
  * @parameter_name NONCAUSAL
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Non-causality in number of samples. Default is causal filter
  *
 END*/
 
