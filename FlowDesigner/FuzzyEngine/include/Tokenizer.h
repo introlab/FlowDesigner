@@ -1,8 +1,8 @@
 // Copyright (C) 2001 Luc Lussier
 
-#include <iterator.h>
+#include <iterator>
 #include <vector>
-#include <fstream.h>
+#include <fstream>
 #include <string>
 #include <algorithm>
 #include "Vector.h"
@@ -74,25 +74,5 @@ This function is used to transform an integer into a string.
 */
 string int_to_string(int inputInteger);
 
-
-
-/** Global function.
-Print a given vector to stdout.
-
-@param vectorToPrint The vector of type T to be printed to the standard output.
-
-@author Luc Lussier
-*/
-template<class T>
-void print_vector(Vector<T> const &vectorToPrint)
-{
-  for (Vector<T>::iterator VectorIt(const_cast<Vector<T>::iterator>(vectorToPrint.begin())); 
-       VectorIt < vectorToPrint.end(); 
-       VectorIt++) {
-    cout << *VectorIt << " ";
-  }
-  cout << endl << flush;
-  return;
-}
 
 #endif

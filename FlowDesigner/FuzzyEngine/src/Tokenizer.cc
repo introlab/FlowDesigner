@@ -1,8 +1,7 @@
-// Copyright (C) 2001 Dominic Letourneau (doumdi@yahoo.com)
+// Copyright (C) 2001 Luc Lussier
 
-#include <strstream> //used for strstream
+#include <sstream> 
 #include "Tokenizer.h"
-
 
 
 const static string FILE_NAME = __FILE__;
@@ -143,11 +142,8 @@ string int_to_string(int inputInteger)
   string tempString;
 
   //a complex way of transforming an int into a string...
-  strstream tempBuf;
-  tempBuf << inputInteger << ends; //you must append ends to the constructed string as the null character is not otherwise added to the string. ???
-  char *pcTemp = tempBuf.str();
-  tempString = pcTemp;
-  delete pcTemp;
-
+  ostringstream tempBuf;
+  tempBuf << inputInteger << ends; //you must append ends to the constructed string as the null character is not otherwise added to the string. ???  
+  tempString = tempBuf.str();
   return tempString;
 }
