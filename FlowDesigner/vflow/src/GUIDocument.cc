@@ -102,6 +102,7 @@ GtkWidget *GUIDocument::createView()
 void GUIDocument::load()
 {
    cerr << "GUIDocument::load\n";
+   cerr << "this = " << this << endl;
    UIDocument::load();
    cerr << "almost loaded\n";
    for (int i=0;i<networks.size();i++)
@@ -242,3 +243,21 @@ UINetwork *GUIDocument::newNetwork(UIDocument *_doc, xmlNodePtr _net, bool iter)
    cerr << "GUIDocument::newNetwork\n";
    return new GUINetwork(_doc, _net, iter);
 }
+
+
+void GUIDocument::setFullPath(const string &fullpath)
+{
+   //cerr << "fullpath is: \"" << fullpath << "\"" << endl;
+   int slashpos = fullpath.rfind("/");
+   //cerr << "slashpos = " << slashpos << endl;
+   path="";
+   path.append(fullpath,0,slashpos+1);
+   docName=fullpath;
+   docName.erase(0,slashpos+1);
+   //cerr << "path is: \"" << path << "\"" << endl;
+   //cerr << "name is: \"" << name << "\"" << endl;
+   gnome_mdi_child_set_name (GNOME_MDI_CHILD(this), (gchar *)docName.c_str());
+   untitled=false; 
+}
+
+
