@@ -69,6 +69,7 @@ public:
       inputsCache[inputID].lookAhead=1;
       lastPos=0;
       currentCount=0;
+      inOrder = true;
    }
 
    void reset()
