@@ -46,16 +46,10 @@ DECLARE_NODE(NNetTrainDBD)
  * @parameter_name LEARN_RATE
  * @parameter_description No description available
  *
- * @parameter_name MOMENTUM
- * @parameter_description No description available
- *
  * @parameter_name INCREASE
  * @parameter_description No description available
  *
  * @parameter_name DECREASE
- * @parameter_description No description available
- *
- * @parameter_name BATCH_SETS
  * @parameter_description No description available
  *
 END*/
@@ -82,15 +76,11 @@ protected:
 
    int maxEpoch;
       
-   double learnRate;
+   float learnRate;
 
-   double momentum;
+   float decrease;
 
-   double decrease;
-
-   double increase;
-
-   int nbSets;
+   float increase;
 
    int processCount;
 
@@ -111,11 +101,7 @@ public:
       if (parameters.exist("LEARN_RATE"))
 	    learnRate = dereference_cast<float> (parameters.get("LEARN_RATE"));
       else learnRate = .00001;
-      
-      if (parameters.exist("MOMENTUM"))
-	 momentum = dereference_cast<float> (parameters.get("MOMENTUM"));
-      else momentum = .9;
-      
+            
       if (parameters.exist("INCREASE"))
 	 increase = dereference_cast<float> (parameters.get("INCREASE"));
       else increase = 1.05;
@@ -123,10 +109,6 @@ public:
       if (parameters.exist("DECREASE"))
 	 decrease = dereference_cast<float> (parameters.get("DECREASE"));
       else decrease = .7;
-
-      if (parameters.exist("BATCH_SETS"))
-	 nbSets = dereference_cast<int> (parameters.get("BATCH_SETS"));
-      else nbSets = 1;
       
    }
       
@@ -186,8 +168,9 @@ public:
 
 	       //FFNet *net = new FFNet( topo ); 
 	       FFNet &net = object_cast<FFNet> (netValue);
+	       net.setDerivOffset(.05);
 	       //net.trainRecurrent(in, out, maxEpoch, learnRate, momentum, increase, decrease);
-	       net.trainDeltaBar(in, out, maxEpoch, learnRate, momentum, increase, decrease, nbSets);
+	       net.trainDeltaBar(in, out, maxEpoch, learnRate, increase, decrease);
 	       //net->trainlm(in, out, maxEpoch);
 
 	       currentNet = netValue;

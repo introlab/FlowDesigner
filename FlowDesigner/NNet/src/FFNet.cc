@@ -431,7 +431,7 @@ float FFNet::totalError(vector<float *> tin, vector<float *> tout)
 
 
 void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, float learnRate, 
-			  float mom, float increase, float decrease, int nbSets)
+			  float increase, float decrease)
 {
    int i,j;
    double SSE;
@@ -498,6 +498,11 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, f
 }
 
 
+void FFNet::setDerivOffset(float d)
+{
+   for (int i=0;i<layers.size();i++)
+      layers[i]->setDerivOffset(d);
+}
 
 void FFNet::printOn(ostream &out) const
 {

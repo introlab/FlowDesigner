@@ -14,6 +14,7 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, float *_weights, int _weightOff
    , weights(_weights+_weightOffset)
    , weightOffset (_weightOffset)
    , neuronOffset (_neuronOffset)
+   , derivOffset(0)
 {
    if (funcType == "lin")
    {

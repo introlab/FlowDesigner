@@ -49,16 +49,10 @@ DECLARE_NODE(NNetSetTrainDBD)
  * @parameter_name LEARN_RATE
  * @parameter_description No description available
  *
- * @parameter_name MOMENTUM
- * @parameter_description No description available
- *
  * @parameter_name INCREASE
  * @parameter_description No description available
  *
  * @parameter_name DECREASE
- * @parameter_description No description available
- *
- * @parameter_name BATCH_SETS
  * @parameter_description No description available
  *
 END*/
@@ -88,17 +82,11 @@ protected:
 
    int maxEpoch;
       
-   double learnRate;
+   float learnRate;
 
-   double momentum;
+   float decrease;
 
-   double decrease;
-
-   double increase;
-
-   double errRatio;
-
-   int nbSets;
+   float increase;
 
    int processCount;
 
@@ -121,10 +109,6 @@ public:
 	    learnRate = dereference_cast<float> (parameters.get("LEARN_RATE"));
       else learnRate = .00001;
       
-      if (parameters.exist("MOMENTUM"))
-	 momentum = dereference_cast<float> (parameters.get("MOMENTUM"));
-      else momentum = .9;
-      
       if (parameters.exist("INCREASE"))
 	 increase = dereference_cast<float> (parameters.get("INCREASE"));
       else increase = 1.05;
@@ -132,14 +116,6 @@ public:
       if (parameters.exist("DECREASE"))
 	 decrease = dereference_cast<float> (parameters.get("DECREASE"));
       else decrease = .7;
-
-      if (parameters.exist("ERR_RATIO"))
-	 errRatio = dereference_cast<float> (parameters.get("ERR_RATIO"));
-      else errRatio = 1.04;
-
-      if (parameters.exist("BATCH_SETS"))
-	 nbSets = dereference_cast<int> (parameters.get("BATCH_SETS"));
-      else nbSets = 1;
 
    }
       
@@ -208,7 +184,7 @@ public:
 	       //FFNet *net = new FFNet( topo ); 
 	       NNetSet &net = object_cast<NNetSet> (netValue);
 	       cerr << "training...\n";
-	       net.trainDeltaBar(id, in, out, maxEpoch, learnRate, momentum, increase, decrease, nbSets);
+	       net.trainDeltaBar(id, in, out, maxEpoch, learnRate, increase, decrease);
 	       //net->trainlm(in, out, maxEpoch);
 
 	       currentNet = netValue;

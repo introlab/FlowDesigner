@@ -80,7 +80,7 @@ void NNetSet::train(vector<int> id, vector<float *> tin, vector<float *> tout, i
    }*/
 
 void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
-		    double learnRate, double mom, double increase, double decrease, int nbSets)
+		    double learnRate, double increase, double decrease)
 {
    int nbNets = nets.size();
    cerr << "nbNets = " << nbNets << endl;
@@ -99,7 +99,7 @@ void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *>
    {
       //if (i==47 || i==56)
       //if (i==1 || i==2 || i==4 || i==5 || i==17 || i==23)
-      nets[i]->trainDeltaBar(in[i],out[i],iter,learnRate,mom,increase,decrease,nbSets);
+      nets[i]->trainDeltaBar(in[i],out[i],iter,learnRate,increase,decrease);
    }
    
 }
