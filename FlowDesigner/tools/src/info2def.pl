@@ -211,29 +211,29 @@ while (<>)
 
 	foreach $input (@{$node_info{inputs}}) {
 	  print "    <Input name=\"$$input{input_name}\" ",
-	  "type=\"$$input{input_type}\">\n";
-	  print "        $$input{input_description}\n";
-	  print "    </Input>\n";
+	  "type=\"$$input{input_type}\">";
+	  print "$$input{input_description}";
+	  print "</Input>\n";
 	}
 	
 	foreach $output (@{$node_info{outputs}}) {
 	  print "    <Output name=\"$$output{output_name}\" ",
-	  "type=\"$$output{output_type}\">\n";
-	  print "       $$output{output_description}\n";
-	  print "    </Output>\n";
+	  "type=\"$$output{output_type}\">";
+	  print "$$output{output_description}";
+	  print "</Output>\n";
 	}
 	
 	foreach $param (@{$node_info{params}}) {
 	  print "    <Parameter name=\"$$param{parameter_name}\" ",
 	  "type=\"$$param{parameter_type}\" ",
-	  "value=\"$$param{parameter_value}\">\n";
-	  print "        $$param{parameter_description}\n";
-	  print "    </Parameter>\n";
+	  "value=\"$$param{parameter_value}\">";
+	  print "$$param{parameter_description}";
+	  print "</Parameter>\n";
 	}
 	
-	print "    <Description>\n";
-	print "       $node_info{description}\n";
-	print "    </Description>\n";
+	print "    <Description>";
+	print "$node_info{description}";
+	print "</Description>\n";
 	print "  </NodeClass>\n";
 	
 	# the last info parsed, so we can deal with carryovers.
