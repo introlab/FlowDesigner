@@ -46,15 +46,44 @@ DECLARE_NODE(KeyPad)
  * @parameter_name SKIP
  * @parameter_description No description available
  *
+ * @parameter_name HOLD
+ * @parameter_description Hold for X iteration (0 = forever)
+ * @parameter_type int
+ *
+ *
 END*/
 
+  
 
+const int KeyPad::pad_0_number = 0;
+const int KeyPad::pad_1_number = 1;
+const int KeyPad::pad_2_number = 2;
+const int KeyPad::pad_3_number = 3;
+const int KeyPad::pad_4_number = 4;
+const int KeyPad::pad_5_number = 5;
+const int KeyPad::pad_6_number = 6;
+const int KeyPad::pad_7_number = 7;
+const int KeyPad::pad_8_number = 8;
+const int KeyPad::pad_9_number = 9;
+const int KeyPad::pad_star_number = 10;
+const int KeyPad::pad_hash_number = 11;
+const int KeyPad::pad_A_number = 12;
+const int KeyPad::pad_B_number = 13;
+const int KeyPad::pad_C_number = 14;
+const int KeyPad::pad_D_number =15;
 
 KeyPad::KeyPad(string nodeName, ParameterSet params) 
-   : Probe(nodeName, params), changed(false) {
+   : Probe(nodeName, params), changed(false), hold_value(0), 
+  selected_line(-1), selected_column(-1), selected_pad(-1) {
 
-  cerr<<"KeypPad Constructor"<<endl;
+  cerr<<"KeyPad Constructor"<<endl;
   keypadID = addOutput("KEYPAD");
+
+  if (parameters.exist("HOLD")) {
+    hold_value = dereference_cast<int> (parameters.get("HOLD"));
+  }
+
+  cerr<<"End Keypad Constructor"<<endl;
 }
 
 KeyPad::~KeyPad() {
@@ -63,12 +92,12 @@ KeyPad::~KeyPad() {
 
 void KeyPad::specificInitialize() {
 
-  cerr<<"calling probe specific initialize"<<endl;
-   Probe::specificInitialize();
+  cerr<<"Probe specific initialize"<<endl;
+  Probe::specificInitialize();
 
-   cerr<<"KeyPad: specificInitialize"<<endl;
 
-   NO_CANCEL
+  cerr<<"Keypad specific initialize"<<endl;
+   NO_CANCEL;
    gdk_threads_enter(); 
 
    //creating table_1
@@ -80,6 +109,7 @@ void KeyPad::specificInitialize() {
 
    //creating button1
    button_1 = gtk_button_new_with_label ("1");
+   key_map.insert(make_pair(button_1,pad_1_number));
    gtk_widget_ref (button_1);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_1", button_1,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -88,6 +118,7 @@ void KeyPad::specificInitialize() {
    
    //creating button2
    button_2 = gtk_button_new_with_label ("2");
+   key_map.insert(make_pair(button_2,pad_2_number));
    gtk_widget_ref (button_2);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_2", button_2,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -96,6 +127,7 @@ void KeyPad::specificInitialize() {
 
    //creating button3
    button_3 = gtk_button_new_with_label ("3");
+   key_map.insert(make_pair(button_3,pad_3_number));
    gtk_widget_ref (button_3);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_3", button_3,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -105,6 +137,7 @@ void KeyPad::specificInitialize() {
 
    //creating button4
    button_4 = gtk_button_new_with_label ("4");
+   key_map.insert(make_pair(button_4,pad_4_number));
    gtk_widget_ref (button_4);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_4", button_4,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -114,6 +147,7 @@ void KeyPad::specificInitialize() {
 
    //creating button5
    button_5 = gtk_button_new_with_label ("5");
+   key_map.insert(make_pair(button_5,pad_5_number));
    gtk_widget_ref (button_5);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_5", button_5,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -123,6 +157,7 @@ void KeyPad::specificInitialize() {
 
    //creating button6
    button_6 = gtk_button_new_with_label ("6");
+   key_map.insert(make_pair(button_6,pad_6_number));
    gtk_widget_ref (button_6);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_6", button_6,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -132,6 +167,7 @@ void KeyPad::specificInitialize() {
 
    //creating button7
    button_7 = gtk_button_new_with_label ("7");
+   key_map.insert(make_pair(button_7,pad_7_number));
    gtk_widget_ref (button_7);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_7", button_7,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -141,6 +177,7 @@ void KeyPad::specificInitialize() {
 
    //creating button8
    button_8 = gtk_button_new_with_label ("8");
+   key_map.insert(make_pair(button_8,pad_8_number));
    gtk_widget_ref (button_8);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_8", button_8,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -150,6 +187,7 @@ void KeyPad::specificInitialize() {
 
    //creating button9
    button_9 = gtk_button_new_with_label ("9");
+   key_map.insert(make_pair(button_9,pad_9_number));
    gtk_widget_ref (button_9);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_9", button_9,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -159,6 +197,7 @@ void KeyPad::specificInitialize() {
 
    //creating button0
    button_0 = gtk_button_new_with_label ("0");
+   key_map.insert(make_pair(button_0,pad_0_number));
    gtk_widget_ref (button_0);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_0", button_0,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -168,6 +207,7 @@ void KeyPad::specificInitialize() {
 
    //creating button_hash
    button_hash = gtk_button_new_with_label ("#");
+   key_map.insert(make_pair(button_hash,pad_hash_number));
    gtk_widget_ref (button_hash);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_hash", button_hash,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -177,6 +217,7 @@ void KeyPad::specificInitialize() {
 
    //creating button_star
    button_star = gtk_button_new_with_label ("*");
+   key_map.insert(make_pair(button_star,pad_star_number));
    gtk_widget_ref (button_star);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_star", button_star,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -186,6 +227,7 @@ void KeyPad::specificInitialize() {
 
    //creating button_A
    button_A = gtk_button_new_with_label ("A");
+   key_map.insert(make_pair(button_A,pad_A_number));
    gtk_widget_ref (button_A);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_A", button_A,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -194,6 +236,7 @@ void KeyPad::specificInitialize() {
 
    //creating button_B
    button_B = gtk_button_new_with_label ("B");
+   key_map.insert(make_pair(button_B,pad_B_number));
    gtk_widget_ref (button_B);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_B", button_B,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -202,6 +245,7 @@ void KeyPad::specificInitialize() {
    
    //creating button_C
    button_C = gtk_button_new_with_label ("C");
+   key_map.insert(make_pair(button_C,pad_C_number));
    gtk_widget_ref (button_C);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_C", button_C,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -210,6 +254,7 @@ void KeyPad::specificInitialize() {
 
    //creating button_D
    button_D = gtk_button_new_with_label ("D");
+   key_map.insert(make_pair(button_D,pad_D_number));
    gtk_widget_ref (button_D);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_D", button_D,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -219,8 +264,99 @@ void KeyPad::specificInitialize() {
    //packing table
    gtk_box_pack_start (GTK_BOX (vbox2), table_1, TRUE, TRUE, 0);
 
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_1), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_2), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_3), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_4), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_5), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_6), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_7), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_8), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_9), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_0), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_hash), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_star), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_A), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_B), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_C), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_D), "clicked",
+		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+		       this);
+   
+
+
+
    gdk_threads_leave(); 
-   SET_CANCEL
+   SET_CANCEL;
 
 }
 
@@ -245,11 +381,15 @@ void KeyPad::display() {
 
 ObjectRef KeyPad::getOutput(int output_id, int count) {
 
+ 
+
+  current_count = count;
+
   if (count % skip == 0) {
     char tmp[16];
     sprintf (tmp,"%d",count);
     NO_CANCEL;
-    gdk_threads_enter(); 
+    gdk_threads_enter();
     gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
     gdk_threads_leave(); 
     SET_CANCEL; 
@@ -269,11 +409,11 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
       if (traceEnable && (count % skip == 0) && count >= breakAt)
 	trace();
       
-      if (!changed) {
+      if (changed && (hold_value == 0 || (count < last_update + hold_value))) {
 	Vector<int> *my_output = new Vector<int>(2);
 	
-	(*my_output)[0] = line;
-	(*my_output)[1] = column;
+	(*my_output)[0] = selected_line;
+	(*my_output)[1] = selected_column;
 	
 	return ObjectRef(my_output);
 	
@@ -289,5 +429,110 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
 
   }//else
   
-  
+ 
 }
+
+void KeyPad::update_values(int pad_number) {
+
+  //updating pad, line and column
+  selected_pad = pad_number;
+
+  switch(pad_number) {
+  case pad_0_number:
+    selected_line = 3;
+    selected_column = 1;
+    break;
+  case pad_1_number:
+    selected_line = 0;
+    selected_column = 0;
+    break;
+  case pad_2_number:
+    selected_line = 0;
+    selected_column = 1;
+    break;
+  case pad_3_number:
+    selected_line = 0;
+    selected_column = 2;
+    break;
+  case pad_4_number:
+    selected_line = 1;
+    selected_column = 0;
+    break;
+  case pad_5_number:
+    selected_line = 1;
+    selected_column = 1;
+    break;
+  case pad_6_number:
+    selected_line = 1;
+    selected_column = 2;
+    break;
+  case pad_7_number:
+    selected_line = 2;
+    selected_column = 0;
+    break;
+  case pad_8_number:
+    selected_line = 2;
+    selected_column = 1;
+    break;
+  case pad_9_number:
+    selected_line = 2;
+    selected_column = 2;
+    break;
+  case pad_star_number:
+    selected_line = 3;
+    selected_column = 0;
+    break;
+  case pad_hash_number:
+    selected_line = 3;
+    selected_column = 2;
+    break;
+  case pad_A_number:
+    selected_line = 0;
+    selected_column = 3;
+    break;
+  case pad_B_number:
+    selected_line = 1;
+    selected_column = 3;
+    break;
+  case pad_C_number:
+    selected_line = 2;
+    selected_column = 3;
+    break;
+  case pad_D_number:
+    selected_line = 3;
+    selected_column = 3;
+    break;
+    
+  default:
+    throw new NodeException (this, "KeyPad: Invalid pad number", __FILE__, __LINE__);
+    break;
+
+  }
+
+  changed = true;
+  last_update = current_count;
+
+}
+
+void keypad_button_clicked(GtkObject  *object, KeyPad *keypad) {
+
+  try {
+  
+    int pad_number = keypad->key_map[GTK_WIDGET(object)];
+    cerr<<"got pad number"<<pad_number<<endl;
+    keypad->update_values(pad_number);
+    
+  }
+  catch (BaseException *e) {
+    e->print(cerr);
+    delete e;
+  }
+  catch (...) {
+    cerr<<"Unknown exception occured"<<endl;
+    exit(-1);
+  }
+}
+
+
+
+
