@@ -35,8 +35,8 @@ macros          -a FlowDesigner/macros
 tools           -a FlowDesigner/tools
 vflow           -a FlowDesigner/vflow
 examples        -a FlowDesigner/examples
-root            -a FlowDesigner
+root            -d FlowDesigner -l FlowDesigner
 FuzzyEngine     -a FlowDesigner/FuzzyEngine
 effects         -a FlowDesigner/effects
-FlowCore		-a &macros &data-flow &doc &html &vflow &tools &examples
+FlowCore		-a FlowDesigner &macros &data-flow &doc &html &vflow &tools &examples
 
