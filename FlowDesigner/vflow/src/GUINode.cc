@@ -11,6 +11,8 @@
 #include "GUINodeTooltip.h"
 #include "flow_pref.h"
 #include <math.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -521,6 +523,33 @@ void GUINode::initialize_widgets() {
     outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2, y2));
   }
 
+  //creating node XPM representation
+  if (Node::getXPM(getType()) != NULL) {
+    cerr<<"drawing XPM"<<endl;
+    
+    GdkPixbuf *pixbuf;
+    GnomeCanvasItem *pixbuf_item;
+    
+    pixbuf = gdk_pixbuf_new_from_xpm_data ((const char**)Node::getXPM(getType()));
+
+    g_assert (pixbuf != NULL);
+    
+    pixbuf_item = gnome_canvas_item_new (group,
+				  gnome_canvas_pixbuf_get_type(),
+				  "pixbuf", pixbuf,
+				  NULL);
+
+    gnome_canvas_item_lower_to_bottom(pixbuf_item);
+
+    gdk_pixbuf_unref (pixbuf);
+  }
+  else {
+    cerr<<"not drawing XPM"<<endl;
+  }
+  
+
+
+
    guint32 col = FlowPref::getColor("VFLOW", "RegularColor");
  
   //creating rectangle
@@ -537,6 +566,8 @@ void GUINode::initialize_widgets() {
 
   gnome_canvas_item_lower_to_bottom(nodeRect);
 
+
+ 
 
   gtk_signal_connect(GTK_OBJECT(group), "event",
 		     (GtkSignalFunc) node_handler,

@@ -168,6 +168,12 @@ public:
    /**Adding a factory into the static dictionary*/
    static int addFactory (const string &factoryName, _NodeFactory* const factory);
 
+   /**Adding a XPM representation into the XPM dictionary*/
+   static int addXPM (const string &nodeName, char **XPMData);
+
+   /**Get the XPM representation from the XPM dictionary*/
+   static char**  getXPM (const string &nodeName);
+   
    /**The factory lookup function*/
    static _NodeFactory* getFactoryNamed (const string &name);
 
@@ -197,7 +203,10 @@ public:
 
    /**The node information map*/
    static vector<string> &nodeInfo();
-   
+
+   /**The node visual representation map (XPM)*/
+   static map<string,char**> &XPMDictionary();
+
    /**Routine to add info for a node*/
    static int addNodeInfo (const string &info);
 };
@@ -281,9 +290,11 @@ protected:
 
 
 
-#define DECLARE_NODE(NodeTypeName) int dummy_initializer_for ## NodeTypeName = \
-               Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>(# NodeTypeName));
+#define DECLARE_NODE_XPM(NodeTypeName, XPMFilePtr) int dummy_initializer_for ## NodeTypeName = \
+               Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>(# NodeTypeName)) + \
+               Node::addXPM (# NodeTypeName, XPMFilePtr);
 
 
+#define DECLARE_NODE(NodeTypeName) DECLARE_NODE_XPM(NodeTypeName,NULL)
 
 #endif

@@ -27,6 +27,13 @@ vector<string> &Node::nodeInfo()
    return var; 
 }
 
+//our static xpm dictionary
+map<string, char**> &Node::XPMDictionary()
+{
+  static map<string,char**> var;
+  return var;
+}
+
 //map<string,_NodeFactory*> Node::factoryDictionary;
 /***************************************************************************/
 /*
@@ -246,6 +253,47 @@ _NodeFactory* Node::getFactoryNamed (const string &name) {
    return factory;
 }
 
+/***************************************************************************/
+/*
+  Node::getXPM (...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+char** Node::getXPM (const string &nodeName) {
+  
+  char **result = NULL;
+  
+  map<string,char**>::iterator iter;
+  
+  //let's find the key in our map
+  //if not found will return NULL
+  for (iter = XPMDictionary().begin(); iter != XPMDictionary().end(); iter++) {
+    if ((*iter).first == nodeName) {
+      result = (*iter).second;
+      break;
+    }
+  }
+  return result;   
+}
+
+/***************************************************************************/
+/*
+  Node::addXPM()
+  Dominic Letourneau
+  We should not throw exceptions here, as there is no way to catch it if the
+  toolbox is being dynamically loaded
+ */
+/***************************************************************************/
+int Node::addXPM (const string &nodeName, char **XPMData) {
+  if (getXPM(nodeName) == NULL) {
+    XPMDictionary().insert(make_pair(nodeName,XPMData));
+    return 0;
+  }
+  else {
+    return -1;
+  }
+
+}
 
 /***************************************************************************/
 /*
