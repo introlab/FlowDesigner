@@ -1,22 +1,14 @@
-document parameters for batch mode
-
 support removing network terminals (implemented, but buggy)
 
 set the isModified flag when adding a net terminal or moving a node, ...
 
 implement variable number of inputs/outputs
 
-prevent the user from running a network that has an input (ie that has to be included somewhere else)
-
 implement Matrix class
-
-implement image/matrix probe
 
 debug BREAT_AT in probes
 
 fix segfault on invalid int param (eg. mistaken for subnet param)
-
-do something more useful on user program segfault
 
 manage to handle subnet dependencies
 
