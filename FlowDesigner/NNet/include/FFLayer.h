@@ -3,9 +3,9 @@
 #ifndef FFLAYER_H
 #define FFLAYER_H
 
+#include "Object.h"
 #include <math.h>
 #include <iostream>
-#include "Object.h"
 #include <stdlib.h>
 #include "functions.h"
 

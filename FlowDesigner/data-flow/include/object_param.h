@@ -3,10 +3,14 @@
 #ifndef OBJECT_PARAM_H
 #define OBJECT_PARAM_H
 
+#ifdef _MSC_VER
+#pragma warning (disable: 4786)
+#endif
+
+#include "ParameterSet.h"
+#include "ObjectRef.h"
 #include <string>
 #include <vector>
-#include "ObjectRef.h"
-#include "ParameterSet.h"
 
 class ObjectParam {
 public:

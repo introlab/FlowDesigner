@@ -3,11 +3,10 @@
 #ifndef _NODE_H_
 #define _NODE_H_
 
-
+#include "Object.h"
 #include <string>
 #include <map>
 #include <vector>
-#include "Object.h"
 #include "ObjectRef.h"
 #include "BaseException.h"
 #include <typeinfo>

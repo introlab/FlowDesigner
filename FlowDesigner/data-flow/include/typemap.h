@@ -1,5 +1,10 @@
+// Copyright (C) 2001 Jean-Marc Valin
 #ifndef TYPE_MAP_H
 #define TYPE_MAP_H
+
+#ifdef _MSC_VER
+#pragma warning (disable: 4786)
+#endif
 
 #include <algorithm>
 #include <map>

@@ -3,11 +3,11 @@
 #ifndef FFNET_H
 #define FFNET_H
 
+#include "Object.h"
+#include "FFLayer.h"
 #include <vector>
 #include <iostream>
 
-#include "FFLayer.h"
-#include "Object.h"
 #include "Array.h"
 
 class TrainingAlgo;

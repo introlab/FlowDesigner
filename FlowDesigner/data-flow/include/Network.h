@@ -3,12 +3,12 @@
 #ifndef _NETWORK_H_
 #define _NETWORK_H_
 
+#include "Node.h"
 #include <map>
 #include <string>
 #include "NodeFactory.h"
 //#include "NodeHeaders.h"
 #include "Exception.h"
-#include "Node.h"
 
 
 /**

@@ -3,6 +3,10 @@
 #ifndef __RC_PTRS_H
 #define __RC_PTRS_H
 
+#ifdef _MSC_VER
+#pragma warning (disable: 4786)
+#endif
+
 /*
  * Copyright 1998
  * Mark E. (snowball3@usa.net)
