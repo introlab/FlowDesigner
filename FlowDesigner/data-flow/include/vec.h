@@ -1,15 +1,6 @@
 #ifndef VEC_H
 #define VEC_H
 
-#include <stdio.h>
-
-//template <class T>
-//inline T sqr(T x) {return x*x;}
-
-#define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
-
-//#define sqr(x) ((x)*(x))
-
 
 template <class T>
 inline void vec_copy(T *x, T *y, int len)
@@ -31,7 +22,7 @@ inline void vec_copy(T *x, T *y, int len)
 
 
 template <class T>
-inline float inner_prod(T *a, T *b, int len)
+inline T vec_inner_prod(T *a, T *b, int len)
 {
   T sum1=0, sum2=0, sum3=0, sum4=0;
   T *end = a+len;
@@ -52,9 +43,218 @@ inline float inner_prod(T *a, T *b, int len)
   return (sum1+sum2)+(sum3+sum4);
 }
 
-#ifdef USE_3DNOW
+template <class T>
+inline void vec_add_vec(T *a, T *b, T *c, int len)
+{
+  T *end = a+len;
+  while (a<end-3)
+    {
+      c[0]=a[0]+b[0];
+      c[1]=a[1]+b[1];
+      c[2]=a[2]+b[2];
+      c[3]=a[3]+b[3];
+      a+=4;
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]=a[0]+b[0];
+      a++; b++; c++;
+    }
+}
+
+template <class T>
+inline void vec_sub_vec(T *a, T *b, T *c, int len)
+{
+  T *end = a+len;
+  while (a<end-3)
+    {
+      c[0]=a[0]-b[0];
+      c[1]=a[1]-b[1];
+      c[2]=a[2]-b[2];
+      c[3]=a[3]-b[3];
+      a+=4;
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]=a[0]-b[0];
+      a++; b++; c++;
+    }
+}
+
+template <class T>
+inline void vec_mul_vec(T *a, T *b, T *c, int len)
+{
+  T *end = a+len;
+  while (a<end-3)
+    {
+      c[0]=a[0]*b[0];
+      c[1]=a[1]*b[1];
+      c[2]=a[2]*b[2];
+      c[3]=a[3]*b[3];
+      a+=4;
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]=a[0]*b[0];
+      a++; b++; c++;
+    }
+}
+
+template <class T>
+inline void vec_add_scal(T a, T *b, T *c, int len)
+{
+  T *end = b+len;
+  while (b<end-3)
+    {
+      c[0]=a+b[0];
+      c[1]=a+b[1];
+      c[2]=a+b[2];
+      c[3]=a+b[3];
+      b+=4;
+      c+=4;
+    }
+  while (b<end)
+    {
+      c[0]=a+b[0];
+      b++; c++;
+    }
+}
+
+template <class T>
+inline void vec_mul_scal(T a, T *b, T *c, int len)
+{
+  T *end = b+len;
+  while (b<end-3)
+    {
+      c[0]=a*b[0];
+      c[1]=a*b[1];
+      c[2]=a*b[2];
+      c[3]=a*b[3];
+      b+=4;
+      c+=4;
+    }
+  while (b<end)
+    {
+      c[0]=a*b[0];
+      b++; c++;
+    }
+}
+
+template <class T>
+inline T vec_dist2(T *a, T *b, int len)
+{
+  T sum1=0, sum2=0, sum3=0, sum4=0;
+  T *end = a+len;
+  while (a<end-3)
+    {
+      sum1+=(a[0]-b[0])*(a[0]-b[0]);
+      sum2+=(a[1]-b[1])*(a[1]-b[1]);
+      sum3+=(a[2]-b[2])*(a[2]-b[2]);
+      sum4+=(a[3]-b[3])*(a[3]-b[3]);
+      a+=4;
+      b+=4;
+    }
+  while (a<end)
+    {
+      sum1+=(a[0]-b[0])*(a[0]-b[0]);
+      a++; b++;
+    }
+  return (sum1+sum2)+(sum3+sum4);
+}
+
+template <class T>
+inline T vec_sum(T *a, int len)
+{
+  T sum1=0, sum2=0, sum3=0, sum4=0;
+  T *end = a+len;
+  while (a<end-3)
+    {
+      sum1+=a[0];
+      sum2+=a[1];
+      sum3+=a[2];
+      sum4+=a[3];
+      a+=4;
+    }
+  while (a<end)
+    {
+      sum1+=a[0];
+      a++;
+    }
+  return (sum1+sum2)+(sum3+sum4);
+}
+
+template <class T>
+inline T vec_norm2(T *a, int len)
+{
+  T sum1=0, sum2=0, sum3=0, sum4=0;
+  T *end = a+len;
+  while (a<end-3)
+    {
+      sum1+=a[0]*a[0];
+      sum2+=a[1]*a[0];
+      sum3+=a[2]*a[0];
+      sum4+=a[3]*a[0];
+      a+=4;
+    }
+  while (a<end)
+    {
+      sum1+=a[0]*a[0];
+      a++;
+    }
+  return (sum1+sum2)+(sum3+sum4);
+}
+
+template <class T>
+inline void vec_inv(T *a, T *b, int len)
+{
+  T *end = a+len;
+  while (a<end-3)
+    {
+      b[0]=1/a[0];
+      b[1]=1/a[1];
+      b[2]=1/a[2];
+      b[3]=1/a[3];
+      a+=4; b+=4;
+    }
+  while (a<end)
+    {
+      b[0]=1/a[0];
+      a++; b++;
+    }
+}
+
+template <class T>
+inline void vec_sqrt(T *a, T *b, int len)
+{
+  T *end = a+len;
+  while (a<end-3)
+    {
+      b[0]=sqrt(a[0]);
+      b[1]=sqrt(a[1]);
+      b[2]=sqrt(a[2]);
+      b[3]=sqrt(a[3]);
+      a+=4; b+=4;
+    }
+  while (a<end)
+    {
+      b[0]=sqrt(a[0]);
+      a++; b++;
+    }
+}
+
+#ifdef _USE_3DNOW
+
+#define FP_DIRTY   : "memory", "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
+
+
 template <>
-inline float inner_prod<float>(float *a, float *b, int len)
+inline float vec_inner_prod<float>(float *a, float *b, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -130,11 +330,10 @@ FP_DIRTY
     
   return sum[0];
 }
-#endif
 
 
-#ifdef USE_3DNOW
-inline void add_vec_vec(float *a, float *b, float *c, int len)
+template <>
+inline void vec_add_vec<float>(float *a, float *b, float *c, int len)
 {
   __asm__ __volatile__ (
   "
@@ -203,32 +402,10 @@ inline void add_vec_vec(float *a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
-#else
 
-inline void add_vec_vec(float *a, float *b, float *c, int len)
-{
-  float *end = a+len;
-  while (a<end-3)
-    {
-      c[0]=a[0]+b[0];
-      c[1]=a[1]+b[1];
-      c[2]=a[2]+b[2];
-      c[3]=a[3]+b[3];
-      a+=4;
-      b+=4;
-      c+=4;
-    }
-  while (a<end)
-    {
-      c[0]=a[0]+b[0];
-      a++; b++; c++;
-    }
-}
 
-#endif
-
-#ifdef USE_3DNOW
-inline void sub_vec_vec(float *a, float *b, float *c, int len)
+template <>
+inline void vec_sub_vec<float>(float *a, float *b, float *c, int len)
 {
   __asm__ __volatile__ (
   "
@@ -297,33 +474,10 @@ inline void sub_vec_vec(float *a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
-#else
-
-inline void sub_vec_vec(float *a, float *b, float *c, int len)
-{
-  float *end = a+len;
-  while (a<end-3)
-    {
-      c[0]=a[0]-b[0];
-      c[1]=a[1]-b[1];
-      c[2]=a[2]-b[2];
-      c[3]=a[3]-b[3];
-      a+=4;
-      b+=4;
-      c+=4;
-    }
-  while (a<end)
-    {
-      c[0]=a[0]-b[0];
-      a++; b++; c++;
-    }
-}
-
-#endif
 
 
-#ifdef USE_3DNOW
-inline void mul_vec_vec(float *a, float *b, float *c, int len)
+template <>
+inline void vec_mul_vec<float>(float *a, float *b, float *c, int len)
 {
   __asm__ __volatile__ (
   "
@@ -392,32 +546,10 @@ inline void mul_vec_vec(float *a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
-#else
 
-inline void mul_vec_vec(float *a, float *b, float *c, int len)
-{
-  float *end = a+len;
-  while (a<end-3)
-    {
-      c[0]=a[0]*b[0];
-      c[1]=a[1]*b[1];
-      c[2]=a[2]*b[2];
-      c[3]=a[3]*b[3];
-      a+=4;
-      b+=4;
-      c+=4;
-    }
-  while (a<end)
-    {
-      c[0]=a[0]*b[0];
-      a++; b++; c++;
-    }
-}
 
-#endif
-
-#ifdef USE_3DNOW
-inline void add_scal_vec(float a, float *b, float *c, int len)
+template <>
+inline void vec_add_scal<float>(float a, float *b, float *c, int len)
 {
   float tmp[2];
   tmp[0]=tmp[1]=a;
@@ -482,33 +614,10 @@ inline void add_scal_vec(float a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
-#else
-
-inline void add_scal_vec(float a, float *b, float *c, int len)
-{
-  float *end = b+len;
-  while (b<end-3)
-    {
-      c[0]=a+b[0];
-      c[1]=a+b[1];
-      c[2]=a+b[2];
-      c[3]=a+b[3];
-      b+=4;
-      c+=4;
-    }
-  while (b<end)
-    {
-      c[0]=a+b[0];
-      b++; c++;
-    }
-}
-
-#endif
 
 
-
-#ifdef USE_3DNOW
-inline void mul_scal_vec(float a, float *b, float *c, int len)
+template <>
+inline void vec_mul_scal<float>(float a, float *b, float *c, int len)
 {
   float tmp[2];
   tmp[0]=tmp[1]=a;
@@ -573,33 +682,10 @@ inline void mul_scal_vec(float a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
-#else
-
-inline void mul_scal_vec(float a, float *b, float *c, int len)
-{
-  float *end = b+len;
-  while (b<end-3)
-    {
-      c[0]=a*b[0];
-      c[1]=a*b[1];
-      c[2]=a*b[2];
-      c[3]=a*b[3];
-      b+=4;
-      c+=4;
-    }
-  while (b<end)
-    {
-      c[0]=a*b[0];
-      b++; c++;
-    }
-}
-
-#endif
 
 
-
-#ifdef USE_3DNOW
-inline float vec_dist2(float *a, float *b, int len)
+template <>
+inline float vec_dist2<float>(float *a, float *b, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -679,33 +765,10 @@ FP_DIRTY
     
   return sum[0];
 }
-#else
 
-inline float vec_dist2(float *a, float *b, int len)
-{
-  float sum1=0, sum2=0, sum3=0, sum4=0;
-  float *end = a+len;
-  while (a<end-3)
-    {
-      sum1+=(a[0]-b[0])*(a[0]-b[0]);
-      sum2+=(a[1]-b[1])*(a[1]-b[1]);
-      sum3+=(a[2]-b[2])*(a[2]-b[2]);
-      sum4+=(a[3]-b[3])*(a[3]-b[3]);
-      a+=4;
-      b+=4;
-    }
-  while (a<end)
-    {
-      sum1+=(a[0]-b[0])*(a[0]-b[0]);
-      a++; b++;
-    }
-  return (sum1+sum2)+(sum3+sum4);
-}
 
-#endif
-
-#ifdef USE_3DNOW
-inline float vec_sum(float *a, int len)
+template <>
+inline float vec_sum<float>(float *a, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -768,55 +831,8 @@ FP_DIRTY
     
   return sum[0];
 }
-#else
 
-inline float vec_sum(float *a, int len)
-{
-  float sum1=0, sum2=0, sum3=0, sum4=0;
-  float *end = a+len;
-  while (a<end-3)
-    {
-      sum1+=a[0];
-      sum2+=a[1];
-      sum3+=a[2];
-      sum4+=a[3];
-      a+=4;
-    }
-  while (a<end)
-    {
-      sum1+=a[0];
-      a++;
-    }
-  return (sum1+sum2)+(sum3+sum4);
-}
-
-#endif
-
-
-template <class T>
-inline float vec_norm2(T *a, int len)
-{
-  T sum1=0, sum2=0, sum3=0, sum4=0;
-  T *end = a+len;
-  while (a<end-3)
-    {
-      sum1+=a[0]*a[0];
-      sum2+=a[1]*a[0];
-      sum3+=a[2]*a[0];
-      sum4+=a[3]*a[0];
-      a+=4;
-    }
-  while (a<end)
-    {
-      sum1+=a[0]*a[0];
-      a++;
-    }
-  return (sum1+sum2)+(sum3+sum4);
-}
-
-
-#ifdef USE_3DNOW
-templace <>
+template <>
 inline float vec_norm2<float>(float *a, int len)
 {
   //float sum=0;
@@ -884,10 +900,10 @@ FP_DIRTY
     
   return sum[0];
 }
-#endif
 
-#ifdef USE_3DNOW
-inline void vec_inv(float *a, float *b, int len)
+
+template <>
+inline void vec_inv<float>(float *a, float *b, int len)
 {
   __asm__ __volatile__ (
   "
@@ -943,30 +959,10 @@ inline void vec_inv(float *a, float *b, int len)
 FP_DIRTY
   );
 }
-#else
 
-inline void vec_inv(float *a, float *b, int len)
-{
-  float *end = a+len;
-  while (a<end-3)
-    {
-      b[0]=1/a[0];
-      b[1]=1/a[1];
-      b[2]=1/a[2];
-      b[3]=1/a[3];
-      a+=4; b+=4;
-    }
-  while (a<end)
-    {
-      b[0]=1/a[0];
-      a++; b++;
-    }
-}
 
-#endif
-
-#ifdef USE_3DNOW
-inline void vec_rsqrt(float *a, float *b, int len)
+template <>
+inline void vec_sqrt<float>(float *a, float *b, int len)
 {
   __asm__ __volatile__ (
   "
@@ -1026,12 +1022,9 @@ inline void vec_rsqrt(float *a, float *b, int len)
 FP_DIRTY
   );
 }
-#else
-
-
-#endif
 
 
 
+#endif /* ifdef USE_3DNOW */
 
-#endif
+#endif /* ifndef VEC_H*/
