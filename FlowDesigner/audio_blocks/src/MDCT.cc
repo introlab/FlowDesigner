@@ -14,6 +14,7 @@ DECLARE_NODE(MDCT)
  *
  * @name MDCT
  * @category Signal:DSP
+ * @require MDCT
  * @description MDCT implementation (taken from Vorbis)
  *
  * @input_name INPUT

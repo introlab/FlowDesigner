@@ -11,6 +11,7 @@ DECLARE_NODE(DiagGMMSetScore)
  *
  * @name DiagGMMSetScore
  * @category HMM
+ * @require DGMM
  * @description Scores a DiagGMM
  *
  * @input_name INPUT

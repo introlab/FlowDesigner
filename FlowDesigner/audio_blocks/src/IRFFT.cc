@@ -14,6 +14,7 @@ DECLARE_NODE(IRFFT)
  *
  * @name IRFFT
  * @category Signal:DSP
+ * @require FFT
  * @description Inverse FFT, half complex to real vector
  *
  * @input_name INPUT

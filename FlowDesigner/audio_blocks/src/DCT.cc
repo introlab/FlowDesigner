@@ -13,6 +13,7 @@ DECLARE_NODE(DCT)
  *
  * @name DCT
  * @category Signal:DSP
+ * @require FFT
  * @description Computes the Discrete Cosine Transform (DCT)
  *
  * @input_name INPUT

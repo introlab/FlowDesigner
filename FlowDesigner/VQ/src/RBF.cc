@@ -6,6 +6,7 @@
 #include "misc.h"
 
 DECLARE_TYPE(RBF)
+//@implements VQ
 
 void RBF::train (int codeSize, const vector<float *> &data/*, const vector<float *> &data_out*/, int len, bool binary)
 {

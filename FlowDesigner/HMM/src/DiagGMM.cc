@@ -7,6 +7,7 @@
 #include "binio.h"
 
 DECLARE_TYPE(DiagGMM)
+//@implements DGMM
 
 float DiagGMM::score(const float *vec)
 {

@@ -13,6 +13,7 @@ DECLARE_NODE(SVD)
  *
  * @name SVD
  * @category Matrix
+ * @require LapackFlow
  * @description Finds the eigenvalues and eigenvectors of a matrix (A=U*SIGMA*V')
  *
  * @input_name INPUT

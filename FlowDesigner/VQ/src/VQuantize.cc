@@ -12,6 +12,7 @@ DECLARE_NODE(VQuantize)
  *
  * @name VQuantize
  * @category VQ
+ * @require VQ
  * @description No description available
  *
  * @input_name INPUT

@@ -14,6 +14,7 @@ DECLARE_NODE(RFFT)
  *
  * @name RFFT
  * @category Signal:DSP
+ * @require FFT
  * @description Computes the FFT of a real input vector and output a complex result
  *
  * @input_name INPUT

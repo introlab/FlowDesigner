@@ -14,6 +14,7 @@ DECLARE_NODE(FFT)
  *
  * @name FFT
  * @category Signal:DSP
+ * @require FFT
  * @description Computes the real FFT of a float vector
  *
  * @input_name INPUT

@@ -13,6 +13,7 @@ DECLARE_NODE(Eig)
  *
  * @name Eig
  * @category Matrix
+ * @require LapackFlow
  * @description Finds the eigenvalues and eigenvectors of a matrix (A=V*D*V')
  *
  * @input_name INPUT

@@ -8,6 +8,7 @@
 #include <iostream>
 
 DECLARE_TYPE(Gaussian)
+//@implements GMM
 
 void Gaussian::to_real()
 {

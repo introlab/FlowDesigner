@@ -14,6 +14,7 @@ DECLARE_NODE(LPC2PS)
  *
  * @name LPC2PS
  * @category Signal:DSP
+ * @require FFT
  * @description No description available
  *
  * @input_name INPUT

@@ -4,6 +4,7 @@
 #include "ObjectParser.h"
 
 DECLARE_TYPE(MeanSet)
+//@implements GMM
 
 int MeanSet::getIDFor(RCPtr<Mean> cov)
 {

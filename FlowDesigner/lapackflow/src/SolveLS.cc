@@ -13,6 +13,7 @@ DECLARE_NODE(SolveLS)
  *
  * @name SolveLS
  * @category Matrix
+ * @require LapackFlow
  * @description Solves the min[(A*x-b)**2] least square system
  *
  * @input_name A

@@ -4,6 +4,7 @@
 #include "ObjectParser.h"
 
 DECLARE_TYPE(GMMSet)
+//@implements GMM
 
 int GMMSet::getIDFor(RCPtr<GMM> cov)
 {

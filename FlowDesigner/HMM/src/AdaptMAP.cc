@@ -12,6 +12,7 @@ DECLARE_NODE(AdaptMAP)
  *
  * @name AdaptMAP
  * @category HMM
+ * @require GMM
  * @description Performs MAP adaptation (well, almost!)
  *
  * @input_name FRAMES

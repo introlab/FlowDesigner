@@ -6,6 +6,7 @@
 #include <string>
 
 DECLARE_TYPE(DiagonalCovariance)
+//@implements GMM
 
 void DiagonalCovariance::processMean(RCPtr<Mean> mean)
 {

@@ -11,6 +11,7 @@ DECLARE_NODE(MakeDiagGMM)
  *
  * @name MakeDiagGMM
  * @category HMM
+ * @require GMM
  * @description Transforms a GMM into a DiagGMM
  *
  * @input_name INPUT

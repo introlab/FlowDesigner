@@ -4,6 +4,7 @@
 #include "ObjectParser.h"
 
 DECLARE_TYPE(CovarianceSet)
+//@implements GMM
 
    /*void CovarianceSet::toInvert (MeanSet &means)
 {

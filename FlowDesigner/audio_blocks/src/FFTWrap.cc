@@ -2,4 +2,6 @@
 
 #include "FFTWrap.h"
 
+//@implements FFT
+
 _FFTWrap FFTWrap;

@@ -4,6 +4,7 @@
 #include "ObjectParser.h"
 
 DECLARE_TYPE(GaussianSet)
+//@implements GMM
 
 int GaussianSet::getIDFor(RCPtr<Gaussian> cov)
 {

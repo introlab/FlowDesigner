@@ -3,6 +3,7 @@
 #include "mean.h"
 
 DECLARE_TYPE(Mean)
+//@implements GMM
 
 
 void Mean::printOn (ostream &out) const

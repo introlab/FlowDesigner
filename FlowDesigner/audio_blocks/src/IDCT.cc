@@ -13,6 +13,7 @@ DECLARE_NODE(IDCT)
 
  * @name IDCT
  * @category Signal:DSP
+ * @require FFT
  * @description No description available
 
  * @input_name INPUT

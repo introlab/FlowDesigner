@@ -5,6 +5,7 @@
 #include "ObjectParser.h"
 
 DECLARE_TYPE(KMeans)
+//@implements VQ
 
 int KMeans::split (const vector<float *> &data, int len)
 {

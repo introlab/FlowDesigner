@@ -10,6 +10,7 @@ DECLARE_NODE(VQTrain)
  *
  * @name VQTrain
  * @category VQ
+ * @require VQ
  * @description No description available
  *
  * @input_name FRAMES

@@ -10,6 +10,8 @@
 #endif
 
 DECLARE_TYPE(GMM)
+//@implements GMM
+//@require DGMM
 
 void GMM::init(vector<float *> frames)
 {

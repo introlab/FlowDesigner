@@ -11,6 +11,7 @@
 #endif
 
 DECLARE_TYPE(Cell)
+//@implements VQ
 
 void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)
 {

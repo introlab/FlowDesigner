@@ -13,6 +13,7 @@ DECLARE_NODE(LinSolve)
  *
  * @name LinSolve
  * @category Matrix
+ * @require LapackFlow
  * @description Solves the A*x=b linear system
  *
  * @input_name A
