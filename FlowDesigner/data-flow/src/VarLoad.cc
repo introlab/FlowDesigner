@@ -68,10 +68,6 @@ public:
 	    return tmp->second;
 	 else 
 	    return Object::nilObject;
-
-	 /*openedFile = ObjectRef (new IFStream());
-	 IFStream &tmp = object_cast<IFStream> (openedFile);
-	 tmp.open(fileName.c_str());*/
       }
       else throw new NodeException (this, "VarLoad: Unknown output id", __FILE__, __LINE__);
       

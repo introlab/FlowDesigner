@@ -56,6 +56,14 @@ class fileptr_istream : public istream {
       {clear();}
 };
 
+class fileptr_iostream : public iostream {
+   fileptr_streambuf _streambuffer;
+  public:
+   fileptr_iostream(FILE *_file, bool _owner=false)
+      : _streambuffer (_file, _owner)
+      , iostream(&_streambuffer)
+      {clear();}
+};
 
 
 
@@ -99,6 +107,15 @@ class fd_istream : public istream {
    fd_istream(int _fd, bool _owner=false)
       : _streambuffer (_fd, _owner)
       , istream(&_streambuffer)
+      {clear();}
+};
+
+class fd_iostream : public iostream {
+   fd_streambuf _streambuffer;
+  public:
+   fd_iostream(int _fd, bool _owner=false)
+      : _streambuffer (_fd, _owner)
+      , iostream(&_streambuffer)
       {clear();}
 };
 #endif

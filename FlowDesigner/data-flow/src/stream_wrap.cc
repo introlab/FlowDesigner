@@ -68,7 +68,6 @@ int fileptr_streambuf::pbackfail(int c)
 
 streamsize fileptr_streambuf::xsgetn(char *s, streamsize n)
 {
-   cerr << "xsgetn " << n << endl;
    return fread(s, 1, n, file);
 }
 
@@ -146,13 +145,4 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 }
 
 #endif
-
-/*
-int main() 
-{
-   fd_ostream out(1);
-   //fileptr_ostream out(stdout);
-   out.write("salut\n", 6);
-}
-*/
 

@@ -75,17 +75,6 @@ public:
 	 Variable::all[varName] = inputValue;
 	 return inputValue;
 
-	 /*
-	 map<string,ObjectRef>::iterator tmp = Variable::all.find(varName);
-	 if (tmp!=Variable::all.end())
-	    return tmp->second;
-	 else 
-	    return Object::nilObject;
-	 */
-
-	 /*openedFile = ObjectRef (new IFStream());
-	 IFStream &tmp = object_cast<IFStream> (openedFile);
-	 tmp.open(fileName.c_str());*/
       }
       else throw new NodeException (this, "VarStore: Unknown output id", __FILE__, __LINE__);
       

@@ -11,6 +11,8 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
+#include "stream_wrap.h"
+
 #ifdef HAVE_MACHINE_SOUNDCARD_H
 #include <machine/soundcard.h>
 #endif
@@ -77,14 +79,18 @@ protected:
 
    /*the file descriptor*/
    int audio_fd;
+
    /**The ID of the 'value' output*/
    int outputID;
+
+   bool init;
+
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
    Sound(string nodeName, ParameterSet params)
-      : Node(nodeName, params) 
-      //, value (parameters.get("VALUE"))
+      : Node(nodeName, params)
+      , init(false)
    {
       outputID = addOutput("OUTPUT");
       
@@ -94,6 +100,9 @@ public:
    {
       Node::specificInitialize();
 
+      if (init)
+	 return;
+      init = true;
       int speed=44100;
       int stereo=0;
       //int audio_fd;
@@ -171,13 +180,14 @@ public:
 
 #endif
 
-      value = ObjectRef(new Int(audio_fd));      
+      //value = ObjectRef(new Stream(&cout));      
+      value = ObjectRef(new Stream(new fd_iostream(audio_fd, true)));      
    }
       
    virtual ~Sound()
    {
       //cerr << "Sound destructor\n";
-      close(audio_fd);
+      //close(audio_fd);
    }
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */

@@ -79,10 +79,13 @@ public:
       {
 	 case cpp:
 	 {
-	    IFStream *file = new IFStream(fileName.c_str());
+	    ifstream *file = new ifstream(fileName.c_str());
 	    if (file->fail())
+	    {
+	       delete file;
 	       throw new NodeException(this, "InputStream: cannot open file: " + fileName, __FILE__, __LINE__);
-	    openedFile = ObjectRef (file);
+	    }
+	    openedFile = ObjectRef (new Stream(file));
 	 }
 	    break;
 	 case fptr:
