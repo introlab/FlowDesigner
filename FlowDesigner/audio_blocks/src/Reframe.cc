@@ -71,6 +71,13 @@ public:
       currentCount=0;
    }
 
+   void reset()
+   {
+      lastPos = 0;
+      currentCount = 0;
+      BufferedNode::reset();
+   }
+
    void calculate(int output_id, int count, Buffer &out)
    {
       Vector<float> &output = *Vector<float>::alloc(length);
@@ -79,7 +86,7 @@ public:
       //How many can we copy from the buffer
       int nbCopy = min(lastPos, length);
 
-      cerr << nbCopy << endl;
+      //cerr << nbCopy << endl;
 
       //Copying from the buffer
       for (int i=0;i<nbCopy;i++)
@@ -89,15 +96,8 @@ public:
       //updating the buffer
       lastPos -= advance;
       
-      int buffDiscard = 0;
-      if (lastPos <= 0)
-      {
-	 buffDiscard = -lastPos;
-	 lastPos = 0;
-      } else {
-	 for (int i=0;i<lastPos;i++)
-	    buff[i] = buff[i+advance];
-      }
+      for (int i=0;i<lastPos;i++)
+	 buff[i] = buff[i+advance];
 
       while (fill != output.size())
       {
@@ -109,26 +109,28 @@ public:
 	 }
 	 const Vector<float> &in = object_cast<Vector<float> > (inputValue);
 	 int inputLength = in.size();
-	 int newPos = lastPos+inputLength-buffDiscard;
+	 int newPos = lastPos+inputLength;
 
-	 cerr << newPos << endl;
+	 //cerr << newPos << endl;
 
 	 if (newPos > buff.size())
 	    buff.resize(newPos);
+	 int buffDiscard=0;
+	 if (lastPos < 0)
+	    buffDiscard = -lastPos;
 	 for (int i=buffDiscard;i<inputLength;i++)
-	    buff[i+lastPos-buffDiscard] = in[i];
-	 buffDiscard-=inputLength;
-	 if (buffDiscard<0)
-	    buffDiscard=0;
+	    buff[i+lastPos] = in[i];
 
 	 nbCopy=min(inputLength, length-fill);
 
-	 cerr << nbCopy << endl;
+	 //cerr << nbCopy << endl;
 	 for (int i=0;i<nbCopy;i++)
 	    output[i+fill] = in[i];
 	 fill += nbCopy;
 	 lastPos = newPos;
       }
+      if (lastPos <0)
+	 lastPos = 0;
 
    }
 

@@ -5,6 +5,7 @@
 #include "Node.h"
 #include <iostream>
 #include <string>
+#include <set>
 
 using namespace std;
 
@@ -83,8 +84,25 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
       f++;
       }*/
    map<string, SubnetInfo *>::iterator info = GUIDocument::externalDocInfo.begin();
+   set<string> strCategories;
    while (info != GUIDocument::externalDocInfo.end()) 
    {
+      strCategories.insert(info->second->category);
+      //addType(info->second->category,info->first);
+      info++;
+   }
+   
+   set<string>::iterator cat = strCategories.begin();
+   while (cat != strCategories.end())
+   {
+      addCategory(*cat);
+      cat++;
+   }
+
+   info = GUIDocument::externalDocInfo.begin();
+   while (info != GUIDocument::externalDocInfo.end()) 
+   {
+
       addType(info->second->category,info->first);
       info++;
    }
@@ -175,6 +193,7 @@ GUINetPopup::~GUINetPopup()
 
 void GUINetPopup::addCategory(string name)
 {
+   //if the category has not been added yet
    if (categories.find(name) == categories.end())
    {
       int colonPos = name.rfind(":");

@@ -25,7 +25,7 @@ DECLARE_NODE(Amplitude)
 /*Node
  *
  * @name Amplitude
- * @category Deprecated
+ * @category ZDeprecated
  * @description Deprecated, use RMS instead
  *
  * @input_name INPUT
