@@ -1,0 +1,2 @@
+2001/07/8   Jean-Marc Valin <valj01@gel.usherb.ca>
+Corrected major bug (uninitialized value at read) in DiagGMM
