@@ -49,11 +49,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       out[count] = vmethod()->call(methID, inputValue);
    }

@@ -50,12 +50,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 (*(outputs[valuesID].buffer))[count] = inputValue;
-	 (*(outputs[vectorsID].buffer))[count] = inputValue;
-      }
-
       Matrix<float> &mat = object_cast<Matrix<float> > (inputValue);
       int size = mat.nrows();
       if (mat.ncols() != mat.nrows())

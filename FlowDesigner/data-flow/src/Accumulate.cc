@@ -60,13 +60,10 @@ public:
       //for (i=processCount+1;i<=count;i++)
       //{
 	 ObjectRef inputValue = getInput(inputID,count);
-	 if (inputValue->status == Object::valid)
-	 {
-	    ObjectRef accumValue = getInput(accumID,count);
-	    Vector<ObjectRef> &accum = object_cast<Vector<ObjectRef> > (accumValue);
+	 ObjectRef accumValue = getInput(accumID,count);
+	 Vector<ObjectRef> &accum = object_cast<Vector<ObjectRef> > (accumValue);
 	    
-	    accum.push_back(inputValue);
-	 }
+	 accum.push_back(inputValue);
 	 
       //}
       //processCount = count;

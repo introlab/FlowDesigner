@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.78 2001/08/09 22:51:41 jmvalin Exp $
+# $Id: Makefile.am,v 1.79 2001/08/15 05:47:37 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -14,25 +14,23 @@ lib_LTLIBRARIES = libflow.la
 # Sources for compilation in the library
 libflow_la_SOURCES = Node.cc \
 	BufferedNode.cc \
-        Object.cc \
+	Object.cc \
 	Load.cc \
-        ParameterSet.cc \
-        Constant.cc \
-        Network.cc \
-        DLManager.cc \
+	ParameterSet.cc \
+	Constant.cc \
+	Network.cc \
+	DLManager.cc \
         Collector.cc \
-	NotDone.cc \
         NetExec.cc \
-        PathList.cc \
-        Iterator.cc \
+	PathList.cc \
+	Iterator.cc \
         InputStream.cc \
         OutputStream.cc \
         Save.cc \
-        Sum.cc \
-        OR.cc \
-	IsValid.cc \
-        AND.cc \
-        NOT.cc \
+	Sum.cc \
+	OR.cc \
+	AND.cc \
+	NOT.cc \
         List.cc \
         Pack.cc \
         UnPack.cc \

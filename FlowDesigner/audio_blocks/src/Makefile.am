@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.87 2001/08/08 18:05:56 jmvalin Exp $
+# $Id: Makefile.am,v 1.88 2001/08/09 22:51:41 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -58,7 +58,6 @@ libablocks_la_SOURCES =	\
 	MergeChannels.cc \
 	SeparChannels.cc \
 	Sqrt.cc \
-	InvalidPad.cc \
 	Poly.cc \
 	mdct.c \
 	window.c \

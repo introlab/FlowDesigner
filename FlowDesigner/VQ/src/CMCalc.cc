@@ -50,18 +50,8 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef CMValue = getInput(CMinputID, count);
-      if (CMValue->status != Object::valid)
-      {
-	 out[count] = CMValue;
-         return;
-      }
 
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       const CodebookMap &cmap = object_cast<CodebookMap> (CMValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);

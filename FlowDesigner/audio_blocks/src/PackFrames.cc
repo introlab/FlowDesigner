@@ -61,12 +61,12 @@ public:
       out[count] = &output;
       for (int i=-back;i<=front;i++)
       {
-	 
+	 bool ok=true;
 	 if (count+i >= 0)
 	    inputValue = getInput(inputID, count+i);
 	 else
-	    inputValue = Object::nilObject;
-	 if (inputValue->status != Object::valid)
+	    ok=false;
+	 if (!ok)
 	 {
 	    for (int j=0;j<length;j++)
 	       output[cnt++] = 0.0;

@@ -92,17 +92,7 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
       ObjectRef refValue = getInput(refID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
-      if (refValue->status != Object::valid)
-      {
-	 out[count] = refValue;
-         return;
-      }
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const Vector<float> &ref = object_cast<Vector<float> > (refValue);
@@ -119,11 +109,8 @@ public:
       if (count > 0)   
       {
          ObjectRef pastInputValue = getInput(inputID, count-1);
-         if (pastInputValue->status == Object::valid)
-         {
-            can_look_back=true;
-            past = &object_cast<Vector<float> > (pastInputValue);
-         }      
+	 can_look_back=true;
+	 past = &object_cast<Vector<float> > (pastInputValue);
       }      
       
       DYN_VEC(float, inputLength+size-1, _x);

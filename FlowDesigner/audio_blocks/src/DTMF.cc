@@ -85,13 +85,6 @@ public:
       Vector<float> &output = *Vector<float>::alloc(length);
       out[count] = &output;
 
-      if (inputValue->status != Object::valid)
-      {
-	 lastDTMF=false;
-	 for (int i=0;i<length;i++)
-	    output[i]=0;
-         return;
-      }
       const Vector<int> &in = object_cast<Vector<int> > (inputValue);
 
       if (!lastDTMF || in[0]!=last[0] || in[1]!=last[1])

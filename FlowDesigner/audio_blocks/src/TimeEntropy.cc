@@ -99,11 +99,6 @@ public:
       {
          //RCPtr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
          ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
-         if (inputValue->status != Object::valid)
-         {
-            output[0]=0.0;
-            return;
-         }
          //frames[j] = inputValue.get();
          frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
 	 inputLength = frames[j]->size();

@@ -48,19 +48,8 @@ public:
 
   void calculate(int output_id, int count, Buffer &out) {
 
-     ObjectRef InputValue1 = getInput(input1ID,count);
-     
-     if (InputValue1->status != Object::valid) {
-       out[count] = InputValue1;
-       return;
-     }
-     
+     ObjectRef InputValue1 = getInput(input1ID,count);     
      ObjectRef InputValue2 = getInput(input2ID,count);
-
-     if (InputValue2->status != Object::valid) {
-       out[count] = InputValue2;
-       return;
-     }
 
      out[count] = max(InputValue1, InputValue2);
 

@@ -126,13 +126,6 @@ public:
    {
       ObjectRef leftValue = getInput(leftInID, count);
       ObjectRef rightValue = getInput(rightInID, count);
-      if (leftValue->status != Object::valid || rightValue->status != Object::valid)
-      {
-	 (*outputs[leftOutID].buffer)[count] = leftValue;
-	 (*outputs[rightOutID].buffer)[count] = rightValue;
-         return;
-      }
-
 
       const Vector<float> &rightIn = object_cast<Vector<float> > (rightValue);
       const Vector<float> &leftIn = object_cast<Vector<float> > (leftValue);

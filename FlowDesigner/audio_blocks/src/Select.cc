@@ -57,11 +57,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
       
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
       int outputLength = end-start+1;

@@ -42,18 +42,8 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(input1ID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       ObjectRef input2Value = getInput(input2ID, count);
-      if (input2Value->status != Object::valid)
-      {
-	 out[count] = input2Value;
-	 return;
-      }
       out[count] = concat(inputValue, input2Value);
    }
 

@@ -146,34 +146,30 @@ void PlotProbe::display()
    NO_CANCEL
    gdk_threads_enter();
    
-   if (inputValue->status == Object::valid)
+   Vector<float> &data = object_cast<Vector<float> > (inputValue);
+   points = gnome_canvas_points_new(data.size());
+      
+   double datamin, datamax;
+   datamin = datamax = data[0];
+   for (int i=0;i<data.size();i++)
    {
-      Vector<float> &data = object_cast<Vector<float> > (inputValue);
-      points = gnome_canvas_points_new(data.size());
-      
-      double datamin, datamax;
-      datamin = datamax = data[0];
-      for (int i=0;i<data.size();i++)
-      {
-	 if (data[i] > datamax)
-	    datamax = data[i];
-	 if (data[i] < datamin)
-	    datamin = data[i];
-      }
-      datamax+=.00001;
-      for (int i=0;i<data.size();i++)
-      {
-	 //points->coords[2*i]=(100.0*i)/length;
-	 points->coords[2*i]=xmin+((xmax-xmin)*i)/(data.size()-1);
-	 points->coords[2*i+1]= ymin + (ymax-ymin)*(1-(data[i]-datamin)/(datamax-datamin));
-      }
-      
-      gnome_canvas_item_set(item, "points", points, NULL);
-      
-      gnome_canvas_points_unref(points);
-      
-      //cerr << "plot done...\n";
+      if (data[i] > datamax)
+	 datamax = data[i];
+      if (data[i] < datamin)
+	 datamin = data[i];
    }
+   datamax+=.00001;
+   for (int i=0;i<data.size();i++)
+   {
+      //points->coords[2*i]=(100.0*i)/length;
+      points->coords[2*i]=xmin+((xmax-xmin)*i)/(data.size()-1);
+      points->coords[2*i+1]= ymin + (ymax-ymin)*(1-(data[i]-datamin)/(datamax-datamin));
+   }
+      
+   gnome_canvas_item_set(item, "points", points, NULL);
+      
+   gnome_canvas_points_unref(points);
+      
    gdk_threads_leave();
    SET_CANCEL
 

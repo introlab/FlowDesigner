@@ -61,11 +61,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
 
@@ -78,11 +73,8 @@ public:
       if (count > 0)   
       {
          ObjectRef pastInputValue = getInput(inputID, count-1);
-         if (pastInputValue->status == Object::valid)
-         {
-            can_look_back=true;
-            past = &object_cast<Vector<float> > (pastInputValue);
-         }      
+	 can_look_back=true;
+	 past = &object_cast<Vector<float> > (pastInputValue);
       }      
 
       float best=-FLT_MAX;

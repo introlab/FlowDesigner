@@ -58,17 +58,7 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
       ObjectRef filterValue = getInput(filterID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-         return;
-      }
 
-      if (filterValue->status != Object::valid)
-      {
-         out[count] = filterValue;
-         return;
-      }
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int length = in.size();
@@ -81,11 +71,8 @@ public:
       if (count > 0)   
       {
          ObjectRef pastInputValue = this->getOutput(outputID, count-1);
-         if (pastInputValue->status == Object::valid)
-         {
-            can_look_back=true;
-            past = &object_cast<Vector<float> > (pastInputValue);
-         }      
+	 can_look_back=true;
+	 past = &object_cast<Vector<float> > (pastInputValue);
       }      
       
       //int size = filter.size();
@@ -107,8 +94,6 @@ public:
 	 //output[i] -= in[i-delay];
 	 output[i] += filter[0]*output[i-delay];
             
-
-      output.status = Object::valid;
    }
 
 };

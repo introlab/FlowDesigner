@@ -105,11 +105,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       if (inputLength != in.size())
 	 throw new NodeException(this, "Input length mismatch", __FILE__, __LINE__);

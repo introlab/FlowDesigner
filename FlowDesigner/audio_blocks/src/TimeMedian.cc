@@ -89,9 +89,6 @@ public:
 
          ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
 
-         if (inputValue->status != Object::valid)
-            continue;
-
 	 const Vector<float> &in = object_cast<Vector<float> > (inputValue);
 
 	 for (int i=0;i<length;i++)

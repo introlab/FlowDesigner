@@ -44,19 +44,9 @@ public:
    {
       ObjectRef input1Value = getInput(input1ID, count);
 
-      if (input1Value->status != Object::valid)
-      {
-	 out[count] = input1Value;
-         return;
-      }
 
       ObjectRef input2Value = getInput(input2ID, count);
 
-      if (input2Value->status != Object::valid)
-      {
-	 out[count] = input2Value;
-         return;
-      }
 
       const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
       const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);

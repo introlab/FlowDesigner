@@ -70,11 +70,6 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
       out[count] = Vector<float>::alloc(length);

@@ -57,18 +57,8 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-         return;
-      }
 
       ObjectRef netValue = getInput(netInputID, count);
-      if (netValue->status != Object::valid)
-      {
-         out[count] = netValue;
-         return;
-      }
 
       FeatureMap &fmap = object_cast<FeatureMap> (netValue);
 

@@ -51,20 +51,10 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int length = in.size();
 
       ObjectRef matrixValue = getInput(matrixID, count);
-      if (matrixValue->status != Object::valid)
-      {
-	 out[count] = matrixValue;
-	 return;
-      }
       const Matrix<float> &mat = object_cast<Matrix<float> > (matrixValue);
       if (mat.nrows() != mat.nrows() || mat.nrows() != length)
 	 throw new NodeException(this, "Transition matrix has wrong size", __FILE__, __LINE__);
@@ -75,11 +65,6 @@ public:
       if (count > 0)
       {
 	 //ObjectRef pastValue = getOutput(outputID, count-1);
-	 /*if (pastValue->status != Object::valid)
-	 {
-	    out[count] = pastValue;
-	    return;
-	    }*/
 	 //const Vector<float> &past = object_cast<Vector<float> > (pastValue);
 	 const Vector<float> &past = object_cast<Vector<float> > (out[count-1]);
 

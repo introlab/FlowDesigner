@@ -66,11 +66,6 @@ public:
       ObjectRef input1Value = getInput(input1ID, count);
 
       ObjectRef input2Value = getInput(input2ID, count);
-      if (input2Value->status != Object::valid)
-      {
-	 out[count] = input2Value;
-	 return;
-      }
 
       ObjectRef input3Value = getInput(input3ID, count);
       
@@ -84,24 +79,18 @@ public:
 	 output[i]=hanning[i]*in2[i];
       }
 
-      if (input1Value->status == Object::valid)
+      int half = length >> 1;
+
+      const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
+      for (int i=0;i<half;i++)
       {
-	 const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
-	 int half = length >> 1;
-	 for (int i=0;i<half;i++)
-	 {
-	    output[i]+=(1.0-hanning[i])*in1[i];
-	 }
+	 output[i]+=(1.0-hanning[i])*in1[i];
       }
 
-      if (input3Value->status == Object::valid)
+      const Vector<float> &in3 = object_cast<Vector<float> > (input3Value);
+      for (int i=half;i<length;i++)
       {
-	 const Vector<float> &in3 = object_cast<Vector<float> > (input3Value);
-	 int half = length >> 1;
-	 for (int i=half;i<length;i++)
-	 {
-	    output[i]+=(1-hanning[i])*in3[i];
-	 }
+	 output[i]+=(1-hanning[i])*in3[i];
       }
    }
 

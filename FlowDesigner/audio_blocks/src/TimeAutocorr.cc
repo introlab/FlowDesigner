@@ -86,11 +86,6 @@ public:
       {
          ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
 
-         if (inputValue->status != Object::valid)
-         {
-	    out[count] = inputValue;
-            return;
-         }
 	 
 	 inVect.insert(inVect.end(),RCPtr<Vector<float> > (inputValue));
       }      

@@ -48,19 +48,9 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       ObjectRef gmmValue = getInput(gmmID, count);
 
-      if (gmmValue->status != Object::valid)
-      {
-	 out[count] = gmmValue;
-         return;
-      }
        
       DiagGMM &gmm = object_cast<DiagGMM> (gmmValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);

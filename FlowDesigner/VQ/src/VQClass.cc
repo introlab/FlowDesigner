@@ -49,19 +49,9 @@ public:
 
       ObjectRef VQValue = VQInput.node->getOutput(VQInput.outputID, count);
 
-      if (VQValue->status != Object::valid)
-      {
-         out[count] = VQValue;
-         return;
-      }
 
       ObjectRef inputValue = input.node->getOutput(input.outputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const KMeans &vq = object_cast<KMeans> (VQValue);
       

@@ -58,28 +58,13 @@ public:
    {
 
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
 
       ObjectRef netValue = getInput(netInputID, count);
-      if (netValue->status != Object::valid)
-      {
-	 out[count] = netValue;
-         return;
-      }
       NNetSet &net = object_cast<NNetSet> (netValue);
       
       ObjectRef idValue = getInput(IDInputID, count);
-      if (idValue->status != Object::valid)
-      {
-	 out[count] = idValue;
-         return;
-      }
       const Vector<float> &id = object_cast<Vector<float> > (idValue);
 
       Vector<float> &output = *Vector<float>::alloc(outputLength);

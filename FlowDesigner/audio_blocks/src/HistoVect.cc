@@ -43,11 +43,6 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-         return;
-      }
 
       int &in = dereference_cast<int> (inputValue);
 

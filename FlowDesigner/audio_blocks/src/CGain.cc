@@ -44,11 +44,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
 
@@ -57,19 +52,9 @@ public:
 
       ObjectRef gainValue = getInput(gainID, count);
 
-      if (gainValue->status != Object::valid)
-      {
-	 for (int i=0;i<inputLength;i++)
-	    output[i] = 0;
-         return;
-      }
-
       const Vector<float> &gain = object_cast<Vector<float> > (gainValue);
 
       float g=gain[0];
-
-      //if (g>10) g=10;
-      //if (g<-10) g=-10;
 
       for (int i=0;i<inputLength;i++)
       {

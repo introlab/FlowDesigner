@@ -73,14 +73,11 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
+      //FIXME: Should remove all references to Object->status
       if (!constantDelay)
       {
 	 ObjectRef delayValue = getInput(delayID, count);
-	 if (delayValue->status == Object::valid)
-	 {
-	    delay = int((object_cast<Vector<float> > (delayValue))[0]);
-	    //delay = dereference_cast<float> (delayValue);
-	 }
+	 delay = int((object_cast<Vector<float> > (delayValue))[0]);
       }
       
       int frameDelay = delay/length;

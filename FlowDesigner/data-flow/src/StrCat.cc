@@ -47,16 +47,6 @@ public:
       ObjectRef input1Value = getInput(input1ID, count);
       ObjectRef input2Value = getInput(input2ID, count);
 
-      if (input1Value->status != Object::valid)
-      {
-	 out[count] = input1Value;
-         return;
-      }
-      if (input2Value->status != Object::valid)
-      {
-	 out[count] = input2Value;
-         return;
-      }
 
       const String &in1 = object_cast<String> (input1Value);
       const String &in2 = object_cast<String> (input2Value);

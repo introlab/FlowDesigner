@@ -41,11 +41,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       int sz;
       if (typeid(*inputValue) == typeid(Vector<ObjectRef>))

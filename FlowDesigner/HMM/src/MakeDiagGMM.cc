@@ -42,11 +42,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       
       GMM &gmm = object_cast<GMM> (inputValue);
       out[count] = ObjectRef(gmm.createDiagGMM());

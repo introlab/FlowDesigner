@@ -58,11 +58,6 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
@@ -72,11 +67,6 @@ public:
       if (index == -1)
       {
 	 ObjectRef indexValue = getInput(indexID, count);
-	 if (indexValue->status != Object::valid)
-	 {
-	    out[count] = indexValue;
-	    return;
-	 }
 	 ind = dereference_cast<int> (indexValue);
       } else {
 	 ind = index;

@@ -51,18 +51,8 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef netValue = getInput(netInputID, count);
-      if (netValue->status != Object::valid)
-      {
-	 out[count] = netValue;
-         return;
-      }
 
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();

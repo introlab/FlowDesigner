@@ -61,11 +61,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
       
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-	 return;
-      }
 
       int sample = (count*frameAdv)+1;
       while (sample > currEnd)

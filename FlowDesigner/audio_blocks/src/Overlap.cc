@@ -60,11 +60,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
 
@@ -78,19 +73,13 @@ public:
       if (count > 0)   
       {
          ObjectRef pastInputValue = getInput(inputID, count-1);
-         if (pastInputValue->status == Object::valid)
-         {
-            can_look_back=true;
-            past = &object_cast<Vector<float> > (pastInputValue);
-         }      
+	 can_look_back=true;
+	 past = &object_cast<Vector<float> > (pastInputValue);
       }
       
       ObjectRef nextInputValue = getInput(inputID, count+1);
-      if (nextInputValue->status == Object::valid)
-      {
-	 can_look_ahead=true;
-	 next = &object_cast<Vector<float> > (nextInputValue);
-      }
+      can_look_ahead=true;
+      next = &object_cast<Vector<float> > (nextInputValue);
       
       
       for (int i=0;i<outputLength;i++)

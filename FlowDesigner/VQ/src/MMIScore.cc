@@ -60,8 +60,6 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
          
          ObjectRef inputValue = framesInput.node->getOutput(framesInput.outputID,count);
          //FUTURE: return the right "empty object" instead of inputValue (for buffer reasons)
-         if (inputValue->status)
-            return inputValue;
          Vector<float> &inputFrame = object_cast<Vector<float> > (inputValue);
          
          Cell &mmi = object_cast<Cell> (mmiInput.node->getOutput(mmiInput.outputID,count));

@@ -56,13 +56,6 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 (*(outputs[valuesID].buffer))[count] = inputValue;
-	 (*(outputs[lvectorsID].buffer))[count] = inputValue;
-	 (*(outputs[rvectorsID].buffer))[count] = inputValue;
-      }
-
       Matrix<float> &mat = object_cast<Matrix<float> > (inputValue);
       int rows = mat.nrows();
       int cols = mat.ncols();

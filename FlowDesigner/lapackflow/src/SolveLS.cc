@@ -51,16 +51,6 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
       ObjectRef matrixValue = getInput(matrixID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
-      if (matrixValue->status != Object::valid)
-      {
-	 out[count] = matrixValue;
-         return;
-      }
 
       Vector<float> &in = object_cast<Vector<float> > (inputValue);
       Matrix<float> &mat = object_cast<Matrix<float> > (matrixValue);

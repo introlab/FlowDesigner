@@ -87,11 +87,6 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      /*if (count < inputsCache[inputID].lookBack)
-      {
-         output.status = Object::before_beginning;
-         return;
-	 }*/
       NodeInput input = inputs[inputID];
 
       int i,j;
@@ -106,8 +101,6 @@ public:
 	    break;
          ObjectRef inputValue = input.node->getOutput(input.outputID, count - i + inputsCache[inputID].lookAhead);
          //cerr << "inputsCache[inputID].lookAhead = " << inputsCache[inputID].lookAhead << endl;
-         if (inputValue->status != Object::valid)
-            continue;
 
          const Vector<float> &firRow = object_cast<Vector<float> > (inputValue);
          for (j = 0; j < inputLength ; j++)
@@ -121,10 +114,6 @@ public:
       for (i = 1; i <= iir_limit ; i++)
       {
          ObjectRef inputValue = this->getOutput(outputID, count - i);
-         if (inputValue->status != Object::valid)
-         {
-            break;
-         }
          const Vector<float> &iirRow = object_cast<Vector<float> > (inputValue);
          for (j = 0; j < inputLength ; j++)
             output[j] -= iir[i]*iirRow[j];

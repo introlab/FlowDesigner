@@ -89,11 +89,6 @@ public:
       while (fill != output.size())
       {
 	 ObjectRef inputValue = getInput(inputID, currentCount++);
-	 if (inputValue->status != Object::valid)
-	 {
-	    out[count] = inputValue;
-	    return;
-	 }
 	 const Vector<float> &in = object_cast<Vector<float> > (inputValue);
 	 int inputLength = in.size();
 	 int newPos = lastPos+inputLength;

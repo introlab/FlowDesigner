@@ -78,11 +78,6 @@ public:
    {
       int i;
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-	 return;
-      }
 
       //Vector<float> &cms = object_cast<Vector<float> > (out[count]);
       Vector<float> &output = *Vector<float>::alloc(length);

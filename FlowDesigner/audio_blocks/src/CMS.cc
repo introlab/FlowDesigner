@@ -99,11 +99,6 @@ public:
       NodeInput input = inputs[inputID];
       ObjectRef inputValue = input.node->getOutput(input.outputID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-	 return;
-      }
 
       Vector<float> &output = *Vector<float>::alloc(length);
       out[count] = &output;
@@ -113,13 +108,10 @@ public:
 	 for (int i=0;i<lookAhead;i++)
 	 {
 	    ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+lookAhead);
-	    if (nextInputValue->status == Object::valid)
-	    {
-	       Vector<float> &curr = object_cast<Vector<float> > (nextInputValue);
-	       accumCount++;
-	       for (int j=0;j<length;j++)
-		  mean[j] += curr[j];
-	    }
+	    Vector<float> &curr = object_cast<Vector<float> > (nextInputValue);
+	    accumCount++;
+	    for (int j=0;j<length;j++)
+	       mean[j] += curr[j];
 	 }
 	 init=true;
       }
@@ -133,22 +125,13 @@ public:
       if (count >= lookBack)   
       {
          ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-lookBack);
-         if (pastInputValue->status == Object::valid)
-         {
-            can_look_back=true;
-            past = &object_cast<Vector<float> > (pastInputValue);
-         }
-      }      
-      
-      if (1)
-      {
-         ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+lookAhead);
-         if (nextInputValue->status == Object::valid)
-         {
-            can_look_ahead=true;
-            next = &object_cast<Vector<float> > (nextInputValue);
-         }      
+	 can_look_back=true;
+	 past = &object_cast<Vector<float> > (pastInputValue);
       }
+      
+      ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+lookAhead);
+      can_look_ahead=true;
+      next = &object_cast<Vector<float> > (nextInputValue);
       
       for (int i=0;i<length;i++)
          mean[i]*=NEAR_ONE;

@@ -50,16 +50,6 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
       ObjectRef filterValue = getOutput(filterID, count);
 
-      if (inputValue->status != Object::valid)
-      {
-         out[count] = inputValue;
-         return;
-      }
-      if (filterValue->status != Object::valid)
-      {
-         out[count] = filterValue;
-         return;
-      }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int length = in.size();
       const Vector<float> &filter = object_cast<Vector<float> > (filterValue);
@@ -71,11 +61,8 @@ public:
       if (count > 0)
       {
          ObjectRef pastInputValue = getInput(inputID, count-1);
-         if (pastInputValue->status == Object::valid)
-         {
-            can_look_back=true;
-            past = &object_cast<Vector<float> > (pastInputValue);
-         }      
+	 can_look_back=true;
+	 past = &object_cast<Vector<float> > (pastInputValue);
       }      
       
       //int size = filter.size();

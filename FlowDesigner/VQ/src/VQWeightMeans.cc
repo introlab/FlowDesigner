@@ -53,18 +53,8 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef VQValue = getInput(VQinputID, count);
-      if (VQValue->status != Object::valid)
-      {
-	 out[count] = VQValue;
-         return;
-      }
 
       ObjectRef inputValue = getInput(inputID, count);
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-         return;
-      }
 
       const KMeans &vq = object_cast<KMeans> (VQValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
@@ -75,8 +65,6 @@ public:
 
       
       vq.weightMeans(in, output);
-
-      output.status = Object::valid;
    }
 
 };

@@ -66,18 +66,9 @@ public:
 	 if (count+i>=0)
 	 {
 	    ObjectRef inputValue = getInput(inputID, count+i);
-	    if (inputValue->status != Object::valid)
-	    {
-	       //out[count] = inputValue;
-	       //return;
-	       output[lookBack+i] = 0;
-	    } else {
-	       output[lookBack+i] = dereference_cast<float> (inputValue);
-	    }
+	    output[lookBack+i] = dereference_cast<float> (inputValue);
 	    
 	 } else {
-	    //out[count] = Object::before_beginningObject;
-	    //return;
 	    output[lookBack+i] = 0;
 	 }
       }

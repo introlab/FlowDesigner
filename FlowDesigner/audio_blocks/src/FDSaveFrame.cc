@@ -70,18 +70,8 @@ public:
 
       ObjectRef inputValue = getInput(objectInputID,count);
 
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-	 return;
-      }
 
       ObjectRef streamValue = getInput(streamInputID,count);
-      if (streamValue->status != Object::valid)
-      {
-	 out[count] = streamValue;
-	 return;
-      }
       
       int stream = dereference_cast<int> (streamValue);
 
