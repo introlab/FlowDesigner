@@ -37,7 +37,7 @@ tools           -d FlowDesigner/tools FlowDesigner/tools
 vflow           -d FlowDesigner/vflow FlowDesigner/vflow
 examples        -d FlowDesigner/examples FlowDesigner/examples
 visix           -d FlowDesigner/visix FlowDesigner/visix
-root            -d . -l FlowDesigner/
+root            -d FlowDesigner -l FlowDesigner/
 FuzzyEngine     -d FlowDesigner/FuzzyEngine FlowDesigner/FuzzyEngine
 effects         -d FlowDesigner/effects FlowDesigner/effects
 FlowCore        &root &macros &data-flow &doc &html &vflow &tools &examples
