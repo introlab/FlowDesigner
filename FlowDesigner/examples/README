@@ -1,0 +1,9 @@
+There are 4 examples here:
+
+hello.n     (displays "Hello World" as the output)
+tone.n      (plays a "pseudo-sinewave" to the soundcard)
+play_mp3.n  (plays an MP3 file to the soundcard)
+find_beat.n (uses autocorrelation to find out the tempo in an MP3 song)
+
+note that for the last two ones, you will need to click on "Parameters" to set
+the name of your MP3 file

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Sound" x="-149.000000" y="100.000000">
+      <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
+      <Parameter name="RATE" type="int" value="8000"/>
+    </Node>
+    <Node name="node2" type="LOOP" x="-76.000000" y="100.000000"/>
+    <Link from="node1" output="OUTPUT" to="node2" input="SND"/>
+    <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
+  </Network>
+  <Network type="iterator" name="LOOP">
+    <Node name="node1" type="ConstantVector" x="-149.000000" y="100.000000">
+      <Parameter name="VALUE" type="string" value="&lt;Vector 0 .5 1 .5 0 -.5 -1 -.5 &gt;"/>
+    </Node>
+    <Node name="node2" type="FDSaveFrame" x="220.000000" y="107.000000"/>
+    <Node name="node3" type="Constant" x="-76.000000" y="49.000000">
+      <Parameter name="VALUE" type="bool" value="true"/>
+    </Node>
+    <Node name="node4" type="Gain" x="14.000000" y="104.000000">
+      <Parameter name="LENGTH" type="int" value="8"/>
+      <Parameter name="GAIN" type="float" value="1000"/>
+    </Node>
+    <Link from="node4" output="OUTPUT" to="node2" input="OBJECT"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="INPUT"/>
+    <NetInput name="SND" node="node2" terminal="FD"/>
+    <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
+    <NetCondition name="CONDITION" node="node3" terminal="VALUE"/>
+  </Network>
+</Document>
