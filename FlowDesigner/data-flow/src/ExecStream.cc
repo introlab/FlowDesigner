@@ -106,7 +106,13 @@ public:
 	    NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
 	 opened = true;
 	 current = ObjectRef (new FILEPTR (tmp));
+
+	 //fileno (file)
+	 //new ofstream(fileno(tmp)); 
+
 	 return current;
+
+
 	 /*openedFile = ObjectRef (new IFStream());
 	 IFStream &tmp = object_cast<IFStream> (openedFile);
 	 tmp.open(fileName.c_str());*/

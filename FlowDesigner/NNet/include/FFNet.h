@@ -65,9 +65,9 @@ class FFNet {
 	       for (int j=0;j<layerInputs;j++)
 	       {
 		  //cout << w[j] << " -> ";
-		  w[j] += alpha * previous[j] * err[i] ; // * g'(x)
+		  w[j] += alpha * previous[j] * err[i] * deriv_tanh(current[i]);
 	       }
-	       w[layerInputs] += alpha * err[i];  // * g'(x)
+	       w[layerInputs] += alpha * err[i] * deriv_tanh(current[i]);
 	       //cout << w[i] << endl;
 	    }
 	 }
@@ -77,6 +77,15 @@ class FFNet {
 	 
       }
 
+   void train(vector<float *> in, vector<float *> out, int iter)
+      {
+	 while (iter)
+	 {
+	    for (int i=0;i<in.size();i++)
+	       learn (in[i], out[i]);
+	    iter--;
+	 }
+      }
 };
 
 #endif

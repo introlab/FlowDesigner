@@ -76,9 +76,9 @@ public:
             val[i]=-val[i];
          val[length/2]+=1;
       }
-      for (i=0;i<length;i++)
+      /*for (i=0;i<length;i++)
          cout << val[i] << " ";
-      cout << endl;
+	 cout << endl;*/
      
    }
 

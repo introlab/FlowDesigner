@@ -4,4 +4,4 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
 #EXTRA_DIST = BUGS INSTALL.generic
-SUBDIRS = data-flow audio_blocks VQ HMM tools vflow
+SUBDIRS = data-flow audio_blocks VQ HMM NNet tools vflow

@@ -31,7 +31,7 @@
 class Sound;
 
 //DECLARE_NODE(Sound)
-NODE_INFO(Sound,"Signal:Audio", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE")
+NODE_INFO(Sound,"Signal:Audio", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE:BUFFER")
 
 /** A constant node contains a value that will never changes. */
 class Sound : public Node
@@ -88,6 +88,21 @@ public:
       
       //int arg=0x7fff0004;
       int arg=0x0002000a;
+      if (parameters.exist("BUFFER"))
+      {
+	 unsigned int buffLen = dereference_cast<int> (parameters.get("BUFFER"));
+	 buffLen--;
+	 arg=-1;
+	 while (buffLen)
+	 {
+	    arg++;
+	    buffLen >>= 1;
+	 }
+	 if (arg < 4)
+	    arg=4;
+	 arg |= 0x00020000;
+	 cerr << "arg = " << arg << endl;
+      }      
       ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
       
 

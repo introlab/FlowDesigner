@@ -3,6 +3,16 @@
 
 #include <math.h>
 
+inline float deriv_tanh(float x)
+{
+   //float c=cosh(x);
+   //return 1/(c*c);
+
+   return 1;
+
+   //return 1/(x*x);
+}
+
 class FFLayer {
   protected:
    int nbNeurons;
