@@ -783,14 +783,14 @@ void GUIDocument::run()
       }
       //cerr << "building net...\n";
       //parameters.print();
+      
+      bool buildError = false;
+
       Network *net;
-      try {
+      //try {
 	 net = build("MAIN", parameters);
-      } catch (...)
+
       {
-	 cerr << "build error\n";
-	 exit(0);
-      }
       if (net->getInputNode())
 	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       runningNet = net;
@@ -824,7 +824,7 @@ void GUIDocument::run()
       gdk_threads_leave();
       //delete net;
       //ask for params and desired output
-      
+      }  
       //run in a window in a separated thread
    } catch (BaseException *e)
    {
