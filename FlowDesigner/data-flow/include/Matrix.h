@@ -43,15 +43,15 @@ public:
 
    void resize(int _rows, int _cols)
    {
-      cerr << "resizing to " << _rows << " x " << _cols << endl;
+      //cerr << "resizing to " << _rows << " x " << _cols << endl;
       T *new_data = new T [_rows*_cols];
       int min_rows = _rows < rows ? _rows : rows;
       int min_cols = _cols < cols ? _cols : cols;
-      cerr << min_rows << " " << min_cols << endl;
+      //cerr << min_rows << " " << min_cols << endl;
       for (int i=0;i<min_rows;i++)
 	 for (int j=0;j<min_cols;j++)
 	    new_data[i*_cols+j] = data[i*cols+j];
-      cerr << "deleting\n";
+      //cerr << "deleting\n";
       if (data)
 	 delete [] data;
       data = new_data;

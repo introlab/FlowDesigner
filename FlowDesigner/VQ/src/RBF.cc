@@ -27,7 +27,7 @@ void RBF::train (int codeSize, const vector<float *> &data/*, const vector<float
 
    covar.resize(nbClasses());
 
-   vector<int> counts(covar.size());
+   vector<int> counts(covar.size(), 0);
    for (int i=0;i<covar.size();i++)
       covar[i].resize(len,0);
    for (int i=0;i<data.size();i++)

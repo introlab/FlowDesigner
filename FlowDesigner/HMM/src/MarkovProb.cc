@@ -20,6 +20,10 @@
 #include "Vector.h"
 #include "Matrix.h"
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 class MarkovProb;
 
 DECLARE_NODE(MarkovProb)
@@ -54,6 +58,7 @@ public:
       inputID = addInput("INPUT");
       matrixID = addInput("MATRIX");
       outputID = addOutput("OUTPUT");
+      inOrder=1;
       outputs[outputID].lookBack += 1;
    }
 
@@ -106,16 +111,26 @@ public:
 	 for (int i=0;i<length;i++)
 	    output[i] = 1;
       }
-      float sum=0;
+      float sum=10*FLT_MIN;
       for (int i=0;i<length;i++)
       {
 	 output[i] *= in[i];
 	 sum += output[i];
       }
+     
       sum = 1.0/sum;
       for (int i=0;i<length;i++)
+      {
+	 //cerr << output[i] << " ";
+	 output[i] += FLT_MIN;
 	 output[i] *= sum;
-
+      }
+      //cerr << endl;
+      for (int i=0;i<length;i++)
+      {
+	 //cerr << output[i] << " ";
+      }
+      //cerr << endl;
    }
 
 };

@@ -105,7 +105,7 @@ public:
       
       vq.calcDist(in.begin(), output.begin());
 
-      float sum = 0;
+      float sum = 10*FLT_MIN;
       float epsilon = 100*FLT_MIN;
       for (int i=0;i<outputLength;i++)
       {
