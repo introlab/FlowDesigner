@@ -16,6 +16,7 @@
 #include <unistd.h>
 
 
+//@implements UIClasses
 
 UINodeRepository &UINodeRepository::GlobalRepository()
 {
