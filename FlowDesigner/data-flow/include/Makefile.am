@@ -22,7 +22,6 @@ include_HEADERS = Array.h \
 	rc_ptrs.h \
         BaseException.h \
 	ThreadedIterator.h \
-	FrameOperation.h \
 	GrowingFrameBuffer.h \
 	RotatingFrameBuffer.h \
 	variables.h \

@@ -1,104 +1,99 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
 #include "window.h"
 #include "mdct.h"
-//#include "codec.h"
-//#include "psy.h"
 
 class MDCT;
 
-
-
 DECLARE_NODE(MDCT)
 /*Node
-
+ *
  * @name MDCT
  * @category Signal:DSP
- * @description No description available
-
+ * @description MDCT implementation (taken from Vorbis)
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input frame
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description MDCT result
+ *
  * @parameter_name LENGTH
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Frame (not window) size
+ *
 END*/
 
 
-class MDCT : public FrameOperation {
+class MDCT : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
+   int length;
    vector<float> buffer;
    vector<double> pcm;
    double *window;
    mdct_lookup m_look;
-      //vorbis_look_psy p_look;
 
 public:
    MDCT(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
+   , window(NULL)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+      length = dereference_cast<int> (parameters.get("LENGTH"));
 
-      buffer.resize(inputLength*2);
-      pcm.resize(inputLength*2);
-      for (int i=0;i<inputLength*2;i++)
+      buffer.resize(length*2);
+      pcm.resize(length*2);
+      for (int i=0;i<length*2;i++)
 	 buffer[i]=0;
       inOrder = true;
    }
 
-   ~MDCT() {free(window);}
+   ~MDCT() {if (window) free(window);}
 
    virtual void specificInitialize()
    {
-      window=_vorbis_window(0,inputLength*2,inputLength,inputLength);
-      mdct_init(&m_look,inputLength*2);
-      //_vp_psy_init(&p_look,&_psy_set0,inputLength,16000);
-      
-      this->FrameOperation::specificInitialize();
+      window=_vorbis_window(0,length*2,length,length);
+      mdct_init(&m_look,length*2);
+      this->BufferedNode::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+         out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
-      for (int i=0;i<inputLength;i++)
-	 buffer[i+inputLength] = in[i];
+      out[count] = Vector<float>::alloc(length);
+      Vector<float> &output = object_cast<Vector<float> > (out[count]);
 
-      for (int i=0;i<inputLength*2;i++)
+      for (int i=0;i<length;i++)
+	 buffer[i+length] = in[i];
+
+      for (int i=0;i<length*2;i++)
 	 pcm[i]=buffer[i]*window[i];
 
       mdct_forward(&m_look,&pcm[0],&pcm[0]);
 
-      for (int i=0;i<outputLength;i++)
+      for (int i=0;i<length;i++)
       {
          output[i]=pcm[i];
       }
 
-      for (int i=0;i<inputLength;i++)
-	 buffer[i] = buffer[i+inputLength];
-      
-      output.status = Object::valid;
+      for (int i=0;i<length;i++)
+	 buffer[i] = buffer[i+length];
    }
 
 };

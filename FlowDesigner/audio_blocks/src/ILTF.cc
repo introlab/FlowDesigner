@@ -10,30 +10,30 @@ class ILTF;
 
 DECLARE_NODE(ILTF)
 /*Node
-
+ *
  * @name ILTF
  * @category Signal:DSP
- * @description No description available
-
+ * @description Inverse (all-pole) long-term (comb) filter
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input frame
+ *
  * @input_name FILTER
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Filter params as [gain, period]
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
- * @parameter_name LENGTH
- * @parameter_description No description available
-
+ * @output_type Vector
+ * @output_description Filtered signal
+ *
 END*/
 
 
 class ILTF : public FrameOperation {
    
    int inputID;
-   int inputLength;
+   int outputID;
    int filterID;
    int noncausal;
    bool continuous;
@@ -44,43 +44,40 @@ public:
    {
       inputID = addInput("INPUT");
       filterID = addInput("FILTER");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-
-      
- 
+      outputID = addOutput("OUTPUT");
    }
-
-   ~ILTF() {}
 
    virtual void specificInitialize()
    {
       outputs[outputID].lookBack += 1;
       this->FrameOperation::specificInitialize();
-      
-      
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
+      ObjectRef filterValue = getInput(filterID, count);
 
-      NodeInput filterInput = inputs[filterID];
-      ObjectRef filterValue = filterInput.node->getOutput(filterInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+         out[count] = inputValue;
          return;
       }
+
+      if (filterValue->status != Object::valid)
+      {
+         out[count] = filterValue;
+         return;
+      }
+
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int length = in.size();
       const Vector<float> &filter = object_cast<Vector<float> > (filterValue);
       const Vector<float> *past;
       bool can_look_back = false;
 
+      out[count] = Vector<float>::alloc(length);
+      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (count > 0)   
       {
          ObjectRef pastInputValue = this->getOutput(outputID, count-1);
@@ -101,8 +98,8 @@ public:
       if (can_look_back)
       {
 	 for (int i=0;i<delay;i++)
-	    //output[i] -= (*past)[inputLength+i-delay];
-	    output[i] += filter[0]*(*past)[inputLength+i-delay];
+	    //output[i] -= (*past)[length+i-delay];
+	    output[i] += filter[0]*(*past)[length+i-delay];
       }
       
       
