@@ -26,6 +26,7 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
+#include <unistd.h>
 
 class Sound;
 
@@ -41,6 +42,8 @@ protected:
    /**The value of the constant*/
    ObjectRef value;
 
+   /*the file descriptor*/
+   int audio_fd;
    /**The ID of the 'value' output*/
    int outputID;
 public:
@@ -52,9 +55,15 @@ public:
    {
       outputID = addOutput("OUTPUT");
       
+   }
+
+   void specificInitialize()
+   {
+      Node::specificInitialize();
+
       int speed=44100;
       int stereo=0;
-      int audio_fd;
+      //int audio_fd;
       String device = object_cast <String> (parameters.get("DEVICE"));
       if (parameters.exist("RATE"))
 	 speed = dereference_cast<int> (parameters.get("RATE"));
@@ -72,26 +81,35 @@ public:
       if ((audio_fd=open(device.c_str(),mode)) == -1) 
       {
 	 perror (device.c_str());
-	 exit(1);
+	 //close(audio_fd);
+	 throw NodeException(NULL, "Can't open sound device\n", __FILE__, __LINE__);
+	 //exit(1);
       }
       
+      int arg=0x7fff0004;
+      ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
+      
+
       int format=AFMT_S16_LE;
       if (ioctl(audio_fd, SNDCTL_DSP_SETFMT, &format)==-1)
       {
-	 perror("SNDCTL_DSP_SETFMT");  
-	 exit(1);
+	 perror("SNDCTL_DSP_SETFMT");
+	 close(audio_fd);
+	 throw NodeException(NULL, "Can't set the right format\n", __FILE__, __LINE__);
       }
       
       if (ioctl(audio_fd, SNDCTL_DSP_STEREO, &stereo)==-1)
       {
 	 perror("SNDCTL_DSP_STEREO");
-	 exit(1);
+	 close(audio_fd);
+	 throw NodeException(NULL, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
       }
       
       if (ioctl(audio_fd, SNDCTL_DSP_SPEED, &speed)==-1)
       {
 	 perror("SNDCTL_DSP_SPEED");
-	 exit(1);
+	 close(audio_fd);
+	 throw NodeException(NULL, "Can't set sound device speed\n", __FILE__, __LINE__);
       }
 
 
@@ -101,8 +119,14 @@ public:
       //str_vector >> val;
 
       //cerr << "vector is: " << val << endl;
+      
    }
-
+      
+   virtual ~Sound()
+   {
+      cerr << "Sound destructor\n";
+      close(audio_fd);
+   }
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
