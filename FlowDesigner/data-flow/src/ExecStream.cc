@@ -73,7 +73,7 @@ public:
       
    virtual ~ExecStream()
    {
-      cerr << "ExecStream destructor\n";
+      //cerr << "ExecStream destructor\n";
       if (opened)
 	 pclose (dereference_cast<FILE *> (current));
    }
