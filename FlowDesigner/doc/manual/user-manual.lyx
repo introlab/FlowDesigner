@@ -1,11 +1,11 @@
 #LyX 1.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 2.16
+\lyxformat 218
 \textclass book
 \begin_preamble
 \usepackage{graphicx}
 \usepackage{hyperref}
 \end_preamble
-\language default
+\language english
 \inputencoding latin1
 \fontscheme default
 \graphics default
@@ -61,7 +61,7 @@ What is Overflow?
 \backslash 
 href{http://freespeech.sourceforge.net/overflow.html}{Overflow}
 \latex default 
- is a free (GPL/LGPL) "data flow oriented" development environment.
+ is a free (GPL/LGPL) "data-flow oriented" development environment.
  It can be use to build complex applications by combining small, reusable
  building blocks.
  In some way, it has similarities with Simulink and LabView, although it
@@ -309,7 +309,7 @@ Networks->Add Network
 
 \begin_inset Figure size 100 100
 file vflow
-width 4 90.00
+width 4 90
 flags 9
 
 \end_inset 
@@ -404,6 +404,129 @@ When your program is complete, you can execute it by clicking "Run" in the
  is in the path.
 \layout Chapter
 
+Advanced features
+\layout Section
+
+Feed-back loops
+\layout Standard
+
+In some circumstances, it is desirable to insert feed-back loops into a
+ program.
+ Normaly, Overflow only supports acyclic graphs, but feed-back loops can
+ be made using the special 
+\emph on 
+Feedback
+\emph default 
+ node.
+\layout Section
+
+Exceptions
+\layout Subsection
+
+Run-time exceptions
+\layout Standard
+
+First, it is important to note that there are two types of exceptions that
+ can happen.
+ The first type, which we'll call 
+\emph on 
+run-time exceptions
+\emph default 
+, is thrown (usually by a node) when an error happens during processing
+ by Overflow.
+ Such type of exception can be thrown when a node receives an object of
+ an unexpected type, but there can be many other causes.
+ Run-time exceptions usually terminate the current Overflow program with
+ an error message indicating where the error happened.
+ They are analoguous to run-time errors in most interpreted languages.
+ 
+\layout Standard
+
+It is possible to prevent a run-time exception from stopping a program.
+ This can be done with the 
+\emph on 
+Recover
+\emph default 
+ node, that catches all run-time exceptions.
+\layout Subsection
+
+User exceptions
+\layout Standard
+
+The second type of exceptions, 
+\emph on 
+user exceptions
+\emph default 
+, can be thrown and caught by a user program using the 
+\emph on 
+Throw
+\emph default 
+ and 
+\emph on 
+Catch
+\emph default 
+ nodes.
+ They are serve the same function as the 
+\emph on 
+throw
+\emph default 
+ and 
+\emph on 
+catch
+\emph default 
+ statements in a C++ program.
+\layout Section
+
+Multi-threading
+\layout Standard
+
+It must first be noted that multi-threading in Overflow is still an experimental
+ feature and not all structures are fully MT-safe.
+ Overflow multi-threading is provided through three special nodes: 
+\emph on 
+SerialThread
+\emph default 
+, 
+\emph on 
+ParallelThread
+\emph default 
+ and 
+\emph on 
+ThreadJoin
+\emph default 
+.
+\layout Subsection
+
+SerialThread
+\layout Standard
+
+The 
+\emph on 
+SerialThread
+\emph default 
+ node provides the type of multi-threading known as pipelining.
+\layout Subsection
+
+ParallelThread
+\layout Standard
+
+The 
+\emph on 
+ParallelThread
+\emph default 
+ node provides parallelism-type multi-threading.
+\layout Subsection
+
+ThreadJoin
+\layout Standard
+
+The 
+\emph on 
+ThreadJoin
+\emph default 
+ node acts like a mutex and prevents
+\layout Chapter
+
 Automatic C++ code generation
 \layout Standard
 
@@ -424,7 +547,7 @@ Is is now possible to generate C++ code from an Overflow .n file.
 
 \begin_inset Figure size 100 100
 file codegen
-width 4 60.00
+width 4 60
 flags 9
 
 \end_inset 
