@@ -8,7 +8,7 @@
 #include "Object.h"
 #include <map>
 
-inline bool isValidType (istream &in, string expectedType);
+inline bool isValidType (istream &in, string expectedType, bool binary=false);
 
 inline ostream &operator << (ostream &out, const ObjectRef &ref)
 {
@@ -113,11 +113,11 @@ protected:
 };
 
 
-inline bool isValidType (istream &in, string expectedType)
+inline bool isValidType (istream &in, string expectedType, bool binary=false)
 {
    char ch;
    in >> ch;
-   if (ch == '<')
+   if ((ch == '<' && !binary) || (ch == '{' && binary))
    {
       string type;
       in >> type;
@@ -149,18 +149,25 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
 {
    char ch;
    in >> ch;
-   if (ch != '<'){
+
+   if (ch == '<')
+   {
+      string type;
+      in >> type;
+      o = Object::newObject(type);
+      o->readFrom(in);
+   } else if (ch == '{')
+   {
+      string type;
+      in >> type;
+      o = Object::newObject(type);
+      o->unserialize(in);
+   } else {
       in.putback(ch);
-      //in.clear(ios::failbit);
-      return in;
    }
-
-   string type;
-   in >> type;
-   o = Object::newObject(type);
-   o->readFrom(in);
-
+   
    return in;  
 }
+
 
 #endif

@@ -65,7 +65,7 @@ public:
 
    virtual void serialize(ostream &out) const;
 
-   virtual void unserialize(ostream &out);
+   virtual void unserialize(istream &in);
    
    virtual void doesNotUnderstand(string method);
 

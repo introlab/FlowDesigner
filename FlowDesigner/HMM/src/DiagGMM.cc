@@ -3,7 +3,9 @@
 #include "DiagGMM.h"
 #include "misc.h"
 #include "vec.h"
+#include "ObjectParser.h"
 
+DECLARE_TYPE(DiagGMM)
 
 float DiagGMM::score(const float *vec)
 {
@@ -35,4 +37,96 @@ float DiagGMM::score(const float *vec)
    }
    //cerr << "tata\n";
    return maxScore;
+}
+
+
+void DiagGMM::printOn(ostream &out) const
+{
+   out << "<DiagGMM " << endl;
+   out << "<nbGauss " << nbGauss << ">" << endl;
+   out << "<dimensions " << dim << ">" << endl;
+   out << "<data ";
+   int inc=2*augDim;
+   float *mean=base;
+   float *cov=base+augDim;
+   for (int i=0;i<nbGauss;i++)
+   {
+      for (int j=0;j<dim+1;j++)
+	 out << mean[j] << " ";
+      for (int j=0;j<dim+1;j++)
+	 out << cov[j] << " ";
+      out << endl;
+      mean+=inc;
+      cov += inc;
+   }
+   out << ">\n";
+   out << ">\n";
+}
+
+
+void DiagGMM::readFrom (istream &in)
+{
+   string tag;
+
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+      else if (ch != '<') 
+       throw new ParsingException ("Parse error: '<' expected");
+      in >> tag;
+      if (tag == "nbGauss")
+         in >> nbGauss;
+      else if (tag == "dimensions")
+      {
+         in >> dim;
+	 augDim = (dim+4)&0xfffffffc;
+      }
+      else if (tag == "data")
+      {
+	 int allocSize = 2 * augDim * nbGauss * sizeof(float)  +  CACHE_LINES;
+	 ptr = new char [allocSize];
+	 base = (float *) (((unsigned long)(ptr) + (CACHE_LINES-1))&CACHE_MASK);
+	 
+	 int inc=2*augDim;
+	 float *mean=base;
+	 float *cov=base+augDim;
+	 for (int i=0;i<nbGauss;i++)
+	 {
+	    for (int j=0;j<dim+1;j++)
+	       in >> mean[j];
+	    for (int j=0;j<dim+1;j++)
+	       in >> cov[j];
+	    mean+=inc;
+	    cov += inc;
+	 }
+      } 
+      else
+         throw new ParsingException ("unknown argument: " + tag);
+
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+
+      in >> tag;
+      if (tag != ">") 
+         throw new ParsingException ("Parse error: '>' expected ");
+   }
+}
+
+void DiagGMM::serialize(ostream &out) const
+{
+   
+}
+
+void DiagGMM::unserialize(istream &in)
+{
+   
+}
+
+
+istream &operator >> (istream &in, DiagGMM &gmm)
+{
+   if (!isValidType(in, "DiagGMM")) return in;
+   gmm.readFrom(in);
+   return in;
 }

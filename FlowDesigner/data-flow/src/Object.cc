@@ -37,7 +37,7 @@ void Object::serialize(ostream &out) const
    throw new GeneralException("Object doesn't know how to serialize itself", __FILE__, __LINE__);
 }
 
-void Object::unserialize(ostream &out)
+void Object::unserialize(istream &in)
 {
    throw new GeneralException("Object doesn't know how to unserialize itself", __FILE__, __LINE__);
 }

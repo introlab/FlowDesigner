@@ -37,8 +37,24 @@ public:
    /**Number of dimensions*/
    int getDim() {return dim;}
 
+   /** print function used for operator << */
+   virtual void printOn(ostream &out=cout) const;
+
+   /**Read function used for operator >> */
+   void readFrom (istream &in=cin);
+
+   /**extractor for DiagGMM*/
+   friend istream &operator >> (istream &in, DiagGMM &gmm);
+
+   virtual void serialize(ostream &out) const;
+
+   virtual void unserialize(istream &in);
+
    friend class GMM;
 };
+
+//ostream &operator << (ostream &out, const GMM &gmm);
+istream &operator >> (istream &in, DiagGMM &gmm);
 
 
 #endif /* DIAG_GMM_H */
