@@ -12,12 +12,12 @@
    the cpuid instruction, you think you can use SSE, while in fact you can't.
    
    SSE (SIMD Streaming Extensions) requires at least Linux 2.4 or Win NT SP6 
-   (I don't know about millenium/2000/XP). Is is not yet supported on Solaris/x86.
+   (I don't know about millenium/2000/XP). It is not yet supported on Solaris/x86.
    To compile C/C++ code with SSE assembly on MSVC++, you need the compiler 
    "processor pack". A recent version of binutils (2.10 I think) is required 
    under Linux (that should not be a problem).
 
-   3DNow! does not require OS support, as it is only an extension to MMX.   
+   3DNow! does not require OS support, as it is only an extension to MMX.
 */
 
 #include "iextensions.h"
@@ -165,7 +165,7 @@ void IExtensions::detect3DNow()
 
 
 #if (defined (_ALLOW_SSE) || defined (_ALLOW_3DNOW))
-#warning "SSE and 3DNow! only supported on GCC and MSVC++, help us get more support!"
+#error "SSE and 3DNow! only supported on GCC and MSVC++ (help us get more support). Try disabling _ALLOW_SSE and _ALLOW_3DNOW"
 #endif
 
 #endif

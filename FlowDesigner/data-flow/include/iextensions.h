@@ -65,19 +65,19 @@ inline void emms()
 #endif /*__GUNC__*/
 
 #ifdef WIN32
-inline void prefetchnta(void *ptr) {}
-inline void prefetch0(void *ptr) {}
-inline void prefetch1(void *ptr) {}
-inline void prefetch2(void *ptr) {}
-inline void emms() {}
+inline void prefetchnta(void *ptr) {_asm {prefetchnta ptr}}
+inline void prefetcht0(void *ptr) {_asm {prefetcht0 ptr}}
+inline void prefetcht1(void *ptr) {_asm {prefetcht1 ptr}}
+inline void prefetcht2(void *ptr) {_asm {prefetcht2 ptr}}
+inline void emms() {_asm {femms}}
 #endif /*WIN32*/
 
 #else
 
 inline void prefetchnta(void *ptr) {}
-inline void prefetch0(void *ptr) {}
-inline void prefetch1(void *ptr) {}
-inline void prefetch2(void *ptr) {}
+inline void prefetcht0(void *ptr) {}
+inline void prefetcht1(void *ptr) {}
+inline void prefetcht2(void *ptr) {}
 inline void emms() {}
 
 #endif /*defined(_ALLOW_SSE) || defined(_ALLOW_3DNOW)*/
