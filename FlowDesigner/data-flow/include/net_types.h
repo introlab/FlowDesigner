@@ -167,8 +167,55 @@ typedef NetCType<bool> Bool;
 
 ///STL types
 typedef PrintableGenericType<string> String;
-typedef GenericType<ifstream> IFStream;
-typedef GenericType<ofstream> OFStream;
+//typedef GenericType<ifstream> ISFtream;
+//typedef GenericType<ofstream> OFStream;
+
+class IStream : virtual public istream, virtual public Object
+{
+public:
+   IStream() : istream() {}
+   void printOn(ostream &out) const
+   {
+      out << "<IStream>";
+   }
+};
+
+class IFStream : virtual public ifstream, virtual public IStream
+{
+public:
+   IFStream() : ifstream()
+   {}
+   IFStream(char * name) : ifstream(name)
+   {}
+   void printOn(ostream &out=cout) const
+   { 
+      out << "<IFStream>";
+   }
+};
+
+class OStream : virtual public ostream, virtual public Object
+{
+public:
+   OStream() : ostream() {}
+   void printOn(ostream &out) const
+   {
+      out << "<OStream>";
+   }
+};
+
+class OFStream : virtual public ofstream, virtual public OStream
+{
+public:
+   OFStream() : ofstream()
+   {}
+   OFStream(char * name) : ofstream(name)
+   {}
+   void printOn(ostream &out=cout) const
+   { 
+      out << "<OFStream>";
+   }
+};
+
 
 //@}
 

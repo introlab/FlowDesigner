@@ -149,6 +149,9 @@ public:
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
 
+   /**Read function used for operator >> */
+   void readFrom (istream &in=cin);
+
    //friend ostream &operator << (ostream &out, const GMM &gmm);
    friend istream &operator >> (istream &in, GMM &gmm);
 }

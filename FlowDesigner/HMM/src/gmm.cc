@@ -18,6 +18,8 @@
 #include <typeinfo>
 #include <vector>
 
+DECLARE_TYPE(GMM)
+
 void GMM::init(vector<float *> frames)
 {
    for (unsigned int i=0;i<frames.size();i++)
@@ -233,32 +235,30 @@ void GMM::printOn(ostream &out) const
    out << ">\n";
 }
 
-istream &operator >> (istream &in, GMM &gmm)
+void GMM::readFrom (istream &in)
 {
-   if (!isValidType(in, "GMM")) return in;
    string tag;
 
    while (1)
    {
       char ch;
       in >> ch;
-      //cerr << "ch: " << ch << endl;
       if (ch == '>') break;
       else if (ch != '<') 
        throw ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "nb_gaussians")
-         in >> gmm.nb_gaussians;
+         in >> nb_gaussians;
       else if (tag == "apriori")
-         in >> gmm.apriori;
+         in >> apriori;
       else if (tag == "dimensions")
-         in >> gmm.dimensions;
+         in >> dimensions;
       else if (tag == "gaussians")
-         in >> gmm.gaussians;
+         in >> gaussians;
       else if (tag == "mode")
-         in >> gmm.mode;
+         in >> mode;
       else if (tag == "nb_frames_aligned")
-         in >> gmm.nb_frames_aligned;
+         in >> nb_frames_aligned;
       else
          throw ParsingException ("unknown argument: " + tag);
 
@@ -268,10 +268,11 @@ istream &operator >> (istream &in, GMM &gmm)
       if (tag != ">") 
          throw ParsingException ("Parse error: '>' expected ");
    }
-   
-   //string end;
-   //in >> end;
-   //cerr << "terminator: " << end << endl;
+}
 
+istream &operator >> (istream &in, GMM &gmm)
+{
+   if (!isValidType(in, "GMM")) return in;
+   gmm.readFrom(in);
    return in;
 }

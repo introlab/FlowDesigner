@@ -15,7 +15,31 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Object.h"
+#include "ObjectParser.h"
+#include "Exception.h"
 
 const ObjectRef Object::nilObject = ObjectRef (new Object(Object::nil));
 const ObjectRef Object::before_beginningObject = ObjectRef (new Object(Object::before_beginning));
 const ObjectRef Object::past_endObject = ObjectRef (new Object(Object::past_end));
+
+map<string, _ObjectFactory*>& Object::ObjectFactoryDictionary()
+{
+   static map<string, _ObjectFactory*> dict;
+   return dict;
+}
+
+ObjectRef Object::newObject(const string &objType)
+{
+   if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
+   {
+      return ObjectFactoryDictionary()[objType]->create();
+   } else
+   {
+      throw GeneralException ("ObjectRef error: unknown type " + objType, __FILE__, __LINE__);
+   }
+}
+
+int Object::addObjectType(const string &objType, _ObjectFactory *factory)
+{
+   ObjectFactoryDictionary()[objType] = factory;
+}

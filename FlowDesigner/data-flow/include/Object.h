@@ -19,6 +19,8 @@
 
 #include "rc_ptrs.h"
 #include <string>
+#include <map>
+#include "Exception.h"
 
 class Object;
 /** Smart pointer to Object called ObjectRef
@@ -27,6 +29,7 @@ class Object;
  */
 typedef counted_ptr<Object> ObjectRef; 
 
+class _ObjectFactory;
 
 /** Our Object base class. Everything in the network must have Object as 
     base class.
@@ -60,6 +63,12 @@ public:
          out << "<" << typeid (*this).name() << " <status " << status << "> >" << endl;
    }
    
+   /**Generic read function*/
+   virtual void readFrom(istream &in=cin)
+   {
+      throw GeneralException("Trying to read undefined Object", __FILE__, __LINE__);
+   }
+
    /**Prints the object to a stream*/
    friend ostream &operator << (ostream &out, const Object& obj) 
    {
@@ -71,9 +80,13 @@ public:
    static const ObjectRef before_beginningObject;
    static const ObjectRef past_endObject;
    
-protected:
-   
+   static ObjectRef newObject(const string &objType);
+   static int addObjectType(const string &objType, _ObjectFactory *factory);
+private:
+   static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
 };
 
+#define DECLARE_TYPE(type) static int dummy = \
+               Object::addObjectType (# type, new ObjectFactory<type>);
 
 #endif

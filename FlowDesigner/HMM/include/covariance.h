@@ -154,6 +154,9 @@ public:
 
    virtual void printOn(ostream &out=cout) const;
 
+   /**Read function used for operator >> */
+   void readFrom (istream &in=cin);
+
    friend istream &operator >> (istream &in, DiagonalCovariance &cov);
 }
 ;

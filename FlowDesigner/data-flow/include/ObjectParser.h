@@ -20,6 +20,8 @@
 #include <stream.h>
 #include <iostream.h>
 #include <vector>
+#include <Object.h>
+#include <map>
 
 inline ostream &operator << (ostream &out, const ObjectRef &ref)
 {
@@ -113,6 +115,37 @@ inline bool isValidType (istream &in, string expectedType)
       return false;
    }
    return true;
+}
+
+
+class _ObjectFactory
+{
+public:
+   virtual ObjectRef create() = 0;
+};
+
+template <class T>
+class ObjectFactory : public _ObjectFactory {
+public:
+   virtual ObjectRef create() {return ObjectRef(new T);}
+};
+
+inline istream &operator >> (istream &in, ObjectRef &o)
+{
+   char ch;
+   in >> ch;
+   if (ch != '<'){
+      in.putback(ch);
+      in.clear(ios::failbit);
+      return in;
+   }
+
+   string type;
+   in >> type;
+   o = Object::newObject(type);
+   o->readFrom(in);
+
+   return in;  
 }
 
 #endif

@@ -45,7 +45,7 @@ ObjectRef Save::getOutput(int output_id, int count)
       if (count != processCount)
       {
          NodeInput streamInput = inputs[streamInputID];
-         ofstream &stream = dereference_cast<ofstream> (streamInput.node->getOutput(streamInput.outputID,count));
+         OStream &stream = object_cast<OStream> (streamInput.node->getOutput(streamInput.outputID,count));
          NodeInput objectInput = inputs[objectInputID];
          Object &object = *(objectInput.node->getOutput(objectInput.outputID,count));
          stream << object;

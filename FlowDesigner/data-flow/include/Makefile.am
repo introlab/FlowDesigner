@@ -15,7 +15,6 @@ noinst_HEADERS = Node.h \
 	InputStream.h \
 	Iterator.h \
 	List.h \
-	Load.h \
 	Mux.h \
 	NOT.h \
 	NetExec.h \

@@ -18,6 +18,8 @@
 #include "misc.h"
 #include <string>
 
+DECLARE_TYPE(DiagonalCovariance)
+
 void DiagonalCovariance::to_invert(const float accum_1, const vector<float> *mean)
 {
    if (mode == inverted) return;
@@ -76,9 +78,8 @@ void DiagonalCovariance::printOn(ostream &out) const
    return;
 }
 
-istream &operator >> (istream &in, DiagonalCovariance &cov)
+void DiagonalCovariance::readFrom (istream &in)
 {
-   if (!isValidType(in, "DiagonalCovariance")) return in;
    string tag;
    while (1)
    {
@@ -87,17 +88,23 @@ istream &operator >> (istream &in, DiagonalCovariance &cov)
       if (ch == '>') break;
       in >> tag;
       if (tag == "dimension") 
-         in >> cov.dimension;
+         in >> dimension;
       else if (tag == "data")
-         in >> cov.data;
+         in >> data;
       else if (tag == "mode")
-         in >> cov.mode;
+         in >> mode;
       else 
          throw ParsingException ("unknown argument: " + tag);
       if (!in) throw ParsingException ("Parse error trying to build " + tag);
       in >> tag;
       if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
-   }
-   
+   }   
+};
+
+istream &operator >> (istream &in, DiagonalCovariance &cov)
+{
+   if (!isValidType(in, "DiagonalCovariance")) return in;
+
+   cov.readFrom(in);   
    return in;
 }

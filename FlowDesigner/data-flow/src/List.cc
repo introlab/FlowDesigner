@@ -52,7 +52,7 @@ ObjectRef List::getOutput(int output_id, int count)
          NodeInput input = inputs[streamInputID];
          ObjectRef inputValue = input.node->getOutput(input.outputID,count);
          
-         ifstream &file = dereference_cast<ifstream> (inputValue);
+         IStream &file = object_cast<IStream> (inputValue);
 
          char tmpLine[256];
          while (true)

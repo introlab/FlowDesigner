@@ -22,6 +22,7 @@
 #include <fstream.h>
 #include <iostream.h>
 
+DECLARE_TYPE(Gaussian)
 
 void Gaussian::to_real()
 {
@@ -65,10 +66,8 @@ void Gaussian::printOn (ostream &out) const
    out << ">\n";
 }
 
-
-istream &operator >> (istream &in, Gaussian &gauss)
+void Gaussian::readFrom (istream &in)
 {
-   if (!isValidType(in, "Gaussian")) return in;
    string tag;
    while (1)
    {
@@ -77,28 +76,32 @@ istream &operator >> (istream &in, Gaussian &gauss)
       if (ch == '>') break;
       in >> tag;
       if (tag == "dimension") 
-         in >> gauss.dimension;
+         in >> dimension;
       else if (tag == "accum_count")
-         in >> gauss.accum_count;
+         in >> accum_count;
       else if (tag == "mean")
       {
          vector<float> *tmp = new vector<float>;
          in >> *tmp;
-         gauss.mean = tmp;
+         mean = tmp;
       }
       else if (tag == "covariance")
       {
-         //DiagonalCovariance *cov = new DiagonalCovariance;
-         //in >> *cov;
-         //gauss.covariance = cov;
-         gauss.covariance = new DiagonalCovariance (in);
+         covariance = new DiagonalCovariance (in);
       } else 
          throw ParsingException ("unknown argument: " + tag);
       if (!in) throw ParsingException ("Parse error trying to build " + tag);
       in >> tag;
       if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
    }
+}
+
+istream &operator >> (istream &in, Gaussian &gauss)
+{
+   if (!isValidType(in, "Gaussian")) return in;
    
+   gauss.readFrom(in);
+
    return in;
 }
 

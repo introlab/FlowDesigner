@@ -46,7 +46,7 @@ ObjectRef InputStream::getOutput(int output_id, int count)
          NodeInput input = inputs[inputID];
          string fileName = dereference_cast<string> (input.node->getOutput(input.outputID,count));
          openedFile = ObjectRef (new IFStream());
-         ifstream &tmp = dereference_cast<ifstream> (openedFile);
+         IFStream &tmp = object_cast<IFStream> (openedFile);
          tmp.open(fileName.c_str());
       } 
       return openedFile;
