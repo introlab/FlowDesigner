@@ -22,13 +22,15 @@ class Complex : public complex<T>, public Object {
   Complex(const complex<T> &val) : complex<T>(val) {}
 		  
  void printOn(ostream &out) const {
-    out << "<"<<className();
-    out << *this;
+    out << "<"<<className()<<" ";
+    out << *((complex<T>*) this);
     out << ">"<<endl;
   }
   
   void readFrom(istream &in) {
-    in >> *this;
+    complex<T> value;
+    in >> value;
+    *this = value;
     char ch;
     in >> ch;
     if (ch != '>') {
@@ -38,7 +40,7 @@ class Complex : public complex<T>, public Object {
   
   void serialize(ostream &out) const {
     out << "{" << className() << " |";
-    BinIO::write(out, this, 1);
+    BinIO::write(out, (complex<T>*) this, 1);
     out << " }";
   }
   
