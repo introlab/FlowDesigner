@@ -46,8 +46,6 @@ public:
   
    GnomeCanvasGroup * getGroup() {return group;}
   
-   void draw();
-  
    void createPopup();
   
    void paramClose() {guiParams=NULL;}

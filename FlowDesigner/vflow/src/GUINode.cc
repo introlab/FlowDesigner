@@ -43,113 +43,6 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    createPopup();
 }
 
-void GUINode::draw()
-{
-   GnomeCanvasItem *item1, *item2;
-   double x1,y1,x2,y2;
-   gint ix,iy;
-   //cerr << "finding group...\n";
-   GnomeCanvasGroup* netGroup = dynamic_cast<GUINetwork *> (net)->getGroup();
-   //cerr << "..found\n";
-   group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (netGroup,
-                                                      gnome_canvas_group_get_type(),
-                                                      "x", x,
-                                                      "y", y,
-                                                      NULL));
-   item1 = gnome_canvas_item_new(group,
-                                 gnome_canvas_text_get_type(),
-                                 "x", 0.0,
-                                 "y", 0.0,
-                                 "text", type.c_str(),
-                                 "anchor", GTK_ANCHOR_CENTER,
-                                 "fill_color", "black",
-                                 "font", "fixed",
-                                 NULL);
-   gnome_canvas_item_get_bounds(item1, &x1,&y1, &x2, &y2);
-   //x2 *= .33;
-   
-   gnome_canvas_item_raise_to_top(item1);
-   
-   double xx1=x1-15.0;
-   double xx2=x2+15.0;
-   vector<ItemInfo *> inputname = net->getDocument()->getNetInputs(type);
-   vector<ItemInfo *> outputname = net->getDocument()->getNetOutputs(type);
-   
-   if (inputname.size() > 1 || FlowPref::getBool("VFLOW", "ShowAllInOut"))
-      for (int i=0;i<inputname.size();i++)
-      {
-	 double tx1,ty1,tx2,ty2;
-	 item1 = gnome_canvas_item_new(group,
-				       gnome_canvas_text_get_type(),
-				       "x", xx1,
-				       "y", 0.0,
-				       "text", inputname[i]->name.c_str(),
-				       "anchor", GTK_ANCHOR_EAST ,
-				       "fill_color", "blue",
-				       "font", "fixed",
-				       NULL);
-	 gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(inputname.size()-1)-i));
-	 gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	 //tx2*=.33;
-	 x1=min(x1,tx1);
-	 y1=min(y1,ty1);
-	 y2=max(y2,ty2);
-      }
-   if (outputname.size() > 1 || FlowPref::getBool("VFLOW", "ShowAllInOut"))
-      for (int i=0;i<outputname.size();i++)
-      {
-	 double tx1,ty1,tx2,ty2;
-	 item1 = gnome_canvas_item_new(group,
-				       gnome_canvas_text_get_type(),
-				       "x", xx2,
-				       "y", 0.0,
-				       "text", outputname[i]->name.c_str(),
-				       "anchor", GTK_ANCHOR_WEST ,
-				       "fill_color", "blue",
-				       "font", "fixed",
-				       NULL);
-	 gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(outputname.size()-1)-i));
-	 gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	 //tx2=.33;
-	 x2=max(x2,tx2);
-	 y1=min(y1,ty1);
-	 y2=max(y2,ty2);
-      }
-
-   guint32 col = FlowPref::getColor("VFLOW", "RegularColor");
-
-   item2 = gnome_canvas_item_new(group,
-				 gnome_canvas_rect_get_type(),
-				 "x1", x1-5,
-				 "y1", y1-5,
-				 "x2", x2+5,
-				 "y2", y2+5,
-				 "fill_color_rgba", col,
-				 "outline_color", "black",
-				 "width_units", 2.0,
-				 NULL);
-   gnome_canvas_item_lower_to_bottom(item2);
-   nodeRect=item2;  
-   //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
-   
-   for (int i=0;i<inputname.size();i++)
-   {
-      inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
-						   -15.0*(.5*(inputname.size()-1)-i)));
-   }
-   for (int i=0;i<outputname.size();i++)
-   {
-      outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2+5.0, 
-						     -15.0*(.5*(outputname.size()-1)-i)));
-   }
-
-   gtk_signal_connect(GTK_OBJECT(group), "event",
-                      (GtkSignalFunc) node_handler,
-                      this);
-}
-
-
-
 GUINode::~GUINode()
 {
    dynamic_cast<GUINetwork*>(net)->removeSelectedNode(this);
@@ -681,47 +574,16 @@ void GUINode::unselect() {
 			  NULL);
 }
 
-void GUINode::getBounds(double &x1, double &y1, double &x2, double &y2) {
+void GUINode::getBounds(double &x1, double &y1, double &x2, double &y2) 
+{
 
+   //getting bounds of the group
+   gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(group),
+                                 &x1,
+                                 &y1,
+                                 &x2,
+                                 &y2);
 
-  //double gx1,gy1,gx2,gy2;
-  //double rx1,ry1,rx2,ry2;
-
-  //getting bounds of the group
-  gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(group),
-				&x1,
-				&y1,
-				&x2,
-				&y2);
-
-/*
-
-  //getting bounds of the group
-  gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(group),
-				&gx1,
-				&gy1,
-				&gx2,
-				&gy2);
-
-  printf("group bounds (%f,%f) : (%f,%f)\n",gx1,gy1,gx2,gy2);
-
-
-  //getting bounds of the rectangle (relative to the group)
-  gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(nodeRect),
-				&rx1,
-				&ry1,
-				&rx2,
-				&ry2);
-
-  printf("rect bounds (%f,%f) : (%f,%f)\n",rx1,ry1,rx2,ry2);
- 
-
-
-  x1 = gx1 + rx1;
-  y1 = gy1 + ry1;
-  x2 = gx2 + rx2;
-  y2 = gy2 + ry2;
-*/
 
 }
 
