@@ -18,82 +18,82 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
 {
    float sum=0;
    __asm__ __volatile__ (
-   push %%eax
-   push %%esi
-   push %%edi
-   push %%ecx
-   xorps %%xmm4, %%xmm4
-   xorps %%xmm5, %%xmm5
+   "\tpush %%eax\n"
+   "\tpush %%esi\n"
+   "\tpush %%edi\n"
+   "\tpush %%ecx\n"
+   "\txorps %%xmm4, %%xmm4\n"
+   "\txorps %%xmm5, %%xmm5\n"
 
-   sub $8, %%ecx
-   jb .mul8_skip%=
+   "\tsub $8, %%ecx\n"
+   "\tjb .mul8_skip%=\n"
 
-   prefetcht0 (%%esi)
-   prefetcht0 (%%edi)
-.mul8_loop%=:
-   movaps (%%eax), %%xmm0
-   movaps (%%edi), %%xmm1
-   movaps 16(%%eax), %%xmm2
-   movaps 16(%%edi), %%xmm3
-   movaps (%%esi), %%xmm6
-   movaps 16(%%esi), %%xmm7
-   add $32, %%eax
-   add $32, %%edi
-   add $32, %%esi
-   prefetcht0 (%%esi)
-   prefetcht0 (%%edi)
-   subps %%xmm0, %%xmm1
-   subps %%xmm2, %%xmm3
-   mulps %%xmm1, %%xmm1
-   mulps %%xmm3, %%xmm3
-   mulps %%xmm6, %%xmm1
-   mulps %%xmm7, %%xmm3
-   addps %%xmm1, %%xmm4
-   addps %%xmm3, %%xmm5
+   "\tprefetcht0 (%%esi)\n"
+   "\tprefetcht0 (%%edi)\n"
+".mul8_loop%=:\n"
+   "\tmovaps (%%eax), %%xmm0\n"
+   "\tmovaps (%%edi), %%xmm1\n"
+   "\tmovaps 16(%%eax), %%xmm2\n"
+   "\tmovaps 16(%%edi), %%xmm3\n"
+   "\tmovaps (%%esi), %%xmm6\n"
+   "\tmovaps 16(%%esi), %%xmm7\n"
+   "\tadd $32, %%eax\n"
+   "\tadd $32, %%edi\n"
+   "\tadd $32, %%esi\n"
+   "\tprefetcht0 (%%esi)\n"
+   "\tprefetcht0 (%%edi)\n"
+   "\tsubps %%xmm0, %%xmm1\n"
+   "\tsubps %%xmm2, %%xmm3\n"
+   "\tmulps %%xmm1, %%xmm1\n"
+   "\tmulps %%xmm3, %%xmm3\n"
+   "\tmulps %%xmm6, %%xmm1\n"
+   "\tmulps %%xmm7, %%xmm3\n"
+   "\taddps %%xmm1, %%xmm4\n"
+   "\taddps %%xmm3, %%xmm5\n"
 
-   sub $8,  %%ecx
-   jae .mul8_loop%=
+   "\tsub $8,  %%ecx\n"
+   "\tjae .mul8_loop%=\n"
 
-.mul8_skip%=:
-   addps %%xmm5, %%xmm4
-
-
-   add $4, %%ecx
-   jl .mul4_skip%=
-
-   movaps (%%eax), %%xmm0
-   movaps (%%edi), %%xmm1
-   movaps (%%esi), %%xmm6
-   add $16, %%eax
-   add $16, %%edi
-   add $16, %%esi
-
-   subps %%xmm0, %%xmm1
-   mulps %%xmm1, %%xmm1
-   mulps %%xmm6, %%xmm1
-   addps %%xmm1, %%xmm4
-
-   sub $4,  %%ecx
-
-.mul4_skip%=:
+".mul8_skip%=:\n"
+   "\taddps %%xmm5, %%xmm4\n"
 
 
+   "\tadd $4, %%ecx\n"
+   "\tjl .mul4_skip%=\n"
 
-   movaps %%xmm4, %%xmm3
+   "\tmovaps (%%eax), %%xmm0\n"
+   "\tmovaps (%%edi), %%xmm1\n"
+   "\tmovaps (%%esi), %%xmm6\n"
+   "\tadd $16, %%eax\n"
+   "\tadd $16, %%edi\n"
+   "\tadd $16, %%esi\n"
+
+   "\tsubps %%xmm0, %%xmm1\n"
+   "\tmulps %%xmm1, %%xmm1\n"
+   "\tmulps %%xmm6, %%xmm1\n"
+   "\taddps %%xmm1, %%xmm4\n"
+
+   "\tsub $4,  %%ecx\n"
+
+".mul4_skip%=:\n"
 
 
-   movhlps %%xmm3, %%xmm4
-   addps %%xmm4, %%xmm3
-   movaps %%xmm3, %%xmm4
-   shufps $0x55, %%xmm4, %%xmm4
-   addss %%xmm4, %%xmm3
-   movss %%xmm3, (%%edx)
+
+   "\tmovaps %%xmm4, %%xmm3\n"
 
 
-   pop %%ecx
-   pop %%edi
-   pop %%esi
-   pop %%eax
+   "\tmovhlps %%xmm3, %%xmm4\n"
+   "\taddps %%xmm4, %%xmm3\n"
+   "\tmovaps %%xmm3, %%xmm4\n"
+   "\tshufps $0x55, %%xmm4, %%xmm4\n"
+   "\taddss %%xmm4, %%xmm3\n"
+   "\tmovss %%xmm3, (%%edx)\n"
+
+
+   "\tpop %%ecx\n"
+   "\tpop %%edi\n"
+   "\tpop %%esi\n"
+   "\tpop %%eax\n"
    : : "a" (a), "S" (c), "D" (b), "c" (len), "d" (&sum)
    : "memory"
    );
