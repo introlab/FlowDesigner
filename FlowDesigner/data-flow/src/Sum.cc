@@ -15,7 +15,7 @@ DECLARE_NODE(Sum)
  *
  * @input_name INPUT
  * @input_description The input vector 
- * @input_type Vector
+ * @input_type Vector<float>
  *
  * @output_name OUTPUT
  * @output_description The sum

@@ -14,11 +14,11 @@ DECLARE_NODE(Normalize)
  * @description Normalizes a vector by dividing each element by the sum of all components
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Normalized vector
 END*/
 

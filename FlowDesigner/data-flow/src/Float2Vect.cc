@@ -18,7 +18,7 @@ DECLARE_NODE(Float2Vect)
  * @input_description The input float 
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description The vector
  *
  * @parameter_name LOOKAHEAD

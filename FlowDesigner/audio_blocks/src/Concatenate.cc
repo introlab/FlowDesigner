@@ -14,15 +14,15 @@ DECLARE_NODE(Concatenate)
  * @description Concatenates two vectors together (deprecated, use Concat instead)
  *
  * @input_name INPUT1
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description First input vector
  *
  * @input_name INPUT2
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Second input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Concatenated vector
  *
 END*/

@@ -16,11 +16,11 @@ DECLARE_NODE(Sqrt)
  * @description Square root of a vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Result vector of square root
  *
 END*/

@@ -20,7 +20,7 @@ DECLARE_NODE(AudioStream)
  * @description Reads an audio stream and outputs frames
  *
  * @input_name INPUT
- * @input_type IStream
+ * @input_type Stream
  * @input_description An audio input stream (IStream, fd or FILE *)
  *
  * @output_name AUDIO

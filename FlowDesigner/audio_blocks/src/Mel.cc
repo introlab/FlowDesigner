@@ -15,11 +15,11 @@ DECLARE_NODE(Mel)
  * @description calculates Mel-scale channel energies from power-spectrum
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input power-spectrum
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Mel-scale channel energies
  *
  * @parameter_name INPUTLENGTH

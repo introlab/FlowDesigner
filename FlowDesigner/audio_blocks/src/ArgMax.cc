@@ -23,11 +23,11 @@ DECLARE_NODE(ArgMax)
  * @description Finds the maximum value in a vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Index 0 contains the maximum value, index 1 contains the index where the maximum is found
  *
  * @parameter_name START

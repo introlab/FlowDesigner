@@ -14,11 +14,11 @@ DECLARE_NODE(Select)
  * @description Selects an index range in an input vector 
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Output vector (size = END-START+1)
  *
  * @parameter_name START

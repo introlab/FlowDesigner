@@ -17,7 +17,7 @@ DECLARE_NODE(NewAccumulator)
  * @description Creates a new Accumulator (Vector<ObjectRef>)
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<ObjectRef>
  * @output_description Empty accumulator
  *
 END*/

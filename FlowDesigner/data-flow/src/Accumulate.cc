@@ -14,15 +14,15 @@ DECLARE_NODE(Accumulate)
  *
  * @input_name INPUT
  * @input_description Input object
- * @input_type Vector
+ * @input_type Vector<float>
  *
  * @input_name ACCUM
  * @input_description Accumulator where to put the input
- * @input_type Vector
+ * @input_type Vector<ObjectRef>
  *
  * @output_name OUTPUT
  * @output_description The input accumulator
- * @output_type Buffer
+ * @output_type Vector<ObjectRef>
  *
 END*/
 

@@ -14,11 +14,11 @@ DECLARE_NODE(PS)
  * @description Converts the output of the FFT (not RFFT) node to a power spectrum
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Spectrum output from FFT
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Power spectrum (half the input length)
  *
 END*/

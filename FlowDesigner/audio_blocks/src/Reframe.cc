@@ -15,11 +15,11 @@ DECLARE_NODE(Reframe)
  * @description Applies a window on a frame
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input frame
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Reframeed frame
  *
  * @parameter_name LENGTH
