@@ -25,12 +25,13 @@ int main(int argc, char **argv)
   }
   catch (BaseException *e) 
   {
+     return 1;
      e->print();
   }  
   catch (...) {
     cerr<<"Unhandled exception in "<<argv[0]<<endl;
     cerr<<"Exiting"<<endl;
-    exit(-1);
+    return 1;
   }
 
   return 0;

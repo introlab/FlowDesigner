@@ -87,6 +87,12 @@ public:
          out << "<" << typeid (*this).name() << " <status " << status << "> >" << endl;
    }
    
+   /**Prints an object in a more "user-friendly" format*/
+   virtual void prettyPrint(ostream &out=cout) const
+   {
+      printOn(out);
+   }
+
    /**Generic read function*/
    virtual void readFrom(istream &in=cin)
    {

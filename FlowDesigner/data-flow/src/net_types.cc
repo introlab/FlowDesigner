@@ -28,6 +28,89 @@ vector<Double *> ObjectPool<Double>::stack;
 ObjectRef TrueObject(new Bool(true));
 ObjectRef FalseObject(new Bool(false));
 
+
+static void writeString(ostream &out, const String &str)
+{
+   for (int i=0;i<str.size();i++)
+   {
+      if (str[i] == '>')
+      {
+	 out.put('\\');
+	 out.put('>');
+      } else if (str[i] == '\\')
+      {
+	 out.put('\\');
+	 out.put('\\');
+      } else
+	 out.put(str[i]);
+   }
+}
+
+void String::printOn(ostream &out) const
+{
+   out << "<String ";
+   writeString(out, *this);
+   out.put('>');
+   //out << "<String " << *(string*) (this) << " >";
+}
+void String::readFrom(istream &in)
+{
+
+   //string myString;
+   int i=0;
+   while(1)
+   {
+     char ch;
+     in.get(ch);
+     if (in.eof() || in.fail())
+	throw new GeneralException("Error reading String: '>' or '}' expected", __FILE__, __LINE__);
+     if (ch == '\\')
+     {
+        in.get(ch);
+        (*this) += ch;
+     }
+     else if (ch == ' ')
+     {
+	if (i)
+	   ;//break;
+	else
+	   continue;
+	   }
+     else if (ch == '>')
+     {
+        //in.putback(ch);
+        break;
+     }
+     else if (ch == '}')
+     {
+        //in.putback(ch);
+        break;
+     }
+     else
+     {
+        (*this) += ch;
+     }
+     i++;
+   }
+}
+void String::serialize(ostream &out) const
+{
+   out << "{String ";
+   writeString(out, *this);
+   out.put('}');
+   //out << "{String |" << *(string*) (this) << " }";
+}
+void String::unserialize(istream &in)
+{
+   readFrom(in);
+}
+
+void String::prettyPrint(ostream &out) const
+{
+   out << *(string*) (this);
+}
+
+
 FILEPTR::FILEPTR(FILE *file) 
    : GenericType<FILE *> (file)
 {}

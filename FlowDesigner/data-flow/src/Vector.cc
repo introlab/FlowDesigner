@@ -28,7 +28,43 @@ VectorPool<float> floatVectorPool;
 
 VectorPool<double> doubleVectorPool;
 
+template <>
+inline void _vector_printOn(const Vector<string> &v, ostream &out)
+{
+   out << "<" << v.className();
+   for (unsigned int i=0; i < v.size(); i++)
+   {
+      out << " " << v[i];
+   }
+   out << " > ";
+}
 
+template <>
+inline void _vector_readFrom(Vector<string> &v, istream &in)
+{
+   while (1)
+   {
+      char ch=' ';
+      while (ch == ' ')
+      {
+	 in >> ch;
+	 if (ch == '>')
+	 {
+	    return;
+	 } else if (ch != ' ') {
+	    in.putback(ch);
+	 }
+	 if (in.fail()) 
+	    throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
+      }
+      string tmp;
+      in >> tmp;
+      if (in.fail()) 
+	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
+      v.push_back(tmp);
+   }
+
+}
 
 ObjectRef addVectorFloat(ObjectRef x, ObjectRef y)
 {

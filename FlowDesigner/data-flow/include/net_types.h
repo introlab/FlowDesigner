@@ -212,30 +212,12 @@ class String : virtual public string, virtual public Object
 {
 public:
    String() : string() {}
-   void printOn(ostream &out) const
-   {
-      out << "<String " << *(string*) (this) << " >";
-   }
-   void readFrom(istream &in)
-   {
-      in >> (*(string*) (this));
-      char ch;
-      in >> ch;
-      if (ch != '>')
-	 throw new GeneralException("Error reading String: '>' expected", __FILE__, __LINE__);
-   }
-   void serialize(ostream &out) const
-   {
-      out << "{String |" << *(string*) (this) << " }";
-   }
-   void unserialize(istream &in)
-   {
-      in >> (*(string*) (this));
-      char ch;
-      in >> ch;
-      if (ch != '}')
-	 throw new GeneralException("Error reading String: '}' expected", __FILE__, __LINE__);
-   }
+   void printOn(ostream &out) const;
+   void readFrom(istream &in);
+   void serialize(ostream &out) const;
+   void unserialize(istream &in);
+   void prettyPrint(ostream &out) const;
+
    String(const char *str) : string(str)
    {}
    String(const string &str) : string(str)

@@ -61,7 +61,7 @@ public:
       } catch (BaseException *e)
       {
 	 //cerr << "base exception\n";
-	 //e->print();
+	 e->print();
 	 out[count] = Object::past_endObject;
       } catch (...)
       {

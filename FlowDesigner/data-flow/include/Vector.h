@@ -9,6 +9,7 @@
 #include "ObjectRef.h"
 #include "binio.h"
 #include "typetraits.h"
+#include <string>
 
 using namespace std;
 
@@ -65,6 +66,9 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
    out << " > ";
 }
 
+template <>
+inline void _vector_printOn(const Vector<string> &v, ostream &out);
+
 /*The following code doesn't compile on MSVC++*/
 #ifndef BROKEN_TEMPLATES
 template <class T>
@@ -110,6 +114,9 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
       v.push_back(tmp);
    }
 }
+
+template <>
+inline void _vector_readFrom(Vector<string> &v, istream &in);
 
 /*The following code doesn't compile on MSVC++*/
 #ifndef BROKEN_TEMPLATES
