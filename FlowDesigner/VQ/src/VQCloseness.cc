@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "kmeans.h"
@@ -28,51 +28,36 @@ class VQCloseness;
 
 DECLARE_NODE(VQCloseness)
 /*Node
-
+ *
  * @name VQCloseness
  * @category VQ
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name VQ
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
- * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
+ *
 END*/
 
 
-class VQCloseness : public FrameOperation {
+class VQCloseness : public BufferedNode {
    
    int inputID;
    int VQinputID;
-   int inputLength;
+   int outputID;
 
 public:
    VQCloseness(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       VQinputID = addInput("VQ");
-      /*if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-         else inputLength = dereference_cast<int> (parameters.get("LENGTH"));*/
-   }
-
-   ~VQCloseness() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -82,10 +67,9 @@ public:
 
       ObjectRef VQValue = VQInput.node->getOutput(VQInput.outputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (VQValue->status != Object::valid)
       {
-         output.status = VQValue->status;
+         out[count] = VQValue;
          return;
       }
 
@@ -93,14 +77,17 @@ public:
 
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+         out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
       const KMeans &vq = object_cast<KMeans> (VQValue);
-      
-      //int classID = vq.getClassID(in.begin());
-      //const vector<float> &mean = vq[classID];
+
+      int outputLength = vq.nbClasses();
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
       
       vq.calcDist(&in[0], &output[0]);
 
@@ -118,8 +105,6 @@ public:
 	 output[i] /= sum;
 	 //output[i] = 2*output[i] - 1;
       }
-
-      output.status = Object::valid;
    }
 
 };

@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
@@ -23,33 +23,30 @@ class Saturate;
 
 DECLARE_NODE(Saturate)
 /*Node
-
+ *
  * @name Saturate
  * @category Effects
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name LENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name SATURATION
  * @parameter_description No description available
-
+ *
  * @parameter_name THRESHOLD
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class Saturate : public FrameOperation {
+class Saturate : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    enum Type {HARD, TANH, ATAN, SOFT4};
 
    float threshold;
@@ -57,16 +54,14 @@ class Saturate : public FrameOperation {
 
 public:
    Saturate(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
 
       threshold = dereference_cast<float> (parameters.get("THRESHOLD"));
       
-      if (parameters.exist("INPUTLENGTH"))
+      if (parameters.exist("SATURATION"))
       {
 	 String satur = object_cast<String> (parameters.get("SATURATION"));
 	 if (satur == "hard")
@@ -81,30 +76,25 @@ public:
       } else saturation = HARD;
    }
 
-   ~Saturate() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-   }
-
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
       switch (saturation)
       {
 	 case HARD:
-	    for (int i=0;i<outputLength;i++)
+	    for (int i=0;i<inputLength;i++)
 	    {
 	       output[i] = in[i];
 	       if (output[i] < -threshold)
@@ -114,20 +104,18 @@ public:
 	    }
 	    break;
 	 case ATAN:
-	    for (int i=0;i<outputLength;i++)
+	    for (int i=0;i<inputLength;i++)
 	    {
 	       output[i] = ((2/M_PI)*threshold) * atan(in[i]/threshold);
 	    }
 	    break;
 	 case TANH:
-	    for (int i=0;i<outputLength;i++)
+	    for (int i=0;i<inputLength;i++)
 	    {
 	       output[i] = threshold * tanh(in[i]/threshold);
 	    }
 	    break;
       }
-      
-      output.status = Object::valid;
    }
 
 };

@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 
@@ -22,74 +22,65 @@ class Poly;
 
 DECLARE_NODE(Poly)
 /*Node
-
+ *
  * @name Poly
  * @category Signal:Base
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name COEF
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name LENGTH
- * @parameter_description No description available
-
+ *
 END*/
 
 
-class Poly : public FrameOperation {
+class Poly : public BufferedNode {
    
    int input1ID;
    int input2ID;
-   int inputLength;
+   int outputID;
 
 public:
    Poly(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       input1ID = addInput("INPUT");
       input2ID = addInput("COEF");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
+      outputID = addOutput("OUTPUT");
 
-   ~Poly() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input1 = inputs[input1ID];
-      ObjectRef input1Value = input1.node->getOutput(input1.outputID, count);
+      ObjectRef input1Value = getInput(input1ID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (input1Value->status != Object::valid)
       {
-         output.status = input1Value->status;
+	 out[count] = input1Value;
          return;
       }
 
-      NodeInput input2 = inputs[input2ID];
-      ObjectRef input2Value = input2.node->getOutput(input2.outputID, count);
+      ObjectRef input2Value = getInput(input2ID, count);
+
       if (input2Value->status != Object::valid)
       {
-         output.status = input2Value->status;
+	 out[count] = input2Value;
          return;
       }
 
       const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
       const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
+      int inputLength = in1.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
       
-      for (int i=0;i<outputLength;i++)
+      for (int i=0;i<inputLength;i++)
       {
 	 float x_n = 1;
 	 output[i] = 0;
@@ -99,8 +90,6 @@ public:
 	    x_n *= in1[i];
 	 }
       }
-      
-      output.status = Object::valid;
    }
 
 };
