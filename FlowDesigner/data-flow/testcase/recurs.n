@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node2" type="SUBNET" x="-464.000000" y="151.000000"/>
+    <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
+  </Network>
+  <Network type="subnet" name="SUBNET">
+    <Node name="node1" type="MAIN" x="-239.000000" y="100.000000"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>
