@@ -14,45 +14,42 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef KMEANS_H
-#define KMEANS_H
+#ifndef MSVQ_H
+#define MSVQ_H
 
-#include <vector>
-#include <stream.h>
+#include "kmeans.h"
 #include "Object.h"
-#include "vq.h"
+#include <vector>
 
-class KMeans : public VQ {
-protected:
-   //int length;
-   vector<vector<float> > means;
-   //vector<int> accum;
-
-public:
-   KMeans (float (*_dist)(const float *, const float*, int) = euclidian)
+/**This is a multi-stage vector quantization class, and has nothing to do with microsoft :-)*/
+class MSVQ : public VQ {
+  protected:
+   vector<int> stagesSizes;
+   vector<KMeans> stages;
+  public:
+   MSVQ(float (*_dist)(const float *, const float*, int) = KMeans::euclidian)
       : VQ(_dist)
-   {}
+      {}
+   MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const float*, int) = KMeans::euclidian);
 
-   int nbClasses() const {return means.size();}
+   int ID2Vec(const vector<int> &vec) const;
 
-   const vector<float> &operator[] (int i) const;
+   vector<int> Vec2ID(int ID) const;
 
-   int split (const vector<float *> &data, int len);
+   int nbClasses() const;
 
-   int bsplit ();
+   int nbStages() const {return stagesSizes.size();}
 
-   void update (const vector<float *> &data, int len);
+   //const vector<float> &operator[] (int i) const;
 
    void train (int codeSize, const vector<float *> &data, int len, bool binary=false);
 
    int getClassID (const float *v, float *dist_return = NULL) const;
-   void calcDist (const float *v, float *dist_return) const;
 
-   void weightMeans (const vector<float> &w, vector<float> &out) const;
-   
+   //void calcDist (const float *v, float *dist_return) const;
+
    void printOn(ostream &out=cout) const;
    void readFrom (istream &in=cin);
-   friend istream &operator >> (istream &in, KMeans &mdl);
+   friend istream &operator >> (istream &in, MSVQ &mdl);
 };
-
 #endif

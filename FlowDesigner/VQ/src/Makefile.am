@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.11 2000/06/11 17:58:37 jmvalin Exp $
+# $Id: Makefile.am,v 1.12 2000/07/14 22:34:01 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -24,7 +24,8 @@ libvq_la_SOURCES = kmeans.cc \
 	CMTrain.cc \
 	CodebookMap.cc \
 	VQCloseness.cc \
-	VQWeightMeans.cc
+	VQWeightMeans.cc \
+	msvq.cc
 
 #libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libvq_la_LDFLAGS = -release $(LT_RELEASE)

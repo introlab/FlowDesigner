@@ -82,6 +82,10 @@ int KMeans::split (const vector<float *> &data, int len)
 #endif
 }
 
+const vector<float> &KMeans::operator[] (int i) const 
+{
+   return means[i];
+}
 
 int KMeans::bsplit ()
 {
