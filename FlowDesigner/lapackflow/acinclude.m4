@@ -266,8 +266,12 @@ AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 AC_PROG_MAKE_SET
 AC_C_BIGENDIAN
-
 AC_INST_EXTENSIONS
+
+AC_ARG_ENABLE(multithread, [  --enable-multithread           enable multi-threading support], [if test "$enableval" = yes; then AC_DEFINE(MULTITHREAD)fi])
+
+AC_ARG_ENABLE(x86-asm, [  --enable-x86-asm           enable x86-specific assembly language (recommended for multi-thread)], [if test "$enableval" = yes; then AC_DEFINE(_ENABLE_X86_ASM)fi])
+
 
 dnl Checks for libraries.
 AC_CHECK_HEADERS(dlfcn.h dl.h float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h linux/rtc.h linux/mc146818rtc.h)
