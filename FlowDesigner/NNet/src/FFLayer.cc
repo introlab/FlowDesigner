@@ -26,25 +26,25 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
       func = tanh;
       deriv_func = deriv_tanh;
    }
-   weights = new float [nbNeurons*(nbInputs+1)];
+   weights = new double [nbNeurons*(nbInputs+1)];
    /*for (int i=0;i<nbNeurons*(nbInputs+1);i++)
    {
       //weights[i]=1.0;
       weights[i]=sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1);
       }*/
 
-   momentum = new float [nbNeurons*(nbInputs+1)];
+   momentum = new double [nbNeurons*(nbInputs+1)];
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       momentum[i]=0;
 
-   tmp_weights = new float [nbNeurons*(nbInputs+1)];
+   tmp_weights = new double [nbNeurons*(nbInputs+1)];
 
-   deriv = new float [nbNeurons];
-   value = new float [nbNeurons];
-   error = new float [nbNeurons];
+   deriv = new double [nbNeurons];
+   value = new double [nbNeurons];
+   error = new double [nbNeurons];
 }
 
-void FFLayer::init(float minmax)
+void FFLayer::init(double minmax)
 {
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
    {
@@ -107,18 +107,18 @@ void FFLayer::readFrom (istream &in)
 	 }
       } else if (tag == "weights")
       {
-	 weights = new float [nbNeurons*(nbInputs+1)];
+	 weights = new double [nbNeurons*(nbInputs+1)];
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
 	    //weights[i]=1.0;
 	    in >> weights[i];
 	 }
 	 
-	 tmp_weights = new float [nbNeurons*(nbInputs+1)];
+	 tmp_weights = new double [nbNeurons*(nbInputs+1)];
 	 
-	 deriv = new float [nbNeurons];
-	 value = new float [nbNeurons];
-	 error = new float [nbNeurons];
+	 deriv = new double [nbNeurons];
+	 value = new double [nbNeurons];
+	 error = new double [nbNeurons];
 	 
 	 
       }

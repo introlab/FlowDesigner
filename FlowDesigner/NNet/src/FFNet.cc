@@ -24,12 +24,12 @@ FFNet::FFNet(const Vector<int> &_topo)
    alpha = .000001;
    last_error=-1;
    momentum=.9;
-   /*float *f=layers[0]->getWeights(0);
+   /*double *f=layers[0]->getWeights(0);
    f[0]=2;f[1]=-1;
    f[2]=1;*/
 }
 
-float *FFNet::calc(const float *input)
+double *FFNet::calc(const double *input)
 {
    layers[0]->update(input);
    for (int i=1;i<layers.size();i++)
@@ -37,7 +37,7 @@ float *FFNet::calc(const float *input)
    return layers[layers.size()-1]->getValue();
 }
 
-void FFNet::learn(float *input, float *output)
+void FFNet::learn(double *input, double *output)
 {
    int outputLayer = topo.size()-2;
    calc(input);
@@ -46,7 +46,7 @@ void FFNet::learn(float *input, float *output)
    for (int k=outputLayer;k>=0;k--)
    {
       FFLayer *currentLayer = layers[k];
-      float *previousValue, *currentValue;
+      double *previousValue, *currentValue;
       if (k==0)
 	 previousValue = input;
       else 
@@ -56,10 +56,10 @@ void FFNet::learn(float *input, float *output)
 
       int layerSize = topo[k+1];
       int layerInputs = topo[k];
-      float *delta = currentLayer->getError();
+      double *delta = currentLayer->getError();
       for (int i=0;i<layerSize;i++)
       {
-	 float *w = currentLayer->getTmpWeights(i);
+	 double *w = currentLayer->getTmpWeights(i);
 	 //cerr << k << endl;
 	 if (k==outputLayer)
 	 {
@@ -72,10 +72,10 @@ void FFNet::learn(float *input, float *output)
 	 else
 	 {
 	    delta[i] = 0;
-	    float *outErr = layers[k+1]->getError();
+	    double *outErr = layers[k+1]->getError();
 	    for (int j=0;j<topo[k+2];j++)
 	    {
-	       float *outW = layers[k+1]->getWeights(j);
+	       double *outW = layers[k+1]->getWeights(j);
 	       delta[i]+= outErr[j]*outW[i];
 	    }
 	    delta[i] = currentLayer->deriv[i]*delta[i];
@@ -89,20 +89,31 @@ void FFNet::learn(float *input, float *output)
    }	 
 }
 
-void FFNet::train(vector<float *> in, vector<float *> out, int iter)
+void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
 {
    int worse=0;
    while (iter)
    {
-      //error = 0;
       int i,j;
+
+	 
+      //error = 0;
       //cerr << "iter...\n";
       for (i=0;i<layers.size();i++)
       {
 	 layers[i]->copyToTmp();
       }
-      for (i=0;i<in.size();i++)
-	 learn (in[i], out[i]);
+      for (i=0;i<tin.size();i++)
+      {
+	 double in[topo[0]];
+	 double out[topo[topo.size()-1]];
+	 for (j=0;j<topo[0];j++)
+	    in[j]=tin[i][j];
+	 for (j=0;j<topo[topo.size()-1];j++)
+	    out[j]=tout[i][j];
+	 learn (in, out);
+	 
+      }
       for (i=0;i<layers.size();i++)
       {
 	 layers[i]->copyFromTmp(momentum);
@@ -110,14 +121,21 @@ void FFNet::train(vector<float *> in, vector<float *> out, int iter)
       iter--;
 
       double SSE = 0;
-      for (i=0;i<in.size();i++)
+      for (i=0;i<tin.size();i++)
       {
-	 float *netOut = calc (in[i]);
+	 double in[topo[0]];
+	 double out[topo[topo.size()-1]];
+	 for (j=0;j<topo[0];j++)
+	    in[j]=tin[i][j];
 	 for (j=0;j<topo[topo.size()-1];j++)
-	    SSE += (netOut[j]-out[i][j])*(netOut[j]-out[i][j]);
+	    out[j]=tout[i][j];
+
+	 double *netOut = calc (in);
+	 for (j=0;j<topo[topo.size()-1];j++)
+	    SSE += (netOut[j]-out[j])*(netOut[j]-out[j]);
       }
       momentum=.9;
-      if (last_error > 0 && (SSE/last_error > 1.04 || worse > 4))
+      if (last_error > 0 && (SSE/last_error > 1.001 /*|| worse > 4*/))
       {
 	 momentum=0;
 	 alpha *= .7;
@@ -135,7 +153,7 @@ void FFNet::train(vector<float *> in, vector<float *> out, int iter)
 	 //cerr << "ce quoi l'probleme??? " << error << " " << last_error << endl;
 	 error=SSE;
       }
-      cout << sqrt(error/in.size()/topo[topo.size()-1]) << "\t" << alpha << endl;
+      cout << (error/tin.size()/topo[topo.size()-1]) << "\t" << alpha << endl;
 
       last_error = error;
    }

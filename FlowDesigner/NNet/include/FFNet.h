@@ -16,14 +16,14 @@ class FFNet : public Object {
    Vector<FFLayer *> layers;
    double error;
    double last_error;
-   float alpha;
-   float momentum;
+   double alpha;
+   double momentum;
   public:
    FFNet(const Vector<int> &_topo);
    FFNet() {}
-   float *calc(const float *input);
+   double *calc(const double *input);
 
-   void learn(float *input, float *output);
+   void learn(double *input, double *output);
 
    void train(vector<float *> in, vector<float *> out, int iter);
 

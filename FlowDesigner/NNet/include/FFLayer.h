@@ -42,7 +42,7 @@ inline double deriv_tanh(double x)
 
    //return 1;
    
-   float c = cosh(atanh(x));
+   double c = cosh(atanh(x));
    return 1/(c*c);
    //return 1/(x*x);
 }
@@ -67,25 +67,25 @@ class FFLayer : public Object {
   public:
    double (*func) (double);
    double (*deriv_func) (double);
-   float *tmp_weights;
-   float *deriv;
+   double *tmp_weights;
+   double *deriv;
   protected:
    int nbNeurons;
    int nbInputs;
-   float *weights;
-   float *value;
-   float *error;
+   double *weights;
+   double *value;
+   double *error;
    string funcType;
-   float *momentum;
+   double *momentum;
   public:
    FFLayer() {};
    FFLayer(int _nbNeurons, int _nbInputs, string type = "tansig");
    ~FFLayer() {delete tmp_weights; delete value; delete weights; delete error; delete deriv;}
-   void update(const float *previous)
+   void update(const double *previous)
       {
 	 for (int i=0;i<nbNeurons;i++)
 	 {
-	    float *w=weights + i*(nbInputs+1);
+	    double *w=weights + i*(nbInputs+1);
 	    value[i]=w[nbInputs];
 	    for (int j=0;j<nbInputs;j++)
 	       value[i] += w[j]*previous[j];
@@ -101,7 +101,7 @@ class FFLayer : public Object {
 	    tmp_weights[i]=0;
 	 }
       }
-   void copyFromTmp(float mom)
+   void copyFromTmp(double mom)
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
@@ -116,11 +116,11 @@ class FFLayer : public Object {
 	    weights[i]-=momentum[i];
 	 }
       }
-   void init(float minmax);
-   float *getValue() {return value;}
-   float *getWeights(int i) {return weights + i*(nbInputs+1);}
-   float *getTmpWeights(int i) {return tmp_weights + i*(nbInputs+1);}
-   float *getError() {return error;}
+   void init(double minmax);
+   double *getValue() {return value;}
+   double *getWeights(int i) {return weights + i*(nbInputs+1);}
+   double *getTmpWeights(int i) {return tmp_weights + i*(nbInputs+1);}
+   double *getError() {return error;}
    void printOn(ostream &out) const;
    void readFrom (istream &in);
 };

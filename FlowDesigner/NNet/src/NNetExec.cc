@@ -75,7 +75,10 @@ public:
       
       //int classID = vq.getClassID(in.begin());
       //const vector<float> &mean = vq[classID];
-      float *netOut = net.calc(in.begin());
+      double tmp[in.size()];
+      for (int i=0;i<in.size();i++)
+	 tmp[i]=in[i];
+      double *netOut = net.calc(tmp);
       
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];
