@@ -98,13 +98,21 @@ void UILink::saveXML(xmlNode *root)
 
 void UILink::build(Network *net)
 {
-   //FIXME: Safer to check here
+   if (!to || !from)
+      throw new GeneralException("Link is not connected at both endes", __FILE__, __LINE__);
+   if (!to->getNode() || !from->getNode())
+      throw new GeneralException("Cannot find node associated with link", __FILE__, __LINE__);
    net->connect(to->getNode()->getName(), to->getName(), 
 		from->getNode()->getName(), from->getName());
 }
 
 void UILink::genCode(ostream &out)
 {
+   if (!to || !from)
+      throw new GeneralException("Link is not connected at both endes", __FILE__, __LINE__);
+   if (!to->getNode() || !from->getNode())
+      throw new GeneralException("Cannot find node associated with link", __FILE__, __LINE__);
+   //No need for run-time check, I think
    out << "   net->connect(\"" << to->getNode()->getName() << "\", \"" << to->getName()
        << "\", \"" << from->getNode()->getName() << "\", \"" << from->getName() << "\");\n\n";
 }

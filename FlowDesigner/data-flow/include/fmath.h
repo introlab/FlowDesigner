@@ -76,7 +76,7 @@ inline float flog(float f)
 }
 
 //Log (base e) rough approximation
-inline void fflogv(float *fin, float *fout, int len)
+inline void fflogv(const float *fin, float *fout, int len)
 {
    build_flog_table();
    FloatManip m;

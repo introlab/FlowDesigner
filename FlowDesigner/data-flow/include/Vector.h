@@ -157,6 +157,8 @@ public:
    
    T *ptr() {return data;}
    
+   const T *ptr() const {return data;}
+   
   protected:
    void constr(T* ptr, const T& val) { new(ptr) T(val);}
    void destr(T* ptr) { ptr->~T(); }
