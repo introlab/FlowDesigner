@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Throw" x="-220.000000" y="100.000000"/>
+    <Node name="node2" type="Constant" x="-319.000000" y="100.000000">
+      <Parameter name="VALUE" type="string" value="tata"/>
+    </Node>
+    <Node name="node3" type="Catch" x="-88.000000" y="109.000000"/>
+    <Link from="node2" output="VALUE" to="node1" input="INPUT"/>
+    <Link from="node1" output="OUTPUT" to="node3" input="INPUT"/>
+    <Link from="node1" output="OUTPUT" to="node3" input="CATCH"/>
+    <NetOutput name="OUTPUT" node="node3" terminal="OUTPUT"/>
+  </Network>
+</Document>
