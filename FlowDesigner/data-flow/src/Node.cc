@@ -208,7 +208,7 @@ void Node::initialize ()
       }
       
       specificInitialize();
-      parameters.checkUnused();
+      //parameters.checkUnused();
   
       vector<NodeInput>::iterator in;
 
