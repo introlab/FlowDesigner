@@ -5,6 +5,7 @@
 #include <list>
 #include <sstream>
 #include "vflow_pref.h"
+#include "flow_version.h"
 
 void GUIDocument_codegen(GUIDocument *doc);
 

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "ObjectParser.h"
 #include "Vector.h"
-
+#include "misc.h"
 
 DECLARE_TYPE(FFLayer)
 DECLARE_TYPE(Vector<FFLayer>)
@@ -91,6 +91,7 @@ void FFLayer::init(float minmax)
 
 void FFLayer::init(double *mean, double *std)
 {
+   cerr << "init layer\n";
    float meanSum = 0;
    for (int j=0;j<nbInputs;j++)
       meanSum += mean[j];
@@ -100,10 +101,10 @@ void FFLayer::init(double *mean, double *std)
       for (int j=0;j<nbInputs;j++)
       {
 	 cerr << std[j] << " ";
-	 weights[i*(nbInputs+1) + j] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/(1e-5+std[j]);
-	 meanSum += weights[i*(nbInputs+1) + j]*mean[j];
+	 weights[i*(nbInputs+1) + j] = gauss_rand(sqrt(1.0/nbInputs)/(1e-5+std[j]));
+	 meanSum += weights[i*(nbInputs+1) + j] * mean[j];
       }
-      weights[i*(nbInputs+1) + nbInputs] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1) - meanSum;
+      weights[i*(nbInputs+1) + nbInputs] = gauss_rand(sqrt(3.0/nbInputs)) - meanSum;
    }
    cerr << endl;
 }

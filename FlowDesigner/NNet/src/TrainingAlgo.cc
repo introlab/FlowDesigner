@@ -20,7 +20,7 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
    int k=1;
 
    int nbWeights = 0;
-
+   cerr << "training\n";
    const float *weights = net->getWeights();
    const Vector<RCPtr<FFLayer> > &layers=net->getLayers();
    const Vector<int> &topo = net->getTopo();

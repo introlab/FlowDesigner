@@ -8,10 +8,15 @@
 #  include <config.h>
 #endif
 
+#include <stdlib.h>
 
-int version_check(const char *vers);
+#define OVERFLOW_ABI_VERSION "0.6.0pre-20011105"
 
-static int dummy_version_check = version_check(OVERFLOW_VERSION);
+extern "C" {
+int version_check(const char *vers, const char *abi_vers, const char *unused_vers=NULL);
+}
+
+static int dummy_version_check = version_check(OVERFLOW_VERSION, OVERFLOW_ABI_VERSION);
 
 
 #endif

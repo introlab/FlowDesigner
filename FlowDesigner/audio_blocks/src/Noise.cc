@@ -6,6 +6,7 @@
 #include "Vector.h"
 #include <stdlib.h>
 #include <math.h>
+#include "misc.h"
 
 class Noise;
 
@@ -26,7 +27,8 @@ DECLARE_NODE(Noise)
  *
  * @parameter_name TYPE
  * @parameter_type string
- * @parameter_description Noise type (UNIFORM, GAUSS)
+ * @parameter_description Noise type (UNIFORM, GAUSS, TRIANGLE)
+ * @parameter_value GAUSS
  *
  * @parameter_name SD
  * @parameter_type float
@@ -83,7 +85,9 @@ public:
 	 }
       } else if (type == gauss)
       {
-	 for (int i=0;i<(length+1)>>1;i++)
+	 for (int i=0;i<length;i++)
+	    output[i]=gauss_rand(sd);
+/*	 for (int i=0;i<(length+1)>>1;i++)
 	 {
 	    float U1, U2, S;
 	    do {
@@ -96,6 +100,7 @@ public:
 	    output[i]          = sd*sqrt(-2 * log(S) / S) * U1;
 	    output[length-i-1] = sd*sqrt(-2 * log(S) / S) * U2;
 	 }
+*/
       } else 
 	 throw new NodeException(this, "Unknown function type", __FILE__, __LINE__);
    }

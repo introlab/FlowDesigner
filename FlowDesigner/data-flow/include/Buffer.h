@@ -8,7 +8,6 @@
 #include "Exception.h"
 #include <typeinfo>
 #include <vector>
-#include "misc.h"
 
 /**A rotating buffer implementation.
    This buffer keeps the last N lines (frames) it has*/
@@ -142,13 +141,16 @@ inline void Buffer::printOn(ostream &out) const
    int i;
    //cerr << "printing... currentPos = " << currentPos << " bufferLength = " << bufferLength << endl;
    out << "<Buffer" << endl;
-   for (i=max(0,currentPos-bufferLength+1);i<=currentPos;i++)
+   for (i=currentPos-bufferLength+1;i<=currentPos;i++)
    {
-      out << "< " << i << " ";
-      if (isValid(i))
-	 out << get(i);
-      else
-	 out << "nil";
+      if (i>=0)
+      {
+	 out << "< " << i << " ";
+	 if (isValid(i))
+	    out << get(i);
+	 else
+	    out << "nil";
+      }
    }
    out << " >" << endl;
 }

@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <math.h>
+#include <stdlib.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -71,7 +72,10 @@ public:
 #endif
 
 
+//Inline function that "template recursively" calculates the log-base2 
+//of an N-bit integer in O(log2(N)) 
 
+//Template argument is N/2
 template<int M2>
 inline int _log2(int i)
 {
@@ -98,5 +102,25 @@ inline int log2(int i)
 }
 
 
+
+/**Gaussian random generator*/
+/*sd is the gaussian standard deviation, x is the generated random number*/
+inline float gauss_rand(float sd)
+{
+   float U1, U2, S, x;
+   do {
+      U1 = float(rand())/float(RAND_MAX);
+      U2 = float(rand())/float(RAND_MAX);
+      U1 = 2*U1-1;
+      U2 = 2*U2-1;
+      S = U1*U1 + U2*U2;
+   } while (S >= 1 || S == 0.0f);
+   x = sd*sqrt(-2 * log(S) / S) * U1;
+
+   //In the algorithm, it looks like we could compute y also, but I'm
+   //not sure it's really "independent" of x, right?
+   //y = sd*sqrt(-2 * log(S) / S) * U2;
+   return x;
+}
 
 #endif
