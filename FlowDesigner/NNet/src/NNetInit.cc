@@ -19,6 +19,9 @@
 #include "ObjectRef.h"
 #include "FFNet.h"
 #include "Buffer.h"
+#include <sstream.h>
+#include "ObjectParser.h"
+#include "Vector.h"
 
 class NNetInit;
 
@@ -38,6 +41,12 @@ DECLARE_NODE(NNetInit)
  * @output_name OUTPUT
  * @output_description No description available
  *
+ * @parameter_name TOPO
+ * @parameter_description No description available
+ *
+ * @parameter_name FUNCTIONS
+ * @parameter_description No description available
+ *
 END*/
 
 
@@ -54,6 +63,9 @@ protected:
    /**The ID of the 'OUTPUT' output*/
    int outputID;
 
+   Vector<int> topo;
+      
+   vector<string> functions;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetInit(string nodeName, ParameterSet params)
@@ -62,6 +74,23 @@ public:
       outputID = addOutput("OUTPUT");
       trainInID = addInput("TRAIN_IN");
       trainOutID = addInput("TRAIN_OUT");
+
+      //String topoStr = object_cast<String> (parameters.get("TOPO"));
+      //String funcStr = object_cast<String> (parameters.get("FUNCTIONS"));
+      
+      istringstream str_vector(object_cast <String> (parameters.get("TOPO")));
+      str_vector >> topo;
+
+      istringstream str_func(object_cast <String> (parameters.get("FUNCTIONS")));
+      str_func >> functions;
+
+      //ObjectRef Otopo;
+      //istringstream toposs(string(topoStr));
+      //toposs >> topo;
+      //topo = *Otopo;
+
+      //ostringstream funcss(string(funcStr));
+      //funcss >> functions;
       
    }
       
@@ -84,7 +113,7 @@ public:
       for (i=0;i<outBuff.getCurrentPos();i++)
 	 tout[i]=object_cast <Vector<float> > (outBuff[i]).begin();
       
-      Vector<int> topo(4);
+      /*Vector<int> topo(4);
       topo[0] = 16;
       topo[1] = 12;
       topo[2] = 12;
@@ -92,7 +121,9 @@ public:
       vector<string> functions(3);
       functions[0] = "tansig";
       functions[1] = "tansig";
-      functions[2] = "lin";
+      functions[2] = "lin";*/
+      //cerr << topo << endl;
+      //cerr << functions << endl;
       FFNet *net = new FFNet(topo, functions, tin, tout);
 
       out[count] = ObjectRef(net);
