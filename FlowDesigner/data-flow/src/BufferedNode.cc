@@ -96,7 +96,7 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
       Buffer &outBuffer = *(outputs[output_id].buffer);
       if (inOrder)
       {
-	 for (int i=processCount+1;i<=count;i++)
+	 for (int i= outBuffer.getCurrentPos() + 1;i<=count;i++)
 	    calculate (output_id, i, outBuffer);
          if (count > processCount)
             processCount = count;
