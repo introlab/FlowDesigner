@@ -34,6 +34,9 @@
 #include <pthread.h>
 #endif
 
+//using namespace std;
+//namespace DataFlow {
+
 /**Definition of the type we need for the dictionaries*/
 typedef map<string, Node*>::value_type nodeEntry;
 typedef map<string, _NodeFactory*>::value_type factoryEntry; 
@@ -344,5 +347,6 @@ protected:
 
 #endif
 
+//} //namespace DataFlow 
 
 #endif

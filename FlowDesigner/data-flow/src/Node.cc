@@ -19,6 +19,11 @@
 #include <typeinfo>
 #include "Object.h"
 
+//using namespace std;
+
+//using namespace DataFlow;
+//namespace DataFlow {
+
 //our static factory dictionary
 map<string,_NodeFactory*> &Node::factoryDictionary()
 { 
@@ -280,3 +285,6 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
    }
    return 0;
 };
+
+
+//} //namespace DataFlow
