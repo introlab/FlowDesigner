@@ -14,6 +14,9 @@ union FloatManip {
       unsigned int i;
 };
 
+#ifndef M_LN2
+#define M_LN2 0.69314718055994530942
+#endif
 
 /*#define FLOGLOOKUP2SIZE 8192
 #define FLOGLOOKUP2SHIFT 10

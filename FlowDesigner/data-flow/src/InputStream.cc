@@ -2,6 +2,7 @@
 
 #include "BufferedNode.h"
 #include "net_types.h"
+#include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -56,8 +57,10 @@ public:
 	    type = cpp;
 	 else if (strType == "FILE")
 	    type = fptr;
+#ifndef WIN32
 	 else if (strType == "fd")
 	    type = fd;
+#endif
 	 else 
 	    throw new NodeException(NULL, "Bad stream type: " + strType, __FILE__, __LINE__);
       }
@@ -90,6 +93,7 @@ public:
 	    openedFile = ObjectRef (new FILEPTR(file));
 	 }
 	    break;
+#ifndef WIN32
 	 case fd:
 	 {
 	    int file = open (fileName.c_str(), O_RDONLY);
@@ -98,6 +102,7 @@ public:
 	    openedFile = ObjectRef (new FILEDES(file));
 	 }
 	    break;
+#endif
       }
       out[count] = openedFile;
    }

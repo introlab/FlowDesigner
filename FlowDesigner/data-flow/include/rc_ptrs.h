@@ -85,7 +85,7 @@ public:
    typedef X* pointer_type;
    typedef size_t size_type;
 
-#ifndef WIN32
+#ifndef BROKEN_TEMPLATES
 protected:
 #endif
    X* ptr;
@@ -226,7 +226,7 @@ protected:
       // cerr << "crisse de vraiment grosse erreur\n";
    }
 
-#ifndef WIN32
+#ifndef BROKEN_TEMPLATES
    template <class Z>
    friend class RCPtr;
 #endif

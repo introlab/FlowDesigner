@@ -2,7 +2,11 @@
 
 #include "net_types.h"
 #include <stdio.h>
+
+#ifndef WIN32
 #include <unistd.h>
+#endif /*ifdef WIN32*/
+
 #include <iostream>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -35,6 +39,7 @@ FILEPTR::~FILEPTR()
    fclose(value);
 }
 
+#ifndef WIN32
 
 FILEDES::FILEDES(int fd) 
    : GenericType<int> (fd)
@@ -50,3 +55,4 @@ FILEDES::~FILEDES()
 }
 
 
+#endif /*ifdef WIN32*/

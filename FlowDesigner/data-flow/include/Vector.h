@@ -36,7 +36,7 @@ public:
 
    static string GetClassName() 
    {
-      string name = Object::GetClassName<Vector<T> >();
+      string name = ObjectGetClassName<Vector<T> >();
       if (name == "unknown")
 	 return string("Vector");
       //return string("Vector<") + Object::GetClassName<T>() + ">";
@@ -346,7 +346,7 @@ istream &operator >> (istream &in, Vector<T> &vec)
    char ch;
    in >> ch;
 
-   string expected = Object::GetClassName<Vector<T> >();
+   string expected = ObjectGetClassName<Vector<T> >();
 
    if (ch == '<')
    {

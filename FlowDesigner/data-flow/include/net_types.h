@@ -3,7 +3,6 @@
 #ifndef _NETTYPES_H_
 #define _NETTYPES_H_
 
-using namespace std;
 
 #include "Object.h"
 #include <iostream>
@@ -13,6 +12,8 @@ using namespace std;
 #include "ObjectPool.h"
 #include "ObjectParser.h"
 #include "typetraits.h"
+
+using namespace std;
 
 /** This is a generic type that Overflow will handle. Subclass GenericType if
     you want to add specific operations and operators */
@@ -187,6 +188,8 @@ class FILEPTR : public GenericType<FILE *> {
    ~FILEPTR();
 };
 
+#ifndef WIN32
+
 //typedef NetCType<FILE *> FILEPTR;
 class FILEDES : public GenericType<int> {
   public: 
@@ -194,6 +197,9 @@ class FILEDES : public GenericType<int> {
    FILEDES(const string &filename, int mode);
    ~FILEDES();
 };
+
+#endif /*ifdef WIN32*/
+
 
 extern ObjectRef TrueObject;
 extern ObjectRef FalseObject;

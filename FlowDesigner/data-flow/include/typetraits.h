@@ -52,11 +52,15 @@ _DEF_OBJECTPTR_TYPE(ObjectRef)
 
 //_DEF_C_TYPE(string)
 
+#ifndef BROKEN_TEMPLATES
+
 template<class T>struct TypeTraits<complex<T> > {enum {kind=TTraits::Basic};};
 template<class T>struct TypeTraits<RCPtr<T> > {enum {kind=TTraits::ObjectPointer};};
 
 //KLUDGE: This is a kludge but it should get the right traits for pointer types
 template<class T>struct TypeTraits<T*> {enum {kind=TTraits::ObjectPointer+TypeTraits<T>::kind};};
+
+#endif /*ifndef BROKEN_TEMPLATES*/
 
 
 #endif

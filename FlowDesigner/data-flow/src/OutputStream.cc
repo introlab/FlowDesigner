@@ -2,6 +2,7 @@
 
 #include "BufferedNode.h"
 #include "net_types.h"
+#include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -56,8 +57,10 @@ public:
 	    type = cpp;
 	 else if (strType == "FILE")
 	    type = fptr;
+#ifndef WIN32
 	 else if (strType == "fd")
 	    type = fd;
+#endif
 	 else 
 	    throw new NodeException(NULL, "Bad stream type: " + strType, __FILE__, __LINE__);
       }
@@ -75,14 +78,31 @@ public:
       switch (type)
       {
 	 case cpp:
-	    openedFile = ObjectRef (new OFStream(fileName.c_str()));
-	    break;
+	 {
+	    OFStream *file = new OFStream(fileName.c_str());
+	    if (file->fail())
+	       throw new NodeException(this, "OutputStream: cannot open file: " + fileName, __FILE__, __LINE__);
+	    openedFile = ObjectRef (file);
+	 }
+	 break;
 	 case fptr:
-	    openedFile = ObjectRef (new FILEPTR(fopen (fileName.c_str(), "w")));
-	    break;
+	 {
+	    FILE *file = fopen (fileName.c_str(), "w");
+	    if (!file)
+	       throw new NodeException(this, "OutputStream: cannot open file: " + fileName, __FILE__, __LINE__);
+	    openedFile = ObjectRef (new FILEPTR(file));
+	 }
+	 break;
+#ifndef WIN32
 	 case fd:
-	    openedFile = ObjectRef (new FILEDES(open (fileName.c_str(), O_WRONLY)));
-	    break;
+	 {
+	    int file = open (fileName.c_str(), O_WRONLY);
+	    if (file == -1)
+	       throw new NodeException(this, "OutputStream: cannot open file: " + fileName, __FILE__, __LINE__);
+	    openedFile = ObjectRef (new FILEDES(file));
+	 }
+	 break;
+#endif
       }
       out[count] = openedFile;
    }
@@ -92,6 +112,4 @@ protected:
    OutputStream() {throw new GeneralException("OutputStream copy constructor should not be called",__FILE__,__LINE__);}
 
 };
-
-
 

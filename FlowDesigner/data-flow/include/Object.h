@@ -102,8 +102,6 @@ public:
    /**Returns the name of the class of the Object*/
    virtual string className() const;
    
-   template<class T>
-   static string GetClassName();
 
    static const ObjectRef nilObject;
    static const ObjectRef before_beginningObject;
@@ -112,7 +110,7 @@ public:
    /**Creates an instance of an object by class name*/
    static ObjectRef newObject(const string &objType);
 
-#ifndef WIN32 /*Workaround for a compiler crash */
+#ifndef BROKEN_TEMPLATES /*Workaround for a compiler crash */
 
    /**Registers the object name*/
    template<class T>
@@ -122,7 +120,9 @@ public:
       TypeidDictionary()[&typeid(T)] = factory;
       return 0;
    }
-private:
+
+/*Because of f*ck*ng MSVC++*/
+//private:
 
 #endif
 
@@ -131,14 +131,14 @@ private:
 };
 
 
-#ifdef WIN32 /*Workaround for a compiler crash */
+#ifdef BROKEN_TEMPLATES /*Workaround for a compiler crash */
 
 /**Registers the object name*/
 template<class T>
 static int ObjectaddObjectType(const string &objType, _ObjectFactory *factory)
 {
-   ObjectFactoryDictionary()[objType] = factory;
-   TypeidDictionary()[&typeid(T)] = factory;
+   Object::ObjectFactoryDictionary()[objType] = factory;
+   Object::TypeidDictionary()[&typeid(T)] = factory;
    return 0;
 }
 
@@ -162,11 +162,11 @@ public:
 
 
 
-
+/* This used to be Object::GetClassName<T>() but it changed because of stupid MSVC++ bugs*/
 template<class T>
-string Object::GetClassName()
+string ObjectGetClassName()
 {
-   map<const type_info *, _ObjectFactory*> &m = TypeidDictionary();
+   map<const type_info *, _ObjectFactory*> &m = Object::TypeidDictionary();
    map<const type_info *, _ObjectFactory*>::iterator found = m.find(&typeid(T));
    if (found != m.end())
       return found->second->getName();
@@ -181,7 +181,7 @@ string Object::GetClassName()
 
 
 
-#ifndef WIN32 /*Workaround for a compiler crash */
+#ifndef BROKEN_TEMPLATES /*Workaround for a compiler crash */
 
 #define DECLARE_TYPE(type) static int dummy_init_for ## type = \
                Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
@@ -205,7 +205,7 @@ string Object::GetClassName()
                ObjectaddObjectType<type > (str, new ObjectFactory<type > (str));
 
 
-#endif /*WIN32*/
+#endif /*BROKEN_TEMPLATES*/
 
 
 #endif
