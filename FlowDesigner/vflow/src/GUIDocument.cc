@@ -111,13 +111,14 @@ gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
   gtk_widget_show (label1);
   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0), label1);
 
+  gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
   gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, label1);
 
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), vbox2, label1);
-  gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
+  //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), vbox2, label1);
 
   less_print("VFlow " VERSION " by Jean-Marc Valin & Dominic Letourneau");
   less_print("--");
+  gtk_notebook_set_current_page (GTK_NOTEBOOK(notebook), -1);
   
 }
 

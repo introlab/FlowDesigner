@@ -352,9 +352,9 @@ void open_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
   //until user_data (2nd arg works)
   vflow = vflowGUI::instance();
 
-   GtkWidget *ssel = gtk_file_selection_new("Open file...");
-   
-   gtk_object_set_user_data(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),ssel);
+  GtkWidget *ssel = gtk_file_selection_new("Open file...");
+  
+  gtk_object_set_user_data(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),ssel);
 
    gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),
                       "clicked", (GtkSignalFunc)file_open_ok_sel, 
@@ -365,6 +365,7 @@ void open_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
                       ssel);
       
    gtk_widget_show(ssel);
+
 }
 
 /**********************************************************************************************************

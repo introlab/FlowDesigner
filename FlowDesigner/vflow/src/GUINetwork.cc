@@ -167,6 +167,8 @@ void GUINetwork::create()
    
    */
 
+     gtk_notebook_set_current_page (GTK_NOTEBOOK(notebook1), -1);
+
 }
 
 
