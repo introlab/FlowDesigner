@@ -69,10 +69,14 @@ void GUILink::grab(guint32 etime)
 gint GUILink::event(GdkEvent *event)
 {
    //return TRUE;
+  static double new_px, new_py;
    double new_x, new_y;
    GdkCursor *fleur;
    double item_x, item_y;
    GnomeCanvasPoints *points;
+
+
+
   
    item_x = event->button.x;
    item_y = event->button.y;
@@ -89,6 +93,11 @@ gint GUILink::event(GdkEvent *event)
             delete this;
             return TRUE;
          }
+	 
+	 new_px = item_x;
+	 new_py = item_y;
+
+
          break;
       case 2:
 	if (event->button.state & GDK_SHIFT_MASK) {
@@ -124,6 +133,31 @@ gint GUILink::event(GdkEvent *event)
          }
          gnome_canvas_item_set(item, "points", points, NULL);
       }
+      else {
+	
+	if (event->motion.state & GDK_BUTTON1_MASK) {
+
+	  cout<<"should redraw distorted line"<<endl;
+
+	  points = gnome_canvas_points_new(3);
+	  points->coords[0]=x1;
+	  points->coords[1]=y1;
+	  
+	  points->coords[2]=item_x;
+	  points->coords[3]=item_y;
+	  
+	  points->coords[4]=x2;
+	  points->coords[5]=y2;
+	  
+	  gnome_canvas_item_set(item, "points", points, NULL);
+
+	  new_px = item_x;
+	  new_py = item_y;
+
+
+	}
+      }
+
       break;
           
    case GDK_BUTTON_RELEASE:
@@ -141,8 +175,11 @@ gint GUILink::event(GdkEvent *event)
                complete = true;
             } else {
                /*committing suicide*/
+
                delete this;
                return TRUE;
+
+
             }
          } else {
             UITerminal *term = dynamic_cast<GUINetwork *>(net)->isNearInputTerminal(x2,y2);
@@ -158,6 +195,7 @@ gint GUILink::event(GdkEvent *event)
                complete = true;
             } else {
                /*committing suicide*/
+
                delete this;
                return TRUE;
             }
@@ -165,6 +203,13 @@ gint GUILink::event(GdkEvent *event)
          net->addLink(this);
          complete = true;
       }
+      else {
+	cout<<"should insert new point "<<endl;
+	cout<<"item_x "<<item_x<<endl;
+	cout<<"item_y "<<item_y<<endl;
+
+      }
+
       break;
       
    default:
