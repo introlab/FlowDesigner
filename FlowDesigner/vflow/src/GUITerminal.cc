@@ -18,6 +18,7 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
   GnomeCanvasGroup *group = dynamic_cast<GUINode *>(node)->getGroup();
    
 
+  //creating the ellipse
   item = gnome_canvas_item_new(group,
 			       gnome_canvas_ellipse_get_type(),
 			       "x1", x-2.0,
@@ -32,8 +33,34 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
   gtk_signal_connect(GTK_OBJECT(item), "event",
 		     (GtkSignalFunc) terminal_handler,
 		     this);
+
+  //creating the text
+  if (isInput) {
+    item_text = gnome_canvas_item_new(group,
+				      gnome_canvas_text_get_type(),
+				      "x", x + 2,
+				      "y", y - 5,
+				      "text", name.c_str(),
+				      "anchor", GTK_ANCHOR_WEST ,
+				      "fill_color", "blue",
+				      "font", "fixed",
+				      NULL);
   
-  
+  }
+
+  else {
+    item_text = gnome_canvas_item_new(group,
+				      gnome_canvas_text_get_type(),
+				      "x", x - 2,
+				      "y", y - 5,
+				      "text", name.c_str(),
+				      "anchor", GTK_ANCHOR_EAST ,
+				      "fill_color", "blue",
+				      "font", "fixed",
+				      NULL);
+
+  }
+
   
 }
 
@@ -46,9 +73,6 @@ gint GUITerminal::event(GdkEvent *event)
   item_x = event->button.x;
   item_y = event->button.y;
   //gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
-
-
-  updatePos();
 
 
   switch (event->type) 

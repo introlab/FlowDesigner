@@ -8,43 +8,7 @@
 #include <string>
 #include <tree.h>
 #include <fstream.h>
-
-
-class TerminalWidget {
-
- public:
-
-  //constructor
-  TerminalWidget(GnomeCanvasItem *terminal, GnomeCanvasItem *text, bool display = true)
-    :m_terminal(terminal),m_text(text), m_display(display){
-  }
-
-  //copy constructor
-  TerminalWidget(const TerminalWidget &cpy) {
-    m_terminal = cpy.m_terminal;
-    m_text = cpy.m_text;
-    m_display = cpy.m_display;
-  }
-
-  //operator =
-  TerminalWidget & operator = (const TerminalWidget &eqs) {
-    m_terminal = eqs.m_terminal;
-    m_text = eqs.m_text;
-    m_display = eqs.m_display;
-    return *this;
-  }
-
-  //destructor
-  ~TerminalWidget() {;}
-
-  //the terminal (ellipse)
-  GnomeCanvasItem *m_terminal;
-  //the terminal name
-  GnomeCanvasItem *m_text;
-  //display text flag
-  bool m_display;
-
-};
+#include "GUITerminal.h"
 
 
 class GUINetwork;
@@ -60,11 +24,6 @@ class GUINode : public UINode {
   
   bool dragging;
   
-
-  //widgets to draw
-  vector<TerminalWidget> m_input_widgets;
-  vector<TerminalWidget> m_output_widgets;
-
   GnomeCanvasItem *nodeRect;
   GnomeCanvasItem *nodeText;
 

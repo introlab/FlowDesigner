@@ -432,10 +432,6 @@ UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type)
 void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) {
 
   double x1=0,y1=0,x2=0,y2=0;
-
-
-  GnomeCanvasItem *item1 = NULL;
-  GnomeCanvasItem *item2 = NULL;
   
   gnome_canvas_item_get_bounds(nodeRect, &x1,&y1,&x2,&y2);
   
@@ -450,56 +446,14 @@ void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type)
 
   case UINetTerminal::INPUT :
 
-
-    
-
-    item1 = gnome_canvas_item_new(group,
-				  gnome_canvas_text_get_type(),
-				  "x", x1,
-				  "y", 0.0,
-				  "text", _name.c_str(),
-				  "anchor", GTK_ANCHOR_EAST ,
-				  "fill_color", "blue",
-				  "font", "fixed",
-				  NULL);
-
-
-    inputs.insert(inputs.end(), new GUITerminal (info, 
-						 this, 
-						 true,
-						 x1,
-						 y1));
-
-    item2 = dynamic_cast<GUITerminal*>(inputs.back())->getItem();
-		  
-
-    //keeping those widgets
-    m_input_widgets.push_back(TerminalWidget(item2,item1,true));
+    inputs.insert(inputs.end(), new GUITerminal (info, this, true, x1, y1));
     
     break;
 
   case UINetTerminal::OUTPUT:
 
-    item1 = gnome_canvas_item_new(group,
-				  gnome_canvas_text_get_type(),
-				  "x", x2,
-				  "y", 0.0,
-				  "text", _name.c_str(),
-				  "anchor", GTK_ANCHOR_WEST ,
-				  "fill_color", "blue",
-				  "font", "fixed",
-				  NULL);
-
-
     outputs.insert(outputs.end(), new GUITerminal (info, this, false, x2,y2 ));
     
-    item2 = dynamic_cast<GUITerminal*>(outputs.back())->getItem();
-
-
-    //keeping those widgets
-    m_output_widgets.push_back(TerminalWidget(item2,item1,true));
-
-
     break;
 
   default:
@@ -550,52 +504,13 @@ void GUINode::initialize_widgets() {
 
   //creating input items
   for (int i=0;i<inputname.size();i++) {
-
-    
-    item1 = gnome_canvas_item_new(group,
-				  gnome_canvas_text_get_type(),
-				  "x", x1,
-				  "y", 0.0,
-				  "text", inputname[i]->name.c_str(),
-				  "anchor", GTK_ANCHOR_EAST ,
-				  "fill_color", "blue",
-				  "font", "fixed",
-				  NULL);
-    
     inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1,y1));
-    
-    item2 = dynamic_cast<GUITerminal*>(inputs.back())->getItem();
-    
-    //keeping those widgets
-    m_input_widgets.push_back(TerminalWidget(item2,item1,true));
+  }
 
-		  
-    
-  }//inputs
-
+  //creating output items
   for (int i=0;i<outputname.size();i++) {
-
-    item1 = gnome_canvas_item_new(group,
-				  gnome_canvas_text_get_type(),
-				  "x", x2,
-				  "y", 0.0,
-				  "text", outputname[i]->name.c_str(),
-				  "anchor", GTK_ANCHOR_WEST ,
-				  "fill_color", "blue",
-				  "font", "fixed",
-				  NULL);
-
-
     outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2, y2));
-
-    item2 = dynamic_cast<GUITerminal*>(outputs.back())->getItem();
-
-    
-    //keeping those widgets
-    m_output_widgets.push_back(TerminalWidget(item2,item1,true));
-
-
-  } //outputs
+  }
 
  
   //creating rectangle
@@ -624,112 +539,64 @@ void GUINode::initialize_widgets() {
 
 
 void GUINode::redraw() {
-
-  double x1,y1,x2,y2;
+  
   double tx1,ty1,tx2,ty2;
   double rx1,ry1,rx2,ry2;
-  double min_x1 = -1;
-  double max_x2 = -1;
-
-  const double ellipse_radius =  2.0;
-
-
+  double max_inputs = 10;
+  double max_outputs = 10;
+  double start_y1;
+  double start_y2;
 
   //the node Text is the reference
   gnome_canvas_item_get_bounds (nodeText,&tx1,&ty1,&tx2,&ty2);
 
-  rx1 = tx1 - 5;
-  ry1 = ty1 - 5;
-  rx2 = tx2 + 5;
-  ry2 = ty2 + 5;
+  //rectangle bounding box
+  rx1 = tx1;
+  ry1 = ty1;
+  rx2 = tx2;
+  ry2 = ty2;
 
 
-  //let's find the maximum width of the inputs
-  for (int i = 0; i < m_input_widgets.size(); i++) {
-   
-    //position text
-    gnome_canvas_item_set(m_input_widgets[i].m_text,
-			  "x",(tx1 - 5),
-			  "y",(ty1 + 15 * i),
-			  NULL);
+  //centering on label
 
-   
-    
-    gnome_canvas_item_get_bounds (m_input_widgets[i].m_text,&x1,&y1,&x2,&y2);
+  start_y1 = (ty1 + ty2) / 2.0 - (inputs.size() -1)* 15.0 / 2.0;
+  start_y2 = (ty1 + ty2) / 2.0 - (outputs.size() -1)* 15.0 / 2.0;
 
 
-    //position terminal
-    gnome_canvas_item_set(m_input_widgets[i].m_terminal,
-			  "x1",(x1 - (5 + ellipse_radius)),
-			  "y1",((y2 + y1) / 2.0) - ellipse_radius,
-			  "x2",(x1 - (5 - ellipse_radius)),
-			  "y2",((y2 + y1) / 2.0) + ellipse_radius,
-			  NULL);
-
-    //updating rectangle boundaries
-    rx1 = min (rx1, x1 - 5);
-    ry1 = min (ry1, y1 - 5);
-    ry2 = max (ry2, y2 + 5);
-
-    if (min_x1 != -1) {
-      min_x1 = min(min_x1, x1 - 5);
-    }
-    else {
-      min_x1 = x1 - 5;
-    }
-
-  }//inputs
-
-  //equalizing input terminals
-  for (int i = 0; i < m_input_widgets.size(); i++) {
-    gnome_canvas_item_set(m_input_widgets[i].m_terminal,
-			  "x1",min_x1 - ellipse_radius,
-			  "x2",min_x1 + ellipse_radius,NULL);
+  //finding max size for text + input terminal
+  for (int i = 0; i < inputs.size(); i++) {
+    max_inputs = max(max_inputs,dynamic_cast<GUITerminal*>(inputs[i])->getWidth() + 10);    
   }
 
+  //finding max size for text + output terminal
+  for (int i = 0; i < outputs.size(); i++) {
+    max_outputs = max(max_outputs,dynamic_cast<GUITerminal*>(outputs[i])->getWidth() + 10);
+  }
+
+
+  //let's position the inputs
+  for (int i = 0; i < inputs.size(); i++) {   
+    //position text & terminal
+    dynamic_cast<GUITerminal*>(inputs[i])->setAbsPos(tx1 - max_inputs, start_y1 + 15 * (i));
+  }//inputs
 
 
   //let's find the maximum width of the output
-  for (int i = 0; i < m_output_widgets.size(); i++) {
-    
-    //position text
-    gnome_canvas_item_set(m_output_widgets[i].m_text,
-			  "x",(tx2 + 5),
-			  "y",(ty1 + 15 * i),
-			  NULL);
-
-   
-
-    gnome_canvas_item_get_bounds (m_output_widgets[i].m_text,&x1,&y1,&x2,&y2);
-
-
-    //position terminal
-    gnome_canvas_item_set(m_output_widgets[i].m_terminal,
-			  "x1",(x2 + (5 - ellipse_radius)),
-			  "y1",((y2 + y1) /2.0) - ellipse_radius,
-			  "x2",(x2 + (5 + ellipse_radius)),
-			  "y2",((y2 + y1) /2.0) + ellipse_radius,
-			  NULL);
-
-    rx2 = max(rx2,x2 + 5);
-    ry2 = max(ry2,y2 + 5);
-
-    if (max_x2 != -1) {
-      max_x2 = max(max_x2,x2 + 5);
-    }
-    else {
-      max_x2 = x2 + 5;
-    }
-
-
+  for (int i = 0; i < outputs.size(); i++) {
+    //position text & terminal
+    dynamic_cast<GUITerminal*>(outputs[i])->setAbsPos(tx2 + max_outputs, start_y2 + 15 * (i));
   }//outputs
 
-  //equalizing output terminals
-  for (int i = 0; i < m_output_widgets.size(); i++) {
-    gnome_canvas_item_set(m_output_widgets[i].m_terminal,
-			  "x1",max_x2 - ellipse_radius,
-			  "x2",max_x2 + ellipse_radius,NULL);
-  }
+
+
+  rx1 -= max_inputs; 
+  rx2 += max_outputs;
+
+  //dont forget text size
+  ry1 = min(start_y1,start_y2) - 10;
+  ry2 = min(start_y1,start_y2) + 15.0 * max(inputs.size() -1 ,outputs.size() - 1) + 10;
+
+
   
   //updating rectangle
   gnome_canvas_item_set(nodeRect,
@@ -738,15 +605,6 @@ void GUINode::redraw() {
 			"x2",rx2,
 			"y2",ry2,
 			NULL);
-
-
-  //centering text (this is buggy)
-  /*
-  gnome_canvas_item_set(nodeText,
-			"x",(rx1 + rx2) / 2.0,
-			"y",(ry1 + ry2) / 2.0,
-			NULL);
-  */
 
 
 }

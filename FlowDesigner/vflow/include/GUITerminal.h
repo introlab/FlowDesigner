@@ -18,11 +18,14 @@ protected:
    /**The item that corresponds to the terminal*/
    GnomeCanvasItem *item;
 
+   GnomeCanvasItem *item_text;
+
+
 
 public:
 
    GnomeCanvasItem * getItem() {return item;}
-
+   
    GUITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
    ~GUITerminal() {}
@@ -52,17 +55,49 @@ public:
    void updatePos() {
 
      double x1,y1,x2,y2;
-     
-     
+
      gnome_canvas_item_get_bounds(item,&x1,&y1,&x2,&y2);
      
      x = (x1+x2) /2.0;
-     y = (y1+y2) /2.0;
-     
-
-
+     y = (y1+y2) /2.0;     
    }
 
+   void setAbsPos(double x1, double y1) {
+
+     x = x1;
+     y = y1;
+
+
+     gnome_canvas_item_set(item,
+			   "x1",x1 - 2,
+			   "y1",y1 - 2,
+			   "x2",x1 + 2,
+			   "y2",y1 + 2,NULL);
+
+     
+     if (isInput) {
+       gnome_canvas_item_set(item_text,
+			     "x",x + 2,
+			     "y",y - 0.5,NULL);
+     }
+     else {
+       gnome_canvas_item_set(item_text,
+			     "x",x - 2,
+			     "y",y - 0.5,NULL);
+     }
+			 
+   }
+
+
+   double getWidth() {
+
+     double x1,y1,x2,y2;
+
+     gnome_canvas_item_get_bounds(item_text,&x1,&y1,&x2,&y2);
+
+     return x2 - x1 + 2;
+   }
+   
 
 
 };
