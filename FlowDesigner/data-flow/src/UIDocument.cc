@@ -227,13 +227,43 @@ void UIDocument::loadXML(xmlNodePtr root)
       free (comments);
    }
 
+   //loading networks
    xmlNodePtr net = root->children;
    //cerr << "parsing...\n";
    while (net != NULL)
    {
-      //cerr << "start net\n";
+      //Standard network found
       if (string((char*)net->name) == "Network")
+      {
 	addNetwork (net);
+      }
+      //File included (prototype)
+      if (string((char*)net->name) == "IncludeNetwork") 
+      {
+	
+	cerr<<"Warning, included network is still a prototype, use at your own risk"<<endl;
+	xmlChar *fname = xmlGetProp(net,(xmlChar *)"file");
+	
+	if (fname) 
+	{
+	  cerr<<"Including : "<<(char*) fname<<endl;
+	  try 
+	  {
+	    //let's import the network
+	    importNetwork(string((char*) fname));
+	    
+	  }
+	  catch(BaseException *e) 
+	  {
+	    e->print(cerr);
+	    delete e;
+	  }
+	  free(fname);
+	}
+      }
+
+
+
       net = net->next;
    }
 
