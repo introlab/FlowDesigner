@@ -68,6 +68,7 @@ public:
 	 else
 	    beforeLimit = -1;
 
+
       } catch (BaseException *e)
       {
          //e->print();
@@ -83,6 +84,11 @@ public:
       req.add("LOOKBACK", ObjectRef(new Int(delay)));
       req.add("INORDER", nilObject);
       inputs[inputID].node->request(inputs[inputID].outputID,req);
+
+      ParameterSet req2;
+      req2.add("LOOKBACK", ObjectRef(Int::alloc(beforeLimit+delay)));
+      inputs[beforeID].node->request(inputs[beforeID].outputID,req2);
+
    }
 
    /*WARNING: Do not try this at home. Overriding the registerOutput() method should not be 
@@ -103,9 +109,6 @@ public:
       if (output_id == outputID)
 	 inputs[inputID].node->request(inputs[inputID].outputID,req);
 
-      ParameterSet p;
-      p.add("LOOKBACK", ObjectRef(Int::alloc(delay)));
-      inputs[beforeID].node->request(inputs[beforeID].outputID,p);
    }
       
    ObjectRef getOutput(int output_id, int count)
