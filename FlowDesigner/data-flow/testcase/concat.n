@@ -2,7 +2,6 @@
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
-    <Node name="node_Concat_1" type="Concat" x="-245.000000" y="67.000000"/>
     <Node name="node_Constant_1" type="Constant" x="-546.000000" y="58.000000">
       <Parameter name="VALUE" type="object" value="&lt;Int 0&gt;" description="The value"/>
     </Node>
@@ -18,28 +17,29 @@
     <Node name="node_Constant_5" type="Constant" x="-685.000000" y="222.000000">
       <Parameter name="VALUE" type="object" value="&lt;Complex&lt;double&gt; 5&gt;" description="The value"/>
     </Node>
-    <Node name="node_Concat_2" type="Concat" x="-246.000000" y="112.000000"/>
-    <Node name="node_Concat_3" type="Concat" x="-246.000000" y="161.000000"/>
-    <Node name="node_Concat_4" type="Concat" x="-246.000000" y="213.000000"/>
-    <Node name="node_Concat_5" type="Concat" x="-89.000000" y="75.000000"/>
-    <Node name="node_Concat_6" type="Concat" x="-88.000000" y="169.000000"/>
-    <Node name="node_Concat_7" type="Concat" x="129.000000" y="83.000000"/>
-    <Node name="node_Print_1" type="Print" x="217.000000" y="82.000000"/>
-    <Link from="node_Constant_1" output="VALUE" to="node_Concat_1" input="INPUT1"/>
-    <Link from="node_Constant_2" output="VALUE" to="node_Concat_1" input="INPUT2"/>
-    <Link from="node_Constant_2" output="VALUE" to="node_Concat_2" input="INPUT1"/>
-    <Link from="node_Constant_3" output="VALUE" to="node_Concat_2" input="INPUT2"/>
-    <Link from="node_Constant_3" output="VALUE" to="node_Concat_3" input="INPUT1"/>
-    <Link from="node_Constant_4" output="VALUE" to="node_Concat_3" input="INPUT2"/>
-    <Link from="node_Constant_4" output="VALUE" to="node_Concat_4" input="INPUT1"/>
-    <Link from="node_Constant_5" output="VALUE" to="node_Concat_4" input="INPUT2"/>
-    <Link from="node_Concat_1" output="OUTPUT" to="node_Concat_5" input="INPUT1"/>
-    <Link from="node_Concat_2" output="OUTPUT" to="node_Concat_5" input="INPUT2"/>
-    <Link from="node_Concat_3" output="OUTPUT" to="node_Concat_6" input="INPUT1"/>
-    <Link from="node_Concat_4" output="OUTPUT" to="node_Concat_6" input="INPUT2"/>
-    <Link from="node_Concat_5" output="OUTPUT" to="node_Concat_7" input="INPUT1"/>
-    <Link from="node_Concat_6" output="OUTPUT" to="node_Concat_7" input="INPUT2"/>
-    <Link from="node_Concat_7" output="OUTPUT" to="node_Print_1" input="INPUT"/>
+    <Node name="node_Print_1" type="Print" x="261.000000" y="102.000000"/>
+    <Node name="node_Add_1" type="Add" x="27.000000" y="81.000000"/>
+    <Node name="node_Add_2" type="Add" x="-302.000000" y="66.000000"/>
+    <Node name="node_Add_3" type="Add" x="-303.000000" y="112.000000"/>
+    <Node name="node_Add_4" type="Add" x="-303.000000" y="174.000000"/>
+    <Node name="node_Add_5" type="Add" x="27.000000" y="136.000000"/>
+    <Node name="node_Add_6" type="Add" x="165.000000" y="101.000000"/>
+    <Node name="node_Mul_1" type="Mul" x="-152.000000" y="166.000000"/>
+    <Link from="node_Constant_1" output="VALUE" to="node_Add_2" input="INPUT1"/>
+    <Link from="node_Constant_2" output="VALUE" to="node_Add_2" input="INPUT2"/>
+    <Link from="node_Constant_1" output="VALUE" to="node_Add_3" input="INPUT1"/>
+    <Link from="node_Constant_3" output="VALUE" to="node_Add_3" input="INPUT2"/>
+    <Link from="node_Constant_4" output="VALUE" to="node_Add_4" input="INPUT1"/>
+    <Link from="node_Constant_5" output="VALUE" to="node_Add_4" input="INPUT2"/>
+    <Link from="node_Add_2" output="OUTPUT" to="node_Add_1" input="INPUT1"/>
+    <Link from="node_Add_3" output="OUTPUT" to="node_Add_1" input="INPUT2"/>
+    <Link from="node_Add_1" output="OUTPUT" to="node_Add_6" input="INPUT1"/>
+    <Link from="node_Add_5" output="OUTPUT" to="node_Add_6" input="INPUT2"/>
+    <Link from="node_Add_6" output="OUTPUT" to="node_Print_1" input="INPUT"/>
+    <Link from="node_Add_3" output="OUTPUT" to="node_Mul_1" input="INPUT1"/>
+    <Link from="node_Add_4" output="OUTPUT" to="node_Mul_1" input="INPUT2"/>
+    <Link from="node_Mul_1" output="OUTPUT" to="node_Add_5" input="INPUT2"/>
+    <Link from="node_Add_3" output="OUTPUT" to="node_Add_5" input="INPUT1"/>
     <NetOutput name="OUTPUT" node="node_Print_1" terminal="OUTPUT" object_type="any" description="No description available"/>
   </Network>
 </Document>

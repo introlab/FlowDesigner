@@ -46,9 +46,9 @@ network_socket::~network_socket() {
 
 void network_socket::printOn (ostream &out) const {
 
-  out<<"network_socket"<<endl;
-  out<<"Type : "<<m_type<<endl;
-  out<<"Port : "<<m_port<<endl;
+  out<<"<network_socket";
+  out<<" Type : "<<m_type;
+  out<<" Port : "<<m_port<<" >"<<endl;
 
 }
 
