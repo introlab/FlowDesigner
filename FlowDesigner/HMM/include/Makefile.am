@@ -17,4 +17,5 @@ noinst_HEADERS = C_GMM.h \
 	acoustic_model.h \
 	gmm_set.h \
 	GMMScore.h \
-	GMMTrain.h
+	GMMTrain.h \
+	viterbi.h

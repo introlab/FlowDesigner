@@ -47,4 +47,9 @@ noinst_HEADERS = Node.h \
 	rc_ptrs.h \
         BaseException.h \
 	AND.h \
-	ThreadedIterator.h
+	ThreadedIterator.h \
+	FrameOperation.h \
+	GrowingFrameBuffer.h \
+	RotatingFrameBuffer.h \
+	variables.h
+

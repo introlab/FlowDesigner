@@ -1,4 +1,4 @@
-EXTRA_DIST = gnome-hello-logo.png
+EXTRA_DIST = 
 
 pixmapdir = $(datadir)/pixmaps
 
