@@ -4,17 +4,17 @@ support removing network terminals (implemented, but buggy)
 
 set the isModified flag when adding a net terminal or moving a node, ...
 
-debug thread race with run button disable
-
 implement variable number of inputs/outputs
 
 prevent from running a network that has an input (ie that has to be included
 somewhere else)
 
-complete "count" display in probe
-
 implement Matrix class
 
 implement image/matrix probe
 
+debug BREAT_AT in probes
 
+fix segfault on invalid int param (eg. mistaken for subnet param)
+
+do something more useful on user program segfault

@@ -57,13 +57,14 @@ public:
       /*if (iir.size() - 1 > outputs[outputID].lookBack)
          outputs[outputID].lookBack = iir.size() - 1;
       */
-      outputs[outputID].lookBack += iir.size() - 1;
+      
    }
 
    ~TimeFilter() {}
 
    virtual void specificInitialize()
    {
+      outputs[outputID].lookBack += iir.size() - 1;
       this->FrameOperation::specificInitialize();
       
    }

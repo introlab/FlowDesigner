@@ -52,7 +52,7 @@ AC_LIBTOOL_ACC_KLUDGE
 
 dnl Checks for programs.
 
-AM_C_PROTOTYPES
+dnl AM_C_PROTOTYPES
 AC_PROG_CXX
 AC_PROG_MAKE_SET
 dnl AC_PROG_RANLIB
@@ -65,7 +65,7 @@ dnl AC_CHECK_LIB(dl, dlopen)
 dnl AC_CHECK_LIB(pthread, pthread_create)
 
 dnl test for SGI audio library (required by SndLib) and define LIBS
-AC_PATH_FFTW
+dnl AC_PATH_FFTW
 
 dnl Checks for library functions.
 
