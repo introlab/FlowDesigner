@@ -236,8 +236,7 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
       } 
       else if (curr->type == "subnet_param")
       {
-	 //BUG WARNING
-	 //I guess I shouldn't do that...
+	 //FIXME: Shouldn't have to use const_cast
 	 if (par.exist(curr->value))
 	    value = const_cast<ParameterSet &> (par).get(curr->value);
 	 else
@@ -254,5 +253,5 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
       parameters->add(curr->name,value);
    }
    return parameters;
-   //perform suvstitution
+   //perform substitution
 }
