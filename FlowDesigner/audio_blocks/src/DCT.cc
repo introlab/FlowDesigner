@@ -48,11 +48,6 @@ public:
       outputID = addOutput("OUTPUT");
       length = dereference_cast<int> (parameters.get("LENGTH"));
 
-      /*if (length & 1) 
-      {
-	 throw new NodeException(NULL, "DCT only implemented for even sizes", __FILE__, __LINE__);
-	 }*/
-
       inputCopy.resize(length);
       outputCopy.resize(length);
       rNormalize.resize(length);
