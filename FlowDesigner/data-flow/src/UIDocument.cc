@@ -784,6 +784,8 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
 	
 	net = doc.getNetworkNamed("MAIN")->build(_name, params);
 	
+	closedir(my_directory);
+
 	return net;
       }
     }
