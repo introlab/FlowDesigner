@@ -6,36 +6,38 @@
 #include <sstream>
 #include "vflow_pref.h"
 #include <unistd.h>
+#include "UserException.h"
 
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
-  
+  gdk_threads_leave();
+ 
   if (my_context->net) {
     
     alarm(5);
 
     //stopping processing thread
     if (my_context->running_thread) {
-      cerr<<"Stopping processing thread"<<endl;
-      pthread_cancel(*(my_context->running_thread));
+      //cerr<<"Stopping processing thread"<<endl;
+      //pthread_cancel(*(my_context->running_thread));
+      my_context->net->cleanupNotify();
+      //cerr << "joining thread\n";
+      pthread_join(*my_context->running_thread, NULL);
+    } else {
+      cerr << "On a un crisse de gros probleme\n";
     }
 
-    cerr<<"Stopping GTK"<<endl;
-    gtk_main_quit();
-    gdk_threads_leave();
-
-    cerr<<"Deleting network..."<<endl;
-    if(my_context->net) {
-      delete my_context->net;
-    }
-
-    cerr<<"Terminating program"<<endl;
-    exit(0);
-  } 
-  else  {
-    exit(0);
+    //cerr<<"Deleting network..."<<endl;
+    //delete my_context->net;
   }
-  
-  return TRUE;
+  //cerr<<"Stopping GTK"<<endl;
+  gdk_threads_enter();
+  gtk_main_quit();
+  //gdk_threads_leave();
+
+    
+  //cerr<<"Terminating program"<<endl;
+    exit(0);
+    return true;
 }
 
 void GRunContext::set_thread(pthread_t *thread) {
@@ -95,6 +97,7 @@ void GRunContext::less_print(const char *message)
 
 void GRunContext::run()
 {
+  net = NULL;
    try {
       gdk_threads_enter();
       less_print("Running network...");
@@ -112,13 +115,16 @@ void GRunContext::run()
 	 {
 	    stringstream execOut;
 	    execOut << *net->getOutput(i,0);
+	    //cerr << "End of getOutput" << endl;
 	    gdk_threads_enter();
 	    less_print(execOut.str());
 	    gdk_threads_leave();
+	    //cerr << "Printed" << endl;
 	 } else {
 	    net->getOutput(i,0);
 	 }
       }
+      //cerr << "Deleting in run()" << endl;
       delete net;
       net = NULL;
       gdk_threads_enter();
@@ -127,7 +133,7 @@ void GRunContext::run()
 	    
    } catch (BaseException *e)
    {
-      //cerr << "exception\n";
+     //cerr << "exception" << endl;
       stringstream excOut;
 	    
       e->print (excOut);
@@ -136,6 +142,10 @@ void GRunContext::run()
       gdk_threads_leave();
 	    
       delete e;
+      delete net;
+   } catch (UserException *e) {
+     cerr << "User stop caught" << endl;
+     delete e;
    } catch (...)
    {
       gdk_threads_enter();

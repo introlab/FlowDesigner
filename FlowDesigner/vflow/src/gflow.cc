@@ -34,6 +34,7 @@ void run2(GRunContext *ctx)
 {
    signal(11,SIG_DFL);
    ctx->run();
+   cerr << "End of run2()" << endl;
    //gtk_main_quit();
 }
 

@@ -4,6 +4,7 @@
 #include "Iterator.h"
 #include "Node.h"
 #include "ObjectRef.h"
+#include "UserException.h"
 
 //@implements core
 
@@ -26,7 +27,7 @@ Iterator::Iterator (string nodeName, ParameterSet params)
 }
 
 void Iterator::cleanupNotify() {
-
+  //cerr << "Setting exit_status" << endl;
    exit_status = true;
    Network::cleanupNotify();
 }
@@ -74,8 +75,10 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
 	    out_id++;
 	 }
 
-         while(!exit_status)
+         while(1)
          {
+	   if (exit_status)
+	     throw new UserException;
             if (doWhile)
             {
 	       int out_id=0;
@@ -83,9 +86,13 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
 	       {
 		  output[out_id] = sinkNode->getOutput(out_id,pc);
 		  out_id++;
+		  if (exit_status)
+		    throw new UserException;
 	       }
             }
             ObjectRef condition = conditionNode->getOutput(conditionID,pc);
+	   if (exit_status)
+	     throw new UserException;
             
             if (dereference_cast<bool>(condition)==false) break;
             if (!doWhile)
@@ -95,6 +102,8 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
 	       {
 		  output[out_id] = sinkNode->getOutput(out_id,pc);
 		  out_id++;
+		  if (exit_status)
+		    throw new UserException;
 	       }
 	    }
             pc++;
