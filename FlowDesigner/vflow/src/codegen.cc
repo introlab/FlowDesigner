@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <gnome.h>
 #include "GUIDocument.h"
@@ -17,6 +18,9 @@ class CodeGenState {
    GUIDocument *doc;
    GtkWidget *fileentry1;
    GtkWidget *combo_entry1;
+  GtkWidget *radiobutton1;
+  GtkWidget *radiobutton2;
+  GtkWidget *radiobutton3;
 public:
    CodeGenState(GUIDocument *_doc);
       ~CodeGenState() {gtk_widget_destroy(dialog);}
@@ -32,12 +36,24 @@ void CodeGenState::ok()
 	 filename = "vflow_code.cc";
 
       char *funcname = gtk_entry_get_text(GTK_ENTRY(combo_entry1));
-      cerr << strlen(funcname);
       if (!funcname || !strlen(funcname))
 	 funcname = "buildDoc";
-
-      //cerr << "file = " << filename <<endl;
-      //cerr << "function = " << funcname << endl;
+ 
+      bool generateMain = false;
+      bool compile = false;
+      if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radiobutton1)))
+      {
+	 cerr << "func only\n";
+      } else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radiobutton2)))
+      {
+	 generateMain=true;
+      } else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(radiobutton3)))
+      {
+	 generateMain=true;
+	 compile=true;
+      } else {
+	 cerr << "nothing selected!\n";
+      }
 
       doc->less_print("Warning: automatic code generation is still experimental");
       ofstream out(filename);
@@ -45,6 +61,53 @@ void CodeGenState::ok()
 
       doc->less_print(string("C++ code generated in '") + filename 
 		      + "', build function name is '" + funcname + "'");
+
+      if (generateMain)
+      {
+	 out << "\n\n#include <path.h>\n\n";
+	 out << "int main(int argc, char **argv)\n";
+	 out << "{\n\n";
+	 out << "   try {\n";
+	 out << "      scanDL();\n";
+	 //out << "      UIDocument::loadAllInfo();\n";
+	 out << "      ParameterSet param;\n";
+	 out << "      for (int arg = 2; arg<argc; arg++)\n";
+	 out << "      {\n";
+	 out << "         char arg_name[100];\n";
+	 out << "         sprintf (arg_name, \"ARG%d\", arg-1);\n";
+	 out << "         param.add(arg_name, ObjectRef (new String (argv[arg])));\n";
+	 out << "      }\n";
+	 out << "      Network *net = " << funcname << "(\"MAIN\", param);\n";
+	 out << "      net->verifyConnect();\n";
+	 out << "      net->initialize();\n";
+	 out << "      net->getOutput(0,0);\n";
+	 out << "\n";
+	 
+
+	 out << "   }\n";
+	 out << "   catch (BaseException *e)\n";
+	 out << "   {\n";
+	 out << "      e->print();\n";
+	 out << "      return 1;\n";
+	 out << "   }\n";
+	 out << "   catch (...) {\n";
+	 out << "      cerr<<\"Unhandled exception in \"<<argv[0]<<endl;\n";
+	 out << "      cerr<<\"Exiting\"<<endl;\n";
+	 out << "      return 1;\n";
+	 out << "   }\n";
+	 out << "   return 0;\n";
+	 out << "}\n";
+
+      }
+
+      if (compile)
+      {
+	 out.flush();
+	 string source_name = string(filename) + ".cc";
+	 string cmd = string("g++ -O3 -o ") + filename + " " + source_name + " `overflow-config config libflow --cflags --libs` `gnome-config xml --cflags --libs` -lrfftw -lfftw &";
+	 cerr << cmd << endl;
+	 system(cmd.c_str());
+      }
 
    } catch (BaseException *e)
    {
@@ -58,6 +121,8 @@ void GUIDocument_codegen(GUIDocument *doc)
 {
    new CodeGenState(doc);
 }
+
+
 
 static void codegen_ok(GtkButton *button, CodeGenState *gen)
 {
@@ -85,9 +150,6 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
   GtkWidget *label3;
   GtkWidget *vbox2;
   GSList *vbox2_group = NULL;
-  GtkWidget *radiobutton1;
-  GtkWidget *radiobutton2;
-  GtkWidget *radiobutton3;
   GtkWidget *hseparator2;
   GtkWidget *hbuttonbox1;
   GtkWidget *button1;
