@@ -1,5 +1,3 @@
-set the isModified flag when adding a net terminal or moving a node, ...
-
 implement variable number of inputs/outputs
 
 implement Matrix class

@@ -360,6 +360,7 @@ gint GUINode::event(GdkEvent *event)
          gnome_canvas_item_ungrab(item, event->button.time);
          dragging = FALSE;
          dynamic_cast<GUINetwork *> (net)->updateScroll();
+	 net->setModified();
       }
       break;
    case GDK_2BUTTON_PRESS:
