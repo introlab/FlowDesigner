@@ -115,6 +115,8 @@ public:
      if (!hidden) {
        gnome_canvas_item_get_bounds(item_text,&x1,&y1,&x2,&y2);
        
+       cout<<"width"<<x2 - x1 + 2;
+
        return x2 - x1 + 2;
      }
      else {
