@@ -739,6 +739,7 @@ void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool topl
 void UINodeRepository::updateNetInfo(UINetwork *net)
 {
    //cerr << "UINodeRepository::updateNetInfo for network "<<net->getName()<<endl;
+
    iterator inet = info.find(net->getName());
    if (inet!=info.end())
    {
@@ -747,24 +748,36 @@ void UINodeRepository::updateNetInfo(UINetwork *net)
    }
 
    NodeInfo *ninfo = new NodeInfo;
-   vector<string> tmp = net->getTerminals(UINetTerminal::INPUT);
+   vector<UINetTerminal *> my_terminals = net->getTerminals();
 
-   for (unsigned int i = 0; i < tmp.size(); i++)
+   //updating inputs & outputs
+   //new implementation using name + type + description for all UINetTerminals
+   //(DL) 15/12/203
+   for (unsigned int i = 0; i < my_terminals.size(); i++)
    {
+      
       ItemInfo *newInfo = new ItemInfo;
-      newInfo->name = tmp[i];
 
-      //cerr<<"adding new Info for inputs "<<newInfo->name<<endl;
-      ninfo->inputs.push_back(newInfo);
-   }
-   tmp = net->getTerminals(UINetTerminal::OUTPUT);
-   for (unsigned int i = 0; i < tmp.size(); i++)
-   {
-      ItemInfo *newInfo = new ItemInfo;
-      newInfo->name = tmp[i];
+      if (my_terminals[i]) {
 
-      //cerr<<"adding new Info for outputs "<<newInfo->name<<endl;
-      ninfo->outputs.push_back(newInfo);
+	//input name
+	newInfo->name = my_terminals[i]->getName();
+
+	//input type
+	newInfo->type = my_terminals[i]->getType();
+	  
+	//input description 
+	newInfo->description = my_terminals[i]->getDescription();
+	  	  	  
+	//input our output?
+	if (my_terminals[i]->getType() == UINetTerminal::INPUT) {
+	  ninfo->inputs.push_back(newInfo);
+	}
+	else if (my_terminals[i]->getType() == UINetTerminal::OUTPUT) {
+	  ninfo->outputs.push_back(newInfo);
+	}
+	
+      }
    }
 
    //cerr<<"insertingNetParams"<<endl;
