@@ -46,6 +46,7 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
    : topo(_topo)
    , layers(topo.size()-1)
 {
+   //cerr << tin.size() << endl;
    vector<double> inputMeans(topo[0], 0);
    vector<double> outputMeans(topo[topo.size()-1], 0);
    vector<double> inputStd(topo[0], 0);
@@ -73,9 +74,13 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
       }
    }
 
-   for (int j=0;j<topo[0];j++)
+   for (int j=0;j<topo[topo.size()-1];j++)
+   {
       outputMeans[j] /= tout.size();
-   for (int j=0;j<topo[0];j++)
+      //cerr << outputMeans[j] << " ";
+   }
+   //cerr << endl;
+   for (int j=0;j<topo[topo.size()-1];j++)
       outputStd[j] = sqrt(outputStd[j]/tout.size() - outputMeans[j]*outputMeans[j]);
    
 

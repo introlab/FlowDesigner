@@ -76,8 +76,10 @@ void FFLayer::setBias(double *minmax)
 {
    for (int i=0;i<nbNeurons;i++)
    {
+      //cerr << minmax[i] << " ";
       weights[i*(nbInputs+1) + nbInputs] = minmax[i];
    }   
+   //cerr << endl;
 }
 
 void FFLayer::printOn(ostream &out) const

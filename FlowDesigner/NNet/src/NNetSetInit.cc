@@ -44,6 +44,9 @@ DECLARE_NODE(NNetSetInit)
  * @output_name OUTPUT
  * @output_description No description available
  *
+ * @parameter_name NB_NETS
+ * @parameter_description No description available
+ *
  * @parameter_name TOPO
  * @parameter_description No description available
  *
