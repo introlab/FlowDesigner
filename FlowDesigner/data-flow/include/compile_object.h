@@ -13,8 +13,9 @@ class CompileObject {
    DL_HANDLE_TYPE lib;
    void *sym;
 public:
-   CompileObject(const string &_code);
+   CompileObject(const string &_code="");
    ~CompileObject();
+   void setCode(const string &_code) {code = _code;}
    void compile();
    void *getFuncPtr() {return sym;}
 };
