@@ -22,17 +22,19 @@ class PS;
 
 DECLARE_NODE(PS)
 /*Node
-
+ *
  * @name PS
  * @category Signal:DSP
- * @description No description available
-
+ * @description Converts the output of the FFT (not RFFT) node to a power spectrum
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Spectrum output from FFT
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Power spectrum (half the input length)
+ *
 END*/
 
 
