@@ -205,7 +205,7 @@ mul4_skip:
 #else
 inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, int len)
 {
-   throw new generalException("Trying to use SSE routine, but code not compiled for SSE support", __FILE__,
+   throw new GeneralException("Trying to use SSE routine, but code not compiled for SSE support", __FILE__,
 			      __LINE__);
 }
 #endif /*ALLOW_SSE*/
