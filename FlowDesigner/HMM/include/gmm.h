@@ -135,6 +135,9 @@ public:
    /**Performs k-means training (using another GMM to score)*/
    void kmeans2(vector<float * > frames, GMM *gmm);
 
+   /**Perform MAP adaptation (using another GMM to score)*/
+   void adaptMAP(vector<float * > frame);
+
    /**Converts the GMM from accum mode to real mode*/
    void to_real();
 

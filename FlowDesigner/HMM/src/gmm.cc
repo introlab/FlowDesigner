@@ -72,6 +72,19 @@ void GMM::kmeans2(vector<float *> frames, GMM *gmm)
    to_real();
 }
 
+void GMM::adaptMAP(vector<float *> frames)
+{
+   vector<Score> scores;
+   scores = minDistance(frames);
+   //scores = gmm->score(frames);
+   reset_to_accum_mode();
+   for (int i=0;i<frames.size();i++)
+   {
+      //FIXME: We should weight the adaptation instead of just accumulating
+      accum_to_gaussian(scores[i].gaussian_id,(frames[i]));
+   }
+}
+
 void GMM::kmeans1(vector<float *> frames, int nb_iterations)
 {
    for (int i=0;i<nb_iterations;i++)

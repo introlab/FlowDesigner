@@ -49,7 +49,7 @@
 #endif /*CACHE_MASK */
 
 #ifndef MAX_PREFETCH
-#define MAX_PREFETCH 2096  /* The PIII L1 size is only 16 kB */
+#define MAX_PREFETCH 4096  /* The PIII L1 size is 32 kB */
 #endif /*MAX_PREFETCH*/
 
 #endif

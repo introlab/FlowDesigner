@@ -45,7 +45,8 @@ public:
 };
 
 class DiagGMM {
-
+   vector<DiagGaussian *> gauss;
 public:
-   train(vector<float *> in, );
+   train(vector<float *> in, int length, int nbGauss);
+   
 };
