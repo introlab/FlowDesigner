@@ -13,39 +13,20 @@ To compile everything you need:
 
 How to compile:
 
-% ./configure <options>
+% ./configure --disable-static --prefix=<some prefix> <other options>
 % make
 % make install
 
 NOTE: if you are using a CVS tarball, use ./autogen.sh insteand of ./configure
 
-
-notes about configure
-One some HP's, you should use aCC instead of the default g++
-you need to set the environment variables CXX and CC
-
-On csh:
-% setenv CXX aCC
-% setenv CC cc
-% ./configure <options>
-
-On sh/ksh
-% CXX=aCC CC=cc ./configure <options>
-
 To have a list of all configure options type ./configure --help
 The important options are:
 --prefix=install-path=/path/where/to/install
 --with-fftw-dir=/path/to/fftw
---with-libtool-acc-kludge     (you MUST use this options ONLY if you are 
-                               using HP's aCC as the C++ compiler)
-
-If you plan to use the audio modules, then only shared libraries will work 
-(because the program makes use of dynamically loaded "plugins"). 
-To do that, add:
---enable-shared --disable-static
+--disable-static
 
 note: in the case of the --with-xxx-dir=path options, configure looks for 
 libxxx in path/lib and includes in path/include
 
 Here is a example:
-CXX=aCC CC=cc ./configure --enable-shared --disable-static --prefix=/home/jmvalin/net-install --with-fftw-dir=/opt --with-libtool-acc-kludge
+./configure --disable-static --prefix=/opt/overflow --with-fftw-dir=/opt
