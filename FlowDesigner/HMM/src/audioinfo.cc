@@ -16,11 +16,14 @@
 
 #include "audioinfo.h"
 #include "ObjectParser.h"
+#include <string.h>
+
+DECLARE_TYPE(AudioInfo)
 
 void AudioInfo::printOn(ostream &out=cout) const
 {
    out << "<AudioInfo " << endl;
-   out << "<ortho " << ortho << ">" << endl;
+   out << "<ortho \"" << ortho << "\" >" << endl;
    if (coarse_endpointed)
    {
       out << "<coarse_start " << coarse_start << ">" << endl;
@@ -47,7 +50,22 @@ void AudioInfo::readFrom (istream &in)
        throw ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "ortho")
-         in >> ortho;
+      {
+         ortho="";
+         do {
+            in >> ch;
+         } while (ch != '"');
+         
+         in.get(ch);
+         while (ch != '"')
+         {
+            ortho += ch;
+            in.get(ch);
+         }
+
+
+      }
+      //  in >> ortho;
       else if (tag == "coarse_start")
       {
          in >> coarse_start;

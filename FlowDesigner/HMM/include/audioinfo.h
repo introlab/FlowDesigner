@@ -19,14 +19,18 @@
 #include <string>
 #include <stream.h>
 #include <iostream.h>
+#include "Object.h"
 
 class Tag {
-   string tagName;
-   
+   int begin
+   int end;
+   int phone;
+   int state;
+   int gaussian;
 };
 
 /**Describes the content of an audio file*/
-class AudioInfo {
+class AudioInfo : public Object {
 protected:
    string ortho;
    int length;
@@ -39,6 +43,7 @@ protected:
    //vector<Tag> tags;
 
 public:
+   /**Full constructor*/
    AudioInfo(string _ortho, int _length) 
       : ortho(_ortho)
       , length(_length)
@@ -47,6 +52,24 @@ public:
    {
       
    }
+
+   /**Default constructor*/
+   AudioInfo() 
+      : coarse_endpointed(false)
+      , fine_endpointed(false) 
+   {}
+
+   /**Does the info file contain coarse endpoints?*/
+   bool isCoarseEndpointed() const {return coarse_endpointed;}
+
+   /**Does the info file contain fine endpoints?*/
+   bool isFineEndpointed() const {return fine_endpointed;}
+
+   /**Is the sample within coarse endpoints*/
+   bool isWithinCoarse(int sample) {return sample > coarse_start && sample < coarse_end;}
+
+   /**Is the sample within fine endpoints*/
+   bool isWithinFine(int sample) {return sample > fine_start && sample < fine_end;}
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
