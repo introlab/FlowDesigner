@@ -22,7 +22,7 @@ done
 AC_DEFUN(AC_LIBTOOL_KLUDGE,
 [
 AC_ARG_WITH(libtool-ld,
-    [  --with-libtool-acc-kludge    tell libtool to use g++ instead of ld to link shared libraries],
+    [  --with-libtool-ld=<linker>    tells libtool to use <linker> instead of ld to link shared libraries],
     [mv libtool libtool-bak  
 export withval
 cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$ENV{"withval"}\"/; print' > libtool
