@@ -71,9 +71,9 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      for (int i=0;i<inputLength;i++)
-	 output[i]=in[i];
-      solve (inputLength, 1, &mat[0][0], &output[0]);
+      int tmp=1;
+      solve_(inputLength, tmp, &mat[0][0], &in[0], &output[0]);
+      //solve (inputLength, 1, &mat[0][0], &output[0]);
    }
 
 };

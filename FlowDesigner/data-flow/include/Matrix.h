@@ -21,6 +21,24 @@ public:
       , data(NULL)
    {}
 
+   Matrix(const Matrix &mat, bool transpose=false) 
+      : rows(mat.rows)
+      , cols(mat.cols)
+      , data(new T [rows*cols])
+   {
+      if (transpose)
+      {
+	 rows=mat.cols;
+	 cols=mat.rows;
+	 for (int i=0;i<rows;i++)
+	    for (int j=0;j<cols;j++)
+	       data[i*cols+j] = mat.data[j*mat.cols+i];
+      } else {
+	 for (int i=0;i<rows*cols;i++)
+	    data[i] = mat.data[i];
+      }
+   }
+
    Matrix(int _rows, int _cols) 
       : rows(_rows)
       , cols(_cols)
@@ -68,6 +86,25 @@ public:
    int nrows() const {return rows;} 
 
    int ncols() const {return cols;}
+
+   void transpose()
+   {
+      if (rows==cols)
+      {
+	 for (int i=0;i<rows;i++)
+	    for (int j=0;j<i+1;j++)
+	    {
+	       float tmp=data[i*cols+j];
+	       data[i*cols+j] = data[j*cols+i];
+	       data[j*cols+i] = tmp;
+	    }
+      } else {
+	 Matrix mat(*this);
+	 for (int i=0;i<rows;i++)
+	    for (int j=0;j<cols;j++)
+	       data[i*cols+j] = mat.data[j*mat.cols+i];
+      }
+   }
 
    void printOn(ostream &out) const
    {

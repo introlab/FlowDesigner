@@ -1,25 +1,27 @@
 
-      SUBROUTINE SOLVE(N, NRHS, A, B, INFO)
+
+      SUBROUTINE SOLVE(N, NRHS, A, B, X)
       INTEGER N
       INTEGER NRHS
       REAL A(N,N)
       REAL B(N,NRHS)
+      REAL X(N,NRHS)
       INTEGER INFO
-
-      INTEGER I
-      INTEGER LDA
+      REAL AF(N,N)
+      REAL R(N)
+      REAL C(N)
       INTEGER IPIV(N)
-      INTEGER LDB
-      LDA=N
-      LDB=N
-      DO I=1,N
-         IPIV(I)=I
-      ENDDO
-      call SGETRF(N, N, A, N, IPIV, INFO)
-      call SGETRS('N', N, NRHS, A, LDA, IPIV, B, LDB, INFO)
+      CHARACTER EQUED
+      REAL RCOND
+      REAL FERR(NRHS)
+      REAL BERR(NRHS)
+      REAL WORK(4*N)
+      INTEGER IWORK(N)
+
+      call SGESVX('E', 'T', N, NRHS, A, N, AF, N, IPIV, EQUED, R, C, B,
+     *N, X, N, RCOND, FERR, BERR, WORK, IWORK, INFO)
       RETURN
       END
-
 
 
       SUBROUTINE EIG(N, A, D, V)
