@@ -21,7 +21,6 @@ vflow_SOURCES = \
 	Probe.cc \
 	TextProbe.cc \
 	PlotProbe.cc \
-	SpectrumProbe.cc \
 	canvas-background.c \
 	GUINode.cc \
 	GUINetwork.cc \

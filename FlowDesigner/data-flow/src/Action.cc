@@ -16,16 +16,22 @@
 
 #include "Node.h"
 
-class NOP;
+class Action;
 
-DECLARE_NODE(NOP)
+DECLARE_NODE(Action)
 /*Node
  *
- * @name NOP
+ * @name Action
  * @category General
  * @description No description available
  *
  * @input_name INPUT
+ * @input_description No description available
+ *
+ * @input_name BEFORE
+ * @input_description No description available
+ *
+ * @input_name AFTER
  * @input_description No description available
  *
  * @output_name OUTPUT
@@ -34,36 +40,68 @@ DECLARE_NODE(NOP)
 END*/
 
 
-class NOP : public Node {
+class Action : public Node {
 protected:
    int inputID;
+   int beforeID;
+   int afterID;
    int outputID;
 
 public:
-   NOP(string nodeName, ParameterSet params)
+   Action(string nodeName, ParameterSet params)
       : Node(nodeName, params)
    {
       try {
          inputID = addInput("INPUT");
+         beforeID = -1;
+         afterID = -1;
 	 outputID=addOutput("OUTPUT");
       } catch (BaseException *e)
       {
          //e->print();
-         throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
+         throw e->add(new NodeException (NULL, "Exception caught in Action constructor", __FILE__, __LINE__));
       }
       
    }
+
+   int translateInput (string inputName)
+   {
+      
+      for (int i=0; i< inputs.size(); i++) {
+	 if (inputs[i].name == inputName) {
+	    return i;
+	 }
+      }    
+
+      if (inputName == "BEFORE")
+      {
+	 beforeID = addInput(inputName);
+	 return beforeID;
+      } else if (inputName == "AFTER")
+      {
+	 afterID = addInput(inputName);
+	 return afterID;
+      } else {
+	 throw new NodeException(this,string("Unknown input in translateInput : ") + inputName, __FILE__,__LINE__);
+      }
+   }
+
 
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req)
    {
       inputs[inputID].node->request(inputs[inputID].outputID,req);
+      inputs[beforeID].node->request(inputs[beforeID].outputID,req);
+      inputs[afterID].node->request(inputs[afterID].outputID,req);
    }
 
    ObjectRef getOutput(int output_id, int count)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
+      if (beforeID != -1)
+	 getInput(beforeID,count);
+      ObjectRef inputValue = getInput(inputID,count);
+      if (afterID != -1)
+	 getInput(afterID,count);
       return inputValue;
    }
 
