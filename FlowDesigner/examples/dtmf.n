@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="iterator" name="MAIN_LOOP">
+    <Node name="node2" type="Constant" x="183.000000" y="41.000000">
+      <Parameter name="VALUE" type="bool" value="true"/>
+    </Node>
+    <Node name="node1" type="KeyPad" x="97.000000" y="100.000000">
+      <Parameter name="BREAK_AT" type="int" value="-1"/>
+      <Parameter name="SHOW" type="bool" value="true"/>
+      <Parameter name="HOLD" type="int" value="1000"/>
+    </Node>
+    <Node name="node4" type="Constant" x="-42.000000" y="100.000000">
+      <Parameter name="VALUE" type="int" value="1"/>
+    </Node>
+    <Node name="node3" type="FDSaveFrame" x="577.000000" y="113.000000"/>
+    <Node name="node5" type="DTMF" x="356.000000" y="104.000000">
+      <Parameter name="LENGTH" type="int" value="256"/>
+      <Parameter name="SAMPLING" type="int" value="8000"/>
+      <Parameter name="GAIN" type="float" value="2000"/>
+    </Node>
+    <Link from="node4" output="VALUE" to="node1" input="INPUT"/>
+    <Link from="node5" output="OUTPUT" to="node3" input="OBJECT"/>
+    <Link from="node1" output="KEYPAD" to="node5" input="INPUT"/>
+    <NetCondition name="CONDITION" node="node2" terminal="VALUE"/>
+    <NetOutput name="OUTPUT" node="node3" terminal="OUTPUT"/>
+    <NetInput name="SOUND" node="node3" terminal="FD"/>
+  </Network>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="MAIN_LOOP" x="-284.000000" y="118.000000"/>
+    <Node name="node2" type="Sound" x="-429.000000" y="140.000000">
+      <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
+      <Parameter name="RATE" type="int" value="8000"/>
+    </Node>
+    <Link from="node2" output="OUTPUT" to="node1" input="SOUND"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>
