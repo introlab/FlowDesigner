@@ -39,6 +39,7 @@ DECLARE_NODE(Sound)
  *
  * @parameter_name DEVICE
  * @parameter_type string
+ * @parameter_value /dev/dsp
  * @parameter_description Path to the sound devide
  *
  * @parameter_name RATE
@@ -51,6 +52,7 @@ DECLARE_NODE(Sound)
  *
  * @parameter_name MODE
  * @parameter_type string
+ * @parameter_value W
  * @parameter_description R for sound input, W for sound output, RW for full-duplex mode
  *
  * @parameter_name BUFFER
@@ -169,13 +171,7 @@ public:
 
 #endif
 
-      value = ObjectRef(new Int(audio_fd));
-      //Vector<float> &val = object_cast<Vector<float> > (value);
-      //istrstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
-      //str_vector >> val;
-
-      //cerr << "vector is: " << val << endl;
-      
+      value = ObjectRef(new Int(audio_fd));      
    }
       
    virtual ~Sound()

@@ -33,22 +33,27 @@ DECLARE_NODE(Reverb)
  *
  * @parameter_name ROOMSIZE
  * @parameter_type float
+ * @parameter_value .5
  * @parameter_description 0 < Room Size < 1 (default = .5)
  *
  * @parameter_name DAMP
  * @parameter_type float
+ * @parameter_value .5
  * @parameter_description 0 < Damp < 1 (default = .5)
  *
  * @parameter_name WET
  * @parameter_type float
+ * @parameter_value .33
  * @parameter_description 0 < Wet < 1 (default = 1/3)
  *
  * @parameter_name DRY
  * @parameter_type float
+ * @parameter_value 0
  * @parameter_description 0 < Dry < 1 (default = 0)
  *
  * @parameter_name WIDTH
  * @parameter_type float
+ * @parameter_value 1
  * @parameter_description 0 < Width < 1 (default = 1)
  *
 END*/

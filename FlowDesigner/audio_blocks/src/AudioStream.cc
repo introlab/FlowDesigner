@@ -189,10 +189,10 @@ public:
       encoding = lin8;
       else if (enc == "LIN16")
 	 encoding = lin16;
-      else if (enc == "SPHERE")
+      else if (enc == "SPHERE" || enc == "NIST")
 	 encoding = sphere;
       else 
-	 throw new NodeException(this, string("Invalid encoding: ") + enc,__FILE__, __LINE__);
+	 throw new NodeException(NULL, string("Invalid encoding: ") + enc,__FILE__, __LINE__);
       itemSize = encoding == lin16 ? 2 : 1;
       tmpBuffer.resize(itemSize*advance);
    }
