@@ -155,8 +155,11 @@ void GRunContext::run()
       gdk_threads_leave();
    }
    pthread_mutex_lock(&del_lock);
-   net->cleanupNotify();
-   delete net;
-   net=NULL;
+   if (net)
+   {
+      net->cleanupNotify();
+      delete net;
+      net=NULL;
+   }
    pthread_mutex_unlock(&del_lock);
 }
