@@ -87,9 +87,13 @@ void UINetwork::load (xmlNodePtr net)
          cerr << getNodeNamed(fromnode)->getOutputNamed(out) << " "
          << getNodeNamed(tonode)->getInputNamed(in) << endl;*/
 
+	 char *points=NULL;
+	 if (node->childs)
+	    points = (char *)node->childs->content;
+	 cerr << points << endl;
      //BUG HERE
          newLink(getNodeNamed(fromnode)->getOutputNamed(out),
-                  getNodeNamed(tonode)->getInputNamed(in));
+                  getNodeNamed(tonode)->getInputNamed(in), points);
       }
       node = node->next;
    }
@@ -408,11 +412,11 @@ UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
    return new UITerminal (_name, _node, _isInput, _x, _y);
 }*/
 
-UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to)
+UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
 {
    //BUG HERE (GUI instead of UI)
    //cerr << "UINetwork::newLink\n";
-   return new UILink (_from, _to);
+   return new UILink (_from, _to, str);
 }
 
 UINetTerminal *UINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)

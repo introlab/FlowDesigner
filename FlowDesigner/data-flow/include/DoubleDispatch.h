@@ -17,7 +17,7 @@
 #ifndef DOUBLE_DISPATCH_H
 #define DOUBLE_DISPATCH_H
 
-#include <ObjectRef.h>
+#include "ObjectRef.h"
 #include "BaseException.h"
 
 //#ifdef NO_HASH_MAP

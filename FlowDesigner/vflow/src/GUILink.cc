@@ -10,15 +10,12 @@ static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
    return ((GUILink *)(data))->event(event);
 }
 
-GUILink::GUILink(UITerminal *_from, UITerminal *_to)
-  : UILink (_from, _to), MIN_POINT_DISTANCE(25.0) {
+GUILink::GUILink(UITerminal *_from, UITerminal *_to, char *points_str)
+  : UILink (_from, _to, points_str), MIN_POINT_DISTANCE(25.0) {
 
 
-  m_points.push_back(new GUILinkPoint(x1,y1));
-  m_points.push_back(new GUILinkPoint(x2,y2));
 
-
-  GnomeCanvasPoints *points = gnome_canvas_points_new(2);
+   /*GnomeCanvasPoints *points = gnome_canvas_points_new(2);
 
   points->coords[0] = x1;
   points->coords[1] = y1;
@@ -44,6 +41,40 @@ GUILink::GUILink(UITerminal *_from, UITerminal *_to)
                                 "arrow_shape_c", 5.0,
                                 NULL);
   
+   gnome_canvas_points_unref(points);
+   */
+
+   GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
+   
+   int pos = 0;
+   
+   for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+	iter != m_points.end(); iter++) {
+      
+      points->coords[pos++] = (*iter)->x;
+      points->coords[pos++] = (*iter)->y;
+      
+   }
+   
+   //gnome_canvas_item_set(item, "points", points, NULL);
+   group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (dynamic_cast<GUINetwork *> (net)->getGroup(),
+						     gnome_canvas_group_get_type(),
+						     "x", 0,
+						     "y", 0,
+						     NULL));
+  
+   item = gnome_canvas_item_new(group,
+                                gnome_canvas_line_get_type(),
+                                "points" , points,
+                                "fill_color", "black",
+                                "width_units", 2.0,
+				"cap_style",GDK_CAP_ROUND,
+                                "last_arrowhead", TRUE,
+                                "arrow_shape_a", 9.0,
+                                "arrow_shape_b", 15.0,
+                                "arrow_shape_c", 5.0,
+                                NULL);   
+
    gnome_canvas_points_unref(points);
    
    gtk_signal_connect(GTK_OBJECT(item), "event",

@@ -5,8 +5,9 @@
 #include <tree.h>
 
 #include "Network.h"
+#include <sstream>
 
-UILink::UILink(UITerminal *_from, UITerminal *_to)
+UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
    : from(_from)
    , to(_to)
 {
@@ -40,6 +41,22 @@ UILink::UILink(UITerminal *_from, UITerminal *_to)
       to->connect(this);
    }
    //net->setModified();
+   if (points_str)
+   {
+      cerr << points_str << endl;
+      stringstream str(points_str);
+      while(1)
+      {
+	 double x, y;
+	 str >> x >> y;
+	 if (str.eof())
+	    break;
+	 m_points.push_back(new GUILinkPoint(x,y));
+      }
+   } else {
+      m_points.push_back(new GUILinkPoint(x1,y1));
+      m_points.push_back(new GUILinkPoint(x2,y2));
+   }
 }
 
 UILink::~UILink()
@@ -56,17 +73,20 @@ UILink::~UILink()
 
 void UILink::saveXML(xmlNode *root)
 {
-   xmlNodePtr tree = xmlNewChild(root, NULL, (CHAR *)"Link", NULL);
-   /*char tmp[15];
-   sprintf (tmp, "%f", float(x1));
-   xmlSetProp(tree, (CHAR *)"x1", (CHAR *)tmp);
-   sprintf (tmp, "%f", float(y1));
-   xmlSetProp(tree, (CHAR *)"y1", (CHAR *)tmp);
-   sprintf (tmp, "%f", float(x2));
-   xmlSetProp(tree, (CHAR *)"x2", (CHAR *)tmp);
-   sprintf (tmp, "%f", float(y2));
-   xmlSetProp(tree, (CHAR *)"y2", (CHAR *)tmp);*/
-
+   xmlNodePtr tree;
+   if (m_points.size()<=2)
+      tree = xmlNewChild(root, NULL, (CHAR *)"Link", NULL);
+   else {
+      stringstream str;
+      list<GUILinkPoint*>::iterator it = m_points.begin();
+      while(it != m_points.end())
+      {
+	 str << (*it)->x << " " << (*it)->y << " ";
+	 it++;
+      }
+      tree = xmlNewChild(root, NULL, (CHAR *)"Link", (xmlChar*)str.str().c_str());
+   }
+       
    xmlSetProp(tree, (CHAR *)"from", (CHAR *)from->getNode()->getName().c_str());
    xmlSetProp(tree, (CHAR *)"output", (CHAR *)from->getName().c_str());
    xmlSetProp(tree, (CHAR *)"to", (CHAR *)to->getNode()->getName().c_str());

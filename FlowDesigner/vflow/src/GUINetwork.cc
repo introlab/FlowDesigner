@@ -8,10 +8,7 @@
 #include "Node.h"
 #include "GUINetTerminal.h"
 #include "canvas-background.h"
-
-template<class T>
-T abs(T x) {return x < 0 ? -x : x;}
-
+#include "misc.h"
 
 /*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
@@ -333,9 +330,9 @@ UINode *GUINetwork::newNode(UINetwork* _net, xmlNodePtr def)
    return new GUITerminal (_name, _node, _isInput, _x, _y);
 }*/
 
-UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to)
+UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
 {
-   return new GUILink (_from, _to);
+   return new GUILink (_from, _to, str);
 }
 
 UINetTerminal *GUINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
