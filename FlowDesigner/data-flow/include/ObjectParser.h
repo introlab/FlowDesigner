@@ -180,7 +180,7 @@ inline istream &operator >> (istream &in, T* &o)
 {
    RCPtr<T> obj;
    in >> obj;
-   o = obj->detach();
+   o = obj.detach();
    return in;
 }
 
