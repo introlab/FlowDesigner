@@ -48,10 +48,10 @@ public:
       outputID = addOutput("OUTPUT");
       length = dereference_cast<int> (parameters.get("LENGTH"));
 
-      if (length & 1) 
+      /*if (length & 1) 
       {
 	 throw new NodeException(NULL, "DCT only implemented for even sizes", __FILE__, __LINE__);
-      }
+	 }*/
 
       inputCopy.resize(length);
       outputCopy.resize(length);
@@ -85,20 +85,28 @@ public:
       for (i=0, j=0 ;i<length ; i+=2, j++)
          inputCopy[j]=in[i];
 
-      for (i = length-1; i>=0 ; i-=2, j++)
-         inputCopy[j]=in[i];
-      
+      for (j=length-1,i=1;i<length;i+=2,j--)
+	 inputCopy[j]=in[i];
 
+      for (int i=0;i<length;i++)
+	 cerr << inputCopy[i] << " ";
+      cerr << endl;
       FFTWrap.rfft(&inputCopy[0], &outputCopy[0], length);
+      for (int i=0;i<length;i++)
+	 cerr << outputCopy[i] << " ";
+      cerr << endl;
 
-      for (i=1;i<length/2;i++)
+      output[0]=outputCopy[0]*rNormalize[0];
+      for (i=1;i<(length+1)>>1;i++)
       {
 	 output[i]=rNormalize[i]*outputCopy[i] - iNormalize[i]*outputCopy[length-i];
 	 output[length-i]=rNormalize[length-i]*outputCopy[i] + iNormalize[length-i]*outputCopy[length-i];
       }
-
-      output[0]=outputCopy[0]*rNormalize[0];
-      output[length/2] = outputCopy[length/2]*rNormalize[length/2];
+      if (!(length&1)) //even case
+      {
+	 output[length>>1] = outputCopy[length>>1]*rNormalize[length>>1];
+      }
+      
    }
 
 };
