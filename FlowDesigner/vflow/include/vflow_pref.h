@@ -7,19 +7,6 @@
 #include <string>
 
 class VFlowPref {
-     /*   
-	  //General
-	  bool showAll;
-	  bool showTool;
-	  bool printOut;
-	  bool runProcess;
-	  //Documents
-	  int mdiMode;
-	  int tabPos;
-	  //Colors
-	  int regularCol;
-	  int highliteCol;
-	  int errorCol;*/
    int modified;
    map<string,string> params;
 
@@ -31,12 +18,17 @@ class VFlowPref {
    void save();
 
    static bool getBool(const string &str);
+   static void setBool(const string &str, bool val);
    //static bool isShowAll() {return pref.showAll;}
 };
 
 
 class VFlowPrefDialog {
    GtkWidget *propertybox1;
+   GtkWidget *printout;
+   GtkWidget *runprocess;
+   GtkWidget *showallio;
+   GtkWidget *showtooltip;
   public:
    VFlowPrefDialog();
    ~VFlowPrefDialog();

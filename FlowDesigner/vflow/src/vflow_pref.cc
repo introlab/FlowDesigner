@@ -67,6 +67,15 @@ bool VFlowPref::getBool(const string &str)
       return false;
 }
 
+void VFlowPref::setBool(const string &str, bool val)
+{
+   if (val)
+      pref.params[str] = "yes";
+   else
+      pref.params[str] = "no";
+   pref.modified=true;
+}
+
 void VFlowPref::save()
 {
    string filename = getenv("HOME");
@@ -98,20 +107,23 @@ static void pref_close (GnomePropertyBox *propertybox, VFlowPrefDialog* user_dat
    user_data->close();
 }
 
+void pref_changed (GtkToggleButton *togglebutton, GtkWidget *propertybox1)
+{
+   gnome_property_box_set_state (GNOME_PROPERTY_BOX(propertybox1), TRUE);
+}
+
 VFlowPrefDialog::VFlowPrefDialog()
 {
-   cerr << "For the moment, this preference dialog box is nothing more than decoration, sorry:-(" << endl;
+  cerr << "For the moment, this preference dialog box is only half functional (and half decoration), sorry:-(" << endl;
 
   GtkWidget *notebook1;
   GtkWidget *vbox3;
   GtkWidget *frame1;
   GtkWidget *vbox4;
-  GtkWidget *checkbutton2;
-  GtkWidget *checkbutton3;
+  GtkWidget *showallio;
+  GtkWidget *showtooltip;
   GtkWidget *frame2;
   GtkWidget *vbox5;
-  GtkWidget *checkbutton4;
-  GtkWidget *checkbutton5;
   GtkWidget *label1;
   GtkWidget *vbox1;
   GtkWidget *mdiframe;
@@ -164,19 +176,27 @@ VFlowPrefDialog::VFlowPrefDialog()
   gtk_widget_show (vbox4);
   gtk_container_add (GTK_CONTAINER (frame1), vbox4);
 
-  checkbutton2 = gtk_check_button_new_with_label (_("Show all Input/Output names"));
-  gtk_widget_ref (checkbutton2);
-  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "checkbutton2", checkbutton2,
+  showallio = gtk_check_button_new_with_label (_("Show all Input/Output names"));
+  gtk_widget_ref (showallio);
+  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "showallio", showallio,
                             (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (checkbutton2);
-  gtk_box_pack_start (GTK_BOX (vbox4), checkbutton2, FALSE, FALSE, 0);
+  gtk_widget_show (showallio);
+  gtk_box_pack_start (GTK_BOX (vbox4), showallio, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showallio), VFlowPref::getBool("ShowAllInOut"));
+  gtk_signal_connect (GTK_OBJECT (showallio), "toggled",
+		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
-  checkbutton3 = gtk_check_button_new_with_label (_("Show tooltips"));
-  gtk_widget_ref (checkbutton3);
-  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "checkbutton3", checkbutton3,
+
+
+  showtooltip = gtk_check_button_new_with_label (_("Show tooltips"));
+  gtk_widget_ref (showtooltip);
+  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "showtooltip", showtooltip,
                             (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (checkbutton3);
-  gtk_box_pack_start (GTK_BOX (vbox4), checkbutton3, FALSE, FALSE, 0);
+  gtk_widget_show (showtooltip);
+  gtk_box_pack_start (GTK_BOX (vbox4), showtooltip, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showtooltip), VFlowPref::getBool("ShowTooltips"));
+  gtk_signal_connect (GTK_OBJECT (showtooltip), "toggled",
+		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
   frame2 = gtk_frame_new (_("Run"));
   gtk_widget_ref (frame2);
@@ -192,19 +212,26 @@ VFlowPrefDialog::VFlowPrefDialog()
   gtk_widget_show (vbox5);
   gtk_container_add (GTK_CONTAINER (frame2), vbox5);
 
-  checkbutton4 = gtk_check_button_new_with_label (_("Print program output in text area"));
-  gtk_widget_ref (checkbutton4);
-  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "checkbutton4", checkbutton4,
+  printout = gtk_check_button_new_with_label (_("Print program output in text area"));
+  gtk_widget_ref (printout);
+  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "printout", printout,
                             (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (checkbutton4);
-  gtk_box_pack_start (GTK_BOX (vbox5), checkbutton4, FALSE, FALSE, 0);
+  gtk_widget_show (printout);
+  gtk_box_pack_start (GTK_BOX (vbox5), printout, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(printout), VFlowPref::getBool("PrintOutput"));
+  gtk_signal_connect (GTK_OBJECT (printout), "toggled",
+		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
-  checkbutton5 = gtk_check_button_new_with_label (_("Run in a separate process"));
-  gtk_widget_ref (checkbutton5);
-  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "checkbutton5", checkbutton5,
+  runprocess = gtk_check_button_new_with_label (_("Run in a separate process"));
+  gtk_widget_ref (runprocess);
+  gtk_object_set_data_full (GTK_OBJECT (propertybox1), "runprocess", runprocess,
                             (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (checkbutton5);
-  gtk_box_pack_start (GTK_BOX (vbox5), checkbutton5, FALSE, FALSE, 0);
+  gtk_widget_show (runprocess);
+  gtk_box_pack_start (GTK_BOX (vbox5), runprocess, FALSE, FALSE, 0);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(runprocess), VFlowPref::getBool("RunProcess"));
+  gtk_signal_connect (GTK_OBJECT (runprocess), "toggled",
+		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
+
 
   label1 = gtk_label_new (_("General"));
   gtk_widget_ref (label1);
@@ -414,7 +441,11 @@ VFlowPrefDialog::~VFlowPrefDialog()
 
 void VFlowPrefDialog::apply()
 {
-   cerr << "apply\n";
+   //cerr << "apply\n";
+   VFlowPref::setBool("RunProcess", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(runprocess)));
+   VFlowPref::setBool("PrintOutput", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(printout)));
+   VFlowPref::setBool("ShowAllInOut", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showallio)));
+   VFlowPref::setBool("ShowTooltips", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showtooltip)));
 }
 
 
