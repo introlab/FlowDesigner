@@ -2,6 +2,7 @@
 #define UILINK_H
 #include <list>
 #include "misc.h"
+#include <math.h>
 
 //#include <gnome.h>
 #include <gnome-xml/tree.h>
