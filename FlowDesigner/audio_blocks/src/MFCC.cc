@@ -146,10 +146,10 @@ public:
       rNormalize =new float [melLength];
       iNormalize =new float [melLength];
       float sqrt2n=sqrt(2.0/inputLength);
-      for (int i=0;i<inputLength;i++)
+      for (int i=0;i<melLength;i++)
       {
-	 rNormalize[i]=cos(M_PI*i/(2*inputLength))*sqrt2n;
-	 iNormalize[i]=-sin(M_PI*i/(2*inputLength))*sqrt2n;
+	 rNormalize[i]=cos(M_PI*i/(2*melLength))*sqrt2n;
+	 iNormalize[i]=-sin(M_PI*i/(2*melLength))*sqrt2n;
       }
       rNormalize[0] /= sqrt(2);
 
