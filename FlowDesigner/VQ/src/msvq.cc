@@ -81,7 +81,7 @@ void MSVQ::train (const vector<float *> &data, int len, bool binary=false)
 
    for (int i=0;i<stagesSizes.size();i++)
    {
-      stages[i].train(stagesSizes[i], train, binary);
+      stages[i].train(stagesSizes[i], train, length, binary);
       
       for (int j=0;j<data.size();j++)
       {
