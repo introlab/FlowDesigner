@@ -18,11 +18,11 @@
 #include "BufferedNode.h"
 #include "operators.h"
 
-class Greater;
-DECLARE_NODE(Greater)
+class Smaller;
+DECLARE_NODE(Smaller)
 /*Node
  *
- * @name Greater
+ * @name Smaller
  * @category Logic
  * @description No description available
  *
@@ -38,7 +38,7 @@ DECLARE_NODE(Greater)
 END*/
 
 
-class Greater : public BufferedNode {
+class Smaller : public BufferedNode {
 protected:
    ///The ID of the 'output' output
    int outputID;
@@ -49,21 +49,19 @@ protected:
    ///The ID of the 'input2' input
    int input2ID;
 
+
 public:
    ///Constructor, takes the name of the node and a set of parameters
-   Greater(string nodeName, ParameterSet params) 
+   Smaller(string nodeName, ParameterSet params) 
      : BufferedNode(nodeName, params)
    {
       input1ID = addInput ("INPUT1");
       input2ID = addInput ("INPUT2");
       outputID = addOutput ("OUTPUT");
 
-      trueObject = ObjectRef (new Bool(true));
-      falseObject = ObjectRef (new Bool(false));
+
    }
    
-
-
   void calculate(int output_id, int count, Buffer &out) {
 
      ObjectRef InputValue1 = getInput(input1ID,count);
@@ -81,7 +79,7 @@ public:
      }
 
      
-     out[count] = InputValue1 > InputValue2;
+     out[count] = InputValue1 < InputValue2;
 
    }
    
