@@ -67,6 +67,5 @@ noinst_HEADERS = \
 	OR.h \
 	Pack.h \
 	UnPack.h \
-	AND.h \
 	sstream.unused
 
