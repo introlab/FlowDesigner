@@ -790,8 +790,9 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
 
 Network *UIDocument::build(const string &_name, const ParameterSet &params)
 {
-   //cerr << "UIDocument::build\n";
-   return getNetworkNamed("MAIN")->build(_name, params);
+   Network *net = getNetworkNamed("MAIN")->build(_name, params);
+   net->verifyConnect();
+   return net;
 }
 
 //Run without a GUI
