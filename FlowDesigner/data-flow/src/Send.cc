@@ -1,4 +1,4 @@
-// Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
+// Copyright (C) 2000 Jean-Marc Valin & Dominic Letourneau
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,11 @@
 #include "ObjectParser.h"
 #include <stream.h>
 #include <strstream.h>
+#include <sys/socket.h>
+#include <sys/types.h> 
+#include <netinet/in.h>
+
+#define LOOPBACK "127.0.0.1"
 
 class Send;
 
@@ -31,11 +36,16 @@ class Send : public Node
 
 protected:
 
-   /**The value of the constant*/
-   ObjectRef value;
+  struct sockaddr_un m_name;
+  struct sockaddr_in m_clientname;
 
-   /**The ID of the 'value' output*/
-   int outputID;
+  /**The value of the constant*/
+  ObjectRef value;
+  
+  int m_socket;
+  
+  /**The ID of the 'value' output*/
+  int outputID;
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -44,6 +54,8 @@ public:
       //, value (parameters.get("VALUE"))
    {
       outputID = addOutput("OUTPUT");
+      m_socket = socket(PF_INET,SOCK_STREAM,6);
+
       
    }
 
@@ -51,8 +63,45 @@ public:
       and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
    {
-      if (output_id==outputID) return value;
-      else throw new NodeException (this, "Send: Unknown output id", __FILE__, __LINE__);
+
+     unsigned char in_buffer[2048];
+
+     while (1) {
+
+       m_name.sin_family = AF_INET;
+       m_name.sin_port = htons (5248);
+       m_name.sin_addr.s_addr = htonl (INADDR_ANY);
+       cout<<"bind"<<endl;
+       bind (m_socket, (struct sockaddr *) &m_name, sizeof (m_name));
+
+       cout<<"listen"<<endl;
+       listen (m_socket, 1);
+       int size;
+
+       cout<<"accept"<<endl;
+       int conn = accept (socket,(struct sockaddr *) &m_clientname,&size);
+
+
+       cout<<"recv"<<endl;
+       int data_length = recv(conn,in_buffer,2048,NULL);
+       cout<<"got length : "<<data_lengt<<endl;
+
+       cout<<"got this :";
+       for (int i=0; i< data_length;i++) {
+	 cout<<in_buffer[i];
+	 
+       }
+       cout<<endl;
+
+       //should compute here!
+
+       //returns the value
+       strcpy(in_buffer,"ALLO\0");
+
+       cout<<"sending"<<endl;
+       send(conn,in_buffer,strlen(in_buffer), NULL);
+      
+     }
    }
 
 protected:
