@@ -41,6 +41,7 @@ AC_MODULE_OPT(HMM, yes)
 AC_MODULE_OPT(VQ, yes)
 AC_MODULE_OPT(FuzzyEngine, yes)
 AC_MODULE_OPT(lapackflow, no)
+AC_MODULE_OPT(octave, no)
 AC_MODULE_OPT(vflow, yes)
 
 AM_CONDITIONAL(COND_OPT, true)
