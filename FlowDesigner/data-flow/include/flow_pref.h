@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 
+using namespace std;
+
 class FlowPref {
    int modified;
    map<string, map<string,string> > params;
