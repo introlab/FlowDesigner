@@ -21,7 +21,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "Object.h"
+#include "ObjectRef.h"
 //#include "net_types.h"
 #include "NetworkException.h"
 #include <typeinfo>
@@ -100,7 +100,7 @@ protected:
    long status;
    
    ///Parameters given to the node at construction time
-   map <string, ObjectRef> parameters;
+   ParameterSet parameters;
 
 public:
    ///Constructor, takes the name of the node and a set of parameters
@@ -199,19 +199,25 @@ public:
 class NodeException : public NetworkBaseException {
 
 public:
-   NodeException( Node *_node, string _message) 
+   NodeException( Node *_node, string _message, char *_file, int _line) 
       : message(_message)
       , node(_node)
+      , file(_file)
+      , line(_line)
    {}   
 
    virtual void print(ostream &out = cerr) 
    {
-      out << "Node " << node->getName() << " (type " << 
-      typeid(*node).name() << ") : " << message << endl;
+      if (node)
+         out << file << " line " << line << ": Node " << node->getName() 
+             << " (type " << typeid(*node).name() << ") " << message << endl;
+      else out << file << ", line " << line << ": " << message << endl;
    }
 protected:
    string message;
    Node *node;
+   string file;
+   int line;
 };
 
 #endif

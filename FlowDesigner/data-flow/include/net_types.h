@@ -14,12 +14,17 @@
 template <class T> 
 class GenericType : public Object {
 
+protected:
+   T value;
+
 public:
 
    ///cast operator
-   operator T() {
+   /*operator T() {
       return value;
-   }
+      }*/
+
+   T &val() {return value;}
    
    ///default constructor
    GenericType() {
@@ -39,8 +44,6 @@ public:
       value = copy.value;
    }
 
-protected:
-   T value;
 };
 
 
@@ -63,6 +66,11 @@ public:
    ///destructor
    virtual ~NetCType() {;}
    
+   ///cast operator
+   operator T() {
+      return GenericType<T>::value;
+   }
+
    ///operator= between a NetCType and another NetCType
    NetCType<T>& operator= (NetCType<T> &type) {
       GenericType<T>::value = type.value;
@@ -108,6 +116,7 @@ typedef NetCType<long> Long;
 typedef NetCType<unsigned char> U_char;
 typedef NetCType<unsigned int> U_int;
 typedef NetCType<unsigned long> U_long;
+
 //STL types
 typedef GenericType<string> String;
 

@@ -79,10 +79,10 @@ public:
       float dist=0;
       for (unsigned int i=0;i<fr->size();i++)
       {
-         dist+=sqr((*fr)[i]-(*mean)[i]);// /(*covariance)[i];
+         dist+=sqr((*fr)[i]-(*mean)[i]) /(*covariance)[i];
       }
       //cerr << "det: " << covariance->getDeterminant() << endl;
-      return dist;//*covariance->getDeterminant();
+      return dist + covariance->getDeterminant();
    }
 
    ///Adds (accumulates) a frame to the gaussian

@@ -67,6 +67,28 @@ void GMM::kmeans1(vector<Frame *> frames, int nb_iterations)
       kmeans2(frames,this);
 }
 
+void GMM::split1()
+{
+   int max_gauss=0, max_accum=gaussians[0]->get_accum_count();
+   gaussians.resize(nb_gaussians+1);
+   apriori.resize(nb_gaussians+1);
+   for (int i=1;i<nb_gaussians;i++)
+   {
+      int accum=gaussians[i]->get_accum_count();
+      if (accum>max_accum)
+      {
+         max_gauss=i;
+         max_accum=accum;
+      }
+   }
+   cout << "spliting " << max_gauss << endl;
+   gaussians[nb_gaussians]=new Gaussian(*(gaussians[max_gauss]));
+   vector <float> &mean = gaussians[nb_gaussians]->getMean();
+   for (unsigned int j=0;j<mean.size();j++)
+      mean[j]+=.01;
+   ++nb_gaussians;
+}
+
 void GMM::binary_split()
 {
    int old_size=nb_gaussians;

@@ -101,6 +101,8 @@ public:
    ///Performs k-means training
    void kmeans1(vector<Frame *> frames, int nb_iterations = 1);
 
+   void split1();
+
    ///Performs k-means training (using another GMM to score)
    void kmeans2(vector<Frame *> frames, GMM *gmm);
 

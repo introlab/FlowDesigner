@@ -65,7 +65,8 @@ Node::Node(string nodeName, ParameterSet params)
 
 void Node::connectToNode(unsigned int in, Node *inputNode, unsigned int out)
 {
-   if (in >= inputs.size()) inputs.resize(in);
+   if (in >= inputs.size()) inputs.resize(in + 1);
+   cout<<"Adding input: "<<inputNode->name<<" to: "<<name<<endl;
    inputs[in] = NodeInput(inputNode, out);
    inputNode->registerOutput(out);
 }
@@ -80,14 +81,22 @@ void Node::initialize ()
    if (initialized) return;
    if (--outputInitializeCount <=0)
    {
-      this->specificInitialize();
+      specificInitialize();
+      cout<<name<<" is in initialize..."<<endl;
+
+
       vector<NodeInput>::iterator in;
+
       for (in = inputs.begin(); in < inputs.end(); in++)
       {
+         cout<<in->node->name<<"called for initialized..."<<endl;
          in->node->initialize();
+
          if (!in->node->hasOutput(in->outputID)) 
-            throw new NodeException(this, "Input node doesn't implement output");
-      }
+            throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
+
+     }
+      
    }
 }
 
