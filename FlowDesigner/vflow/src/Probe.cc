@@ -215,6 +215,13 @@ void Probe::specificInitialize()
 		       this);
 
 
+   GtkWidget *entry1 = gtk_entry_new ();
+   gtk_widget_ref (entry1);
+   gtk_object_set_data_full (GTK_OBJECT (window1), "entry1", entry1,
+			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (entry1);
+   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar2), entry1, NULL, NULL);
+   
 
    gtk_widget_show(window1);
 
