@@ -9,8 +9,7 @@
 #include "conversion.h"
 #include "Complex.h"
 #include <sstream>
-#include <iostream>
-#include <complex>
+#include "Matrix.h"
 
 using namespace std;
 
@@ -66,9 +65,31 @@ ObjectRef CTypeVectorConversion (ObjectRef in) {
   return ToVector;
 }
 
+template <class T, class U>
+ObjectRef VectorVectorConversion (ObjectRef in) {
+  RCPtr<T> FromVector = in;
+  RCPtr<U> ToVector(U::alloc(FromVector->size()));
+  for (int i = 0; i < ToVector->size(); i++) {
+    (*ToVector)[i] = static_cast<typename U::basicType>((*FromVector)[i]);
+  }
+  return ToVector;
+}
+
+template <class T, class U>
+ObjectRef MatrixMatrixConversion (ObjectRef in) {
+  RCPtr<T> FromMatrix = in;
+  RCPtr<U> ToMatrix( new U(FromMatrix->nrows(), FromMatrix->ncols()));
+  for (int i = 0; i < ToMatrix->nrows(); i++) {
+    for (int j = 0; j < ToMatrix->ncols(); j++) {
+      (*ToMatrix)(i,j) = static_cast<typename U::basicType>((*FromMatrix)(i,j));
+    }
+  }
+  return ToMatrix;
+}
+
 
 //(DL) 17/02/2004
-//Commented conversions make no sense to be implemented (?)
+//Commented conversions that make no sense to be implemented (?)
 
 //to Bool conversion
 REGISTER_CONVERSION_TEMPLATE(Bool, Bool, CTypeConversion);
@@ -140,7 +161,7 @@ REGISTER_CONVERSION_TEMPLATE(Complex<double>, String, CTypeStringConversion);
 REGISTER_CONVERSION_TEMPLATE(String, String, CTypeStringConversion);
 REGISTER_CONVERSION(NilObject, String, ReturnNilObject);
 
-//to Vector conversion
+//CType to Vector conversion
 //REGISTER_CONVERSION_TEMPLATE(Bool, Vector<bool>, CTypeStringConversion);
 REGISTER_CONVERSION_TEMPLATE(Int, Vector<int>, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Float, Vector<float>, CTypeVectorConversion);
@@ -148,12 +169,59 @@ REGISTER_CONVERSION_TEMPLATE(Double, Vector<double>, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<float>, Vector<complex<float> >, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<double>, Vector<complex<double> >, CTypeVectorConversion);
 
+//Vector to Vector conversion
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Vector<int>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Vector<float>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Vector<double>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Vector<complex<float> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Vector<complex<double> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Vector<int>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Vector<float>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Vector<double>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Vector<complex<float> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Vector<complex<double> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Vector<int>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Vector<float>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Vector<double>, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Vector<complex<float> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Vector<complex<double> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<complex<float> >, Vector<complex<float> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<complex<float> >, Vector<complex<double> >, VectorVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<complex<double> >, Vector<complex<double> >, VectorVectorConversion);
+
 //NilObject to Vector<T> returns nilObject...
 REGISTER_CONVERSION(NilObject, Vector<int>, ReturnNilObject);
 REGISTER_CONVERSION(NilObject, Vector<float>, ReturnNilObject);
 REGISTER_CONVERSION(NilObject, Vector<double>, ReturnNilObject);
 REGISTER_CONVERSION(NilObject, Vector<complex<float> >, ReturnNilObject);
 REGISTER_CONVERSION(NilObject, Vector<complex<double> >, ReturnNilObject);
+
+//Matrix to Matrix conversion
+REGISTER_CONVERSION_TEMPLATE(Matrix<int>, Matrix<int>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<int>, Matrix<float>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<int>, Matrix<double>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<int>, Matrix<complex<float> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<int>, Matrix<complex<double> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<float>, Matrix<int>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<float>, Matrix<float>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<float>, Matrix<double>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<float>, Matrix<complex<float> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<float>, Matrix<complex<double> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<double>, Matrix<int>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<double>, Matrix<float>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<double>, Matrix<double>, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<double>, Matrix<complex<float> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<double>, Matrix<complex<double> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<complex<float> >, Matrix<complex<float> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<complex<float> >, Matrix<complex<double> >, MatrixMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Matrix<complex<double> >, Matrix<complex<double> >, MatrixMatrixConversion);
+
+//NilObject to Matrx<T> returns nilObject...
+REGISTER_CONVERSION(NilObject, Matrix<int>, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Matrix<float>, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Matrix<double>, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Matrix<complex<float> >, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Matrix<complex<double> >, ReturnNilObject);
 
 
 //(DL) 17/02/2004
