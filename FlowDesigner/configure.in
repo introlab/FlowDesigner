@@ -28,7 +28,7 @@ fi
 
 AC_MODULE_OPT(video_blocks)
 if test $video_blocks = video_blocks; then
-AC_CONFIG_SUBDIRS()
+AC_CONFIG_SUBDIRS(video_blocks)
 fi
 
 
