@@ -15,10 +15,6 @@
 
 #include "NodeFactory.h"
 
-//class _NodeFactory;
-
-//using namespace std;
-//namespace DataFlow {
 
 /**Definition of the type we need for the dictionaries*/
 typedef map<string, Node*>::value_type nodeEntry;
@@ -31,7 +27,6 @@ class Node;
 /** A NodeInput is a data structure that holds a reference to
     the node we are connected at and its related output number.
     @author Jean-Marc Valin
-    @version 1.0
 */
 class NodeInput {
 public:
@@ -74,7 +69,6 @@ class UINode;
    derive from this class. It contains the proper initializations
    for the connectivity of the nodes.
    @author Jean-Marc Valin & Dominic Letourneau
-   @version 1.0
 */
 class Node { 
 
@@ -223,6 +217,8 @@ public:
 
 
 
+
+
 /***************************************************************************/
 /*
   NotInitializedException
@@ -233,7 +229,6 @@ public:
     initialized before the processing begins. It happens when the network
     is not properly connected.
     @author Dominic Letourneau
-    @version 1.0
  */
 class NotInitializedException : public BaseException {
 
@@ -261,7 +256,6 @@ public:
     exception in a node. You should use __FILE__ and __LINE__ in the 
     arguments.
     @author Jean-Marc Valin
-    @version 1.0
 */
 class NodeException : public BaseException {
 
@@ -298,10 +292,11 @@ protected:
 
 };
 
+
+
 #define DECLARE_NODE(NodeTypeName) int dummy_initializer_for ## NodeTypeName = \
                Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>(# NodeTypeName));
 
 
-//} //namespace DataFlow 
 
 #endif

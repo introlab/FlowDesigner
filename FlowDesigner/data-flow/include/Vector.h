@@ -12,6 +12,10 @@
 
 using namespace std;
 
+/**The (template) Overflow Vector type, it adds functionnality to the 
+   basic vector<T> type, including serialisation and unserialisation
+   @author Jean-Marc Valin
+*/
 template<class T>
 class Vector : public vector<T>, public Object
 {
@@ -20,7 +24,13 @@ public:
    explicit Vector(int n, const T &x = T()) : vector<T>(n, x) {}
    void printOn(ostream &out) const
    {
-      out << *static_cast<const vector<T> *> (this);
+      out << className();
+      for (int i=0; i < size(); i++)
+      {
+	 out << " " << operator[](i);
+      }
+      out << " > ";
+      //out << *static_cast<const vector<T> *> (this);
    }
    
    void readFrom(istream &in=cin);
@@ -103,11 +113,20 @@ template<class T, int I>
 struct VecBinary {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
-      throw new GeneralException("serialization not supported for vectors of object", __FILE__, __LINE__);
-      /*out << "{Vector<float>" << endl;
+      out << "{" << v.className() << endl;
       out << "|";
-      BinIO::write(out, &v[0], v.size());
-      out << "}";*/
+      int tmp=v.size();
+      BinIO::write(out, &tmp, 1);
+      for (int i=0;i<v.size();i++)
+      {
+	 out << "|";
+	 v[i].serialize();
+	 out << "|";
+      }
+      out << "}";
+   }
+   static inline void unserialize(Vector<T> &v, istream &in)
+   {
    }
 };
 
@@ -115,10 +134,15 @@ template<class T>
 struct VecBinary<T,1> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
-      out << "{Vector<float>" << endl;
+      out << "{" << v.className() << endl;
       out << "|";
+      int tmp=v.size();
+      BinIO::write(out, &tmp, 1);
       BinIO::write(out, &(const_cast<Vector<T> &>(v))[0], v.size());
       out << "}";
+   }
+   static inline void unserialize(Vector<T> &v, istream &in)
+   {
    }
 };
 
@@ -131,7 +155,7 @@ inline void Vector<T>::serialize(ostream &out) const
 template <class T>
 inline void Vector<T>::unserialize(istream &in)
 {
-   Object::unserialize(in);
+   VecBinary<T, TypeTraits<T>::isBasic>::unserialize(*this, in);
 }
 
 
@@ -178,8 +202,7 @@ inline Vector<double> *Vector<double>::alloc(int size)
    return doubleVectorPool.newVector(size);
 }
 
-//FIXME: We're not checking for the vector type
-inline bool isValidVectorType (istream &in, bool binary=false)
+inline bool isValidVectorType (istream &in, const string &className, bool binary=false)
 {
    char ch;
    in >> ch;
@@ -187,9 +210,8 @@ inline bool isValidVectorType (istream &in, bool binary=false)
    {
       string type;
       in >> type;
-      //if (type != expectedType)
-      if (!strstr(type.c_str(), "Vector"))
-         throw new ParsingException ("Parser expected type Vector<Type> and got " + type);
+      if (type != "Vector" && type != className)
+	 throw new ParsingException ("Parser expected type Vector<Type> and got " + type);
    } else {
       in.putback(ch);
       in.clear(ios::failbit);
@@ -203,7 +225,7 @@ inline bool isValidVectorType (istream &in, bool binary=false)
 template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
 {
-   if (!isValidVectorType(in)) return in;
+   if (!isValidVectorType(in, vec.className())) return in;
    vec.readFrom(in);
    return in;
 }

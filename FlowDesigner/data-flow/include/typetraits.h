@@ -5,6 +5,7 @@
 #define TYPE_TRAITS_H
 
 #include "Object.h"
+#include <complex>
 
 template<class T>
 struct TypeTraits {
@@ -24,6 +25,8 @@ _DEF_C_TYPE(char)
 _DEF_C_TYPE(unsigned char)
 _DEF_C_TYPE(long)
 _DEF_C_TYPE(unsigned long)
+_DEF_C_TYPE(complex<float>)
+_DEF_C_TYPE(complex<double>)
 _DEF_C_TYPE(ObjectRef)
 
 /*

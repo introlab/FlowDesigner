@@ -100,7 +100,10 @@ public:
    }
 
    /**Returns the name of the class of the Object*/
-   const string &className();
+   const string &className() const;
+   
+   template<class T>
+   static const string &GetClassName();
 
    static const ObjectRef nilObject;
    static const ObjectRef before_beginningObject;
@@ -122,6 +125,10 @@ private:
    static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
 };
 
+
+
+
+
 class _ObjectFactory {
    string typeName;
 public:
@@ -138,10 +145,22 @@ public:
 };
 
 
+
+
+template<class T>
+const string &Object::GetClassName()
+{return TypeidDictionary()[&typeid(T)]->getName();}
+
+
+
+
 #define DECLARE_TYPE(type) static int dummy_init_for ## type = \
                Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
 
 #define DECLARE_TYPE2(type, dummyID) static int dummy_init_for ## dummyID = \
                Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
+
+#define DECLARE_TYPE3(str, type, dummyID) static int dummy_init_for ## dummyID = \
+               Object::addObjectType<type > (str, new ObjectFactory<type> (str));
 
 #endif

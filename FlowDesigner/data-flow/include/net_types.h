@@ -12,10 +12,8 @@ using namespace std;
 #include <stdio.h>
 #include "ObjectPool.h"
 
-/** We must define network types that we want to use in our network.
-    We will use a template class where all the proper operators are defined. */
 
-/** This is a generic type that the network will handle. Subclass GenericType if
+/** This is a generic type that Overflow will handle. Subclass GenericType if
     you want to add specific operations and operators */
 template <class T> 
 class GenericType : public Object {
@@ -25,27 +23,23 @@ protected:
 
 public:
    typedef T basicType;
-   ///cast operator
-   /*operator T() {
-      return value;
-      }*/
 
    T &val() {return value;}
    
-   ///default constructor
+   /**default constructor*/
    GenericType() {
       //value = (T) 0;
    }
 
-   ///destructor
+   /**destructor*/
    virtual ~GenericType() {;}
    
-   ///constructor with a value
+   /**constructor with a value*/
    GenericType (T val) {
       value = val;
    }
    
-   ///copy constructor
+   /**copy constructor*/
    GenericType (GenericType<T> &copy) {
       value = copy.value;
    }
@@ -84,61 +78,60 @@ public:
 /**
    The NetCType. We are using this class to wrap standard C types into objects
    tha are Object compatible.
-   @autor Dominic Letourneau
-   @version 1.0
+   @author Dominic Letourneau & jean-Marc Valin
  */
 template <class T>
 class NetCType : public PrintableGenericType<T> {
    
 public:
    
-   ///default constructor
+   /**default constructor*/
    NetCType() {
       //casting into the type
       GenericType<T>::value = (T) 0;
    }
 
-   ///constructor with a predefined value
+   /**constructor with a predefined value*/
    NetCType(T val) { 
       GenericType<T>::value = val;
    }
    
-   ///destructor
+   /**destructor*/
    virtual ~NetCType() {;}
    
-   ///cast operator
+   /**cast operator*/
    operator T() {
       return GenericType<T>::value;
    }
 
-   ///operator= between a NetCType and another NetCType
+   /**operator= between a NetCType and another NetCType*/
    NetCType<T>& operator= (NetCType<T> &type) {
       GenericType<T>::value = type.value;
       return *this;
    }
 
-   ///operator= between a standard C type and a NetCType
+   /**operator= between a standard C type and a NetCType*/
    NetCType<T>& operator= (T val) {
       GenericType<T>::value = val;
       return *this;
    }
 
-   ///operator== between two NetCType
+   /**operator== between two NetCType*/
    int operator== (NetCType<T> &type) {
       return (type.value == GenericType<T>::value);
    }
    
-   ///operator== between a NetCType and a standard C type
+   /**operator== between a NetCType and a standard C type*/
    int operator== (T val) {
       return (GenericType<T>::value == val);
    }
    
-   ///operator!= between two NetCType
+   /**operator!= between two NetCType*/
    int operator!= (NetCType<T> &type) {
       return (type.value != GenericType<T>::value);
    }
    
-   ///operator!= between a NetCType and a standard C type
+   /**operator!= between a NetCType and a standard C type*/
    int operator!= (T val) {
       return (GenericType<T>::value != val);
    }
@@ -157,10 +150,6 @@ public:
 };
 
 
-///defining the standard C types
-//@name type definitions
-//@{
-//typedef NetCType<char> Char;
 typedef NetCType<int> Int;
 typedef NetCType<float> Float;
 typedef NetCType<double> Double;
@@ -186,11 +175,10 @@ class FILEDES : public GenericType<int> {
 extern ObjectRef TrueObject;
 extern ObjectRef FalseObject;
 
-///STL types
-//typedef PrintableGenericType<string> String;
-//typedef GenericType<ifstream> ISFtream;
-//typedef GenericType<ofstream> OFStream;
 
+/**Base Overflow String type, wraps a C++ string
+   @author Jean-Marc Valin
+*/
 class String : virtual public string, virtual public Object
 {
 public:
@@ -206,6 +194,9 @@ public:
    
 };
 
+/**Base Overflow Stream type, wraps a C++ stream
+   @author Jean-Marc Valin
+*/
 class Stream : public Object
 {
   protected:
@@ -273,7 +264,5 @@ class OFStream : public Stream {
 
 
 
-
-//@}
 
 #endif

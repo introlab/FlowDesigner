@@ -20,7 +20,7 @@ map<const type_info *, _ObjectFactory*>& Object::TypeidDictionary()
    return dict;
 }
 
-const string &Object::className()
+const string &Object::className() const
 {
    return TypeidDictionary()[&typeid(*this)]->getName();
 }
