@@ -57,6 +57,19 @@ GUINode::~GUINode()
    gtk_object_destroy(GTK_OBJECT(group));
    destroyed=true;
 }
+/*
+static void node_add_input (GtkMenuItem *menuitem, GUINode *node)
+{
+   char *input_name = "INTPUT-N";
+   node->addTerminal(string(input_name), UINetTerminal::INPUT);
+}
+
+static void node_add_output (GtkMenuItem *menuitem, GUINode *node)
+{
+   char *output_name = "OUTPUT-N";
+   node->addTerminal(string(output_name), UINetTerminal::OUTPUT);
+}
+*/
 
 static void node_help (GtkMenuItem *menuitem, gpointer user_data)
 {
@@ -94,7 +107,9 @@ void GUINode::help()
 void GUINode::createPopup()
 {
    popupMenu = gtk_menu_new();
-   GtkWidget *label = gtk_menu_item_new_with_label("Delete");
+   GtkWidget *label;
+   /*
+   label = gtk_menu_item_new_with_label("Add input");
    gtk_menu_append(GTK_MENU(popupMenu),label);
    gtk_widget_show(label);
    gtk_widget_ref (label);
@@ -102,10 +117,20 @@ void GUINode::createPopup()
                              label,
                              (GtkDestroyNotify) gtk_widget_unref);
    gtk_signal_connect(GTK_OBJECT(label), "activate",
-                      (GtkSignalFunc) node_delete,
+                      (GtkSignalFunc) node_add_input,
                       this);
 
-
+   label = gtk_menu_item_new_with_label("Add output");
+   gtk_menu_append(GTK_MENU(popupMenu),label);
+   gtk_widget_show(label);
+   gtk_widget_ref (label);
+   gtk_object_set_data_full (GTK_OBJECT (popupMenu), "label",
+                             label,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_signal_connect(GTK_OBJECT(label), "activate",
+                      (GtkSignalFunc) node_add_output,
+                      this);
+   */
    label = gtk_menu_item_new_with_label("Properties");
    gtk_menu_append(GTK_MENU(popupMenu),label);
    gtk_widget_show(label);
@@ -128,6 +153,27 @@ void GUINode::createPopup()
    gtk_signal_connect(GTK_OBJECT(label), "activate",
                       (GtkSignalFunc) node_help,
                       this);
+   
+   
+   GtkWidget *separ = gtk_menu_item_new();
+   gtk_menu_append(GTK_MENU(popupMenu),separ);
+   gtk_widget_show(separ);
+   gtk_widget_ref (separ);
+   gtk_object_set_data_full (GTK_OBJECT (popupMenu), "label",
+                             separ,
+                             (GtkDestroyNotify) gtk_widget_unref);
+
+   label = gtk_menu_item_new_with_label("Delete");
+   gtk_menu_append(GTK_MENU(popupMenu),label);
+   gtk_widget_show(label);
+   gtk_widget_ref (label);
+   gtk_object_set_data_full (GTK_OBJECT (popupMenu), "label",
+                             label,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_signal_connect(GTK_OBJECT(label), "activate",
+                      (GtkSignalFunc) node_delete,
+                      this);
+
 
 }
 

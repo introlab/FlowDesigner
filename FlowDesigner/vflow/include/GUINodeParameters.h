@@ -32,6 +32,9 @@ protected:
    vector<ParameterText *> &textParams;
    GUINode *node;
    GtkWidget *text_comments;
+   GtkWidget *list1;
+   GtkWidget *list2;
+   GtkWidget *input_entry, *output_entry;
 
 public:
    GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams);
@@ -44,7 +47,10 @@ public:
    ParameterData *getParamDataNamed(string n);
    void insertLoadedParam(ParameterText *param, string type, string value);
    GUINode *getGUINode() {return node;}
-
+   void addInput();
+   void addOutput();
+   void removeInput();
+   void removeOutput();
 };
 
 

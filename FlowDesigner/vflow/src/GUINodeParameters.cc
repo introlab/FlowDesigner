@@ -35,11 +35,12 @@ static void comments_changed (GtkText *entry, GUINodeParameters* user_data)
    user_data->changed();
 }
 
+#if 0
 static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
 
   
   //let's add the required UITerminal & GUITerminal
-  /*
+  
   GUINode *node = user_data->getGUINode();
   
   char input_name[9];
@@ -53,7 +54,7 @@ static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamete
   
   cerr<<"input adjustment callback"<<endl;
   ((GUINodeParameters *)(user_data))->changed();
-  */
+  
 
   cerr<<"Input & Output size adjustment not yet implemented!"<<endl;
 
@@ -64,7 +65,7 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamet
   
   //let's add the required UITerminal & GUITerminal
 
-  /*
+  
   GUINode *node = user_data->getGUINode();
   
   char input_name[9];
@@ -77,14 +78,81 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamet
 
   //cout<<"output adjustment callback"<<endl;
   ((GUINodeParameters *)(user_data))->changed();
-  */
+  
   cerr<<"Input & Output size adjustment not yet implemented!"<<endl;
   
 
 }
 
+#endif
 
+void GUINodeParameters::addInput()
+{
+   char *new_input = gtk_entry_get_text(GTK_ENTRY(input_entry));
+   if (!new_input || strlen(new_input)==0)
+      return;
+   gtk_entry_set_text(GTK_ENTRY(input_entry), "");
+   gtk_list_select_all(GTK_LIST(list1));
 
+   GtkWidget *inp1 = gtk_list_item_new_with_label(new_input);
+   gtk_widget_ref (inp1);
+   gtk_object_set_data_full (GTK_OBJECT (list1), "table1", inp1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show(inp1);
+   GList *in_lis = g_list_append (NULL, inp1);
+
+   gtk_list_append_items(GTK_LIST(list1), in_lis);
+   node->addTerminal(string(new_input), UINetTerminal::INPUT);
+}
+
+void GUINodeParameters::addOutput()
+{
+   char *new_output = gtk_entry_get_text(GTK_ENTRY(output_entry));
+   if (!new_output || strlen(new_output)==0)
+      return;
+   gtk_entry_set_text(GTK_ENTRY(output_entry), "");
+   gtk_list_select_all(GTK_LIST(list1));
+
+   GtkWidget *outp1 = gtk_list_item_new_with_label(new_output);
+   gtk_widget_ref (outp1);
+   gtk_object_set_data_full (GTK_OBJECT (list1), "table1", outp1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show(outp1);
+   GList *out_lis = g_list_append (NULL, outp1);
+
+   gtk_list_append_items(GTK_LIST(list2), out_lis);
+   node->addTerminal(string(new_output), UINetTerminal::OUTPUT);
+}
+
+void GUINodeParameters::removeInput()
+{
+   cerr << "removing an input\n";
+}
+
+void GUINodeParameters::removeOutput()
+{
+   cerr << "removing an output\n";
+}
+
+static void node_add_input (GtkButton *button, GUINodeParameters *node_param)
+{
+   node_param->addInput();
+}
+
+static void node_add_output (GtkButton *button, GUINodeParameters *node_param)
+{
+   node_param->addOutput();
+}
+
+static void node_remove_input (GtkButton *button, GUINodeParameters *node_param)
+{
+   node_param->removeInput();
+}
+
+static void node_remove_output (GtkButton *button, GUINodeParameters *node_param)
+{
+   node_param->removeOutput();
+}
 
 GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams)
    : node(_node)
@@ -112,14 +180,19 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    GtkWidget *scrolledwindow2;
    GtkWidget *label13;
    GtkWidget *label_properties;
-   GtkWidget *table_properties;
-   GtkWidget *input_size_label;
-   GtkWidget *output_size_label;
-   GtkObject *input_adjustment;
-   GtkObject *output_adjustment;
-   GtkWidget *input_spinbutton;
-   GtkWidget *output_spinbutton;
 
+   GtkWidget *table1;
+   GtkWidget *vseparator1;
+   GtkWidget *vseparator2;
+   GtkWidget *vseparator3;
+   GtkWidget *hbox1;
+   GtkWidget *button1;
+   GtkWidget *button2;
+   GtkWidget *hbox2;
+   GtkWidget *button3;
+   GtkWidget *button4;
+   GtkWidget *label1;
+   GtkWidget *label2;
 
    nodeproperty = gnome_property_box_new ();
    //gnome_dialog_close_hides (GNOME_DIALOG(nodeproperty), TRUE);
@@ -314,132 +387,200 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    //properties tab (DL)
    //removed until it works
 
-   /*
+   
+      
+   GList *in_lis = NULL;
+   GList *out_lis = NULL;
+         
+   vector<UITerminal *> inputs = node->getInputs();
+   vector<UITerminal *> outputs = node->getOutputs();
+   for (int i=0;i<inputs.size();i++)
+   {
+      GtkWidget *inp1 = gtk_list_item_new_with_label(inputs[i]->getName().c_str());
+      gtk_widget_ref (inp1);
+      gtk_object_set_data_full (GTK_OBJECT (notebook2), "table1", inp1,
+                                (GtkDestroyNotify) gtk_widget_unref);
+      gtk_widget_show(inp1);
+      in_lis = g_list_append (in_lis, inp1);
+   }
 
-   label_properties = gtk_label_new(_("Properties"));
+   for (int i=0;i<outputs.size();i++)
+   {
+      GtkWidget *outp1 = gtk_list_item_new_with_label(outputs[i]->getName().c_str());
+      gtk_widget_ref (outp1);
+      gtk_object_set_data_full (GTK_OBJECT (notebook2), "table1", outp1,
+                                (GtkDestroyNotify) gtk_widget_unref);
+      gtk_widget_show(outp1);
+      out_lis = g_list_append (out_lis, outp1);
+   }
+
+   label_properties = gtk_label_new(_("Inputs/Outputs"));
    gtk_widget_ref (label_properties);
    gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "label_properties", label_properties,
-			     (GtkDestroyNotify) gtk_widget_unref);
+                             (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (label_properties);
+      
+      
 
+   //GtkWidget *notebook2;
 
-   table_properties = gtk_table_new (2, 2, TRUE);
-   gtk_widget_ref (table_properties);
-  
+   //window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+   //gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
+   //gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
 
-   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "table_properties", table_properties,
-			     (GtkDestroyNotify) gtk_widget_unref);
-
-   gtk_widget_show(table_properties);
-
-
-   input_size_label = gtk_label_new(_("Input Size"));
-   gtk_widget_ref (input_size_label);
-   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "input_size_label", input_size_label,
-			     (GtkDestroyNotify) gtk_widget_unref);
-   gtk_widget_show(input_size_label);
-
-
-   //cout<<"input size : "<< _node->getInputs().size()<<endl;
-
-   input_adjustment = gtk_adjustment_new ((float) _node->getInputs().size(), //value
-					  (float) _node->getInputs().size(), //lower
-					  100.0, //higher
-					  1.0,
-					  1.0,
-					  1.0);
-
- 
-
-   input_spinbutton =  gtk_spin_button_new (GTK_ADJUSTMENT(input_adjustment),
-					    1.0,0);
-   gtk_widget_ref (input_spinbutton);
-   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "input_spinbutton",input_spinbutton,
-			     (GtkDestroyNotify) gtk_widget_unref);
-
-   gtk_widget_show(input_spinbutton);
-
-   //Here we should check if the node is resizable and set to TRUE if needed
-   gtk_entry_set_editable (GTK_ENTRY(input_spinbutton),FALSE);
-
-   //we should also activate/deactivate the button if the node is resizable
-
-   output_size_label = gtk_label_new(_("Output Size"));
-   gtk_widget_ref (output_size_label);
-   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "output_size_label", output_size_label,
-			     (GtkDestroyNotify) gtk_widget_unref);
-   gtk_widget_show(output_size_label);
-
-   //cout<<"output size : "<< _node->getOutputs().size()<<endl;
-
-
-   output_adjustment = gtk_adjustment_new ((float) _node->getOutputs().size(), //value
-					   (float) _node->getOutputs().size(), //lower
-					   100.0, //higher
-					   1.0,
-					   1.0,
-					   1.0);
-  
-
-
-   output_spinbutton =  gtk_spin_button_new (GTK_ADJUSTMENT(output_adjustment),
-					     1.0,0);
-   gtk_widget_ref (output_spinbutton);
-   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "output_spinbutton",output_spinbutton,
-			     (GtkDestroyNotify) gtk_widget_unref);
-
-   gtk_widget_show(output_spinbutton);
-
-   //Here we should check if the node is resizable and set to TRUE if needed
-   gtk_entry_set_editable (GTK_ENTRY(output_spinbutton),FALSE);
-
-   //we should also activate/deactivate the button if the node is resizable
-
-                                              
-
-
-   gtk_table_attach (GTK_TABLE (table_properties), input_size_label, 0, 1, 0, 1,
-		     (GtkAttachOptions) (GTK_FILL),
-		     (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-   gtk_table_attach (GTK_TABLE (table_properties), input_spinbutton, 1, 2, 0, 1,
-		     (GtkAttachOptions) (GTK_FILL),
-		     (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-
-   gtk_table_attach (GTK_TABLE (table_properties), output_size_label, 0, 1, 1, 2,
-		     (GtkAttachOptions) (GTK_FILL),
-		     (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-   gtk_table_attach (GTK_TABLE (table_properties), output_spinbutton, 1, 2, 1, 2,
-		     (GtkAttachOptions) (GTK_FILL),
-		     (GtkAttachOptions) (GTK_FILL), 0, 0);
-
-
-   gtk_table_set_homogeneous (GTK_TABLE(table_properties),TRUE);
-
-
+   table1 = gtk_table_new (3, 3, FALSE);
+   gtk_widget_ref (table1);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "table1", table1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (table1);
+   //gtk_container_add (GTK_CONTAINER (notebook2), table1);
    gtk_notebook_append_page (GTK_NOTEBOOK(notebook2),
-			     table_properties,
-			     label_properties);
+                             table1,
+                             label_properties);
 
+   vseparator1 = gtk_vseparator_new ();
+   gtk_widget_ref (vseparator1);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "vseparator1", vseparator1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (vseparator1);
+   gtk_table_attach (GTK_TABLE (table1), vseparator1, 1, 2, 0, 1,
+                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-   gtk_signal_connect (GTK_OBJECT (input_adjustment ), "value-changed",
-		       GTK_SIGNAL_FUNC(input_adjustment_changed),this);
-  
-   //gtk_signal_connect (GTK_OBJECT (input_adjustment ), "changed",
-   //		      GTK_SIGNAL_FUNC(input_adjustment_changed), this);
-  
-   gtk_signal_connect (GTK_OBJECT (output_adjustment ), "value-changed",
-		       GTK_SIGNAL_FUNC(output_adjustment_changed),this);
-  
-   //gtk_signal_connect (GTK_OBJECT (output_adjustment ), "changed",
-   //		      GTK_SIGNAL_FUNC(output_adjustment_changed), this);
+   vseparator2 = gtk_vseparator_new ();
+   gtk_widget_ref (vseparator2);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "vseparator2", vseparator2,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (vseparator2);
+   gtk_table_attach (GTK_TABLE (table1), vseparator2, 1, 2, 1, 2,
+                     (GtkAttachOptions) (GTK_FILL),
+                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
+   vseparator3 = gtk_vseparator_new ();
+   gtk_widget_ref (vseparator3);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "vseparator3", vseparator3,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (vseparator3);
+   gtk_table_attach (GTK_TABLE (table1), vseparator3, 1, 2, 2, 3,
+                     (GtkAttachOptions) (GTK_FILL),
+                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
 
-   */
-   //end properties tab (DL)
+   hbox1 = gtk_hbox_new (FALSE, 0);
+   gtk_widget_ref (hbox1);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "hbox1", hbox1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (hbox1);
+   gtk_table_attach (GTK_TABLE (table1), hbox1, 0, 1, 1, 2,
+                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
+   input_entry = gtk_entry_new ();
+   gtk_widget_ref (input_entry);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "input_entry", input_entry,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (input_entry);
+   gtk_box_pack_start (GTK_BOX (hbox1), input_entry, TRUE, TRUE, 0);
+
+   button1 = gtk_button_new_with_label (_("Add"));
+   gtk_widget_ref (button1);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "button1", button1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (button1);
+   gtk_box_pack_start (GTK_BOX (hbox1), button1, FALSE, FALSE, 0);
+
+   button2 = gtk_button_new_with_label (_("Remove"));
+   gtk_widget_ref (button2);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "button2", button2,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (button2);
+   gtk_box_pack_start (GTK_BOX (hbox1), button2, FALSE, FALSE, 0);
+
+   hbox2 = gtk_hbox_new (FALSE, 0);
+   gtk_widget_ref (hbox2);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "hbox2", hbox2,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (hbox2);
+   gtk_table_attach (GTK_TABLE (table1), hbox2, 2, 3, 1, 2,
+                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                     (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+   output_entry = gtk_entry_new ();
+   gtk_widget_ref (output_entry);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "output_entry", output_entry,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (output_entry);
+   gtk_box_pack_start (GTK_BOX (hbox2), output_entry, FALSE, FALSE, 0);
+
+   button3 = gtk_button_new_with_label (_("Add"));
+   gtk_widget_ref (button3);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "button3", button3,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (button3);
+   gtk_box_pack_start (GTK_BOX (hbox2), button3, FALSE, FALSE, 0);
+
+   button4 = gtk_button_new_with_label (_("Remove"));
+   gtk_widget_ref (button4);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "button4", button4,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (button4);
+   gtk_box_pack_start (GTK_BOX (hbox2), button4, FALSE, FALSE, 0);
+
+   list2 = gtk_list_new ();
+   gtk_widget_ref (list2);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "list2", list2,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (list2);
+   gtk_table_attach (GTK_TABLE (table1), list2, 2, 3, 2, 3,
+                     (GtkAttachOptions) (GTK_FILL),
+                     (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+   gtk_list_append_items(GTK_LIST(list2), out_lis);
+
+   label1 = gtk_label_new (_("Inputs"));
+   gtk_widget_ref (label1);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "label1", label1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (label1);
+   gtk_table_attach (GTK_TABLE (table1), label1, 0, 1, 0, 1,
+                     (GtkAttachOptions) (GTK_FILL),
+                     (GtkAttachOptions) (0), 0, 0);
+   gtk_misc_set_alignment (GTK_MISC (label1), 0, 0.5);
+
+   label2 = gtk_label_new (_("Outputs"));
+   gtk_widget_ref (label2);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "label2", label2,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (label2);
+   gtk_table_attach (GTK_TABLE (table1), label2, 2, 3, 0, 1,
+                     (GtkAttachOptions) (GTK_FILL),
+                     (GtkAttachOptions) (0), 0, 0);
+   gtk_misc_set_alignment (GTK_MISC (label2), 0, 0.5);
+
+   list1 = gtk_list_new ();
+   gtk_widget_ref (list1);
+   gtk_object_set_data_full (GTK_OBJECT (notebook2), "list1", list1,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (list1);
+   gtk_table_attach (GTK_TABLE (table1), list1, 0, 1, 2, 3,
+                     (GtkAttachOptions) (GTK_FILL),
+                     (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+   gtk_list_append_items(GTK_LIST(list1), in_lis);
+
+   gtk_signal_connect (GTK_OBJECT (button1), "clicked",
+                       GTK_SIGNAL_FUNC (node_add_input),
+                       this);
+   gtk_signal_connect (GTK_OBJECT (button2), "clicked",
+                       GTK_SIGNAL_FUNC (node_remove_input),
+                       this);
+   gtk_signal_connect (GTK_OBJECT (button3), "clicked",
+                       GTK_SIGNAL_FUNC (node_add_output),
+                       this);
+   gtk_signal_connect (GTK_OBJECT (button4), "clicked",
+                       GTK_SIGNAL_FUNC (node_remove_output),
+                       this);
+    
+   
 
    //gnome_property_box_changed(GNOME_PROPERTY_BOX(nodeproperty));
    gtk_signal_connect (GTK_OBJECT (nodeproperty), "apply",
