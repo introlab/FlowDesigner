@@ -86,7 +86,8 @@ GUIDocument::GUIDocument(string _name)
   
   GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_show (scrolledwindow1);
-gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
+  gtk_widget_set_size_request(GTK_WIDGET(scrolledwindow1), -1, 100);
+  gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
   //gnome_app_set_contents (GNOME_APP (), scrolledwindow1);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS)
 ;

@@ -863,6 +863,9 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (about2, about2, "about2");
 
+  gtk_window_set_transient_for(GTK_WINDOW(about2), GTK_WINDOW(vflowGUI::instance()->get_mdi()));
+  gtk_window_set_position (GTK_WINDOW(about2), GTK_WIN_POS_CENTER_ON_PARENT);
+
   gtk_widget_show(about2);
 }
 
