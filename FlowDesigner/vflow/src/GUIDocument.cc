@@ -12,6 +12,7 @@ static GnomeMDIChildClass *parent_class = NULL;
 
 bool GUIDocument::isRunning=false;
 pthread_t GUIDocument::runThread;
+Network * GUIDocument::runningNet;
 
 
 void create_net(gchar * str, GUIDocument *doc)
@@ -566,11 +567,17 @@ void GUIDocument::createParamDialog()
 
 }
 
+static void disposeFunct(void *dummy)
+{
+   //delete net;
+   delete GUIDocument::runningNet; 
+   //pthread_cleanup_push(routine,arg) 
+}
 
 static void threadFunct(GUIDocument *doc)
 {
    doc->run();
-   //pthread_cleanup_push(routine,arg) 
+   // pthread_cleanup_push(disposeFunct, NULL);
 }
 
 void GUIDocument::threadRun()
@@ -637,6 +644,8 @@ void GUIDocument::run()
       net->initialize();
       cerr << "running...\n";
       cout << *net->getOutput(0,0) << endl;
+
+      //delete net;
       //ask for params and desired output
       
       //run in a window in a separated thread
