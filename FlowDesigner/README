@@ -1,19 +1,6 @@
-To compile everything you need:
-   automake (1.4)
-   aclocal (1.4, comes with automake)
-   autoconf (2.13)
-   libtool 
-   make (GNU)
-   cvs (1.10)
-   doc++ (3.3.11)
-   perl 5
-   m4
-   an ANSI C++ compiler (a recent aCC, g++ 2.8 or higher, egcs 1.1.2 or higher)
+To compile:
 
-
-How to compile:
-
-% ./configure --disable-static --prefix=<some prefix> <other options>
+% ./configure --prefix=<some prefix> <other options>
 % make
 % make install
 
@@ -21,12 +8,9 @@ NOTE: if you are using a CVS tarball, use ./autogen.sh insteand of ./configure
 
 To have a list of all configure options type ./configure --help
 The important options are:
---prefix=install-path=/path/where/to/install
+--prefix=/path/where/to/install
 --with-fftw-dir=/path/to/fftw
---disable-static
 
-note: in the case of the --with-xxx-dir=path options, configure looks for 
-libxxx in path/lib and includes in path/include
-
-Here is a example:
-./configure --disable-static --prefix=/opt/overflow --with-fftw-dir=/opt
+Also, if you're compiling with gcc, we strongly suggest setting the CFLAGS 
+and CXXFLAGS environment variables to '-O3'. Otherwise, the default is 
+'-O2 -g' which creates huge (we mean it, think 100x bigger) binaries.
