@@ -18,6 +18,7 @@
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
+#include <strstream>
 
 //DECLARE_NODE(Probe)
 NODE_INFO(TextProbe, "Probe", "INPUT", "OUTPUT", "")
@@ -57,9 +58,16 @@ void TextProbe::reset()
 
 void TextProbe::trace()
 {
+   char probeOut[1000];
+   ostrstream out(probeOut, 999);
+   
+   out << *inputValue;
    cerr << "Probe value = " << *inputValue << endl;
-   gnome_less_show_string(GNOME_LESS(less1), "ceci est un test\n");
-
+   gdk_threads_enter();
+   gnome_less_clear (GNOME_LESS(less1));
+   gnome_less_show_string(GNOME_LESS(less1), probeOut);
+   gdk_threads_leave(); 
+   
    Probe::trace();
 }
 
