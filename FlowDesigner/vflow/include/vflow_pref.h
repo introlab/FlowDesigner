@@ -4,9 +4,6 @@
 #define VFLOW_PREF_H
 
 
-GtkWidget *create_propertybox1 ();
-
-
 class VFlowPref {
    //General
    bool showAll;
@@ -25,10 +22,20 @@ class VFlowPref {
   public:
    VFlowPref();
    ~VFlowPref();
-   
+   void save();
+
    static bool isShowAll() {return pref.showAll;}
 };
 
+
+class VFlowPrefDialog {
+   GtkWidget *propertybox1;
+  public:
+   VFlowPrefDialog();
+   ~VFlowPrefDialog();
+   void apply();
+   void close();
+};
 
 
 #endif

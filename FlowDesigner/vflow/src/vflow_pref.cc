@@ -14,19 +14,35 @@ VFlowPref VFlowPref::pref;
 
 VFlowPref::VFlowPref()
 {
-   
 }
 
 VFlowPref::~VFlowPref()
 {
+   save();
+}
+
+void VFlowPref::save()
+{
+   //cerr << "pref save\n";
 }
 
 
-GtkWidget *create_propertybox1 ()
+static void pref_apply (GnomePropertyBox *propertybox, gint arg1, VFlowPrefDialog* user_data)
+{
+   //cerr << "user_data = " << user_data << endl;
+   user_data->apply();
+}
+
+static void pref_close (GnomePropertyBox *propertybox, VFlowPrefDialog* user_data)
+{
+   //cerr << "user_data = " << user_data << endl;
+   user_data->close();
+}
+
+VFlowPrefDialog::VFlowPrefDialog()
 {
    cerr << "For the moment, this preference dialog box is nothing more than decoration, sorry:-(" << endl;
 
-  GtkWidget *propertybox1;
   GtkWidget *notebook1;
   GtkWidget *vbox3;
   GtkWidget *frame1;
@@ -320,7 +336,30 @@ GtkWidget *create_propertybox1 ()
   gtk_widget_show (label3);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 2), label3);
 
+
+   gtk_signal_connect (GTK_OBJECT (propertybox1), "apply",
+		       GTK_SIGNAL_FUNC(pref_apply), this);
+
+   gtk_signal_connect (GTK_OBJECT (propertybox1), "close",
+		       GTK_SIGNAL_FUNC(pref_close), this);
+
+  gnome_property_box_set_state (GNOME_PROPERTY_BOX(propertybox1), FALSE);
   gtk_widget_show(propertybox1);
-  return propertybox1;
 }
 
+VFlowPrefDialog::~VFlowPrefDialog()
+{
+   gtk_widget_destroy(propertybox1);
+}
+
+
+void VFlowPrefDialog::apply()
+{
+   cerr << "apply\n";
+}
+
+
+void VFlowPrefDialog::close()
+{
+   delete this;
+}

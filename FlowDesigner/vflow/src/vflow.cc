@@ -644,7 +644,8 @@ void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow) {
 
 void on_preferences1_activate  (GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
-   create_propertybox1();
+   new VFlowPrefDialog;
+   //create_propertybox1();
 }
 
 /**********************************************************************************************************
