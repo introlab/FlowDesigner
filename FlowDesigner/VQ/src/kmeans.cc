@@ -169,6 +169,8 @@ void KMeans::train (int codeSize, const vector<float *> &data, int len, bool bin
          for (j=0;j<10;j++)
             update(data, len);
       }
+      for (j=0;j<30;j++)
+	 update(data, len);
    } else {
       for (i=1;i<codeSize;i++)
       {

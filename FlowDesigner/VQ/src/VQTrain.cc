@@ -22,7 +22,7 @@
 //#include "multithread.h"
 
 //DECLARE_NODE(VQTrain)
-NODE_INFO(VQTrain,"VQ", "FRAMES", "OUTPUT", "MEANS")
+NODE_INFO(VQTrain,"VQ", "FRAMES", "OUTPUT", "MEANS:BINARY")
 
 VQTrain::VQTrain(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
@@ -57,6 +57,9 @@ ObjectRef VQTrain::getOutput(int output_id, int count)
    {
       if (count != processCount)
       {
+         bool binary = false;
+         if (parameters.exist("BINARY"))
+            binary = dereference_cast<bool> (parameters.get("BINARY"));
          int i;
          NodeInput framesInput = inputs[framesInputID];
 
@@ -73,7 +76,7 @@ ObjectRef VQTrain::getOutput(int output_id, int count)
          int length = object_cast <Vector<float> > (mat[0]).size();
 
          cerr << "training..." << endl;
-         vq->train(nbMeans,data,length);
+         vq->train(nbMeans,data,length,binary);
          cerr << "training complete." << endl;
 
          current = ObjectRef(vq);

@@ -17,17 +17,21 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    {
       func = sigmoid;
       deriv_func = deriv_sigmoid;
+   } else if (funcType == "tansig")
+   {
+      func = tansig;
+      deriv_func = deriv_tansig;
    } else if (funcType == "tanh")
    {
       func = tanh;
       deriv_func = deriv_tanh;
    }
    weights = new float [nbNeurons*(nbInputs+1)];
-   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+   /*for (int i=0;i<nbNeurons*(nbInputs+1);i++)
    {
       //weights[i]=1.0;
-      weights[i]=(rand()%1000) * .0002 - .05;
-   }
+      weights[i]=sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1);
+      }*/
 
    momentum = new float [nbNeurons*(nbInputs+1)];
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
@@ -38,6 +42,15 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    deriv = new float [nbNeurons];
    value = new float [nbNeurons];
    error = new float [nbNeurons];
+}
+
+void FFLayer::init(float minmax)
+{
+   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+   {
+      //weights[i]=1.0;
+      weights[i]=sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/minmax;
+   }
 }
 
 void FFLayer::printOn(ostream &out) const
@@ -83,6 +96,10 @@ void FFLayer::readFrom (istream &in)
 	 {
 	    func = sigmoid;
 	    deriv_func = deriv_sigmoid;
+	 } else if (funcType == "tansig")
+	 {
+	    func = tansig;
+	    deriv_func = deriv_tansig;
 	 } else if (funcType == "tanh")
 	 {
 	    func = tanh;

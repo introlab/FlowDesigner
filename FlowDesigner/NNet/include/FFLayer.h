@@ -7,6 +7,10 @@
 
 inline double sigmoid(double x)
 {
+   if (x>10)
+      return 1.0;
+   else if (x<-10)
+      return 0;
    return 1/(1+exp(-x));
 }
 
@@ -14,6 +18,21 @@ inline double deriv_sigmoid(double x)
 {
    //return 20*(.05*x+.5)*(1 - (.05*x+.5));
    return x*(1-x);
+}
+
+inline double tansig(double x)
+{
+   if (x>10)
+      return 1.0;
+   else if (x<-10)
+      return 0;
+   return 2/(1+exp(-2*x)) - 1;
+}
+
+inline double deriv_tansig(double x)
+{
+   //return 20*(.05*x+.5)*(1 - (.05*x+.5));
+   return 1-x*x;
 }
 
 inline double deriv_tanh(double x)
@@ -60,9 +79,9 @@ class FFLayer : public Object {
    float *momentum;
   public:
    FFLayer() {};
-   FFLayer(int _nbNeurons, int _nbInputs, string type = "tanh");
+   FFLayer(int _nbNeurons, int _nbInputs, string type = "tansig");
    ~FFLayer() {delete tmp_weights; delete value; delete weights; delete error; delete deriv;}
-   void update(float *previous)
+   void update(const float *previous)
       {
 	 for (int i=0;i<nbNeurons;i++)
 	 {
@@ -83,16 +102,19 @@ class FFLayer : public Object {
 	    tmp_weights[i]=0;
 	 }
       }
-   void copyFromTmp()
+   void copyFromTmp(float mom)
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
 	    //weights[i]=tmp_weights[i];
-	    momentum[i] = .90*momentum[i] + tmp_weights[i];
+	    momentum[i] = mom*momentum[i] + tmp_weights[i];
 	    weights[i]+=momentum[i];
+	    //cerr << momentum[i] << " ";
 	    //weights[i]+=tmp_weights[i];
 	 }
+	 //cerr << endl;
       }
+   void init(float minmax);
    float *getValue() {return value;}
    float *getWeights(int i) {return weights + i*(nbInputs+1);}
    float *getTmpWeights(int i) {return tmp_weights + i*(nbInputs+1);}

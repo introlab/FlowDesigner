@@ -14,18 +14,22 @@ FFNet::FFNet(const Vector<int> &_topo)
    {
       if (i==topo.size()-2)
       {
-	 //cout << "layer with " << topo[i+1] << endl;
 	 layers[i]=new FFLayer(topo[i+1],topo[i], "lin");
       } else
 	 layers[i]=new FFLayer(topo[i+1],topo[i]);
+      layers[i]->init(1.0);
    }
+   layers[0]->init(5);
 
+   alpha = .000001;
+   last_error=-1;
+   momentum=.9;
    /*float *f=layers[0]->getWeights(0);
    f[0]=2;f[1]=-1;
    f[2]=1;*/
 }
 
-float *FFNet::calc(float *input)
+float *FFNet::calc(const float *input)
 {
    layers[0]->update(input);
    for (int i=1;i<layers.size();i++)
@@ -100,10 +104,20 @@ void FFNet::train(vector<float *> in, vector<float *> out, int iter)
 	 learn (in[i], out[i]);
       for (i=0;i<layers.size();i++)
       {
-	 layers[i]->copyFromTmp();
+	 layers[i]->copyFromTmp(momentum);
       }
       iter--;
-      cout << sqrt(error/in.size()) << endl;
+      cout << sqrt(error/in.size()) << "\t" << alpha << endl;
+      
+      momentum=.9;
+      if (last_error > 0 && error/last_error > 1.05)
+      {
+	 momentum=0;
+	 alpha *= .7;
+      }
+      else if (last_error > 0 && error < last_error)
+	 alpha *= 1.05;
+      last_error = error;
    }
 }
 

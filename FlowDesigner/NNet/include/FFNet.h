@@ -8,17 +8,20 @@
 #include "Object.h"
 #include "Vector.h"
 
-#define alpha .001
+//#define alpha .0000005
 
 class FFNet : public Object {
   protected:
    Vector<int> topo;
    Vector<FFLayer *> layers;
-   float error;
+   double error;
+   double last_error;
+   float alpha;
+   float momentum;
   public:
    FFNet(const Vector<int> &_topo);
    FFNet() {}
-   float *calc(float *input);
+   float *calc(const float *input);
 
    void learn(float *input, float *output);
 
