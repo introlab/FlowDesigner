@@ -5,6 +5,9 @@
 
 static void create_net_terminal(gchar * str, GUINetTerminal *term)
 {
+
+  cout<<"create_net_terminal"<<endl;
+
    if (str)
       term->setName(string(str));
    else 
@@ -70,9 +73,12 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       terminal->getNode()->getNetwork()->removeTerminal(this);
       cerr << "disconnecting\n";
       terminal->disconnectNetTerminal();
-      cerr << "throwing\n";
-      throw false;
-      //BUG, there's a leak here
+      //cerr << "throwing\n";
+      //throw false;
+      //BUG, there's a leak here      
+      cerr<< "returning"<<endl;  
+      return;
+      
    }
    
    item = gnome_canvas_item_new(dynamic_cast<GUINode *>(terminal->getNode())->getGroup(),

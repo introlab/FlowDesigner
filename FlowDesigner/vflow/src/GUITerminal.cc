@@ -61,7 +61,6 @@ gint GUITerminal::event(GdkEvent *event)
                  if (connections.size() == 0 && !netTerminal)
                     new GUINetTerminal(this,UINetTerminal::INPUT,"");
                  //netTerminal = new UINetTerminal(x-10,y,this,UINetTerminal::INPUT);
-
                  //cerr << "added net input\n";
               } else {
                  if (!netTerminal)
@@ -109,6 +108,8 @@ gint GUITerminal::event(GdkEvent *event)
        break;
     }
   
+  //cout<<"terminate GUITerminal::event"<<endl;
+
   return FALSE;
 }
 
