@@ -900,6 +900,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 	 if (alpha[i] < .00000000001)
 	    alpha[i] = .00000000001;
       }
+      //if (SSE/tin.size()/topo[topo.size()-1]<.08) break;
       cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
       SSE=nextE;
       dEk = nextdE;
