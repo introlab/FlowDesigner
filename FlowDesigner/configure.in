@@ -14,6 +14,11 @@ if test $audio_blocks = audio_blocks; then
 AC_CONFIG_SUBDIRS(audio_blocks)
 fi
 
+AC_MODULE_OPT(effects)
+if test $audio_blocks = audio_blocks; then
+AC_CONFIG_SUBDIRS(audio_blocks)
+fi
+
 AC_MODULE_OPT(NNet)
 if test $NNet = NNet; then
 AC_CONFIG_SUBDIRS(NNet)

@@ -18,29 +18,30 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <math.h>
 
-class Sqrt;
+class Poly;
 
-//DECLARE_NODE(Sqrt)
-NODE_INFO(Sqrt,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
+//DECLARE_NODE(Poly)
+NODE_INFO(Poly, "Signal:Base", "INPUT:COEF", "OUTPUT", "LENGTH")
 
-class Sqrt : public FrameOperation {
+class Poly : public FrameOperation {
    
-   int inputID;
+   int input1ID;
+   int input2ID;
    int inputLength;
 
 public:
-   Sqrt(string nodeName, ParameterSet params)
+   Poly(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
    {
-      inputID = addInput("INPUT");
+      input1ID = addInput("INPUT");
+      input2ID = addInput("COEF");
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
    }
 
-   ~Sqrt() {}
+   ~Poly() {}
 
    virtual void specificInitialize()
    {
@@ -49,20 +50,36 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      NodeInput input1 = inputs[input1ID];
+      ObjectRef input1Value = input1.node->getOutput(input1.outputID, count);
 
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (inputValue->status != Object::valid)
+      if (input1Value->status != Object::valid)
       {
-         output.status = inputValue->status;
+         output.status = input1Value->status;
          return;
       }
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+
+      NodeInput input2 = inputs[input2ID];
+      ObjectRef input2Value = input2.node->getOutput(input2.outputID, count);
+      if (input2Value->status != Object::valid)
+      {
+         output.status = input2Value->status;
+         return;
+      }
+
+      const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
+      const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
       
       for (int i=0;i<outputLength;i++)
       {
-         output[i]=sqrt(in[i]);
+	 float x_n = 1;
+	 output[i] = 0;
+	 for (int j=0;j<in2.size();j++)
+	 {
+	    output[i] += in2[j] * x_n;
+	    x_n *= in1[i];
+	 }
       }
       
       output.status = Object::valid;
