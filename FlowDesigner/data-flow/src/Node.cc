@@ -203,27 +203,32 @@ void Node::initialize ()
    if (--outputInitializeCount <=0)
    {
       
-      specificInitialize();
-      //parameters.checkUnused();
   
       vector<NodeInput>::iterator in;
 
       for (in = inputs.begin(); in < inputs.end(); in++)
       {        
-         if (!in->node || in->outputID == -1) {
+         if (!in->node || in->outputID == -1) 
             throw new NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
-         }
-         else {
-            if (!in->node->hasOutput(in->outputID)) 
-               throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
-	    try {
+         
+         if (!in->node->hasOutput(in->outputID)) 
+	    throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
+         
+      }
+
+      specificInitialize();
+      //parameters.checkUnused();
+
+      for (in = inputs.begin(); in < inputs.end(); in++)
+      {        
+	 try {
             in->node->initialize();
-	    } catch (BaseException *e)
-	    {
-	       throw e->add(new NodeException(this, "Exception caught in node initialization", __FILE__, __LINE__));
-	    }
-         }
-     }
+	 } catch (BaseException *e)
+	 {
+	    throw e->add(new NodeException(this, "Exception caught in node initialization", __FILE__, __LINE__));
+	 }
+         
+      }
       
    }
 }
