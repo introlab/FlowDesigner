@@ -49,7 +49,7 @@ END*/
 
 GenericModel::GenericModel() {
 
-  cerr<<"Creating Generic Model"<<endl;
+  //cerr<<"Creating Generic Model"<<endl;
 }
 
 GenericModel::GenericModel(string nodeName, ParameterSet params) 
@@ -69,7 +69,7 @@ GenericModel::GenericModel(const GenericModel &model)
 //////////////////////////////////////////////////////////////////////
 GenericModel::~GenericModel() {
 
-  cerr<<"generic Model Destructor"<<endl;
+  //cerr<<"generic Model Destructor"<<endl;
 
 }
 
@@ -204,8 +204,6 @@ void GenericModel::printOn(ostream &out) const {
 }
 	
 void GenericModel::readFrom(istream &in) {
-
-  cerr<<"Generic Model readFrom"<<endl;
 
    string tag;
    int rule_size;
