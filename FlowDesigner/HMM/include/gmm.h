@@ -106,7 +106,6 @@ public:
       //gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
    }
 
-   GMM (string file);
    void save(string file);
 
    /**Returns the number of gaussians in the GMM*/

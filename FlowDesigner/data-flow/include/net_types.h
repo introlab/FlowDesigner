@@ -159,6 +159,13 @@ public:
 
    static NetCType<T> *alloc()  {return ObjectPool<NetCType<T> >::alloc();}
 
+   static NetCType<T> *alloc(const T &obj)  
+   {
+      NetCType<T> *ret = ObjectPool<NetCType<T> >::alloc();
+      ret->value = obj;
+      return ret;
+   }
+
    void destroy() {ObjectPool<NetCType<T> >::release(this);}
 
 };

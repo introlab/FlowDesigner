@@ -76,8 +76,9 @@ void GaussianSet::readFrom (istream &in)
        throw new ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "gaussians")
+      {
          in >> gaussians;
-      else if (tag == "nb_gaussians")
+      } else if (tag == "nb_gaussians")
          in >> nb_gaussians;
       else
          throw new ParsingException ("unknown argument: " + tag);

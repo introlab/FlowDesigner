@@ -83,7 +83,7 @@ void DiagonalCovariance::printOn(ostream &out) const
    out << "<data";
    for (int i=0;i<dimension;i++)
       out << " " << data[i];
-
+   out << ">\n";
    out << ">\n";
    return;
 }

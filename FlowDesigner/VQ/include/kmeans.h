@@ -29,7 +29,7 @@ protected:
    //vector<int> accum;
 
 public:
-   KMeans (float (*_dist)(const float *, const float*, int) = euclidian)
+   explicit KMeans (float (*_dist)(const float *, const float*, int) = euclidian)
       : VQ(_dist)
    {}
 

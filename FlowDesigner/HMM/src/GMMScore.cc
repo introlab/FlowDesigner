@@ -84,7 +84,10 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
          //   cerr << mat[count][i] << " ";
          //cerr << endl;
          //cout << "score: " << score << endl;
-         currentScore = ObjectRef(new Float(score));
+         
+	 //currentScore = ObjectRef(new Float(score));
+	 currentScore = Float::alloc(score);
+
          processCount=count;
       }
       //cerr << "GMMScore returning: " << currentScore << " (" << typeid(currentScore).name() << ")" << endl;

@@ -52,7 +52,7 @@ protected:
    
    
 public:
-   RBF (float (*_dist)(const float *, const float*, int) = euclidian)
+   explicit RBF (float (*_dist)(const float *, const float*, int) = euclidian)
       : KMeans(_dist)
    {}
 
