@@ -1,0 +1,118 @@
+// Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, write to the Free Software Foundation,
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+
+#include "Node.h"
+#include "Vector.h"
+#include "ObjectParser.h"
+#include <stream.h>
+#include <strstream.h>
+
+#include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <sys/soundcard.h>
+
+class Sound;
+
+//DECLARE_NODE(Sound)
+NODE_INFO(Sound,"Signal", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE")
+
+/** A constant node contains a value that will never changes. */
+class Sound : public Node
+{
+
+protected:
+
+   /**The value of the constant*/
+   ObjectRef value;
+
+   /**The ID of the 'value' output*/
+   int outputID;
+public:
+
+   /**Constructor, takes the name of the node and a set of parameters*/
+   Sound(string nodeName, ParameterSet params)
+      : Node(nodeName, params) 
+      //, value (parameters.get("VALUE"))
+   {
+      outputID = addOutput("OUTPUT");
+      
+      int speed=44100;
+      int stereo=0;
+      int audio_fd;
+      String device = object_cast <String> (parameters.get("DEVICE"));
+      if (parameters.exist("RATE"))
+	 speed = dereference_cast<int> (parameters.get("RATE"));
+      if (parameters.exist("STEREO"))
+	 stereo = dereference_cast<int> (parameters.get("STEREO"));
+      int mode=O_WRONLY;
+      if (parameters.exist("MODE"))
+      {
+	 String modeStr = object_cast <String> (parameters.get("MODE"));
+	 if (modeStr == "R")
+	    mode=O_RDONLY;
+	 if (modeStr == "RW")
+	    mode=O_RDWR;
+      }
+      if ((audio_fd=open(device.c_str(),mode)) == -1) 
+      {
+	 perror (device.c_str());
+	 exit(1);
+      }
+      
+      int format=AFMT_S16_LE;
+      if (ioctl(audio_fd, SNDCTL_DSP_SETFMT, &format)==-1)
+      {
+	 perror("SNDCTL_DSP_SETFMT");  
+	 exit(1);
+      }
+      
+      if (ioctl(audio_fd, SNDCTL_DSP_STEREO, &stereo)==-1)
+      {
+	 perror("SNDCTL_DSP_STEREO");
+	 exit(1);
+      }
+      
+      if (ioctl(audio_fd, SNDCTL_DSP_SPEED, &speed)==-1)
+      {
+	 perror("SNDCTL_DSP_SPEED");
+	 exit(1);
+      }
+
+
+      value = ObjectRef(new Int(audio_fd));
+      //Vector<float> &val = object_cast<Vector<float> > (value);
+      //istrstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
+      //str_vector >> val;
+
+      //cerr << "vector is: " << val << endl;
+   }
+
+   /**Ask for the node's output which ID (number) is output_id 
+      and for the 'count' iteration */
+   virtual ObjectRef getOutput(int output_id, int count)
+   {
+      if (output_id==outputID) return value;
+      else throw NodeException (this, "Sound: Unknown output id", __FILE__, __LINE__);
+   }
+
+protected:
+   /**Default constructor, should not be used*/
+   Sound() {throw GeneralException("Sound copy constructor should not be called",__FILE__,__LINE__);}
+
+};
