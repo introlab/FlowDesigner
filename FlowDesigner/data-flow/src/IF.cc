@@ -43,16 +43,22 @@ public:
    IF(string nodeName, ParameterSet params)
       : Node(nodeName, params)
    {
-      try {
+      try
+      {
          inputID = addInput("COND");
          thenID = addInput("THEN");
          elseID = addInput("ELSE");
 	 outputID=addOutput("OUTPUT");
 	 if (parameters.exist("PULL_ANYWAY"))
+	 {
 	    pullAnyway = dereference_cast<bool> (parameters.get("PULL_ANYWAY"));
+	 }
 	 else
+	 {
 	    pullAnyway = false;
-      } catch (BaseException *e)
+	 }
+      }
+      catch (BaseException *e)
       {
          throw e->add(new NodeException (NULL, "Exception caught in IF constructor", __FILE__, __LINE__));
       }
@@ -63,14 +69,20 @@ public:
    {
       //NodeInput input = inputs[inputID];
       //ObjectRef inputValue = input.node->getOutput(input.outputID,count);
-      if (dereference_cast<bool> (getInput(inputID,count)))
+      if(dereference_cast<bool> (getInput(inputID,count)))
       {
-	 if (pullAnyway)
+	 if(pullAnyway)
+	 {
 	    getInput(elseID,count);
+	 }
 	 return getInput(thenID,count);
-      } else {
-	 if (pullAnyway)
+      } 
+      else
+      {
+	 if(pullAnyway)
+	 {
 	    getInput(thenID,count);
+	 }
 	 return getInput(elseID,count);
       }
    }
