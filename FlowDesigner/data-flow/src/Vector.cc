@@ -78,3 +78,18 @@ ObjectRef divVectorFloat(ObjectRef x, ObjectRef y)
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divVectorFloat, Vector<float>, Vector<float>);
+
+
+
+ObjectRef addVectorFloatFloat (ObjectRef x, ObjectRef y)
+{
+   Vector<float> &v1 = object_cast<Vector<float> > (x);
+   float v2 = dereference_cast<float> (y);
+   int length = v1.size();
+
+   Vector<float> *v = Vector<float>::alloc(length);
+   for (int i=0;i<length;i++)
+      (*v)[i] = v1[i]+v2;
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addVectorFloatFloat, Vector<float>, Float);
