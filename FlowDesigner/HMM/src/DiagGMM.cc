@@ -5,9 +5,109 @@
 #include "vec.h"
 #include "ObjectParser.h"
 #include "binio.h"
+#include "iextensions.h"
 
 DECLARE_TYPE(DiagGMM)
 //@implements DGMM
+
+
+#ifdef _ALLOW_SSE
+inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, int len)
+{
+   float sum=0;
+   __asm__ __volatile__ (
+   "
+   push %%eax
+   push %%esi
+   push %%edi
+   push %%ecx
+   xorps %%xmm4, %%xmm4
+   xorps %%xmm5, %%xmm5
+
+   sub $8, %%ecx
+   jb .mul8_skip%=
+
+   prefetcht0 (%%esi)
+   prefetcht0 (%%edi)
+.mul8_loop%=:
+   movaps (%%eax), %%xmm0
+   movaps (%%edi), %%xmm1
+   movaps 16(%%eax), %%xmm2
+   movaps 16(%%edi), %%xmm3
+   movaps (%%esi), %%xmm6
+   movaps 16(%%esi), %%xmm7
+   add $32, %%eax
+   add $32, %%edi
+   add $32, %%esi
+   prefetcht0 (%%esi)
+   prefetcht0 (%%edi)
+   subps %%xmm0, %%xmm1
+   subps %%xmm2, %%xmm3
+   mulps %%xmm1, %%xmm1
+   mulps %%xmm3, %%xmm3
+   mulps %%xmm6, %%xmm1
+   mulps %%xmm7, %%xmm3
+   addps %%xmm1, %%xmm4
+   addps %%xmm3, %%xmm5
+
+   sub $8,  %%ecx
+   jae .mul8_loop%=
+
+.mul8_skip%=:
+   addps %%xmm5, %%xmm4
+
+
+   add $4, %%ecx
+   jl .mul4_skip%=
+
+   movaps (%%eax), %%xmm0
+   movaps (%%edi), %%xmm1
+   movaps (%%esi), %%xmm6
+   add $16, %%eax
+   add $16, %%edi
+   add $16, %%esi
+
+   subps %%xmm0, %%xmm1
+   mulps %%xmm1, %%xmm1
+   mulps %%xmm6, %%xmm1
+   addps %%xmm1, %%xmm4
+
+   sub $4,  %%ecx
+
+.mul4_skip%=:
+
+
+
+   movaps %%xmm4, %%xmm3
+
+
+   movhlps %%xmm3, %%xmm4
+   addps %%xmm4, %%xmm3
+   movaps %%xmm3, %%xmm4
+   shufps $33, %%xmm4, %%xmm4
+   addss %%xmm4, %%xmm3
+   movss %%xmm3, (%%edx)
+
+
+   pop %%ecx
+   pop %%edi
+   pop %%esi
+   pop %%eax
+   "
+   : : "a" (a), "S" (c), "D" (b), "c" (len), "d" (&sum)
+   : "memory"
+   );
+    
+   return sum;
+}
+#else
+inline float mahalanobis4_SSE<float>(const float *a, const float *b, const float *c, int len)
+{
+   throw new generalException("Trying to use SSE routine, but code not compiled for SSE support", __FILE__,
+			      __LINE__);
+}
+#endif
+
 
 float DiagGMM::score(const float *vec)
 {
@@ -26,17 +126,28 @@ float DiagGMM::score(const float *vec)
    float *mean=base;
    float *cov=base+augDim;
    float maxScore=0;
-   for (int k=0;k<nbGauss;k++)
+
+   if (IExtensions::haveSSE())
    {
-      score = 0;
-      //for (int i=0;i<augDim;i++)
-      // score += sqr(data[i]-mean[i])*cov[i];
-      score = vec_mahalanobis2(data, mean, cov, augDim);
-      //cerr << score << endl;
-      if (k==0 || score > maxScore)
-	 maxScore = score;
-      mean+=inc;
-      cov += inc;
+      for (int k=0;k<nbGauss;k++)
+      {
+	 score = 0;
+	 score = mahalanobis4_SSE(data, mean, cov, augDim);
+	 if (k==0 || score > maxScore)
+	    maxScore = score;
+	 mean+=inc;
+	 cov += inc;
+      }
+   } else {
+      for (int k=0;k<nbGauss;k++)
+      {
+	 score = 0;
+	 score = vec_mahalanobis2(data, mean, cov, augDim);
+	 if (k==0 || score > maxScore)
+	    maxScore = score;
+	 mean+=inc;
+	 cov += inc;
+      }
    }
    //cerr << "tata\n";
    return maxScore;
