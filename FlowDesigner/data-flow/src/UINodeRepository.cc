@@ -250,7 +250,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	       else
 		  info->description = string((char *)tmp);
 	       free(tmp);
-	    } else 
+	    } else if (!xmlIsBlankNode(data))
 	    {
 	       cerr << "other\n";
 	    }
@@ -266,6 +266,11 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	 xmlNodePtr depend = node->children;
 	 while (depend != NULL)
 	 {
+            if (xmlIsBlankNode(depend))
+            {
+               depend = depend->next;
+               continue;
+            }
 	    if (string((char*)depend->name) != "Require")
 	       throw new GeneralException(string("Unknown section in module dependency: ") + (char*)node->name, 
 				    __FILE__, __LINE__);
@@ -303,14 +308,14 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 		  throw new GeneralException(string("Empty header dependency for file: ") + dep_file, 
 					     __FILE__, __LINE__);
 	       HeaderDepend()[dep_file].insert(HeaderDepend()[dep_file].end(), req_header);	       
-	    } else 
+	    } else if (!xmlIsBlankNode(depend))
 	       throw new GeneralException(string("Unknown section in file dependency: ") + (char*)node->name, 
 				    __FILE__, __LINE__);
 
 	    depend = depend->next;
 	 }	 
       } 
-      else 
+      else if (!xmlIsBlankNode(node))
 	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + string((char*)node->name) + " in " + fullname, 
 				    __FILE__, __LINE__);
       

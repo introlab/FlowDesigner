@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
       cerr << "usage: batchflow <document> [arguments]" << endl;
       exit(1);
     }
-    xmlKeepBlanksDefault(0);   
+    //xmlKeepBlanksDefault(0);   
     //signal function
     signal(SIGINT,sig_usr);
     batchflowApp::instance()->initialize(argc,argv);

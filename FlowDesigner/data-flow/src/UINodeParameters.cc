@@ -93,7 +93,8 @@ void UINodeParameters::load(xmlNodePtr node)
 	 if (str)
 	    setComments(string(str));
 	 free(str);
-      } else {
+      } else if (!xmlIsBlankNode(par)) {
+         
 	 cerr << "unknown param tag\n";
       }
       par = par->next;
