@@ -662,24 +662,12 @@ static void disposeFunct(void *dummy)
 {
    cerr << "disposeFunct called\n";
    if (dummy != NULL) {
-     //if (GUIDocument::isRunning) {
      GUIDocument *doc = (GUIDocument*) dummy;
      GUIDocument::isRunning = false;
-     doc->threadStop();
-     //}
-
-     cerr<<"updating buttons"<<endl;
-     gdk_threads_enter();
-     GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
-     gtk_widget_set_sensitive(w,true);
-     w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
-     gtk_widget_set_sensitive(w,false);
-     gdk_threads_leave();
-     
-     //delete net;
      cerr <<  "Deleting the running network.\n"; 
-     delete GUIDocument::runningNet; 
-     //runningNet=NULL; 
+     delete GUIDocument::runningNet;
+     //gdk_threads_leave();
+     GUIDocument::runningNet=NULL; 
    }
   
 }
@@ -696,6 +684,7 @@ void GUIDocument::threadRun()
    {
       isRunning=true;
 
+      //Let's create the thread already in a detached state
       pthread_attr_t tattr;
       pthread_attr_init(&tattr);
       pthread_attr_setdetachstate(&tattr,PTHREAD_CREATE_DETACHED);
@@ -705,6 +694,8 @@ void GUIDocument::threadRun()
       
    }
 }
+
+extern void set_run_mode (bool isRuning);
 
 void GUIDocument::threadStop()
 {
@@ -718,6 +709,8 @@ void GUIDocument::threadStop()
      isRunning=false;
      //runningNet->setExitStatus();
      pthread_cancel(runThread);
+
+     set_run_mode(false);
    }
    
 
@@ -727,7 +720,6 @@ void GUIDocument::threadStop()
 void GUIDocument::run()
 {
    //cerr << "GUIDocument::run\n";
-   
    pthread_cleanup_push(disposeFunct, this);
    //Network *net;
    try{
@@ -821,6 +813,9 @@ void GUIDocument::run()
       //delete net;
       //runningNet=NULL;
    }
+   gdk_threads_enter();
+   set_run_mode(false);
+   gdk_threads_leave();
    
    pthread_cleanup_pop(1);
 

@@ -123,9 +123,9 @@ void PlotProbe::display()
 {
    GnomeCanvasPoints *points;
 
+   pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
    gdk_threads_enter();
    
-   //cerr << "length = " << length << endl;
 
    Vector<float> &data = object_cast<Vector<float> > (inputValue);
    points = gnome_canvas_points_new(data.size());
@@ -154,6 +154,7 @@ void PlotProbe::display()
    //cerr << "plot done...\n";
 
    gdk_threads_leave();
+   pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 
 }
 
