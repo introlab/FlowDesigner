@@ -43,6 +43,8 @@ int BufferedNode::addOutput(const string &output_name)
 
 void BufferedNode::initializeBuffers()
 {
+   //cerr << typeid(*this).name() << " " << outputs[0].lookAhead << " " << outputs[0].lookBack << endl;
+
    for (int i=0;i<outputs.size();i++)
    {
       outputs[i].buffer = RCPtr<Buffer>(new Buffer (outputs[i].lookAhead+outputs[i].lookBack+1));
@@ -106,6 +108,22 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
 {
    try 
    {
+      Buffer &outBuffer = *(outputs[output_id].buffer);
+      if (inOrder)
+      {
+	 for (int i=processCount+1;i<=count;i++)
+	    calculate (output_id, i, outBuffer);
+         if (count > processCount)
+            processCount = count;
+	 return outBuffer[count];
+      } else {
+	 if (count > outBuffer.getCurrentPos() || outBuffer[count]->status != Object::valid)
+	    calculate (output_id, count, outBuffer);
+         if (count > processCount)
+            processCount = count;
+	 return outBuffer[count];
+      }
+/*
       //Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
       Buffer &outBuffer = *(outputs[output_id].buffer);
       
@@ -127,7 +145,7 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
          if (count > processCount)
             processCount = count;
          return outBuffer[count];
-      }
+	 }*/
    } catch (BaseException *e)
    {
       //e->print();
