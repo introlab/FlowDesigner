@@ -28,6 +28,7 @@ vflow_SOURCES = \
 	GUINetTerminal.h GUINetTerminal.cc \
 	Probe.cc TextProbe.cc PlotProbe.cc SpectrumProbe.cc canvas-background.c
 
+
 batchflow_SOURCES = \
 	batchflow.cc \
 	UINode.h UINode.cc \
