@@ -16,7 +16,7 @@
 
 using namespace std;
 
-/** This is a generic type that Overflow will handle. Subclass GenericType if
+/** This is a generic type that FlowDesigner will handle. Subclass GenericType if
     you want to add specific operations and operators */
 template <class T> 
 class GenericType : public Object {
@@ -65,12 +65,22 @@ public:
 
 };
 
+/** 
+    This is a generic printable type that FlowDesigner will handle. Subclass PrintableGenericType if
+    you want to add specific operations and operators 
+*/
 template <class T>
 class PrintableGenericType : public GenericType<T> {
 
 public:
+
+   /**Default constructor*/
    PrintableGenericType () {}
 
+   /**
+      Constructor with a value
+      \param val the value
+   */
    PrintableGenericType (T val) {
       GenericType<T>::value = val;
    }
@@ -80,17 +90,35 @@ public:
       GenericType<T>::value = copy.value;
    }
 
+   /**
+      Value accessor.
+      \return T the value.
+   */
    T &val() {return GenericType<T>::value;}
 
+   /**
+      Formatted output in the FlowDesigner format. <br>
+      <b>Format : </b> \<T <i>value<\i> \>
+      \param out the output stream
+   */
    void printOn(ostream &out) const
    {
       out << "<" << className() << " " << value << " >";
    }
 
+   /**
+      Formatted output (std)
+      \param out output stream
+   */
    virtual void prettyPrint(ostream &out=cout) const {
      out << value << " ";
    }
 
+   /**
+      Formatted input in the FlowDesigner format. <br>
+      <b>Format : </b> \<T <i>value<\i> \>
+      \param in the input stream
+   */
    void readFrom(istream &in)
    {
       in >> value;
@@ -99,10 +127,22 @@ public:
       if (ch != '>')
 	 throw new GeneralException("Error reading String: '>' expected", __FILE__, __LINE__);
    }
+
+   /**
+      Binary output in the FlowDesigner format. <br>
+      <b>Format : </b> {T |<i>value<\i> }
+      \param out the output stream
+   */
    void serialize(ostream &out) const
    {
       out << "{" << className() << " |" << value << " }";
    }
+
+   /**
+      Binary input in the FlowDesigner format. <br>
+      <b>Format : </b> {T |<i>value<\i> }
+      \param in the input stream
+   */
    void unserialize(istream &in)
    {
       in >> value;
@@ -118,8 +158,8 @@ public:
 /**
    The NetCType. We are using this class to wrap standard C types into objects
    that are Object compatible.
-   @author Dominic Letourneau & jean-Marc Valin
- */
+   \author Dominic Letourneau & Jean-Marc Valin
+*/
 template <class T>
 class NetCType : public PrintableGenericType<T> {
    
@@ -176,8 +216,16 @@ public:
       return (GenericType<T>::value != val);
    }
 
+   /**
+      Allocator from the pool
+      \return NetCType<T>* The newly created object
+   */
    static NetCType<T> *alloc()  {return ObjectPool<NetCType<T> >::alloc();}
 
+   /**
+      Allocator from the pool with an object
+      \return NetCType<T>* The newly created object (copy of obj)
+   */
    static NetCType<T> *alloc(const T &obj)  
    {
       NetCType<T> *ret = ObjectPool<NetCType<T> >::alloc();
@@ -185,18 +233,25 @@ public:
       return ret;
    }
 
+   ///Destroy object from the pool
    void destroy() {ObjectPool<NetCType<T> >::release(this);}
 
 };
 
-
+///Int which is a NetCType<int>
 typedef NetCType<int> Int;
+
+///Float which is a NetCType<float>
 typedef NetCType<float> Float;
+
+///Double which is a NetCType<double>
 typedef NetCType<double> Double;
+
+///Bool which is a NetCType<double>
 typedef NetCType<bool> Bool;
 
-
 //typedef NetCType<FILE *> FILEPTR;
+/** FILE* wrapper */
 class FILEPTR : public GenericType<FILE *> {
   public: 
    FILEPTR(FILE *file);
@@ -207,6 +262,7 @@ class FILEPTR : public GenericType<FILE *> {
 #ifndef WIN32
 
 //typedef NetCType<FILE *> FILEPTR;
+/** File descriptor wrapper */
 class FILEDES : public GenericType<int> {
   public: 
    FILEDES(int fd);
@@ -216,34 +272,73 @@ class FILEDES : public GenericType<int> {
 
 #endif /*ifdef WIN32*/
 
-
+///TrueObject = NetCType<Bool>(true)
 extern ObjectRef TrueObject;
+
+///FalseObject = NetCType<Bool>(false)
 extern ObjectRef FalseObject;
 
 
-/**Base Overflow String type, wraps a C++ string
-   @author Jean-Marc Valin
+/**Base FlowDesigner String type, wraps a C++ string
+   \author Jean-Marc Valin
 */
 class String : public string, public Object
 {
-public:
-  typedef string basicType;
+ public:
 
+   ///You can always get the type wrapped by String by using typename String::basicType.
+   typedef string basicType;
+   
+   /** Default constructor */
    String() : string() {}
+
+   /**
+      Formatted output in the FlowDesigner format for String.
+      <b>Format : </b> \<String <i>the_string_with_escape_characters<\i>\>
+      \param out the output stream
+   */
    void printOn(ostream &out) const;
+
+   /**
+      Formatted input in the FlowDesigner format for String.
+      <b>Format : </b> \<String <i>the_string_with_escape_characters<\i>\>
+      \param in the input stream
+   */
    void readFrom(istream &in);
+
+   /**
+      Binary output in the FlowDesigner String format. <br>
+      <b>Format : </b> {String |<i>the_string<\i> }
+      \param out the output stream
+   */
    void serialize(ostream &out) const;
+
+   /**
+      Binary input in the FlowDesigner String format. <br>
+      <b>Format : </b> {String |<i>the_string<\i> }
+      \param in the input stream
+   */
    void unserialize(istream &in);
+
+   /** 
+       Std formatted output
+       \param out the output stream
+   */
    void prettyPrint(ostream &out) const;
 
+   /** Constructor with char* */
    String(const char *str) : string(str)
    {}
+
+   /** Constructor with string */
    String(const string &str) : string(str)
    {}
    
+   /** return the string value */
    const string& val() { return *this;}
 };
 
+///operator >> for String
 istream &operator >> (istream &in, String &str);
 
 _DEF_OBJECT_TYPE(String)
