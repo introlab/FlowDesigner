@@ -1,7 +1,6 @@
-This package is released under the version 2 of the GPL, with one exception: 
+This package is released under the version 2.1 of the GNU Lesser General
+Public License, with the following exception: 
 it is allowed to distribute a new module in binary-only form, provided that 
 this modules does not require modifications to the base system or other 
 toolboxes. This exception is meant to be equivalent to the Linux binary-only
 kernel modules.
-
-
