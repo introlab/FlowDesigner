@@ -4,6 +4,7 @@
 #include "ThreadedIterator.h"
 #include <pthread.h>
 #include "Constant.h"
+#include <time.h>
 
 const int ThreadedIterator::STATUS_RUNNING = 1;
 const int ThreadedIterator::STATUS_STOPPED = 0;
@@ -143,10 +144,14 @@ void * workloop (void *param) {
 
   ThreadedIterator *ptr = (ThreadedIterator *) param;
 
+  cout<<"Starting the workloop."<<endl;
+
   while (1) {
 
     ptr->iterator_lock();
   
+    time_t begin =  time(NULL);
+
     if (ptr->thread_status != ThreadedIterator::STATUS_RUNNING) break;
     
     try {
@@ -178,7 +183,18 @@ void * workloop (void *param) {
 
     ptr->iterator_unlock();
 
-    //SLEEP the amount of time needed
+    time_t end = time(NULL);
+
+    //period in ms
+    int period = 1000 / ptr->rate_per_second;
+    
+    if (end - begin < period) {
+      //SLEEP the amount of time needed
+      //to be verified...
+      //usleep ((period - (end - begin)) * 1000); 
+    }
+
+   
 
   }
   
