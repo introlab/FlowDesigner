@@ -414,8 +414,10 @@ inline void vec_sqrt(const T *a, T *b, int len)
 }
 
 template <class T>
-inline void vec_corr(const T *a, T *b, int len)
+inline void vec_corr_cont(const T *a, T *filt, T *out, int len, int filtLen)
 {
+   for (int i=0;i<len;i++)
+      out[i] = vec_inner_prod(a-filtLen+1, filt, filtLen);   
 }
 
 #ifdef _USE_3DNOW
