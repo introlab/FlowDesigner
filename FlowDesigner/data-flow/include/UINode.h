@@ -31,58 +31,80 @@ class ParameterSet;
 */
 class UINode {
 protected:
+   /**Not too sure what I was thinking when I wrote that*/
    bool destroyed;
+
+   /**Node name*/
    string name;
 
+   /**The network in which the node is included*/
    UINetwork *net;
 
-
+   /**Node type (either the name of the .n or the builtin Node subclass)*/
    string type;
    
+   /**Node description (unused?)*/
    string description;
 
+   /**Position on the canvas*/
    double x,y;
 
+   /**Temporary position used in move operations*/
    double xtmp,ytmp;
 
+   /**Pointers to all the inputs*/
    vector <UITerminal *> inputs;
 
+   /**Pointers to all the outputs*/
    vector <UITerminal *> outputs;
 
+   /**All the node parameters*/
    UINodeParameters *parameters;
 
 public:
 
+   /**"Normal" constructor*/
    UINode(UINetwork* _net, string _name, string _type, double x, double y, bool doInit=1);
 
+   /**Constructor from XML parse tree*/
    UINode(UINetwork* _net, xmlNodePtr def, bool doInit=1);
 
+   /**Destructor*/
    virtual ~UINode();
 
-
+   /**Returns the node name*/
    const string &getName() {return name;}
+   
+   /**Returns the node type*/
    const string &getType() {return type;}
 
+   /**Returns the corresponding network*/
    UINetwork * getNetwork() {return net;}
 
+   /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
 
+   /**Returns the input (terminal) corresponding to a certain name*/
    UITerminal *getInputNamed(string n);
 
+   /**Returns the output (terminal) corresponding to a certain name*/
    UITerminal *getOutputNamed(string n);
 
+   /**Returns the node position*/
    void getPos (double &xx, double &yy)
    {
       xx=x;
       yy=y;
    }
    
+   /**Changes the position (not too sure it should be used*/
    void setPos (double new_x, double new_y)
    {
 	   x = new_x;
 	   y = new_y;
    }
 
+   /**Export to old network format (deprecated)*/
    void export2net (ostream &out);
 /*
    virtual void setAsCondition();
