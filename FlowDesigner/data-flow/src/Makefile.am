@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.2 1999/08/13 17:38:51 jmvalin Exp $
+# $Id: Makefile.am,v 1.1 1999/08/26 15:55:43 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 AUTOMAKE_OPTIONS = no-dependencies
@@ -11,7 +11,7 @@ lib_LTLIBRARIES = libnetwork.la
 libnetwork_la_SOURCES = Node.cc \
         ParameterSet.cc \
         NetworkLogger.cc \
-        ConstantNode.cc \
+        Constant.cc \
         FileParserException.cc \
         Network.cc \
         DLManager.cc \
@@ -42,6 +42,6 @@ libnetwork_la_SOURCES = Node.cc \
 
 
 #libnetwork_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
-libnetwork_la_LDFLAGS = -release $(LT_RELEASE) @LIBS@
+libnetwork_la_LDFLAGS = -release $(LT_RELEASE)
 
 INCLUDES = -I$(top_srcdir)/data-flow/include

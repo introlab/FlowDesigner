@@ -22,8 +22,9 @@
   date  : 09/06/99 
  */
 
-#include "Node.h"
-
+//#include "Node.h"
+#include "ParameterSet.h"
+class Node;
 
 //abstract factory class
 class _NodeFactory {

@@ -26,9 +26,17 @@
 #include <typeinfo>
 #include "ParameterSet.h"
 
+#include "NodeFactory.h"
+//class _NodeFactory;
+
 #ifdef MULTITHREAD
 #include <pthread.h>
 #endif
+
+///Definition of the type we need for the dictionaries
+typedef map<string, Node*>::value_type nodeEntry;
+typedef map<string, _NodeFactory*>::value_type factoryEntry; 
+
 
 //must be defined
 class Node;
@@ -215,6 +223,11 @@ public:
    }
 #endif
 
+   ///Adding a factory into the static dictionary
+   static int addFactory (const string &factoryName, _NodeFactory* const factory);
+
+   ///The factory lookup function
+   static _NodeFactory* getFactoryNamed (const string &name);
 
 private:
    /**Tell the node we will be using output 'out'*/
@@ -234,6 +247,10 @@ protected:
 
    /**symbolic to numeric translation for output names*/
    virtual int translateOutput(string inputName);
+
+   ///The node instance factory
+   static map<string,_NodeFactory*> factoryDictionary;
+   
 };
 
 /***************************************************************************/
@@ -306,7 +323,20 @@ protected:
    int line;
 };
 
+#ifdef _PLUGIN_NODE
 
+#define DECLARE_NODE(NodeTypeName) extern "C" {                     \
+   Node *createNewNode(string nodeName, ParameterSet params)        \
+   {                                                                \
+      return new NodeTypeName(nodeName, params);                    \
+   }                                                                \
+}
+#else
+
+#define DECLARE_NODE(NodeTypeName) static int tata = \
+               Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>);
+
+#endif
 
 
 #endif

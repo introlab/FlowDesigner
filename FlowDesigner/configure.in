@@ -109,9 +109,11 @@ AC_OUTPUT([Makefile HMM/Makefile HMM/src/Makefile HMM/include/Makefile \
 	data-flow/Makefile \
 	data-flow/src/Makefile data-flow/include/Makefile \
 	data-flow/doc/Makefile data-flow/doc/html/Makefile \
+	data-flow/doc/html/images/Makefile \
 	audio_blocks/Makefile audio_blocks/include/Makefile \
 	audio_blocks/src/Makefile audio_blocks/blocks/Makefile \
 	audio_blocks/doc/Makefile audio_blocks/doc/html/Makefile \
 	audio_blocks/config/Makefile \
+	tools/Makefile tools/src/Makefile tools/m/Makefile \
 	])
 

@@ -18,9 +18,8 @@
 #define _NETWORK_CC_
 
 #include "Network.h"
+#include "DLManager.h"
 
-//our static factory dictionary
-map<string,_NodeFactory*> Network::factoryDictionary;
 
 /***************************************************************************/
 /*
@@ -31,26 +30,26 @@ map<string,_NodeFactory*> Network::factoryDictionary;
 void Network::initializeFactories() {
 
    try {
-      Network::addFactory ("CONST", new ConstantNodeFactory);
-      Network::addFactory ("COLLECTOR", new CollectorNodeFactory);
-      Network::addFactory ("MUX", new MuxNodeFactory);
-      Network::addFactory ("EXEC", new ExecNodeFactory);
-      Network::addFactory ("PATHLIST", new PathListFactory);
-      Network::addFactory ("ISVALID", new IsValidFactory);
-      Network::addFactory ("SUM", new NodeFactory<Sum>);
-      Network::addFactory ("VSUM", new NodeFactory<VSum>);
-      Network::addFactory ("VNSUM", new NodeFactory<VNSum>);
-      Network::addFactory ("SAVE", new NodeFactory<Save>);
-      Network::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
-      Network::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
-      Network::addFactory ("SWITCH", new NodeFactory<Switch>);
-      Network::addFactory ("NOTDONE", new NodeFactory<NotDone>);
-      Network::addFactory ("OR",new NodeFactory<ORNode>);
-      Network::addFactory ("AND" , new NodeFactory<ANDNode>);
-      Network::addFactory ("NOT", new NodeFactory<NOTNode>);
-      Network::addFactory ("LIST", new NodeFactory<List>);
-      Network::addFactory ("PACK", new NodeFactory<Pack>);
-      Network::addFactory ("UNPACK", new NodeFactory<UnPack>);
+      Node::addFactory ("Constant", new ConstantNodeFactory);
+      Node::addFactory ("COLLECTOR", new CollectorNodeFactory);
+      Node::addFactory ("MUX", new MuxNodeFactory);
+      Node::addFactory ("EXEC", new ExecNodeFactory);
+      Node::addFactory ("PATHLIST", new PathListFactory);
+      Node::addFactory ("ISVALID", new IsValidFactory);
+      Node::addFactory ("SUM", new NodeFactory<Sum>);
+      Node::addFactory ("VSUM", new NodeFactory<VSum>);
+      Node::addFactory ("VNSUM", new NodeFactory<VNSum>);
+      Node::addFactory ("SAVE", new NodeFactory<Save>);
+      Node::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
+      Node::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
+      Node::addFactory ("SWITCH", new NodeFactory<Switch>);
+      Node::addFactory ("NOTDONE", new NodeFactory<NotDone>);
+      Node::addFactory ("OR",new NodeFactory<ORNode>);
+      Node::addFactory ("AND" , new NodeFactory<ANDNode>);
+      Node::addFactory ("NOT", new NodeFactory<NOTNode>);
+      Node::addFactory ("LIST", new NodeFactory<List>);
+      Node::addFactory ("PACK", new NodeFactory<Pack>);
+      Node::addFactory ("UNPACK", new NodeFactory<UnPack>);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;
@@ -120,7 +119,7 @@ Network::~Network() {
    map<string, _NodeFactory*>::iterator factoryIter;
  
 
-   while (factoryDictionary.size() > 0) {
+   /*while (factoryDictionary.size() > 0) {
 
       factoryIter = factoryDictionary.begin();
       if (debugMode) {
@@ -129,7 +128,7 @@ Network::~Network() {
       factory = (*factoryIter).second;
       factoryDictionary.erase((*factoryIter).first);  
       delete factory;
-   }
+      }*/
 
    //deleting all nodes in the dictionary
    Node* node = NULL;
@@ -166,6 +165,29 @@ Node* Network::getNodeNamed (const string &name){
    }
    return node;
 }
+
+/***************************************************************************/
+/*
+  void tryPluginNode(string name)
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+Node *tryPluginNode(const string &name, const string &nodeName, const ParameterSet &parameters)
+{
+   /*cerr << "Trying to load node " << name << " dynamically" << endl;
+   cerr << "Not supported" << endl;
+   void *handle = dlopen (name.c_str(), RTLD_LAZY);
+   cerr << "handle = " << handle << endl;
+   void *sym = dlsym (handle, "createNewNode");
+   cerr << "sym = " << sym << endl;*/
+   LoadedLibrary *library = (LoadedLibrary *) DLManager::get_lib(name);
+   void *sym = library->get_proc("createNewNode");
+   Node *(*new_funct)(string, ParameterSet) = (Node *(*)(string, ParameterSet)) (sym);
+
+   return new_funct(nodeName,parameters);
+   //return NULL;
+}
+
 /***************************************************************************/
 /*
   Network::addNode (...)
@@ -178,12 +200,15 @@ void Network::addNode (const string &factoryName,const string &nodeName, const P
 
    factory = getFactoryNamed(factoryName);
    if (!factory) {
-      throw FactoryNotFoundException(factoryName);
+      node = tryPluginNode(factoryName, nodeName, parameters);
+      //cerr << "node = " << node << endl;
+      if (!node)
+         throw FactoryNotFoundException(factoryName);
+   } else {
+      //creating an instance of the specified node.
+      node = factory->Create(nodeName, parameters);
    }
 
-   //creating an instance of the specified node.
-   node = factory->Create(nodeName, parameters);
-   
    //inserting in the node dictionary
    //maybe we should look for duplicate entries...
 
@@ -226,27 +251,8 @@ Node * Network::removeNode (const string &nodeName) {
 
    return node;
 }
-/***************************************************************************/
-/*
-  Network::getFactoryNamed (...)
-  Dominic Letourneau
- */
-/***************************************************************************/
-_NodeFactory* Network::getFactoryNamed (const string &name) {
 
-   _NodeFactory* factory = NULL;
-   map<string,_NodeFactory*>::iterator iter;
-   
-   //let's find the key in our map
-   //if not found will return NULL
-   for (iter = factoryDictionary.begin(); iter != factoryDictionary.end(); iter++) {
-      if ((*iter).first == name) {
-         factory = (*iter).second;
-         break;
-      }
-   }
-   return factory;
-}
+
 /***************************************************************************/
 /*
   Network::connect (...)
@@ -277,27 +283,7 @@ void Network::connect (const string &currentNodeName,const string &inputName,
 }
 
 
-/***************************************************************************/
-/*
-  Network::addFactory()
-  Dominic Letourneau
- */
-/***************************************************************************/
-void Network::addFactory (const string &factoryName, _NodeFactory* const factory) {
-   if (!getFactoryNamed(factoryName)) {
-      //the factory doesn't exist inserting it...
-      if (factory != NULL) {
-         factoryDictionary.insert (factoryEntry(factoryName,factory));
-      }
-      else {
-         cerr<<"NULL _NodeFactory pointer, exiting"<<endl;
-         exit(-1);
-      }
-   }
-   else {
-      throw NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
-   }
-};
+
 /***************************************************************************/
 /*
   Network::specificInitialize(...)

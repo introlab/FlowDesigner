@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 noinst_HEADERS = ANDNode.h \
 	Buffer.h \
 	CollectorNode.h \
-	ConstantNode.h \
+	Constant.h \
 	DLManager.h \
 	Exception.h \
 	FP_network_info_container.h \

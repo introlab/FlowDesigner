@@ -4,4 +4,4 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
 #EXTRA_DIST = BUGS INSTALL.generic
-SUBDIRS = HMM MMI data-flow audio_blocks 
+SUBDIRS = HMM MMI data-flow audio_blocks tools

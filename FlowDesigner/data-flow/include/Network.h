@@ -25,10 +25,6 @@
 #include "Node.h"
 
 
-///Definition of the type we need for the dictionaries
-typedef map<string, Node*>::value_type nodeEntry;
-typedef map<string, _NodeFactory*>::value_type factoryEntry; 
-
 /**
    The Pull Network Class. It holds the nodes which are connected by the Network.
    A network has always a single input node and a sink node (output node).
@@ -114,9 +110,6 @@ public:
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(const ParameterSet &req) {sinkNode->request(req);}
 
-   ///Adding a factory into the static dictionary
-   static void addFactory (const string &factoryName, _NodeFactory* const factory);
-
    ///Subnet : NetworkNode specific initialize
    virtual void specificInitialize();
 
@@ -153,9 +146,6 @@ protected:
    ///The number of nodes in the network
    int numNodes;
 
-   ///The node instance factory
-   static map<string,_NodeFactory*> factoryDictionary;
-   
    ///The node dictionary
    map<string,Node*> nodeDictionary;
    ///The sink node
@@ -165,8 +155,6 @@ protected:
    ///The debug mode flag
    bool debugMode;
  
-   ///The factory lookup function
-   static _NodeFactory* getFactoryNamed (const string &name);
 
 
 

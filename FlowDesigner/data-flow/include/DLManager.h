@@ -19,7 +19,7 @@
 
 #include <map>
 #include <string>
-
+#include <stdio.h>
 
 #include <errno.h>
 #include "Exception.h"
@@ -33,14 +33,15 @@
 typedef shl_t DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
+   if (!strstr(path.c_str(), "/"))
+   {
+      path = "lib" + path + ".so";
+   }
    //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
    DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
    //cerr << "library = " << library << endl;
    if (!library) 
-   {
       perror ("Load error");
-      //cerr << "errno: " << errno << endl;
-   }
    return library;
 }
 inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
@@ -61,23 +62,37 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 #if defined (LINUX) || defined(SOLARIS)
 #include <dlfcn.h>
 
-///The pointer to library type (OS dependent)
+/**The pointer to library type (OS dependent)*/
 typedef void *DL_HANDLE_TYPE;
+
+/**How to open a library*/
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
+   if (!strstr(path.c_str(), "/"))
+   {
+      path = "lib" + path + ".so";
+   }
    //cerr << "opening lib " << path.c_str() << endl;
-   return dlopen (path.c_str(), RTLD_LAZY);
+   DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY);
+   if (!library) 
+      perror ("Load error");
+
+   return library;
 }
-inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
+
+/**How to search for a specific symbol */
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, const string &symbol) 
 {
    return dlsym (lib, symbol.c_str());
 }
+
+/**How to close a library*/
 inline void _DL_CLOSE(DL_HANDLE_TYPE lib) 
 {
    dlclose(lib);
 }
 
-#endif
+#endif /*LINUX or SOLARIS*/
 
 /**Class for a dynamically loaded library*/
 class LoadedLibrary {

@@ -19,6 +19,8 @@
 #include <typeinfo>
 #include "Object.h"
 
+//our static factory dictionary
+map<string,_NodeFactory*> Node::factoryDictionary;
 
 /***************************************************************************/
 /*
@@ -228,3 +230,48 @@ void Node::reset()
 {
    processCount=-1;
 }
+
+/***************************************************************************/
+/*
+  Node::getFactoryNamed (...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+_NodeFactory* Node::getFactoryNamed (const string &name) {
+
+   _NodeFactory* factory = NULL;
+   map<string,_NodeFactory*>::iterator iter;
+   
+   //let's find the key in our map
+   //if not found will return NULL
+   for (iter = factoryDictionary.begin(); iter != factoryDictionary.end(); iter++) {
+      if ((*iter).first == name) {
+         factory = (*iter).second;
+         break;
+      }
+   }
+   return factory;
+}
+
+/***************************************************************************/
+/*
+  Node::addFactory()
+  Dominic Letourneau
+ */
+/***************************************************************************/
+int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
+   if (!getFactoryNamed(factoryName)) {
+      //the factory doesn't exist inserting it...
+      if (factory != NULL) {
+         factoryDictionary.insert (factoryEntry(factoryName,factory));
+      }
+      else {
+         cerr<<"NULL _NodeFactory pointer, exiting"<<endl;
+         exit(-1);
+      }
+   }
+   else {
+      throw NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
+   }
+   return 0;
+};

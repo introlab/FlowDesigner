@@ -14,6 +14,8 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#define _PLUGIN_NODE
+
 #include "Concatenate.h"
 #include "FrameBinaryOperation.h"
 #include "Buffer.h"
@@ -21,6 +23,8 @@
 #include "net_types.h"
 #include <string>
 #include "Network.h"
+
+DECLARE_NODE(Concatenate)
 
 Concatenate::Concatenate(string nodeName, ParameterSet params)
    : FrameBinaryOperation(nodeName, params)
@@ -70,3 +74,4 @@ void Concatenate::computeFrame(ObjectRef input1, ObjectRef input2, int count)
       outputFrame[i+input1Length]= input2Frame[i];
    }
 }
+
