@@ -92,7 +92,9 @@ int main(int argc, char **argv)
 	try {
 	  string val(argv[arg]);
 	  ParameterSet p;
-	  params.add(arg_name, ObjectParam::stringParam("object", val, p));
+	  ObjectRef obj = ObjectParam::stringParam("object", val, p);
+	  if (!obj.isNil())
+	     params.add(arg_name, obj);
 	} catch (...) {}
       }
    }

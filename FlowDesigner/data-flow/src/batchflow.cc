@@ -72,7 +72,9 @@ public:
 	try {
 	  string val(argv[arg]);
 	  ParameterSet p;
-	  param.add(arg_name, ObjectParam::stringParam("object", val, p));
+	  ObjectRef obj = ObjectParam::stringParam("object", val, p);
+	  if (!obj.isNil())
+	     param.add(arg_name, obj);
 	} catch (...) {}
       }
     }

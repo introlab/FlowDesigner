@@ -254,7 +254,7 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
       {
 	 ObjectRef value = ObjectParam::stringParam(curr->type, curr->value, const_cast<ParameterSet &> (par));
 	 
-	 if (!value->isNil())
+	 if (!value.isNil())
 	    parameters->add(curr->name,value);
       }
    }
