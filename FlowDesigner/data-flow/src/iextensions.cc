@@ -71,8 +71,7 @@ void IExtensions::detectSSE()
    }
    signal (SIGILL, illegal_inst);
    __asm__ __volatile__ (
-      "
-      xorps %%xmm0, %%xmm0 "
+      "\txorps %%xmm0, %%xmm0 \n"
       : :
       : "memory"
       );
@@ -93,10 +92,10 @@ void IExtensions::detect3DNow()
       return;
    }
    signal (SIGILL, illegal_inst);
-   __asm__ __volatile__ ("
-        pfadd %%mm7, %%mm7
-        femms
-        ": : 
+   __asm__ __volatile__ (
+	"\tpfadd %%mm7, %%mm7 \n"
+        "\tfemms \n"
+        : : 
 	: "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
         );
    signal (SIGILL, SIG_DFL);

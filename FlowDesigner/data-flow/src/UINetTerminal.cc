@@ -4,8 +4,9 @@
 #include "UITerminal.h"
 #include "UINode.h"
 #include "UINetwork.h"
+#include <iostream>
 
-
+using namespace std;
 
 UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, string _name)
    : name(_name)
@@ -20,8 +21,8 @@ UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, string _n
 
 UINetTerminal::~UINetTerminal()
 {
-   terminal->getNode()->getNetwork()->removeTerminal(this);
-   terminal->disconnectNetTerminal();
+  terminal->getNode()->getNetwork()->removeTerminal(this);
+  terminal->disconnectNetTerminal();
 }
 
 void UINetTerminal::setName(const string &_name)
