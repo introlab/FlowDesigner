@@ -26,11 +26,6 @@
 
 class LPC2PS;
 
-//#define SAMP_SIZE 256
-//#define SAMP_SIZE_2 128
-
-//static int SAMP_SIZE=40;
-//static int SAMP_SIZE_2=20;
 DECLARE_NODE(LPC2PS)
 
 class LPC2PS : public FrameOperation {
@@ -98,7 +93,7 @@ public:
       for (int i=SAMP_SIZE_2;i<SAMP_SIZE;i++)
          ps[i]=0.0;
       for (int i=0;i<SAMP_SIZE_2;i++)
-         output[i]=1/(.0001+ps[i]);
+         output[i]=1/ps[i];
 
 
       output.status = Object::valid;

@@ -26,11 +26,6 @@
 
 class PS2LPC;
 
-//#define SAMP_SIZE 256
-//#define SAMP_SIZE_2 128
-
-//static int SAMP_SIZE=40;
-//static int SAMP_SIZE_2=20;
 DECLARE_NODE(PS2LPC)
 
 class PS2LPC : public FrameOperation {
@@ -99,7 +94,7 @@ public:
       response[0] *= 1.001;
       wld(output.begin(), response, &er, outputLength-1);
       for (int i=0;i<outputLength;i++)
-         output[i] *= pow(.99,i);
+        output[i] *= pow(.99,i);
 
       output.status = Object::valid;
 

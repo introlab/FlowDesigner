@@ -18,30 +18,29 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <lpc.h>
-#include <stdlib.h>
-#include <math.h>
 
-class LPC;
+class UpSample;
 
-DECLARE_NODE(LPC)
+DECLARE_NODE(UpSample)
 
-class LPC : public FrameOperation {
+class UpSample : public FrameOperation {
    
    int inputID;
    int inputLength;
+   int factor;
 
 public:
-   LPC(string nodeName, ParameterSet params)
+   UpSample(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
    {
       inputID = addInput("INPUT");
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      factor = dereference_cast<int> (parameters.get("FACTOR"));
    }
 
-   ~LPC() {}
+   ~UpSample() {}
 
    virtual void specificInitialize()
    {
@@ -60,18 +59,15 @@ public:
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-            
-      //vector<float> r(outputLength+1,0.0);
-      float r[outputLength];
-      //vector<float> filter(outputLength+1,0.0);
-      autocorr(in.begin(), r, outputLength-1, in.size());
-
-      float er=0;
-      r[0] *= 1.001;
-      wld(output.begin(), r, &er, outputLength-1);
-
-      for (int i=0;i<outputLength;i++)
-        output[i] *= pow(.99,i);
+      
+      int i,j;
+      for (i=0;i<outputLength;i++)
+         output[i]=0;
+      for (i=0,j=0;i<outputLength;j++,i+=factor)
+      {
+         output[i]=in[j];
+      }
+      
       output.status = Object::valid;
    }
 
