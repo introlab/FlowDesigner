@@ -207,7 +207,7 @@ public:
    
    virtual void specificInitialize()
    {
-      outputs[audioID].lookAhead = outputs[eofID].lookAhead = max(outputs[audioID].lookAhead, outputs[eofID].lookAhead);
+      outputs[audioID].lookAhead = outputs[eofID].lookAhead = 1+max(outputs[audioID].lookAhead, outputs[eofID].lookAhead);
       //outputs[audioID].lookBack += 1;
       this->BufferedNode::specificInitialize();
    }
@@ -268,7 +268,7 @@ public:
       
 	 if (advance < outputLength)
 	 {
-	    Vector<float> &previous = object_cast<Vector<float> > (out[count-1]);
+	    Vector<float> &previous = object_cast<Vector<float> > (audioBuffer[count-1]);
 	    for (int i=0;i<outputLength-advance;i++)
 	       output[i]=previous[i+advance];
 	 } else {
