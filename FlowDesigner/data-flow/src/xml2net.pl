@@ -38,9 +38,9 @@ sub parse_net {
 set_connect();
   if ($net_condition)
     {
-      print "Iterator: $name {\n\n";
+      print "Iterator: $name\n{\n";
     } else {
-      print "Network: $name {\n\n";
+      print "Network: $name\n{\n";
     }
   for ($i=0;$i<=$#curr_net;$i++)
     {
@@ -235,6 +235,7 @@ sub parse_node_indo {
 	      $curr_net[$nb_nodes]{"type"} = $1;
 	      $istype=0;
 	    } else {
+	      s/&quot;/\"/g;
 	      /(.*)=(.*)\#<\/dia:string>/;
 	      $curr_net[$nb_nodes]{"param"}[$param_count][0]=$1;
 	      $curr_net[$nb_nodes]{"param"}[$param_count][1]=$2;
@@ -247,9 +248,10 @@ sub parse_node_indo {
 	  chop;
 	  if ($istype)
 	    {
-	      $curr_net[$nb_nodes]{"type"} = $1;
+	      $curr_net[$nb_nodes]{"type"} = $_;
 	      $istype=0;
 	    } else {
+	      s/&quot;/\"/g;
 	      /(.*)=(.*)/;
 	      $curr_net[$nb_nodes]{"param"}[$param_count][0]=$1;
 	      $curr_net[$nb_nodes]{"param"}[$param_count][1]=$2;
