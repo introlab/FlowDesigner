@@ -13,6 +13,8 @@ int main(int argc, char **argv)
       cerr << "usage: codeflow  <input XML file>  <output C++ source file>  <build function name>" << endl;
       exit(1);
    }
+   cerr << "Warning: automatic code generation is in a very experimental stage right now\n";
+   
    
    try 
    {

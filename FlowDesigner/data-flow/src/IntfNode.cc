@@ -23,8 +23,8 @@ void IntfNode::init()
 {
    buff = new Buffer(lookAhead+lookBack+1);
    //cerr << "buffsize: " << lookAhead+lookBack+1 << endl;
-   for (int i=0;i<lookAhead;i++)
-      (*buff)[i] = Object::before_beginningObject;
+   //for (int i=0;i<lookAhead;i++)
+   //   (*buff)[i] = Object::before_beginningObject;
 }
 
 void IntfNode::specificInitialize()
@@ -43,10 +43,14 @@ void IntfNode::reset()
 
 ObjectRef IntfNode::getOutput(int output_id, int count)
 {
-   return (*buff)[count];
+   //cerr << "get " << count << " " << buff->getCurrentPos() << endl;
+   return (*buff).get(count);
+   //return (*buff)[count];
 }
 
 void IntfNode::setValue(int count, ObjectRef val)
 {
-   (*buff)[count+lookAhead] = val;
+   //cerr << "set " << count << " " << buff->getCurrentPos() << endl;
+   //(*buff)[count+lookAhead] = val;
+   (*buff)[count] = val;
 }

@@ -767,8 +767,6 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
 
 void UIDocument::genCode(ostream &out, const string &functName)
 {
-   cerr << "Warning: automatic code generation is in a very experimental stage right now\n";
-   
    out << "//This code has been generated automatically using codeflow\n";
    out << "//Note that automatic code generation is in a very experimental\n";
    out << "//  stage right now, use at your own risk\n";
