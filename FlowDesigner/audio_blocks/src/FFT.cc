@@ -43,9 +43,10 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      ObjectRef inputValue = getInput(inputID, count);
+      RCPtr<Vector<float> > inputValue = getInput(inputID, count);
 
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      const Vector<float> &in = *inputValue;      
+
       int inputLength = in.size();
 
       Vector<float> &output = *Vector<float>::alloc(inputLength);
