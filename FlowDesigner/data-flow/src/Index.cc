@@ -77,7 +77,7 @@ public:
        throw new NodeException(this, "Negative index", __FILE__, __LINE__);
      
      //out[count] = Float::alloc((*in)[ind]);
-     out[count] = in->index(ind);
+     out[count] = in->getIndex(ind);
    }
   
       

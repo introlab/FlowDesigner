@@ -45,9 +45,29 @@ class BaseVector  : public Object {
 	\param pos the position of the element
 	\return ObjectRef the newly created Object
    */
-   virtual ObjectRef index(int pos) {
-   	throw new GeneralException(string("Vector index not implemented for object : ") + className(),__FILE__,__LINE__);
+   virtual ObjectRef getIndex(int pos) {
+   	throw new GeneralException(string("Vector getIndex not implemented for object : ") + className(),__FILE__,__LINE__);
    }
+   
+   /**
+   	Set an element value at the desired position
+	\param pos The position in the vector
+   	\param val The value to put at the desired position
+   */
+   virtual void setIndex(int pos, ObjectRef val) {
+   	throw new GeneralException(string("Vector setIndex not implemented for object : ") + className(),__FILE__,__LINE__);   
+   }
+      
+   /**
+   	Push an element at the beginning of the vector
+   	\param val The value to push at the beginning of the vector
+   */
+   virtual void pushBack(ObjectRef val) {
+   	throw new GeneralException(string("Vector pushBack not implemented for object : ") + className(),__FILE__,__LINE__);   
+   }
+   
+   
+   
 };
 
 /**The (template) Overflow Vector type, it adds functionnality to the 
@@ -181,8 +201,20 @@ public:
    	\param pos the position in the vector
 	\return ObjectRef Element at the desired position
    */
-   virtual ObjectRef index(int pos);
+   virtual ObjectRef getIndex(int pos);
 
+   /**
+   	Set an element value at the desired position
+	\param pos The position in the vector
+   	\param val The value to put at the desired position
+   */
+   virtual void setIndex(int pos, ObjectRef val);
+      
+   /**
+   	Push an element at the beginning of the vector
+   	\param val The value to push at the beginning of the vector
+   */
+   virtual void pushBack(ObjectRef val);         
 };
 
 

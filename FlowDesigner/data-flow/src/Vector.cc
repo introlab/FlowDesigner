@@ -199,293 +199,166 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
 
 }
 
-//index implementation for Vector<bool>
-ObjectRef Vector<bool>::index(int pos) {
+//getIndex implementation for Vector<bool>
+ObjectRef Vector<bool>::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef(Bool::alloc(static_cast<basicType> ((*this)[pos])));
 }
 
-//index implementation for Vector<int>
-ObjectRef Vector<int>::index(int pos) {
+//getIndex implementation for Vector<int>
+ObjectRef Vector<int>::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef(Int::alloc(static_cast<basicType> ((*this)[pos])));
 }
 
-//index implementation for Vector<float>
-ObjectRef Vector<float>::index(int pos) {
+//getIndex implementation for Vector<float>
+ObjectRef Vector<float>::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef(Float::alloc(static_cast<basicType> ((*this)[pos])));
 }
 
-//index implementation for Vector<double>
-ObjectRef Vector<double>::index(int pos) {
+//getIndex implementation for Vector<double>
+ObjectRef Vector<double>::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef(Double::alloc(static_cast<basicType> ((*this)[pos])));
 }
 
-//index implementation for Vector<complex<float> >
-ObjectRef Vector<complex<float> >::index(int pos) {
+//getIndex implementation for Vector<complex<float> >
+ObjectRef Vector<complex<float> >::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef(Complex<float>::alloc(static_cast<basicType> ((*this)[pos])));
 }
 
-//index implementation for Vector<complex<double> >
-ObjectRef Vector<complex<double> >::index(int pos) {
+//getIndex implementation for Vector<complex<double> >
+ObjectRef Vector<complex<double> >::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef(Complex<double>::alloc(static_cast<basicType> ((*this)[pos])));
 }
 
-//index implementation for Vector<ObjectRef>
-ObjectRef Vector<ObjectRef>::index(int pos) {
+//getIndex implementation for Vector<ObjectRef>
+ObjectRef Vector<ObjectRef>::getIndex(int pos) {
 	//look for range ?
 	return ObjectRef((*this)[pos]);
 }
 
-//index implementation for Vector<String>
-ObjectRef Vector<String>::index(int pos) {
+//getIndex implementation for Vector<String>
+ObjectRef Vector<String>::getIndex(int pos) {
 	//look for range ?
 	String *new_string = new String();
 	*new_string = (*this)[pos];
 	return ObjectRef(new_string);
 }
 
-//index implementation for Vector<string>
-ObjectRef Vector<string>::index(int pos) {
+//getIndex implementation for Vector<string>
+ObjectRef Vector<string>::getIndex(int pos) {
 	//look for range ?
 	String *new_string = new String();
 	*new_string = (*this)[pos];
 	return ObjectRef(new_string);
 }
 
-
-
-//Implemented in add_operators.cc
-
-/*
-ObjectRef addVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-   if (v1.size() != v2.size())
-   {
-      cerr << v1.size() << " != " << v2.size() << endl;
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   }
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_add_vec(&v1[0], &v2[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<bool>
+void Vector<bool>::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<Bool> v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(addVtable, addVectorFloat, Vector<float>, Vector<float>);
 
-
-ObjectRef mulVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-   if (v1.size() != v2.size())
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_mul_vec(&v1[0], &v2[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<int>
+void Vector<int>::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<Int> v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorFloat, Vector<float>, Vector<float>);
 
-
-ObjectRef subVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-   if (v1.size() != v2.size())
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_sub_vec(&v1[0], &v2[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<float>
+void Vector<float>::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<Float> v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(subVtable, subVectorFloat, Vector<float>, Vector<float>);
 
-
-ObjectRef divVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-   if (v1.size() != v2.size())
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_div_vec(&v1[0], &v2[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<double>
+void Vector<double>::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<Double> v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(divVtable, divVectorFloat, Vector<float>, Vector<float>);
-
-
-
-ObjectRef addVectorFloatFloat (ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   float v2 = dereference_cast<float> (y);
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_add_scal(v2, &v1[0], &(*v)[0], length);
-   return ObjectRef(v);
+   
+//setIndex implementation for Vector<complex<float> >
+void Vector<complex<float> >::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<Complex<float> > v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(addVtable, addVectorFloatFloat, Vector<float>, Float);
 
-ObjectRef subVectorFloatFloat (ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   float v2 = dereference_cast<float> (y);
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_add_scal(-v2, &v1[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<complex<double> >
+void Vector<complex<double> >::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<Complex<double> > v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(subVtable, subVectorFloatFloat, Vector<float>, Float);
 
-ObjectRef mulVectorFloatFloat (ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   float v2 = dereference_cast<float> (y);
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   vec_mul_scal(v2, &v1[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<string>
+void Vector<string>::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<String> v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorFloatFloat, Vector<float>, Float);
 
-
-
-ObjectRef addVectorComplexFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<complex<float> > &v1 = object_cast<Vector<complex<float> > > (x);
-   Vector<complex<float> > &v2 = object_cast<Vector<complex<float> > > (y);
-   if (v1.size() != v2.size())
-   {
-      cerr << v1.size() << " != " << v2.size() << endl;
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   }
-   int length = v1.size();
-
-   Vector<complex<float> > *v = Vector<complex<float> >::alloc(length);
-   vec_add_vec(&v1[0], &v2[0], &(*v)[0], length);
-   return ObjectRef(v);
+//setIndex implementation for Vector<String>
+void Vector<String>::setIndex(int pos, ObjectRef val) {
+	//look for range ?
+	RCPtr<String> v = val;
+	(*this)[pos] = static_cast<basicType>(v->val());	
 }
-REGISTER_DOUBLE_VTABLE(addVtable, addVectorComplexFloat, Vector<complex<float> >, Vector<complex<float> >);
 
-
-ObjectRef mulVectorComplexFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<complex<float> > &v1 = object_cast<Vector<complex<float> > > (x);
-   Vector<complex<float> > &v2 = object_cast<Vector<complex<float> > > (y);
-   if (v1.size() != v2.size())
-   {
-      cerr << v1.size() << " != " << v2.size() << endl;
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   }
-   int length = v1.size();
-
-   Vector<complex<float> > *v = Vector<complex<float> >::alloc(length);
-   vec_mul_vec(&v1[0], &v2[0], &(*v)[0], length);
-   return ObjectRef(v);
+//pushBack implementation for Vector<bool>
+void Vector<bool>::pushBack(ObjectRef val) {
+	RCPtr<Bool> v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorComplexFloat, Vector<complex<float> >, Vector<complex<float> >);
 
-
-ObjectRef maxVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-   if (v1.size() != v2.size())
-   {
-      cerr << v1.size() << " != " << v2.size() << endl;
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   }
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = max(v1[i], v2[i]);
-   return ObjectRef(v);
+//pushBack implementation for Vector<int>
+void Vector<int>::pushBack(ObjectRef val) {
+	RCPtr<Int> v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(maxVtable, maxVectorFloat, Vector<float>, Vector<float>);
 
-
-ObjectRef minVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-   if (v1.size() != v2.size())
-   {
-      cerr << v1.size() << " != " << v2.size() << endl;
-      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   }
-   int length = v1.size();
-
-   Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = min(v1[i], v2[i]);
-   return ObjectRef(v);
+//pushBack implementation for Vector<float>
+void Vector<float>::pushBack(ObjectRef val) {
+	RCPtr<Float> v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(minVtable, minVectorFloat, Vector<float>, Vector<float>);
 
-
-
-ObjectRef concatVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   Vector<float> &v2 = object_cast<Vector<float> > (y);
-
-   Vector<float> *v = Vector<float>::alloc(v1.size()+v2.size());
-   vec_copy(&v1[0], &(*v)[0], v1.size());
-   vec_copy(&v2[0], &(*v)[v1.size()], v2.size());
-   return ObjectRef(v);
+//pushBack implementation for Vector<double>
+void Vector<double>::pushBack(ObjectRef val) {
+	RCPtr<Double> v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloat, Vector<float>, Vector<float>);
 
-
-ObjectRef concatVectorFloatFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (x);
-   float f = dereference_cast<float> (y);
-
-   Vector<float> *v = Vector<float>::alloc(v1.size()+1);
-   vec_copy(&v1[0], &(*v)[0], v1.size());
-   (*v)[v1.size()] = f;
-   return ObjectRef(v);
+//pushBack implementation for Vector<complex<float> >
+void Vector<complex<float> >::pushBack(ObjectRef val) {
+	RCPtr<Complex<float> > v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloatFloat, Vector<float>, Float);
 
-ObjectRef concatFloatVectorFloat(ObjectRef x, ObjectRef y)
-{
-   Vector<float> &v1 = object_cast<Vector<float> > (y);
-   float f = dereference_cast<float> (x);
-
-   Vector<float> *v = Vector<float>::alloc(v1.size()+1);
-   vec_copy(&v1[0], &(*v)[1], v1.size());
-   (*v)[0] = f;
-   return ObjectRef(v);
+//pushBack implementation for Vector<complex<double> >
+void Vector<complex<double> >::pushBack(ObjectRef val) {
+	RCPtr<Complex<double> > v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatVectorFloat, Float, Vector<float>);
 
-
-ObjectRef concatFloatFloat(ObjectRef x, ObjectRef y)
-{
-   float f1 = dereference_cast<float> (x);
-   float f2 = dereference_cast<float> (y);
-
-   Vector<float> *v = Vector<float>::alloc(2);
-   (*v)[0] = f1;
-   (*v)[1] = f2;
-   return ObjectRef(v);
+//pushBack implementation for Vector<string>
+void Vector<string>::pushBack(ObjectRef val) {
+	RCPtr<String> v = val;
+	this->push_back(static_cast<basicType>(v->val()));
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatFloat, Float, Float);
-*/
+
+//pushBack implementation for Vector<string>
+void Vector<String>::pushBack(ObjectRef val) {
+	RCPtr<String> v = val;
+	this->push_back(static_cast<basicType>(v->val()));
+}
+
+

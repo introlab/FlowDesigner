@@ -21,58 +21,58 @@ DECLARE_TYPE(Matrix<string>)
 DECLARE_TYPE(Matrix<String>)
 
 
-//index implementation for Matrix<bool>
-ObjectRef Matrix<bool>::index(int _row, int _col) {
+//getIndex implementation for Matrix<bool>
+ObjectRef Matrix<bool>::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef(Bool::alloc(static_cast<basicType> ((*this)(_row,_col))));
 }
 
-//index implementation for Matrix<int>
-ObjectRef Matrix<int>::index(int _row, int _col) {
+//getIndex implementation for Matrix<int>
+ObjectRef Matrix<int>::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef(Int::alloc(static_cast<basicType> ((*this)(_row,_col))));
 }
 
-//index implementation for Matrix<float>
-ObjectRef Matrix<float>::index(int _row, int _col) {
+//getIndex implementation for Matrix<float>
+ObjectRef Matrix<float>::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef(Float::alloc(static_cast<basicType> ((*this)(_row,_col))));
 }
 
-//index implementation for Matrix<double>
-ObjectRef Matrix<double>::index(int _row, int _col) {
+//getIndex implementation for Matrix<double>
+ObjectRef Matrix<double>::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef(Double::alloc(static_cast<basicType> ((*this)(_row,_col))));
 }
 
-//index implementation for Matrix<complex<float> >
-ObjectRef Matrix<complex<float> >::index(int _row, int _col) {
+//getIndex implementation for Matrix<complex<float> >
+ObjectRef Matrix<complex<float> >::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef(Complex<float>::alloc(static_cast<basicType> ((*this)(_row,_col))));
 }
 
-//index implementation for Matrix<complex<double> >
-ObjectRef Matrix<complex<double> >::index(int _row, int _col) {
+//getIndex implementation for Matrix<complex<double> >
+ObjectRef Matrix<complex<double> >::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef(Complex<double>::alloc(static_cast<basicType> ((*this)(_row,_col))));
 }
 
-//index implementation for Matrix<ObjectRef>
-ObjectRef Matrix<ObjectRef>::index(int _row, int _col) {
+//getIndex implementation for Matrix<ObjectRef>
+ObjectRef Matrix<ObjectRef>::getIndex(int _row, int _col) {
 	//look for range ?
 	return ObjectRef((*this)(_row,_col));
 }
 
-//index implementation for Matrix<String>
-ObjectRef Matrix<String>::index(int _row, int _col) {
+//getIndex implementation for Matrix<String>
+ObjectRef Matrix<String>::getIndex(int _row, int _col) {
 	//look for range ?
 	String *new_string = new String();
 	*new_string = (*this)(_row,_col);
 	return ObjectRef(new_string);
 }
 
-//index implementation for Matrix<string>
-ObjectRef Matrix<string>::index(int _row, int _col) {
+//getIndex implementation for Matrix<string>
+ObjectRef Matrix<string>::getIndex(int _row, int _col) {
 	//look for range ?
 	String *new_string = new String();
 	*new_string = (*this)(_row,_col);

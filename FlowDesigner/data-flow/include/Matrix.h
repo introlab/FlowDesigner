@@ -26,7 +26,7 @@ public:
 	\param pos the position of the element
 	\return ObjectRef the newly created Object
    */
-   virtual ObjectRef index(int _row, int _col) {
+   virtual ObjectRef getIndex(int _row, int _col) {
    	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 	
@@ -279,7 +279,7 @@ public:
    }
    
    ///Return matrix element at _row, _col
-   virtual ObjectRef index(int _row, int _col);
+   virtual ObjectRef getIndex(int _row, int _col);
 
 };
 
