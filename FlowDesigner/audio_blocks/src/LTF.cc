@@ -24,7 +24,7 @@
 class LTF;
 
 //DECLARE_NODE(LTF)
-NODE_INFO(LTF,"Maitrise", "INPUT:FILTER", "OUTPUT", "LENGTH")
+NODE_INFO(LTF,"Signal:DSP", "INPUT:FILTER", "OUTPUT", "LENGTH")
 
    //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
 

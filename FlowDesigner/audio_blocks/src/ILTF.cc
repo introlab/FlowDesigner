@@ -24,7 +24,7 @@
 class ILTF;
 
 //DECLARE_NODE(ILTF)
-NODE_INFO(ILTF,"Maitrise", "INPUT:FILTER", "OUTPUT", "LENGTH")
+NODE_INFO(ILTF,"Signal:DSP", "INPUT:FILTER", "OUTPUT", "LENGTH")
 
    //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
 
