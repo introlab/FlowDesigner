@@ -41,17 +41,12 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
       {
          inputs.insert(inputs.end(), new UITerminal (inputname[i], 
                                                      this, true, 0.0, 0.0));
-         //FIXME: Fixing this leak cleanly requires a good cleanup
-         //delete outputname[i];
       }
       
       for (int i=0;i<outputname.size();i++) 
       { 
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
-	 
-         //FIXME: Fixing this leak cleanly requires a good cleanup
-         //delete outputname[i];
       }
       
       description = net->getDocument()->getDescription(type);
@@ -65,7 +60,6 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    : net(_net)
    , destroyed(false)
 {
-   //FIXME: Need to check that all properties are there
    char *str_name = (char *)xmlGetProp(def, (CHAR *)"name");
    char *str_type = (char *)xmlGetProp(def, (CHAR *)"type");
    char *str_x = (char *)xmlGetProp(def, (CHAR *)"x");
@@ -85,9 +79,7 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
 
    xtmp = x;
    ytmp = y;
-   //draw();
    parameters = newNodeParameters(this, type);
-   //cerr << "ici\n";
    parameters->load(def);
    if (doInit)
    {
@@ -98,23 +90,18 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
       {
 	 inputname = net->getDocument()->getNetInputs(type); 
 	 outputname = net->getDocument()->getNetOutputs(type); 
-	 //cerr << "UINode::draw factory not found in simple nodes\n";
       }
       
       for (int i=0;i<inputname.size();i++)
       {
          inputs.insert(inputs.end(), new UITerminal (inputname[i],
                                                      this, true, 0.0, 0.0));
-         //FIXME: Fixing this leak cleanly requires a good cleanup
-         //delete outputname[i];
       }
       
       for (int i=0;i<outputname.size();i++)
       {
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
-         //FIXME: Fixing this leak cleanly requires a good cleanup
-         //delete outputname[i];
       }
 
       description = net->getDocument()->getDescription(type);
@@ -196,18 +183,14 @@ UINodeParameters *UINode::newNodeParameters (UINode *_node, string type)
 
 Node *UINode::build(const ParameterSet &params)
 {
-   //cerr << "UINode::build for node" << name << endl;
-   //params.print();
    //for all params, it will perform substitution in parameters (process subnet_params)
-   //cerr << "building parameters\n";
    ParameterSet *par = parameters->build(params);
 
-   //This is only true is type is in the dictionary
    Node *node=NULL;
    _NodeFactory *factory = NULL;
    factory = Node::getFactoryNamed(type);
-   //cerr << "building " << type << endl;
    try {
+      //This is only true if type is in the dictionary
       if (factory) 
       {
 	 node = factory->Create(name, *par);
@@ -263,7 +246,6 @@ void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
 	 buildNet->genCode(out, id, nodeList);
       else {
 	 UIDocument::genCodeExternal(type, out, id, nodeList);
-	 //throw new GeneralException("external nodes not supported yet\n", __FILE__, __LINE__);
       }
    }
    out << "static Node *genNode" << bakID << "(const ParameterSet &params)\n";
@@ -278,7 +260,6 @@ void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
       out << "   _NodeFactory *factory = Node::getFactoryNamed(\"" << type << "\");\n";
       out << "   if (!factory)\n";
       out << "      throw new GeneralException(\"Node could not be found: " << type << "\", __FILE__, __LINE__);\n";
-      //FIXME: Should still for (factory == NULL) in generated code and report errors
       out << "   Node *node = factory->Create(\""<<name << "\", parameters);\n";
    } else {
       out << "   Node *node = genNet" << bakID2 << "(\""<<name << "\", parameters);\n";

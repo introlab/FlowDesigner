@@ -66,107 +66,80 @@ void GUINode::draw()
                                  NULL);
    gnome_canvas_item_get_bounds(item1, &x1,&y1, &x2, &y2);
    //x2 *= .33;
-      
+   
    gnome_canvas_item_raise_to_top(item1);
-
-   //cerr << "processing inputs/outputs\n";
-   {
-      double xx1=x1-15.0;
-      double xx2=x2+15.0;
-      vector<ItemInfo *> inputname;
-      vector<ItemInfo *> outputname;
-      /*_NodeFactory *factory = Node::getFactoryNamed(type);
-	if (factory)
-	{
-	inputname = factory->getInputs();
-	outputname = factory->getOutputs();
-	} else*/ {
-	 inputname = net->getDocument()->getNetInputs(type); 
-	 outputname = net->getDocument()->getNetOutputs(type); 
-
-	 //cerr << "UINode::draw factory not found in simple nodes\n";
-      }
-      if (inputname.size() > 1)
-	 for (int i=0;i<inputname.size();i++)
-	 {
-	    double tx1,ty1,tx2,ty2;
-	    item1 = gnome_canvas_item_new(group,
-                                          gnome_canvas_text_get_type(),
-                                          "x", xx1,
-                                          "y", 0.0,
-                                          "text", inputname[i]->name.c_str(),
-                                          "anchor", GTK_ANCHOR_EAST ,
-                                          "fill_color", "blue",
-                                          "font", "fixed",
-                                          NULL);
-	    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(inputname.size()-1)-i));
-	    gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	    //tx2*=.33;
-	    x1=min(x1,tx1);
-	    y1=min(y1,ty1);
-	    y2=max(y2,ty2);
-	 }
-      if (outputname.size() > 1)
-	 for (int i=0;i<outputname.size();i++)
-	 {
-	    double tx1,ty1,tx2,ty2;
-	    item1 = gnome_canvas_item_new(group,
-                                          gnome_canvas_text_get_type(),
-                                          "x", xx2,
-                                          "y", 0.0,
-                                          "text", outputname[i]->name.c_str(),
-                                          "anchor", GTK_ANCHOR_WEST ,
-                                          "fill_color", "blue",
-                                          "font", "fixed",
-                                          NULL);
-	    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(outputname.size()-1)-i));
-	    gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	    //tx2=.33;
-	    x2=max(x2,tx2);
-	    y1=min(y1,ty1);
-	    y2=max(y2,ty2);
-	 }
-
-      //This is a kludge, but it almost works... NOT!
-      /*double zoom = dynamic_cast<GUINetwork *> (net)->getZoom();
-	x1=x1*zoom;
-	x2=x2*zoom;
-	y1=y1*zoom;
-	y2=y2*zoom;*/
-      item2 = gnome_canvas_item_new(group,
-				    gnome_canvas_rect_get_type(),
-				    "x1", x1-5,
-				    "y1", y1-5,
-				    "x2", x2+5,
-				    "y2", y2+5,
-				    "fill_color_rgba", 0x8cd0af20,
-				    "outline_color", "black",
-				    "width_units", 2.0,
-				    NULL);
-      gnome_canvas_item_lower_to_bottom(item2);
-      nodeRect=item2;  
-      //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
-      
-      //cerr << "creating terminals\n";
-      //cerr << "inputs size "<<inputname.size()<<endl;
-      //cerr << "output size "<<outputname.size()<<endl;
-
-
+   
+   double xx1=x1-15.0;
+   double xx2=x2+15.0;
+   vector<ItemInfo *> inputname = net->getDocument()->getNetInputs(type);
+   vector<ItemInfo *> outputname = net->getDocument()->getNetOutputs(type);
+   
+   if (inputname.size() > 1)
       for (int i=0;i<inputname.size();i++)
       {
-         inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
-						      -15.0*(.5*(inputname.size()-1)-i)));
-         //FIXME: Fixing this leak cleanly requires a good cleanup
-         //delete outputname[i];
+	 double tx1,ty1,tx2,ty2;
+	 item1 = gnome_canvas_item_new(group,
+				       gnome_canvas_text_get_type(),
+				       "x", xx1,
+				       "y", 0.0,
+				       "text", inputname[i]->name.c_str(),
+				       "anchor", GTK_ANCHOR_EAST ,
+				       "fill_color", "blue",
+				       "font", "fixed",
+				       NULL);
+	 gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(inputname.size()-1)-i));
+	 gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
+	 //tx2*=.33;
+	 x1=min(x1,tx1);
+	 y1=min(y1,ty1);
+	 y2=max(y2,ty2);
       }
+   if (outputname.size() > 1)
       for (int i=0;i<outputname.size();i++)
       {
-         outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2+5.0, 
-							-15.0*(.5*(outputname.size()-1)-i)));
-         //FIXME: Fixing this leak cleanly requires a good cleanup
-         //delete outputname[i];
+	 double tx1,ty1,tx2,ty2;
+	 item1 = gnome_canvas_item_new(group,
+				       gnome_canvas_text_get_type(),
+				       "x", xx2,
+				       "y", 0.0,
+				       "text", outputname[i]->name.c_str(),
+				       "anchor", GTK_ANCHOR_WEST ,
+				       "fill_color", "blue",
+				       "font", "fixed",
+				       NULL);
+	 gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(outputname.size()-1)-i));
+	 gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
+	 //tx2=.33;
+	 x2=max(x2,tx2);
+	 y1=min(y1,ty1);
+	 y2=max(y2,ty2);
       }
+   
+   item2 = gnome_canvas_item_new(group,
+				 gnome_canvas_rect_get_type(),
+				 "x1", x1-5,
+				 "y1", y1-5,
+				 "x2", x2+5,
+				 "y2", y2+5,
+				 "fill_color_rgba", 0x8cd0af20,
+				 "outline_color", "black",
+				 "width_units", 2.0,
+				 NULL);
+   gnome_canvas_item_lower_to_bottom(item2);
+   nodeRect=item2;  
+   //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
+   
+   for (int i=0;i<inputname.size();i++)
+   {
+      inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
+						   -15.0*(.5*(inputname.size()-1)-i)));
    }
+   for (int i=0;i<outputname.size();i++)
+   {
+      outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2+5.0, 
+						     -15.0*(.5*(outputname.size()-1)-i)));
+   }
+
    gtk_signal_connect(GTK_OBJECT(group), "event",
                       (GtkSignalFunc) node_handler,
                       this);
@@ -462,11 +435,6 @@ void GUINode::selectedMove(double dx,double dy) {
 
 
 
-/*UITerminal *GUINode::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
-{
-   return new GUITerminal (_name, _node, _isInput, _x, _y);
-}*/
-
 UILink *GUINode::newLink (UITerminal *_from, UITerminal *_to)
 {
    return new GUILink (_from, _to);
@@ -484,23 +452,22 @@ void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type)
   gnome_canvas_item_get_bounds(nodeRect, &x1,&y1,&x2,&y2);
   
 
-  //leak
-  ItemInfo *info = new ItemInfo();
+  ItemInfo info;
 
-  info->name = _name;
+  info.name = _name;
 
  
   switch (_type) {
 
   case UINetTerminal::INPUT :
 
-    inputs.insert(inputs.end(), new GUITerminal (info, this, true, x1, y1));
+    inputs.insert(inputs.end(), new GUITerminal (&info, this, true, x1, y1));
     
     break;
 
   case UINetTerminal::OUTPUT:
 
-    outputs.insert(outputs.end(), new GUITerminal (info, this, false, x2,y2 ));
+    outputs.insert(outputs.end(), new GUITerminal (&info, this, false, x2,y2 ));
     
     break;
 
@@ -587,13 +554,6 @@ void GUINode::initialize_widgets() {
 
 }
 
-/*#define min(x,y) ((x)<(y) ? (x) : (y))
-#define max(x,y) ((x)>(y) ? (x) : (y))
-*/
-
-/*template <class T>
-T &max(T &a, T &b) {return a > b ? a : b;}
-*/
 
 void GUINode::redraw() {
   
