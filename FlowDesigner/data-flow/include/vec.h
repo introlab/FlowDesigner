@@ -1,6 +1,7 @@
 #ifndef VEC_H
 #define VEC_H
 
+#include <math.h>
 
 template <class T>
 inline void vec_copy(T *x, T *y, int len)
@@ -107,6 +108,28 @@ inline void vec_mul_vec(T *a, T *b, T *c, int len)
 }
 
 template <class T>
+inline void vec_div_vec(T *a, T *b, T *c, int len)
+{
+  T *end = a+len;
+  while (a<end-3)
+    {
+      c[0]=a[0]/b[0];
+      c[1]=a[1]/b[1];
+      c[2]=a[2]/b[2];
+      c[3]=a[3]/b[3];
+      a+=4;
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]=a[0]/b[0];
+      a++; b++; c++;
+    }
+}
+
+
+template <class T>
 inline void vec_add_scal(T a, T *b, T *c, int len)
 {
   T *end = b+len;
@@ -163,6 +186,28 @@ inline T vec_dist2(T *a, T *b, int len)
   while (a<end)
     {
       sum1+=(a[0]-b[0])*(a[0]-b[0]);
+      a++; b++;
+    }
+  return (sum1+sum2)+(sum3+sum4);
+}
+
+template <class T>
+inline T vec_mahalanobis2(T *a, T *b, T *c, int len)
+{
+  T sum1=0, sum2=0, sum3=0, sum4=0;
+  T *end = a+len;
+  while (a<end-3)
+    {
+      sum1+=c[0]*(a[0]-b[0])*(a[0]-b[0]);
+      sum2+=c[1]*(a[1]-b[1])*(a[1]-b[1]);
+      sum3+=c[2]*(a[2]-b[2])*(a[2]-b[2]);
+      sum4+=c[3]*(a[3]-b[3])*(a[3]-b[3]);
+      a+=4;
+      b+=4;
+    }
+  while (a<end)
+    {
+      sum1+=c[0]*(a[0]-b[0])*(a[0]-b[0]);
       a++; b++;
     }
   return (sum1+sum2)+(sum3+sum4);
@@ -250,7 +295,7 @@ inline void vec_sqrt(T *a, T *b, int len)
 
 #ifdef _USE_3DNOW
 
-#define FP_DIRTY   : "memory", "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
+#define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
 
 
 template <>
@@ -972,11 +1017,13 @@ inline void vec_sqrt<float>(float *a, float *b, int len)
 
   sub $2, %%ecx
   //jb mul2_skip
-  jb .+65
+  jb .+79
 
 //mul2_loop:
   movd (%%eax), %%mm0
   movd 4(%%eax), %%mm1
+  movq %%mm0, %%mm6
+  movq %%mm1, %%mm7
   pfrsqrt %%mm0, %%mm2
   pfrsqrt %%mm1, %%mm3
   movq %%mm2, %%mm4
@@ -987,6 +1034,8 @@ inline void vec_sqrt<float>(float *a, float *b, int len)
   pfrsqit1 %%mm3, %%mm1
   pfrcpit2 %%mm4, %%mm0
   pfrcpit2 %%mm5, %%mm1
+  pfmul %%mm6, %%mm0
+  pfmul %%mm7, %%mm1
 
   movd %%mm0, (%%edx)
   movd %%mm1, 4(%%edx)
@@ -995,20 +1044,22 @@ inline void vec_sqrt<float>(float *a, float *b, int len)
   sub $2,  %%ecx
 
   //jae mul2_loop
-  jae .-61
+  jae .-75
 
 //mul2_skip:
 
   and $1, %%ecx
   //jz even
-  jz .+27
+  jz .+34
 
   movd (%%eax), %%mm0
+  movq %%mm0, %%mm6
   pfrsqrt %%mm0, %%mm2
   movq %%mm2, %%mm4
   pfmul %%mm2, %%mm2
   pfrsqit1 %%mm2, %%mm0
   pfrcpit2 %%mm4, %%mm0
+  pfmul %%mm6, %%mm0
 
   movd %%mm0, (%%edx)
 //even:
