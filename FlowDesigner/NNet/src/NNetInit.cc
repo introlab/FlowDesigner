@@ -15,25 +15,34 @@ DECLARE_NODE(NNetInit)
  *
  * @name NNetInit
  * @category NNet
+ * @require FFNet
  * @description Initialized the neural network weights to fit the input/output set
  *
  * @input_name TRAIN_IN
- * @input_description No description available
+ * @input_type Vector<ObjectRef>
+ * @input_description Training input data
  *
  * @input_name TRAIN_OUT
- * @input_description No description available
+ * @input_type Vector<ObjectRef>
+ * @input_description Training output data
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type FFNet
+ * @output_description Initialized feed-forward neural network
  *
  * @parameter_name TOPO
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_value <Vector >
+ * @parameter_description Number of units on each layer (including input and output layers)
  *
  * @parameter_name FUNCTIONS
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_value <Vector >
+ * @parameter_description Activation functions for each layer (except the input layer)
  *
  * @parameter_name RAND_SEED
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Sets to random seed to RAND_SEED before initialization
  *
 END*/
 
@@ -51,8 +60,10 @@ protected:
    /**The ID of the 'OUTPUT' output*/
    int outputID;
 
+   /**Network topology (see TOPO parameter)*/
    Vector<int> topo;
-      
+   
+   /**Activation functions (see FUNCTIONS parameter)*/
    Vector<string> functions;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -62,23 +73,12 @@ public:
       outputID = addOutput("OUTPUT");
       trainInID = addInput("TRAIN_IN");
       trainOutID = addInput("TRAIN_OUT");
-
-      //String topoStr = object_cast<String> (parameters.get("TOPO"));
-      //String funcStr = object_cast<String> (parameters.get("FUNCTIONS"));
       
       istringstream str_vector(object_cast <String> (parameters.get("TOPO")));
       str_vector >> topo;
 
       istringstream str_func(object_cast <String> (parameters.get("FUNCTIONS")));
       str_func >> functions;
-
-      //ObjectRef Otopo;
-      //istringstream toposs(string(topoStr));
-      //toposs >> topo;
-      //topo = *Otopo;
-
-      //ostringstream funcss(string(funcStr));
-      //funcss >> functions;
 
       if (parameters.exist("RAND_SEED"))
 	 srand(dereference_cast<int> (parameters.get("RAND_SEED")));
@@ -104,17 +104,6 @@ public:
       for (i=0;i<outBuff.size();i++)
 	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
       
-      /*Vector<int> topo(4);
-      topo[0] = 16;
-      topo[1] = 12;
-      topo[2] = 12;
-      topo[3] = 8;
-      vector<string> functions(3);
-      functions[0] = "tansig";
-      functions[1] = "tansig";
-      functions[2] = "lin";*/
-      //cerr << topo << endl;
-      //cerr << functions << endl;
       FFNet *net = new FFNet(topo, functions, tin, tout);
 
       out[count] = ObjectRef(net);
