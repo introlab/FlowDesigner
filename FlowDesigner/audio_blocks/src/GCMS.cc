@@ -93,10 +93,10 @@ ObjectRef GCMS::getOutput(int output_id, int count)
       //cerr << "leaving GCMS::getOutput for " << name << " count: " << count << endl;
       //cerr << "returning status " << out[count]->status << endl;
       return unlock_and_return(out[count]);
-   } catch (BaseException &e)
+   } catch (BaseException *e)
    {
-      e.print();
+      e->print();
       unlock();
-      throw NodeException (this, "Exception in GCMS::getOutput", __FILE__, __LINE__);
+      throw new NodeException (this, "Exception in GCMS::getOutput", __FILE__, __LINE__);
    }
 }

@@ -57,5 +57,5 @@ ObjectRef Sum::getOutput(int output_id, int count)
       return ObjectRef(new Float(sum));
    }
    else 
-      throw NodeException (this, "Sum: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "Sum: Unknown output id", __FILE__, __LINE__);
 }

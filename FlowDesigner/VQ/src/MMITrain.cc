@@ -81,5 +81,5 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
       return unlock_and_return(currentMMI);
    }
    else 
-      throw NodeException (this, "MMITrain: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "MMITrain: Unknown output id", __FILE__, __LINE__);
 }

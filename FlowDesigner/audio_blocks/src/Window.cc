@@ -61,7 +61,7 @@ public:
             window[i]=.54-.46*cos((2*M_PI*i)/inputLength);
       } else 
       {
-         throw GeneralException("Unknown window type",__FILE__,__LINE__);
+         throw new GeneralException("Unknown window type",__FILE__,__LINE__);
       }
       
    }

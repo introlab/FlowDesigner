@@ -36,7 +36,7 @@ ObjectRef OR::getOutput (int output_id, int count) {
    int true_count = 0;
    int false_count = 0;
 
-   if (!hasOutput(output_id)) throw NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
+   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
    if (count != processCount) {
       //We are updating our output only if needed
@@ -53,15 +53,15 @@ ObjectRef OR::getOutput (int output_id, int count) {
             else {false_count++;}
             
          } //end of try block
-         catch (GenericCastException &e) {
+         catch (GenericCastException *e) {
             //We had a problem casting, our inputs are invalid?
-            e.print();
+            e->print();
             false_count++;
          }         
-         catch (BaseException &e) {
+         catch (BaseException *e) {
             //Something weird happened
-            e.print();
-            throw NodeException (this,string("Cannot get BOOL value from") + 
+            e->print();
+            throw new NodeException (this,string("Cannot get BOOL value from") + 
                                  inputs[i].node->getName()
                                  , __FILE__,__LINE__);
          }      

@@ -63,5 +63,5 @@ ObjectRef Save::getOutput(int output_id, int count)
       //return ObjectRef(new Object(Object::nil));
    }
    else 
-      throw NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
 }

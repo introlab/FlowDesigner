@@ -61,5 +61,5 @@ ObjectRef Pack::getOutput(int output_id, int count)
       return unlock_and_return(output);
    }
    else 
-      throw NodeException (this, "Pack: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "Pack: Unknown output id", __FILE__, __LINE__);
 }

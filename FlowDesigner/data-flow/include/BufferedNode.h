@@ -94,7 +94,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   BufferedNode() {throw GeneralException("BufferedNode copy constructor should not be called",__FILE__,__LINE__);}
+   BufferedNode() {throw new GeneralException("BufferedNode copy constructor should not be called",__FILE__,__LINE__);}
 };
 
 #endif

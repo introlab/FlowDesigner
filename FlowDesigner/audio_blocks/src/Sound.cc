@@ -82,7 +82,7 @@ public:
       {
 	 perror (device.c_str());
 	 //close(audio_fd);
-	 throw NodeException(NULL, "Can't open sound device\n", __FILE__, __LINE__);
+	 throw new NodeException(NULL, "Can't open sound device\n", __FILE__, __LINE__);
 	 //exit(1);
       }
       
@@ -111,21 +111,21 @@ public:
       {
 	 perror("SNDCTL_DSP_SETFMT");
 	 close(audio_fd);
-	 throw NodeException(NULL, "Can't set the right format\n", __FILE__, __LINE__);
+	 throw new NodeException(NULL, "Can't set the right format\n", __FILE__, __LINE__);
       }
       
       if (ioctl(audio_fd, SNDCTL_DSP_STEREO, &stereo)==-1)
       {
 	 perror("SNDCTL_DSP_STEREO");
 	 close(audio_fd);
-	 throw NodeException(NULL, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
+	 throw new NodeException(NULL, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
       }
       
       if (ioctl(audio_fd, SNDCTL_DSP_SPEED, &speed)==-1)
       {
 	 perror("SNDCTL_DSP_SPEED");
 	 close(audio_fd);
-	 throw NodeException(NULL, "Can't set sound device speed\n", __FILE__, __LINE__);
+	 throw new NodeException(NULL, "Can't set sound device speed\n", __FILE__, __LINE__);
       }
 
 
@@ -148,11 +148,11 @@ public:
    virtual ObjectRef getOutput(int output_id, int count)
    {
       if (output_id==outputID) return value;
-      else throw NodeException (this, "Sound: Unknown output id", __FILE__, __LINE__);
+      else throw new NodeException (this, "Sound: Unknown output id", __FILE__, __LINE__);
    }
 
 protected:
    /**Default constructor, should not be used*/
-   Sound() {throw GeneralException("Sound copy constructor should not be called",__FILE__,__LINE__);}
+   Sound() {throw new GeneralException("Sound copy constructor should not be called",__FILE__,__LINE__);}
 
 };

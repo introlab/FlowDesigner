@@ -33,10 +33,10 @@ VQTrain::VQTrain(string nodeName, ParameterSet params)
       framesInputID = addInput("FRAMES");
       //cerr << "VQTrain initialization done\n";
       nbMeans = dereference_cast<int> (parameters.get("MEANS"));
-   } catch (BaseException &e)
+   } catch (BaseException *e)
    {
-      e.print(cerr);
-      throw NodeException(NULL, "Exception caught in VQTrain constructor", __FILE__, __LINE__);
+      e->print(cerr);
+      throw new NodeException(NULL, "Exception caught in VQTrain constructor", __FILE__, __LINE__);
    }
 }
 
@@ -81,5 +81,5 @@ ObjectRef VQTrain::getOutput(int output_id, int count)
       return current;
    }
    else 
-      throw NodeException (this, "VQTrain: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "VQTrain: Unknown output id", __FILE__, __LINE__);
 }

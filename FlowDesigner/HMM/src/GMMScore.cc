@@ -75,5 +75,5 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
       return unlock_and_return(currentScore);
    }
    else 
-      throw NodeException (this, "GMMScore: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "GMMScore: Unknown output id", __FILE__, __LINE__);
 }

@@ -168,7 +168,7 @@ void Network::addNode (const string &factoryName,const string &nodeName, const P
       node = tryPluginNode(factoryName, nodeName, parameters);
       //cerr << "node = " << node << endl;
       if (!node)
-         throw FactoryNotFoundException(factoryName);
+         throw new FactoryNotFoundException(factoryName);
    } else {
       //creating an instance of the specified node.
       node = factory->Create(nodeName, parameters);
@@ -211,7 +211,7 @@ Node * Network::removeNode (const string &nodeName) {
       numNodes--;
    }
    else {
-      throw NodeNotFoundException(nodeName);
+      throw new NodeNotFoundException(nodeName);
    }
 
    return node;
@@ -240,8 +240,8 @@ void Network::connect (const string &currentNodeName,const string &inputName,
      currentNode->connectToNode(inputName,inputNode,outputName);
    }
    else {
-      if (!currentNode) {throw NodeNotFoundException(currentNodeName);}
-      if (!inputNode) {throw NodeNotFoundException(inputNodeName);}
+      if (!currentNode) {throw new NodeNotFoundException(currentNodeName);}
+      if (!inputNode) {throw new NodeNotFoundException(inputNodeName);}
    }
    
 
@@ -260,7 +260,7 @@ void Network::specificInitialize() {
    
    //We need a sink Node
    if (!sinkNode) {
-      throw NoSinkNodeException();
+      throw new NoSinkNodeException();
    }
 
 
@@ -280,7 +280,7 @@ void Network::specificInitialize() {
    }
 
    if (connectionMap.size() > 0) {
-      throw NotInitializedException(connectionMap);
+      throw new NotInitializedException(connectionMap);
    }
 
 
@@ -295,7 +295,7 @@ void Network::specificInitialize() {
 ObjectRef Network::getOutput (int output_id, int count) {
 
    if (!sinkNode) {
-      throw NoSinkNodeException();
+      throw new NoSinkNodeException();
    }
    lock();
    return sinkNode->getOutput(output_id, count);
@@ -311,7 +311,7 @@ ObjectRef Network::getOutput (int output_id, int count) {
 bool Network::hasOutput (int output_id) const {
 
    if (!sinkNode) {
-      throw NoSinkNodeException();
+      throw new NoSinkNodeException();
    }
    return sinkNode->hasOutput(output_id);
 }
@@ -324,7 +324,7 @@ bool Network::hasOutput (int output_id) const {
 /***************************************************************************/
 int Network::translateInput (string   inputName) {
    if (!inputNode) {
-      throw NoInputNodeException();
+      throw new NoInputNodeException();
    }
    return inputNode->translateInput (inputName);
 }
@@ -337,7 +337,7 @@ int Network::translateInput (string   inputName) {
 int Network::translateOutput (string outputName) {
 
    if (!sinkNode) {
-      throw NoSinkNodeException();
+      throw new NoSinkNodeException();
    }
    return sinkNode->translateOutput(outputName);
 }
@@ -350,7 +350,7 @@ int Network::translateOutput (string outputName) {
 /***************************************************************************/
 void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
    if (!inputNode) {
-      throw NoInputNodeException();
+      throw new NoInputNodeException();
    }
    inputNode->connectToNode(in,inNode,out);
 }

@@ -109,14 +109,14 @@ void DiagonalCovariance::readFrom (istream &in)
       else if (tag == "data")
       {
          if (dimension==-1)
-            throw ParsingException("dimension must be specified before data");
+            throw new ParsingException("dimension must be specified before data");
          for (int i=0;i<dimension;i++)
             in >> data[i];
       } else 
-         throw ParsingException ("unknown argument: " + tag);
-      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+         throw new ParsingException ("unknown argument: " + tag);
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
       in >> tag;
-      if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
+      if (tag != ">") throw new ParsingException ("Parse error: '>' expected ");
    }   
 };
 

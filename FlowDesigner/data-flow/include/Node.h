@@ -248,7 +248,7 @@ private:
 protected:
 
    /**Default constructor, should not be used*/
-   Node() {throw GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
+   Node() {throw new GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 
    /**symbolic to numeric translation for input names*/
    virtual int translateInput(string inputName);

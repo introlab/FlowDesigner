@@ -775,9 +775,9 @@ void GUIDocument::run()
       //ask for params and desired output
       
       //run in a window in a separated thread
-   } catch (BaseException &e)
+   } catch (BaseException *e)
    {
-      e.print();
+      e->print();
       /* The net will be deleted in the dispose function. */
       //delete net;
       //runningNet=NULL;

@@ -54,7 +54,7 @@ T object_ptr_cast (const ObjectRef &ref)
 {
    T tmp = dynamic_cast<T>(&(*ref));
    if (!tmp) 
-      throw CastException<T> (typeid ((*ref)).name());
+      throw new CastException<T> (typeid ((*ref)).name());
    return tmp;
 }
 
@@ -64,7 +64,7 @@ T &object_cast (const ObjectRef &ref)
 {
    T *tmp = dynamic_cast<T *>(&(*ref));
    if (!tmp) 
-      throw CastException<T> (typeid ((*ref)).name());
+      throw new CastException<T> (typeid ((*ref)).name());
    return *tmp;
 }
 
@@ -74,7 +74,7 @@ T &dereference_cast (const ObjectRef &ref)
 {
    GenericType<T> *tmp = (dynamic_cast<GenericType<T> * >(&(*ref)));
    if (!tmp) 
-      throw CastException<T> (typeid ((*ref)).name());
+      throw new CastException<T> (typeid ((*ref)).name());
    return tmp->val();
 }
 

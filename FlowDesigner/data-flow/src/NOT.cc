@@ -34,7 +34,7 @@ NOT::NOT(string nodeName, ParameterSet params)
 ObjectRef NOT::getOutput (int output_id, int count) {
    
  
-   if (!hasOutput(output_id)) throw NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
+   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
    if (count != processCount) {
       //We are updating our output only if needed
@@ -60,15 +60,15 @@ ObjectRef NOT::getOutput (int output_id, int count) {
          
       } //end of try block
       
-      catch (GenericCastException &e) {
+      catch (GenericCastException *e) {
          //We had a problem casting, our inputs are invalid?
-         e.print();
+         e->print();
          output = ObjectRef(new Object(Object::nil));
       }         
-      catch (BaseException &e) {
+      catch (BaseException *e) {
          //Something weird happened
-         e.print();
-         throw NodeException (this,string("Cannot get BOOL value from") + 
+         e->print();
+         throw new NodeException (this,string("Cannot get BOOL value from") + 
                               inputs[inputID].node->getName()
                               , __FILE__,__LINE__);
       }

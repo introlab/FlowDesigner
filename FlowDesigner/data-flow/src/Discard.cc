@@ -34,10 +34,10 @@ public:
       try {
          inputID = addInput("INPUT");
 	 outputID=addOutput("OUTPUT");
-      } catch (BaseException &e)
+      } catch (BaseException *e)
       {
-         e.print();
-         throw NodeException (NULL, "Exception caught in Discard constructor", __FILE__, __LINE__);
+         e->print();
+         throw new NodeException (NULL, "Exception caught in Discard constructor", __FILE__, __LINE__);
       }
       
    }

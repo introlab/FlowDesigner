@@ -23,8 +23,6 @@
 #include "rc_ptrs.h"
 #include "BaseException.h"
 
-
-
 /***************************************************************************/
 /*
   NodeNotFoundException

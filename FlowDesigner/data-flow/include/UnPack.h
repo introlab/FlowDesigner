@@ -48,7 +48,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   UnPack() {throw GeneralException("UnPack copy constructor should not be called",__FILE__,__LINE__);}
+   UnPack() {throw new GeneralException("UnPack copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 

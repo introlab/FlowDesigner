@@ -62,5 +62,5 @@ ObjectRef UnPack::getOutput(int output_id, int count)
       }
    }
    else 
-      throw NodeException (this, "UnPack: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "UnPack: Unknown output id", __FILE__, __LINE__);
 }

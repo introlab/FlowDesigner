@@ -71,5 +71,5 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
       return unlock_and_return(currentScore);
    }
    else 
-      throw NodeException (this, "MMIScore: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "MMIScore: Unknown output id", __FILE__, __LINE__);
 }

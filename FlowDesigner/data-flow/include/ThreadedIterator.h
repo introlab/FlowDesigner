@@ -64,7 +64,7 @@ class ThreadedIterator : public Iterator {
   /** Default constructor that should not be used*/
  /* ThreadedIterator() 
     :Iterator (string("DUMMY"), new ParameterSet()) {
-    throw NodeException (NULL,"The default constructor should not be called from ThreadedIterator",__FILE__,__LINE__);
+    throw new NodeException (NULL,"The default constructor should not be called from ThreadedIterator",__FILE__,__LINE__);
   }*/
    
   void* loop(void *param);

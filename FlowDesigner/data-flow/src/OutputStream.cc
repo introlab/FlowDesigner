@@ -53,5 +53,5 @@ ObjectRef OutputStream::getOutput(int output_id, int count)
       return openedFile;
    }
    else 
-      throw NodeException (this, "OutputStream: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "OutputStream: Unknown output id", __FILE__, __LINE__);
 }

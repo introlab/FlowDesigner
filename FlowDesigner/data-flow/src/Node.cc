@@ -96,7 +96,7 @@ int Node::addInput (const string &input_name) {
    
    for (iter = inputs.begin(); iter < inputs.end(); iter++) {
       if (iter->name == input_name) {
-         throw NodeException(this,string("Input already defined : ") + input_name, __FILE__, __LINE__);
+         throw new NodeException(this,string("Input already defined : ") + input_name, __FILE__, __LINE__);
          //just in case
          break;
       }      
@@ -126,7 +126,7 @@ int Node::addOutput(const string &output_name) {
 
    for (int in = 0; in < outputNames.size(); in++) {
       if (outputNames[in] == output_name) {
-         throw NodeException(this,string("Output already defined : ") + output_name, __FILE__, __LINE__);
+         throw new NodeException(this,string("Output already defined : ") + output_name, __FILE__, __LINE__);
          //just in case
          break;
       }      
@@ -160,7 +160,7 @@ int Node::translateOutput (string output_name) {
       }      
    }
 
-   throw NodeException(this,string("Unknown output in translateOutput : ") + output_name, __FILE__,__LINE__);
+   throw new NodeException(this,string("Unknown output in translateOutput : ") + output_name, __FILE__,__LINE__);
    //should never return...
    return -1;
 }
@@ -179,7 +179,7 @@ int Node::translateInput (string input_name) {
          return in;
       }      
    }
-   throw NodeException(this,string("Unknown input in translateInput : ") + input_name, __FILE__,__LINE__);
+   throw new NodeException(this,string("Unknown input in translateInput : ") + input_name, __FILE__,__LINE__);
    return -1;
 }
 /***************************************************************************/
@@ -215,11 +215,11 @@ void Node::initialize ()
       for (in = inputs.begin(); in < inputs.end(); in++)
       {        
          if (!in->node || in->outputID == -1) {
-            throw NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
+            throw new NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
          }
          else {
             if (!in->node->hasOutput(in->outputID)) 
-               throw NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
+               throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
             in->node->initialize();
          }
      }
@@ -288,7 +288,7 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
       }
    }
    else {
-      throw NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
+      throw new NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
    }
    return 0;
 };

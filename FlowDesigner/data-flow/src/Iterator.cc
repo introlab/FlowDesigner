@@ -40,7 +40,7 @@ Iterator::Iterator (string nodeName, ParameterSet params)
 /***************************************************************************/
 ObjectRef Iterator::getOutput (int output_id, int count) {
    
-   if (!hasOutput(output_id)) throw NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
+   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
    lock();
 
@@ -86,15 +86,15 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
             pc++;
          }
       }
-      catch (GenericCastException &e) {
+      catch (GenericCastException *e) {
          //We had a problem casting, our inputs are invalid?
-         e.print();
+         e->print();
          output = ObjectRef(new Object(Object::nil));         
       }      
-      catch (BaseException &e) {
+      catch (BaseException *e) {
          //Something weird happened
-         e.print();
-         throw NodeException (this,string("Error in Iterator::getOutput"), __FILE__,__LINE__);
+         e->print();
+         throw new NodeException (this,string("Error in Iterator::getOutput"), __FILE__,__LINE__);
       }
       processCount = count;
    }
@@ -113,7 +113,7 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
 void Iterator::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
  
    if (!inputNode) 
-      throw NodeException(this,"Trying to connect without input node",__FILE__,__LINE__);
+      throw new NodeException(this,"Trying to connect without input node",__FILE__,__LINE__);
 
    if (!translator) {
       //let's add our translator node
@@ -139,7 +139,7 @@ void Iterator::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
 void Iterator::specificInitialize() {
 
    if (!conditionNode) {
-      throw NodeException(this,"No condition Node specified in Iterator",__FILE__,__LINE__);
+      throw new NodeException(this,"No condition Node specified in Iterator",__FILE__,__LINE__);
    }
 
    // We must initialize the conditionNode before

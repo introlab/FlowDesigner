@@ -34,7 +34,7 @@ ObjectRef Collector::getOutputNamed (const string &outputName, int count) {
       }
    }   
  
-   throw NodeException(this,string("Unknown output name :")+outputName,__FILE__,__LINE__);
+   throw new NodeException(this,string("Unknown output name :")+outputName,__FILE__,__LINE__);
 
    //just in case returning a nil object
    return ObjectRef(new Object(Object::nil));
@@ -76,14 +76,14 @@ ObjectRef Collector::getOutput(int output_id, int count)
       try{	
 	 int outputID = inputs[output_id].outputID;
 	 return (inputs[output_id].node)->getOutput(outputID,count);
-      } catch (BaseException &e)
+      } catch (BaseException *e)
       {
-	 e.print();
-	 throw NodeException (this, "Exception caught in Collector::getOutput", __FILE__, __LINE__);
+	 e->print();
+	 throw new NodeException (this, "Exception caught in Collector::getOutput", __FILE__, __LINE__);
       }
    }
    else {
-      throw NodeException(this,"Unknown output_id",__FILE__,__LINE__);
+      throw new NodeException(this,"Unknown output_id",__FILE__,__LINE__);
    }
    
    //Just in case returns an invalid object

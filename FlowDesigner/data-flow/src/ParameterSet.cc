@@ -30,7 +30,7 @@ bool ParameterSet::exist(const string &param) const
 ObjectRef ParameterSet::get(string param) const
 {
    if (find(param)==end())
-      throw ParameterException("Missing Parameter", param,*this);
+      throw new ParameterException("Missing Parameter", param,*this);
    //else return operator[](param);
    else 
       {
@@ -75,7 +75,7 @@ void ParameterSet::checkUnused() const
 
       if (!it->second.second)
       {   
-         throw ParameterException("Unused (unknown) parameter", it->first,*this);
+         throw new ParameterException("Unused (unknown) parameter", it->first,*this);
       }
    }
 }

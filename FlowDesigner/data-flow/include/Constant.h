@@ -50,7 +50,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   Constant() {throw GeneralException("Constant copy constructor should not be called",__FILE__,__LINE__);}
+   Constant() {throw new GeneralException("Constant copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 

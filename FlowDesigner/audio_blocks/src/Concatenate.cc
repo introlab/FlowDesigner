@@ -61,11 +61,11 @@ void Concatenate::computeFrame(ObjectRef input1, ObjectRef input2, int count)
    const Vector<float> &input2Frame = object_cast<Vector<float> > (in2[count]);
    Vector<float> &outputFrame = object_cast<Vector<float> > (out[count]);
    if (input1Length != input1Frame.size())
-      throw NodeException (this, "input1Length != in1.ncols()" , __FILE__, __LINE__);
+      throw new NodeException (this, "input1Length != in1.ncols()" , __FILE__, __LINE__);
    if (input2Length != input2Frame.size())
-      throw NodeException (this, "input2Length != in2.ncols()" , __FILE__, __LINE__);
+      throw new NodeException (this, "input2Length != in2.ncols()" , __FILE__, __LINE__);
    if (input1Length+input2Length != outputLength)
-      throw NodeException (this, "input1Length+input2Length != outputLength" , __FILE__, __LINE__);
+      throw new NodeException (this, "input1Length+input2Length != outputLength" , __FILE__, __LINE__);
    for (i=0;i<input1Length;i++)
    {
       outputFrame[i]= input1Frame[i];

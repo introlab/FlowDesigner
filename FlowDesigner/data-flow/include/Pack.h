@@ -51,7 +51,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   Pack() {throw GeneralException("Pack copy constructor should not be called",__FILE__,__LINE__);}
+   Pack() {throw new GeneralException("Pack copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 

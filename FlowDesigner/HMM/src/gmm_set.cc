@@ -35,7 +35,7 @@ int GMMSet::getIDFor(Ptr<GMM> cov)
 Ptr<GMM> GMMSet::getPtrFor(int id)
 {
    if (id>=nb_gmms)
-      throw GeneralException("Invalid gmm ID", __FILE__, __LINE__);
+      throw new GeneralException("Invalid gmm ID", __FILE__, __LINE__);
    return gmms[id];
 }
 
@@ -73,20 +73,20 @@ void GMMSet::readFrom (istream &in=cin)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "gmms")
          in >> gmms;
       else if (tag == "nb_gmms")
          in >> nb_gmms;
       else
-         throw ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("unknown argument: " + tag);
 
-      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("Parse error: '>' expected ");
    }
 }
 

@@ -54,7 +54,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   GMMScore() {throw GeneralException("GMMScore copy constructor should not be called",__FILE__,__LINE__);}
+   GMMScore() {throw new GeneralException("GMMScore copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 

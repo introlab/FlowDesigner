@@ -90,7 +90,7 @@ public:
 
    /**Returns the inputs vector */
    virtual vector<NodeInput>& getInputs () {
-      if (!inputNode) throw NodeException(this,"No inputNode",__FILE__,__LINE__);
+      if (!inputNode) throw new NodeException(this,"No inputNode",__FILE__,__LINE__);
       return inputNode->getInputs();
    }
 
@@ -118,7 +118,7 @@ public:
    /**Subnet : The connectToNode method overloaded from Node */
    virtual void connectToNode(string in, Node *inNode, string out) {
       if (!inputNode) {
-         throw NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
+         throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
       }
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
    }
@@ -154,7 +154,7 @@ protected:
    
    /**default constructor should never be used*/
    Network () {
-     throw NodeException (NULL,"The default constructor should not be called from Network",__FILE__,__LINE__);
+     throw new NodeException (NULL,"The default constructor should not be called from Network",__FILE__,__LINE__);
    } 
    
 };

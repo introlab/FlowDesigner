@@ -55,7 +55,7 @@ int CovarianceSet::getIDFor(Ptr<Covariance> cov)
 Ptr<Covariance> CovarianceSet::getPtrFor(int id) const
 {
    if (id>=nb_covariances)
-      throw GeneralException("Invalid covariance ID", __FILE__, __LINE__);
+      throw new GeneralException("Invalid covariance ID", __FILE__, __LINE__);
    return covariances[id];
 }
 
@@ -78,20 +78,20 @@ void CovarianceSet::readFrom (istream &in=cin)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "covariances")
          in >> covariances;
       else if (tag == "nb_covariances")
          in >> nb_covariances;
       else
-         throw ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("unknown argument: " + tag);
 
-      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("Parse error: '>' expected ");
    }
 }
 

@@ -87,11 +87,11 @@ public:
    virtual ObjectRef getOutput(int output_id, int count)
    {
       if (output_id==outputID) return value;
-      else throw NodeException (this, "LPFilter: Unknown output id", __FILE__, __LINE__);
+      else throw new NodeException (this, "LPFilter: Unknown output id", __FILE__, __LINE__);
    }
 
 protected:
    /**Default constructor, should not be used*/
-   LPFilter() {throw GeneralException("LPFilter copy constructor should not be called",__FILE__,__LINE__);}
+   LPFilter() {throw new GeneralException("LPFilter copy constructor should not be called",__FILE__,__LINE__);}
 
 };

@@ -47,7 +47,7 @@ private:
    
    /** The default constructor that should never be used */
    InputTranslator () {
-      throw NodeException (NULL,"The default constructor should not be called from InputTranslator",__FILE__,__LINE__);
+      throw new NodeException (NULL,"The default constructor should not be called from InputTranslator",__FILE__,__LINE__);
    }
 };
 
@@ -65,7 +65,7 @@ public:
    /** The connectToNode method overloaded from Node */
    virtual void connectToNode(string in, Node *inNode, string out) {
       if (!inputNode) {
-         throw NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
+         throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
       }
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
    }
@@ -98,7 +98,7 @@ protected:
    
    /** Default constructor that should not be used*/
    Iterator() {
-      throw NodeException (NULL,"The default constructor should not be called from Iterator",__FILE__,__LINE__);
+      throw new NodeException (NULL,"The default constructor should not be called from Iterator",__FILE__,__LINE__);
    }
    
 };

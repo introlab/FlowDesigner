@@ -401,10 +401,10 @@ void Cell::readFrom (istream &in)
          in >> *tmp;
          second = tmp;
       } else 
-         throw ParsingException ("unknown argument: " + tag);
-      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+         throw new ParsingException ("unknown argument: " + tag);
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
       in >> tag;
-      if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
+      if (tag != ">") throw new ParsingException ("Parse error: '>' expected ");
    }
    
 }

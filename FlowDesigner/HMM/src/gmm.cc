@@ -268,7 +268,7 @@ void GMM::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "nb_gaussians")
          in >> nb_gaussians;
@@ -291,13 +291,13 @@ void GMM::readFrom (istream &in)
       else if (tag == "nb_frames_aligned")
          in >> nb_frames_aligned;
       else
-         throw ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("unknown argument: " + tag);
 
-      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("Parse error: '>' expected ");
    }
 }
 

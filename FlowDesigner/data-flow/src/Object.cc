@@ -35,7 +35,7 @@ ObjectRef Object::newObject(const string &objType)
       return ObjectFactoryDictionary()[objType]->create();
    } else
    {
-      throw GeneralException ("ObjectRef error: unknown type " + objType, __FILE__, __LINE__);
+      throw new GeneralException ("ObjectRef error: unknown type " + objType, __FILE__, __LINE__);
    }
 }
 

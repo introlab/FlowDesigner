@@ -100,7 +100,7 @@ public:
       if (!ptr) 
          {
             //throw "Ptr<X>: Illegal pointer conversion in copy constructor";
-            if (!ptr) throw PtrCastException<Z,X>(r.ptr);
+            if (!ptr) throw new PtrCastException<Z,X>(r.ptr);
          }
       count=r.count;
       acquire();
@@ -123,7 +123,7 @@ public:
       {
          X *tmp=dynamic_cast<X*> (r.ptr);
          //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
-         if (!tmp) throw PtrCastException<Z,X>(r.ptr);
+         if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
          release();
          ptr=tmp;
          count = r.count;
@@ -151,7 +151,7 @@ public:
       {
          X *tmp=dynamic_cast<X*> (r);
          //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
-         if (!tmp) throw PtrCastException<Z,X>(r.ptr);
+         if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
          release();
          ptr=tmp;
          count=new size_type(1);
@@ -171,8 +171,8 @@ public:
    }
 
 #ifdef RT_DEBUG
-   X& operator* () const {if (ptr) return *ptr; else throw PtrException("dereferencing NULL pointer in *");}
-   X* operator->() const {if (ptr) return  ptr; else throw PtrException("dereferencing NULL pointer in ->");}
+   X& operator* () const {if (ptr) return *ptr; else throw new PtrException("dereferencing NULL pointer in *");}
+   X* operator->() const {if (ptr) return  ptr; else throw new PtrException("dereferencing NULL pointer in ->");}
 #else
    X& operator* () const {	return *ptr; }
    X* operator->() const {	return  ptr; }
@@ -196,10 +196,10 @@ public:
             ptr = 0;
             return tmp;
          } else {
-            throw PtrException("Error: trying to detach a non-unique pointer in rc_ptrs.h");
+            throw new PtrException("Error: trying to detach a non-unique pointer in rc_ptrs.h");
          }
       } else {
-         throw PtrException("Error: trying to detach a NULL pointer in rc_ptrs.h");
+         throw new PtrException("Error: trying to detach a NULL pointer in rc_ptrs.h");
       }
    }
 

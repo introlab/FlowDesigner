@@ -64,10 +64,10 @@ public:
          filters.resize(outputLength);
          filterStart.resize(outputLength);
          window.resize(inputLength);
-      } catch (BaseException &e)
+      } catch (BaseException *e)
       {
-         e.print();
-         throw NodeException (NULL, "Exception caught in MFCC constructor", __FILE__, __LINE__);
+         e->print();
+         throw new NodeException (NULL, "Exception caught in MFCC constructor", __FILE__, __LINE__);
       }
       
    }
@@ -100,7 +100,7 @@ public:
             window[i]=.54-.46*cos((2*M_PI*i)/inputLength);
       } else 
       {
-         throw GeneralException("Unknown window type",__FILE__,__LINE__);
+         throw new GeneralException("Unknown window type",__FILE__,__LINE__);
       }
 
 

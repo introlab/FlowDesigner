@@ -57,7 +57,7 @@ public:
    /**raw (binary) output method*/
    virtual void rawWrite(ostream &out) const
    {
-      throw GeneralException("Object doesn't know how to rawWrite itself", __FILE__, __LINE__);
+      throw new GeneralException("Object doesn't know how to rawWrite itself", __FILE__, __LINE__);
    }
 
    /**Generic print function*/
@@ -72,7 +72,7 @@ public:
    /**Generic read function*/
    virtual void readFrom(istream &in=cin)
    {
-      throw GeneralException("Trying to read undefined Object", __FILE__, __LINE__);
+      throw new GeneralException("Trying to read undefined Object", __FILE__, __LINE__);
    }
 
    /**Prints the object to a stream*/

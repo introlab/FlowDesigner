@@ -96,10 +96,10 @@ public:
          //return ObjectRef(new Object(Object::nil));
       }
       else 
-         throw NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
+         throw new NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
    }
 protected:
    /**Default constructor, should not be used*/
-   FDSaveFrame() {throw GeneralException("FDSaveFrame copy constructor should not be called",__FILE__,__LINE__);}
+   FDSaveFrame() {throw new GeneralException("FDSaveFrame copy constructor should not be called",__FILE__,__LINE__);}
 
 };

@@ -117,13 +117,13 @@ public:
 	 IFStream &tmp = object_cast<IFStream> (openedFile);
 	 tmp.open(fileName.c_str());*/
       }
-      else throw NodeException (this, "ExecStream: Unknown output id", __FILE__, __LINE__);
+      else throw new NodeException (this, "ExecStream: Unknown output id", __FILE__, __LINE__);
       
       
    }
 
 protected:
    /**Default constructor, should not be used*/
-   ExecStream() {throw GeneralException("ExecStream copy constructor should not be called",__FILE__,__LINE__);}
+   ExecStream() {throw new GeneralException("ExecStream copy constructor should not be called",__FILE__,__LINE__);}
 
 };

@@ -120,9 +120,9 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
             processCount = count;
          return outBuffer[count];
       }
-   } catch (BaseException &e)
+   } catch (BaseException *e)
    {
-      e.print();
-      throw NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__);
+      e->print();
+      throw new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__);
    }
 }

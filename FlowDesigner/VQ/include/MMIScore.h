@@ -54,7 +54,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   MMIScore() {throw GeneralException("MMIScore copy constructor should not be called",__FILE__,__LINE__);}
+   MMIScore() {throw new GeneralException("MMIScore copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 

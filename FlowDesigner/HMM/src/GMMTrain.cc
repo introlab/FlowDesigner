@@ -80,5 +80,5 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
       return unlock_and_return(currentGMM);
    }
    else 
-      throw NodeException (this, "GMMTrain: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "GMMTrain: Unknown output id", __FILE__, __LINE__);
 }

@@ -108,7 +108,7 @@ public:
    LoadedLibrary(const string &path) 
       : lib(_DL_OPEN(path))
       , count(1)
-   {if (!lib) throw GeneralException(string("couldn't load library ")+path,__FILE__,__LINE__);}
+   {if (!lib) throw new GeneralException(string("couldn't load library ")+path,__FILE__,__LINE__);}
    
    /**returns a pointer to the function named 'symbol'*/
    void *get_proc (string symbol) 

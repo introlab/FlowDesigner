@@ -44,11 +44,47 @@ public:
    ///Destructor
    virtual ~BaseException(){;}
 
+   virtual BaseException *add(BaseException *e);
+
 };
 
 class GenericCastException : public BaseException{
 public:
    virtual void print(ostream &out = cerr)=0;
 };
+
+#include <vector>
+
+/***************************************************************************/
+/*
+  ExceptionStack
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+class ExceptionStack : public BaseException {
+  protected:
+   vector<BaseException *> stack;
+public:
+   ExceptionStack() {};
+   
+   BaseException *add(BaseException *e)
+      {
+	 stack.insert(stack.end(), e);
+	 return this;
+      }
+   
+   virtual ~ExceptionStack() 
+      {for (int i=0;i<stack.size();i++) delete stack[i];}
+   ///The print method that prints on stderr by default
+   virtual void print(ostream &out = cerr) {
+      for (int i=0;i<stack.size();i++)
+	 stack[i]->print(out);
+   }
+};
+
+inline BaseException *BaseException::add(BaseException *e)
+{
+   return (new ExceptionStack)->add(e);
+}
 
 #endif

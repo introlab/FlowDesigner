@@ -154,7 +154,7 @@ public:
       else if (enc == "LIN16")
 	 encoding = lin16;
       else 
-	 throw NodeException(this, string("Invalid encoding: ") + enc,__FILE__, __LINE__);
+	 throw new NodeException(this, string("Invalid encoding: ") + enc,__FILE__, __LINE__);
       itemSize = encoding == lin16 ? 2 : 1;
       tmpBuffer = new char [itemSize*advance];
    }
@@ -249,7 +249,7 @@ public:
          out[i]=(float) (((unsigned char *)in)[i]);
       break;
    default:
-      throw NodeException(this, "Unimplemented encoding type",__FILE__, __LINE__);
+      throw new NodeException(this, "Unimplemented encoding type",__FILE__, __LINE__);
    }
 }
 };

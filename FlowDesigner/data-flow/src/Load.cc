@@ -56,7 +56,7 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   Load() {throw GeneralException("Load copy constructor should not be called",__FILE__,__LINE__);}
+   Load() {throw new GeneralException("Load copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 
@@ -91,7 +91,7 @@ inline ObjectRef Load::getOutput(int output_id, int count)
       return currentObject;
    }
    else 
-      throw NodeException (this, "Load: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "Load: Unknown output id", __FILE__, __LINE__);
 }
 
 

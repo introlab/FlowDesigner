@@ -22,7 +22,7 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
     cout<<"ThreadedIterator constructor..."<<endl;
     
     if (rate_per_second <=0 ) {
-      throw NodeException (this, "RATE_PER_SECOND IN THREADED ITERATOR MUST BE GREATER THAN ZERO.",__FILE__,__LINE__);
+      throw new NodeException (this, "RATE_PER_SECOND IN THREADED ITERATOR MUST BE GREATER THAN ZERO.",__FILE__,__LINE__);
     }
     
     
@@ -30,16 +30,16 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
     
 
   }
-  catch (GenericCastException &e) {
+  catch (GenericCastException *e) {
     //We had a problem casting, our inputs are invalid?
-    e.print();
+    e->print();
     output = ObjectRef(new Object(Object::nil)); 
-    throw NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__);
+    throw new NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__);
   }      
-  catch (BaseException &e) {
+  catch (BaseException *e) {
     //Something weird happened
-    e.print();
-    throw NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__);
+    e->print();
+    throw new NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__);
   }
   
   
@@ -47,7 +47,7 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
 
 ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
    
-   if (!hasOutput(output_id)) throw NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
+   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
    if (thread_status == ThreadedIterator::STATUS_STOPPED) {
      //We must start the thread
@@ -71,15 +71,15 @@ ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
 	output = sinkNode->getOutput(output_id,internal_pc);
        
       }
-      catch (GenericCastException &e) {
+      catch (GenericCastException *e) {
          //We had a problem casting, our inputs are invalid?
-         e.print();
+         e->print();
          output = ObjectRef(new Object(Object::nil));         
       }      
-      catch (BaseException &e) {
+      catch (BaseException *e) {
          //Something weird happened
-         e.print();
-         throw NodeException (this,string("Error in ThreadedIterator::getOutput"), __FILE__,__LINE__);
+         e->print();
+         throw new NodeException (this,string("Error in ThreadedIterator::getOutput"), __FILE__,__LINE__);
       }
       processCount = count;
    }
@@ -143,7 +143,7 @@ void ThreadedIterator::specificInitialize() {
 void * workloop (void *param) {
   
   if (param == NULL) {
-    throw NodeException (NULL,string("Error in ThreadedIterator::getOutput workloop: NULL param."), __FILE__,__LINE__);
+    throw new NodeException (NULL,string("Error in ThreadedIterator::getOutput workloop: NULL param."), __FILE__,__LINE__);
   }
 
   ThreadedIterator *ptr = (ThreadedIterator *) param;
@@ -174,15 +174,15 @@ void * workloop (void *param) {
       ptr->internal_pc++;
     
     }
-    catch (GenericCastException &e) {
+    catch (GenericCastException *e) {
       //We had a problem casting, our inputs are invalid?
-      e.print();
-      throw NodeException (ptr,string("Error in ThreadedIterator::getOutput workloop"), __FILE__,__LINE__);
+      e->print();
+      throw new NodeException (ptr,string("Error in ThreadedIterator::getOutput workloop"), __FILE__,__LINE__);
     }      
-    catch (BaseException &e) {
+    catch (BaseException *e) {
       //Something weird happened
-      e.print();
-      throw NodeException (ptr,string("Error in ThreadedIterator::getOutput workloop"), __FILE__,__LINE__);
+      e->print();
+      throw new NodeException (ptr,string("Error in ThreadedIterator::getOutput workloop"), __FILE__,__LINE__);
     }
 
 
