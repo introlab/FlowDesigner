@@ -15,40 +15,40 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
 
 class Mel;
 
-//DECLARE_NODE(Mel)
 NODE_INFO(Mel, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:SAMPLING:LOW:HIGH")
 
-class Mel : public FrameOperation {
+class Mel : public BufferedNode {
    
    int inputID;
+   int outputID;
    int inputLength;
+   int outputLength;
    vector<vector<float> > filters;
    vector<int> filterStart;
 
 public:
    Mel(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
-      , filters(outputLength)
-      , filterStart(outputLength)
+      : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
+      outputID = addOutput("OUTPUT");
+      inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
 
-   ~Mel() {}
+      filters.resize(outputLength);
+      filterStart.resize(outputLength);
+   }
 
    virtual void specificInitialize()
    {
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
 
       float niquist = dereference_cast<int> (parameters.get("SAMPLING")) / 2.0;
       float high = dereference_cast<int> (parameters.get("HIGH"));
@@ -82,16 +82,18 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
       
       int i;
       int nbFilters = filters.size();
@@ -107,7 +109,6 @@ public:
          }
       }
       
-      output.status = Object::valid;
    }
 
 };
