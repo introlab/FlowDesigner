@@ -525,8 +525,7 @@ void GUINode::initialize_widgets() {
 
   //creating node XPM representation
   if (Node::getXPM(getType()) != NULL) {
-    cerr<<"drawing XPM"<<endl;
-    
+  
     GdkPixbuf *pixbuf;
     GnomeCanvasItem *pixbuf_item;
     
@@ -535,20 +534,15 @@ void GUINode::initialize_widgets() {
     g_assert (pixbuf != NULL);
     
     pixbuf_item = gnome_canvas_item_new (group,
-				  gnome_canvas_pixbuf_get_type(),
-				  "pixbuf", pixbuf,
-				  NULL);
-
+					 gnome_canvas_pixbuf_get_type(),
+					 "pixbuf", pixbuf,
+					 "anchor", GTK_ANCHOR_CENTER,
+					 NULL);
+    
     gnome_canvas_item_lower_to_bottom(pixbuf_item);
 
     gdk_pixbuf_unref (pixbuf);
   }
-  else {
-    cerr<<"not drawing XPM"<<endl;
-  }
-  
-
-
 
    guint32 col = FlowPref::getColor("VFLOW", "RegularColor");
  
