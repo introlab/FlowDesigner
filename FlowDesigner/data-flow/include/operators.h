@@ -44,3 +44,16 @@ inline ObjectRef operator/(ObjectRef x, ObjectRef y)
    return divVtable::perform(x,y);
 }
 
+DEFINE_DOUBLE_VTABLE(smallerVtable);
+
+inline ObjectRef operator<(ObjectRef x, ObjectRef y)
+{
+  return smallerVtable::perform(x,y);
+}
+
+inline ObjectRef operator>(ObjectRef x, ObjectRef y)
+{
+  return smallerVtable::perform(y,x);
+}
+
+

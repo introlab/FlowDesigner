@@ -43,6 +43,13 @@ ObjectRef divFloatFloat(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divFloatFloat, Float, Float);
 
+ObjectRef smallerFloatFloat(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Bool(dereference_cast<float> (x) < (dereference_cast<float> (y))));
+}
+REGISTER_DOUBLE_VTABLE(smallerVtable, smallerFloatFloat, Float, Float);
+
+
 
 //Operators for Int and Int
 ObjectRef addIntInt(ObjectRef x, ObjectRef y)
@@ -68,6 +75,12 @@ ObjectRef divIntInt(ObjectRef x, ObjectRef y)
    return ObjectRef(new Int(dereference_cast<int> (x) / (dereference_cast<int> (y))));
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divIntInt, Int, Int);
+
+ObjectRef smallerIntInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Bool(dereference_cast<int> (x) < (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntInt, Int, Int);
 
 
 //Operators for Int and Float
@@ -95,6 +108,12 @@ ObjectRef divIntFloat(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divIntFloat, Int, Float);
 
+ObjectRef smallerIntFloat(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Bool(dereference_cast<int> (x) < (dereference_cast<float> (y))));
+}
+REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntFloat, Int, Float);
+
 
 
 //Operators for Float and Int
@@ -121,3 +140,99 @@ ObjectRef divFloatInt(ObjectRef x, ObjectRef y)
    return ObjectRef(new Float(dereference_cast<float> (x) / (dereference_cast<int> (y))));
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divFloatInt, Float, Int);
+
+ObjectRef smallerFloatInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Bool(dereference_cast<float> (x) < (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(smallerVtable, smallerFloatInt, Float, Int);
+
+
+
+/**
+New type addition
+Dominic Letourneau
+05/03/2001
+**/
+
+/*
+
+//Operators for Short and Short
+ObjectRef addShortShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Short(dereference_cast<short> (x) + (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addShortShort, Short, Short);
+
+ObjectRef mulShortShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Short(dereference_cast<short> (x) * (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulShortShort, Short, Short);
+
+ObjectRef subShortShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Short(dereference_cast<short> (x) - (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(subVtable, subShortShort, Short, Short);
+
+ObjectRef divShortShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Short(dereference_cast<short> (x) / (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(divVtable, divShortShort, Short, Short);
+
+
+
+//Operators for Short and Int
+ObjectRef addShortInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<short> (x) + (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addShortInt, Short, Int);
+
+ObjectRef mulShortInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<short> (x) * (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulShortInt, Short, Int);
+
+ObjectRef subShortInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<short> (x) - (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(subVtable, subShortInt, Short, Int);
+
+ObjectRef divShortInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<short> (x) / (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(divVtable, divShortInt, Short, Int);
+
+
+//Operators for Int and Short
+ObjectRef addIntShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<int> (x) + (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addIntShort, Int, Short);
+
+ObjectRef mulIntShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<int> (x) * (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulIntShort, Int, Short);
+
+ObjectRef subIntShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<int> (x) - (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(subVtable, subIntShort, Int, Short);
+
+ObjectRef divIntShort(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Int(dereference_cast<int> (x) / (dereference_cast<short> (y))));
+}
+REGISTER_DOUBLE_VTABLE(divVtable, divIntShort, Int, Short);
+
+*/
