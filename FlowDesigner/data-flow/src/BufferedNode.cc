@@ -101,24 +101,23 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
 	    calculate (output_id, i, outBuffer);
          if (count > processCount)
             processCount = count;
-	 return outBuffer[count];
+	 return outBuffer.get(count);
       } else {
 	 if (count > outBuffer.getCurrentPos())
 	 {
 	    calculate (output_id, count, outBuffer);
-	    return outBuffer[count];
+	    //return outBuffer[count];
+	    return outBuffer.get(count);
 	 } else {
-	    ObjectRef value = outBuffer[count];
-	    if (value->status == Object::valid)
+	    if (!outBuffer.isValid(count))
 	    {
-	       return value;
-	    } else {
 	       calculate (output_id, count, outBuffer);
-	       return outBuffer[count];
 	    }
+	    return outBuffer.get(count);
+	    
 	 }
       }
-
+      
    } catch (BaseException *e)
    {
       //e->print();

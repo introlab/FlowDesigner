@@ -14,10 +14,12 @@
    This buffer keeps the last N lines (frames) it has*/
 class Buffer : public Object {
 protected:
-   ///Pointer to raw float
-   mutable vector<ObjectRef> data ;
+   /**Pointers to objects*/
+   mutable vector<ObjectRef> data;
 
-   ///The number N of lines kept
+   mutable vector<int> flags;
+
+   /**The number N of objects kept*/
    int bufferLength ;
 
    mutable int bufferPos;
@@ -26,27 +28,36 @@ protected:
 
 
 public:
-   ///Constructor, requires the vector length (vLength) and the buffer length (bLength)
+   /**Constructor, requires the buffer length (bLength)*/
    Buffer(int bLength)
       : data(bLength)
       , bufferLength (bLength)
+      , flags(bLength,0)
    {
-      for (int i=0;i<bLength;i++) 
-         data[i]=Object::nilObject;
+      //for (int i=0;i<bLength;i++) 
+      //   data[i]=Object::nilObject;
 
       bufferPos=-1;
       currentPos = -1;
    }
 
-   ///Copy constructor (not implemented, do we need one?)
+   /**Copy constructor (not implemented, do we need one?)*/
    Buffer(const Buffer&);
 
-   ///Indexing operator, also sets the indexed frame as being the current frame
-   ObjectRef operator[] (int ind) const;
+   /**Indexing operator, read-only*/
+   inline ObjectRef &get(int ind) const;
+
+   /**Indexing operator, also sets the indexed frame as being the current frame*/
+   inline ObjectRef &operator[] (int ind);
    
-   ///Indexing operator, also sets the indexed frame as being the current frame
-   ObjectRef & operator[] (int ind) ;
-   
+   int isValid(int ind) const
+   {
+      int tmp = bufferPos+ind-currentPos;
+      if (tmp < 0)
+	 tmp += bufferLength;
+      return flags[tmp];
+   }
+
    ///Print
    void printOn(ostream &out = cout) const;
 
@@ -97,57 +108,34 @@ inline ObjectRef & Buffer::operator[] (int ind)
 	 bufferPos++;
 	 if (bufferPos == bufferLength)
 	    bufferPos=0;
-	 data[bufferPos] = Object::nilObject;
+	 //data[bufferPos] = Object::nilObject;
+	 flags[bufferPos] = 0;
       }
       currentPos = ind;
+      flags[bufferPos] = 1;
       return data[bufferPos];
    }
    
    int tmp = bufferPos+ind-currentPos;
    if (tmp < 0)
       tmp += bufferLength;
+   flags[tmp] = 1;
    return data[tmp];
-
-
-   /*if (ind > currentPos)
-   {
-      for (int i=currentPos+1;i<=ind;i++)
-         data[ind % bufferLength] = Object::nilObject;
-      currentPos = ind;
-   }
-   if (ind < 0 || ind <= currentPos-bufferLength)
-   {
-      throw new BufferException (this, "trying to access non-existing element",ind);
-   }
-   return data[ind % bufferLength];
-   */
 }
 
-inline ObjectRef Buffer::operator[] (int ind) const
+inline ObjectRef &Buffer::get(int ind) const
 {
    if (ind < 0 || ind <= currentPos-bufferLength || ind > currentPos)
    {
       throw new BufferException (this, "trying to access non-existing element",ind);
    }
-   
    int tmp = bufferPos+ind-currentPos;
    if (tmp < 0)
       tmp += bufferLength;
-   return data[tmp];
-
-
-   /*if (ind > currentPos)
-   {
-      for (int i=currentPos+1;i<=ind;i++)
-         data[ind % bufferLength] = Object::nilObject;
-      currentPos = ind;
-   }
-   if (ind < 0 || ind <= currentPos-bufferLength)
-   {
+   if (flags[tmp])
+      return data[tmp];
+   else 
       throw new BufferException (this, "trying to access non-existing element",ind);
-   }
-   return data[ind % bufferLength];
-   */
 }
 
 
@@ -158,16 +146,17 @@ inline void Buffer::printOn(ostream &out) const
    out << "<Buffer" << endl;
    for (i=max(0,currentPos-bufferLength+1);i<=currentPos;i++)
    {
-      out << "< " << i << " < ";
-      out << *((*this)[i]);
-      out << " > > ";
-      out << endl;
+      out << "< " << i << " ";
+      if (isValid(i))
+	 out << get(i);
+      else
+	 out << "nil";
    }
-   out << " > " << endl;
+   out << " >" << endl;
 }
 
 
-inline Buffer::Buffer(const Buffer&) 
+inline Buffer::Buffer(const Buffer&)
 {throw new BufferException(NULL,"use an ObjectRef instead",0);}
 
 #endif
