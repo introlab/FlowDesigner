@@ -17,7 +17,7 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
    int nbWeights = 0;
 
    const float *weights = net->getWeights();
-   const Vector<FFLayer *> &layers=net->getLayers();
+   const Vector<RCPtr<FFLayer> > &layers=net->getLayers();
    const Vector<int> &topo = net->getTopo();
 
 
@@ -164,7 +164,7 @@ void TrainingSCG::train(FFNet *net, vector<float *> tin, vector<float *> tout, i
    int nbWeights = 0;
 
    const float *weights = net->getWeights();
-   const Vector<FFLayer *> &layers=net->getLayers();
+   const Vector<RCPtr<FFLayer> > &layers=net->getLayers();
    const Vector<int> &topo = net->getTopo();
 
    for (i=0;i<layers.size();i++)
@@ -308,14 +308,14 @@ void TrainingQProp::train(FFNet *net, vector<float *> tin, vector<float *> tout,
    int nbWeights = 0;
 
    const float *weights = net->getWeights();
-   const Vector<FFLayer *> &layers=net->getLayers();
+   const Vector<RCPtr<FFLayer> > &layers=net->getLayers();
    const Vector<int> &topo = net->getTopo();
 
    for (i=0;i<layers.size();i++)
    {
       nbWeights += layers[i]->getNbWeights();
    }
-   cerr << "WARNING: This implementation of Quickprop doesn't work ywt!" << endl;
+   cerr << "WARNING: This implementation of Quickprop doesn't work yet!" << endl;
    cerr << "found " << nbWeights << " weights\n";
 
    //Array<float> alpha(nbWeights);
@@ -397,7 +397,7 @@ void TrainingWeightDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<
    int nbWeights = 0;
 
    const float *weights = net->getWeights();
-   const Vector<FFLayer *> &layers=net->getLayers();
+   const Vector<RCPtr<FFLayer> > &layers=net->getLayers();
    const Vector<int> &topo = net->getTopo();
 
 

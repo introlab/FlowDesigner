@@ -23,7 +23,7 @@ class FFNet : public Object {
    Vector<int> topo;
 
    /**Pointers to all MLP layers*/
-   Vector<FFLayer *> layers;
+   Vector<RCPtr<FFLayer> > layers;
 
    /**Complete weight vector*/
    float *weights;
@@ -90,7 +90,7 @@ class FFNet : public Object {
 
    const Vector<int> &getTopo() {return topo;}
 
-   const Vector<FFLayer *> &getLayers() {return layers;}
+   const Vector<RCPtr<FFLayer> > &getLayers() {return layers;}
 
    const float *getWeights() {return weights;}
 

@@ -162,7 +162,7 @@ void FFNet::learn(float *input, float *output, double *gradient, double *err, fl
    //start with the output layer, towards the input
    for (int k=outputLayer;k>=0;k--)
    {
-      FFLayer *currentLayer = layers[k];
+      FFLayer *currentLayer = &(*layers[k]);
       
       float *previousValue, *currentValue;
       if (k==0)
@@ -289,7 +289,7 @@ void FFNet::weightedLearn(float *input, float *output, float *learnWeights, doub
    //start with the output layer, towards the input
    for (int k=outputLayer;k>=0;k--)
    {
-      FFLayer *currentLayer = layers[k];
+      FFLayer *currentLayer = &(*layers[k]);
       
       float *previousValue, *currentValue;
       if (k==0)

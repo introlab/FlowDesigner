@@ -14,7 +14,7 @@ ostream &operator << (ostream &out, const NNetSet &cell);
 
 class NNetSet : public Object {
 protected:
-   vector<FFNet *> nets;
+   vector<RCPtr<FFNet> > nets;
    float *value;
 public:
    //NNetSet() 

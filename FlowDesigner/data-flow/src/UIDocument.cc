@@ -914,20 +914,6 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
       }
    } while (nbDepends != initial_files.size());
 
-   set<string> newDep;
-   set<string>::iterator file=initial_files.begin();
-   while (file != initial_files.end())
-   {
-      string fullPath = findExternal(*file, "VFLOW_SOURCE", false);
-      if (fullPath != "")
-      {
-	 newDep.insert(newDep.end(), fullPath);
-      } else {
-	 cerr << "file not found: " << *file << endl;
-      }
-      file++;
-   }
-   initial_files=newDep;
 }
 
 void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
