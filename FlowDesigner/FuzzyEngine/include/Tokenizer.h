@@ -1,4 +1,4 @@
-// Copyright (C) 2001 Dominic Letourneau (doumdi@yahoo.com)
+// Copyright (C) 2001 Luc Lussier
 
 #include <iterator.h>
 #include <vector>

@@ -1,4 +1,4 @@
-// Copyright (C) 2000 Dominic Letourneau (doumdi@yahoo.com)
+// Copyright (C) 2000 Dominic Letourneau (dominic.letourneau@courrier.usherb.ca)
 
 // FuzzySet.cc: implementation of the FuzzySet class.
 //
