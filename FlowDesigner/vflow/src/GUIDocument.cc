@@ -630,7 +630,7 @@ void GUIDocument::run()
    //cerr << "GUIDocument::run\n";
    
    pthread_cleanup_push(disposeFunct, NULL);
-   Network *net;
+   //Network *net;
    try{
       ParameterSet parameters;
       {
@@ -673,14 +673,22 @@ void GUIDocument::run()
       }
       cerr << "building net...\n";
       parameters.print();
-      net = build("MAIN", parameters);
+      runningNet = build("MAIN", parameters);
       //Ptr<Network> net(build("MAIN", parameters));
       cerr << "initializing...\n";
-      net->initialize();
+      runningNet->initialize();
       cerr << "running...\n";
-      runningNet=net;
-      cout << *net->getOutput(0,0) << endl;
-
+      
+      // Getting all the network outputs.
+      for (int k=0; ;k++) {
+	if (runningNet->hasOutput(k)) {
+	  cout << *runningNet->getOutput(k,0) << endl;
+	}
+	else {
+	  break;
+	}
+      }
+      
       //delete net;
       //ask for params and desired output
       
@@ -688,8 +696,9 @@ void GUIDocument::run()
    } catch (BaseException &e)
    {
       e.print();
-      delete net;
-      runningNet=NULL;
+      /* The net will be deleted in the dispose function. */
+      //delete net;
+      //runningNet=NULL;
    }
    
    pthread_cleanup_pop(1);
