@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "FFNet.h"
@@ -23,80 +23,90 @@ class NNetExecRecurrent;
 
 DECLARE_NODE(NNetExecRecurrent)
 /*Node
-
+ *
  * @name NNetExecRecurrent
  * @category NNet
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name NNET
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class NNetExecRecurrent : public FrameOperation {
+class NNetExecRecurrent : public BufferedNode {
    
    int inputID;
    int netInputID;
-   int inputLength;
    double *prev_output;
+   int outputID;
+   int outputLength;
 public:
    NNetExecRecurrent(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inOrder = true;
       inputID = addInput("INPUT");
       netInputID = addInput("NNET");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH")); 
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
+      prev_output=new double [outputLength];
    }
 
-   ~NNetExecRecurrent() {}
+   ~NNetExecRecurrent() 
+   {
+      delete [] prev_output;
+   }
 
    virtual void specificInitialize()
    {
-      prev_output=new double [outputLength];
       for (int i=0;i<outputLength;i++)
 	 prev_output[i]=0;
 
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
+   }
+
+   virtual void reset()
+   {
+      for (int i=0;i<outputLength;i++)
+	 prev_output[i]=0;
+
+      this->BufferedNode::reset();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      NodeInput netInput = inputs[netInputID];
-
-      ObjectRef netValue = netInput.node->getOutput(netInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      ObjectRef netValue = getInput(netInputID, count);
       if (netValue->status != Object::valid)
       {
-         output.status = netValue->status;
+	 out[count] = netValue;
          return;
       }
 
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
+
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
+
       FFNet &net = object_cast<FFNet> (netValue);
       
       //int classID = vq.getClassID(in.begin());
@@ -113,7 +123,6 @@ public:
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];
        
-      output.status = Object::valid;
    }
 
 };

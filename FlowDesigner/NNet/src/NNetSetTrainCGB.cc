@@ -18,7 +18,7 @@
 #include "Node.h"
 #include "ObjectRef.h"
 #include "NNetSet.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 
 class NNetSetTrainCGB;
 
@@ -151,9 +151,9 @@ public:
 	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
 
 	       cerr << "inputs calculated\n";
-	       Buffer &inBuff = object_cast<Buffer> (trainInValue);
-	       Buffer &outBuff = object_cast<Buffer> (trainOutValue);
-	       Buffer &idBuff = object_cast<Buffer> (trainIDValue);
+	       GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
+	       GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
+	       GrowingBuffer &idBuff = object_cast<GrowingBuffer> (trainIDValue);
 
 	       cerr << "inputs casted\n";
 	       vector <float *> in(inBuff.getCurrentPos());

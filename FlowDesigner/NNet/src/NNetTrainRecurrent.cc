@@ -18,7 +18,7 @@
 #include "Node.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 
 class NNetTrainRecurrent;
 
@@ -164,8 +164,8 @@ public:
 	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
 
 	       //cerr << "inputs calculated\n";
-	       Buffer &inBuff = object_cast<Buffer> (trainInValue);
-	       Buffer &outBuff = object_cast<Buffer> (trainOutValue);
+	       GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
+	       GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
 
 	       //cerr << "inputs converted\n";
 	       vector <float *> in(inBuff.getCurrentPos());
