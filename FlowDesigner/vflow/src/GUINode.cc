@@ -202,7 +202,12 @@ void GUINode::propertiesShow()
 void GUINode::help()
 {
    string fullPath = UIDocument::findExternal(type + ".cc", "VFLOW_SOURCE", false);
-   gnome_help_goto(NULL, const_cast<char *>(fullPath.c_str()));
+   if (fullPath == "")
+      fullPath = UIDocument::findExternal(type + ".cpp", "VFLOW_SOURCE", false);
+   if (fullPath == "")
+      cerr << "Node help not found\n";
+   else
+      gnome_help_goto(NULL, const_cast<char *>(fullPath.c_str()));
 }
 
 void GUINode::createPopup()
