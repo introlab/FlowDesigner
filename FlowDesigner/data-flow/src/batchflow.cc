@@ -27,6 +27,10 @@ int main(int argc, char **argv)
 	 char arg_name[100];
 	 sprintf (arg_name, "ARG%d", arg-1);
 	 param.add(arg_name, ObjectRef (new String (argv[arg])));
+	 sprintf (arg_name, "int:ARG%d", arg-1);
+	 param.add(arg_name, ObjectRef (Int::alloc (atoi(argv[arg]))));
+	 sprintf (arg_name, "float:ARG%d", arg-1);
+	 param.add(arg_name, ObjectRef (Float::alloc (atof(argv[arg]))));
       }
       UIDocument *doc = new UIDocument(argv[1]);
       doc->load();
