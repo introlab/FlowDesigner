@@ -343,7 +343,7 @@ class FFLayer : public Object {
       }
    int getNbWeights() {return nbNeurons*(nbInputs+1);}
    void init(double minmax);
-   void init(double *minmax);
+   void init(double *mean, double *std);
    void setBias(double *minmax);
    double *getValue() {return value;}
    double *getWeights(int i) {return weights + i*(nbInputs+1);}

@@ -20,20 +20,20 @@
 
 DECLARE_NODE(Save)
 /*Node
-
+ *
  * @name Save
  * @category IO
- * @description No description available
-
+ * @description Takes an object and saves it using a stream, returns the input object
+ *
  * @input_name OBJECT
- * @input_description No description available
-
+ * @input_description The object that will be saved
+ *
  * @input_name STREAM
- * @input_description No description available
-
+ * @input_description The output stream where to save
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_description The input object
+ *
 END*/
 
 

@@ -21,6 +21,8 @@ public:
    
    NNetSet (const NNetSet &) {cerr << "don't call the NNetSet copy constructor\n"; exit(1);}
 
+   NNetSet(int nbNets, const Vector<int> &topo, const vector<string> &functions, vector<int> id, vector<float *> &tin, vector<float *> &tout);
+   
    ~NNetSet() 
    {
    }

@@ -102,4 +102,13 @@ inline Vector<float> *Vector<float>::alloc(int size)
    return floatVectorPool.newVector(size);
 }
 
+template<class T>
+istream &operator >> (istream &in, Vector<T> &vec)
+{
+   if (!isValidType(in, "Vector")) return in;
+   vec.readFrom(in);
+   return in;
+}
+
+
 #endif
