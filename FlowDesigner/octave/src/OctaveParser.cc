@@ -4,6 +4,8 @@
 #include "BufferedNode.h"
 #include "octave/oct.h"
 #include "octave/parse.h"
+#include "octave/variables.h"
+#include "octave/sysdep.h"
 
 class OctaveParser;
 
@@ -44,6 +46,11 @@ public:
 
      //outputs
      m_outputID = addOutput("OUTPUT");
+
+     //init octave
+     sysdep_init();
+     initialize_symbol_tables();
+     
    }
 
    void calculate(int output_id, int count, Buffer &out) {
