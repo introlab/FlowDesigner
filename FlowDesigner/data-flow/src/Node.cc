@@ -298,7 +298,7 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
       }
    }
    else {
-      cerr << "The factory already exists. Ignoring the new one." << endl;
+      //cerr << "The factory (" << factoryName << ") already exists. Ignoring the new one." << endl;
    }
    return 0;
 };

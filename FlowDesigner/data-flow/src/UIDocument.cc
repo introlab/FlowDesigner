@@ -246,6 +246,8 @@ void UIDocument::load()
    {
       cerr << "load: error loading " << fullpath << "\n";
       xmlFreeDoc (doc);
+      addNetwork("MAIN", UINetwork::subnet);
+      resetModified();
       return;
    }
    xmlNodePtr root=doc->root;
