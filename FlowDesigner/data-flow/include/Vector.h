@@ -34,6 +34,16 @@ public:
       , capacity(0)
    {}
 
+   Vector(const Vector<T> &v)
+      : obj_size(v.obj_size)
+      , capacity(v.obj_size)
+   {
+      if (obj_size)
+	 data=(T*)new char [obj_size*sizeof(T)];
+      memcpy(data, v.data, obj_size*sizeof(T));
+   }
+
+
    explicit Vector(size_t n, const T &x = T())
       : data(NULL)
       , obj_size(0)
@@ -50,6 +60,27 @@ public:
 	 //free (data);
 	 data = NULL;
       }      
+   }
+
+   Vector<T> &operator=(const Vector<T> &v)
+   {
+      if (&v != this)
+      {
+	 if (data)
+	 {
+	    for (iterator i=begin();i!=end();i++)
+	       destr(i);
+	    delete[] (char *)(data);
+	    //free (data);
+	    data = NULL;
+	 }
+	 
+	 obj_size=v.obj_size;
+	 capacity=v.obj_size;
+	 if (obj_size)
+	    data=(T*)new char [obj_size*sizeof(T)];
+	 memcpy(data, v.data, obj_size*sizeof(T));
+      }
    }
 
    inline void resize(int new_size, const T &x = T());
