@@ -29,8 +29,8 @@
       INTEGER IDUMMY
       REAL ISUPPZ(2*N)
       INTEGER IWORK(10*N)
-      call SSYTRD('U', N, A, D, E, TAU, WORK, 18*N, INFO)
-c      call SSTEGR('V', 'A', N, D, E, FDUMMY, FDUMMY, IDUMMY, IDUMMY, 
-c      DLAMCH, IDUMMY, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
+      call SSYTRD('U', N, A, N, D, E, TAU, WORK, 18*N, INFO)
+      call SSTEGR('V', 'A', N, D, E, FDUMMY, FDUMMY, IDUMMY, IDUMMY, 
+     *DLAMCH, IDUMMY, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
       RETURN
       END

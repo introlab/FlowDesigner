@@ -65,5 +65,21 @@ inline T &dereference_cast (const ObjectRef &ref)
 }
 
 
+/**Does the object derive from T*/
+template <class T>
+inline bool &object_kind_of (const ObjectRef &ref)
+{
+   return dynamic_cast<T *>(&(*ref));
+}
+
+
+/**Is the object of type T (exact match)*/
+template <class T>
+inline bool &object_has_type (const ObjectRef &ref)
+{
+   return typeid(*ref) == typeid(T);
+}
+
+
 
 #endif
