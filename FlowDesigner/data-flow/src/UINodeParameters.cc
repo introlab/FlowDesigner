@@ -178,8 +178,6 @@ void UINodeParameters::insertNetParams(vector<ItemInfo *> &par)
 
       if (textParams[i]->value != "" && textParams[i]->type == "subnet_param") {
 
-
-
 	  bool alreadyPresent = false;
 	  for (unsigned int j=0;j<par.size();j++) {
 	    if (par[j]->name == textParams[i]->value) {
@@ -189,7 +187,20 @@ void UINodeParameters::insertNetParams(vector<ItemInfo *> &par)
 
 	  if (!alreadyPresent) {
 	    ItemInfo *newInfo = new ItemInfo;
+
+	    //Adding type & description information to subnet_params
+	    //(DL) 15/12/2003
+
+	    //Since it is a subnet_param, parameter name will appear as
+	    //the name entered in the value field
 	    newInfo->name = textParams[i]->value;
+
+	    //type should remain the same
+	    newInfo->type = textParams[i]->type;
+	    
+	    //description should remain the same
+	    newInfo->description = textParams[i]->description;
+	    
 	    par.insert(par.end(), newInfo);
 	  }
 	  // par.insert(par.end(), textParams[i]->value);
