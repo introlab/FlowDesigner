@@ -31,23 +31,27 @@ DECLARE_NODE(CMS)
  *
  * @input_name INPUT
  * @input_type Vector
- * @input_description Input frames
+ * @input_description Input frames (cepstrum)
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description CMS output frames
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Frame length (number of features)
  *
  * @parameter_name LOOKBACK
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description CMS window look-back (number of frames)
  *
  * @parameter_name LOOKAHEAD
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description CMS window look-ahead (number of frames)
  *
 END*/
 
-
+#define NEAR_ONE .99999
 
 class CMS : public BufferedNode {
 
@@ -57,10 +61,11 @@ class CMS : public BufferedNode {
 
    int lookAhead;
    int lookBack;
-   vector<float> mean;
+   vector<double> mean;
    float decrease;
    float norm;
    bool init;
+   int accumCount;
 
 public:
    CMS(string nodeName, ParameterSet params)
@@ -68,7 +73,7 @@ public:
       , init(false)
    {
       inputID = addInput("INPUT");
-      outputID = addInput("OUTPUT");
+      outputID = addOutput("OUTPUT");
       length = dereference_cast<int> (parameters.get("LENGTH"));
 
       inputsCache[inputID].lookBack=dereference_cast<int> (parameters.get("LOOKBACK"));
@@ -77,14 +82,20 @@ public:
       lookAhead = inputsCache[inputID].lookAhead;
       lookBack = inputsCache[inputID].lookBack;
 
-      norm = 1.0/(lookAhead+lookBack);
-      decrease = pow(.999,lookAhead+lookBack);
+      mean.resize(length);
+
+      //norm = 1.0/(lookAhead+lookBack);
+      norm = (1-pow(NEAR_ONE,lookAhead+lookBack+1))/(1-NEAR_ONE)/(lookAhead+lookBack+1);
+      //cerr << "norm = " << norm << endl;
+      decrease = pow(NEAR_ONE,lookAhead+lookBack);
+      inOrder = true;
    }
 
    virtual void specificInitialize()
    {
       for (int i=0;i<length;i++)
 	 mean[i]=0;
+      accumCount=0;
       BufferedNode::specificInitialize();
    }
 
@@ -92,6 +103,7 @@ public:
    {
       for (int i=0;i<length;i++)
 	 mean[i]=0;
+      accumCount = 0;
       init=false;
       BufferedNode::reset();
    }
@@ -118,6 +130,7 @@ public:
 	    if (nextInputValue->status == Object::valid)
 	    {
 	       Vector<float> &curr = object_cast<Vector<float> > (nextInputValue);
+	       accumCount++;
 	       for (int j=0;j<length;j++)
 		  mean[j] += curr[j];
 	    }
@@ -152,23 +165,26 @@ public:
       }
       
       for (int i=0;i<length;i++)
-         mean[i]*=.999;
+         mean[i]*=NEAR_ONE;
 
       if (can_look_back)
       {
+	       accumCount--;
 	 for (int i=0;i<length;i++)
 	    mean[i] -= decrease*(*past)[i];
       }
 
       if (can_look_ahead)
       {
+	       accumCount++;
 	 for (int i=0;i<length;i++)
 	    mean[i] += (*next)[i];
       }
 
-            
+      //cerr << mean[0] << " " << accumCount << endl;
+      float normalize = 1.0/accumCount/norm;
       for (int i=0;i<length;i++)
-         output[i] = in[i] - norm*mean[i];
+         output[i] = in[i] - normalize*mean[i];
 
    }
 
