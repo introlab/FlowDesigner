@@ -98,7 +98,6 @@ class FFLayer : public Object {
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    //tmp_weights[i]=weights[i];
 	    tmp_weights[i]=0;
 	 }
       }
@@ -106,13 +105,16 @@ class FFLayer : public Object {
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    //weights[i]=tmp_weights[i];
-	    momentum[i] = mom*momentum[i] + tmp_weights[i];
+	    momentum[i] = mom*momentum[i] + (1-mom)*tmp_weights[i];
 	    weights[i]+=momentum[i];
-	    //cerr << momentum[i] << " ";
-	    //weights[i]+=tmp_weights[i];
 	 }
-	 //cerr << endl;
+      }
+   void undo()
+      {
+	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	 {
+	    weights[i]-=momentum[i];
+	 }
       }
    void init(float minmax);
    float *getValue() {return value;}
