@@ -20,9 +20,9 @@ FlowPref::FlowPref()
    params["VFLOW"]["ShowTooltips"] = "yes";
    params["VFLOW"]["PrintOutput"]  = "yes";
    params["VFLOW"]["RunProcess"]   = "no";
-   params["VFLOW"]["RegularColor"] = "0x8cd0afff";
-   params["VFLOW"]["SelectedColor"]= "0xa8b2fcff";
-   params["VFLOW"]["ErrorColor"]   = "0xfc9595ff";
+   params["VFLOW"]["RegularColor"] = "0x8cd0af80";
+   params["VFLOW"]["SelectedColor"]= "0xa8b2fc80";
+   params["VFLOW"]["ErrorColor"]   = "0xfc959580";
    
    string filename = getenv("HOME");
    filename += "/.flowrc";

@@ -77,7 +77,7 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
 				"text", tooltext.str().c_str(),
 				"anchor", GTK_ANCHOR_SOUTH,
 				"fill_color", "black",
-				"font", "fixed",
+				"font", "sans 12",
 				NULL);
    
    gnome_canvas_item_get_bounds(tooltipText, &x1,&y1, &x2, &y2);

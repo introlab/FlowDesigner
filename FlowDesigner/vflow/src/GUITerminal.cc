@@ -60,7 +60,7 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
 				      "text", name.c_str(),
 				      "anchor", GTK_ANCHOR_WEST ,
 				      "fill_color", "blue",
-				      "font", "fixed",
+				      "font", "sans 13",
 				      NULL);
   
 
@@ -75,7 +75,7 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
 				      "text", name.c_str(),
 				      "anchor", GTK_ANCHOR_EAST ,
 				      "fill_color", "blue",
-				      "font", "fixed",
+				      "font", "sans 13",
 				      NULL);
 
 
