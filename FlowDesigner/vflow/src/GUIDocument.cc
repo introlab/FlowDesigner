@@ -307,6 +307,19 @@ void GUIDocument::renameCurrentNet()
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
+UINetwork* GUIDocument::getCurrentNet() {
+
+  int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+
+  if (netID == -1) {
+    return NULL;
+  }
+  else {
+    return networks[netID];
+  }
+
+}
+
 
 UINetwork *GUIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {

@@ -26,6 +26,8 @@ public:
 
    void moveSelectedNodes(double dx, double dy);
 
+   void clearSelectedNodes();
+
    bool isNodeSelected(GUINode *node);
 
    GUINetwork(UIDocument *_doc, string _name, Type _type);

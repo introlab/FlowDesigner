@@ -67,6 +67,9 @@ public:
 
    void renameCurrentNet ();
 
+   UINetwork* getCurrentNet();
+
+
    UINetwork *newNetwork(const string &_name, UINetwork::Type type);
 
    UINetwork *newNetwork(xmlNodePtr _net);

@@ -473,3 +473,13 @@ bool GUINetwork::isNodeSelected(GUINode *node) {
 
   return false;
 }
+
+void GUINetwork::clearSelectedNodes() {
+
+  while (!selectedNodes.empty()) {
+    GUINode *my_node = selectedNodes.front();
+    selectedNodes.pop_front();
+    delete my_node;
+  }
+
+}
