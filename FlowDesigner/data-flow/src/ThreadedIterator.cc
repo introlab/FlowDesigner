@@ -117,6 +117,8 @@ void ThreadedIterator::stop_thread() {
 
   iterator_lock();
 
+
+  cout<<"Setting the stop status"<<endl;
   thread_status = ThreadedIterator::STATUS_STOPPED;
 
   iterator_unlock();
@@ -125,8 +127,10 @@ void ThreadedIterator::stop_thread() {
 
   void **return_status;
 
+  cout<<"join"<<endl;
   pthread_join (work_thread,return_status);
 
+  cout<<"join successfull"<<endl;
 
 }
 
@@ -148,7 +152,6 @@ void * workloop (void *param) {
 
   while (1) {
 
-    cout<<"lock..."<<endl;
     ptr->iterator_lock();
   
     time_t begin =  time(NULL);
@@ -182,10 +185,12 @@ void * workloop (void *param) {
       throw NodeException (ptr,string("Error in ThreadedIterator::getOutput workloop"), __FILE__,__LINE__);
     }
 
-    cout<<"unlock"<<endl;
+
     ptr->iterator_unlock();
 
     time_t end = time(NULL);
+
+    //cout<<"got time : "<<end - begin <<endl;
 
     //period in ms
     int period = 1000 / ptr->rate_per_second;
