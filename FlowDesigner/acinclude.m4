@@ -294,7 +294,7 @@ AC_SUBST(GNOME_XML_INCLUDE)
 
 AC_PATH_FFTW
 
-if test "x$prefix" != "xDONE"; then
+if test "x$prefix" != "xNONE"; then
 AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${prefix}")
 AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${prefix}/lib/flowdesigner/toolbox")
 else
