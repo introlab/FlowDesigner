@@ -23,26 +23,26 @@ class FIR;
 
 DECLARE_NODE(FIR)
 /*Node
-
+ *
  * @name FIR
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name FILTER
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name CONTINUOUS
  * @parameter_description No description available
-
+ *
  * @parameter_name NONCAUSAL
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -160,7 +160,7 @@ public:
          for (int i=inputLength-noncausal;i<inputLength;i++)
          {
             int j, k;
-            for (j=i+noncausal-inputLength, k=0; j>= 0; j--, k++)
+            for (j=i+noncausal-inputLength, k=0; j>= 0 && k<size; j--, k++)
             {
                output[i]+=(*next)[j]*filter[k];
             }

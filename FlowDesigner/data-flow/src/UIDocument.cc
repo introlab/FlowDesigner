@@ -767,7 +767,7 @@ void UIDocument::run(ParameterSet &p)
       {
      if (!net->hasOutput(i)) 
         break;
-     cout << *net->getOutput(i,0);
+        *net->getOutput(i,0);
       }
    } 
    catch (BaseException &e) {

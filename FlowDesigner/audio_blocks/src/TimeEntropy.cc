@@ -100,7 +100,7 @@ public:
       }
       NodeInput input = inputs[inputID];
 
-      int i,j;
+      int i, j;
       int inputLength;
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
       {
@@ -120,13 +120,28 @@ public:
 
       for (i=0;i<numberFrames;i++)
          min[i]=FLT_MAX;
+      
+      /*float sx[inputLength];
+      float sx2[inputLength];
+      for (int i=0;i<inputLength;i++)
+	 sx[i]=sx2[i]=0;
+      */
+
       for (i=0;i<numberFrames;i++)
-            for (j=i+1;j<numberFrames;j++)
-            {
-               float tmp=dist(&(*frames[i])[0], &(*frames[j])[0], inputLength);
-               if (tmp < min[i]) min[i]=tmp;
-               if (tmp < min[j]) min[j]=tmp;
-            }
+      {
+	 /*for (j=0;j<inputLength;j++)
+	 {
+	    sx[j] += (*frames[i])[j];
+	    sx2[j] += (*frames[i])[j] * (*frames[i])[j];
+	 }
+	 */
+	 for (j=i+1;j<numberFrames;j++)
+	 {
+	    float tmp=dist(&(*frames[i])[0], &(*frames[j])[0], inputLength);
+	    if (tmp < min[i]) min[i]=tmp;
+	    if (tmp < min[j]) min[j]=tmp;
+	 }
+      }
       float accum=0;
       for (i=0;i<numberFrames;i++)
       {
@@ -136,6 +151,11 @@ public:
       output[0] = accum/numberFrames;
       //cerr << output[0] << endl;
 
+      /*float var=0;
+      for (j=0;j<inputLength;j++)
+	 var += sx2[j]-sx[j]*sx[j]/numberFrames;
+      output[1] = var/numberFrames/inputLength;
+      */
    }
 
 };
