@@ -15,11 +15,13 @@ class OFWrapper {
    Network *net;
    int count;
    IntfNode *intf;
+   bool withInput;
 public:
    OFWrapper(UIDocument *_doc);
    ~OFWrapper();
-   void init(const ParameterSet &params);
+   void init(const ParameterSet &params, bool withInput=false);
    ObjectRef process(ObjectRef in);
+   ObjectRef process();
 };
 
 

@@ -108,7 +108,7 @@ void *overflowNewNetwork(void *vdoc, char **argv)
    UIDocument *doc = ((UIDocument*)vdoc);
    try {
       OFWrapper *wrap = new OFWrapper(doc);
-      wrap->init(param);
+      wrap->init(param, true);
       void *ret = (void*)(wrap);
       return ret;
    } catch (BaseException *e) {

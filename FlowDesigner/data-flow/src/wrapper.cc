@@ -26,9 +26,9 @@ OFWrapper::~OFWrapper()
       delete intf;
 }
 
-void OFWrapper::init(const ParameterSet &params)
+void OFWrapper::init(const ParameterSet &params, bool _withInput)
 {
-   //net = doc->build("wrapper", params);
+   withInput = _withInput;
    if (!doc)
       throw new GeneralException("No Overflow document is opened", __FILE__, __LINE__);
    count=0;
@@ -39,8 +39,11 @@ void OFWrapper::init(const ParameterSet &params)
    try 
    {
       net = doc->getNetworkNamed("MAIN")->build("wrapper", params);
-      intf=new IntfNode("interface", ParameterSet());
-      net->connectToNode("INPUT", intf, "OUTPUT");
+      if (_withInput)
+      {
+	 intf=new IntfNode("interface", ParameterSet());
+	 net->connectToNode("INPUT", intf, "OUTPUT");
+      }
       net->verifyConnect();
       net->initialize();
    } catch (...)
@@ -58,7 +61,18 @@ ObjectRef OFWrapper::process(ObjectRef in)
 {
    if (!net)
       throw new GeneralException("Overflow wrapper is not initialized", __FILE__, __LINE__);
+   if (!withInput)
+      throw new GeneralException("You should not specify an input for processing", __FILE__, __LINE__);
    intf->setValue(count, in);
+   return net->getOutput(0,count++);
+}
+
+ObjectRef OFWrapper::process()
+{
+   if (!net)
+      throw new GeneralException("Overflow wrapper is not initialized", __FILE__, __LINE__);
+   if (withInput)
+      throw new GeneralException("You should specify an input for processing", __FILE__, __LINE__);
    return net->getOutput(0,count++);
 }
 
