@@ -2,6 +2,25 @@
 
 DECLARE_TYPE(NNetSet)
 
+NNetSet::NNetSet(int nbNets, const Vector<int> &topo, const vector<string> &functions, vector<int> id, vector<float *> &tin, vector<float *> &tout)
+{
+   nets.resize(32);
+
+   vector<vector <float *> > in(nbNets);
+   vector<vector <float *> > out(nbNets);
+   for (int i=0;i<tin.size();i++)
+   {
+      in[id[i]].insert(in[id[i]].end(), tin[i]);
+      out[id[i]].insert(out[id[i]].end(), tout[i]);
+   }
+   
+   for (int i=0;i<nbNets;i++)
+   {
+      nets[i] = new FFNet (topo, functions, in[i], out[i]);
+   }
+ 
+}
+
 double *NNetSet::calc(int id, const double *input)
 {
    //cerr << "calc for id " << id << endl;
