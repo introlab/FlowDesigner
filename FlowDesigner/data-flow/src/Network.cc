@@ -320,7 +320,7 @@ void Network::connectToNode(string in, Node *inNode, string out)
 {
    if (!inputNode) 
    {
-      throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
+      throw new NodeException(this,string("No input node in subnet :") + name, __FILE__,__LINE__);
    }
    connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
 }
