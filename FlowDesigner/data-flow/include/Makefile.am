@@ -64,7 +64,6 @@ noinst_HEADERS = \
 	NOT.h \
 	NetExec.h \
 	PathList.h \
-	OR.h \
 	Pack.h \
 	UnPack.h \
 	sstream.unused
