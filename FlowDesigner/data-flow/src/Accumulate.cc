@@ -10,11 +10,11 @@ DECLARE_NODE(Accumulate)
  *
  * @name Accumulate
  * @category General
- * @description Accumulation of frames into a buffer
+ * @description Accumulation of objects into a buffer, that is, a vector of Objects References. When the node is in the main network or in a sub-network, his input is packed in the vector only once. However while in iterators, his input is packed (added) in the vector at every iteration. As well, his other input "ACCUM" must be connected to a node: "NewAccumulator"(General).
  *
  * @input_name INPUT
  * @input_description Input object
- * @input_type Vector<float>
+ * @input_type any
  *
  * @input_name ACCUM
  * @input_description Accumulator where to put the input

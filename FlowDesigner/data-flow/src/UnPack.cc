@@ -9,7 +9,7 @@ DECLARE_NODE(UnPack)
  *
  * @name UnPack
  * @category Flow
- * @description Unpack data already packed
+ * @description Unpack data already packed. This node makes just the opposite of "Pack" and is often used with it.
  *
  * @input_name INPUT
  * @input_description The packed vector

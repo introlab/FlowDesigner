@@ -9,7 +9,7 @@ DECLARE_NODE(Action)
  *
  * @name Action
  * @category General
- * @description Pulls in order (BEFORE,INPUT,AFTER)
+ * @description Pulls in order the inputs: BEFORE, INPUT and AFTER. 
  *
  * @input_name INPUT
  * @input_description The input

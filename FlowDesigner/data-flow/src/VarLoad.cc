@@ -13,13 +13,13 @@ DECLARE_NODE(VarLoad)
  *
  * @name VarLoad
  * @category General
- * @description Load a variable
+ * @description Load a variable. The variable is pulled from a node of type: " VarStore "(General) which has the same given name. The node: " VarStore " can be declared in a different Overflow file, but must be declared before.
  *
  * @output_name OUTPUT
  * @output_description The variable value
  *
  * @parameter_name VARIABLE
- * @parameter_description The name of the variable
+ * @parameter_description The name of the variable t be loaded
  * @parameter_type string
  *
 END*/

@@ -9,10 +9,10 @@ DECLARE_NODE(Pack)
  *
  * @name Pack
  * @category Flow
- * @description Pack Data into a vector
+ * @description Pack Data into a vector of Objects references. When the node is in the main network or in a sub-network, his input is packed in the vector only once. However while in iterators, his input is packed (added) in the vector at every iteration.
  *
  * @input_name INPUT
- * @input_description Inputs to be packed (until processCount reached)
+ * @input_description Objects to be packed (until processCount reached)
  *
  * @output_name OUTPUT
  * @output_description A vector of ObjectRef(s)

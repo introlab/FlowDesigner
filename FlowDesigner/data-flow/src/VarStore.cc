@@ -13,7 +13,7 @@ DECLARE_NODE(VarStore)
  *
  * @name VarStore
  * @category General
- * @description Store a variable (named)
+ * @description Store a variable under a specified name. The variable may be used in other Overflow files by the node: " VarLoad "(General).
  *
  * @input_name INPUT
  * @input_description The value of the variable 

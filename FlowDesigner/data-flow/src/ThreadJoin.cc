@@ -10,7 +10,7 @@ DECLARE_NODE(ThreadJoin)
  *
  * @name ThreadJoin
  * @category Flow
- * @description Joining thread so there's no race at the input nodes
+ * @description Acts like a mutex and prevents two Overflow threads from accessing the same (input) node at the same time.
  *
  * @input_name INPUT
  * @input_description The input

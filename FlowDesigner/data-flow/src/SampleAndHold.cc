@@ -16,7 +16,7 @@ DECLARE_NODE(SampleAndHold)
  * @input_description The input x[count]
  *
  * @output_name OUTPUT
- * @output_description x[count - count%FACTOR]
+ * @output_description x[count - (count "modulo" FACTOR)]
  *
  * @parameter_name DOWNSAMPLING
  * @parameter_description The downsampling factor

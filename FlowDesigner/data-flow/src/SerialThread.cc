@@ -14,7 +14,7 @@ DECLARE_NODE(SerialThread)
  *
  * @name SerialThread
  * @category Flow
- * @description Pipeline threading
+ * @description Provides a pipeline-type multi-threading. A thread is started and computes inputs before the are needed by the output node.
  *
  * @input_name INPUT
  * @input_type any

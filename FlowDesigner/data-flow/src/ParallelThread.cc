@@ -15,7 +15,7 @@ DECLARE_NODE(ParallelThread)
  *
  * @name ParallelThread
  * @category Flow
- * @description Parallel threading
+ * @description Provides parallelism-type threading. When asked for an input, it computes both inputs at the same time and caches the other.
  *
  * @input_name INPUT1
  * @input_type any

@@ -9,7 +9,7 @@ DECLARE_NODE(IterWall)
  *
  * @name IterWall
  * @category Flow
- * @description Get the input object only once
+ * @description Get the input object only once, compute the result and always give the same output afterwards.
  *
  * @input_name INPUT
  * @input_description The input object

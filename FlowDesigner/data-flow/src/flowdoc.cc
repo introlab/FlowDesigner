@@ -7,8 +7,6 @@
 #include <vector>
 
 
-
-
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
    int nb;
@@ -18,8 +16,14 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
        << nodeName << " (" << info->category << ")</h3>\n";
    if (info->requireList.size())
       out << "<i>(require: " << info->requireList << ")</i><br>";
-   out << info->description
-       << "<br>&nbsp;\n"
+   out << info->description;
+
+   if(nodeName == "Constant")
+     out << "<br><br>For further explainations see Users Manual at section 6.3 \"Data Types\": "
+	 << "<a href=\"http://freespeech.sourceforge.net/doc/user-manual/node8.html#SECTION00830000000000000000\">Users Manual</a>";
+
+
+   out << "<br>&nbsp;\n"
        << "<table BORDER COLS=4 WIDTH=\"75%\" NOSAVE >\n"
        << "<tr>\n"
        << "<td WIDTH=\"10%\"></td>\n"
@@ -46,45 +50,65 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
 	    fieldInfoPtr = &info->params;
 	    break;
       }
+
+
       vector<ItemInfo *> &fieldInfo= *fieldInfoPtr;
-      out << "<tr NOSAVE>\n"
-	  << "<th WIDTH=\"10%\">" << fieldName << "</th>\n";
+
       nb = fieldInfo.size();
-      if (nb > 0)
+      if (nb == 1)
       {
-	 out << "<td WIDTH=\"15%\">";
-	 for (int i=0;i<nb;i++)
-	 {
-	    if (i>0)
-	       out << "<br>";
-	    out << fieldInfo[i]->name;
-	 }
-	 out << "</td>";
-	 
-	 out << "<td WIDTH=\"10%\">";
-	 for (int i=0;i<nb;i++)
-	 {
-	    if (i>0)
-	       out << "<br>";
-	    out << fieldInfo[i]->type;
-	 }
-	 out << "</td>";
-	 
-	 out << "<td WIDTH=\"40%\">";
-	 for (int i=0;i<nb;i++)
-	 {
-	    if (i>0)
-	       out << "<br>";
-	    out << fieldInfo[i]->description;
-	 }
-	 out << "</td>";
-      } else {
-	 out << "<td>none</td>";
+
+	out << "<tr NOSAVE>\n"
+	    << "<th WIDTH=\"10%\">" << fieldName << "</th>\n";
+
+	out << "<td WIDTH=\"15%\">";
+	out << fieldInfo[0]->name;
+	out << "</td>";
+  	 
+	out << "<td WIDTH=\"10%\">";
+	out << fieldInfo[0]->type;
+	out << "</td>";
+  	 
+	out << "<td WIDTH=\"40%\">";
+	out << fieldInfo[0]->description;
+	out << "</td>";
+      }
+      else if ( nb > 1 )
+	{
+
+	  for (int i=0;i<nb;i++)
+	    {
+	      if (i == 0)
+		{
+		  out << "<tr NOSAVE>\n"
+		      << "<th WIDTH=\"10%\" ROWSPAN=\"#" << nb << "\">" << fieldName << "</th>\n";
+		}
+	      
+	      out << "<td WIDTH=\"15%\">";
+	      out << fieldInfo[i]->name;
+	      out << "</td>";
+  	 
+	      out << "<td WIDTH=\"15%\">";
+	      out << fieldInfo[i]->type;
+	      out << "</td>";
+  	 
+	      out << "<td WIDTH=\"40%\">";
+	      out << fieldInfo[i]->description;
+	      out << "</td></tr>";
+	    }
+	}
+      else {
+	out << "<tr NOSAVE>\n"
+	    << "<th WIDTH=\"10%\">" << fieldName << "</th>\n";
+  	out << "<td>none</td>";
+  	out << "<td>none</td>";
+  	out << "<td>none</td>";
       }
       out << "</tr>\n";
    }
    
    out << "</table>\n";
+
 }
 
 
@@ -97,9 +121,7 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
 
 
 
-
-
-void categContent( string categName, ostream &out, UINodeRepository::iterator i )
+void categContent( string categName, string nextcateg, ostream &out, UINodeRepository::iterator i )
 {
 
 // Initialisation des variables
@@ -146,21 +168,63 @@ void categContent( string categName, ostream &out, UINodeRepository::iterator i 
 	 {
 	   out << "<tr><td>" <<"* " <<"<a href=\"#" << listnodes[k] << "\">" << listnodes[k] <<"</a></td>\n";
 	   
-	   out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k ] << "\">" << listnodes[(nbnodes / nbcol ) + k ] <<"</a></td>\n";
-	   
-	   out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(2 * nbnodes / nbcol ) + k + 1] <<"</a></td></tr>\n";
+	   if(listnodes[(nbnodes / nbcol ) + k ] != "")
+	     {
+	       out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k ] << "\">" << listnodes[(nbnodes / nbcol ) + k ] <<"</a></td>\n";
+	     }
+	   else
+	     out << "</tr>\n";
+
+	   if(listnodes[(2 * nbnodes / nbcol ) + k] != "")
+	     {
+	       out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k] << "\">" << listnodes[(2 * nbnodes / nbcol ) + k] <<"</a></td></tr>\n";
+	     }
+	   else
+	     out << "</tr>\n";
 	 }   
        break;
 
      case 1:
+
+       for(int k=0; k <= (nbnodes / nbcol); k++)
+	 {
+	   out << "<tr><td>" <<"* " <<"<a href=\"#" << listnodes[k] << "\">" << listnodes[k] <<"</a></td>\n";
+	   
+	   if(listnodes[(nbnodes / nbcol) + k + 1] != "")
+	     {
+	       out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(nbnodes / nbcol) + k + 1] <<"</a></td>\n";
+	     }
+	   else
+	     out<< "</tr>\n";
+
+	   if(listnodes[(2 * nbnodes / nbcol) + k + 2] != "")
+	     {
+	       out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k + 2] << "\">" << listnodes[(2 * nbnodes / nbcol) + k + 2] <<"</a></td></tr>\n";
+	     }
+	   else
+	     out << "</tr>\n";
+
+	 }
+       break;
+
      case 2:
        for(int k=0; k <= (nbnodes / nbcol); k++)
 	 {
 	   out << "<tr><td>" <<"* " <<"<a href=\"#" << listnodes[k] << "\">" << listnodes[k] <<"</a></td>\n";
 	   
-	   out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(nbnodes / nbcol) + k + 1] <<"</a></td>\n";
-	   
-	   out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(2 * nbnodes / nbcol) + k + 1] <<"</a></td></tr>\n";
+	   if(listnodes[(nbnodes / nbcol) + k + 1] != "")
+	     {
+	       out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(nbnodes / nbcol) + k + 1] <<"</a></td>\n";
+	     }
+	   else
+	     out << "</tr>\n";
+
+	   if( listnodes[(2 * nbnodes / nbcol) + k + 1] != "")
+	     {
+	       out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(2 * nbnodes / nbcol) + k + 1] <<"</a></td></tr>\n";
+	     }
+	   else
+	     out << "</tr>\n";
 	 }
        break;
 
@@ -168,7 +232,17 @@ void categContent( string categName, ostream &out, UINodeRepository::iterator i 
        out << "\nProblems occured while getting the data\n";
      }
 
-   out << "</table>\n<br><hr><br><br>";
+   out << "</table>\n ";
+
+   if(nextcateg != "")
+     {
+       out << "<br>See next category: "
+	   << "<a href=\"#" << nextcateg << "\">"
+	   << nextcateg << "</a><br>";
+     }
+   out << "<br>Return to: "
+       << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">"
+       << "Categories of available Overflow Nodes</a><br><br><hr><br><br>";
 
 
 // Affichage des informations sur les noeuds
@@ -189,6 +263,12 @@ void categContent( string categName, ostream &out, UINodeRepository::iterator i 
 		   << "<a href=\"#" << categName << "\">" 
 		   << categName <<"</a><br>";
 
+	       if(nextcateg != "")
+		 {
+		   out << "<br>See next category: "
+		       << "<a href=\"#" << nextcateg << "\">"
+		       << nextcateg << "</a><br>";
+		 }
 	       out << "<br>Return to: "
 		   << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">"
 		   << "Categories of available Overflow Nodes</a><br>";
@@ -196,17 +276,9 @@ void categContent( string categName, ostream &out, UINodeRepository::iterator i 
 	   i++;
 	 }
      }
-
-/////////////////////////////////////////////////////////////////////////////////
-//   out << "<br><br>Return to: "
-//       << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">" 
-//       << "Categories of available Overflow Nodes <\a>";
-
-//   out << "<br><br>Return to: "
-//       << "<a href=\"#" << categName << "\">" 
-//       << categName <<"<\a>";
-//////////////////////////////////////////////////////////////////////////////////
 }
+
+
 
 
 
@@ -299,6 +371,7 @@ int main(int argc, char **argv)
 // Affichage du tableau : categories de noeuds
 
    out << "<a NAME=\"" << "Categories of available Overflow Nodes" << "\"></a>"; 
+
    out << "<p><br><center><h1>" << "Categories of available Overflow Nodes"
        << "</h1>\n<br><br><br>";
    out << "<table BORDER COLS=2 WIDTH=\"40% \" NOSAVE >\n\n";
@@ -320,14 +393,14 @@ int main(int argc, char **argv)
 
 
    for(int a=0; a < nbcateg; a++)
-     categContent( listcateg[a], out, i);
+     categContent( listcateg[a], listcateg[a + 1], out, i);
 
    out << "\n</body>\n"
        << "</frameset>"
        << "</html>\n";
 }
 
-
+// ANCIENNE VERSION DU PROGRAMME (PARTIE MAIN)
 
 
 //int main(int argc, char **argv)

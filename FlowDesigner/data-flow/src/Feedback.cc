@@ -9,13 +9,13 @@ DECLARE_NODE(Feedback)
  *
  * @name Feedback
  * @category Flow
- * @description Feedback object with a delay of n iteration
+ * @description Feedback objects with a delay of n iterations.
  *
  * @input_name INPUT
  * @input_description The input object
  *
  * @input_name BEFORE
- * @input_description When count-delay < 0, pull (delay-count) from here
+ * @input_description When count < delay, pull the input from here
  *
  * @output_name OUTPUT
  * @output_description The output object = input object
@@ -28,7 +28,7 @@ DECLARE_NODE(Feedback)
  * @parameter_type int
  *
  * @parameter_name BEFORE_LIMIT
- * @parameter_description When (count-DELAY) is smaller or equal to BEFORE_LIMIT, input will be pulled from BEFORE with count (DELAY-count+BEFORE_LIMIT)
+ * @parameter_description When count - DELAY is smaller or equal to BEFORE_LIMIT, the input is pulled from BEFORE at (DELAY - count + BEFORE_LIMIT)
  * @parameter_type int
  *
 END*/

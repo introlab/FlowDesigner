@@ -14,7 +14,7 @@ DECLARE_NODE(NewAccumulator)
  *
  * @name NewAccumulator
  * @category General
- * @description Creates a new Accumulator (Vector<ObjectRef>)
+ * @description Creates a new Accumulator, that is a vector of Objects References. Accumulators are often used as the input "ACCUM" of the node "Accumulate".
  *
  * @output_name OUTPUT
  * @output_type Vector<ObjectRef>

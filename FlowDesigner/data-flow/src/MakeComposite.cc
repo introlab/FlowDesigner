@@ -10,10 +10,10 @@ DECLARE_NODE(MakeComposite)
  *
  * @name MakeComposite
  * @category General
- * @description Creates a composite object
+ * @description Creates a composite object. A composite object is somewhere like a structure in C++. Indeed, a composite object is a regrouping of inputs like a structure is a regrouping of variables. You can chose the name and the number of inputs that you want your node to containt. To add inputs in the node: double-click on it and click on the tab "Input/Outputs". Give a name to the input and press "Add". Repeat as long as you wish. Then, the node will regoup all of these inputs together in only one output (a composite object).
  *
  * @output_name OUTPUT
- * @output_description New composite object
+ * @output_description Create a new composite object. 
  *
 END*/
 

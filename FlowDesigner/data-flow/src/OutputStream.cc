@@ -52,7 +52,7 @@ public:
       inputID = addInput("INPUT");
       if (parameters.exist("TYPE"))
       {
-	 const String &strType = object_cast<String> (parameters.get("TYPE"));
+	 String strType = object_cast<String> (parameters.get("TYPE"));
 	 if (strType == "stream")
 	    type = cpp;
 	 else if (strType == "FILE")

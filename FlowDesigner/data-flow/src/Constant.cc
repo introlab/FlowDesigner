@@ -7,7 +7,7 @@ DECLARE_NODE(Constant)
  *
  * @name Constant
  * @category General
- * @description Defines a constant
+ * @description Defines a constant in terms of type and value. The different types are: int, float, bool, string, objects and subnet_param.
  *
  * @output_name VALUE
  * @output_description The value (parameter)
@@ -28,17 +28,17 @@ Constant::Constant(string nodeName, ParameterSet params)
 
 void Constant::initialize()
 {
-   value = parameters.get("VALUE");
-   this->Node::initialize();
+  value = parameters.get("VALUE");
+  this->Node::initialize();
 }
 
 void Constant::reset()
 {
-   this->Node::reset();
+  this->Node::reset();
 }
 
 ObjectRef Constant::getOutput(int output_id, int count)
 {
-   if (output_id==outputID) return value;
-   else throw new NodeException (this, "Constant: Unknown output id", __FILE__, __LINE__);
+  if (output_id==outputID) return value;
+  else throw new NodeException (this, "Constant: Unknown output id", __FILE__, __LINE__);
 }

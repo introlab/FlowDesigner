@@ -11,14 +11,14 @@ DECLARE_NODE(VMethod)
  *
  * @name VMethod
  * @category General
- * @description Applies a certain method on an object
+ * @description Applies a certain method on an object int or float. The name of the method to call can be: log, exp, sin or cos.
  *
  * @input_name INPUT
- * @input_type any
- * @input_description Object (this)
+ * @input_type int or float
+ * @input_description Object on wich the method will be applied
  *
  * @output_name OUTPUT
- * @output_type any
+ * @output_type int or float
  * @output_description Return value of the method
  *
  * @parameter_name METHOD

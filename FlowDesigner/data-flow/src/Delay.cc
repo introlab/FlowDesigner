@@ -10,7 +10,7 @@ DECLARE_NODE(Delay)
  *
  * @name Delay
  * @category Flow
- * @description Delay the input of DELAY iterations
+ * @description Delay the input of DELAY iterations. Therefore, it can only be used in iterators.
  *
  * @input_name INPUT
  * @input_description The input object

@@ -16,7 +16,7 @@ DECLARE_NODE(Recover)
  * @input_description Normal flow
  *
  * @input_name CATCH
- * @input_description Flow to follow is an error (exception) is caught
+ * @input_description Flow to follow if an error (exception) is caught
  *
  * @output_name OUTPUT
  * @output_description Flow output

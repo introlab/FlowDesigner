@@ -10,7 +10,7 @@ DECLARE_NODE(GetComposite)
  *
  * @name GetComposite
  * @category General
- * @description Creates a composite object
+ * @description Split up a composite object. This node makes just the opposite of the node "MakeComposite", that is, split up his compressed input (the composite object) into several outputs. However, the outputs must be added manually by by users. To add outputs to the node: double-click on it and click on the tab "Input/Outputs". Give a name to the output and press "Add". Repeat as long as you wish. Therefore, you can regroup inputs with "MakeComposite", send them in one output (the composite object) and get them back with "GetComposite". However, if you want to do so, inputs of "MakeComposite" and outputs of "GetComposite" must have corresponding names. 
  *
  * @input_name INPUT
  * @input_type CompositeType

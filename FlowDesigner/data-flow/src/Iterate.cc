@@ -9,14 +9,14 @@ DECLARE_NODE(Iterate)
 
  * @name Iterate
  * @category Flow
- * @description Specify the number of iteration to do (max)
+ * @description Specify the number of iteration to do (max). Therefore, it can only be used in iterators and the output must be set to COND (left click on the node output and hold the control).
 
  * @output_name OUTPUT
  * @output_description Return true if count < MAX_ITER
  * @output_type bool
 
  * @parameter_name MAX_ITER
- * @parameter_description No description available
+ * @parameter_description Number of iteration to do (max)
  * @parameter_type int
 
 END*/
