@@ -11,12 +11,17 @@
 
 
 class GRunContext {
+
+  friend gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context);
+
   protected:
    UIDocument *doc;
    ParameterSet &params;
    GtkWidget *win;
    GtkWidget *less;
    string less_text;
+   Network *net;
+
   public:
    GRunContext(UIDocument *_doc, ParameterSet &_params);
    

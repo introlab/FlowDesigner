@@ -6,18 +6,21 @@
 #include <sstream>
 #include "vflow_pref.h"
 
-gboolean delete_window      (GtkWidget *widget, GdkEvent *event, gpointer user_data)
-{
-   exit(0);
+gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
+
+  if (my_context->net) {
+    delete my_context->net;
+    my_context->net = NULL;
+  }
+  exit(0);
 }
 
 GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
-   : doc(_doc)
-   , params(_params)
+   : doc(_doc) , params(_params) , net(NULL)
 {
    //cerr << "opening...\n";
    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-   gtk_signal_connect (GTK_OBJECT (win), "delete-event", GTK_SIGNAL_FUNC(delete_window), NULL);
+   gtk_signal_connect (GTK_OBJECT (win), "delete-event", GTK_SIGNAL_FUNC(delete_window), this);
 
    gtk_window_set_title (GTK_WINDOW (win), _("GFlow"));
 	 
@@ -69,7 +72,7 @@ void GRunContext::run()
       gdk_threads_enter();
       less_print("Running network...");
       gdk_threads_leave();
-      Network *net = doc->build("MAIN", params);
+      net = doc->build("MAIN", params);
       if (net->getInputNode())
 	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       //cerr << "initializing...\n";
@@ -90,6 +93,7 @@ void GRunContext::run()
 	 }
       }
       delete net;
+      net = NULL;
       gdk_threads_enter();
       less_print("Network ended normally");
       gdk_threads_leave();
