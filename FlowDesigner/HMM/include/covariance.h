@@ -190,6 +190,7 @@ public:
 
    /**extractor operator*/
    friend istream &operator >> (istream &in, DiagonalCovariance &cov);
+   friend class GMM;
 }
 ;
 

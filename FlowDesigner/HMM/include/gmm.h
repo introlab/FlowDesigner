@@ -21,6 +21,8 @@
 #include "ObjectParser.h"
 #include "gaussian_set.h"
 
+#include "DiagGMM.h"
+
 class GMM;
 
 /**The result of scoring a frame against a GMM*/
@@ -162,6 +164,9 @@ public:
    void toIDsUsing (GaussianSet & gauss);
 
    void toPtrsUsing (const GaussianSet & gauss);
+
+   /**Creates a DiagGMM object from a GMM*/
+   DiagGMM *createDiagGMM();
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;

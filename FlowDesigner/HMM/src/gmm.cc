@@ -17,6 +17,7 @@
 #include <values.h>
 #include <typeinfo>
 #include <vector>
+#include "vec.h"
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>
@@ -176,6 +177,25 @@ void GMM::to_real()
       apriori[i]=log(apriori[i]/nb_frames_aligned);
       gaussians[i]->to_real();
    }
+
+
+   for (int j=0;j<nb_gaussians;j++)
+   {
+      Gaussian &gauss = *gaussians[j];
+      Covariance &_cov = *gauss.covariance;
+      DiagonalCovariance *cov = dynamic_cast<DiagonalCovariance*> (&_cov);
+      if (!cov)
+	 throw new GeneralException("Covariance not diagonal in GMM::createDiagGMM()", 
+				    __FILE__, __LINE__);
+      /* Covariance normalization 
+      float norm = 0;
+      for (int i=0;i<dimensions;i++)
+	 norm += .5*log((*cov).data[i]);
+      apriori[j] += norm;
+      */
+   }
+
+
    mode = real;
 }
 
@@ -260,6 +280,22 @@ Score GMM::score(float * fr) const
 
    for (int j=0;j<nb_gaussians;j++)
    {
+
+/* Covariance normalization 
+      Gaussian &gauss = *gaussians[j];
+      Covariance &_cov = *gauss.covariance;
+      DiagonalCovariance *cov = dynamic_cast<DiagonalCovariance*> (&_cov);
+      if (!cov)
+	 throw new GeneralException("Covariance not diagonal in GMM::createDiagGMM()", 
+				    __FILE__, __LINE__);
+      float norm = 0;
+      for (int i=0;i<dimensions;i++)
+	 norm += .5*log((*cov).data[i]);
+      float dist = gaussians[j]->mahalanobis(fr)-apriori[j]-norm;
+*/
+
+
+
       float dist = gaussians[j]->mahalanobis(fr)-apriori[j];
       //cerr << "apriori[j]: " << apriori[j] << endl;
       if (dist < min_dist)
@@ -295,6 +331,47 @@ void GMM::toPtrsUsing (const GaussianSet &gauss)
    for (int i=0;i<nb_gaussians;i++)
      gaussians[i]=gauss.getPtrFor(gaussianIDs[i]);
 }
+
+
+DiagGMM *GMM::createDiagGMM()
+{
+   DiagGMM *dg = new DiagGMM;
+   dg->dim = dimensions;
+   dg->nbGauss = nb_gaussians;
+   dg->augDim = (dimensions+4)&0xfffffff0;
+   int allocSize = 2 * dg->augDim * dg->nbGauss * sizeof(float)  +  CACHE_LINES;
+   //allocSize += dg->augDim * sizeof(float);
+   dg->ptr = new char [allocSize];
+   dg->base = (float *) (((unsigned long)(dg->ptr) + (CACHE_LINES-1))&CACHE_MASK);
+   float *ptr = dg->base;
+   for (int k=0;k<nb_gaussians;k++)
+   {
+      Gaussian &gauss = *gaussians[k];
+      Mean &mean = *gauss.mean;
+      Covariance &_cov = *gauss.covariance;
+      DiagonalCovariance *cov = dynamic_cast<DiagonalCovariance*> (&_cov);
+      if (!cov)
+	 throw new GeneralException("Covariance not diagonal in GMM::createDiagGMM()", 
+				    __FILE__, __LINE__);
+      for (int i=0;i<dimensions;i++)
+	 ptr[i] = mean[i];
+      for (int i=dimensions;i<dg->augDim;i++)
+	 ptr[i]=0;
+      ptr += dg->augDim;
+      float norm = 0;
+      for (int i=0;i<dimensions;i++)
+      {
+	 norm += .5*log((*cov).data[i]);
+	 ptr[i] = -(*cov).data[i];
+      }
+      ptr[dimensions] = apriori[k]+norm;
+      for (int i=dimensions+1;i<dg->augDim;i++)
+	 ptr[i]=0;
+      ptr += dg->augDim;
+   }
+   return dg;
+}
+
 
 void GMM::printOn(ostream &out) const
 {
