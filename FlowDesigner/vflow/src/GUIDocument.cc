@@ -588,6 +588,7 @@ void GUIDocument::threadRun()
    {
       isRunning=true;
       pthread_create(&runThread, NULL, (void * (*)(void *))threadFunct, this);
+      pthread_detach(runThread);
    }
 }
 
