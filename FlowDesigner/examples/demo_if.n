@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="IF" x="-80.000000" y="111.000000"/>
+    <Node name="node2" type="Constant" x="-252.000000" y="89.000000">
+      <Parameter name="VALUE" type="bool" value="true"/>
+    </Node>
+    <Node name="node3" type="Constant" x="-248.000000" y="174.000000">
+      <Parameter name="VALUE" type="string" value="It&apos;s false!"/>
+    </Node>
+    <Node name="node4" type="Constant" x="-247.000000" y="125.000000">
+      <Parameter name="VALUE" type="string" value="It&apos;s true"/>
+    </Node>
+    <Link from="node2" output="VALUE" to="node1" input="COND"/>
+    <Link from="node4" output="VALUE" to="node1" input="THEN"/>
+    <Link from="node3" output="VALUE" to="node1" input="ELSE"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>
