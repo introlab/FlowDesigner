@@ -64,7 +64,6 @@ public:
    
    /** The connectToNode method overloaded from Node */
    virtual void connectToNode(string in, Node *inNode, string out) {
-      cout<<"Iterator : Calling connectToNode"<<endl;
       if (!inputNode) {
          throw NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
       }

@@ -198,6 +198,7 @@ Score GMM::score(float * fr) const
    float min_dist = FLT_MAX ;
    int min_gauss = 0;
    Score frame_score;
+
    for (int j=0;j<nb_gaussians;j++)
    {
       float dist = gaussians[j]->mahalanobis(fr)-apriori[j];

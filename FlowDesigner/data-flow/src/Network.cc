@@ -38,6 +38,7 @@ void Network::initializeFactories() {
       Network::addFactory ("PATHLIST", new PathListFactory);
       Network::addFactory ("ISVALID", new IsValidFactory);
       Network::addFactory ("SUM", new NodeFactory<Sum>);
+      Network::addFactory ("VSUM", new NodeFactory<VSum>);
       Network::addFactory ("SAVE", new NodeFactory<Save>);
       Network::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
       Network::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
@@ -46,6 +47,9 @@ void Network::initializeFactories() {
       Network::addFactory ("OR",new NodeFactory<ORNode>);
       Network::addFactory ("AND" , new NodeFactory<ANDNode>);
       Network::addFactory ("NOT", new NodeFactory<NOTNode>);
+      Network::addFactory ("LIST", new NodeFactory<List>);
+      Network::addFactory ("PACK", new NodeFactory<Pack>);
+      Network::addFactory ("UNPACK", new NodeFactory<UnPack>);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;

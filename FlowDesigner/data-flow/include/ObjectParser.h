@@ -21,6 +21,12 @@
 #include <iostream.h>
 #include <vector>
 
+inline ostream &operator << (ostream &out, const ObjectRef &ref)
+{
+   out << *ref;
+   return out;
+}
+
 template <class T>
 inline ostream &operator << (ostream &out, const vector<T> &v)
 {
