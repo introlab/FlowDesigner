@@ -13,7 +13,7 @@ DECLARE_NODE(SolveLS)
  *
  * @name SolveLS
  * @category Matrix
- * @description Solves the A*x=b linear system
+ * @description Solves the min[(A*x-b)**2] least square system
  *
  * @input_name A
  * @input_description The A matrix
