@@ -183,7 +183,7 @@ GtkWidget *GUIDocument::createView()
 
   less_print("You can now use the GUIDocument::less_print (const char* message).");
   less_print("The next step is to redirect stdout into the gnome_less textbox.");
-  less_print("Dominic Letourneau (Jan 28 2000).");
+  less_print("Dominic Letourneau & Jean-Marc Valin (Jan 28 2000).");
   
 
 }
