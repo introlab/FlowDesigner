@@ -7,6 +7,11 @@
 #include "rc_ptrs.h"
 #include <strstream>
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
+
 //#include <gdk/gdk.h>
 
 //UIDocument *UIDocument::currentDocument;

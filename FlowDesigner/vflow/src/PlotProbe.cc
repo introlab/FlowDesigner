@@ -21,6 +21,10 @@
 #include <strstream>
 #include "Vector.h"
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 //DECLARE_NODE(Probe)
 NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW:SKIP")
 
