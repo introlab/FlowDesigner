@@ -87,10 +87,10 @@ public:
 
 #ifndef WIN32
 protected:
+#endif
    X* ptr;
    //size_type *count;
    
-#endif
 
 public:
    explicit RCPtr(X* p=0) : ptr(p)
