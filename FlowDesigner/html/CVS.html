@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+    
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+
+  <meta name="GENERATOR"
+ content="Mozilla/4.77 [fr] (X11; U; Linux 2.4.3-20mdk i686) [Netscape]">
+  <title></title>
+</head>
+  <body>
+
+<center>
+<h1>CVS ACCESS</h1>
+</center>
+<p>
+
+<a NAME="Modules"></a>
+<h4>Available CVS Modules</h4>
+
+<table border=0 width="100%">
+  <tr>
+    <td width="20%" bgcolor="#AABBCC"><div align="left">Module Name</div></td>
+    <td width="80%" bgcolor="#AABBCC"><div align=left>CVS Path</div></td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> FlowDesigner </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> Everything </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> FlowCore </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> (alias) &root &macros &data-flow &doc &html &vflow &tools &examples </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> data-flow </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/data-flow </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> audio_blocks </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/audio_blocks </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> VQ </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/VQ </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> HMM </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/HMM </div> </td>
+  </tr>
+    <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> NNet </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/NNet </div> </td>
+  </tr>
+    <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> doc </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/doc </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> html </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/html </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> macros </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/macros </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> vflow </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/vflow </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> examples </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/examples </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> root </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/ (root directory only) </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> FuzzyEngine </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/FuzzyEngine </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> effects </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/effects </div> </td>
+  </tr>
+
+</table>
+</p>
+<p>
+You can also download sources from the FlowDesigner CVS repository with the following commands : <br>
+
+<h6>Anonymous CVS Access</h6>
+
+FlowDesigner CVS repository can be checked out through anonymous (pserver) CVS with the following instruction set.
+The module you wish to check out must be specified as the modulename. When prompted for a password for anonymous,
+simply press the Enter key. To determine the names of the modules created by this project, please see the list of
+<a href="#Modules">available modules</a> from the following list.<br>
+<br>
+<b>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/flowdesigner login</b><br>
+<b>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/flowdesigner co <a href="#Modules">modulename</a></b><br>
+<br>
+NOTE: UNIX file and directory names are case sensitive. The path to the project CVSROOT must be specified using lowercase characters (i.e. /cvsroot/flowdesigner)
+<br>
+<br>
+
+<h6>Developer CVS Access via SSH</h6>
+
+Only project developers can access the CVS tree via this method. A SSH client must be installed on your client
+machine. Substitute <a href="#Modules">modulename</a> and developername with the proper values. Enter your site password when prompted.
+Developers may also make use of shared SSH keys for authentication.
+<br>
+<br>
+<b>export CVS_RSH=ssh</b><br>
+<b>cvs -z3 -d:ext:developername@cvs.sourceforge.net:/cvsroot/flowdesigner co <a href="#Modules">modulename</a></b><br>
+<br>
+<br>
+NOTE: UNIX file and directory names are case sensitive. The path to the project CVSROOT must be specified using lowercase characters (i.e. /cvsroot/flowdesigner)
+<br>
+<hr>
+<div align="Right">
+<br><i>$Date: 2004/01/18 19:48:51 $</i></div>
+</div>
+</p>
+</body>
+</html>
