@@ -245,25 +245,34 @@ REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<complex<double> >,Complex<
 
 
 #define REGISTER_ALL_MATRIX_VTABLE(table,function) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<int>,Matrix<int>,0) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<float>,Matrix<float>,1) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<double>,Matrix<double>,2) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Matrix<int>,Matrix<float>,3) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Matrix<float>,Matrix<float>,4) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Matrix<double>,Matrix<double>,5) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Matrix<int>,Matrix<double>,6) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Matrix<float>,Matrix<double>,7) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Matrix<double>,Matrix<double>,8) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<int>,Matrix<complex<float> >,9) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<float>,Matrix<complex<float> >,10) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<double>,Matrix<complex<double> >,11) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<int>,Matrix<complex<double> >,12) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<float>,Matrix<complex<double> >,13) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<double>,Matrix<complex<double> >,14) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<complex<float> >,Matrix<complex<float> >,15) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<complex<double> >,Matrix<complex<double> >,16) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<complex<float> >,Matrix<complex<double> >,17) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<complex<double> >,Matrix<complex<double> >,18)
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Int,Matrix<int>,0) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Int,Matrix<float>,1) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Int,Matrix<double>,2) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Int,Matrix<complex<float> >,3) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Int,Matrix<complex<double> >,4) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Float,Matrix<float>,5) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Float,Matrix<float>,6) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Float,Matrix<double>,7) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Float,Matrix<complex<float> >,8) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Float,Matrix<complex<double> >,9) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Double,Matrix<double>,10) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Double,Matrix<double>,11) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Double,Matrix<double>,12) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Double,Matrix<complex<double> >,13) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Double,Matrix<complex<double> >,14) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Complex<float>,Matrix<complex<float> >,15) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Complex<float>,Matrix<complex<float> >,16) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Complex<float>,Matrix<complex<double> >,17) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Complex<float>,Matrix<complex<float> >,18) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Complex<float>,Matrix<complex<double> >,19) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Complex<double>,Matrix<complex<double> >,20) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Complex<double>,Matrix<complex<double> >,21) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Complex<double>,Matrix<complex<double> >,22) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Complex<double>,Matrix<complex<double> >,23) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Complex<double>,Matrix<complex<double> >,24) 
+
+
+
 
 #define REGISTER_ALL_MATRIX_NO_COMPLEX_VTABLE(table,function) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<int>,Matrix<int>,0) \
