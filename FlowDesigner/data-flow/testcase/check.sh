@@ -1,43 +1,22 @@
 #!/bin/sh
 
-if batchflow factorial.n | grep -q '^<Int 120 >$';
-then
-echo factorial.n passed
-else
-echo factorial.n failed
-fi
-
-if batchflow exception.n | grep -q '^<Int 9 >$';
-then
-echo exception.n passed
-else
-echo exception.n failed
-fi
-
-if batchflow vect.n | grep -q '<Vector<ObjectRef> <String Hello World!> <Vector<float> 5 7 9 >  <Vector<float> 3 9 5 >  >';
-then
-echo vect.n passed
-else
-echo vect.n failed
-fi
-
-if batchflow saveload.n | grep -q '<Vector<ObjectRef> <String Hello World!> <Vector<float> 5 7 9 >  <Vector<float> 3 9 5 >  >';
-then
-echo saveload.n passed
-else
-echo saveload.n failed
-fi
-
-if batchflow serial.n | grep -q '<Vector<ObjectRef> <String Hello World!> <Vector<float> 5 7 9 >  <Vector<float> 3 9 5 >  >';
-then
-echo serial.n passed
-else
-echo serial.n failed
-fi
-
-if batchflow vecstring.n | grep -q '<Vector<string> tat\\ a to\\\\to\\>>';
-then
-echo vecstring.n passed
-else
-echo vecstring.n failed
-fi
+for file in *.n non-existant.n
+	do
+	if test -f $file.out
+		then
+		if batchflow $file | grep -qf $file.out
+			then
+			echo $file passed
+		else
+			echo $file failed
+		fi
+	else
+		batchflow $file > /dev/null 2>&1
+		if test $? -lt 2
+			then
+			echo $file passed
+		else
+			echo $file failed
+		fi
+	fi
+done
