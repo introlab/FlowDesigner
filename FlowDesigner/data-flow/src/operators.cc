@@ -6,6 +6,10 @@
 //@implements core
 
 //Operators for Float and Float
+/*
+
+//(DL) To be removed soon.
+
 ObjectRef addFloatFloat(ObjectRef x, ObjectRef y)
 {
    return ObjectRef(Float::alloc(dereference_cast<float> (x) + (dereference_cast<float> (y))));
@@ -29,6 +33,8 @@ ObjectRef divFloatFloat(ObjectRef x, ObjectRef y)
    return ObjectRef(Float::alloc(dereference_cast<float> (x) / (dereference_cast<float> (y))));
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divFloatFloat, Float, Float);
+*/
+
 
 ObjectRef smallerFloatFloat(ObjectRef x, ObjectRef y)
 {
@@ -69,6 +75,10 @@ REGISTER_DOUBLE_VTABLE(minVtable, minFloatFloat, Float, Float);
 
 
 //Operators for Int and Int
+/*
+
+//(DL) To be removed soon.
+
 ObjectRef addIntInt(ObjectRef x, ObjectRef y)
 {
    return ObjectRef(Int::alloc(dereference_cast<int> (x) + (dereference_cast<int> (y))));
@@ -93,6 +103,8 @@ ObjectRef divIntInt(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divIntInt, Int, Int);
 
+*/
+
 ObjectRef smallerIntInt(ObjectRef x, ObjectRef y)
 {
   if (dereference_cast<int> (x) < (dereference_cast<int> (y))) {
@@ -102,6 +114,8 @@ ObjectRef smallerIntInt(ObjectRef x, ObjectRef y)
     return FalseObject;
   }
 }
+
+
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntInt, Int, Int);
 
 ObjectRef maxIntInt(ObjectRef x, ObjectRef y)
@@ -127,7 +141,7 @@ ObjectRef minIntInt(ObjectRef x, ObjectRef y)
 REGISTER_DOUBLE_VTABLE(minVtable, minIntInt, Int, Int);
 
 
-
+/*
 
 //Operators for Int and Float
 ObjectRef addIntFloat(ObjectRef x, ObjectRef y)
@@ -154,6 +168,8 @@ ObjectRef divIntFloat(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divIntFloat, Int, Float);
 
+*/
+
 ObjectRef smallerIntFloat(ObjectRef x, ObjectRef y)
 {
   if (dereference_cast<int> (x) < (dereference_cast<float> (y))) {
@@ -165,7 +181,7 @@ ObjectRef smallerIntFloat(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntFloat, Int, Float);
 
-
+/*
 
 //Operators for Float and Int
 ObjectRef addFloatInt(ObjectRef x, ObjectRef y)
@@ -191,6 +207,8 @@ ObjectRef divFloatInt(ObjectRef x, ObjectRef y)
    return ObjectRef(Float::alloc(dereference_cast<float> (x) / (dereference_cast<int> (y))));
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divFloatInt, Float, Int);
+
+*/
 
 ObjectRef smallerFloatInt(ObjectRef x, ObjectRef y)
 {

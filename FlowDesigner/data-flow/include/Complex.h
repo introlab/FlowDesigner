@@ -16,6 +16,8 @@ template <class T>
 class Complex : public complex<T>, public Object {
 
  public:
+
+  typedef complex<T> basicType;
   
   Complex() : complex<T>() {}
   
@@ -59,7 +61,20 @@ class Complex : public complex<T>, public Object {
     out << *((complex<T>*) this);
   }
   
-  complex<T>& val() const {return *this;}
+  complex<T>& val() const {return *((complex<T>*) this);}
+
+
+   static Complex<T> *alloc()  {return ObjectPool<Complex<T> >::alloc();}
+
+   static Complex<T> *alloc(const Complex<T> &obj)  
+   {
+      Complex<T> *ret = ObjectPool<Complex<T> >::alloc();
+      *ret = obj;
+      return ret;
+   }
+
+   void destroy() {ObjectPool<Complex<T> >::release(this);}
+
 
 };
 

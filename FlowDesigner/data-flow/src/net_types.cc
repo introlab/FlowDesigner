@@ -28,12 +28,15 @@ vector<Int *> ObjectPool<Int>::stack;
 vector<Bool *> ObjectPool<Bool>::stack;
 vector<Float *> ObjectPool<Float>::stack;
 vector<Double *> ObjectPool<Double>::stack;
-
+vector<Complex<float> *> ObjectPool<Complex<float> >::stack;
+vector<Complex<double> *> ObjectPool<Complex<double> >::stack;
 
 FastMutex ObjectPool<Int>::mutex;
 FastMutex ObjectPool<Bool>::mutex;
 FastMutex ObjectPool<Float>::mutex;
 FastMutex ObjectPool<Double>::mutex;
+FastMutex ObjectPool<Complex<float> >::mutex;
+FastMutex ObjectPool<Complex<double> >::mutex;
 
 ObjectRef TrueObject(new Bool(true));
 ObjectRef FalseObject(new Bool(false));
