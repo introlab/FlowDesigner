@@ -116,7 +116,7 @@ vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
    {
       params = externalDocInfo[netName]->params;
    }
-   //FIXME: potential leak of ItemInfo here.
+   //FIXME: potential leak of ItemInfo here?
    return params;
 }
 

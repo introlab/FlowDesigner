@@ -19,30 +19,20 @@ public:
 UINodeParameters::UINodeParameters(UINode *_node, string type)
    : node(_node)
 {
-   //cerr << "UINodeParameters::UINodeParameters\n";
-   int i;
-   /*_NodeFactory *factory = Node::getFactoryNamed(type);
-   if (factory)
+   vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
+   for (int i=0;i<tmp.size();i++)
    {
-      vector<string> tmp=factory->getParams();
-      textParams.resize(tmp.size());
-      for (i=0;i<tmp.size();i++)
-     textParams[i].name=tmp[i];
-     } else*/ {
-      vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
-//      textParams.resize(tmp.size());
-      for (i=0;i<tmp.size();i++)
-          {
-              ParameterText *newText = new ParameterText;
-              newText->name = tmp[i]->name;
-              newText->type = tmp[i]->type;
-              newText->value = tmp[i]->value;
-              newText->description = tmp[i]->description;
-              textParams.insert(textParams.end(), newText);
-          }
-      //cerr << "Factory not found in simple nodes... must be a subnet...\n";
+      ParameterText *newText = new ParameterText;
+      newText->name = tmp[i]->name;
+      //FIXME: This is just a temporary kludge
+      if (tmp[i]->type == "any")
+	 newText->type = "int";
+      else
+	 newText->type = tmp[i]->type;
+      newText->value = tmp[i]->value;
+      newText->description = tmp[i]->description;
+      textParams.insert(textParams.end(), newText);
    }
-
 }
 
 UINodeParameters::~UINodeParameters()
