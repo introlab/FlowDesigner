@@ -59,6 +59,10 @@ protected:
 
    ///The condition node of the iterator (no meaning for subnets)
    //UINode *conditionNode;
+private:
+   
+   /**Used to determine infinite recursion in build*/
+   bool buildRecurs;
 public:
    /**Basic constructor, allows building the UINetwork gradually*/
    UINetwork(UIDocument *_doc, string _name, Type _type);

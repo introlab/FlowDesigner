@@ -23,6 +23,7 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
    , name(_name)
    , type (_type)
    , destroyed(false)
+   , buildRecurs(false)
    //, conditionNode(NULL)
 {
    
@@ -32,6 +33,7 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
 UINetwork::UINetwork(UIDocument *_doc, xmlNodePtr net, bool init)
    : doc(_doc)
    , destroyed(false)
+   , buildRecurs(false)
    //, conditionNode(NULL)
 {
    if (init)
@@ -445,6 +447,10 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
 {
    //cerr << "UINetwork::build\n";
    //cerr << "name = " << name << endl;
+   if (buildRecurs)
+      throw new GeneralException("Detected circular subnet inclusion, breaking infinite loop", __FILE__, __LINE__);
+   buildRecurs=true;
+
    Network *net;
    switch (type)
    {
@@ -473,6 +479,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
       }
    } catch (BaseException *e)
    {
+      buildRecurs=false;
       throw e->add (new GeneralException(string("Exception caught while building network ") + name, __FILE__, __LINE__));
    }
    
@@ -569,15 +576,17 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    {
       e->freeze();
       net->cleanupNotify();
+      buildRecurs=false;
       delete net;
       throw e;
    } catch (...)
    {
       net->cleanupNotify();
+      buildRecurs=false;
       delete net;
       throw;
    }
-   
+   buildRecurs=false;
    return net;
 }
 
