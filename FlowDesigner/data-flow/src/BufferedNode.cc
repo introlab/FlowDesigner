@@ -99,16 +99,22 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
 
 ObjectRef BufferedNode::getOutput(int output_id, int count)
 {
-   Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
-
-   ObjectRef result = outBuffer[count];
-   if (result->status == Object::valid)
-      return result;
-   else
+   try {
+      Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
+      
+      ObjectRef result = outBuffer[count];
+      if (result->status == Object::valid)
+         return result;
+      else
+      {
+         calculate (output_id, count, outBuffer);
+         if (count > processCount)
+            processCount = count;
+         return outBuffer[count];
+      }
+   } catch (BaseException &e)
    {
-      calculate (output_id, count, outBuffer);
-      if (count > processCount)
-         processCount = count;
-      return outBuffer[count];
+      e.print();
+      throw NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__);
    }
 }
