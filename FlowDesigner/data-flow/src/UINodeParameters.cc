@@ -97,7 +97,7 @@ void UINodeParameters::load(xmlNodePtr node)
       } else if (string((char*)par->name) == "Comments")
       {
 	 char *str = (char *)xmlNodeGetContent(par);
-	 if (str && strcmp(str,"")!=0)
+	 if (str)
 	    setComments(string(str));
       } else {
 	 cerr << "unknown param tag\n";
@@ -112,7 +112,8 @@ void UINodeParameters::load(xmlNodePtr node)
 void UINodeParameters::saveXML(xmlNode *root)
 {
    // First add all of the ParameterData Nodes to the xml Node
-   xmlNewChild(root, NULL, (CHAR *)"Comments", (xmlChar*)comments.c_str());
+   if (comments != "")
+      xmlNewChild(root, NULL, (CHAR *)"Comments", (xmlChar*)comments.c_str());
    for (int i=0;i<textParams.size();i++)
    {
       if (textParams[i]->value != "")

@@ -245,6 +245,10 @@ Node *UINode::build(const ParameterSet &params)
       { 
 	 //cerr << "building external\n";
 	 node = UIDocument::buildExternal(type, name, *par);
+	 if (!node)
+	 {
+	    throw GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
+	 }
 	 //cerr << "done\n";
       }
    }
