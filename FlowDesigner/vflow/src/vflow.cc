@@ -1402,11 +1402,11 @@ int main (int argc, char *argv[])
       g_thread_init(NULL); 
       gdk_threads_init();
 
-      gnome_program_init ("VFlow", OVERFLOW_VERSION, LIBGNOMEUI_MODULE,
+      gnome_program_init ("VFlow", FLOWDESIGNER_VERSION, LIBGNOMEUI_MODULE,
                           argc, argv,
                           GNOME_PARAM_APP_DATADIR, PACKAGE_DATA_DIR,
 	                  NULL);
-      //gnome_init ("vflow", OVERFLOW_VERSION, argc, argv);
+      //gnome_init ("vflow", FLOWDESIGNER_VERSION, argc, argv);
       setlocale (LC_NUMERIC, "C");
 
       //setting segfault callback

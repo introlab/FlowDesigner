@@ -149,7 +149,7 @@ void FlowPref::save()
    xmlDocPtr doc;
    doc = xmlNewDoc((xmlChar *)"1.0");
    doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Preferences", NULL);
-   xmlSetProp(doc->children, (xmlChar *)"version", (xmlChar *)OVERFLOW_VERSION);
+   xmlSetProp(doc->children, (xmlChar *)"version", (xmlChar *)FLOWDESIGNER_VERSION);
 
    map<string, map<string,string> >::iterator cat = params.begin();
    while (cat != params.end())

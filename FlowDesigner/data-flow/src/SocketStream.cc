@@ -13,9 +13,9 @@
 const int network_socket::BROADCAST_TYPE = 0;
 const int network_socket::TCP_STREAM_TYPE = 1;
 
-#define OVERFLOW_IDENT_STRLEN 8
-#define OVERFLOW_IDENT "OVERFLOW"
-#define OVERFLOW_BROADCAST_IP "255.255.255.255"
+#define FLOWDESIGNER_IDENT_STRLEN 8
+#define FLOWDESIGNER_IDENT "OVERFLOW"
+#define FLOWDESIGNER_BROADCAST_IP "255.255.255.255"
 
 network_socket::network_socket(int type, int port) 
 : m_read_socket(0)
@@ -70,7 +70,7 @@ void network_socket::init_broadcast() {
   memset(&m_write_addr, 0, sizeof(m_write_addr));
   
   m_write_addr.sin_family = AF_INET;
-  m_write_addr.sin_addr.s_addr = inet_addr(OVERFLOW_BROADCAST_IP);
+  m_write_addr.sin_addr.s_addr = inet_addr(FLOWDESIGNER_BROADCAST_IP);
   m_write_addr.sin_port = htons(m_port);
   
   // Set write socket options to allow broadcasting
@@ -411,7 +411,7 @@ void network_socket::socket_accept() {
 
   unsigned char banner[] = {'O','V','E','R','F','L','O','W'};
 
-  send_packet(&banner[0],OVERFLOW_IDENT_STRLEN);
+  send_packet(&banner[0],FLOWDESIGNER_IDENT_STRLEN);
 
   cerr<<"accept done!"<<endl;
 }
@@ -421,7 +421,7 @@ void network_socket::socket_connect(const char *host) {
   struct sockaddr_in server;
   struct hostent* entp;
   int sock;
-  unsigned char banner[OVERFLOW_IDENT_STRLEN];
+  unsigned char banner[FLOWDESIGNER_IDENT_STRLEN];
   int numread;
 
   /* fill in server structure */
@@ -464,7 +464,7 @@ void network_socket::socket_connect(const char *host) {
 //  /*
 //   * read the banner from the server
 //   */
-//  if((numread = recv_packet(&banner[0],OVERFLOW_IDENT_STRLEN)) != OVERFLOW_IDENT_STRLEN) {
+//  if((numread = recv_packet(&banner[0],FLOWDESIGNER_IDENT_STRLEN)) != FLOWDESIGNER_IDENT_STRLEN) {
 //    perror("network_socket::connect(): read() failed");
 //    shutdown();
 //    throw new GeneralException("network_socket::connect(): read() failed",__FILE__,__LINE__);

@@ -4,11 +4,6 @@ AC_INIT(src/FFT.cc)
 
 dnl Stolen from gtk+:
 
-includedir=$includedir/overflow
-datadir=$datadir/overflow
-libdir=$datadir/lib
-
-
 FREESPEECH_MAJOR_VERSION=0
 FREESPEECH_MINOR_VERSION=8
 FREESPEECH_MICRO_VERSION=0
@@ -46,7 +41,7 @@ AC_CANONICAL_HOST
 AC_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-AC_OVERFLOW_CHECKS
+AC_FLOWVERSION_CHECKS
 
 AC_OUTPUT([Makefile include/Makefile src/Makefile \
 	n-files/Makefile \

@@ -8,8 +8,8 @@ using namespace std;
 
 int version_check(const char *vers, const char *abi_vers, const char *unused_vers)
 {
-   static string lib_version = OVERFLOW_VERSION;
-   static string abi_version = OVERFLOW_ABI_VERSION;
+   static string lib_version = FLOWDESIGNER_VERSION;
+   static string abi_version = FLOWDESIGNER_ABI_VERSION;
    if (lib_version!=vers)
    {
       cerr << "Version mismatch: trying to link libflow version " << lib_version << " with code compiled for version " << vers << endl;

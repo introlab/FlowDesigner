@@ -1,6 +1,6 @@
-override includedir=${prefix}/include/overflow
-override datadir=${prefix}/share/overflow
-override libdir=${prefix}/share/overflow/lib
+override includedir=${prefix}/include/flowdesigner
+override datadir=${prefix}/share/flowdesigner
+override libdir=${prefix}/share/flowdesigner/lib
 
 EXTRA_DIST = 
 

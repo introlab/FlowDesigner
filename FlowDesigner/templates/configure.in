@@ -11,7 +11,7 @@ AC_CANONICAL_HOST
 AC_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-AC_OVERFLOW_CHECKS
+AC_FLOWVERSION_CHECKS
 AC_CHECK_HEADER(sstream, rm -f sstream, cp -pf sstream.unused sstream)
 
 AC_OUTPUT([Makefile])

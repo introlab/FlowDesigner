@@ -2,11 +2,6 @@ dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
 AC_INIT(include/fortran.h)
 
-includedir=$includedir/overflow
-datadir=$datadir/overflow
-libdir=$datadir/lib
-
-
 FREESPEECH_MAJOR_VERSION=0
 FREESPEECH_MINOR_VERSION=8
 FREESPEECH_MICRO_VERSION=0
