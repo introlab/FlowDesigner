@@ -54,7 +54,7 @@ public:
 	 out[count] = input2Value;
 	 return;
       }
-      out[count] = inputValue + input2Value;
+      out[count] = concat(inputValue, input2Value);
    }
 
 };
