@@ -107,5 +107,42 @@ ObjectRef mulMatrixObjectRef(ObjectRef op1, ObjectRef op2) {
 }
 REGISTER_DOUBLE_VTABLE(mulVtable,mulMatrixObjectRef,Matrix<ObjectRef>,Matrix<ObjectRef>);
 
+template<class X, class Y, class Z>
+ObjectRef mulVectorScalarFunction(ObjectRef op1, ObjectRef op2) {
 
+  RCPtr<X> op1Value = op1;
+  RCPtr<Y> op2Value = op2;
+
+  //creating new vector
+  RCPtr<Z> resultValue(Z::alloc(op1Value->size()));
+
+  for (int i = 0; i < resultValue->size(); i++) {    
+    (*resultValue)[i] = static_cast<typename Z::basicType> ((*op1Value)[i]) * static_cast<typename Z::basicType> (op2Value->val());
+  }
+
+  return resultValue;
+
+}
+REGISTER_ALL_VECTOR_SCALAR_VTABLE(mulVtable, mulVectorScalarFunction); 
+
+template<class X, class Y, class Z>
+ObjectRef mulMatrixScalarFunction(ObjectRef op1, ObjectRef op2) {
+
+  RCPtr<X> op1Value = op1;
+  RCPtr<Y> op2Value = op2;
+  
+  //creating new Matrix
+  //TODO use Matrix pool?
+  
+  RCPtr<Z> resultValue(new Z(op1Value->nrows(), op1Value->ncols()));
+  
+  for (int i = 0; i < resultValue->nrows(); i++) {    
+    for (int j = 0; j < resultValue->ncols(); j++) {      
+      (*resultValue)(i,j) = static_cast<typename Z::basicType> ((*op1Value)(i,j)) * static_cast<typename Z::basicType> (op2Value->val());    
+     }
+  }
+
+  return resultValue;
+}
+REGISTER_ALL_MATRIX_SCALAR_VTABLE(mulVtable, mulMatrixScalarFunction);
 #endif
