@@ -658,8 +658,10 @@ void UIDocument::updateNetInfo(UINetwork *net) {
   subnetInfo.updateNetInfo(net);
 
   //update "networks parameters that included this net as a node"
-  for (int i = 0; i < networks.size(); i++) {
-    networks[i]->updateAllSubnetParameters(net->getName(), subnetInfo.findNode(net->getName()));
+  for (int i = 0; i < networks.size(); i++) {  
+    if (networks[i]) {
+      networks[i]->updateAllSubnetParameters(net->getName(), subnetInfo.findNode(net->getName()));
+    }
   }
 }
 
