@@ -26,6 +26,8 @@
 
 #include <stddef.h>
 #include <stream.h>
+#include <typeinfo>
+
 template <class X>
 class counted_pod_ptr
 {
@@ -45,7 +47,7 @@ protected:
 public:
    explicit counted_pod_ptr(X* p=0) : ptr(p)
    {
-      cerr << "alloc" << endl;
+      cerr << "alloc " << typeid(X).name() << endl;
       count=new size_type(1);
    }
    
@@ -91,7 +93,7 @@ protected:
    {
       if (count && --(*count)==0)
       {
-      cerr << "delete" << endl;
+      cerr << "delete " << typeid(X).name() << endl;
          delete ptr;
          delete count;
       }

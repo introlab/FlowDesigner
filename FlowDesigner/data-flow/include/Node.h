@@ -26,6 +26,14 @@
 #include "NetworkException.h"
 #include <typeinfo>
 
+
+template <class T>
+T &max(T &a, T &b) {return a > b ? a : b;}
+
+template <class T>
+T &min(T &a, T &b) {return a < b ? a : b;}
+
+
 //must be defined
 class Node;
 
@@ -62,16 +70,21 @@ private:
 */
 class ParameterSet : public map<string,ObjectRef> {
 public:
-   ///require a parameter
-   void requireParam(string param);
+   ///Does a certain parameter exist?
+   bool exist(const string &param) const;
+
    ///get a parameter's value
-   ObjectRef get(string param);
+   ObjectRef get(string param) const;
+
    ///get the default parameter
    ObjectRef getDefault(string param, ObjectRef value);
+
    ///set the default parameter
    void defaultParam(string param, ObjectRef value);
+
    ///adding the parameters
    void add(string param, ObjectRef value);
+
    ///printing the parameters
    void print(ostream &out = cerr);
 };
@@ -147,7 +160,7 @@ protected:
 
 public:
    ///Constructor, takes the name of the node and a set of parameters
-   Node(string nodeName, ParameterSet params);
+   Node(string nodeName, const ParameterSet &params);
    
    //Node(const Node& node); //copy constructor
 
@@ -191,6 +204,9 @@ public:
 
    ///Returns the node name
    string getName() {return name;}   
+ 
+   ///Standard request-passing method between nodes during initialization
+   virtual void request(const ParameterSet &req) {}
 
 private:
    ///Tell the node we will be using output 'out'
@@ -201,7 +217,6 @@ private:
 
 
 protected:
-
    ///Default constructor, should not be used
    Node() {throw new GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 

@@ -19,17 +19,17 @@
 #include <typeinfo>
 #include "Object.h"
 
-void ParameterSet::requireParam(string param) 
+bool ParameterSet::exist(const string &param) const
 {
-   if (find(param)==end()) 
-      throw new MissingParameterException(param,*this);
+   return find(param)!=end();
 }
 
-ObjectRef ParameterSet::get(string param) 
+ObjectRef ParameterSet::get(string param) const
 {
    if (find(param)==end())
       throw new MissingParameterException(param,*this);
-   else return operator[](param);
+   //else return operator[](param);
+   else return find(param)->second;
 }
 ObjectRef ParameterSet::getDefault(string param, ObjectRef value) 
 {
@@ -53,7 +53,7 @@ void ParameterSet::print (ostream &out)
       out << it->first << " -> " << typeid(*(it->second)).name() << endl;
 }
 
-Node::Node(string nodeName, ParameterSet params) 
+Node::Node(string nodeName, const ParameterSet &params) 
    : name (nodeName)
    , inputs (vector<NodeInput>(0))
    , initialized (false)
