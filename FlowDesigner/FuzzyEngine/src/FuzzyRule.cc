@@ -19,6 +19,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "FuzzyRule.h"
+#include <string>
+
 
 DECLARE_NODE(FuzzyRule)
 /*Node
@@ -27,20 +29,19 @@ DECLARE_NODE(FuzzyRule)
  * @category Fuzzy
  * @description No description available
  *
- * @input_name TRAIN_IN
- * @input_description No description available
+ * @parameter_name IF
+ * @parameter_description Antecedant of the rule seperated by spaces
+ * @parameter_type string
  *
- * @output_name OUTPUT
- * @output_description No description available
- *
- * @parameter_name BATCH_SETS
- * @parameter_description No description available
+ * @parameter_name THEN
+ * @parameter_description Consequent of the rule seperated by spaces
+ * @parameter_type string
+ * 
+ * @output_name RULE
+ * @output_description The FuzzyRule Object
+ * @output_type FuzzyRule
  *
 END*/
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction
@@ -50,12 +51,56 @@ FuzzyRule::FuzzyRule(int rule_number)
 : m_rule_number(rule_number) {
 
 }
+
 FuzzyRule::FuzzyRule(string nodeName, ParameterSet params) 
 : BufferedNode(nodeName,params) {
   
+  
+  String antecedant  = object_cast<String>(parameters.get("IF"));
+  String consequent  = object_cast<String>(parameters.get("THEN"));
+
+
+  vector<string> tmp_vector;
+
+  char *tmp_string = strtok(const_cast<char*>(antecedant.c_str()),": \n");
+  
+  do {
+    tmp_vector.push_back(string(tmp_string));
+    tmp_string = strtok(NULL,": \n");
+  }
+  while (tmp_string != NULL);
+
+  if (tmp_vector.size() %2 == 0) {
+    for (int i = 0; i < tmp_vector.size(); i+=2) {
+      m_antecedant.push_back(make_pair(tmp_vector[i],tmp_vector[i+1]));
+    }
+  }
+  else {
+    throw new GeneralException("Antecedant not valid (VARIABLE1:FUNCT1 VARIABLE2:FUNCT2)",__FILE__,__LINE__);
+  }
+
+  tmp_vector.resize(0);
+  tmp_string = strtok(const_cast<char*>(consequent.c_str()),": \n");
+
+  do {
+    tmp_vector.push_back(string(tmp_string));
+    tmp_string = strtok(NULL,": \n");
+  }
+  while (tmp_string != NULL);
+
+  if (tmp_vector.size() %2 == 0) {
+    for (int i = 0; i < tmp_vector.size(); i+=2) {
+      m_consequent.push_back(make_pair(tmp_vector[i],tmp_vector[i+1]));
+    }
+  }
+  else {
+    throw new GeneralException("Consequent not valid (VARIABLE1:FUNCT1 VARIABLE2:FUNCT2)",__FILE__,__LINE__);
+  }
+
+
+  //print_rule(cerr);
 
 }
-
 
 //////////////////////////////////////////////////////////////////////
 // Destruction
@@ -111,6 +156,23 @@ void FuzzyRule::print_rule(ostream &out) {
 
 void FuzzyRule::calculate(int output_id, int count, Buffer &out) {
 
+  //cloning ourself as a Object not a node!
+  out[count] = ObjectRef(clone());
 
+}
 
+FuzzyRule* FuzzyRule::clone() {
+  
+
+  FuzzyRule *my_clone = new FuzzyRule(m_rule_number);
+
+  for (int i = 0; i < m_antecedant.size(); i++) {
+    my_clone->m_antecedant.push_back(m_antecedant[i]);
+  }
+
+  for (int i = 0; i < m_consequent.size(); i++) {
+    my_clone->m_consequent.push_back(m_consequent[i]);
+  }
+
+  return my_clone;
 }

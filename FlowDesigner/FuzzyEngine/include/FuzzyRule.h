@@ -23,10 +23,11 @@
 #include <string>
 #include <vector>
 #include "BufferedNode.h"
+#include "Object.h"
 
 using namespace std;
 
-class FuzzyRule : public BufferedNode {
+class FuzzyRule : public BufferedNode, public Object {
 
 public:
 	
@@ -57,6 +58,9 @@ public:
 	int get_rule_number() {return m_rule_number;}
 	
 	virtual void calculate(int output_id, int count, Buffer &out);
+
+
+	FuzzyRule* clone();
 
 private:
 
