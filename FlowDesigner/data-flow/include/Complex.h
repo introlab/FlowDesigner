@@ -31,6 +31,9 @@ class Complex : public complex<T>, public Object {
   ///Constructor with a complex<T>
   Complex(const complex<T> &val) : complex<T>(val) {}
 
+  ///Constructor with a Complex<T>
+  Complex(const Complex<T> &val) : complex<T>(val) {}
+
   /**
      Formatted output in the FlowDesigner format<br>
      <b>Format : </b> \<Complex\<T\> <i> complex<T> value</i> \>
