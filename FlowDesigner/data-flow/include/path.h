@@ -9,6 +9,6 @@ using namespace std;
 #include <string>
 
 vector<string> envList(char *envName);
-void scanDL();
+void scanDL(bool debug=false);
 
 #endif

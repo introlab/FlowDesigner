@@ -142,9 +142,11 @@ public:
 
    Network *build(const string &netName, const ParameterSet &params);
    
-	vector<UINode *> getNodes() {return nodes;}
-	vector<UILink *> getLinks() {return links;}
-	vector<UINetTerminal *> getTerminals() {return terminals;}
+   vector<UINode *> getNodes() {return nodes;}
+   vector<UILink *> getLinks() {return links;}
+   vector<UINetTerminal *> getTerminals() {return terminals;}
+   
+   void rename(string newName);
 
 };
 

@@ -51,6 +51,10 @@ DECLARE_NODE(NNetTrainDBD)
  * @parameter_type int
  * @parameter_description Number of batch subsets for accelerated training (default 1)
  *
+ * @parameter_name ALLOC_CHUNK
+ * @parameter_type bool
+ * @parameter_description If true, a big vector is allocated to store all the inputs (default false)
+ *
 END*/
 
 
@@ -79,6 +83,8 @@ protected:
    float increase;
 
    int nbSets;
+
+   bool allocChunk;
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -109,6 +115,11 @@ public:
       if (parameters.exist("NB_SETS"))
 	 nbSets = dereference_cast<int> (parameters.get("NB_SETS"));
       else nbSets = 1;
+
+      if (parameters.exist("ALLOC_CHUNK"))
+	 allocChunk = dereference_cast<bool> (parameters.get("ALLOC_CHUNK"));
+      else allocChunk = false;
+      
    }
       
 
@@ -129,6 +140,44 @@ public:
       
 
       //cerr << "inputs converted\n";
+      
+      int nbSamples = inBuff.size();
+      if (nbSamples != outBuff.size())
+	 throw new NodeException(this, "Input buffer sizes don't fit", __FILE__, __LINE__);
+      int inLength = object_cast <Vector<float> > (inBuff[0]).size();
+      int outLength = object_cast <Vector<float> > (outBuff[0]).size();
+      
+      vector <float *> tin(nbSamples);
+      vector <float *> tout(nbSamples);
+      float *buff;
+
+      if (allocChunk)
+      {
+	 buff = new float [nbSamples*(inLength+outLength)];
+	 for (i=0;i<nbSamples;i++)
+	 {
+	    tin[i] = buff+i*(inLength+outLength);
+	    tout[i] = buff+i*(inLength+outLength)+inLength;
+	    Vector<float> &vin = object_cast <Vector<float> > (inBuff[i]);
+	    Vector<float> &vout = object_cast <Vector<float> > (outBuff[i]);
+	    if (inLength != vin.size() || outLength != vout.size())
+	       throw new NodeException(this, "Vectors in buffers have different sizes", __FILE__, __LINE__);
+	    for (int j=0;j<inLength;j++)
+	       tin[i][j] = vin[j];
+	    for (int j=0;j<outLength;j++)
+	       tout[i][j] = vout[j];
+            //vec_copy(&vin[0], tin[i], inLength);
+	    //vec_copy(&vout[0], tout[i], outLength);
+	 }
+	 
+      } else {
+	 for (i=0;i<nbSamples;i++)
+	 {
+	    tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
+	    tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
+	 }
+      }
+      /*
       vector <float *> tin(inBuff.size());
       for (i=0;i<inBuff.size();i++)
 	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
@@ -136,12 +185,16 @@ public:
       vector <float *> tout(outBuff.size());
       for (i=0;i<outBuff.size();i++)
 	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
-      
-      
+      */
+
+
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
       TrainingDeltaBarDelta::train(&net, tin, tout, maxEpoch, learnRate, increase, decrease, nbSets);
       
+      if (allocChunk)
+	 delete [] buff;
+
       out[count] = netValue;
 
    }

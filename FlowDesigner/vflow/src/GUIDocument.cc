@@ -66,6 +66,16 @@ static void add_iter_event  (GtkMenuItem     *menuitem,
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
+static void rename_net_event  (GtkMenuItem     *menuitem,
+                            gpointer         user_data)
+{
+   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+   doc->renameCurrentNet();
+   //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+   //doc
+ //cerr << "remove net\n";
+}
+
 static void remove_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
@@ -78,12 +88,15 @@ static void remove_net_event  (GtkMenuItem     *menuitem,
 
 static GnomeUIInfo view_menu[] = {
    
-   GNOMEUIINFO_ITEM_NONE (N_("_Add Network"),
+   GNOMEUIINFO_ITEM_NONE (N_("Add _Network"),
                           N_("Add a new network the document"), add_net_event),
-   GNOMEUIINFO_ITEM_NONE (N_("_Add Iterator"),
+   GNOMEUIINFO_ITEM_NONE (N_("Add _Iterator"),
 			     N_("Add a new iterator the document"), add_iter_event),
-   GNOMEUIINFO_ITEM_NONE (N_("_Add Threaded Iterator"),
-			     N_("Add a new threaded iterator the document"), add_threaded_event),
+   GNOMEUIINFO_ITEM_NONE (N_("Add _Threaded Iterator"),
+			     N_("Add a new threaded iterator the document (EXPERIMENTAL)"), add_threaded_event),
+   GNOMEUIINFO_SEPARATOR,
+   GNOMEUIINFO_ITEM_NONE (N_("_Rename Network"),
+			     N_("Remove a network from the document"), rename_net_event),
    GNOMEUIINFO_SEPARATOR,
    GNOMEUIINFO_ITEM_NONE (N_("Remove Network"),
 			     N_("Remove a network from the document"), remove_net_event),
@@ -257,8 +270,8 @@ void GUIDocument::removeCurrentNet()
    //cerr << "netID = " << netID << endl;
    if (netID == -1) 
       return;
-   gtk_notebook_remove_page (GTK_NOTEBOOK(notebook1), netID);
    delete networks[netID];
+   gtk_notebook_remove_page (GTK_NOTEBOOK(notebook1), netID);
    for (int i=netID;i<networks.size()-1;i++)
    {
       networks[i]=networks[i+1];
@@ -266,7 +279,25 @@ void GUIDocument::removeCurrentNet()
    networks.resize(networks.size()-1);
 }
 
+void rename_net(gchar * str, UINetwork *net)
+{
+   
+   if (str)
+      net->rename(str);
+}
 
+void GUIDocument::renameCurrentNet()
+{
+   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+   //cerr << "netID = " << netID << endl;
+   if (netID == -1) 
+      return;
+   UINetwork *net = networks[netID];
+   string message;
+   message = string("Rename network ") + net->getName();
+   GtkWidget *dialog = gnome_request_dialog (FALSE, message.c_str(), "", 20, (GnomeStringCallback)rename_net, net, NULL);
+   gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
+}
 
 
 UINetwork *GUIDocument::newNetwork(const string &_name, UINetwork::Type type)

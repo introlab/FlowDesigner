@@ -38,7 +38,7 @@ vector<string> envList(char *envName)
    return list;
 }
 
-void scanDL()
+void scanDL(bool debug)
 {
    vector<string> dirs=envList("VFLOW_PATH");
    if (dirs.size() == 0)
@@ -48,6 +48,8 @@ void scanDL()
    }
    for (int i = 0; i<dirs.size();i++)
    {
+      if (debug)
+	 cerr << "scalDL: Looking in directory " << dirs[i] << endl;
       DIR *my_directory = opendir (dirs[i].c_str());
       if (!my_directory)
 	 continue;
@@ -61,6 +63,8 @@ void scanDL()
 	    continue;
 	 }
 	 string fullname = dirs[i] + "/" + current_entry->d_name;
+	 if (debug)
+	    cerr << "Trying " << fullname << endl;
 	 DLManager::getLib(fullname);
 	 //_DL_OPEN(fullname.c_str());
       }
