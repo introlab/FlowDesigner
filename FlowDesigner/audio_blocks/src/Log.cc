@@ -40,7 +40,7 @@ DECLARE_NODE(Log)
  * @output_description No description available
  *
  * @parameter_name FAST
- * @parameter_description No description available
+ * @parameter_description Should we use log approximation
  *
 END*/
 
