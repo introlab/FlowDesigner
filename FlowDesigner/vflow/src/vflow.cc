@@ -977,7 +977,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
 
   if (!strcmp (translators, "translator_credits"))
     translators = NULL;
-  about2 = gnome_about_new ("VFlow", VERSION,
+  about2 = gnome_about_new ("FlowDesigner", VERSION,
                         _("(C) 1999-2004 Jean-Marc Valin & Dominic Letourneau"),
                         _("FlowDesigner (http://flowdesigner.sourceforge.net/) is a free (LGPL) \"data flow oriented\" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a \"clone\" of any of them."),
                         authors,
@@ -1171,7 +1171,7 @@ void vflowGUI::create_mdi ()
   GtkWidget *label1;
   GtkWidget *appbar1;
 
-  app1 = gnome_app_new ("VFlow", _("VFlow"));
+  app1 = gnome_app_new ("FlowDesigner", _("FlowDesigner"));
 
   //call the delete_app function when closing window
   gtk_signal_connect (GTK_OBJECT (app1), "delete-event",GTK_SIGNAL_FUNC (delete_app), this);
@@ -1402,7 +1402,7 @@ int main (int argc, char *argv[])
       g_thread_init(NULL); 
       gdk_threads_init();
 
-      gnome_program_init ("VFlow", FLOWDESIGNER_VERSION, LIBGNOMEUI_MODULE,
+      gnome_program_init ("FlowDesigner", FLOWDESIGNER_VERSION, LIBGNOMEUI_MODULE,
                           argc, argv,
                           GNOME_PARAM_APP_DATADIR, PACKAGE_DATA_DIR,
 	                  NULL);

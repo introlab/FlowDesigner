@@ -104,7 +104,7 @@ GUIDocument::GUIDocument(string _name)
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (less2), GTK_WRAP_WORD);
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (less2), FALSE);
   /*gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
-        _("VFlow by Jean-Marc Valin & Dominic Letourneau"), -1);
+        _("FlowDesigner by Jean-Marc Valin & Dominic Letourneau"), -1);
   */
 
    
@@ -126,7 +126,7 @@ GUIDocument::GUIDocument(string _name)
   //gtk_notebook_set_current_page (GTK_NOTEBOOK(vflow_notebook), -1);  
 
 
-  less_print("VFlow " VERSION " by Jean-Marc Valin & Dominic Letourneau");
+  less_print("FlowDesigner " VERSION " by Jean-Marc Valin & Dominic Letourneau");
   less_print("--");
 
 
