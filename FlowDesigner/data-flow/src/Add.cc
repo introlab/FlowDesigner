@@ -26,26 +26,41 @@ END*/
 
 
 class Add : public BufferedNode {
-   
-   int input1ID;
-   int input2ID;
-   int outputID;
+
+   int m_input1ID;
+   int m_outputID;
 
 public:
    Add(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
-      input1ID = addInput("INPUT1");
-      input2ID = addInput("INPUT2");
-      outputID = addOutput("OUTPUT");
+      m_input1ID = addInput("INPUT1");
+      m_outputID = addOutput("OUTPUT");
+   }
+
+   virtual int translateInput (string inputName)
+   {
+      for (unsigned int i=0; i< inputs.size(); i++)
+      {
+         if (inputs[i].name == inputName)
+         {
+            return i;
+         }
+      }
+      return addInput(inputName);
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      ObjectRef inputValue = getInput(input1ID, count);
+      ObjectRef ReturnValue = getInput(m_input1ID, count);
 
-      ObjectRef input2Value = getInput(input2ID, count);
-      out[count] = inputValue + input2Value;
+      for (int j = 1; j < inputs.size(); j++)
+      {
+         ObjectRef inputValue = getInput(j, count);
+         ReturnValue = ReturnValue + inputValue;
+      }
+
+      out[count] = ReturnValue;
    }
 
    NO_ORDER_NODE_SPEEDUP(Add)

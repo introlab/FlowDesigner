@@ -31,55 +31,62 @@ DECLARE_NODE(AND)
  *
 END*/
 
-class AND : public BufferedNode {
-   int input1ID;
-   int input2ID;
-   int outputID;
-   bool pullAnyway;
+class AND : public BufferedNode
+{
+   int m_outputID;
+   bool m_pullAnyway;
 public:
 
 
    AND(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
    {
-      input1ID = addInput("INPUT1");
-      input2ID = addInput("INPUT2");
-      outputID = addOutput("OUTPUT");
+      m_outputID = addOutput("OUTPUT");
       if (parameters.exist("PULL_ANYWAY"))
-	 pullAnyway = dereference_cast<bool> (parameters.get("PULL_ANYWAY"));
+      {
+         m_pullAnyway = dereference_cast<bool> (parameters.get("PULL_ANYWAY"));
+      }
       else
-	 pullAnyway = false;
+      {
+         m_pullAnyway = false;
+      }
+   }
+
+   virtual int translateInput (string inputName)
+   {
+      for (unsigned int i=0; i< inputs.size(); i++)
+      {
+         if (inputs[i].name == inputName)
+         {
+            return i;
+         }
+      }
+      return addInput(inputName);
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      if (pullAnyway)
+      bool outValue = true;
+
+      for (int j = 0; j < inputs.size(); j++)
       {
-
-	 ObjectRef input1Value = getInput(input1ID, count);
-	 ObjectRef input2Value = getInput(input2ID, count);
-	 if (dereference_cast<bool> (input1Value)
-	     && dereference_cast<bool> (input2Value))
-	    out[count] = TrueObject;
-	 else
-	    out[count] = FalseObject;
-
-      } else {
-
-	 ObjectRef input1Value = getInput(input1ID, count);
-	 if (!dereference_cast<bool> (input1Value))
-	 {
-	    out[count] = FalseObject;
-	    return;
-	 }
-	 ObjectRef input2Value = getInput(input2ID, count);
-	 if (!dereference_cast<bool> (input2Value))
-	 {
-	    out[count] = FalseObject;
-	    return;
-	 }
-	 out[count] = TrueObject;
-
+         ObjectRef inputValue = getInput(j, count);
+         if (!dereference_cast<bool> (inputValue) && outValue)
+         {
+            outValue = false;
+         }
+         if (!m_pullAnyway && !outValue)
+         {
+            break;
+         }
+      }
+      if (outValue)
+      {
+         out[count] = TrueObject;
+      }
+      else
+      {
+         out[count] = FalseObject;
       }
    }
 };

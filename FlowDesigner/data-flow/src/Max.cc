@@ -26,34 +26,43 @@ END*/
 class Max : public BufferedNode {
 protected:
    ///The ID of the 'output' output
-   int outputID;
+   int m_outputID;
 
    ///The ID of the 'input1' input
-   int input1ID;
-
-   ///The ID of the 'input2' input
-   int input2ID;
+   int m_input1ID;
 
 public:
    ///Constructor, takes the name of the node and a set of parameters
-   Max(string nodeName, ParameterSet params) 
+   Max(string nodeName, ParameterSet params)
      : BufferedNode(nodeName, params)
    {
-      input1ID = addInput ("INPUT1");
-      input2ID = addInput ("INPUT2");
-      outputID = addOutput ("OUTPUT"); 
+      m_input1ID = addInput ("INPUT1");
+      m_outputID = addOutput ("OUTPUT");
    }
-   
 
-
-  void calculate(int output_id, int count, Buffer &out) {
-
-     ObjectRef InputValue1 = getInput(input1ID,count);     
-     ObjectRef InputValue2 = getInput(input2ID,count);
-
-     out[count] = max(InputValue1, InputValue2);
-
+   virtual int translateInput (string inputName)
+   {
+      for (unsigned int i=0; i< inputs.size(); i++)
+      {
+         if (inputs[i].name == inputName)
+         {
+            return i;
+         }
+      }
+      return addInput(inputName);
    }
-   
+
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      ObjectRef ReturnObject = getInput(m_input1ID,count);
+
+      for (int j = 1; j < inputs.size(); j++)
+      {
+         ObjectRef InputValue = getInput(j,count);
+         ReturnObject = max(ReturnObject, InputValue);
+      }
+     out[count] = ReturnObject;
+   }
+
 };
 
