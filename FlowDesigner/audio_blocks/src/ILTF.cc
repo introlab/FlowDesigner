@@ -1,6 +1,6 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
@@ -30,7 +30,7 @@ DECLARE_NODE(ILTF)
 END*/
 
 
-class ILTF : public FrameOperation {
+class ILTF : public BufferedNode {
    
    int inputID;
    int outputID;
@@ -40,7 +40,7 @@ class ILTF : public FrameOperation {
 
 public:
    ILTF(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       filterID = addInput("FILTER");
@@ -50,7 +50,7 @@ public:
    virtual void specificInitialize()
    {
       outputs[outputID].lookBack += 1;
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
