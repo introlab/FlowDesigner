@@ -9,6 +9,7 @@
 //@implements core
 
 DECLARE_TYPE2("Matrix", Matrix<float>)
+DECLARE_TYPE(Matrix<bool>)
 DECLARE_TYPE(Matrix<int>)
 DECLARE_TYPE(Matrix<float>)
 DECLARE_TYPE(Matrix<double>)
