@@ -130,21 +130,21 @@ void GUIDocument::load()
    {
       dynamic_cast<GUINetwork *> (networks[i])->updateScroll();
    }
-   cerr << "aa\n";
+   //cerr << "aa\n";
    //BUG I guess we should delete this, but it screws up with the threads
    if (docproperty)
    {
       gtk_widget_destroy(docproperty);
    }
-   cerr << "bb\n";
+   //cerr << "bb\n";
    createParamDialog();
-   cerr << "cc\n";
+   //cerr << "cc\n";
 
    for (int i=0;i<params.size();i++)
    {
       insertLoadedParam(&(params[i]), params[i].type, params[i].value);
    }
-   cerr << "doc load updated\n";
+   //cerr << "doc load updated\n";
 }
 
 
@@ -631,7 +631,7 @@ void GUIDocument::run()
    try{
       ParameterSet parameters;
       {
-	 cerr << "there are " << params.size() << " params\n";
+	 //cerr << "there are " << params.size() << " params\n";
 	 for (int i=0;i<params.size();i++)
 	 {
 	    DocParameterData &curr = params[i];

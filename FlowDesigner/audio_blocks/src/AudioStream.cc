@@ -24,7 +24,7 @@
 class AudioStream;
 
 //DECLARE_NODE(AudioStream)
-NODE_INFO(AudioStream,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:ADVANCE:ENCODING")
+NODE_INFO(AudioStream,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:ADVANCE:ENCODING:STREAM_TYPE")
 
 
 static short ulaw2linear[256] = 
@@ -195,16 +195,28 @@ public:
 	    IStream &file = object_cast<IStream> (inputValue);
 	    file.read(tmpBuffer,itemSize*advance);
 	    if (file.eof())
+	    {
 	       output.status = Object::past_end;
+	       continue;
+	    }
 	 }
 	 else if (strType == fptr)
 	 {
-	    FILE *file = dereference_cast<FILEPTR> (inputValue);
+	    FILE *file = dereference_cast<FILE *> (inputValue);
 	    fread (tmpBuffer, 1, itemSize*advance, file);
+	    if (feof(file))
+	    {
+	       output.status = Object::past_end;
+	       continue;
+	    }
 	 } else if (strType == fd)
 	 {
 	    int file = dereference_cast<int> (inputValue);
-	    read (file, tmpBuffer, itemSize*advance);
+	    if (read (file, tmpBuffer, itemSize*advance) != itemSize*advance)
+	    {
+	       output.status = Object::past_end;
+	       continue;
+	    }
 	 }
 	 raw2Float (tmpBuffer, output.end() - advance, advance, encoding);
 
