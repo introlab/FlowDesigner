@@ -38,12 +38,15 @@ public:
   //cog evaluation
   virtual float get_center_of_gravity();
   
-  //lower limits of the function
+  //higher limits of the function
   virtual float get_upper_bound() {return m_c;}
   
-  //higher limit of the functions
+  //lower limit of the functions
   virtual float get_lower_bound() {return m_a;}
-  
+
+  //get all bounds of the function
+  virtual Vector<float> get_bounds();
+ 
   //cloning capability
   virtual ObjectRef clone();
   

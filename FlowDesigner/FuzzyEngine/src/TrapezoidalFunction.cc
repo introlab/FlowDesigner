@@ -8,6 +8,7 @@
 #include "Vector.h"
 #include "FuzzyOperators.h"
 
+
 DECLARE_NODE(TrapezoidalFunction)
 DECLARE_TYPE(TrapezoidalFunction)
 /*Node
@@ -200,4 +201,17 @@ void TrapezoidalFunction::readFrom(istream &in) {
       if (tag != ">") 
          throw new ParsingException ("Parse error: '>' expected ");
    }
+}
+
+Vector<float> TrapezoidalFunction::get_bounds() {
+
+  Vector<float> bounds(4);
+
+  bounds[0] = m_a;
+  bounds[1] = m_b;
+  bounds[2] = m_c;
+  bounds[3] = m_d;
+  
+  return bounds;
+
 }

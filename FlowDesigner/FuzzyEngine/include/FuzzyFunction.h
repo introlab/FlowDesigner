@@ -53,12 +53,15 @@ public:
   //computes the center of gravity (pure virtual function)
   virtual float get_center_of_gravity() = 0;
   
-  //lower limits of the function
+  //higher limits of the function
   virtual float get_upper_bound() = 0;
   
-  //higher limit of the functions
+  //lower limit of the functions
   virtual float get_lower_bound() = 0;
-  
+
+  //get all bounds of the function
+  virtual Vector<float> get_bounds() = 0;
+
   //cloning capability
   //virtual ObjectRef clone() = 0;
   

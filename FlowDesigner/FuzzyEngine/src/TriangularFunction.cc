@@ -175,3 +175,15 @@ void TriangularFunction::readFrom(istream &in) {
   }
   
 }
+
+Vector<float> TriangularFunction::get_bounds() {
+
+  Vector<float> bounds(3);
+
+  bounds[0] = m_a;
+  bounds[1] = m_b;
+  bounds[2] = m_c;
+  
+  return bounds;
+
+}

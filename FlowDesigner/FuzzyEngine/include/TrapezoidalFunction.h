@@ -45,6 +45,9 @@ public:
   //higher limit of the functions
   virtual float get_lower_bound() {return m_a;}
   
+  //get all bounds of the function
+  virtual Vector<float> get_bounds();
+
   //cloning capability
   virtual ObjectRef clone();
   
