@@ -120,7 +120,7 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
 
 
 
-void categContent( string categName, string nextcateg, ostream &out, UINodeRepository::iterator i )
+void categContent( string categName, string nextcateg, ostream &out)
 {
 
 // Initialisation des variables
@@ -133,7 +133,7 @@ void categContent( string categName, string nextcateg, ostream &out, UINodeRepos
 
 // On cree une liste des noeuds de la categorie
 
-   i = UINodeRepository::Begin();
+  UINodeRepository::iterator i = UINodeRepository::Begin();
 
 
    while (i != UINodeRepository::End())
@@ -295,18 +295,10 @@ int main(int argc, char **argv)
 {
 
 
-// Initialisation des variables
-
-   UINodeRepository::Scan();
-   
-   int nbcateg = 0;
-   vector<string> listcateg(100);
-   int newcateg = 1;
-
-   int nbnodes = 0;
-
-   string stock = "";
-
+  //Scan toolboxes
+  UINodeRepository::Scan();
+  
+   vector<string> listcateg;
    ostream &out = cout;
 
    out << "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n"
@@ -320,70 +312,55 @@ int main(int argc, char **argv)
        << "</head>\n"
        << "<body>";
    
-   UINodeRepository::iterator i;
-
-
-// On receuille les categories differentes dans une liste
-
-   i = UINodeRepository::Begin();
-   listcateg[0]= i->second->category;
-   i++;
-   nbcateg++;
-   nbnodes++;
-
-
-   while (i != UINodeRepository::End())
+   //Getting available categories
+   for (UINodeRepository::iterator iter= UINodeRepository::Begin();iter != UINodeRepository::End(); iter++)
    {
-     newcateg = 1;
-     int count = 0;
+     bool newcateg = true;
 
-
-     for(int j = 0; j < nbcateg ; j++)
-       if( listcateg[j] == i->second->category )
-	 newcateg = 0;
-
-
-     if(newcateg == 1)
-       {
-	 listcateg[nbcateg] = i->second->category;
-	 nbcateg++;
+     //testing if we already inserted this category
+     for(int j = 0; j < listcateg.size() ; j++) {
+       if( listcateg[j] == iter->second->category ) {
+	 newcateg = false;
        }
+     }
 
-     nbnodes++;
-     i++;
+     if(newcateg == true) {
+	 if (argc > 1) {
+	   for (int cat = 1; cat < argc; cat++) {	     
+	     //found substring in the category (specified by the user)
+	     if (iter->second->category.find(string(argv[cat])) != string::npos) {
+	       listcateg.push_back(iter->second->category);	     
+	     }
+	   }
+	 }
+	 else {
+	   listcateg.push_back(iter->second->category);	 
+	 }
+       }
    }   
 
+   // Sorting category names
+   sort(listcateg.begin(), listcateg.end(), greater<string>());
 
 
-// Tri des categories en ordre alphabetique dans la liste
-
-   for (int passage=0; passage < (nbcateg - 1) ; passage++)
-       for (int k=0; k < (nbcateg - 1); k++)
-	   if (listcateg[k] > listcateg[k +1])
-	     {
-	       stock = listcateg[k];
-	       listcateg[k] = listcateg[k + 1];
-	       listcateg[k + 1] = stock;
-	     }
-
-
-// Affichage du tableau : categories de noeuds
-
-   out << "<a NAME=\"" << "Categories of available FlowDesigner nodes" << "\"></a>"; 
-
+   // Print categories table header
+   out << "<a NAME=\"" << "Categories of available FlowDesigner Nodes" << "\"></a>"; 
    out << "<p><br><center><h1><b>" << "* NODE" <<"&nbsp " <<" DOCUMENTATION *</b><br><br>";
-   out << "Categories of available FlowDesigner nodes"
-       << "</h1>\n<br>";
+   out << "Categories of available FlowDesigner Nodes"<< "</h1>\n<br>";
    out << "<table BORDER COLS=2 WIDTH=\"40% \" NOSAVE >\n\n";
 
    int nbcol = 2;
 
-   for(int j = 0; j <= ( nbcateg / nbcol) ; j++)
-    {
-       out << "<tr><td>" <<"* " <<"<a href=\"#" << listcateg[j] << "\">" << listcateg[j] <<"</a></td>\n"
-	     << "<td>" <<"* " <<"<a href=\"#" << listcateg[(nbcateg / nbcol ) + j + 1] << "\">" << listcateg[(nbcateg / nbcol) + j + 1] <<"</a></td></tr>\n";
-     }
+   //adding empty category for last element if required
+   if ((listcateg.size() % nbcol) == 1) {
+     listcateg.push_back(string("-"));
+   }
 
+   //printing table
+   for(int j = 0; j < listcateg.size() / nbcol; j++) {
+     out << "<tr><td>" <<"* " <<"<a href=\"#" << listcateg[j] << "\">" << listcateg[j] <<"</a></td>\n"
+	 << "<td>" <<"* " <<"<a href=\"#" << listcateg[listcateg.size() / nbcol + j] << "\">" << listcateg[(listcateg.size() / nbcol) + j] <<"</a></td></tr>\n";
+   }
 
    out << "</table></center>\n";
    out << "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
@@ -391,9 +368,15 @@ int main(int argc, char **argv)
        << "<hr><br>"
        << "<h1>Categories:</h1>";
 
-
-   for(int a=0; a < nbcateg; a++)
-     categContent( listcateg[a], listcateg[a + 1], out, i);
+   //creating list of nodes for each category
+   for(int a=0; a < listcateg.size(); a++) {
+     if (a < listcateg.size() - 1) {
+       categContent( listcateg[a], listcateg[a + 1], out);
+     }
+     else {
+       categContent( listcateg[a],string("-"), out);
+     }
+   }
 
    out << "\n</body>\n"
        << "</frameset>"
