@@ -158,7 +158,7 @@ void GUINode::draw()
                     "y1", y1-5,
                     "x2", x2+5,
                     "y2", y2+5,
-                    "fill_color_rgba", 0x3cb37120,
+                    "fill_color_rgba", 0x8cd0af20,
                     "outline_color", "black",
                     "width_units", 2.0,
                     NULL);
@@ -524,7 +524,7 @@ void GUINode::initialize_widgets() {
 				"y1", y1-5,
 				"x2", x2+5,
 				"y2", y2+5,
-				"fill_color_rgba", 0x3cb37120,
+				"fill_color_rgba", 0x8cd0af20,
 				"outline_color", "black",
 				"width_units", 2.0,
 				NULL);
