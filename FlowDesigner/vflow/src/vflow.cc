@@ -1358,7 +1358,7 @@ gboolean vflow_select_page_event(GtkNotebook *notebook, gboolean arg1, vflowGUI 
 
 int main (int argc, char *argv[]) 
 {
-   xmlKeepBlanksDefault(0);
+   //xmlKeepBlanksDefault(0);
    try {
       
       IExtensions::detect();

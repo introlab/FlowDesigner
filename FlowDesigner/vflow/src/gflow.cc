@@ -43,7 +43,7 @@ void run2(GRunContext *ctx)
 
 int main(int argc, char **argv)
 {
-   xmlKeepBlanksDefault(0);
+   //xmlKeepBlanksDefault(0);
 
    if (argc < 2) {
      cout<<"Usage : "<<argv[0]<<" <document> [arguments]"<<endl;
