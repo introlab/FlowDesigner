@@ -15,6 +15,7 @@ class FFNet : public Object {
    Vector<int> topo;
    Vector<FFLayer *> layers;
   public:
+   FFNet(const Vector<int> &_topo, const vector<string> &functions);
    FFNet(const Vector<int> &_topo);
    FFNet() {}
    double *calc(const double *input);
