@@ -85,7 +85,16 @@ inline ObjectRef Load::getOutput(int output_id, int count)
          //T *loadedObject = new T;
          //stream >> *loadedObject;
          //currentObject = ObjectRef(loadedObject);
-         stream >> currentObject;
+	 cerr << "reading for count = " << count << endl;
+	 try {
+	    stream >> currentObject;
+	 } catch (...)
+	 {
+	    cerr << "end!\n";
+	    return Object::past_endObject;
+	 }
+	 if (stream.eof() || count == 2)
+	    return Object::past_endObject;
          processCount = count;
       }
       return currentObject;

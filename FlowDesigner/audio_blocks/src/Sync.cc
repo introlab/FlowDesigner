@@ -58,6 +58,30 @@ public:
 
    virtual ObjectRef getOutput(int output_id, int count);
    
+
+   void request(int outputID, const ParameterSet &req)
+   {
+      //cerr << "name = " << name << " this = " << this << " outputID = " << outputID << endl;   cerr << "lookahead = " << outputs[outputID].lookAhead << " lookback = " << outputs[outputID].lookBack << endl;   
+      
+      if (req.exist("LOOKAHEAD"))
+      {
+	 ParameterSet p;
+	 p.add("LOOKAHEAD", ObjectRef(new Int (1+ratio*dereference_cast<int> (req.get("LOOKAHEAD")))));
+	 inputs[inputID].node->request(inputs[inputID].outputID,p);
+      }
+      if (req.exist("LOOKBACK"))
+      {
+	 ParameterSet p;
+	 p.add("LOOKBACK", ObjectRef(new Int (1+ratio*dereference_cast<int> (req.get("LOOKBACK")))));
+	 inputs[inputID].node->request(inputs[inputID].outputID,p);
+      }
+      //if (req.exist("CACHEALL"))
+	 
+      this->Node::request(outputID,req);
+      
+   }
+      
+
 };
 
 ObjectRef Sync::getOutput(int output_id, int count)

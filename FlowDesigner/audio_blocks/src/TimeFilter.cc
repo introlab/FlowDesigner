@@ -54,10 +54,10 @@ public:
       if (parameters.exist("LOOKAHEAD"))
          inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
       inputsCache[inputID].lookBack = fir.size() - 1 - inputsCache[inputID].lookAhead;
-      if (iir.size() - 1 > outputs[outputID].lookBack)
+      /*if (iir.size() - 1 > outputs[outputID].lookBack)
          outputs[outputID].lookBack = iir.size() - 1;
-      
-      
+      */
+      outputs[outputID].lookBack += iir.size() - 1;
    }
 
    ~TimeFilter() {}

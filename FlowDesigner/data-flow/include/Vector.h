@@ -35,7 +35,38 @@ public:
    {
       out.write ((const unsigned char*) begin(), size()*sizeof(T));
    }
+   
+   void readFrom(istream &in=cin);
+   
 };
 
+
+
+template <class T>
+inline void Vector<T>::readFrom(istream &in)
+{
+   int items_found=0;
+   
+   while (!in.eof())
+   {
+      T tmp;
+      in >> tmp;
+	 if (in.fail()) break;
+	 items_found++;
+	 resize(items_found);
+	 operator[] (items_found-1)=tmp;
+   }
+   in.clear();
+   char ch;
+   in >> ch;       
+}
+
+//This thing's pissing me off!
+class FFLayer;
+template <>
+inline void Vector<FFLayer*>::readFrom(istream &in)
+{
+   cerr << "fuck off!\n";
+}
 
 #endif

@@ -59,6 +59,8 @@ void TextProbe::reset()
 void TextProbe::display()
 {
    char probeOut[3000];
+   for (int i=0;i<3000;i++)
+      probeOut[i]=0;
    ostrstream out(probeOut, 2999);
    
    out << *inputValue;
