@@ -330,7 +330,7 @@ gint GUILink::event(GdkEvent *event)
 
 void GUILink::move (bool isInput, double dx,double dy)
 {
-   GnomeCanvasPoints *points = gnome_canvas_points_new(2);
+   GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
    if (!isInput)
    {
       x1+=dx;
@@ -339,9 +339,24 @@ void GUILink::move (bool isInput, double dx,double dy)
       x2+=dx;
       y2+=dy;
    }
-   points->coords[0]=x1;
-   points->coords[1]=y1;
-   points->coords[2]=x2;
-   points->coords[3]=y2;
+
+   
+
+   m_points.front()->setxy(x1,y1);
+   m_points.back()->setxy(x2,y2);
+   
+
+   int pos = 0;
+
+   
+   for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+	iter != m_points.end(); iter++) {
+     
+     points->coords[pos++] = (*iter)->x;
+     points->coords[pos++] = (*iter)->y;
+     
+   }
+
    gnome_canvas_item_set(item, "points", points, NULL);
+   gnome_canvas_points_unref(points);
 }

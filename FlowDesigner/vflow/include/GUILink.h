@@ -31,6 +31,11 @@ class GUILinkPoint {
     return *this;
   }
   
+  void setxy(double _x, double _y) {
+    x = _x;
+    y = _y;
+  }
+
   double dist (const GUILinkPoint &p) {
     return sqrt(pow(p.x - x,2) + pow(p.y -y,2));
   }
