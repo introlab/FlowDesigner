@@ -2,7 +2,7 @@ AC_INIT(src/main.cc)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(VFlow, 0.5.1)
+AM_INIT_AUTOMAKE(VFlow, 0.6.0)
 
 includedir=$includedir/overflow
 datadir=$datadir/overflow

@@ -1,6 +1,7 @@
 // Copyright (C) 2001 Jean-Marc Valin & Dominic Letourneau
 
 #include "vflow.h"
+#include "iextensions.h"
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -626,7 +627,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) {
    about = gnome_about_new ("vflow", VERSION,
                             _("(C) 1999-2001 Jean-Marc Valin & Dominic Letourneau"),
                             authors,
-                            _("Overflow (http://freespeech.on.openproject.net/overflow.html) is a free (GPL/LGPL) ""data flow oriented"" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a ""clone"" of any of them.\n\nThis software is part of the Open Mind Speech project (http://freespeech.on.openproject.net/)."),
+                            _("Overflow (http://freespeech.sourceforge.net/overflow.html) is a free (GPL/LGPL) ""data flow oriented"" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a ""clone"" of any of them.\n\nThis software is part of the Open Mind Speech project (http://freespeech.sourceforge.net/)."),
                             NULL);
    gtk_object_set_data (GTK_OBJECT (about), "about", about);
    gtk_window_set_modal (GTK_WINDOW (about), TRUE);
@@ -780,16 +781,8 @@ void vflowGUI::create_mdi () {
 int main (int argc, char *argv[]) {
 
    try {
+      IExtensions::detect();
       scanDL();
-   } 
-   catch (BaseException *e) {
-      e->print();
-      delete e;
-      exit(1);
-   } catch (...) {cerr << "caught something\n"; exit(1);}
-   
-   try {
-      
       UIDocument::loadAllInfo();
 
       g_thread_init(NULL); 
