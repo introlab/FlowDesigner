@@ -123,9 +123,13 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
 	    return outBuffer[count];
 	 } else {
 	    ObjectRef value = outBuffer[count];
-	    if (value->status != Object::valid)
+	    if (value->status == Object::valid)
+	    {
+	       return value;
+	    } else {
 	       calculate (output_id, count, outBuffer);
-	    return value;
+	       return outBuffer[count];
+	    }
 	 }
       }
 
