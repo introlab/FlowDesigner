@@ -40,12 +40,13 @@ ObjectRef InputStream::getOutput(int output_id, int count)
    {
       if (count != processCount)
       {
+         processCount = count;
          NodeInput input = inputs[inputID];
          string fileName = dereference_cast<string> (input.node->getOutput(input.outputID,count));
          openedFile = ObjectRef (new IFStream());
          ifstream &tmp = dereference_cast<ifstream> (openedFile);
          tmp.open(fileName.c_str());
-      }
+      } 
       return openedFile;
    }
    else 

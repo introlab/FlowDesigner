@@ -23,11 +23,6 @@
 #include "Exception.h"
 #include <typeinfo>
 
-/** Smart pointer to Object called ObjectRef
-    @author Jean-Marc Valin
-    @version 1.0
- */
-typedef counted_ptr<Object> ObjectRef; 
 
 class GenericCastException : public BaseException{
 public:

@@ -20,6 +20,14 @@
 #include "rc_ptrs.h"
 #include <string>
 
+class Object;
+/** Smart pointer to Object called ObjectRef
+    @author Jean-Marc Valin
+    @version 1.0
+ */
+typedef counted_ptr<Object> ObjectRef; 
+
+
 /** Our Object base class. Everything in the network must have Object as 
     base class.
     @author Dominic Letourneau & Jean-Marc Valin
@@ -58,6 +66,11 @@ public:
       obj.printOn (out);
       return out;
    }
+
+   static const ObjectRef nilObject;
+   static const ObjectRef before_beginningObject;
+   static const ObjectRef past_endObject;
+   
 protected:
    
 };
