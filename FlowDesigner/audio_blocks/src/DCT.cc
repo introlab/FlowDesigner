@@ -74,6 +74,8 @@ public:
       rfftw_destroy_plan(plan);
       delete [] inputCopy;
       delete [] outputCopy;
+      delete [] rNormalize;
+      delete [] iNormalize;
    }
 
    virtual void specificInitialize()
@@ -108,7 +110,7 @@ public:
       
       for (i=1;i<inputLength/2;i++)
       {
-	 output[i]=rNormalize[i]*outputCopy[i] + iNormalize[i]*outputCopy[inputLength-i];
+	 output[i]=rNormalize[i]*outputCopy[i] - iNormalize[i]*outputCopy[inputLength-i];
 	 output[inputLength-i]=rNormalize[inputLength-i]*outputCopy[i] + iNormalize[inputLength-i]*outputCopy[inputLength-i];
       }
 
