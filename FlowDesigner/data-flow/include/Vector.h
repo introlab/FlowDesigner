@@ -152,7 +152,7 @@ istream &operator >> (istream &in, Vector<T> &vec)
 
 /**The object cast from ObjectRef*/
 template <>
-Vector<float> &object_cast<Vector<float> > (const ObjectRef &ref)
+inline Vector<float> &object_cast<Vector<float> > (const ObjectRef &ref)
 {
    Vector<float> *tmp = dynamic_cast<Vector<float> *>(&(*ref));
    if (!tmp)
@@ -167,7 +167,7 @@ Vector<float> &object_cast<Vector<float> > (const ObjectRef &ref)
 }
 
 template <>
-Vector<double> &object_cast<Vector<double> > (const ObjectRef &ref)
+inline Vector<double> &object_cast<Vector<double> > (const ObjectRef &ref)
 {
    Vector<double> *tmp = dynamic_cast<Vector<double> *>(&(*ref));
    if (!tmp)

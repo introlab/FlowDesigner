@@ -50,7 +50,7 @@ protected:
 
 /**The object pointer cast from ObjectRef*/
 template <class T>
-T object_ptr_cast (const ObjectRef &ref)
+inline T object_ptr_cast (const ObjectRef &ref)
 {
    T tmp = dynamic_cast<T>(&(*ref));
    if (!tmp) 
@@ -60,7 +60,7 @@ T object_ptr_cast (const ObjectRef &ref)
 
 /**The object cast from ObjectRef*/
 template <class T>
-T &object_cast (const ObjectRef &ref)
+inline T &object_cast (const ObjectRef &ref)
 {
    T *tmp = dynamic_cast<T *>(&(*ref));
    if (!tmp) 
@@ -70,7 +70,7 @@ T &object_cast (const ObjectRef &ref)
 
 /**The type cast from ObjectRef*/
 template <class T>
-T &dereference_cast (const ObjectRef &ref)
+inline T &dereference_cast (const ObjectRef &ref)
 {
    GenericType<T> *tmp = (dynamic_cast<GenericType<T> * >(&(*ref)));
    if (!tmp) 
