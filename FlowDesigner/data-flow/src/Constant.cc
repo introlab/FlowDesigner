@@ -18,17 +18,17 @@
 
 DECLARE_NODE(Constant)
 /*Node
-
+ *
  * @name Constant
  * @category General
  * @description No description available
-
+ *
  * @output_name VALUE
  * @output_description No description available
-
+ *
  * @parameter_name VALUE
  * @parameter_description No description available
-
+ *
 END*/
 
 

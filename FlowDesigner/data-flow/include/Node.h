@@ -259,6 +259,15 @@ protected:
    /**symbolic to numeric translation for output names*/
    virtual int translateOutput(string inputName);
 
+   /**Run-time assertions*/
+   virtual void rt_assert(bool cond, string message="", char *_file="unknown", int _line=0);
+
+   /**Construct-time assertions*/
+   virtual void construct_assert(bool cond, string message="", char *_file="unknown", int _line=0);
+
+   /**Error with the node*/
+   virtual void throw_error(bool send_ptr, string message, char *_file, int _line);
+
 public:
    /**The node instance factory*/
    static map<string,_NodeFactory*> &factoryDictionary();

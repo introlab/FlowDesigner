@@ -304,5 +304,25 @@ int Node::addNodeInfo (const string &info) {
    return 0;
 };
 
+/**Run-time assertions*/
+void Node::rt_assert(bool cond, string message="", char *_file, int _line)
+{
+   if (cond)
+      return;
+   throw_error(true, message, _file, _line);
+}
+
+/**Init-time assertions*/
+void Node::construct_assert(bool cond, string message="", char *_file, int _line)
+{
+   throw_error(false, message, _file, _line);
+}
+
+/**Error with the node*/
+void Node::throw_error(bool send_ptr, string message, char *_file, int _line)
+{
+   throw new NodeException (send_ptr ? this : NULL,message,_file,_line);
+}
+
 
 //} //namespace DataFlow

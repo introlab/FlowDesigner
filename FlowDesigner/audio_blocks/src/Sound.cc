@@ -116,13 +116,14 @@ public:
 	 if (modeStr == "RW")
 	    mode=O_RDWR;
       }
-      if ((audio_fd=open(device.c_str(),mode)) == -1) 
+      
+      if (parameters.exist("DUMMY"))
       {
-	 perror (device.c_str());
-	 //close(audio_fd);
-	 throw new NodeException(NULL, "Can't open sound device\n", __FILE__, __LINE__);
-	 //exit(1);
+	 rt_assert((audio_fd=open(device.c_str(),mode, 0644)) != -1, "Can't open sound file\n", __FILE__, __LINE__);
+      } else {
+	 rt_assert((audio_fd=open(device.c_str(),mode)) != -1, "Can't open sound device\n", __FILE__, __LINE__);
       }
+      
       if (!parameters.exist("DUMMY"))
       {
       //int arg=0x7fff0004;
@@ -150,21 +151,21 @@ public:
       {
 	 perror("SNDCTL_DSP_SETFMT");
 	 close(audio_fd);
-	 throw new NodeException(NULL, "Can't set the right format\n", __FILE__, __LINE__);
+	 throw_error (true, "Can't set the sample format\n", __FILE__, __LINE__);
       }
       
       if (ioctl(audio_fd, SNDCTL_DSP_STEREO, &stereo)==-1)
       {
 	 perror("SNDCTL_DSP_STEREO");
 	 close(audio_fd);
-	 throw new NodeException(NULL, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
+	 throw_error (true, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
       }
       
       if (ioctl(audio_fd, SNDCTL_DSP_SPEED, &speed)==-1)
       {
 	 perror("SNDCTL_DSP_SPEED");
 	 close(audio_fd);
-	 throw new NodeException(NULL, "Can't set sound device speed\n", __FILE__, __LINE__);
+	 throw_error (true, "Can't set sound device speed\n", __FILE__, __LINE__);
       }
       }
 
