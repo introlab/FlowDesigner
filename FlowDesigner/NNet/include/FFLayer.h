@@ -148,6 +148,24 @@ class FFLayer : public Object {
 	    weights[i]+=momentum[i];
 	 }
       }
+
+   void setDeltaRate(double rate)
+      {
+	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	    saved_weights[i] = rate;
+      }
+   void deltaBar(double mom, double inc, double dec)
+      {
+	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	 {
+	    if (momentum[i]*gradient[i] > 0)
+	       saved_weights[i] *= inc;
+	    else
+	       saved_weights[i] *= dec;
+	    momentum[i] = mom*momentum[i] + gradient[i];
+	    weights[i] += saved_weights[i]*gradient[i];
+	 }
+      }
    void undo()
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)

@@ -365,6 +365,10 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
    double in[topo[0]];
    double out[topo[topo.size()-1]];
 
+   for (i=0;i<layers.size();i++)
+   {
+      layers[i]->setDeltaRate(learnRate);
+   }
 
    while (iter)
    {
@@ -394,13 +398,14 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 
 	 for (i=0;i<layers.size();i++)
 	 {
+	    layers[i]->deltaBar(mom, increase, decrease);
 	    //layers[i]->updateGradient(alpha,momentum);
 	 }
 
       }
 
       iter--;
-/*
+
       double SSE = 0;
       for (i=0;i<tin.size();i++)
       {
@@ -410,14 +415,14 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 	    in[j]=tin[i][j];
 	 for (j=0;j<topo[topo.size()-1];j++)
 	    out[j]=tout[i][j];
-
+	 
 	 double *netOut = calc (in);
 	 for (j=0;j<topo[topo.size()-1];j++)
 	    SSE += (netOut[j]-out[j])*(netOut[j]-out[j]);
       }
+      
 
-*/
-      //cout << (min_error/tin.size()/topo[topo.size()-1]) << "\t" << middle << "\t" << tin.size() << endl;
+      cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
 
 
    }

@@ -124,6 +124,11 @@ void FFLayer::readFrom (istream &in)
 	 value = new double [nbNeurons];
 	 error = new double [nbNeurons];
 	 momentum = new double [nbNeurons*(nbInputs+1)];
+	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	 {
+	    momentum[i]=0;
+	 }
+
 	 //cerr << "done with weights\n";
       }
       else
