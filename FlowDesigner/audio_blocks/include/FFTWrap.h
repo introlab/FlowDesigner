@@ -35,7 +35,9 @@
 #endif /*ifdef HAVE_FFTW*/
 
 using namespace std;
+#if (__GNUC__ == 3 && __GNUC_MINOR__ == 1 && HAVE_EXT_HASH_MAP)
 using namespace __gnu_cxx;
+#endif
 
 class _FFTWrap {
 #ifdef NO_HASH_MAP
