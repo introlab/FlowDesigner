@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-noinst_HEADERS = FFLayer.h \
+include_HEADERS = FFLayer.h \
 	FFNet.h \
 	NNetSet.h

@@ -1,8 +1,8 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-noinst_HEADERS = kmeans.h \
+include_HEADERS = kmeans.h Cell.h CodebookMap.h
+
+noinst_HEADERS = \
 	VQTrain.h \
 	MMIScore.h \
-	MMITrain.h \
-	Cell.h \
-	CodebookMap.h
+	MMITrain.h
