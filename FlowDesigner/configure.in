@@ -43,6 +43,8 @@ AC_MODULE_OPT(FuzzyEngine, yes)
 AC_MODULE_OPT(lapackflow, no)
 AC_MODULE_OPT(vflow, yes)
 
+AM_CONDITIONAL([COND_OPT], [true])
+
 modules="$audio_blocks $VQ $HMM $NNet $FuzzyEngine $effects $lapackflow $vflow"
 AC_SUBST(modules)
 AC_CONFIG_SUBDIRS($modules)

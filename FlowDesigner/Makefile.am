@@ -11,7 +11,7 @@ bin_SCRIPTS = flowdesigner-config
 EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd
 
 #Fools KDevelop into finding all the files
-if TRUE
+if COND_OPT
 SUBDIRS = data-flow @modules@ tools examples
 else
 SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow vflow tools examples
