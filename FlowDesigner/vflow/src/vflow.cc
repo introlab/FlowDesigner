@@ -116,8 +116,6 @@ void vflowGUI::paste (GUIDocument *doc) {
   net->get_scroll_offsets(c1,c2);   
   //printf("scroll offsets (%i, %i)\n",c1,c2);
 
-
-
   //copying
   for (list<GUINode*>::iterator iter = clipboard.begin();
        iter != clipboard.end(); iter++) {

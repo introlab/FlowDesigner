@@ -26,6 +26,7 @@ GUINode::GUINode(UINetwork* _net, string _name, string _type, double _x, double 
    , grab(false)
    , guiParams(NULL)
 {
+
    initialize_widgets();
    createPopup();
 }
@@ -373,11 +374,11 @@ gint GUINode::event(GdkEvent *event)
          new_y = item_y;
          move(new_x - xtmp, new_y - ytmp);
          //gnome_canvas_item_move(item, new_x - xtmp, new_y - ytmp);
-         x += new_x - xtmp;
-         y += new_y - ytmp;
-
+	
          xtmp = new_x;
          ytmp = new_y;
+	 
+
 	 net->setModified();
       }
       break;
@@ -418,6 +419,8 @@ void GUINode::move(double dx, double dy)
   }
   else {
     int i;
+
+    setPos(x + dx, y + dy);
     gnome_canvas_item_move(GNOME_CANVAS_ITEM(group), dx, dy);
     for (i=0;i<inputs.size();i++)
       dynamic_cast<GUITerminal *>(inputs[i])->move(dx, dy);
@@ -428,6 +431,7 @@ void GUINode::move(double dx, double dy)
 
 void GUINode::selectedMove(double dx,double dy) {
   int i;
+  setPos(x + dx, y + dy);
   gnome_canvas_item_move(GNOME_CANVAS_ITEM(group), dx, dy);
   for (i=0;i<inputs.size();i++)
     dynamic_cast<GUITerminal *>(inputs[i])->move(dx, dy);
