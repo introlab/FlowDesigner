@@ -106,6 +106,8 @@ public:
    
    vector<UILink *> getConnections() const {return connections;}
 
+   UINetTerminal* getNetTerminal() {return netTerminal;}
+
 };
 
 #endif
