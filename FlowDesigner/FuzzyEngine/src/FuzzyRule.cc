@@ -76,14 +76,14 @@ FuzzyRule::FuzzyRule(string nodeName, ParameterSet params)
     throw new GeneralException("Antecedant or consequent not specified",__FILE__,__LINE__);
   }
 
-  vector<char> discardToken(3);
-  vector<char> keepToken;
+  Vector<char> discardToken(3);
+  Vector<char> keepToken;
   discardToken[0]= ' ';
   discardToken[1]= ':';
   discardToken[2]= ';';
 
 
-  vector<string> tokens;
+  Vector<string> tokens;
   string_to_token(tokens,antecedant,keepToken,discardToken);
 
 

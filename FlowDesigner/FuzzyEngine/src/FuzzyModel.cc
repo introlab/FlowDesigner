@@ -295,9 +295,9 @@ FuzzySet* FuzzyModel::find_set_named(const string &name, int type) {
 //////////////////////////////////////////////////////////////////////
 // Evaluation/inference 
 //////////////////////////////////////////////////////////////////////
-vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
+Vector<float>& FuzzyModel::evaluate(Vector<float>  &input_values) {
   
-  vector<float> inputs;
+  Vector<float> inputs;
   
   if (input_values.size() != m_input_set.size()) {		
     throw new GeneralException("NOT ENOUGH INPUT VARIABLES",__FILE__,__LINE__);	
@@ -321,7 +321,7 @@ vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
   }
 
   //we are assuming that the input variables are in the same order than the rules
-  vector<float> conjunction_values(m_input_set.size());
+  Vector<float> conjunction_values(m_input_set.size());
   
   
   for (int x = 0; x < m_rules.size(); x++) {
@@ -369,7 +369,7 @@ vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
   
   for (i = 0; i < m_output_set.size(); i++) {
     
-    vector<FuzzyFunction*> &funct = m_output_set[i]->get_member_functions();
+    Vector<FuzzyFunction*> &funct = m_output_set[i]->get_member_functions();
     
     for (int j = 0; j < funct.size(); j++) {
       disjunction_value = disjunction(funct[j]->get_inference_values());
@@ -481,8 +481,8 @@ void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
     
     //calculate output
     Vector<float> &vect_value = object_cast<Vector<float> >(Input);  
-    
-    vector<float>& calc_output = evaluate(vect_value);
+
+    Vector<float>& calc_output = evaluate(vect_value);
     
     Vector<float> *my_output = new Vector<float>(calc_output.size());
     

@@ -76,10 +76,10 @@ GenericModel::~GenericModel() {
 //////////////////////////////////////////////////////////////////////
 // Fuzzy conjunction operator (min)
 //////////////////////////////////////////////////////////////////////
-float GenericModel::conjunction(vector<float> &c_values) {
+float GenericModel::conjunction(Vector<float> &c_values) {
 
   
-  if (c_values.empty()) {
+  if (c_values.size() == 0) {
     throw new GeneralException("Conjunction values vector empty",__FILE__,__LINE__);
   }
   
@@ -98,9 +98,9 @@ float GenericModel::conjunction(vector<float> &c_values) {
 //////////////////////////////////////////////////////////////////////
 // Fuzzy disjunction operator (max)
 //////////////////////////////////////////////////////////////////////
-float GenericModel::disjunction(vector<float> &d_values) {
+float GenericModel::disjunction(Vector<float> &d_values) {
 
-  if (d_values.empty()) {
+  if (d_values.size() == 0) {
     throw new GeneralException("Disjunction values vector empty",__FILE__,__LINE__);
   }
   
@@ -118,7 +118,7 @@ float GenericModel::disjunction(vector<float> &d_values) {
 }
 
 
-vector<float>& GenericModel::defuzzification() {
+Vector<float>& GenericModel::defuzzification() {
   
   m_defuzzification.resize(0);
   
@@ -136,7 +136,7 @@ vector<float>& GenericModel::defuzzification() {
     area_cumul = 0;
     defuzz_value = 0;
     
-    vector<FuzzyFunction*> & functions = m_output_set[i]->get_member_functions();
+    Vector<FuzzyFunction*> & functions = m_output_set[i]->get_member_functions();
     
     for (int j = 0;j < functions.size(); j++) {
       

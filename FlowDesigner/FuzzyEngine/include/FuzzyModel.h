@@ -48,13 +48,13 @@ public:
 	virtual ~FuzzyModel();
 
 	//evaluate the model with the named input values (in rule order)
-	virtual vector<float> & evaluate(vector<float> &input_values);
+	virtual Vector<float> & evaluate(Vector<float> &input_values);
 
 	//pure virtual function that must be implemented by the
 	//real model (conjunction,disjunction,defuzzification)
-	virtual float conjunction(vector<float> &c_values) = 0;
-	virtual float disjunction(vector<float> &d_values) = 0;
-	virtual vector<float> & defuzzification() = 0;
+	virtual float conjunction(Vector<float> &c_values) = 0;
+	virtual float disjunction(Vector<float> &d_values) = 0;
+	virtual Vector<float> & defuzzification() = 0;
 
 
 	virtual void calculate(int output_id, int count, Buffer &out);
@@ -82,13 +82,13 @@ protected:
 	int m_ModelID;
 
 	//vector of rules
-	vector<FuzzyRule*> m_rules;
+	Vector<FuzzyRule*> m_rules;
 
 	//vector of input sets
-	vector<FuzzySet*> m_input_set;
+	Vector<FuzzySet*> m_input_set;
 
 	//vector of output sets
-	vector<FuzzySet*> m_output_set;
+	Vector<FuzzySet*> m_output_set;
 
 	//vector of input functions to be evaluated for a rule
 	vector<list<FuzzyFunction*> > m_input_functions;
@@ -100,7 +100,7 @@ protected:
 	FuzzySet* find_set_named(const string &name, int type);
 
 	//defuzzification result
-	vector<float> m_defuzzification;
+	Vector<float> m_defuzzification;
 
 };
 

@@ -46,7 +46,7 @@ public:
 	virtual ~FuzzySet();
 
 	//evaluation of all the membership function at once
-	vector<float> & get_all_membership_evaluation(float x);
+	Vector<float> & get_all_membership_evaluation(float x);
 
 	//get the evaluation of the membership function of a given name
 	float get_membership_evaluation(const string &name, float x);
@@ -58,7 +58,7 @@ public:
 	void reset() {for (int i = 0 ; i < m_functions.size(); i++) m_functions[i]->reset_inference_values();}
 	
 	//retuns the internal vector of fuzzy functions
-	vector<FuzzyFunction*> & get_member_functions() {return m_functions;}
+	Vector<FuzzyFunction*> & get_member_functions() {return m_functions;}
 
 	//returns the number of function in the set
 	int get_function_count() {return m_functions.size();}
@@ -80,10 +80,10 @@ private:
 	string m_name;
 
 	//the vector of fuzzy functions
-	vector<FuzzyFunction*> m_functions;
+	Vector<FuzzyFunction*> m_functions;
 
 	//the evaluation vector (results of the evaluation of functions)
-	vector<float> m_evaluation;
+	Vector<float> m_evaluation;
 
 	//the inputID
 	int m_functionID;

@@ -1,10 +1,11 @@
 // Copyright (C) 2001 Dominic Letourneau (doumdi@yahoo.com)
 
 #include <iterator.h>
-#include <vector.h>
+#include <vector>
 #include <fstream.h>
 #include <string>
 #include <algorithm>
+#include "Vector.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ test file for a demonstration of the behavior.
 
 @author Luc Lussier
 */
-void string_to_token(vector<string> &outputVector, const string &inputString, vector<char> &keepToken, vector<char> &discardToken);
+void string_to_token(Vector<string> &outputVector, const string &inputString, Vector<char> &keepToken, Vector<char> &discardToken);
 
 
 
@@ -44,7 +45,7 @@ commands which can contain an arbitrary number of parameters.
 
 @author Luc Lussier
 */
-bool string_contain_nl_sys_command(vector<string> &outputVector, string &inputString);
+bool string_contain_nl_sys_command(Vector<string> &outputVector, string &inputString);
 
 
 
@@ -60,7 +61,7 @@ string separator or by default by a white space.
 
 @author Luc Lussier
 */
-string vector_of_string_to_string(vector<string>::iterator &startOfStringIt, vector<string> &inputVector, string stringSeparator = " ");
+string vector_of_string_to_string(Vector<string>::iterator &startOfStringIt, Vector<string> &inputVector, string stringSeparator = " ");
 
 /** Global function.
 This function is used to transform an integer into a string.
@@ -83,9 +84,9 @@ Print a given vector to stdout.
 @author Luc Lussier
 */
 template<class T>
-void print_vector(vector<T> const &vectorToPrint)
+void print_vector(Vector<T> const &vectorToPrint)
 {
-  for (vector<T>::iterator VectorIt(const_cast<vector<T>::iterator>(vectorToPrint.begin())); 
+  for (Vector<T>::iterator VectorIt(const_cast<Vector<T>::iterator>(vectorToPrint.begin())); 
        VectorIt < vectorToPrint.end(); 
        VectorIt++) {
     cout << *VectorIt << " ";

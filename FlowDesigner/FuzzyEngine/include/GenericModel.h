@@ -26,13 +26,13 @@ public:
 	virtual ~GenericModel();
 
 	//fuzzy conjunction operator (min)
-	virtual float conjunction(vector<float> &c_values);
+	virtual float conjunction(Vector<float> &c_values);
 
 	//fuzzy disjunction operator (max)
-	virtual float disjunction(vector<float> &d_values);
+	virtual float disjunction(Vector<float> &d_values);
 
 	//Mamdani defuzzification 
-	virtual vector<float>& defuzzification();
+	virtual Vector<float>& defuzzification();
 	
 	//cloning capability
 	virtual FuzzyModel* clone();

@@ -57,7 +57,7 @@ public:
 
 
        //we are now ready to calculate
-       vector<float>& calc_output = model.evaluate(input_value);
+       Vector<float>& calc_output = model.evaluate(input_value);
        
        Vector<float> *my_output = new Vector<float>(calc_output.size());
        

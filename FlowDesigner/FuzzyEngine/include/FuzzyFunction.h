@@ -45,7 +45,7 @@ public:
   void reset_inference_values() {m_inference_values.resize(0);}
   
   //return the inference vector
-  vector<float> & get_inference_values() {return m_inference_values;}
+  Vector<float> & get_inference_values() {return m_inference_values;}
   
   //push a value in the vector
   void push_inference_value(float value) {m_inference_values.push_back(value);}
@@ -73,7 +73,7 @@ public:
   string m_name;
   
   //the vector used for inference (temporary)
-  vector<float> m_inference_values;
+  Vector<float> m_inference_values;
   
   int m_functionID;
   

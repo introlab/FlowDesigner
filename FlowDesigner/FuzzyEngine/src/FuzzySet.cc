@@ -105,7 +105,7 @@ void FuzzySet::add_triangular_function(const string &name, float a, float b, flo
 // evaluate all membership function
 //////////////////////////////////////////////////////////////////////
 
-vector<float> & FuzzySet::get_all_membership_evaluation(float x) {
+Vector<float> & FuzzySet::get_all_membership_evaluation(float x) {
   
   //updating evaluation vector
   m_evaluation.resize(m_functions.size());
@@ -186,7 +186,7 @@ FuzzyFunction * FuzzySet::find_function_by_name (const string &name) {
 
 void FuzzySet::print_functions(ostream &out) {
   
-  if (!m_functions.empty()) {
+  if (m_functions.size() > 0) {
     float min = m_functions[0]->get_lower_bound(); 
     float max = m_functions[0]->get_upper_bound();
     int i;

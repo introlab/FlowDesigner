@@ -7,19 +7,23 @@
 
 const static string FILE_NAME = __FILE__;
 
-void string_to_token(vector<string> &outputVector, const string &inputString, vector<char> &keepToken, vector<char> &discardToken)
+void string_to_token(Vector<string> &outputVector, const string &inputString, Vector<char> &keepToken, Vector<char> &discardToken)
 {
   //Clear the output 
-  outputVector.clear();
+  outputVector.resize(0);
+
+  Vector<char> tempVector(inputString.size());
 
   //Place the string in a vector to manipulate it
-  vector<char> tempVector(inputString.begin(), inputString.end());
+  for (int i = 0; i <inputString.size(); i++) {
+    tempVector[i] = inputString[i];
+  }
 
   //Declare and initialize tempVector iterator
-  vector<char>::iterator charVectorItBegin(tempVector.begin()), charVectorItEnd(tempVector.begin());
+  Vector<char>::iterator charVectorItBegin(tempVector.begin()), charVectorItEnd(tempVector.begin());
 
   //Test that the keepToken and discardToken vector don't contain an identical element
-  for (vector<char>::iterator tempTokenIt(keepToken.begin()); tempTokenIt < keepToken.end(); tempTokenIt++) {
+  for (Vector<char>::iterator tempTokenIt(keepToken.begin()); tempTokenIt < keepToken.end(); tempTokenIt++) {
     if (discardToken.end() != find(discardToken.begin(), discardToken.end(), *tempTokenIt)) {
  
       //      cerr << "ERROR in string_to_token keepToken and discardToken contain an identical character" << endl << flush;
@@ -96,14 +100,14 @@ void string_to_token(vector<string> &outputVector, const string &inputString, ve
 }
 
 
-bool string_contain_nl_sys_command(vector<string> &outputVector, string &inputString)
+bool string_contain_nl_sys_command(Vector<string> &outputVector, string &inputString)
 {
   //Clear the output 
-  outputVector.clear();
+  outputVector.resize(0);
 
-  vector<char> keepToken, discardToken;
-  keepToken.clear();
-  discardToken.clear();
+  Vector<char> keepToken, discardToken;
+  keepToken.resize(0);
+  discardToken.resize(0);
 
   string_to_token(outputVector, inputString, keepToken, discardToken);
 
@@ -115,7 +119,7 @@ bool string_contain_nl_sys_command(vector<string> &outputVector, string &inputSt
 }
 
 
-string vector_of_string_to_string(vector<string>::iterator &startOfStringIt, vector<string> &inputVector, string stringSeparator = " ")
+string vector_of_string_to_string(Vector<string>::iterator &startOfStringIt, Vector<string> &inputVector, string stringSeparator = " ")
 {
   string returnString = "";
 
