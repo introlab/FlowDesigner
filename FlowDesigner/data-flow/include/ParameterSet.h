@@ -62,9 +62,9 @@ class ParameterException : public BaseException {
 public:
    /**The constructor with the parameters*/
    ParameterException(string _message, string _param_name, ParameterSet _params)
-      : message(_message)
-      , param_name(_param_name)
+      : param_name(_param_name)
       , params(_params)
+      , message(_message)
    {}   
    /**The print method*/
    virtual void print(ostream &out = cerr) 

@@ -66,7 +66,7 @@ public:
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
-   virtual ObjectRef calculate(int output_id, int count, Buffer &buf) = 0;
+   virtual void calculate(int output_id, int count, Buffer &buf) = 0;
 
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req);

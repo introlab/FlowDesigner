@@ -42,4 +42,5 @@ ObjectRef Object::newObject(const string &objType)
 int Object::addObjectType(const string &objType, _ObjectFactory *factory)
 {
    ObjectFactoryDictionary()[objType] = factory;
+   return 0;
 }

@@ -80,8 +80,8 @@ void Network::resetDebugMode() {
 Network::~Network() {
 
    //deleting all factory in the dictionary
-   _NodeFactory* factory = NULL;
-   map<string, _NodeFactory*>::iterator factoryIter;
+   //_NodeFactory* factory = NULL;
+   //map<string, _NodeFactory*>::iterator factoryIter;
  
 
    /*while (factoryDictionary().size() > 0) {
@@ -263,7 +263,7 @@ void Network::specificInitialize() {
       throw NoSinkNodeException();
    }
 
-   Node* node = NULL;
+
    map<string,Node*>::iterator iter;
    map<string,Node*> connectionMap;
    

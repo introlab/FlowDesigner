@@ -338,7 +338,7 @@ protected:
 }
 #else
 
-#define DECLARE_NODE(NodeTypeName) static int tata = \
+#define DECLARE_NODE(NodeTypeName) static int dummy_initializer = \
                Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>);
 
 #endif
