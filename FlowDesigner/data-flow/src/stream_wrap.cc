@@ -156,11 +156,29 @@ int fd_streambuf::pbackfail(int c)
 
 streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 {
-   int nbytes = read(fd, s, n);
+   int tot_read = 0;
+   while (1) {
+      int nbytes = read(fd, s+tot_read, n-tot_read);
+      if (nbytes<=0)
+      {
+         if (tot_read)
+            return tot_read;
+         else
+            return EOF;
+      } else {
+         tot_read += nbytes;
+         if (tot_read == n)
+            return tot_read;
+      }
+   }
+   /*cerr << "fd_streambuf::xsgetn read " << nbytes << " byte." << endl;
    if (nbytes > 0)
       return nbytes;
    else
+   {
+      cerr << "read only " << nbytes << " bytes " << endl;
       return EOF;
+   }*/
 }
 
 
