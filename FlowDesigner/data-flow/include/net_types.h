@@ -11,6 +11,7 @@ using namespace std;
 #include <fstream>
 #include <stdio.h>
 #include "ObjectPool.h"
+#include "ObjectParser.h"
 
 
 /** This is a generic type that Overflow will handle. Subclass GenericType if
@@ -56,9 +57,6 @@ template <class T>
 class PrintableGenericType : public GenericType<T> {
 
 public:
-   virtual void printOn(ostream &out=cout) const {
-      out<< GenericType<T>::value;
-   }
    PrintableGenericType () {}
 
    PrintableGenericType (T val) {
@@ -71,6 +69,31 @@ public:
    }
 
    T &val() {return GenericType<T>::value;}
+
+   void printOn(ostream &out) const
+   {
+      out << "<" << Object::GetClassName<T>() << " " << value << " >";
+   }
+   void readFrom(istream &in)
+   {
+      in >> value;
+      char ch;
+      in >> ch;
+      if (ch != '>')
+	 throw new GeneralException("Error reading String: '>' expected", __FILE__, __LINE__);
+   }
+   void serialize(ostream &out) const
+   {
+      out << "{" << Object::GetClassName<T>() << " " << value << " }";
+   }
+   void unserialize(istream &in)
+   {
+      in >> value;
+      char ch;
+      in >> ch;
+      if (ch != '}')
+	 throw new GeneralException("Error reading String: '}' expected", __FILE__, __LINE__);
+   }
 
    //static PrintableGenericType<T> *alloc()  {return ObjectPool<PrintableGenericType<T> >::alloc();}
 };
@@ -185,7 +208,27 @@ public:
    String() : string() {}
    void printOn(ostream &out) const
    {
-      out << *(string*) (this);
+      out << "<String " << *(string*) (this) << " >";
+   }
+   void readFrom(istream &in)
+   {
+      in >> (*(string*) (this));
+      char ch;
+      in >> ch;
+      if (ch != '>')
+	 throw new GeneralException("Error reading String: '>' expected", __FILE__, __LINE__);
+   }
+   void serialize(ostream &out) const
+   {
+      out << "{String " << *(string*) (this) << " }";
+   }
+   void unserialize(istream &in)
+   {
+      in >> (*(string*) (this));
+      char ch;
+      in >> ch;
+      if (ch != '}')
+	 throw new GeneralException("Error reading String: '}' expected", __FILE__, __LINE__);
    }
    String(const char *str) : string(str)
    {}
