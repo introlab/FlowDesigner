@@ -7,4 +7,6 @@
 #undef HAVE_STPCPY
 #undef ENABLE_NLS
 #undef HAVE_FFTW
-
+#undef NO_HASH_MAP
+#undef HAVE_EXT_HASH_MAP
+#undef HAVE_HASH_MAP
