@@ -69,7 +69,8 @@ include_HEADERS = Array.h \
 	multithread.h \
 	conversion.h \
 	Complex.h \
-	Stream.h
+	Stream.h \
+	URLHandler.h
 	
 noinst_HEADERS = \
 	Pack.h \
