@@ -50,13 +50,13 @@ void Node::initialize ()
    if (--outputInitializeCount <=0)
    {
       specificInitialize();
-
+      parameters.checkUnused();
       vector<NodeInput>::iterator in;
 
       for (in = inputs.begin(); in < inputs.end(); in++)
       {
          in->node->initialize();
-
+         
          if (!in->node->hasOutput(in->outputID)) 
             throw NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
 

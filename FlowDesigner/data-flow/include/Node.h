@@ -87,25 +87,30 @@ public:
 
    ///printing the parameters
    void print(ostream &out = cerr) const;
+
+   ///check whether there are any unused (never read) parameters (unrecognized)
+   void checkUnused() const;
 };
 
-/** The MissingParameterException occurs when a node needs a parameter
-    for its initialization and couldn't find it. 
+/** The ParameterException occurs when a node needs a parameter
+    for its initialization and couldn't find it or if a parameter
+    is unknown.
     @author Jean-Marc Valin
     @version 1.0
 */
-class MissingParameterException : public BaseException {
+class ParameterException : public BaseException {
 
 public:
    ///The constructor with the parameters
-   MissingParameterException(string _param_name, ParameterSet _params) 
-      : param_name(_param_name)
+   ParameterException(string _message, string _param_name, ParameterSet _params)
+      : message(_message)
+      , param_name(_param_name)
       , params(_params)
    {}   
    ///The print method
    virtual void print(ostream &out = cerr) 
    {
-      out<<"Missing parameter: "<< param_name <<endl;
+      out << message << ": "<< param_name <<endl;
       out << "Given parameters are:\n";
       params.print(out);
    }
@@ -114,6 +119,8 @@ protected:
    string param_name;
    ///the parameter set
    ParameterSet params;
+   ///The error message
+   string message;
 };
 
 ///A parameter entry in the parameterSet
@@ -310,7 +317,7 @@ inline bool ParameterSet::exist(const string &param) const
 inline ObjectRef ParameterSet::get(string param) const
 {
    if (find(param)==end())
-      throw MissingParameterException(param,*this);
+      throw ParameterException("Missing Parameter", param,*this);
    //else return operator[](param);
    else 
       {
@@ -322,7 +329,11 @@ inline ObjectRef ParameterSet::getDefault(string param, ObjectRef value)
 {
    if (find(param)==end()) 
       return value;
-   else return operator[](param).first;
+   else 
+      {
+         (const_cast <ParameterSet *> (this))->find(param)->second.second = true;
+         return operator[](param).first;
+      }
 }
 inline void ParameterSet::defaultParam(string param, ObjectRef value)
 {
@@ -338,6 +349,15 @@ inline void ParameterSet::print (ostream &out) const
 {
    for (ParameterSet::const_iterator it=begin(); it!=end();it++)
       out << it->first << " -> " << typeid(*(it->second.first)).name() << endl;
+}
+
+inline void ParameterSet::checkUnused() const
+{
+   for (ParameterSet::const_iterator it=begin(); it!=end();it++)
+      if (!it->second.second)
+      {
+         throw ParameterException("Unused (unknown) parameter", it->first,*this);
+      }
 }
 
 #endif

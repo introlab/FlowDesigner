@@ -13,13 +13,18 @@
  */
 typedef counted_ptr<Object> ObjectRef; 
 
+class GenericCastException : public BaseException{
+public:
+   virtual void print(ostream &out = cerr)=0;
+};
+
 /** 
     The CastException occurs when we are unable to cast an ObjectRef.
     @author Jean-Marc Valin.
     @version 1.0
  */
 template <class T>
-class CastException : public BaseException {
+class CastException : public GenericCastException {
 public:
    ///The constructur that takes an error message
    CastException(string _type) : type(_type) 
