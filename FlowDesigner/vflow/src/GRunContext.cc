@@ -24,7 +24,9 @@ gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_cont
     gdk_threads_leave();
 
     cerr<<"Deleting network..."<<endl;
-    delete my_context->net;
+    if(my_context->net) {
+      delete my_context->net;
+    }
 
     cerr<<"Terminating program"<<endl;
     exit(0);
