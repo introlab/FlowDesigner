@@ -15,6 +15,7 @@
 #include <fstream>
 #include "iextensions.h"
 #include <unistd.h>
+#include <signal.h>
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -31,6 +32,7 @@ void quit()
 
 void run2(GRunContext *ctx)
 {
+   signal(11,SIG_DFL);
    ctx->run();
    //gtk_main_quit();
 }
@@ -43,6 +45,12 @@ int main(int argc, char **argv)
       if (fork())
 	 _exit(0);
    }
+
+   g_thread_init(NULL);
+   gnome_init ("vflow", VERSION, argc, argv);
+   setlocale (LC_NUMERIC, "C");
+   signal(11,SIG_DFL);
+
    try {
       scanDL();
    } catch (BaseException *e)
@@ -54,10 +62,7 @@ int main(int argc, char **argv)
    UINodeRepository::Scan();
    IExtensions::detect();
 
-   g_thread_init(NULL);
-   gnome_init ("vflow", VERSION, argc, argv);
-   setlocale (LC_NUMERIC, "C");
-
+   
    ParameterSet &params = *new ParameterSet;
    for (int arg = 2; arg<argc; arg++)
    {

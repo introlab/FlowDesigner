@@ -831,7 +831,7 @@ int main (int argc, char *argv[])
       setlocale (LC_NUMERIC, "C");
 
       //setting segfault callback
-      signal(11,on_segfault);     
+      signal(11,on_segfault);
       
       //cerr<<"creating vflow instance"<<endl;
       vflowGUI *vflow = vflowGUI::instance();

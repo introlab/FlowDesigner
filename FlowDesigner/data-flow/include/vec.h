@@ -43,15 +43,15 @@
 
 #endif
 
-#if defined(_USE_SSE) || defined(_USE_3DNOW) || defined (_USE_PREFETCH)
 
-template <class T>
+
+/*template <class T>
 void vec_prefetchnta(T *a, int len)
 {
    int size=sizeof(T)*len;
    if (size > MAX_PREFETCH)
       return;
-   __asm__ /*__volatile__*/ (
+   __asm__ __volatile__ (
    "
    push %%eax
    push %%ecx
@@ -66,49 +66,11 @@ prefetch_loop%=:
    pop %%eax
    "
    : : "a" (a), "D" (CACHE_LINES), "c" (size)
-   : "memory"
+   :
    );
 }
+*/
 
-template <class T>
-void vec_prefetch(T *a, int len)
-{
-   int size=sizeof(T)*len;
-   if (size > MAX_PREFETCH)
-      return;
-   __asm__ /*__volatile__*/ (
-   "
-   push %%eax
-   push %%ecx
-
-prefetch_loop%=:
-   prefetch0 (%%eax)
-   add %%edi, %%eax
-   sub %%edi, %%ecx
-   ja prefetch_loop%=
-
-   pop %%ecx
-   pop %%eax
-   "
-   : : "a" (a), "D" (CACHE_LINES), "c" (size)
-   : "memory"
-   );
-}
-
-
-#else
-
-template <class T>
-void vec_prefetchnta(T *a, int len)
-{
-}
-
-template <class T>
-void vec_prefetch(T *a, int len)
-{
-}
-
-#endif
 
 
 
