@@ -31,9 +31,6 @@
 template <class X>
 class Ptr
 {
-//
-// Public typedefs
-//
 public:
    typedef X element_type;
    typedef X* pointer_type;
@@ -42,12 +39,10 @@ public:
 protected:
    X* ptr;
    size_type *count;
-
    
 public:
    explicit Ptr(X* p=0) : ptr(p)
    {
-      //cerr << "alloc " << typeid(X).name() << endl;
       count=new size_type(1);
    }
    
@@ -60,9 +55,7 @@ public:
       acquire();
    }
    
-   //template <class Y>
-   typedef X Y;
-   Ptr(const Ptr<Y> &r)
+   Ptr(const Ptr<X> &r)
    {
       ptr=r.ptr;
       count=r.count;
@@ -72,9 +65,21 @@ public:
    ~Ptr() { release(); }
    
 
-   //template <class Y>
+   template <class Z>
+   Ptr& operator= (const Ptr<Z> &r)
+   {
+      if ((int) this != (int) (&r))
+      {
+         release();
+         ptr=dynamic_cast<X*> (r.ptr);
+         if (!ptr) throw "Ptr<X>: Illegal pointer conversion in operator =";
+         count = r.count;
+         acquire();
+      }
+      return *this;
+   }
 
-   Ptr& operator= (const Ptr<Y> &r)
+   Ptr& operator= (const Ptr<X> &r)
    {
       if (this != &r)
       {
@@ -86,9 +91,14 @@ public:
       return *this;
    }
 
+#ifdef RT_DEBUG
+   X& operator* () const {if (ptr) return *ptr; else throw "dereferencing NULL pointer in *";}
+   X* operator->() const {if (ptr) return  ptr; else throw "dereferencing NULL pointer in ->";}
+#else
    X& operator* () const {	return *ptr; }
    X* operator->() const {	return  ptr; }
-   X* get () const { return ptr;	}
+#endif
+   X* get () const { return ptr;}
 
    bool unique () const
    {
@@ -119,15 +129,12 @@ protected:
    {
       if (count && --(*count)==0)
       {
-         //cerr << "delete " << typeid(X).name() << endl;
          delete ptr;
          delete count;
       }
       ptr = 0;
       count = 0;
    }
-
-   //template <class Y>
 
    void acquire()
    {

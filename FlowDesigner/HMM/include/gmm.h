@@ -153,6 +153,7 @@ public:
    void readFrom (istream &in=cin);
 
    //friend ostream &operator << (ostream &out, const GMM &gmm);
+   /**extractor for GMM*/
    friend istream &operator >> (istream &in, GMM &gmm);
 }
 ;

@@ -21,6 +21,7 @@
 #include "Object.h"
 #include "ObjectParser.h"
 #include "misc.h"
+#include "Vector.h"
 
 class GMM; 
 class ifstream;
@@ -91,7 +92,7 @@ public:
    virtual Covariance * copy()=0;
 
    ///Converts from accumulate mode to real
-   virtual void to_invert(const float accum_1, const vector<float> *mean)=0;
+   virtual void to_invert(const float accum_1, Ptr<const Vector<float> > mean)=0;
 
    friend class GMM;
 };
@@ -150,13 +151,15 @@ public:
    DiagonalCovariance *copy () {  return new DiagonalCovariance (*this); }
 
    ///Converts from accumulate mode to real
-   void to_invert(const float accum_1, const vector<float> *mean);
+   void to_invert(const float accum_1, Ptr<const Vector<float> > mean);
 
+   /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
 
    /**Read function used for operator >> */
    void readFrom (istream &in=cin);
 
+   /**extractor operator*/
    friend istream &operator >> (istream &in, DiagonalCovariance &cov);
 }
 ;

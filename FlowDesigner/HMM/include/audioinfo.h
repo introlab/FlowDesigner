@@ -22,7 +22,8 @@
 #include "Object.h"
 
 class Tag {
-   int begin
+public:
+   int begin;
    int end;
    int phone;
    int state;

@@ -21,6 +21,7 @@
 #include "covariance.h"
 #include "ObjectParser.h"
 #include "misc.h"
+#include "Vector.h"
 
 class GMM;
 
@@ -29,10 +30,11 @@ class Gaussian : public Object
 {
 protected:
    /**The mean of the gaussian stored as an STL vector of float*/
-   vector<float> *mean;
+   Ptr<Vector<float> > mean;
+   //vector<float> *mean;
 
    /**The covariance of the gaussian is a pointer to abstract class Covariance*/
-   Covariance    *covariance;
+   Ptr<Covariance> covariance;
 
    /**number of frames aligned (accumulated) to the covariance*/
    int            accum_count;
@@ -49,7 +51,7 @@ public:
    /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
     *(allows to create gaussians with either diagonal or full covariance*/
    Gaussian(int dim, Covariance *(*cov_new)(int)) 
-      : mean(new vector<float> (dim,0.0))
+      : mean(new Vector<float> (dim,0.0))
       , covariance(cov_new (dim))
       , accum_count(0)
       , dimension(dim)
@@ -57,7 +59,7 @@ public:
 
    /**Copy constructor*/
    Gaussian(const Gaussian &g) 
-      : mean(new vector<float> (*g.mean))
+      : mean(new Vector<float> (*g.mean))
       , covariance(g.covariance->copy())
       , accum_count (g.accum_count)
       , dimension (g.dimension)
@@ -70,7 +72,7 @@ public:
    int getDimension() const  { return dimension; }
 
    /**Returns the mean of the gaussian*/
-   vector<float> &getMean() const  { return *mean; }
+   Vector<float> &getMean() const  { return *mean; }
 
    /**Returns the covariance of the gaussian*/
    Covariance &getCovariance() const { return *covariance; }

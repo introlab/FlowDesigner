@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
 #include "covariance.h"
 #include "math.h"
 #include "misc.h"
@@ -20,7 +21,7 @@
 
 DECLARE_TYPE(DiagonalCovariance)
 
-void DiagonalCovariance::to_invert(const float accum_1, const vector<float> *mean)
+void DiagonalCovariance::to_invert(const float accum_1, Ptr<const Vector<float> > mean)
 {
    if (mode == inverted) return;
    if (mode != accum) throw string("DiagonalCovariance::to_invert");
