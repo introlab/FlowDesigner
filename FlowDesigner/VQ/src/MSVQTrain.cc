@@ -12,6 +12,7 @@ DECLARE_NODE(MSVQTrain)
  *
  * @name MSVQTrain
  * @category VQ
+ * @require MSVQ
  * @description Training of a multi-stage vector quantizer
  *
  * @input_name FRAMES

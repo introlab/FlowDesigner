@@ -6,6 +6,8 @@
 #include "ObjectParser.h"
 
 DECLARE_TYPE(MSVQ)
+//@implements MSVQ
+//@require VQ
    
 MSVQ::MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const float*, int) = KMeans::euclidian)
    : stagesSizes(_stagesSizes)

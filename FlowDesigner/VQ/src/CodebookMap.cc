@@ -3,6 +3,7 @@
 #include "CodebookMap.h"
 
 DECLARE_TYPE(CodebookMap)
+//@implements CMap
 
 
 CodebookMap::CodebookMap(const RCPtr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length)

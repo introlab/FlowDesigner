@@ -12,6 +12,7 @@ DECLARE_NODE(CMCalc)
  *
  * @name CMCalc
  * @category VQ
+ * @require CMap
  * @description No description available
  *
  * @input_name INPUT

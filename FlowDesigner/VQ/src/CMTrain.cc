@@ -14,6 +14,7 @@ DECLARE_NODE(CMTrain)
  *
  * @name CMTrain
  * @category VQ
+ * @require CMap
  * @description No description available
  *
  * @input_name TRAIN_IN

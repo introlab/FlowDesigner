@@ -128,13 +128,8 @@ void CodeGenState::ok()
 	       file++;
 	       continue;
 	    }
-	    //ifstream fileIn(fullPath.c_str());
-	    //string outName = string(dirname) + "/" + *file;
-	    //ofstream fileOut(outName);
-	    //fileIn << "//This file is released under the LGPL license.\n//See the COPYING in the Overflow source directory" << endl;
-	    //string cmd = string("\cp ") + *file + " " + dirname;
-
 	    
+	    /*Copy the source files to the right directory, adding a license reminder*/
 	    string outName = string(dirname) + "/" + *file;
 	    FILE *fin = fopen (fullPath.c_str(), "r");
 	    if (!fin)
@@ -151,8 +146,9 @@ void CodeGenState::ok()
 	       file++;
 	       continue;		  
 	    }
-	    fprintf (fout, "//This file is released under the LGPL license.\n");
-	    fprintf (fout, "//For more information, see the COPYING file in the Overflow source directory.\n");
+	    fprintf (fout, "//This file is a copy used for static linking of Overflow applications. If it is\n");
+	    fprintf (fout, "//part of the Overflow code base, then it is released under the LGPL license.\n");
+	    fprintf (fout, "//For more information, see the COPYING file in the Overflow source directory.\n\n");
 	    char buff[1024];
 	    int bytesRead;
 	    do {
