@@ -1,3 +1,14 @@
+2002-07-30  gettextize  <bug-gnu-gettext@gnu.org>
+
+
+2002-07-12  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.am (SUBDIRS): Add m4.
+	(SUBDIRS): Remove intl.
+	(ACLOCAL_AMFLAGS): New variable.
+	(EXTRA_DIST): Add config.rpath.
+	* configure.in (AC_OUTPUT): Add m4/Makefile.
+
 2001/07/15  Jean-Marc Valin <valj01@gel.usherb.ca>
 Added dialog for code generator in vflow (not complete yet)
 

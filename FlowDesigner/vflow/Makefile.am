@@ -1,6 +1,8 @@
-SUBDIRS = macros po intl src pixmaps include n-files
+SUBDIRS = m4  macros po src pixmaps include n-files
 
-EXTRA_DIST = 
+EXTRA_DIST = config.rpath  
 
 Applicationsdir = $(datadir)/gnome/apps/Applications
 Applications_DATA = 
+
+ACLOCAL_AMFLAGS = -I m4
