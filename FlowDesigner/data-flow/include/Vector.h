@@ -108,7 +108,7 @@ inline void Vector<T>::readFrom(istream &in)
 
 
 
-
+//FIXME: Serialize problems with (Object *)
 template<class T, int I>
 struct VecBinary {
    static inline void serialize(const Vector<T> &v, ostream &out)
@@ -145,6 +145,21 @@ struct VecBinary<T,1> {
    {
    }
 };
+
+template<class T>
+struct VecBinary<T,2> {
+   static inline void serialize(const Vector<T> &v, ostream &out)
+   {
+      throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
+				 + ")", __FILE__, __LINE__);
+   }
+   static inline void unserialize(Vector<T> &v, istream &in)
+   {
+      throw new GeneralException(string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
+				 + ")", __FILE__, __LINE__);
+   }
+};
+
 
 template <class T>
 inline void Vector<T>::serialize(ostream &out) const

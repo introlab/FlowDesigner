@@ -5,13 +5,19 @@
 #define TYPE_TRAITS_H
 
 #include "Object.h"
-#include <complex>
+//#include <complex>
+
+template<class T>
+class complex;
+//class string;
+
 
 template<class T>
 struct TypeTraits {
-      enum {isBasic=0};
+      enum {isBasic=2};
 };
 
+#define _DEF_OBJECT_TYPE(type) template<>struct TypeTraits<type> {enum {isBasic=0};};
 #define _DEF_C_TYPE(type) template<>struct TypeTraits<type> {enum {isBasic=1};};
 
 //#define _DEF_UNKNOWN_TYPE(type) template<>struct TypeTraits<type> {enum {isBasic=2};};
@@ -27,21 +33,12 @@ _DEF_C_TYPE(long)
 _DEF_C_TYPE(unsigned long)
 _DEF_C_TYPE(complex<float>)
 _DEF_C_TYPE(complex<double>)
-_DEF_C_TYPE(ObjectRef)
+_DEF_C_TYPE(string)
+//_DEF_UNKNOWN_TYPE(ObjectRef)
 
-/*
-template<int I>
-void impl() {cerr << "class\n";}
+//template<class T>struct TypeTraits<T*> {enum {isBasic=2};};
+//template<class T>struct TypeTraits<RCPtr<T> > {enum {isBasic=2};};
+template<class T>struct TypeTraits<complex<T> > {enum {isBasic=1};};
 
-template<>
-void impl<1>() {cerr << "c type\n";}
-
-
-template<class T>
-void something()
-{
-   impl<TypeTraits<T>::isBasic >();
-}
-*/
 
 #endif
