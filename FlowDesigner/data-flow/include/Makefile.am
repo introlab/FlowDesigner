@@ -67,7 +67,8 @@ include_HEADERS = Array.h \
 	rtc.h \
 	UserException.h \
 	multithread.h \
-	conversion.h
+	conversion.h \
+	Complex.h
 	
 noinst_HEADERS = \
 	Pack.h \
