@@ -86,7 +86,7 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
    movhlps %%xmm3, %%xmm4
    addps %%xmm4, %%xmm3
    movaps %%xmm3, %%xmm4
-   shufps $0x33, %%xmm4, %%xmm4
+   shufps $0x55, %%xmm4, %%xmm4
    addss %%xmm4, %%xmm3
    movss %%xmm3, (%%edx)
 
@@ -184,8 +184,7 @@ mul4_skip:
    movhlps xmm4, xmm3
    addps xmm3, xmm4
    movaps xmm4, xmm3
-   ;shufps xmm4, xmm4, 33
-   shufps xmm4, xmm4, 0x33
+   shufps xmm4, xmm4, 0x55
    addss xmm3, xmm4
    movss [edx], xmm3
 
