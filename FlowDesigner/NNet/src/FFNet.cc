@@ -488,7 +488,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, f
       
       if (nextE > SSE)
       {
-	 learnRate *= decrease;
+	 alpha *= decrease;
 	 //So that the "bad" iteration doesn't count
 	 iter++;
 	 cerr << "backing off\n";

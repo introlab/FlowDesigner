@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.61 2001/05/01 13:28:51 jmvalin Exp $
+# $Id: Makefile.am,v 1.62 2001/05/02 15:40:06 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -94,7 +94,8 @@ libflow_la_SOURCES = Node.cc \
 	Equal.cc \
 	mathfunc.cc \
 	VMethod.cc \
-	ReadInt.cc
+	ReadInt.cc \
+	DCVector.cc
 
 
 
