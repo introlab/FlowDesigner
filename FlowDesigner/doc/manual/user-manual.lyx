@@ -461,6 +461,30 @@ When your program is complete, you can execute it by clicking "Run" in the
  is in the path.
 \layout Chapter
 
+Using basic nodes and types
+\layout Section
+
+Int, Float, String, Bool
+\layout Section
+
+Vectors
+\layout Section
+
+Constant
+\layout Section
+
+I/O
+\layout Section
+
+IF/conditions
+\layout Section
+
+Operators
+\layout Section
+
+Probes
+\layout Chapter
+
 Advanced features
 \layout Section
 
