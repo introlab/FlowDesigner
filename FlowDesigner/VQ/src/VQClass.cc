@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "kmeans.h"
@@ -24,51 +24,36 @@ class VQClass;
 
 DECLARE_NODE(VQClass)
 /*Node
-
+ *
  * @name VQClass
  * @category VQ
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name VQ
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
- * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
 END*/
 
 
-class VQClass : public FrameOperation {
+class VQClass : public BufferedNode {
    
    int inputID;
    int VQinputID;
-   int inputLength;
+   int outputID;
+      //int inputLength;
 
 public:
    VQClass(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       VQinputID = addInput("VQ");
-      /*if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-         else inputLength = dereference_cast<int> (parameters.get("LENGTH"));*/
-   }
-
-   ~VQClass() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -78,10 +63,9 @@ public:
 
       ObjectRef VQValue = VQInput.node->getOutput(VQInput.outputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (VQValue->status != Object::valid)
       {
-         output.status = VQValue->status;
+         out[count] = VQValue;
          return;
       }
 
@@ -89,7 +73,7 @@ public:
 
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+         out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
@@ -100,10 +84,13 @@ public:
 
       //for (int i=0;i<outputLength;i++)
       //   output[i]=mean[i];
-       
+      
+
+      Vector<float> &output = *Vector<float>::alloc(1);
+      out[count] = &output;
+
       output[0] = classID;
 
-      output.status = Object::valid;
    }
 
 };

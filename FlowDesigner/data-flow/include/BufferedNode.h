@@ -25,13 +25,11 @@ public:
    OutputCacheInfo () 
       : lookAhead(0)
       , lookBack(0)
-      , cacheAll(false)
    {}
 
-   ObjectRef buffer;
+   Ptr<Buffer> buffer;
    int lookAhead;
    int lookBack;
-   bool cacheAll;
 };
 
 class InputCacheInfo {
@@ -39,11 +37,9 @@ public:
    InputCacheInfo () 
       : lookAhead(0)
       , lookBack(0)
-      , cacheAll(false)
    {}
    int lookAhead;
    int lookBack;
-   bool cacheAll;
 };
 
 class BufferedNode : public Node {

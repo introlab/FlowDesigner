@@ -16,9 +16,8 @@
 #include "GCMS.h"
 #include "FrameOperation.h"
 #include "Vector.h"
-#include "multithread.h"
-#include "Buffer.h"
-#include "RotatingBuffer.h"
+//#include "multithread.h"
+//#include "Buffer.h"
 
 DECLARE_NODE(GCMS)
 /*Node

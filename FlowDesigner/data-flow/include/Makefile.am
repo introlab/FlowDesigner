@@ -16,7 +16,6 @@ include_HEADERS = Array.h \
 	ObjectParser.h \
 	ObjectRef.h \
 	ParameterSet.h \
-	RotatingBuffer.h \
 	Vector.h \
 	misc.h \
 	multithread.h \

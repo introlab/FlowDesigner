@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <strstream.h>
@@ -50,9 +50,10 @@ DECLARE_NODE(TimeFilter)
 END*/
 
 
-class TimeFilter : public FrameOperation {
+class TimeFilter : public BufferedNode {
    
    int inputID;
+   int outputID;
    int inputLength;
 
    int lookAhead;
@@ -62,14 +63,14 @@ class TimeFilter : public FrameOperation {
 
 public:
    TimeFilter(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
+      : BufferedNode(nodeName, params)
 
    {
       inputID = addInput("INPUT");
+      outputID = addOutput("OUTPUT");
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-
 
       istrstream fir_str(object_cast <String> (parameters.get("FIR")).c_str());
       istrstream iir_str(object_cast <String> (parameters.get("IIR")).c_str());
@@ -79,24 +80,22 @@ public:
       if (parameters.exist("LOOKAHEAD"))
          inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
       inputsCache[inputID].lookBack = fir.size() - 1 - inputsCache[inputID].lookAhead;
-      /*if (iir.size() - 1 > outputs[outputID].lookBack)
-         outputs[outputID].lookBack = iir.size() - 1;
-      */
       
    }
-
-   ~TimeFilter() {}
 
    virtual void specificInitialize()
    {
       outputs[outputID].lookBack += iir.size() - 1;
-      this->FrameOperation::specificInitialize();
+      this->BufferedNode::specificInitialize();
       
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      //Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
       /*if (count < inputsCache[inputID].lookBack)
       {
          output.status = Object::before_beginning;
@@ -106,7 +105,7 @@ public:
 
       int i,j;
       
-      for (j=0;j<outputLength;j++)
+      for (j=0;j<inputLength;j++)
          output[j] = 0.0;
       //int fir_limit = min(fir.size() - 1, count + inputsCache[inputID].lookAhead + 1 - fir.size());
       int fir_limit = fir.size() - 1;
@@ -120,10 +119,9 @@ public:
             continue;
 
          const Vector<float> &firRow = object_cast<Vector<float> > (inputValue);
-         for (j = 0; j < outputLength ; j++)
+         for (j = 0; j < inputLength ; j++)
             output[j] += fir[i]*firRow[j];
       }
-
       //int iir_limit = min(iir.size() - 1, count + inputsCache[inputID].lookAhead + 1 - fir.size());
       int iir_limit = min(int(iir.size()) - 1, count);
       //cerr << name << " " << iir_limit << endl;
@@ -136,14 +134,10 @@ public:
             break;
          }
          const Vector<float> &iirRow = object_cast<Vector<float> > (inputValue);
-         for (j = 0; j < outputLength ; j++)
+         for (j = 0; j < inputLength ; j++)
             output[j] -= iir[i]*iirRow[j];
       }
-      
 
-
-
-      output.status = Object::valid;
    }
 
 };

@@ -15,8 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "BufferedNode.h"
-#include "GrowingBuffer.h"
-#include "RotatingBuffer.h"
+//#include "RotatingBuffer.h"
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)
@@ -44,12 +43,7 @@ void BufferedNode::initializeBuffers()
 {
    for (int i=0;i<outputs.size();i++)
    {
-      if (outputs[i].cacheAll)
-      {
-         outputs[i].buffer = ObjectRef(new GrowingBuffer (outputs[i].lookAhead+outputs[i].lookBack+1));
-      } else {
-         outputs[i].buffer = ObjectRef(new RotatingBuffer (outputs[i].lookAhead+outputs[i].lookBack+1));
-      }
+      outputs[i].buffer = Ptr<Buffer>(new Buffer (outputs[i].lookAhead+outputs[i].lookBack+1));
    }
 }
 
@@ -96,8 +90,6 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
       outputs[outputID].lookAhead = max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
    if (req.exist("LOOKBACK"))
       outputs[outputID].lookBack = max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
-   if (req.exist("CACHEALL"))
-      outputs[outputID].cacheAll = true;
    this->Node::request(outputID,req);
 
    Node *ptr=this;
@@ -109,7 +101,8 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
 ObjectRef BufferedNode::getOutput(int output_id, int count)
 {
    try {
-      Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
+      //Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
+      Buffer &outBuffer = *(outputs[output_id].buffer);
       
       ObjectRef result = outBuffer[count];
       if (result->status == Object::valid)
