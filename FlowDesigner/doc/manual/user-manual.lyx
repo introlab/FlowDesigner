@@ -464,7 +464,60 @@ When your program is complete, you can execute it by clicking "Run" in the
 Using basic nodes and types
 \layout Section
 
+Hello World!
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 100 100
+file overflow_hello
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Hello World!
+\end_inset 
+
+
+\layout Section
+
 IF/conditions
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed true
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 100 100
+file overflow_if
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+If/then/else with Overflow
+\end_inset 
+
+
 \layout Section
 
 I/O
