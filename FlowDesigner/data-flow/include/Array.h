@@ -21,6 +21,7 @@
 #include "Vector.h"
 #include "ObjectParser.h"
 #include "misc.h"
+#include "vec.h"
 
 template<class T>
 class Array : public Vector<T>
@@ -122,7 +123,7 @@ public:
 
    T norm() 
    {
-      return vec_norm(&operator[](0), size());
+      return sqrt(vec_norm2(&operator[](0), size()));
    }
 
    T norm2() 

@@ -1,3 +1,6 @@
+#ifndef VEC_H
+#define VEC_H
+
 #include <stdio.h>
 
 //template <class T>
@@ -6,6 +9,26 @@
 #define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
 
 //#define sqr(x) ((x)*(x))
+
+
+template <class T>
+inline void vec_copy(T *x, T *y, int len)
+{
+   while (len > 3)
+   {
+      *y++ = *x++;
+      *y++ = *x++;
+      *y++ = *x++;
+      *y++ = *x++;
+      len -= 4;
+   }
+   while (len)
+   {
+      *y++ = *x++;
+      len--;
+   }
+}
+
 
 #ifdef USE_3DNOW
 inline float inner_prod(float *a, float *b, int len)
@@ -463,8 +486,8 @@ FP_DIRTY
 
 inline void add_scal_vec(float a, float *b, float *c, int len)
 {
-  float *end = a+len;
-  while (a<end-3)
+  float *end = b+len;
+  while (b<end-3)
     {
       c[0]=a+b[0];
       c[1]=a+b[1];
@@ -473,7 +496,7 @@ inline void add_scal_vec(float a, float *b, float *c, int len)
       b+=4;
       c+=4;
     }
-  while (a<end)
+  while (b<end)
     {
       c[0]=a+b[0];
       b++; c++;
@@ -554,8 +577,8 @@ FP_DIRTY
 
 inline void mul_scal_vec(float a, float *b, float *c, int len)
 {
-  float *end = a+len;
-  while (a<end-3)
+  float *end = b+len;
+  while (b<end-3)
     {
       c[0]=a*b[0];
       c[1]=a*b[1];
@@ -564,7 +587,7 @@ inline void mul_scal_vec(float a, float *b, float *c, int len)
       b+=4;
       c+=4;
     }
-  while (a<end)
+  while (b<end)
     {
       c[0]=a*b[0];
       b++; c++;
@@ -769,8 +792,32 @@ inline float vec_sum(float *a, int len)
 
 #endif
 
+
+template <class T>
+inline float vec_norm2(T *a, int len)
+{
+  T sum1=0, sum2=0, sum3=0, sum4=0;
+  T *end = a+len;
+  while (a<end-3)
+    {
+      sum1+=a[0]*a[0];
+      sum2+=a[1]*a[0];
+      sum3+=a[2]*a[0];
+      sum4+=a[3]*a[0];
+      a+=4;
+    }
+  while (a<end)
+    {
+      sum1+=a[0]*a[0];
+      a++;
+    }
+  return (sum1+sum2)+(sum3+sum4);
+}
+
+
 #ifdef USE_3DNOW
-inline float vec_norm2(float *a, int len)
+templace <>
+inline float vec_norm2<float>(float *a, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -837,28 +884,6 @@ FP_DIRTY
     
   return sum[0];
 }
-#else
-
-inline float vec_norm2(float *a, int len)
-{
-  float sum1=0, sum2=0, sum3=0, sum4=0;
-  float *end = a+len;
-  while (a<end-3)
-    {
-      sum1+=a[0]*a[0];
-      sum2+=a[1]*a[0];
-      sum3+=a[2]*a[0];
-      sum4+=a[3]*a[0];
-      a+=4;
-    }
-  while (a<end)
-    {
-      sum1+=a[0]*a[0];
-      a++;
-    }
-  return (sum1+sum2)+(sum3+sum4);
-}
-
 #endif
 
 #ifdef USE_3DNOW
@@ -940,6 +965,7 @@ inline void vec_inv(float *a, float *b, int len)
 
 #endif
 
+#ifdef USE_3DNOW
 inline void vec_rsqrt(float *a, float *b, int len)
 {
   __asm__ __volatile__ (
@@ -1000,4 +1026,12 @@ inline void vec_rsqrt(float *a, float *b, int len)
 FP_DIRTY
   );
 }
+#else
 
+
+#endif
+
+
+
+
+#endif
