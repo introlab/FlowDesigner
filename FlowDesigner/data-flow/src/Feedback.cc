@@ -76,9 +76,9 @@ public:
       delayRecurs=-1;
    }
 
-   void specificInitialize()
+   void initialize()
    {
-      Node::specificInitialize();
+      Node::initialize();
       ParameterSet req;
       req.add("LOOKBACK", ObjectRef(Int::alloc(delay)));
       req.add("INORDER", nilObject);
@@ -88,17 +88,6 @@ public:
       req2.add("LOOKBACK", ObjectRef(Int::alloc(beforeLimit+delay)));
       inputs[beforeID].node->request(inputs[beforeID].outputID,req2);
 
-   }
-
-   /*WARNING: Do not try this at home. Overriding the registerOutput() method should not be 
-              done unless you REALLY know what you're doing... and I'm not even sure 
-              I know what I'm doing here*/
-   void registerOutput (int out) 
-   {
-      if (out == outputID)
-      {
-	 incrementOutputInitialize();
-      }
    }
 
 

@@ -78,13 +78,20 @@ data-flow oriented
  development environment.
  It can be used to build complex applications by combining small, reusable
  building blocks.
- In some way, it has similarities with Simulink and LabView, although it
- is not designed (and far) to be a "clone" of any of them.
+ In some way, it has similarities with 
+\emph on 
+Simulink
+\emph default 
+ and 
+\emph on 
+LabView
+\emph default 
+, although it is not designed (and far) to be a "clone" of any of them.
 \layout Standard
 
-Overflow features a GUI that allows rapid application development and features
+Overflow features a GUI that allows rapid application development and includes
  a visual debugger.
- Although Overflow can be used as a rapid prototyping tool, it can still
+ Although Overflow can be seen as a rapid prototyping tool, it can also
  be used for building real-time applications, such as audio effects processing.
  Since overflow is not really an 
 \begin_inset Quotes eld
@@ -103,7 +110,10 @@ oxes to be easiliy added.
  Overflow currently includes the following toolboxes: 
 \layout Itemize
 
-Signal processing Speech processing (part of the 
+Signal processing
+\layout Itemize
+
+Speech processing (part of the 
 \begin_inset ERT
 status Collapsed
 
@@ -116,7 +126,7 @@ href{http://freespeech.sourceforge.net/}{Open Mind Speech}
  project)
 \layout Itemize
 
-Vector quantization
+Vector quantization (VQ)
 \layout Itemize
 
 Neural network (MLP)
@@ -128,7 +138,7 @@ Fuzzy logic
 Real-time audio effect processing (early stage)
 \layout Itemize
 
-Linear algebra using LAPACK (early stage)
+Linear algebra using LAPACK/BLAS/ATLAS (early stage)
 \layout Itemize
 
 Image processing (early stage)
@@ -165,6 +175,7 @@ you don't pay for the features you don't use
 \end_inset 
 
 .
+ 
 \layout Section
 
 Terminology
@@ -467,6 +478,37 @@ Using basic nodes and types
 Hello World!
 \layout Standard
 
+We cannot present our development environment without first presenting the
+ most popular program ever written: 
+\begin_inset Quotes eld
+\end_inset 
+
+Hello World!
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ Figure 
+\begin_inset LatexCommand \ref{cap:sample_hello}
+
+\end_inset 
+
+ shows how you can make Overflow write 
+\begin_inset Quotes eld
+\end_inset 
+
+Hello World!
+\begin_inset Quotes erd
+\end_inset 
+
+ in the status window.
+ Yes, it's simply a constant string (using 
+\emph on 
+Constant
+\emph default 
+ node) with an output label attached to it.
+\layout Standard
+
 
 \begin_inset Float figure
 placement htbp
@@ -487,6 +529,11 @@ flags 9
 \layout Caption
 
 Hello World!
+\begin_inset LatexCommand \label{cap:sample_hello}
+
+\end_inset 
+
+
 \end_inset 
 
 
@@ -495,11 +542,39 @@ Hello World!
 IF/conditions
 \layout Standard
 
+The most important control structure in a language is conditional branching.
+ Figure 
+\begin_inset LatexCommand \ref{cap:sample_if}
+
+\end_inset 
+
+ shows an 
+\begin_inset Quotes eld
+\end_inset 
+
+if
+\begin_inset Quotes erd
+\end_inset 
+
+ statement in Overflow.
+ The 
+\emph on 
+IF
+\emph default 
+ node pulls from the COND input and depending on whether the condition is
+ true or false, either pulls on the TRUE of the FALSE input, which is returned
+ as the output of the 
+\emph on 
+IF
+\emph default 
+.
+\layout Standard
+
 
 \begin_inset Float figure
 placement htbp
 wide false
-collapsed true
+collapsed false
 
 \layout Standard
 \align center 
@@ -515,12 +590,37 @@ flags 9
 \layout Caption
 
 If/then/else with Overflow
+\begin_inset LatexCommand \label{cap:sample_if}
+
+\end_inset 
+
+
 \end_inset 
 
 
 \layout Section
 
 I/O
+\layout Standard
+
+Figure 
+\begin_inset LatexCommand \ref{cap:sample_IO}
+
+\end_inset 
+
+ shows how to save data to a file.
+ The 
+\emph on 
+Save
+\emph default 
+ node takes two inputs: an object to save and an Overflow write stream (in
+ this situation a file, but it could have been a network stream) where to
+ save the object.
+ The write stream is opened using the 
+\emph on 
+OutputStream
+\emph default 
+ node which takes a file name as input.
 \layout Standard
 
 
@@ -543,6 +643,11 @@ flags 9
 \layout Caption
 
 I/O with Overflow
+\begin_inset LatexCommand \label{cap:sample_IO}
+
+\end_inset 
+
+
 \end_inset 
 
 

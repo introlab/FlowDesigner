@@ -31,10 +31,10 @@ UnPack::UnPack(string nodeName, ParameterSet params)
    inputID = addInput("INPUT");
 }
 
-void UnPack::specificInitialize()
+void UnPack::initialize()
 {
    processCount = -1;
-   this->Node::specificInitialize();
+   this->Node::initialize();
 }
 
 void UnPack::reset()

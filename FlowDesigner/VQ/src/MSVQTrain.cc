@@ -68,10 +68,10 @@ public:
       }
    }
 
-   void specificInitialize()
+   void initialize()
    {
       processCount=-1;
-      this->Node::specificInitialize();
+      this->Node::initialize();
    }
 
    void reset()

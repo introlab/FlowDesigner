@@ -74,10 +74,10 @@ KeyPad::~KeyPad() {
   gdk_threads_leave(); 
 }
 
-void KeyPad::specificInitialize() {
+void KeyPad::initialize() {
  
-  //calling Node specificInitialize()
-   this->Node::specificInitialize();
+  //calling Node initialize()
+   this->Node::initialize();
 
 
    gdk_threads_enter(); 

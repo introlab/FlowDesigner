@@ -107,9 +107,9 @@ public:
       }
    }
 
-   void specificInitialize()
+   void initialize()
    {
-      BufferedNode::specificInitialize();
+      BufferedNode::initialize();
       rev = new revmodel;
       setReverbParams();
    }

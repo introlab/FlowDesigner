@@ -58,9 +58,9 @@ public:
    {
    }
 
-   void specificInitialize()
+   void initialize()
    {
-      Node::specificInitialize();
+      Node::initialize();
    }
 
    /**Ask for the node's output which ID (number) is output_id 

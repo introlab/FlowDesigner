@@ -74,10 +74,10 @@ public:
       
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       outputs[outputID].lookBack += iir.size() - 1;
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
       
    }
 

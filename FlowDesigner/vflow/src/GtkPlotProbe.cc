@@ -95,9 +95,9 @@ GtkPlotProbe::~GtkPlotProbe()
    
 }
 
-void GtkPlotProbe::specificInitialize()
+void GtkPlotProbe::initialize()
 {
-   Probe::specificInitialize();
+   Probe::initialize();
    gdk_threads_enter(); 
 
    try {

@@ -77,12 +77,12 @@ public:
       inOrder = true;
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       for (int i=0;i<length;i++)
 	 mean[i]=0;
       accumCount=0;
-      BufferedNode::specificInitialize();
+      BufferedNode::initialize();
    }
 
    virtual void reset()

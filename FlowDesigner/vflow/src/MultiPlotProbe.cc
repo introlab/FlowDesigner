@@ -95,9 +95,9 @@ MultiPlotProbe::~MultiPlotProbe()
    
 }
 
-void MultiPlotProbe::specificInitialize()
+void MultiPlotProbe::initialize()
 {
-   Probe::specificInitialize();
+   Probe::initialize();
    gdk_threads_enter(); 
 
    try {

@@ -93,7 +93,7 @@ public:
    virtual void request(int outputID, const ParameterSet &req) {sinkNode->request(outputID,req);}
 
    /**Subnet : NetworkNode specific initialize*/
-   virtual void specificInitialize();
+   virtual void initialize();
 
    /**Subnet : NetworkNode returns the output of the SubNet (from the sinkNode)*/
    virtual ObjectRef getOutput (int output_id, int count);

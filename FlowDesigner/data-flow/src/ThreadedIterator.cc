@@ -140,10 +140,10 @@ void ThreadedIterator::stop_thread() {
   cerr<<"end stop thread."<<endl;
 }
 
-void ThreadedIterator::specificInitialize() {
+void ThreadedIterator::initialize() {
 
   start_thread();
-  this->Network::specificInitialize();
+  this->Network::initialize();
    
 }
 

@@ -41,10 +41,10 @@ public:
       outputID = addOutput("OUTPUT");
    }
 
-   void specificInitialize()
+   void initialize()
    {
       //processCount = -1;
-      Node::specificInitialize();
+      Node::initialize();
    }
 
    void reset()

@@ -28,10 +28,10 @@ Pack::Pack(string nodeName, ParameterSet params)
    inputID = addInput("INPUT");
 }
 
-void Pack::specificInitialize()
+void Pack::initialize()
 {
    processCount=-1;
-   this->Node::specificInitialize();
+   this->Node::initialize();
    output = ObjectRef (new Vector<ObjectRef>);
 }
 

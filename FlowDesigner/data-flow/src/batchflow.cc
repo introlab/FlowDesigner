@@ -93,7 +93,7 @@ public:
       ParameterSet req;
       m_net->request(i,req);
       }
-    m_net->specificInitialize();
+    m_net->initialize();
     
 
 

@@ -47,11 +47,11 @@ public:
       inputsCache[inputID].lookBack=1;
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       inputsCache[inputID].lookBack=1;
       inputsCache[inputID].lookAhead=1;
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
       
       
    }

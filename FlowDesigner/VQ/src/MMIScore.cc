@@ -33,10 +33,10 @@ MMIScore::MMIScore(string nodeName, ParameterSet params)
    framesInputID = addInput("FRAMES");
 }
 
-void MMIScore::specificInitialize()
+void MMIScore::initialize()
 {
    processCount=-1;
-   this->Node::specificInitialize();
+   this->Node::initialize();
 }
 
 void MMIScore::reset()

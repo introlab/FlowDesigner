@@ -43,9 +43,9 @@ public:
       ratio = dereference_cast<float> (parameters.get("RATIO"));
    }
    
-   virtual void specificInitialize()
+   virtual void initialize()
    {
-      this->Node::specificInitialize();
+      this->Node::initialize();
       
       ParameterSet req;
       req.add("LOOKAHEAD", ObjectRef(Int::alloc(int(floor (ratio)))));

@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-#define OVERFLOW_ABI_VERSION "dev-2002-01-22"
+#define OVERFLOW_ABI_VERSION "dev-2002-04-30"
 
 extern "C" {
 int version_check(const char *vers, const char *abi_vers, const char *unused_vers=NULL);

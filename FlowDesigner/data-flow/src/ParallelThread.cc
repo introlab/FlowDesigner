@@ -108,9 +108,9 @@ public:
       destroyThread();
    }
 
-   void specificInitialize()
+   void initialize()
    {
-      BufferedNode::specificInitialize();
+      BufferedNode::initialize();
       threadStarted=true;
       pthread_create(&thread, NULL, runThread, (void *) this);
    }

@@ -95,9 +95,9 @@ public:
       
    }
 
-   void specificInitialize()
+   void initialize()
    {
-      Node::specificInitialize();
+      Node::initialize();
 
       int speed=44100;
       int stereo=0;

@@ -13,7 +13,7 @@ class IntfNode : public Node {
    int lookBack;
 public:
    IntfNode(string nodeName, const ParameterSet &params);
-   void specificInitialize();
+   void initialize();
    void reset();
    ObjectRef getOutput(int output_id, int count);
 

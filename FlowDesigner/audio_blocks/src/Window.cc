@@ -54,9 +54,9 @@ public:
       length = dereference_cast<int> (parameters.get("LENGTH"));
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
       int i;
       window.resize(length);
       String type = object_cast<String> (parameters.get("WINDOW"));

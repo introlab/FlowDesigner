@@ -93,9 +93,9 @@ public:
       delete [] lag_window;
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
       hamming = new float[SAMP_SIZE];
       for (int i=0;i<SAMP_SIZE;i++)
          hamming[i]= 0.54 - 0.46*cos(2*M_PI*i/float(SAMP_SIZE));

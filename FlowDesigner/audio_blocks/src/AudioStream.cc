@@ -205,11 +205,11 @@ public:
       tmpBuffer.resize(itemSize*advance);
    }
    
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       outputs[audioID].lookAhead = outputs[eofID].lookAhead = 1+max(outputs[audioID].lookAhead, outputs[eofID].lookAhead);
       //outputs[audioID].lookBack += 1;
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)

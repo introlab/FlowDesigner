@@ -53,12 +53,12 @@ public:
       length = dereference_cast<int> (parameters.get("LENGTH"));
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       hanning.resize(length);
       for (int i=0;i<length;i++)
 	 hanning[i] = .5-.5*cos((2*M_PI*i)/length);
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)

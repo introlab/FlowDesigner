@@ -63,15 +63,6 @@ public:
       }
    }
 
-   /*WARNING: Do not try this at home. Overriding the registerOutput() method should not be 
-              done unless you REALLY know what you're doing... and I'm not even sure 
-              I know what I'm doing here*/
-   void registerOutput (int out) 
-   {
-      if (out == outputID)
-	 incrementOutputInitialize();
-   }
-
 
    ObjectRef getOutput(int output_id, int count)
    {

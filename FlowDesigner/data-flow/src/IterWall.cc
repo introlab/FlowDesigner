@@ -58,9 +58,9 @@ public:
       inputs[inputID].node->request(inputs[inputID].outputID, r);
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
-      Node::specificInitialize();
+      Node::initialize();
       calculated = false;
    }
 

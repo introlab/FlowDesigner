@@ -209,22 +209,22 @@ void Network::verifyConnect()
 
 /***************************************************************************/
 /*
-  Network::specificInitialize(...)
+  Network::initialize(...)
   Dominic Letourneau
  */
 /***************************************************************************/
-void Network::specificInitialize() {
+void Network::initialize() {
 
-   this->Node::specificInitialize();
+   this->Node::initialize();
    
    //We need a sink Node
    if (!sinkNode) {
      throw new NoSinkNodeException();
    }
    
-   //We must call specificInitialize to all our nodes
+   //We must call initialize to all our nodes
    for (map<string,Node*>::iterator iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-     (*iter).second->specificInitialize();
+     (*iter).second->initialize();
    }
 }
 

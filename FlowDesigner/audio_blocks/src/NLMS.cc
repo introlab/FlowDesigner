@@ -71,12 +71,12 @@ public:
       inputsCache[inputID].lookBack=1;
    }
 
-   void specificInitialize()
+   void initialize()
    {
       for (int j=0;j<size;j++)
 	 a[j] = 0;//1.0/size;
       E=1e-6;
-      BufferedNode::specificInitialize();
+      BufferedNode::initialize();
    }
 
    void reset()

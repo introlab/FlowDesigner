@@ -86,13 +86,6 @@ protected:
    /**Node's outputs*/
    vector<string> outputNames;
 
-   /**Whether the node has been initialized*/
-   bool initialized;
-      
-   /**Used during initialization.
-      Becomes zero when all the node's outputs have been initialized*/
-   int outputInitializeCount;
-      
    /**Parameters given to the node at construction time*/
    ParameterSet parameters;
 
@@ -136,15 +129,8 @@ public:
    /**Initialize a node*/
    virtual void initialize ();
 
-   /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize();
-
    /**Checks whether node really has a certain output*/
    virtual bool hasOutput(int output_id) const;
-
-   /**Has the node been initialized?*/
-   bool isInitialized() {return initialized;}
 
    ObjectRef getInput(int inputID, int count)
    {
@@ -184,14 +170,6 @@ public:
 
    /**The factory lookup function*/
    static _NodeFactory* getFactoryNamed (const string &name);
-
-protected:
-   /**Tell the node we will be using output 'out'*/
-   virtual void registerOutput (int out) {incrementOutputInitialize();}
-
-   /**Increment outputInitializeCount when performing a reset()*/
-   virtual void incrementOutputInitialize() {outputInitializeCount++;}
-
 
 protected:
 

@@ -50,9 +50,9 @@ TextProbe::~TextProbe()
 {
 }
 
-void TextProbe::specificInitialize()
+void TextProbe::initialize()
 {
-   Probe::specificInitialize();
+   Probe::initialize();
 
    gdk_threads_enter(); 
    less1 = gnome_less_new ();

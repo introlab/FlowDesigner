@@ -100,11 +100,11 @@ public:
       delete [] tmpBuffer2;
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       int i;
 
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
 
 
       String type = object_cast<String> (parameters.get("WINDOW"));

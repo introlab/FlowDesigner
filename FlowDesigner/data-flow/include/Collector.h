@@ -16,8 +16,8 @@ public:
    Collector(string nodeName, ParameterSet params);
 
    /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize();
+      Each class will call its subclass initialize() method*/
+   virtual void initialize();
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */

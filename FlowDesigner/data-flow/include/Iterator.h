@@ -99,7 +99,7 @@ public:
    Node* getConditionNode() {return conditionNode;}
 
    /**Iterator specific initialize*/
-   virtual void specificInitialize();
+   virtual void initialize();
 
    /**Resets the Iterator and all the internal nodes */
    virtual void reset();

@@ -67,9 +67,9 @@ public:
       filterStart.resize(outputLength);
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
       float niquist = dereference_cast<int> (parameters.get("SAMPLING")) / 2.0;
       float high = dereference_cast<int> (parameters.get("HIGH"));
       float low = dereference_cast<int> (parameters.get("LOW"));

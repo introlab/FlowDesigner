@@ -24,8 +24,8 @@ class MultiPlotProbe : public Probe {
    virtual ~MultiPlotProbe();
 
    /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize();
+      Each class will call its subclass initialize() method*/
+   virtual void initialize();
 
    /**Class reset routine.
       Each class will call its superclass reset() method*/

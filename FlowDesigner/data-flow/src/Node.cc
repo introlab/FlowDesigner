@@ -37,8 +37,6 @@ vector<string> &Node::nodeInfo()
 Node::Node(string nodeName, const ParameterSet &params) 
    : name (nodeName)
    , inputs (vector<NodeInput>(0))
-   , initialized (false)
-   , outputInitializeCount (0)
    , parameters(params)
    , uinode(NULL)
 {
@@ -59,7 +57,6 @@ void Node::connectToNode(unsigned int in, Node *inputNode, unsigned int out)
    else {
       inputs[in].outputID = out;
       inputs[in].node = inputNode;
-      inputNode->registerOutput(out);
    }
 }
 /***************************************************************************/
@@ -205,43 +202,14 @@ void Node::connectToNode(string in, Node *inputNode, string out)
 }
 
 
-
 /***************************************************************************/
 /*
-  initialize()
-  Jean-Marc Valin & Dominic Letourneau
- */
-/***************************************************************************/
-void Node::initialize ()
-{
-   if (initialized) return;
-   {
-      specificInitialize();
-      vector<NodeInput>::iterator in;
-      for (in = inputs.begin(); in < inputs.end(); in++)
-      {        
-	 try {
-            in->node->initialize();
-	 } catch (BaseException *e)
-	 {
-	    throw e->add(new NodeException(this, "Exception caught in node initialization", __FILE__, __LINE__));
-	 }
-         
-      }
-      
-   }
-}
-
-
-/***************************************************************************/
-/*
-  specificInitialize(...)
+  initialize(...)
   Jean-Marc Valin
  */
 /***************************************************************************/
-void Node::specificInitialize()
+void Node::initialize()
 {
-   initialized = true;
 }
 
 

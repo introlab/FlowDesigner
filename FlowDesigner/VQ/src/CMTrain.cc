@@ -66,8 +66,8 @@ public:
    }
       
    /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize()
+      Each class will call its subclass initialize() method*/
+   virtual void initialize()
    {
       processCount=-1;
       NodeInput trainInInput = inputs[trainInID];
@@ -75,7 +75,7 @@ public:
       
       NodeInput trainOutInput = inputs[trainOutID];
       //cerr << "out name = " << trainOutInput.outputID << endl;
-      this->Node::specificInitialize();
+      this->Node::initialize();
    }
 
    /**Class reset routine.

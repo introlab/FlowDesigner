@@ -54,12 +54,12 @@ public:
       delete [] prev_output;
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       for (int i=0;i<outputLength;i++)
 	 prev_output[i]=0;
 
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
    }
 
    virtual void reset()

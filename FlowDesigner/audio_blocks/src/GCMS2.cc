@@ -62,9 +62,9 @@ public:
       inOrder = true;
    }
 
-   void specificInitialize()
+   void initialize()
    {
-      BufferedNode::specificInitialize();
+      BufferedNode::initialize();
       
       for (int i=0;i<length;i++)
 	 sum[i]=0;

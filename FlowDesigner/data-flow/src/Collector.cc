@@ -36,9 +36,9 @@ ObjectRef Collector::getOutputNamed (const string &outputName, int count) {
 }
 
 
-void Collector::specificInitialize()
+void Collector::initialize()
 {
-   this->Node::specificInitialize();
+   this->Node::initialize();
 }
 
 int Collector::translateInput (string inputName)

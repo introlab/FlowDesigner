@@ -60,11 +60,11 @@ public:
 
    ~MDCT() {if (window) free(window);}
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       window=_vorbis_window(0,length*2,length,length);
       mdct_init(&m_look,length*2);
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)

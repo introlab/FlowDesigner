@@ -60,8 +60,8 @@ public:
    //virtual void request(const ParameterSet &req) {throw "error: maudit request";}
 
    /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize();
+      Each class will call its subclass initialize() method*/
+   virtual void initialize();
 
    /**Resets the node internal values and buffers*/
    virtual void reset();

@@ -47,10 +47,10 @@ public:
       outputID = addOutput("OUTPUT");
    }
 
-   virtual void specificInitialize()
+   virtual void initialize()
    {
       outputs[outputID].lookBack += 1;
-      this->BufferedNode::specificInitialize();
+      this->BufferedNode::initialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)

@@ -149,11 +149,11 @@ void Iterator::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
 }
 /***************************************************************************/
 /*
-  Iterator::specificInitialize(...)
+  Iterator::initialize(...)
   Dominic Letourneau
  */
 /***************************************************************************/   
-void Iterator::specificInitialize() {
+void Iterator::initialize() {
 
    if (!conditionNode) {
       throw new NodeException(this,"No condition Node specified in Iterator",__FILE__,__LINE__);
@@ -163,7 +163,7 @@ void Iterator::specificInitialize() {
 
    conditionNode->initialize();
 
-   this->Network::specificInitialize();
+   this->Network::initialize();
    
    if (parameters.exist("DOWHILE"))
    {

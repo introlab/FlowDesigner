@@ -56,10 +56,10 @@ void BufferedNode::performRequests ()
    }
 }
 
-void BufferedNode::specificInitialize()
+void BufferedNode::initialize()
 {
    processCount = -1;
-   this->Node::specificInitialize();
+   this->Node::initialize();
    this->initializeBuffers();
 }
 

@@ -858,7 +858,7 @@ void GUIDocument::run()
       }
       
       //initializing
-      net->specificInitialize();
+      net->initialize();
 
       //cerr << "running...\n";
       

@@ -51,9 +51,9 @@ PlotProbe::~PlotProbe()
 
 }
 
-void PlotProbe::specificInitialize()
+void PlotProbe::initialize()
 {
-   Probe::specificInitialize();
+   Probe::initialize();
    gdk_threads_enter(); 
 
    try {

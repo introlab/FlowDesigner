@@ -136,9 +136,9 @@ Probe::~Probe()
    pthread_mutex_destroy(&mutex);
 }
 
-void Probe::specificInitialize()
+void Probe::initialize()
 {
-   this->Node::specificInitialize();
+   this->Node::initialize();
 
    gdk_threads_enter();
 

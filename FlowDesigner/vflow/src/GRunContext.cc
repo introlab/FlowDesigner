@@ -121,7 +121,7 @@ void GRunContext::run()
       }
       
       //initializing
-      net->specificInitialize();
+      net->initialize();
       //cerr << "running (UIDocument)...\n";
 	    
       for (int i = 0; ;i++) {

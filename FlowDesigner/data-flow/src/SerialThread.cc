@@ -109,12 +109,12 @@ public:
    }
 
 
-   void specificInitialize()
+   void initialize()
    {
       processCount = -1;
       initThread();
       buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
-      Node::specificInitialize();
+      Node::initialize();
    }
 
    void cleanupNotify()

@@ -26,10 +26,10 @@ Constant::Constant(string nodeName, ParameterSet params)
    //value = parameters.get("VALUE");
 }
 
-void Constant::specificInitialize()
+void Constant::initialize()
 {
    value = parameters.get("VALUE");
-   this->Node::specificInitialize();
+   this->Node::initialize();
 }
 
 void Constant::reset()

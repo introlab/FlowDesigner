@@ -54,11 +54,11 @@ public:
    }
       
    /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize()
+      Each class will call its subclass initialize() method*/
+   virtual void initialize()
    {
       processCount = -1;
-      this->Node::specificInitialize();
+      this->Node::initialize();
    }
 
    /**Class reset routine.

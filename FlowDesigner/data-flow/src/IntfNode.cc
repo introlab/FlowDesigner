@@ -28,12 +28,12 @@ void IntfNode::init()
    //   (*buff)[i] = Object::before_beginningObject;
 }
 
-void IntfNode::specificInitialize()
+void IntfNode::initialize()
 {
    init();
    //cerr << "lookahead: " << lookAhead << endl;
    //cerr << "lookback: " << lookBack << endl;
-   Node::specificInitialize();
+   Node::initialize();
 }
 
 void IntfNode::reset()
