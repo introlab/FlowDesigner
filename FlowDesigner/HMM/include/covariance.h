@@ -160,7 +160,7 @@ public:
    void reset();
 
    /**Returns a copy of the covariance*/
-   DiagonalCovariance *copy () {  return new DiagonalCovariance (*this); }
+   Covariance *copy () {  return new DiagonalCovariance (*this); }
 
    /**Converts from accumulate mode to real*/
    void invert();

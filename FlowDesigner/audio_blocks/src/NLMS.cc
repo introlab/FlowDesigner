@@ -126,7 +126,8 @@ public:
          }      
       }      
       
-      float _x[inputLength+size-1];
+      DYN_VEC(float, inputLength+size-1, _x);
+      //float _x[inputLength+size-1];
       float *x=_x+size-1;
 
       if (can_look_back)

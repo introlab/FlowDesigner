@@ -6,6 +6,7 @@
 #include "ObjectParser.h"
 #include <strstream>
 #include <math.h>
+#include "misc.h"
 
 class LPFilter;
 

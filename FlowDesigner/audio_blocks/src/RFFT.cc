@@ -56,7 +56,8 @@ public:
       Vector<complex<float> > &output = *Vector<complex<float> >::alloc((inputLength+1)>>1);
       out[count] = &output;
       
-      float fft_out[inputLength];
+      DYN_VEC(float, inputLength, fft_out);
+      //float fft_out[inputLength];
       
       FFTWrap.rfft(&in[0], fft_out, inputLength);
       output[0] = fft_out[0];

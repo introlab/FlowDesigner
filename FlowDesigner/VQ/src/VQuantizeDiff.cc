@@ -72,7 +72,8 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      float diff[length];
+      DYN_VEC(float, length, diff);
+      //float diff[length];
       for (int i=0;i<length;i++)
 	 diff[i] = in[i]-previous[i];
       

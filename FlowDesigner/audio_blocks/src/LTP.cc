@@ -88,8 +88,10 @@ public:
       float best=-FLT_MAX;
       float best_gain=0;
       int best_T=0;
-      float scores[end+1];
-      float gains[end+1];
+      //float scores[end+1];
+      //float gains[end+1];
+      DYN_VEC(float, end+1, scores);
+      DYN_VEC(float, end+1, gains);
       /*static float old_scores[2000];
       static bool init=false;
       if (!init)

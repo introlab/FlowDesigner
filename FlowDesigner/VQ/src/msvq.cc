@@ -9,7 +9,7 @@ DECLARE_TYPE(MSVQ)
 //@implements MSVQ
 //@require VQ
    
-MSVQ::MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const float*, int) = KMeans::euclidian)
+MSVQ::MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const float*, int))
    : stagesSizes(_stagesSizes)
    , VQ(_dist)
    , stages(stagesSizes.size())
@@ -55,7 +55,7 @@ int MSVQ::nbClasses() const
    return ret;
    }*/
 
-void MSVQ::train (const vector<float *> &data, int len, bool binary=false)
+void MSVQ::train (const vector<float *> &data, int len, bool binary)
 {
    length = len;
    vector<float *> train(data.size());
@@ -83,7 +83,7 @@ void MSVQ::train (const vector<float *> &data, int len, bool binary=false)
    delete [] training_data;
 }
 
-int MSVQ::getClassID (const float *v, float *dist_return = NULL) const
+int MSVQ::getClassID (const float *v, float *dist_return) const
 {
    vector<float> remaining(length);
    for (int i=0;i<length;i++)

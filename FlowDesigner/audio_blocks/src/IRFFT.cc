@@ -56,7 +56,8 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength<<1);
       out[count] = &output;
       
-      float fft_in[inputLength<<1];
+      DYN_VEC(float, inputLength<<1, fft_in);
+      //float fft_in[inputLength<<1];
 
       fft_in[0] = in[0].real();
       fft_in[inputLength] = 0;

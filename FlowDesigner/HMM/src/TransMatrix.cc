@@ -62,7 +62,8 @@ public:
       Matrix<float> &trans = *new Matrix<float> (nbStates, nbStates);
       out[count] = ObjectRef(&trans);
       
-      int sums[nbStates];
+      DYN_VEC(int, nbStates, sums);
+      //int sums[nbStates];
       for (int i=0;i<nbStates;i++)
 	 sums[i] = 0;
       

@@ -10,21 +10,21 @@ class IDCT;
 
 DECLARE_NODE(IDCT)
 /*Node
-
+ *
  * @name IDCT
  * @category Signal:DSP
  * @require FFT
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name LENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 

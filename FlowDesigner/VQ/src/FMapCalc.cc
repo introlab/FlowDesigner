@@ -1,6 +1,6 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
-#include <stream.h>
+#include <iostream>
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"

@@ -5,6 +5,7 @@
 #include "Vector.h"
 #include <stdlib.h>
 #include <math.h>
+#include "misc.h"
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>
@@ -164,7 +165,8 @@ public:
 
       if (normalize2)
       {
-	 float tmp[outputLength];
+	 DYN_VEC(float, outputLength, tmp);
+	 //float tmp[outputLength];
 	 for (int i=0;i<outputLength;i++)
 	 {
 	    tmp[i] = output[i];

@@ -5,7 +5,10 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
+
+#ifndef WIN32
 #include <unistd.h>
+#endif
 
 class AudioStream;
 
@@ -241,7 +244,8 @@ public:
 	 }
 
 	 // Read whole frame for the first time
-	 char buff[itemSize*outputLength];
+	 //char buff[itemSize*outputLength];
+	 DYN_VEC(char, itemSize*outputLength, buff);
 	 if (!readStream(buff, outputLength, inputValue))
 	 {
 	    out[count] = Object::past_endObject;
@@ -331,7 +335,9 @@ protected:
 	 {
 	    return false;
 	 }
-      } else if (strType == fd)
+      } 
+#ifndef WIN32
+      else if (strType == fd)
       {
 	 int file = dereference_cast<int> (inputValue);
 	 if (read (file, buffer, itemSize*length) != itemSize*length)
@@ -339,6 +345,7 @@ protected:
 	    return false;
 	 }
       }
+#endif
       return true;
    }
 

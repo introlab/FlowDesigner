@@ -4,7 +4,7 @@
 #include <string>
 #include "ObjectParser.h"
 #include "misc.h"
-#include <algo.h>
+#include <algorithm>
 
 #ifdef HAVE_VALUES_H
 #include <values.h>
@@ -21,7 +21,8 @@ void FeatureMap::recursiveSplit (const vector<float *> &inData, const vector<flo
    if (level <= 0) 
    //if (data.size() < 50) 
    {
-      float mean[outDimension];
+      DYN_VEC(float, outDimension, mean);
+      //float mean[outDimension];
       for (int i=0;i<outDimension;i++)
 	 mean[i]=0;
          //mapData[i]=0;
@@ -166,10 +167,15 @@ void FeatureMap::findThreshold(const vector<float *> &inData, const vector<float
       delete [] sorted;
    }
    
-   float sumA[outDimension];
-   float sumB[outDimension];
-   float s2A[outDimension];
-   float s2B[outDimension];
+   //float sumA[outDimension];
+   //float sumB[outDimension];
+   //float s2A[outDimension];
+   //float s2B[outDimension];
+   DYN_VEC(float, outDimension, sumA);
+   DYN_VEC(float, outDimension, sumB);
+   DYN_VEC(float, outDimension, s2A);
+   DYN_VEC(float, outDimension, s2B);
+
    for (i=0;i<outDimension;i++)
    {
       sumA[i]=sumB[i]=s2A[i]=s2B[i]=0;
@@ -233,9 +239,9 @@ void FeatureMap::calc(const float *in, float *out)
    }
    //cerr << "+";
    if (in[splitDimension] < threshold) 
-      return first->calc(in, out);
+      first->calc(in, out);
    else
-      return second->calc(in, out);
+      second->calc(in, out);
 
 }
 

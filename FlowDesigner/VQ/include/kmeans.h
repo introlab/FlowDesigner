@@ -23,9 +23,9 @@ public:
 
    const vector<float> &operator[] (int i) const;
 
-   int split (const vector<float *> &data, int len);
+   void split (const vector<float *> &data, int len);
 
-   int bsplit ();
+   void bsplit ();
 
    void update (const vector<float *> &data, int len);
 

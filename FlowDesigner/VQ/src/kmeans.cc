@@ -7,7 +7,7 @@
 DECLARE_TYPE(KMeans)
 //@implements VQ
 
-int KMeans::split (const vector<float *> &data, int len)
+void KMeans::split (const vector<float *> &data, int len)
 {
    int nbMeans = means.size();
 #ifdef STACK_ALLOC
@@ -74,7 +74,7 @@ const vector<float> &KMeans::operator[] (int i) const
    return means[i];
 }
 
-int KMeans::bsplit ()
+void KMeans::bsplit ()
 {
    int nbMeans = means.size();
    int i;
@@ -220,7 +220,7 @@ void KMeans::train (int codeSize, const vector<float *> &data, int len, bool bin
    }
 }
 
-int KMeans::getClassID (const float *v, float *dist_return = NULL) const
+int KMeans::getClassID (const float *v, float *dist_return) const
 {
    float min_dist = dist(&means[0][0], v, length);
    int minID=0;

@@ -6,6 +6,8 @@
 #include <vector>
 #include "Vector.h"
 
+using namespace std;
+
 //@require FFNet
 //@implements FFNetTrain
 
