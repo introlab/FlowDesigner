@@ -1,0 +1,20 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN" category="Operator">
+    <Node name="node_Div_1" type="Div" x="384.000000" y="78.000000"/>
+    <Node name="node_Sub_1" type="Sub" x="606.000000" y="78.000000"/>
+    <Node name="node_Mul_1" type="Mul" x="490.000000" y="86.000000"/>
+    <Node name="node_NOP_1" type="NOP" x="282.000000" y="70.000000"/>
+    <Node name="node_NOP_2" type="NOP" x="282.000000" y="107.000000"/>
+    <Link from="node_Div_1" output="OUTPUT" to="node_Mul_1" input="INPUT1"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_Div_1" input="NUM"/>
+    <Link from="node_NOP_2" output="OUTPUT" to="node_Div_1" input="DEN"/>
+    <Link from="node_NOP_2" output="OUTPUT" to="node_Mul_1" input="INPUT2">295 107 403 107 431 93.5 </Link>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_Sub_1" input="INPUT1">295 70 318 47 525 48 547 70.5 </Link>
+    <Link from="node_Mul_1" output="OUTPUT" to="node_Sub_1" input="INPUT2"/>
+    <NetInput name="DIVIDEND" node="node_NOP_1" terminal="INPUT"/>
+    <NetOutput name="REMAINDER" node="node_Sub_1" terminal="OUTPUT"/>
+    <NetInput name="DIVISOR" node="node_NOP_2" terminal="INPUT"/>
+  </Network>
+</Document>

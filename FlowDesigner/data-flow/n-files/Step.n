@@ -1,0 +1,27 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN" category="Flow">
+    <Node name="node_IterCount_1" type="IterCount" x="439.000000" y="66.000000"/>
+    <Node name="node_IF_1" type="IF" x="821.000000" y="106.000000">
+      <Parameter name="PULL_ANYWAY" type="bool" value="false"/>
+    </Node>
+    <Node name="node_Equal_1" type="Equal" x="706.000000" y="92.000000"/>
+    <Node name="node_Constant_1" type="Constant" x="577.000000" y="121.000000">
+      <Parameter name="VALUE" type="int" value="0"/>
+    </Node>
+    <Node name="node_Constant_2" type="Constant" x="440.000000" y="109.000000">
+      <Parameter name="VALUE" type="subnet_param" value="Step value"/>
+    </Node>
+    <Node name="node_Modulo_1" type="Modulo" x="583.000000" y="85.000000"/>
+    <Link from="node_Equal_1" output="OUTPUT" to="node_IF_1" input="COND"/>
+    <Link from="node_Constant_1" output="VALUE" to="node_Equal_1" input="INPUT2"/>
+    <Link from="node_IterCount_1" output="OUTPUT" to="node_Modulo_1" input="DIVIDEND"/>
+    <Link from="node_Constant_2" output="VALUE" to="node_Modulo_1" input="DIVISOR"/>
+    <Link from="node_Modulo_1" output="REMAINDER" to="node_Equal_1" input="INPUT1"/>
+    <NetInput name="INPUT" node="node_IF_1" terminal="THEN"/>
+    <NetInput name="ELSE" node="node_IF_1" terminal="ELSE"/>
+    <NetOutput name="OUTPUT" node="node_IF_1" terminal="OUTPUT"/>
+  </Network>
+  <Parameter name="Step value" type="" value=""/>
+</Document>
