@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.30 2001/01/19 22:07:48 jmvalin Exp $
+# $Id: Makefile.am,v 1.31 2001/02/14 15:46:21 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -71,7 +71,8 @@ libflow_la_SOURCES = Node.cc \
 	UINetwork.cc \
 	UINode.cc \
 	UINodeParameters.cc \
-	UITerminal.cc
+	UITerminal.cc \
+	IF.cc
 
 
 
