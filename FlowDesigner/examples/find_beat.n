@@ -1,3 +1,4 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
@@ -27,7 +28,7 @@
       <Parameter name="LENGTH" type="int" value="512"/>
       <Parameter name="ADVANCE" type="int" value=""/>
       <Parameter name="ENCODING" type="string" value="LIN16"/>
-      <Parameter name="STREAM_TYPE" type="string" value="FILE"/>
+      <Parameter name="STREAM_TYPE" type="string" value=""/>
       <Parameter name="REWIND" type="bool" value=""/>
     </Node>
     <Node name="node6" type="TimeAutocorr" x="307.000000" y="109.000000">

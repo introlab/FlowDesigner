@@ -376,7 +376,6 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    //cerr << "name = " << name << endl;
    if (buildRecurs)
       throw new GeneralException("Detected circular subnet inclusion, breaking infinite loop", __FILE__, __LINE__);
-   buildRecurs=true;
 
    Network *net;
    switch (type)
@@ -400,13 +399,19 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
       {
 	 //cerr << "building node " << nodes[i]->getName() << endl;
 	 
-	 Node *aNode = nodes[i]->build(params);
-	 net->addNode(*aNode);
+	 buildRecurs=true;
+	 try {
+	    Node *aNode = nodes[i]->build(params);
+	    net->addNode(*aNode);
+	 } catch (...) {
+	    buildRecurs=false;
+	    throw;
+	 }
+	 buildRecurs=false;
 	 
       }
    } catch (BaseException *e)
    {
-      buildRecurs=false;
       throw e->add (new GeneralException(string("Exception caught while building network ") + name, __FILE__, __LINE__));
    }
    
@@ -503,17 +508,14 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    {
       e->freeze();
       net->cleanupNotify();
-      buildRecurs=false;
       delete net;
       throw e;
    } catch (...)
    {
       net->cleanupNotify();
-      buildRecurs=false;
       delete net;
       throw;
    }
-   buildRecurs=false;
    return net;
 }
 

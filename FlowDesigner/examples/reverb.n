@@ -25,11 +25,11 @@
     <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
   </Network>
   <Network type="iterator" name="MAIN_LOOP">
-    <Node name="node1" type="AudioStream" x="-347.000000" y="126.000000">
+    <Node name="node1" type="AudioStream" x="-348.000000" y="126.000000">
       <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE"/>
       <Parameter name="ADVANCE" type="int" value=""/>
       <Parameter name="ENCODING" type="string" value="LIN16"/>
-      <Parameter name="STREAM_TYPE" type="string" value="FILE"/>
+      <Parameter name="STREAM_TYPE" type="string" value=""/>
       <Parameter name="REWIND" type="bool" value=""/>
     </Node>
     <Node name="node4" type="SeparChannels" x="-140.000000" y="120.000000"/>
