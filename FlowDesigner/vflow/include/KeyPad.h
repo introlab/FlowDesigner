@@ -9,15 +9,75 @@
 
 class KeyPad : public BufferedNode {
 
- private:
-  //callbacks
- 
 
-  //updated the pad
+  //callbacks
+  friend void on_button_7_clicked (GtkButton       *button, KeyPad*         user_data);
+
+  friend void on_button_8_clicked (GtkButton       *button, KeyPad*         user_data);
+
+  friend void on_button_9_clicked (GtkButton       *button, KeyPad*         user_data);
+
+  friend void on_button_A_clicked (GtkButton       *button, KeyPad*         user_data);
+
+  friend void on_button_4_clicked (GtkButton       *button, KeyPad*         user_data);
+
+  friend void on_button_5_clicked (GtkButton       *button, KeyPad*         user_data);
+
+  friend void on_button_6_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_B_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_1_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_2_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_3_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_C_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_0_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_F_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_E_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+
+  friend void on_button_D_clicked                    (GtkButton       *button,
+						      KeyPad*         user_data);
+ private: 
+
+  //inputs & outputs
+  int m_outputID;
  
   
   //widgets
- 
+  GtkWidget *window1;
+   GtkWidget *table1;
+   GtkWidget *button_7;
+   GtkWidget *button_8;
+   GtkWidget *button_9;
+   GtkWidget *button_A;
+   GtkWidget *button_4;
+   GtkWidget *button_5;
+   GtkWidget *button_6;
+   GtkWidget *button_B;
+   GtkWidget *button_1;
+   GtkWidget *button_2;
+   GtkWidget *button_3;
+   GtkWidget *button_C;
+   GtkWidget *button_0;
+   GtkWidget *button_F;
+   GtkWidget *button_E;
+   GtkWidget *button_D;
+
   public:
 
    KeyPad(string nodeName, ParameterSet params);
