@@ -50,51 +50,58 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
      x -= 10;
      color="red";
    }   
-   else if (type == OUTPUT)
-     {
-       //defaultName = "OUTPUT";
-       //defaultName = terminal->getName();
-       defaultName = find_unique_name(terminal->getName(),_type);
-       prompt = "Output name";
-       anchor = GTK_ANCHOR_WEST;
-       x += 10;
-       color="blue";
-     }   
+   else if (type == OUTPUT) {
+     //defaultName = "OUTPUT";
+     //defaultName = terminal->getName();
+     defaultName = find_unique_name(terminal->getName(),_type);
+     prompt = "Output name";
+     anchor = GTK_ANCHOR_WEST;
+     x += 10;
+     color="blue";
+   }   
    else if (type == CONDITION) {
-
-      defaultName = "CONDITION";
-      anchor = GTK_ANCHOR_WEST;
-      x += 10;
-      color="purple";
+     defaultName = "CONDITION";
+     anchor = GTK_ANCHOR_WEST;
+     x += 10;
+     color="purple";
    }
    
-   if (name == "")
-   {
-      /*name = defaultName;
-      
-      if (type == INPUT || type == OUTPUT)
-      {
-         GtkWidget *dialog = gnome_request_dialog (FALSE, prompt.c_str(), defaultName.c_str(), 
-                                                   20, (GnomeStringCallback)create_net_terminal, this, NULL);
-         gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
-         }*/
-      name = ask_string_dialog(prompt.c_str(), defaultName.c_str());
+   if (name == "") {
+     /*name = defaultName;
+       
+     if (type == INPUT || type == OUTPUT)
+     {
+     GtkWidget *dialog = gnome_request_dialog (FALSE, prompt.c_str(), defaultName.c_str(), 
+     20, (GnomeStringCallback)create_net_terminal, this, NULL);
+     gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
+     }*/
+     name = ask_string_dialog(prompt.c_str(), defaultName.c_str());
    }
-
+   
    //find network duplicate terminal names 
    //Dominic Letourneau Feb 1 2002.
-   vector<string> my_terms = terminal->getNode()->getNetwork()->getTerminals(_type);
-   int count = 0;
 
-   for (unsigned int i = 0; i < my_terms.size(); i++) {
-     if (my_terms[i] == name) {
-       if (count++ > 0) {
-	 cerr<<"*ERROR* duplicate terminal name"<<endl;
-	 //cerr << "disconnecting\n";
-	 //terminal->disconnectNetTerminal();
-	 //delete this;
-	 //return;
+   //vector<string> my_terms = terminal->getNode()->getNetwork()->getTerminals(_type);
+   //int count = 0;
+
+   vector<UINetTerminal*> my_terminals = terminal->getNode()->getNetwork()->getTerminals();
+
+   for (unsigned int i = 0; i < my_terminals.size(); i++) {
+     if (my_terminals[i]->getName() == name && my_terminals[i] != static_cast<UINetTerminal*>(this)) {
+       
+       cerr<<"*WARNING* duplicate terminal name"<<endl;
+       
+       if (type == INPUT || type == OUTPUT) {
+	 //updating input/output
+	 cerr<<"*WARNING* input/output removed from node : "<<my_terminals[i]->getTerminal()->getNode()->getName()<<endl;
+	 my_terminals[i]->getTerminal()->disconnectNetTerminal();
+	 delete my_terminals[i]; //safe ?
        }
+       if (type == CONDITION) {
+	 cerr<<"*WARNING* input/output removed from node : "<<my_terminals[i]->getTerminal()->getNode()->getName()<<endl;
+	 my_terminals[i]->getTerminal()->disconnectNetTerminal();
+	 delete my_terminals[i]; //safe ?
+       } 
      }
    }
 
