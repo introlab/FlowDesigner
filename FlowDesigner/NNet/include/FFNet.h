@@ -24,7 +24,7 @@ class FFNet : public Object {
    void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
 
    void train(vector<float *> in, vector<float *> out, int iter, double learnRate=.00001, double mom=.9, 
-	      double increase=1.05, double decrease=.7, double errRatio=1.04);
+	      double increase=1.05, double decrease=.7, double errRatio=1.04, int nbSets=1);
 
    void trainlm(vector<float *> in, vector<float *> out, int maxIter);
 

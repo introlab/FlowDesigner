@@ -99,7 +99,7 @@ void FFNet::learn(double *input, double *output, double alpha)
 
 
 void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double learnRate, double mom, 
-		  double increase, double decrease, double errRatio)
+		  double increase, double decrease, double errRatio, int nbSets)
 {
    //int worse=0;
    double error;
@@ -134,25 +134,31 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
 	 
       //error = 0;
       //cerr << "iter...\n";
-      for (i=0;i<layers.size();i++)
+      //int nbSets = 10;
+
+      for (int batchSet=0; batchSet < nbSets; batchSet++)
       {
-	 layers[i]->copyToTmp();
+	 for (i=0;i<layers.size();i++)
+	 {
+	    layers[i]->copyToTmp();
+	 }
+	 for (i=batchSet;i<tin.size();i+=nbSets)
+	 {
+	    double in[topo[0]];
+	    double out[topo[topo.size()-1]];
+	    for (j=0;j<topo[0];j++)
+	       in[j]=tin[i][j];
+	    for (j=0;j<topo[topo.size()-1];j++)
+	       out[j]=tout[i][j];
+	    learn (in, out, alpha);
+	    
+	 }
+	 for (i=0;i<layers.size();i++)
+	 {
+	    layers[i]->copyFromTmp(momentum);
+	 }
       }
-      for (i=0;i<tin.size();i++)
-      {
-	 double in[topo[0]];
-	 double out[topo[topo.size()-1]];
-	 for (j=0;j<topo[0];j++)
-	    in[j]=tin[i][j];
-	 for (j=0;j<topo[topo.size()-1];j++)
-	    out[j]=tout[i][j];
-	 learn (in, out, alpha);
-	 
-      }
-      for (i=0;i<layers.size();i++)
-      {
-	 layers[i]->copyFromTmp(momentum);
-      }
+
       iter--;
 
       double SSE = 0;

@@ -22,7 +22,7 @@
 
 class NNetTrain;
 
-NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT:NNET", "OUTPUT", "MAX_EPOCH:LEARN_RATE:MOMENTUM:INCREASE:DECREASE:ERR_RATIO")
+NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT:NNET", "OUTPUT", "MAX_EPOCH:LEARN_RATE:MOMENTUM:INCREASE:DECREASE:ERR_RATIO:BATCH_SETS")
 
 class NNetTrain : public Node {
 
@@ -55,6 +55,7 @@ protected:
 
    double errRatio;
 
+   int nbSets;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrain(string nodeName, ParameterSet params)
@@ -83,12 +84,15 @@ public:
 
       if (parameters.exist("DECREASE"))
 	 decrease = dereference_cast<float> (parameters.get("DECREASE"));
-      else decrease = 1.05;
+      else decrease = .7;
 
       if (parameters.exist("ERR_RATIO"))
 	 errRatio = dereference_cast<float> (parameters.get("ERR_RATIO"));
-      else errRatio = 1.05;
+      else errRatio = 1.04;
 
+      if (parameters.exist("BATCH_SETS"))
+	 nbSets = dereference_cast<int> (parameters.get("BATCH_SETS"));
+      else nbSets = 1;
       
    }
       
@@ -146,7 +150,7 @@ public:
 
 	       //FFNet *net = new FFNet( topo ); 
 	       FFNet &net = object_cast<FFNet> (netValue);
-	       net.train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
+	       net.train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio, nbSets);
 	       //net->trainlm(in, out, maxEpoch);
 
 	       currentNet = netValue;
