@@ -53,7 +53,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      fflogv(in.ptr(), output.ptr(), inputLength);
+      fflogv(&in[0], &output[0], inputLength);
       
    }
       

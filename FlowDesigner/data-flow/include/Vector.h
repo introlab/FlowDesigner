@@ -27,11 +27,11 @@ class BaseVector  : public Object {
       , obj_capacity(_obj_capacity)
       {}
 
-   size_t size() const {return obj_size;}
+   size_t vsize() const {return obj_size;}
 
-   bool empty() const {return size()==0;}
+   bool vempty() const {return vsize()==0;}
 
-   size_t capacity() {return obj_capacity;}
+   size_t vcapacity() {return obj_capacity;}
    
    virtual ObjectRef range(size_t startInd, size_t endInd)=0;
 };
@@ -41,118 +41,29 @@ class BaseVector  : public Object {
    @author Jean-Marc Valin
 */
 template<class T>
-class Vector : public BaseVector {
+class Vector : public BaseVector , public vector<T> {
 public:
-   typedef T& reference;
-   typedef const T& const_reference;
-   typedef T* iterator;
-   typedef const T* const_iterator;
-protected:
-   T *data;
-public:
+   typedef T basicType;
    Vector()
       : BaseVector(0,0)
-      , data(NULL)
+      , vector<T> ()
    {}
 
    Vector(const Vector<T> &v)
       : BaseVector(v.obj_size,v.obj_size)
+      , vector<T> (v)
    {
-      if (obj_size)
-	 data=(T*)new char [obj_size*sizeof(T)];
-#if 1
-      for (size_t i=0;i<obj_size;i++)
-	 constr(data+i,v.data[i]);
-#else
-      memcpy(data, v.data, obj_size*sizeof(T));
-#endif
    }
 
 
    explicit Vector(size_t n, const T &x = T())
       : BaseVector(0,0)
-      , data(NULL)
-   {resize(n,x);}
+      , vector<T> (n, x)
+   {}
 
    ~Vector()
    {
-      if (data)
-      {
-	 for (iterator i=begin();i!=end();i++)
-	    destr(i);
-	 delete[] (char *)(data);
-	 data = NULL;
-      }      
    }
-
-   Vector<T> &operator=(const Vector<T> &v)
-   {
-      if (&v != this)
-      {
-	 if (data)
-	 {
-	    for (iterator i=begin();i!=end();i++)
-	       destr(i);
-	    delete[] (char *)(data);
-	    data = NULL;
-	 }
-	 
-	 obj_size=v.obj_size;
-	 obj_capacity=v.obj_size;
-	 if (obj_size)
-	    data=(T*)new char [obj_size*sizeof(T)];
-#if 1
-	 for (size_t i=0;i<obj_size;i++)
-	    constr(data+i,v.data[i]);
-#else
-	 memcpy(data, v.data, obj_size*sizeof(T));
-#endif
-      }
-      return *this;
-   }
-
-   inline void resize(size_t new_size, const T &x = T());
-
-   iterator begin() {return data;}
-
-   const_iterator begin() const {return data;}
-
-   reference front() {return *data;}
-
-   const_reference front() const {return *data;}
-
-   reference back() {return data[obj_size-1];}
-
-   const_reference back() const {return data[obj_size-1];}
-
-   iterator end() {return data+obj_size;}
-
-   const_iterator end() const {return data+obj_size;}
-
-   T &operator[] (size_t i) 
-   {
-#ifdef RT_DEBUG
-      if (i>size() || i<0)
-         throw GeneralException ("Vector::operator[] index out of bounds", __FILE__, __LINE__);
-#endif
-      return data[i];
-   }
-   const T &operator[] (size_t i) const 
-   {
-#ifdef RT_DEBUG
-      if (i>size() || i<0)
-         throw GeneralException ("Vector::operator[] index out of bounds", __FILE__, __LINE__);
-#endif
-      return data[i];
-   }
-
-   void push_back(const T &x) {insert(end(),x);}
-
-   void push_front(const T &x) {insert(begin(),x);}
-   
-   inline void insert(iterator after, const T &x);
-
-   inline void erase(iterator item);
 
    void prettyPrint(ostream &out=cout) const;
 
@@ -179,11 +90,7 @@ public:
    }
 
    string getClassName() {return GetClassName();}
-   
-   T *ptr() {return data;}
-   
-   const T *ptr() const {return data;}
-   
+      
    ObjectRef range(size_t startInd, size_t endInd)
    {
       Vector<T> *v = Vector<T>::alloc(endInd-startInd+1);
@@ -196,122 +103,10 @@ public:
       return ObjectRef(v);
    }
 
-  protected:
-   void constr(T* ptr, const T& val) { new(ptr) T(val);}
-   void destr(T* ptr) { ptr->~T(); }
-
-  private:
-   size_t realloc_size(size_t new_size) {if (!obj_size) return new_size; return 1+size_t(new_size*1.5);}
 };
 
 
-template<class T>
-void Vector<T>::resize(size_t new_size, const T &x)
-{
-   if (new_size > obj_size)
-   {
-      if (new_size > obj_capacity)
-      {
-	 size_t new_capacity = realloc_size(new_size);
 
-	 T* tmp = (T*)new char [new_capacity*sizeof(T)];
-#if 1
-	 for (size_t i=0;i<obj_size;i++)
-	    constr(tmp+i,data[i]);
-	 if (data)
-	 {
-	    for (iterator i=begin();i!=end();i++)
-	       destr(i);
-	    delete[] (char *)(data);
-	 }
-#else
-	 memcpy(tmp, data, obj_size*sizeof(T));
-	 if (data)
-	    delete[] (char *)(data);
-#endif
-	 data = tmp;
-	 obj_capacity = new_capacity;
-      }
-
-      for (size_t i=obj_size;i<new_size;i++)
-	 constr(data+i,x);
-
-   } else {
-
-      for (size_t i=new_size;i<obj_size;i++)
-	 destr(data+i);
-
-   }
-   obj_size = new_size;
-}
-
-template<class T>
-void Vector<T>::insert(iterator after, const T &x)
-{
-   size_t pos = after-begin();
-   if (obj_size+1 > obj_capacity)
-   {
-      size_t new_capacity = realloc_size(obj_size+1);
-      //Allocate new memory
-      T* tmp = (T*)new char [new_capacity*sizeof(T)];
-
-#if 1
-      //copy the elements before the inserted object
-      for (size_t i=0;i<pos;i++)
-	 constr(tmp+i,data[i]);
-      //copy inserted object
-      constr(tmp+pos,x);
-      //copy elements after insertion
-      for (size_t i=pos+1;i<obj_size+1;i++)
-	 constr(tmp+i,data[i-1]);
-      //Free old memory
-      if (data)
-      {
-	 for (iterator i=begin();i!=end();i++)
-	    destr(i);
-	 delete[] (char *)(data);
-      }
-      data = tmp;
-#else
-      memcpy(tmp, data, pos*sizeof(T));
-      constr(tmp+pos,x);
-      memcpy(tmp+pos+1, data+pos, (end()-after)*sizeof(T));
-      if (data)
-	 delete[] (char *)(data);
-      data = tmp;
-#endif
-      obj_capacity = new_capacity;
-   } else {
-#if 1
-      for (iterator i=after+1;i<end()+1;i++)
-      {
-	 constr(i,*(i-1));
-	 destr(i-1);
-      }
-      constr(after,x);
-#else
-      memmove(after+1, after, (end()-after)*sizeof(T));
-      constr(after,x);
-#endif
-   }
-   obj_size++;
-}
-
-template<class T>
-void Vector<T>::erase(iterator it)
-{
-#if 1
-   for (iterator i=it;i<end()-1;i++)
-   {
-      destr(i);
-      constr(i,*(i+1));
-   }
-#else
-   memmove(it+1, it, (end()-it-1)*sizeof(T));
-#endif
-   destr(end()-1);
-   obj_size--;
-}
 
 /*template <class T>
 inline ostream &operator << (ostream &out, const Vector<T> &v)
@@ -524,7 +319,7 @@ struct VecBinary<T,TTraits::Basic> {
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
-      BinIO::write(out, &(const_cast<Vector<T> &>(v))[0], v.size());
+      BinIO::write(out, &v[0], v.size());
       out << "}";
    }
    static inline void unserialize(Vector<T> &v, istream &in)
@@ -532,7 +327,7 @@ struct VecBinary<T,TTraits::Basic> {
       int tmp;
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
-      BinIO::read(in, &(const_cast<Vector<T> &>(v))[0], v.size());
+      BinIO::read(in, &v[0], v.size());
       char ch;
       in >> ch;
    }

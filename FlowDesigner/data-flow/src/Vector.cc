@@ -18,7 +18,7 @@ DECLARE_TYPE2("Vector", Vector<float>)
 DECLARE_TYPE(Vector<float>)
 DECLARE_TYPE(Vector<double>)
 DECLARE_TYPE(Vector<int>)
-DECLARE_TYPE(Vector<bool>)
+//DECLARE_TYPE(Vector<bool>)
 DECLARE_TYPE(Vector<ObjectRef>)
 DECLARE_TYPE2("Vector<complex<float>>", Vector<complex<float> >)
 DECLARE_TYPE2("Vector<complex<double>>", Vector<complex<double> >)
@@ -51,12 +51,14 @@ void Vector<int>::prettyPrint(ostream &out) const {
   out<<endl;
 }
 
+#if 0
 void Vector<bool>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<" ";
   }
   out<<endl;
 }
+#endif
 
 void Vector<ObjectRef>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {

@@ -174,7 +174,7 @@ ObjectRef VectorStringConversion(ObjectRef in) {
 }
 
 REGISTER_VTABLE0(toVect, Int, VectorCTypeConversion<Int>, 1);
-REGISTER_VTABLE0(toVect, Bool, VectorCTypeConversion<Bool>, 2);
+//REGISTER_VTABLE0(toVect, Bool, VectorCTypeConversion<Bool>, 2);
 REGISTER_VTABLE0(toVect, Float, VectorCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toVect, Double, VectorCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toVect, String, VectorStringConversion, 5);

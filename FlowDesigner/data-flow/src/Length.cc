@@ -40,7 +40,7 @@ public:
    {
       ObjectRef inputValue = getInput(inputID, count);
       BaseVector &in = object_cast<BaseVector> (inputValue);
-      out[count] = Int::alloc(in.size());
+      out[count] = Int::alloc(in.vsize());
    }
 
       

@@ -68,7 +68,7 @@ public:
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
       
-      fmap.calc(in.begin(), output.begin());
+      fmap.calc(&in[0], &output[0]);
    }
 
 };
