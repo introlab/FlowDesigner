@@ -25,7 +25,7 @@ DECLARE_NODE(GMMScore)
 /*Node
  *
  * @name GMMScore
- * @category VQ
+ * @category HMM
  * @description No description available
  *
  * @input_name FRAMES
