@@ -25,6 +25,14 @@
 \papersides 2
 \paperpagestyle default
 
+\layout Title
+
+Overflow User's Manual
+\layout Author
+
+Jean-Marc Valin
+\newline 
+Dominic Létourneau
 \layout Standard
 
 
@@ -33,12 +41,77 @@
 \end_inset 
 
 
+\layout Standard
+
+
+\begin_inset LatexCommand \listoffigures{}
+
+\end_inset 
+
+
 \layout Chapter
 
 Introduction
+\layout Standard
+
+Overflow is a free (GPL/LGPL) "data flow oriented" development environment.
+ It can be use to build complex applications by combining small, reusable
+ building blocks.
+ In some way, it has similarities with Simulink and LabView, although it
+ is not designed (and far) to be a "clone" of any of them.
+ 
+\layout Standard
+
+Overflow features a GUI that allows rapid application development and features
+ a visual debugger.
+ Although Overflow can be used as a rapid prototyping tool, it can still
+ be used for building real-time applications, such as audio effects processing.
+ Since overflow is not really an "interpreted language", it can be quite
+ fast.
+ 
+\layout Standard
+
+It is written in C++ and features a plugin mechanism that allows plugins/toolbox
+es to be easiliy added.
+ Overflow currently includes the following toolboxes: 
+\layout Itemize
+
+Signal processing Speech processing (part of the Open Mind Speech project)
+ 
+\layout Itemize
+
+Vector quantization 
+\layout Itemize
+
+Neural network (MLP)
+\layout Itemize
+
+Fuzzy logic 
+\layout Itemize
+
+Real-time audio effect processing (early stage) 
+\layout Itemize
+
+Linear algebra using LAPACK (early stage) 
+\layout Itemize
+
+Image processing (early stage) 
+\layout Standard
+
+Future enhancements could provide toolkits for the following applications
+ : 
+\layout Itemize
+
+Artificial Intelligence 
+\layout Itemize
+
+Audio Synthesis 
+\layout Itemize
+
+Robotics (In progres)
 \layout Chapter
 
-Getting Started
+Getting started
 \layout Standard
 
 If called with no argument, the 
@@ -169,7 +242,7 @@ When your program is complete, you can execute it by clicking "Run" in the
  is in the path.
 \layout Chapter
 
-Automatic Code Generation
+Automatic code generation
 \layout Standard
 
 Is is now possible to generate C++ code from an Overflow .n file.
