@@ -225,6 +225,7 @@ public:
    
 };
 
+istream &operator >> (istream &in, String &str);
 
 _DEF_OBJECT_TYPE(String)
 

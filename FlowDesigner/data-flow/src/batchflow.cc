@@ -5,10 +5,10 @@
 #include "ParameterSet.h"
 #include "ObjectRef.h"
 #include "path.h"
+#include "Network.h"
 
 int main(int argc, char **argv)
 {
-
   try {
     scanDL();
     UIDocument::loadAllInfo();
@@ -21,17 +21,32 @@ int main(int argc, char **argv)
       }
     UIDocument *doc = new UIDocument(argv[1]);
     doc->load();
-    doc->run(param);
+
+    Network *net = doc->build("MAIN", param);
+    if (net->getInputNode())
+       throw new GeneralException ("main network has input node", __FILE__, __LINE__);
+    //cerr << "initializing...\n";
+    net->initialize();
+    //cerr << "running (UIDocument)...\n";
+    for (int i = 0; ;i++) 
+    {
+       if (!net->hasOutput(i)) 
+	  break;
+       *net->getOutput(i,0);
+    }
+    
+
+    //doc->run(param);
   }
   catch (BaseException *e) 
   {
-     return 1;
      e->print();
+     return 1;
   }  
   catch (...) {
-    cerr<<"Unhandled exception in "<<argv[0]<<endl;
+    cerr<<"Unhandled exception in "<<argv[1]<<endl;
     cerr<<"Exiting"<<endl;
-    return 1;
+    return 2;
   }
 
   return 0;

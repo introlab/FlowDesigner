@@ -106,6 +106,13 @@ void String::prettyPrint(ostream &out) const
    out << *(string*) (this);
 }
 
+istream &operator >> (istream &in, String &str)
+{
+   if (!isValidType(in, "String")) return in;
+   str.readFrom(in);
+   return in;
+}
+
 
 FILEPTR::FILEPTR(FILE *file) 
    : GenericType<FILE *> (file)

@@ -45,6 +45,8 @@ public:
 	 outputID=addOutput("OUTPUT");
 	 delayID = addOutput("DELAY");
 	 delay = dereference_cast<int> (parameters.get ("DELAY"));
+	 if (delay < 1)
+	    throw new NodeException(NULL, "DELAY <= 0 would cause an infinite recursion", __FILE__, __LINE__);
       } catch (BaseException *e)
       {
          //e->print();

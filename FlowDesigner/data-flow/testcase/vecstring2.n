@@ -4,6 +4,8 @@
     <Node name="node1" type="Constant" x="-240.000000" y="100.000000">
       <Parameter name="VALUE" type="object" value="&lt;Vector&lt;String&gt; &lt;String tata&gt; &gt;"/>
     </Node>
-    <NetOutput name="OUTPUT" node="node1" terminal="VALUE"/>
+    <Node name="node2" type="Print" x="-157.000000" y="100.000000"/>
+    <Link from="node1" output="VALUE" to="node2" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
   </Network>
 </Document>
