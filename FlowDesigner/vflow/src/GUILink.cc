@@ -34,6 +34,7 @@ GUILink::GUILink(UITerminal *_from, UITerminal *_to, char *points_str)
 						     "x", 0,
 						     "y", 0,
 						     NULL));
+
   
    item = gnome_canvas_item_new(group,
                                 gnome_canvas_line_get_type(),
@@ -326,6 +327,17 @@ gint GUILink::event(GdkEvent *event)
                from = term;
                term->connect(this);
                complete = true;
+
+	       //link object type checking
+	       if (from->getType() != "any" &&
+		   to->getType () != "any" &&
+		   from->getType() != to->getType()) {
+		 //wrong types, changing link color!
+		 gnome_canvas_item_set(item,"fill_color","red",NULL);
+	       }
+
+
+
             } else {
                /*committing suicide*/
 
@@ -346,6 +358,15 @@ gint GUILink::event(GdkEvent *event)
                }
                term->connect(this);
                complete = true;
+
+	       //link object type checking
+	       if (from->getType() != "any" &&
+		   to->getType () != "any" &&
+		   from->getType() != to->getType()) {
+		 //wrong types, changing link color!
+		 gnome_canvas_item_set(item,"fill_color","red",NULL);
+	       }
+
             } else {
                /*committing suicide*/
 
