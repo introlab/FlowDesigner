@@ -2,13 +2,13 @@
 <HTML>
 <HEAD>
    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-   <META NAME="GENERATOR" CONTENT="Mozilla/4.07 [en] (X11; I; Linux 2.0.36 i686) [Netscape]">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.07 [en] (X11; I; Linux 2.2.0-pre8 i686) [Netscape]">
    <META NAME="Author" CONTENT="Jean-Marc Valin">
-   <TITLE>VoiceControl Description</TITLE>
+   <TITLE>SpeechInput Description</TITLE>
 </HEAD>
 <BODY BACKGROUND="BACK8.png">
 
-<CENTER><B><U><FONT SIZE=+4>VoiceControl Description</FONT></U></B></CENTER>
+<CENTER><B><U><FONT SIZE=+4>SpeechInput Description</FONT></U></B></CENTER>
 
 <OL>
 <LI>
@@ -140,7 +140,7 @@ Audio server - microphone (application: command and dictate)</LI>
 Separated process using System V IPC (shared memory, semaphores)</LI>
 
 <LI>
-Get audio data directly from /dev/audio (8-bit u-law, 8 kHz)</LI>
+Get audio data directly from /dev/audio (16-bit linear, 16 kHz)</LI>
 
 <LI>
 Do speech/non-speech filtering on coarse spectrum data</LI>
@@ -165,7 +165,7 @@ recordings", e.g. before data collection!)</LI>
 
 <UL>
 <LI>
-Sun u-law audio format (8-bit u-law, 8 kHz)</LI>
+16-bit linear / 16 kHz</LI>
 </UL>
 
 <H1>
@@ -187,6 +187,9 @@ Delta ceps</LI>
 
 <LI>
 (cepstral mean subtraction)</LI>
+
+<LI>
+(Noise reduction / channnel equalization?)</LI>
 
 <LI>
 (Neural network based on power spectrum?)</LI>
@@ -520,7 +523,7 @@ Create CVS-repository</LI>
 <HR WIDTH="100%">
 <BR><I><A HREF="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</A></I>, Universit&eacute;
 de Sherbrooke
-<BR>$Date$
+<BR>$Date: 1998/12/12 01:32:22 $
 <BR>&nbsp;
 </BODY>
 </HTML>
