@@ -780,7 +780,10 @@ void UIDocument::genCode(ostream &out, const string &functName)
    out << "Network *" << functName << "(const string &_name, ParameterSet &params)" << endl;
    out << "{\n";
    out << "\tNetwork *net = genNet0(_name, params);\n";
-   out << "\tnet->verifyConnect();\n";
+   
+   //Don't verify... in case we need other connections
+   //out << "\tnet->verifyConnect();\n";
+   
    out << "\treturn net;\n";
    out << "}\n";
 }
