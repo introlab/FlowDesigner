@@ -61,43 +61,7 @@ class SerialThread : public Node {
    sem_t sendSem;
    sem_t recSem;
 
-      //int internalCount;
-public:
-   SerialThread(string nodeName, const ParameterSet &params)
-      : Node(nodeName, params)
-      , resetState(false)
-      , threadStarted(false)
-   {
-      inputID = addInput("INPUT");
-      outputID = addOutput("OUTPUT");
-      int lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
-   }
-   
-   ~SerialThread()
-   {
-      destroyThread();
-   }
-
-   void request(int outputID, const ParameterSet &req)
-   {
-      if (req.exist("LOOKAHEAD"))
-	 reqLookAhead = max(reqLookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
-      if (req.exist("LOOKBACK"))
-	 reqLookBack = max(reqLookBack,dereference_cast<int> (req.get("LOOKBACK")));
-      Node::request(outputID, req);
-   }
-
-   void specificInitialize()
-   {
-      initThread();
-      buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
-
-      ParameterSet req;
-      req.add("LOOKAHEAD", ObjectRef(new Int(lookAhead+reqLookAhead)));
-      req.add("LOOKBACK", ObjectRef(new Int(reqLookBack)));
-      inputs[inputID].node->request(inputs[inputID].outputID, req);
-      Node::specificInitialize();
-   }
+   //int internalCount;
 
    void destroyThread()
    {
@@ -118,6 +82,40 @@ public:
       //internalCount = 0;
    }
 
+public:
+   SerialThread(string nodeName, const ParameterSet &params)
+      : Node(nodeName, params)
+      , resetState(false)
+      , threadStarted(false)
+   {
+      inputID = addInput("INPUT");
+      outputID = addOutput("OUTPUT");
+      lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
+      reqLookAhead=0;
+      reqLookBack=0;
+      cerr << lookAhead << " " << reqLookAhead << " " << reqLookBack << endl;
+   }
+   
+   ~SerialThread()
+   {
+      destroyThread();
+   }
+
+
+   void specificInitialize()
+   {
+      cerr << lookAhead << " " << reqLookAhead << " " << reqLookBack << endl;
+      initThread();
+      buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
+      ParameterSet req;
+      req.add("LOOKAHEAD", ObjectRef(new Int(lookAhead+reqLookAhead)));
+      req.add("LOOKBACK", ObjectRef(new Int(reqLookBack)));
+      inputs[inputID].node->request(inputs[inputID].outputID, req);
+      cerr << "init done\n";
+      Node::specificInitialize();
+   }
+
+
    void reset()
    {
       destroyThread();
@@ -126,24 +124,37 @@ public:
       Node::reset();
    }
    
+   void request(int outputID, const ParameterSet &req)
+   {
+      if (req.exist("LOOKAHEAD"))
+	 reqLookAhead = max(reqLookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
+      if (req.exist("LOOKBACK"))
+	 reqLookBack = max(reqLookBack,dereference_cast<int> (req.get("LOOKBACK")));
+      Node::request(outputID, req);
+   }
+
    void threadLoop()
    {
       int threadCount = 0;
       while (1)
       {
-	 cerr << "waiting\n";
-	 sem_wait(&sendSem);
-	 cerr << "receiving\n";
+	 //cerr << "receiving" << endl;
+	 //cerr << "waiting\n";
+	 if (sem_wait(&sendSem))
+	    perror("sem_wait(&sendSem)) ");
+	 //cerr << "received" << endl;
+	 //cerr.flush();
 	 if (resetState)
 	    break;
 	 //cerr << "calling getOutput " << threadCount << endl;
 	 ObjectRef inputValue = getInput(inputID, threadCount);
 	 pthread_mutex_lock(&bufferLock);
 	 (*buff)[threadCount] = inputValue;
-	 cerr << "calculated " << threadCount << endl;
+	 //cerr << "calculated " << threadCount << endl;
 	 pthread_mutex_unlock(&bufferLock);
 
-	 sem_post(&recSem);
+	 if (sem_post(&recSem))
+	    perror("sem_post(&recSem) ");
 	 
 	 threadCount++;
       }
@@ -156,7 +167,7 @@ public:
 
    void startThread()
    {
-      cerr << "thread started\n";
+      //cerr << "thread started\n";
       threadStarted=true;
       pthread_create(&thread, NULL, runThread, (void *) this);
    }
@@ -167,15 +178,18 @@ public:
 	 startThread();
       while (processCount < count)
       {
-	 //cerr << "posting\n";
-	 sem_post(&sendSem);
-	 sem_wait(&recSem);
+	 //cerr << "posting" << endl;
+	 if (sem_post(&sendSem))
+	    perror("sem_post(&sendSem) ");
+	 //cerr << "posted" << endl;
+	 if (sem_wait(&recSem))
+	    perror("sem_wait(&recSem) ");
 	 
 	 processCount++;
       }
       //sem_wait(&recSem);
       pthread_mutex_lock(&bufferLock);
-      cerr << "returning " << count << endl;
+      //cerr << "returning " << count << endl;
       ObjectRef returnValue = (*buff)[count];
       pthread_mutex_unlock(&bufferLock);
       return returnValue;
