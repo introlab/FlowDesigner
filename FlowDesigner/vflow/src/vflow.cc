@@ -690,7 +690,7 @@ static void add_net_event  (GtkMenuItem     *menuitem,
    if (str != "")
    {
       try {
-	cerr<<"vflow adding network"<<endl;
+	//cerr<<"vflow adding network"<<endl;
          doc->addNetwork(str, net_type);
       }
       catch (BaseException *e) {
