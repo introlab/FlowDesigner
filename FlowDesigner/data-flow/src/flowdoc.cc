@@ -6,7 +6,6 @@
 #include "ObjectRef.h"
 #include <vector>
 
-
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
    int nb;
@@ -372,8 +371,9 @@ int main(int argc, char **argv)
 
    out << "<a NAME=\"" << "Categories of available Overflow Nodes" << "\"></a>"; 
 
-   out << "<p><br><center><h1>" << "Categories of available Overflow Nodes"
-       << "</h1>\n<br><br><br>";
+   out << "<p><br><center><h1><b>" << "* NODE" <<"&nbsp " <<" DOCUMENTATION *</b><br><br>";
+   out << "Categories of available Overflow Nodes"
+       << "</h1>\n<br>";
    out << "<table BORDER COLS=2 WIDTH=\"40% \" NOSAVE >\n\n";
 
    int nbcol = 2;
@@ -385,8 +385,8 @@ int main(int argc, char **argv)
      }
 
 
-   out << "</table></center>\n"
-       << "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
+   out << "</table></center>\n";
+   out << "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
        << "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
        << "<hr><br>"
        << "<h1>Categories:</h1>";

@@ -25,7 +25,7 @@ DECLARE_NODE(OutputStream)
  * @output_type Stream
  *
  * @parameter_name TYPE
- * @parameter_type String
+ * @parameter_type string
  * @parameter_description Type of stream: stream, fd, or FILE (default stream)
  *
 END*/
