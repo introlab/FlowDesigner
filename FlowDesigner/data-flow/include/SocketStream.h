@@ -116,6 +116,24 @@ class network_socket {
   */
   int get_port() {return m_port;}
 
+  /** 
+      Return the read socket
+      \return int m_read_socket
+  */
+  int get_read_socket() {return m_read_socket;}
+
+  /**
+     Return the write socket
+     \return int m_write_socket
+  */
+  int get_write_socket() {return m_write_socket;}
+
+  /** 
+      Return the listen socket
+      \return int m_listen_socket
+  */
+  int get_listen_socket() {return m_listen_socket;}
+
  private:
   
   /// Initializes TCP stream connection
