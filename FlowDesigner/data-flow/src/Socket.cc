@@ -24,6 +24,7 @@ DECLARE_NODE(Socket)
  *
  * @output_name OUTPUT
  * @output_description The socket to be used for input/output operations
+ * @output_type socket
  *
 END*/
 

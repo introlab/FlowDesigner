@@ -105,31 +105,40 @@ class socket_streambuf : public streambuf, public network_socket {
 };
 
 class socket_ostream : public ostream {
-   socket_streambuf _streambuffer;
+  socket_streambuf _streambuffer; 
   public:
-   socket_ostream(int type, int port)
-      : _streambuffer (type,port)
-      , ostream(&_streambuffer)
-      {clear();}
+
+  operator socket_streambuf&(){return _streambuffer;}
+
+  socket_ostream(int type, int port)
+    : _streambuffer (type,port)
+    , ostream(&_streambuffer)
+    {clear();}
 };
 
 
 class socket_istream : public istream {
-   socket_streambuf _streambuffer;
+  socket_streambuf _streambuffer;
   public:
-   socket_istream(int type, int port)
-      : _streambuffer (type, port)
-      , istream(&_streambuffer)
-      {clear();}
+
+  operator socket_streambuf&(){return _streambuffer;}
+  
+  socket_istream(int type, int port)
+    : _streambuffer (type, port)
+    , istream(&_streambuffer)
+    {clear();}
 };
 
 class socket_iostream : public iostream {
-   socket_streambuf _streambuffer;
+  socket_streambuf _streambuffer;
   public:
-   socket_iostream(int type, int port)
-      : _streambuffer (type, port)
-      , iostream(&_streambuffer)
-      {clear();}
+
+  operator socket_streambuf&(){return _streambuffer;}
+  
+  socket_iostream(int type, int port)
+    : _streambuffer (type, port)
+    , iostream(&_streambuffer)
+    {clear();}
 };
 
 #endif
