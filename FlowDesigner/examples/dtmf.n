@@ -2,35 +2,44 @@
 <?xml version="1.0"?>
 <Document>
   <Network type="iterator" name="MAIN_LOOP">
-    <Node name="node2" type="Constant" x="183.000000" y="41.000000">
-      <Parameter name="VALUE" type="bool" value="true"/>
-    </Node>
-    <Node name="node1" type="KeyPad" x="76.000000" y="117.000000"/>
-    <Node name="node5" type="DTMF" x="254.000000" y="102.000000">
+    <Node name="node1" type="KeyPad" x="-113.000000" y="129.000000"/>
+    <Node name="node5" type="DTMF" x="147.000000" y="190.000000">
       <Parameter name="LENGTH" type="int" value="256"/>
       <Parameter name="SAMPLING" type="int" value="8000"/>
       <Parameter name="GAIN" type="float" value="2000"/>
     </Node>
-    <Node name="node6" type="PlotProbe" x="389.000000" y="102.000000">
-      <Parameter name="BREAK_AT" type="int" value="-1"/>
-      <Parameter name="SHOW" type="int" value=""/>
-      <Parameter name="SKIP" type="int" value=""/>
-    </Node>
-    <Node name="node_WriteAudio_1" type="WriteAudio" x="580.000000" y="109.000000">
+    <Node name="node_WriteAudio_1" type="WriteAudio" x="448.000000" y="197.000000">
       <Parameter name="LEAD_IN" type="int" value=""/>
     </Node>
+    <Node name="node_IF_1" type="IF" x="613.000000" y="165.000000">
+      <Parameter name="PULL_ANYWAY" type="bool" value=""/>
+    </Node>
+    <Node name="node_Constant_1" type="Constant" x="433.000000" y="243.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector 0 0 0 0 0 0&gt;"/>
+    </Node>
+    <Node name="node_PlotProbe_1" type="PlotProbe" x="690.000000" y="166.000000">
+      <Parameter name="BREAK_AT" type="int" value="-1"/>
+      <Parameter name="SHOW" type="int" value=""/>
+      <Parameter name="SKIP" type="int" value="100"/>
+    </Node>
+    <Node name="node_Constant_2" type="Constant" x="285.000000" y="306.000000">
+      <Parameter name="VALUE" type="bool" value="true"/>
+    </Node>
+    <Link from="node1" output="ACTIVATED" to="node_IF_1" input="COND"/>
+    <Link from="node_WriteAudio_1" output="OUTPUT" to="node_IF_1" input="THEN"/>
     <Link from="node1" output="KEYPAD" to="node5" input="INPUT"/>
-    <Link from="node5" output="OUTPUT" to="node6" input="INPUT"/>
-    <Link from="node6" output="OUTPUT" to="node_WriteAudio_1" input="OBJECT"/>
-    <NetCondition name="CONDITION" node="node2" terminal="VALUE"/>
+    <Link from="node_Constant_1" output="VALUE" to="node_IF_1" input="ELSE"/>
+    <Link from="node5" output="OUTPUT" to="node_WriteAudio_1" input="OBJECT"/>
+    <Link from="node_IF_1" output="OUTPUT" to="node_PlotProbe_1" input="INPUT"/>
     <NetInput name="SOUND" node="node_WriteAudio_1" terminal="DEVICE"/>
-    <NetOutput name="OUTPUT" node="node_WriteAudio_1" terminal="OUTPUT"/>
+    <NetOutput name="OUTPUT" node="node_PlotProbe_1" terminal="OUTPUT"/>
+    <NetCondition name="CONDITION" node="node_Constant_2" terminal="VALUE"/>
   </Network>
   <Network type="subnet" name="MAIN">
     <Node name="node1" type="MAIN_LOOP" x="-284.000000" y="118.000000">
       <Parameter name="DOWHILE" type="int" value=""/>
     </Node>
-    <Node name="node2" type="Sound" x="-429.000000" y="140.000000">
+    <Node name="node2" type="Sound" x="-430.000000" y="118.000000">
       <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
       <Parameter name="RATE" type="int" value="8000"/>
       <Parameter name="STEREO" type="int" value=""/>

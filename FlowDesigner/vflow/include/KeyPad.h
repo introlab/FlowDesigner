@@ -58,6 +58,7 @@ class KeyPad : public Node {
   int keypadID;
   int keypadIdID;
   int keypadNameID;
+  int keypadActivatedID;
 
   //a lookup map with widgets/ids
   map <GtkWidget*,int> button_map;

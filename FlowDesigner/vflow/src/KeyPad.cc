@@ -26,6 +26,9 @@ DECLARE_NODE(KeyPad)
  * @output_type Char
  * @output_description The Char description of the key that is pressed
  *
+ * @output_name ACTIVATED
+ * @output_type bool
+ * @output_description True if the user is pressing a button, else false.
  *
 END*/
 
@@ -56,6 +59,7 @@ KeyPad::KeyPad(string nodeName, ParameterSet params)
   keypadID = addOutput("KEYPAD");
   keypadIdID = addOutput("KEYPAD_ID");
   keypadNameID = addOutput("KEYPAD_NAME");
+  keypadActivatedID = addOutput("ACTIVATED");
 
 }
 
@@ -501,31 +505,24 @@ void KeyPad::reset() {
 
 ObjectRef KeyPad::getOutput(int output_id, int count) {
 
-  bool is_active;
-
-  if (key_stroke > 0 || active) {
-    is_active = true;
-  }
-  else {
-    is_active = false;
-  }
+  static bool is_active = false;
 
   key_stroke = max(0,key_stroke - 1);
 
+  //KeypadID
   if (output_id == keypadID) {
-    
-    
+
     if (is_active) {
       Vector<int> *my_output = new Vector<int>(2);
       
       (*my_output)[0] = selected_line;
       (*my_output)[1] = selected_column;
       return ObjectRef(my_output);
-      
     }
     else {
       return nilObject;
     }
+    
     
   }//keypadID
   else if (output_id == keypadIdID) {
@@ -536,7 +533,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
       return nilObject;
     }
 
-  }
+  }//keypadNameID
   else if (output_id == keypadNameID) {
     if (is_active) {
        char tmp[2];
@@ -546,6 +543,22 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
     }
     else {
       return nilObject;
+    }
+  }//keypadActivatedID
+  else if (output_id == keypadActivatedID) {
+    
+    if (key_stroke > 0 || active) {
+      is_active = true;
+    }
+    else {
+      is_active = false;
+    }
+
+    if (is_active) {
+      return ObjectRef(Bool::alloc(true));
+    }
+    else {
+      return ObjectRef(Bool::alloc(false));
     }
   }
   else {
@@ -708,4 +721,5 @@ gboolean keypad_event_function  (GtkWidget *window, GdkEvent *event, KeyPad *key
     break;
   }
 
+  return TRUE;
 }
