@@ -574,6 +574,12 @@ static void disposeFunct(void *dummy)
    GUIDocument::isRunning=false;
    delete GUIDocument::runningNet; 
    GUIDocument::runningNet=NULL;
+
+   GtkWidget *w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[5].widget;
+   gtk_widget_set_sensitive(w,true);
+   w = gnome_mdi_get_toolbar_info (gnome_mdi_get_active_window(mdi))[6].widget;
+   gtk_widget_set_sensitive(w,false);
+
    //pthread_cleanup_push(routine,arg) 
 }
 
