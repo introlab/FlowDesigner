@@ -7,11 +7,6 @@ noinst_HEADERS = Node.h \
 	Constant.h \
 	DLManager.h \
 	Exception.h \
-	FP_network_info_container.h \
-	FP_node_info_container.h \
-	FileParser.h \
-	FileParserException.h \
-	FileParserKeys.h \
 	GrowingBuffer.h \
 	InputStream.h \
 	Iterator.h \
@@ -21,9 +16,6 @@ noinst_HEADERS = Node.h \
 	NetExec.h \
 	PathList.h \
 	Network.h \
-	NetworkBuilder.h \
-	NetworkBuilderException.h \
-	NetworkLogger.h \
 	Node.h \
 	NodeFactory.h \
 	OR.h \
