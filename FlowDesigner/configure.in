@@ -110,6 +110,11 @@ if test "$lapackflow" = "lapackflow"; then
 	AC_MSG_RESULT([$PACKAGE will build lapackflow toolkit])
 fi
 
+if test "$octave" = "octave"; then
+	AC_MSG_RESULT([$PACKAGE will build octave toolkit])
+fi
+		
+
 if test "$vflow" = "vflow"; then
 	AC_MSG_RESULT([$PACKAGE will build vflow toolkit])
 fi
