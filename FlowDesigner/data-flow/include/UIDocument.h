@@ -65,7 +65,11 @@ protected:
    /**True if the object has already been destroyed (by superclass destructor)*/
    bool destroyed;
 
+   /**Category of the document, used when the document's MAIN network is to be inserted as a node */
    string category;
+
+   /**Comments inserted in the document */
+   string m_comments;
 
 public:
 
@@ -84,10 +88,18 @@ public:
    /**Loads the document from memory*/
    virtual void loadFromMemory(const char *mem, int size);
    
+   /**Set the category of the document in the node menu */
    void setCategory(const string &cat) {category = cat;}
 
+   /**Get the category of the document in the node menu */
    const string &getCategory() {return category;}
 
+   /**Set comments for the document */
+   void setComments(const string &comments) {m_comments = comments;}
+
+   /**Get comments from the document */
+   const string &getComments() {return m_comments;}
+   
    /**Sets the 'modified' flag*/
    void setModified() {modified=true;}
    

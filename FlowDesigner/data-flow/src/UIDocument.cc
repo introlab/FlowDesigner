@@ -210,11 +210,20 @@ void UIDocument::loadXML(xmlNodePtr root)
    subnetInfo.clean();
    subnetInfo.loadAllSubnetInfo(root->children);
 
+   //loading category if it exists
    xmlChar *cat = xmlGetProp(root, (xmlChar *)"category");
    if (cat)
    {
       category = string((char *)cat);
       free (cat);
+   }
+
+   //loading comments if they exists
+   xmlChar *comments = xmlGetProp(root, (xmlChar *)"comments");
+   if (comments)
+   {
+      m_comments = string((char *)comments);
+      free (comments);
    }
 
    xmlNodePtr net = root->children;
@@ -399,8 +408,18 @@ char *UIDocument::saveToMemory(int &size)
    xmlDocPtr doc;
    doc = xmlNewDoc((xmlChar *)"1.0");
    doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
-   if (category!="")
+
+   //saving category if defined
+   if (category!="") {
       xmlSetProp(doc->children, (xmlChar *)"category", (xmlChar *)category.c_str());
+   }
+
+   //saving comments if defined
+   if (m_comments!="") {
+     xmlSetProp(doc->children, (xmlChar *)"comments", (xmlChar *)m_comments.c_str());
+   }
+
+
    for (unsigned int i=0;i<networks.size();i++)
    {
       networks[i]->saveXML(doc->children);
