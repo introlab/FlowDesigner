@@ -91,8 +91,8 @@ public:
    virtual ~ExecStream()
    {
       //cerr << "ExecStream destructor\n";
-      if (opened)
-	 pclose (dereference_cast<FILE *> (current));
+      //if (opened)
+      // pclose (dereference_cast<FILE *> (current));
    }
 
    /**Ask for the node's output which ID (number) is output_id 
@@ -109,8 +109,8 @@ public:
 	 ObjectRef inputValue = input.node->getOutput(input.outputID,count);
 	 String name = object_cast<String> (inputValue);
 
-	 if (opened)
-	    pclose (dereference_cast<FILE *> (current));
+	 //if (opened)
+	 //   pclose (dereference_cast<FILE *> (current));
 	 //string cmd = "mpg123 --stdout " + name ;
 	 string cmd = command + " " + name ;
 	 FILE *tmp = popen(cmd.c_str(), "r");
