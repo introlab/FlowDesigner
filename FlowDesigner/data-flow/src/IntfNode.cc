@@ -18,7 +18,6 @@ void IntfNode::request(int outputID, const ParameterSet &req)
       lookAhead = max(lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
    if (req.exist("LOOKBACK"))
       lookBack = max(lookBack,dereference_cast<int> (req.get("LOOKBACK")));
-   this->Node::request(outputID,req);
 }
 
 void IntfNode::init()

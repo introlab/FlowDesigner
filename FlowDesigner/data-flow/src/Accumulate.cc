@@ -47,6 +47,13 @@ public:
       Node::specificInitialize();
    }
 
+   /**Propagate requests*/
+   virtual void request(int outputID, const ParameterSet &req)
+   {
+      inputs[inputID].node->request(inputs[inputID].outputID, req);
+      inputs[accumID].node->request(inputs[accumID].outputID, req);
+   }
+
    void reset()
    {
       //processCount = -1;

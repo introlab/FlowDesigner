@@ -79,11 +79,6 @@ public:
 	 p.add("LOOKBACK", ObjectRef(Int::alloc(look)));
 	 inputs[inputID].node->request(inputs[inputID].outputID,p);
       }
-   
-      //if (req.exist("CACHEALL"))
-      
-      this->Node::request(outputID,req);
-      
    }
       
 

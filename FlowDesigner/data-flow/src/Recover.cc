@@ -54,6 +54,16 @@ public:
       
    }
 
+   /**Propagate requests*/
+   virtual void request(int outID, const ParameterSet &req)
+   {
+      if (outID==outputID)
+      {
+         inputs[inputID].node->request(inputs[inputID].outputID, req);
+         inputs[catchID].node->request(inputs[catchID].outputID, req);
+      }
+   }
+
    /*WARNING: Do not try this at home. Overriding the registerOutput() method should not be 
               done unless you REALLY know what you're doing... and I'm not even sure 
               I know what I'm doing here*/

@@ -47,6 +47,17 @@ public:
       
    }
 
+   /**Propagate requests*/
+   virtual void request(int outputID, const ParameterSet &req)
+   {
+      ParameterSet r;
+      int ahead=0;
+      if (req.exist("LOOKAHEAD"))
+         ahead=dereference_cast<int> (req.get("LOOKAHEAD"));
+      r.add("LOOKAHEAD", ObjectRef(Int::alloc(ahead+iter)));
+      inputs[inputID].node->request(inputs[inputID].outputID, r);
+   }
+
    virtual void specificInitialize()
    {
       Node::specificInitialize();

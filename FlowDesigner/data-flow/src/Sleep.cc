@@ -35,32 +35,37 @@ private:
    RTCUser *rtc;
 public:
 
-  Sleep(string nodeName, ParameterSet params) 
-      : Node(nodeName, params) {
-
-    m_time = dereference_cast<float>(parameters.get("SECONDS"));
-
-    outputID = addOutput("VALUE");
-    rtc=RTCTimer::create(m_time);
-  }
-    
+   Sleep(string nodeName, ParameterSet params) 
+      : Node(nodeName, params) 
+   {
+      
+      m_time = dereference_cast<float>(parameters.get("SECONDS"));
+      
+      outputID = addOutput("VALUE");
+      rtc=RTCTimer::create(m_time);
+   }
+   
    ~Sleep() {RTCTimer::destroy(rtc);}
 
-  void specificInitialize() {
-    this->Node::specificInitialize();
-  }
+   /**Do nothing for requests since we have no inputs*/
+   virtual void request(int outputID, const ParameterSet &req) {}
+
+   void specificInitialize() {
+      this->Node::specificInitialize();
+   }
   
-  void reset() {
-    this->Node::reset();
-  }
-
-  ObjectRef getOutput(int output_id, int count) {
-
-    //sleeping
-    //usleep(m_time);
-     rtc->wait();
-    if (output_id==outputID) return TrueObject;
-    else throw new NodeException (this, "Sleep: Unknown output id", __FILE__, __LINE__);
-  }
+   void reset() 
+   {
+      this->Node::reset();
+   }
+   
+   ObjectRef getOutput(int output_id, int count) 
+   {      
+      //sleeping
+      //usleep(m_time);
+      rtc->wait();
+      if (output_id==outputID) return TrueObject;
+      else throw new NodeException (this, "Sleep: Unknown output id", __FILE__, __LINE__);
+   }
 };
 #endif

@@ -86,8 +86,15 @@ public:
     }
     
     //cerr << "batchflowApp : initializing network "<<"("<<argv[1]<<")\n";
+    for (int i = 0; ;i++) {
+      if (!m_net->hasOutput(i)) {
+	break;
+      }
+      ParameterSet req;
+      m_net->request(i,req);
+      }
     m_net->initialize();
-
+    
 
 
   }//initialize

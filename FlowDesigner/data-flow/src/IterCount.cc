@@ -29,6 +29,9 @@ public:
       outputID = addOutput ("OUTPUT");
    }
    
+   /**Do nothing for requests since we have no inputs*/
+   virtual void request(int outputID, const ParameterSet &req) {}
+
    virtual void specificInitialize()
    {
       this->Node::specificInitialize();

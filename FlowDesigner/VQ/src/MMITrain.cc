@@ -1,10 +1,11 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
-#include "MMITrain.h"
+#include "BufferedNode.h"
 #include "net_types.h"
 #include "Cell.h"
 #include "Vector.h"
 
+class MMITrain;
 DECLARE_NODE(MMITrain)
 /*Node
  *
@@ -27,68 +28,53 @@ DECLARE_NODE(MMITrain)
 END*/
 
 
-MMITrain::MMITrain(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
-{
-   //cerr << "MMITrain initialize\n";
-   outputID = addOutput("OUTPUT");
-   framesInputID = addInput("FRAMES");
-   nb_levels=dereference_cast<int> (parameters.get("LEVELS"));
-}
+class MMITrain : public BufferedNode {
 
-void MMITrain::specificInitialize()
-{
-   processCount=-1;
-   this->Node::specificInitialize();
-}
+protected:
+   
+   int framesInputID;
+   int outputID;
 
-void MMITrain::reset()
-{
-   processCount=-1;
-   this->Node::reset();
-}
-
-ObjectRef MMITrain::getOutput(int output_id, int count)
-{
-   //cerr << "Getting output in MMITrain\n";
-   if (output_id==outputID)
+   int nb_levels;
+      
+public:
+   /**Constructor, takes the name of the node and a set of parameters*/
+   MMITrain(string nodeName, ParameterSet params)
+      : BufferedNode(nodeName, params)
    {
-      if (count != processCount)
-      {
-         int i,j;
-         NodeInput framesInput = inputs[framesInputID];
-
-         ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
-
-         Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
-
-         int dimensions = object_cast<Vector<float> >((object_cast <Vector<ObjectRef> > (mat[0])[0])).size();
-         //cerr << "Dimensions = " << dimensions << endl;
-         //cerr << "Number of Classes: " << mat.size() << endl;
-         Cell *mmi = new Cell(dimensions, mat.size()); 
-	 //cerr << "first cell created with dim " << dimensions << " size " 
-	 //     << mat.size() << endl;
-         vector <pair<int, float *> > data;
-	 //cerr << "inserving\n";
-         for (i=0;i< mat.size();i++)
-         {
-	    cerr << i << endl;
-            Vector<ObjectRef>  &speaker = object_cast <Vector<ObjectRef> > (mat[i]);
-	    //cerr << "class " << i << " has " << speaker.size() << " members\n";
-            for (j=0;j<speaker.size(); j++)
-            {
-               data.insert (data.end(), 
-                            make_pair<int, float *> (i, &object_cast <Vector<float> > (speaker[j])[0]));
-            }
-         }
-         //cerr << "splitting...\n";
-         mmi->recursiveSplit(data, nb_levels);
-         mmi->setNumbering();
-         currentMMI = ObjectRef(mmi);
-         //exit(1);
-      }
-      return currentMMI;
+      outputID = addOutput("OUTPUT");
+      framesInputID = addInput("FRAMES");
+      nb_levels=dereference_cast<int> (parameters.get("LEVELS"));
    }
-   else 
-      throw new NodeException (this, "MMITrain: Unknown output id", __FILE__, __LINE__);
-}
+      
+
+   /**Ask for the node's output which ID (number) is output_id 
+      and for the 'count' iteration */
+   virtual void calculate(int output_id, int count, Buffer &out)
+   {
+      int i,j;
+      NodeInput framesInput = inputs[framesInputID];
+      
+      ObjectRef matRef = getInput(framesInputID,count);
+      
+      Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
+      
+      int dimensions = object_cast<Vector<float> >((object_cast <Vector<ObjectRef> > (mat[0])[0])).size();
+      Cell *mmi = new Cell(dimensions, mat.size()); 
+      vector <pair<int, float *> > data;
+      for (i=0;i< mat.size();i++)
+      {
+         cerr << i << endl;
+         Vector<ObjectRef>  &speaker = object_cast <Vector<ObjectRef> > (mat[i]);
+         for (j=0;j<speaker.size(); j++)
+         {
+            data.insert (data.end(), 
+                         make_pair<int, float *> (i, &object_cast <Vector<float> > (speaker[j])[0]));
+         }
+      }
+      mmi->recursiveSplit(data, nb_levels);
+      mmi->setNumbering();
+      out[count] = ObjectRef(mmi);
+   }
+
+};

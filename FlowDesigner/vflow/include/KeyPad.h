@@ -70,6 +70,9 @@ class KeyPad : public Node {
 
    virtual ~KeyPad();
 
+   /**Do nothing for requests since we have no inputs*/
+   virtual void request(int outputID, const ParameterSet &req) {}
+
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize();

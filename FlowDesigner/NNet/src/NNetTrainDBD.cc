@@ -217,8 +217,4 @@ public:
 
    }
 
-protected:
-   /**Default constructor, should not be used*/
-   NNetTrainDBD() {throw new GeneralException("NNetTrainDBD copy constructor should not be called",__FILE__,__LINE__);}
-
 };

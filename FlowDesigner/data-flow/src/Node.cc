@@ -215,11 +215,8 @@ void Node::connectToNode(string in, Node *inputNode, string out)
 void Node::initialize ()
 {
    if (initialized) return;
-   if (--outputInitializeCount <=0)
    {
       specificInitialize();
-      //parameters.checkUnused();
-
       vector<NodeInput>::iterator in;
       for (in = inputs.begin(); in < inputs.end(); in++)
       {        

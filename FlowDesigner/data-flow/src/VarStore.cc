@@ -53,14 +53,20 @@ public:
 
       varName = object_cast<String> (parameters.get("VARIABLE"));
    }
+      
+   virtual ~VarStore()
+   {
+   }
+
+   /**Propagate requests*/
+   virtual void request(int outputID, const ParameterSet &req)
+   {
+      inputs[inputID].node->request(inputs[inputID].outputID, req);
+   }
 
    void specificInitialize()
    {
       Node::specificInitialize();
-   }
-      
-   virtual ~VarStore()
-   {
    }
 
    /**Ask for the node's output which ID (number) is output_id 

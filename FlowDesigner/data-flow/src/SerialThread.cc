@@ -114,10 +114,6 @@ public:
       processCount = -1;
       initThread();
       buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
-      ParameterSet req;
-      req.add("LOOKAHEAD", ObjectRef(Int::alloc(lookAhead+reqLookAhead)));
-      req.add("LOOKBACK", ObjectRef(Int::alloc(reqLookBack)));
-      inputs[inputID].node->request(inputs[inputID].outputID, req);
       Node::specificInitialize();
    }
 
@@ -139,11 +135,17 @@ public:
    
    void request(int outputID, const ParameterSet &req)
    {
+      ParameterSet r;
+      
       if (req.exist("LOOKAHEAD"))
 	 reqLookAhead = max(reqLookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
       if (req.exist("LOOKBACK"))
 	 reqLookBack = max(reqLookBack,dereference_cast<int> (req.get("LOOKBACK")));
-      Node::request(outputID, req);
+
+      r.add("LOOKAHEAD", ObjectRef(Int::alloc(lookAhead+reqLookAhead)));
+      r.add("LOOKBACK", ObjectRef(Int::alloc(reqLookBack)));
+      inputs[inputID].node->request(inputs[inputID].outputID, r);
+
    }
 
    void threadLoop()

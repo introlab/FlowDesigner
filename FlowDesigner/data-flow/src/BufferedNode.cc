@@ -61,7 +61,6 @@ void BufferedNode::specificInitialize()
    processCount = -1;
    this->Node::specificInitialize();
    this->initializeBuffers();
-   this->performRequests();
 }
 
 void BufferedNode::reset()
@@ -81,7 +80,7 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
       outputs[outputID].lookBack = max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
    if (req.exist("INORDER"))
       inOrder = true;
-   this->Node::request(outputID,req);
+   this->performRequests();
 
    //Node *ptr=this;
    //cerr << "request caught in " << name << " " << typeid(*ptr).name() << endl;

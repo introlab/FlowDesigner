@@ -29,6 +29,12 @@ public:
       Each class will call its superclass specificInitialize() method*/
    virtual void specificInitialize();
 
+   /**Propagate requests*/
+   virtual void request(int outputID, const ParameterSet &req)
+   {
+      inputs[inputID].node->request(inputs[inputID].outputID, req);
+   }
+
    /**Class reset routine.
       Each class will call its superclass reset() method*/
    virtual void reset();
