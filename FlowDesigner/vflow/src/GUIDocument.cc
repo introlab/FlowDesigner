@@ -198,6 +198,17 @@ void GUIDocument::load()
    //cerr << "GUIDocument::load\n";
    //cerr << "this = " << this << endl;
    UIDocument::load();
+	
+   // convert the textParams into GUI params
+   for (int i=0; i<textParams.size(); i++)
+   {
+	 DocParameterData newParam;
+	 newParam.name = textParams[i].name;
+	 newParam.value = textParams[i].value;
+	 newParam.type = textParams[i].type;
+	 params.insert(params.end(), newParam);
+   }
+						
    //cerr << "almost loaded\n";
    //cerr << "doc loaded\n";
    for (int i=0;i<networks.size();i++)
