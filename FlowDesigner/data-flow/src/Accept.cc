@@ -45,7 +45,7 @@ public:
 
      if (my_socket.get_type() == NetworkSocket::TCP_STREAM_TYPE) {
 
-       my_socket.server_accept();
+       my_socket.socket_accept();
 
      }
      else {

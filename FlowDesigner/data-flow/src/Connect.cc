@@ -54,7 +54,7 @@ public:
 
        const String &hostname = object_cast<String>(hostValue);
 
-       my_socket.client_connect(hostname.c_str());
+       my_socket.socket_connect(hostname.c_str());
 
 
      }

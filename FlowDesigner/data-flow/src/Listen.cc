@@ -63,9 +63,7 @@ public:
 
      if (my_socket.get_type() == NetworkSocket::TCP_STREAM_TYPE) {
 
-       my_socket.init_tcp_stream(m_blocking);
-
-       my_socket.server_listen(m_backlog);
+       my_socket.socket_listen(m_backlog, m_blocking);
 
      }
      else {
