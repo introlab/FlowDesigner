@@ -8,7 +8,8 @@ install:
 liblapackflow_la_SOURCES = lapackflow.cc \
 	flapack.f \
 	LinSolve.cc \
-	Eig.cc
+	Eig.cc \
+	SVD.cc
 
 liblapackflow_la_LDFLAGS = -release $(LT_RELEASE)
 

@@ -58,43 +58,18 @@ public:
       Matrix<float> &mat = object_cast<Matrix<float> > (inputValue);
       int size = mat.nrows();
       if (mat.ncols() != mat.nrows())
-	 throw new NodeException(this, "matrix isn't square", __FILE__, __LINE__);
+	 throw new NodeException(this, "Matrix isn't square", __FILE__, __LINE__);
 
       Vector<float> &eigenvalues = *Vector<float>::alloc(size);
       Matrix<float> &eigenvectors = *(new Matrix<float> (size, size));
 
-      /*for (int i=0;i<size;i++)
-	 for (int j=0;j<size;j++)
-	 eigenvectors[i][j] = mat[i][j];*/
-
       Matrix<float> tmp(mat);
-      //out[count] = &output;
+      //Matrix<float> tmp2(mat);
 
-      //eig_(size, &eigenvectors[0][0], &eigenvalues[0], &eigenvectors[0][0]);
       eig_(size, &tmp[0][0], &eigenvalues[0], &eigenvectors[0][0]);
-      
+      //svd_(size, size, &tmp[0][0], &tmp2[0][0], &eigenvalues[0], &eigenvectors[0][0]);
+
       eigenvectors.transpose();
-
-      /*cerr << "transposing\n";
-      cerr << eigenvectors << endl;
-      for (int i=0;i<size;i++)
-	 for (int j=0;j<i+1;j++)
-	 {
-	    //float tmp=eigenvectors[i][j];
-	    //eigenvectors[i][j] =  eigenvectors[j][i];
-	    //eigenvectors[j][i] = tmp;
-	    float tmp=eigenvectors(i,j);
-	    eigenvectors(i,j) =  eigenvectors(j,i);
-	    eigenvectors(j,i) = tmp;
-	    //cerr << tmp;
-	 }
-	 cerr << eigenvectors << endl;*/
-      
-	    //eig(size, &mat[0][0], &eigenvalues[0], &eigenvectors[0][0]);
-
-   /* for (int i=0;i<3;i++)
-	 for (int j=0;j<3;j++)
-	 eigenvectors[i][j] = mat[i][j];*/
  
       (*(outputs[valuesID].buffer))[count] = &eigenvalues;
       (*(outputs[vectorsID].buffer))[count] = &eigenvectors;

@@ -20,6 +20,8 @@
       RETURN
       END
 
+
+
       SUBROUTINE EIG(N, A, D, V)
       REAL D(N)
       REAL E(N)
@@ -29,20 +31,29 @@
       REAL FDUMMY
       INTEGER IDUMMY
       INTEGER IDUMMY2
-c      INTEGER IDUMMY3
       REAL ISUPPZ(2*N)
       INTEGER IWORK(10*N)
-c      call SSYTRD('U', N, A, N, D, E, TAU, WORK, 18*N, INFO)
-c      call SORGTR('U', N, A, N, TAU, WORK, 18*N, INFO)
-c      print A(1,1), A(1,2), A(1,3)
-c      call SSTEGR('V', 'A', N, D, E, FDUMMY, FDUMMY, IDUMMY, IDUMMY, 
-c     *0, IDUMMY2, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
-
 c      CALL SSYEV('V', 'U', N, A, N, D, WORK, 18*N, INFO)
       CALL SSYEVR('V', 'A', 'U', N, A, N, FDUMMY, FDUMMY, IDUMMY, 
      *IDUMMY, DLAMCH, IDUMMY2, D, V, N, ISUPPZ, WORK, 28*N, IWORK, 10*N,
      *INFO)
-c      print INFO
-c     *DLAMCH, IDUMMY, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
+
+      RETURN
+      END
+
+
+
+      SUBROUTINE SVD(M, N, A, U, SIGMA, VT)
+      INTEGER LWORK
+      REAL WORK(15*N*N)
+      INTEGER IWORK(8*N)
+      INTEGER INFO
+
+      CALL SGESDD('A', M, N, A, M, SIGMA, U, M, VT, N, WORK, 15*N*N, 
+     *IWORK, INFO)
+
+c      CALL SGESVD('A', 'A', M, N, A, M, SIGMA, U, M, VT, N, WORK, 
+c     *15*N*N, INFO)
+
       RETURN
       END
