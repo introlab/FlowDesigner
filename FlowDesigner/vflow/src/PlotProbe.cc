@@ -68,7 +68,7 @@ PlotProbe::~PlotProbe()
 void PlotProbe::specificInitialize()
 {
    Probe::specificInitialize();
-
+   NO_CANCEL
    gdk_threads_enter(); 
 
    try {
@@ -139,10 +139,12 @@ void PlotProbe::specificInitialize()
    } catch (BaseException *e)
    {
       gdk_threads_leave();
+      SET_CANCEL
       throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
    
-   gdk_threads_leave(); 
+   gdk_threads_leave();
+   SET_CANCEL
 
 }
 
@@ -155,9 +157,7 @@ void PlotProbe::reset()
 void PlotProbe::display()
 {
    GnomeCanvasPoints *points;
-   #ifdef HAVE_PTHREAD_CANCEL
-   pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
-   #endif
+   NO_CANCEL
    gdk_threads_enter();
    
    if (inputValue->status == Object::valid)
@@ -189,9 +189,7 @@ void PlotProbe::display()
       //cerr << "plot done...\n";
    }
    gdk_threads_leave();
-   #ifdef HAVE_PTHREAD_CANCEL
-   pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-   #endif
+   SET_CANCEL
 
 }
 

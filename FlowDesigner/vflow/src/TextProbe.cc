@@ -59,6 +59,7 @@ void TextProbe::specificInitialize()
 {
    Probe::specificInitialize();
 
+   NO_CANCEL
    gdk_threads_enter(); 
    less1 = gnome_less_new ();
    gtk_widget_ref (less1);
@@ -67,7 +68,7 @@ void TextProbe::specificInitialize()
    gtk_widget_show (less1);
    gtk_box_pack_start (GTK_BOX (vbox2), less1, TRUE, TRUE, 0);
    gdk_threads_leave(); 
-   
+   SET_CANCEL
    //gtk_box_pack_start (GTK_BOX (vbox2), scrolledwindow2, TRUE, TRUE, 0);
 }
 
@@ -83,10 +84,7 @@ void TextProbe::display()
    
    out << *inputValue;
 
-   #ifdef HAVE_PTHREAD_CANCEL
-   pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
-   #endif
-
+   NO_CANCEL
    gdk_threads_enter();
 
    gnome_less_clear (GNOME_LESS(less1));
@@ -94,10 +92,7 @@ void TextProbe::display()
    gnome_less_show_string(GNOME_LESS(less1), out.str().c_str());
 
    gdk_threads_leave();
-
-   #ifdef HAVE_PTHREAD_CANCEL
-   pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-   #endif
+   SET_CANCEL
 
 }
 

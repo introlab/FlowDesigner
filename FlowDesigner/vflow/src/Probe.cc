@@ -108,9 +108,11 @@ Probe::~Probe()
 {
    //cerr << "Probe destructor\n";
 
+   NO_CANCEL
    gdk_threads_enter(); 
    gtk_widget_destroy (window1);
    gdk_threads_leave(); 
+   SET_CANCEL
 
    //sem_destroy(&sem);
    pthread_cond_destroy(&cond);
@@ -121,7 +123,7 @@ void Probe::specificInitialize()
 {
    this->Node::specificInitialize();
 
-
+   NO_CANCEL
    gdk_threads_enter();
 
    try {
@@ -260,10 +262,12 @@ void Probe::specificInitialize()
 
    } catch (BaseException *e)
    {
-      gdk_threads_leave(); 
+      gdk_threads_leave();
+      SET_CANCEL
       throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
-   gdk_threads_leave(); 
+   gdk_threads_leave();
+   SET_CANCEL
 
 }
 
@@ -329,11 +333,13 @@ void Probe::display()
 
 void Probe::trace()
 {
+   NO_CANCEL
    gdk_threads_enter(); 
    gtk_widget_set_sensitive(button16, true);
    //gtk_widget_set_sensitive(button17, false);
    gtk_widget_set_sensitive(button18, true);
    gdk_threads_leave(); 
+   SET_CANCEL
 
    //sem_wait(&sem);
    pthread_mutex_lock(&mutex);
@@ -346,12 +352,14 @@ void Probe::trace()
       nbClick--;
       pthread_mutex_unlock(&mutex);
    }
-   
+
+   NO_CANCEL
    gdk_threads_enter(); 
    //gtk_widget_set_sensitive(button17, true);
    gtk_widget_set_sensitive(button16, false);
    gtk_widget_set_sensitive(button18, false);
-   gdk_threads_leave(); 
+   gdk_threads_leave();
+   SET_CANCEL
 }
 
 ObjectRef Probe::getOutput(int output_id, int count)
@@ -366,9 +374,11 @@ ObjectRef Probe::getOutput(int output_id, int count)
       {
 	 char tmp[16];
 	 sprintf (tmp,"%d",count);
+	 NO_CANCEL
 	 gdk_threads_enter(); 
 	 gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
 	 gdk_threads_leave(); 
+	 SET_CANCEL
       }
       
       if (displayEnable && (count % skip == 0))

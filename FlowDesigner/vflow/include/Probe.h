@@ -7,6 +7,18 @@
 #include <semaphore.h>
 #include <pthread.h>
 
+#ifdef HAVE_PTHREAD_CANCEL
+#define NO_CANCEL pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+#else
+#define NO_CANCEL
+#endif
+
+#ifdef HAVE_PTHREAD_CANCEL
+#define SET_CANCEL pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+#else
+#define SET_CANCEL
+#endif
+
 class Probe : public Node {
   protected:
 
