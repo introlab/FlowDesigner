@@ -17,7 +17,7 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include <pthread.h>
-#include <semaphore.h>
+//#include <semaphore.h>
 #include "ExceptionObject.h"
 
 class ParallelThread;
@@ -65,10 +65,12 @@ class ParallelThread : public BufferedNode {
       //pthread_mutex_t bufferLock;
 
    //Incremented (by getOutput) when a new calculation can be done
-   sem_t sendSem;
+   pthread_cond_t sendSem;
 
    //Incremented (by threadLoop) when a new result is available
-   sem_t recSem;
+   pthread_cond_t recSem;
+
+   pthread_mutex_t lock;
 
    int calcCount;
 
@@ -76,18 +78,25 @@ class ParallelThread : public BufferedNode {
    void destroyThread()
    {
       resetState = true;
-      sem_post(&sendSem);
+      pthread_cond_signal(&sendSem);
+      //sem_post(&sendSem);
       pthread_join (thread, NULL);
-      sem_destroy(&sendSem);
-      sem_destroy(&recSem);
+      pthread_cond_destroy(&sendSem);
+      pthread_cond_destroy(&recSem);
+      pthread_mutex_init(&lock, NULL);
+      //sem_destroy(&sendSem);
+      //sem_destroy(&recSem);
       resetState = false;
    }
 
    //Init thread data
    void initThread()
    {
-      sem_init(&sendSem, 0, 0);
-      sem_init(&recSem, 0, 0);
+      pthread_cond_init(&sendSem,NULL);
+      pthread_cond_init(&recSem,NULL);
+      pthread_mutex_destroy(&lock);
+      //sem_init(&sendSem, 0, 0);
+      //sem_init(&recSem, 0, 0);
    }
 
 public:
@@ -123,13 +132,11 @@ public:
    {
       while (1)
       {
-	 if (sem_wait(&sendSem))
-	    perror("sem_wait(&sendSem)) ");
+	 pthread_cond_wait(&sendSem, &lock);
 	 if (resetState)
 	    break;
 	 calc();
-	 if (sem_post(&recSem))
-	    perror("sem_post(&recSem) ");	 
+	 pthread_cond_signal(&recSem);	 
       }
    }
 
@@ -153,9 +160,10 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
+      //pthread_mutex_lock(&lock);
       calcCount = count;
-      if (sem_post(&sendSem))
-	 perror("sem_post(&sendSem) ");
+      pthread_cond_signal(&sendSem);	 
+
       try {
 	 ObjectRef input2Value = getInput(input2ID, calcCount);
 	 (*outputs[output2ID].buffer)[calcCount] = input2Value;
@@ -170,8 +178,8 @@ public:
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
-      if (sem_wait(&recSem))
-	 perror("sem_wait(&recSem) ");
+      pthread_cond_wait(&recSem, &lock);
+      perror("sem_wait(&recSem) ");
       //cerr << "calculate\n";
 
       if (typeid(*(*outputs[output1ID].buffer)[calcCount]) == typeid(ExceptionObject))
