@@ -22,7 +22,7 @@
 
 class NNetTrain;
 
-NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT", "OUTPUT", "HIDDEN:EPOCH")
+NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT", "OUTPUT", "HIDDEN:MAX_EPOCH:LEARN_RATE:MOMENTUM:INCREASE:DECREASE:ERR_RATIO")
 
 class NNetTrain : public Node {
 
@@ -45,19 +45,55 @@ protected:
 
    int hidden;
       
-   int epoch;
+   int maxEpoch;
+      
+   double learnRate;
+
+   double momentum;
+
+   double decrease;
+
+   double increase;
+
+   double errRatio;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrain(string nodeName, ParameterSet params)
       : Node(nodeName, params)
-      {
-	    outputID = addOutput("OUTPUT");
-	    trainInID = addInput("TRAIN_IN");
-	    trainOutID = addInput("TRAIN_OUT");
-	    hidden = dereference_cast<int> (parameters.get("HIDDEN"));
-	    epoch = dereference_cast<int> (parameters.get("EPOCH"));
-      }
+   {
+      outputID = addOutput("OUTPUT");
+      trainInID = addInput("TRAIN_IN");
+      trainOutID = addInput("TRAIN_OUT");
+      hidden = dereference_cast<int> (parameters.get("HIDDEN"));
+      
+      if (parameters.exist("MAX_EPOCH"))
+	 maxEpoch = dereference_cast<int> (parameters.get("MAX_EPOCH"));
+      else maxEpoch = 200;
+      
+      if (parameters.exist("LEARN_RATE"))
+	    learnRate = dereference_cast<float> (parameters.get("LEARN_RATE"));
+      else learnRate = .00001;
+      
+      if (parameters.exist("MOMENTUM"))
+	 momentum = dereference_cast<float> (parameters.get("MOMENTUM"));
+      else momentum = .9;
+      
+      if (parameters.exist("INCREASE"))
+	 increase = dereference_cast<float> (parameters.get("INCREASE"));
+      else increase = 1.05;
 
+      if (parameters.exist("DECREASE"))
+	 decrease = dereference_cast<float> (parameters.get("DECREASE"));
+      else decrease = 1.05;
+
+      if (parameters.exist("ERR_RATIO"))
+	 errRatio = dereference_cast<float> (parameters.get("ERR_RATIO"));
+      else errRatio = 1.05;
+
+      
+   }
+      
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize()
@@ -117,7 +153,7 @@ public:
 
 	       FFNet *net = new FFNet( topo ); 
 	       
-	       net->train(in, out, epoch);
+	       net->train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
 
 	       currentNet = ObjectRef(net);
 	       //exit(1);

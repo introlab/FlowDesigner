@@ -21,9 +21,6 @@ FFNet::FFNet(const Vector<int> &_topo)
    }
    layers[0]->init(5);
 
-   alpha = .00001;
-   last_error=-1;
-   momentum=.85;
    /*double *f=layers[0]->getWeights(0);
    f[0]=2;f[1]=-1;
    f[2]=1;*/
@@ -37,7 +34,7 @@ double *FFNet::calc(const double *input)
    return layers[layers.size()-1]->getValue();
 }
 
-void FFNet::learn(double *input, double *output)
+void FFNet::learn(double *input, double *output, double alpha)
 {
    int outputLayer = topo.size()-2;
    calc(input);
@@ -92,9 +89,16 @@ void FFNet::learn(double *input, double *output)
 
 
 
-void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
+void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double learnRate, double mom, 
+		  double increase, double decrease, double errRatio)
 {
-   int worse=0;
+   //int worse=0;
+   double error;
+   double min_error=FLT_MAX;
+   double last_error=FLT_MAX;
+   double alpha = learnRate;
+   double momentum=mom;
+
    while (iter)
    {
       int i,j;
@@ -114,7 +118,7 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
 	    in[j]=tin[i][j];
 	 for (j=0;j<topo[topo.size()-1];j++)
 	    out[j]=tout[i][j];
-	 learn (in, out);
+	 learn (in, out, alpha);
 	 
       }
       for (i=0;i<layers.size();i++)
@@ -137,31 +141,39 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
 	 for (j=0;j<topo[topo.size()-1];j++)
 	    SSE += (netOut[j]-out[j])*(netOut[j]-out[j]);
       }
-      momentum=.85;
-      if (last_error > 0 && (SSE/last_error > 1.04 /*|| worse > 4*/))
+      //momentum=.85;
+
+
+      if (SSE < min_error)
       {
+	 momentum = mom;
+	 alpha *= increase;
+	 error = SSE;
+	 min_error=error;
+      } else if (SSE<last_error) 
+      { 
+	 error=SSE;
+	 
+      } else if (SSE/errRatio > min_error)
+      {
+	 cerr << SSE-last_error << endl;
 	 momentum=0;
-	 alpha *= .7;
+	 alpha *= decrease;
+	 //if (SSE/1.04 > min_error)
 	 for (i=0;i<layers.size();i++)
 	    layers[i]->undo();
-	 worse=0;
-      }
-      else if (last_error > 0 && SSE < last_error)
-      {
-	 alpha *= 1.1;
-	 error = SSE;
-	 worse=0;
-	 last_error = error;
+	 
       } else {
-	 worse++;
-	 //cerr << "ce quoi l'probleme??? " << error << " " << last_error << endl;
+	 
+	 alpha *= sqrt(decrease);
+	 momentum = 0;
 	 error=SSE;
-	 if (last_error < 0)
-	    last_error = error;
       }
+
+
       cout << (error/tin.size()/topo[topo.size()-1]) << "\t" << alpha << endl;
 
-      //last_error = error;
+      last_error = error;
    }
 }
 
