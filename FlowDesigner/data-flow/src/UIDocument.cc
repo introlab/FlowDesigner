@@ -157,12 +157,10 @@ void UIDocument::loadXML(xmlNodePtr root)
       net = net->next;
    }
 
-     return;
   
    vector<ItemInfo *> tmp = getNetParams("MAIN");
    //cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
    //textParams.resize(tmp.size());
-   
    for (unsigned int i=0;i<tmp.size();i++)
      {   
         DocParameterDataText *newParam = new DocParameterDataText;
