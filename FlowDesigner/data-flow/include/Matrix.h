@@ -133,10 +133,22 @@ public:
 
    //(DL) 11/02/2004
    /** Returns the size of the matrix */
-   int size() {
+   int size() const {
      return (cols * rows);
    }
+   
+   virtual void serialize(ostream &out) const;
 
+   virtual void unserialize(istream &in);
+
+   static string GetClassName()
+   {
+      string name = ObjectGetClassName<Matrix<T> >();
+      if (name == "unknown")
+	 return string("Matrix");
+      else
+	 return name;
+   }
 
 };
 
@@ -195,11 +207,11 @@ inline Matrix<T> operator * (Matrix<T> A, Matrix<T> B)
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
 struct MatrixBinary {
-   static inline void serialize(const Matrix<T> &v, ostream &out)
+   static inline void serialize(const Matrix<T> &m, ostream &out)
    {
       throw new GeneralException("MatrixBinary default serialize should never be called", __FILE__, __LINE__);
    }
-   static inline void unserialize(Matrix<T> &v, istream &in)
+   static inline void unserialize(Matrix<T> &m, istream &in)
    {
       throw new GeneralException("MatrixBinary default unserialize should never be called", __FILE__, __LINE__);
    }
@@ -211,12 +223,14 @@ struct MatrixBinary<T,TTraits::Object> {
   static inline void serialize(const Matrix<T> &m, ostream &out) {
     out << "{" << m.className() << endl;
     out << "|";
-    
+
     //writing nb rows
-    BinIO::write(out, m.nrows(), 1);
-    
+    int tmp = m.nrows();
+    BinIO::write(out, &tmp, 1);
+   
     //writing nb cols
-    BinIO::write(out, m.ncols(), 1);
+    tmp = m.ncols();
+    BinIO::write(out, &tmp, 1);
     
     //serializing object(s)
     for (size_t i=0;i<m.nrows();i++) {
@@ -263,10 +277,12 @@ struct MatrixBinary<T,TTraits::ObjectPointer> {
       out << "|";
      
       //writing nb rows
-      BinIO::write(out, m.nrows(), 1);
+      int tmp = m.nrows();
+      BinIO::write(out, &tmp, 1);
       
       //writing nb cols
-      BinIO::write(out, m.ncols(), 1);
+      tmp = m.ncols();
+      BinIO::write(out, &tmp, 1);
 
       //serializing object(s)
       for (size_t i=0;i<m.nrows();i++) {
@@ -291,7 +307,7 @@ struct MatrixBinary<T,TTraits::ObjectPointer> {
 
      for (size_t i=0;i<m.nrows();i++) {
        for (size_t j=0;j<m.ncols();j++) {
-	 in >> v(i,j);
+	 in >> m(i,j);
        }
      }
 
@@ -305,17 +321,19 @@ template<class T>
 struct MatrixBinary<T,TTraits::Basic> {
    static inline void serialize(const Matrix<T> &m, ostream &out)
    {
-      out << "{" << v.className() << endl;
+      out << "{" << m.className() << endl;
       out << "|";
 
       //writing nb rows
-      BinIO::write(out, m.nrows(), 1);
+      int tmp = m.nrows();
+      BinIO::write(out, &tmp, 1);
       
       //writing nb cols
-      BinIO::write(out, m.ncols(), 1);
+      tmp = m.ncols();
+      BinIO::write(out, &tmp, 1);
 
       //writing all data at once
-      BinIO::write(out, &(const_cast<Matrix<T> &>(m))[0], m.size());
+      BinIO::write(out,m[0], m.size());
 
       out << "}";
    }
@@ -331,7 +349,7 @@ struct MatrixBinary<T,TTraits::Basic> {
      m.resize(nrows,ncols);
 
      //reading all data at once
-     BinIO::read(in, &(const_cast<Matrix<T> &>(m))[0], m.size());
+     BinIO::read(in,m[0], m.size());
      char ch;
      in >> ch;
    }
@@ -352,6 +370,18 @@ struct MatrixBinary<T,TTraits::Unknown> {
    }
 };
 
+
+template <class T>
+inline void Matrix<T>::serialize(ostream &out) const
+{
+   MatrixBinary<T, TypeTraits<T>::kind>::serialize(*this, out);
+}
+
+template <class T>
+inline void Matrix<T>::unserialize(istream &in)
+{
+   MatrixBinary<T, TypeTraits<T>::kind>::unserialize(*this, in);
+}
 
 
 
