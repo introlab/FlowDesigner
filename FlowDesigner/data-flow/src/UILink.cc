@@ -48,7 +48,6 @@ UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
       while(1)
       {
 	 double x, y;
-	 str >> x >> y;
 	 if (str.eof())
 	    break;
 	 m_points.push_back(new GUILinkPoint(x,y));

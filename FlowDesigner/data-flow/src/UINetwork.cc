@@ -90,8 +90,7 @@ void UINetwork::load (xmlNodePtr net)
 	 char *points=NULL;
 	 if (node->childs)
 	    points = (char *)node->childs->content;
-	 cerr << points << endl;
-     //BUG HERE
+     //FIXME: potential segfault
          newLink(getNodeNamed(fromnode)->getOutputNamed(out),
                   getNodeNamed(tonode)->getInputNamed(in), points);
       }
