@@ -142,8 +142,22 @@ void KMeans::update (const vector<float *> &data, int len)
       int meanID=belongs[i];
       //cerr << "meanID = " << meanID << endl;
       accum[meanID]++;
-      for (j=0;j<length;j++)
-         means[meanID][j] += data[i][j];
+
+      float *theMean = means[meanID].begin();
+      float *theData = data[i];
+      float *end = theData+length;
+      while (theData < end-3)
+      {
+	 *theMean++ += *theData++;
+	 *theMean++ += *theData++;
+	 *theMean++ += *theData++;
+	 *theMean++ += *theData++;
+      }
+      while (theData<end)
+	 *theMean++ += *theData++;
+      /*for (j=0;j<length;j++)
+	means[meanID][j] += data[i][j];*/
+
    }
    for (i=0; i<nbMeans;i++)
    {
@@ -221,7 +235,11 @@ int KMeans::getClassID (const float *v, float *dist_return = NULL) const
    int minID=0;
    for (int i=1;i<means.size();i++)
    {
-      float tmp = dist(means[i].begin(), v, length);
+      float tmp;
+      if (dist==euclidian)
+	 tmp = euclidian(means[i].begin(), v, length);
+      else
+	 tmp = dist(means[i].begin(), v, length);
       if (tmp < min_dist) 
       {
          minID=i;

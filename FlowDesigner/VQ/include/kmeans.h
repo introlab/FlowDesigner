@@ -30,11 +30,31 @@ protected:
 
    static float euclidian (const float *x, const float *y, int len)
    {
-      float val=0;
+      float sum1=0,sum2=0,sum3=0,sum4=0;
+      const float *end = x+len;
+      while (x<end-3)
+      {
+	 sum1 += (*x-*y)*(*x-*y);
+	 x++; y++;
+	 sum2 += (*x-*y)*(*x-*y);
+	 x++; y++;
+	 sum3 += (*x-*y)*(*x-*y);
+	 x++; y++;
+	 sum4 += (*x-*y)*(*x-*y);
+	 x++; y++;
+      }
+       while (x<end)
+       {
+	 sum1 += (*x-*y)*(*x-*y);
+	 x++; y++;
+       }
+      return (sum1+sum2)+(sum3+sum4);
+
+      /*float val=0;
       for (int i=0;i<len;i++)
          val += (x[i]-y[i])*(x[i]-y[i]);
       //cerr << "returned " << val << endl;
-      return val;
+      return val;*/
    }
 
 public:

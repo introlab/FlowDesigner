@@ -134,6 +134,7 @@ public:
 	    } //else {cerr << "doubling\n";}
 	 }
       }
+      //cout << endl;
 /*
       for (int i=start;i<=end;i++)
       {
