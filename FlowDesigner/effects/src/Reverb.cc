@@ -25,7 +25,7 @@ DECLARE_NODE(Reverb)
 /*Node
  *
  * @name Reverb
- * @category Signal:Base
+ * @category Effects
  * @description Stereo Reverb
  *
  * @input_name LEFT
@@ -43,6 +43,26 @@ DECLARE_NODE(Reverb)
  * @output_name RIGHT
  * @output_type Vector
  * @output_description Left Output Channel
+ *
+ * @parameter_name ROOMSIZE
+ * @parameter_type float
+ * @parameter_description 0 < Room Size < 1 (default = .5)
+ *
+ * @parameter_name DAMP
+ * @parameter_type float
+ * @parameter_description 0 < Damp < 1 (default = .5)
+ *
+ * @parameter_name WET
+ * @parameter_type float
+ * @parameter_description 0 < Wet < 1 (default = 1/3)
+ *
+ * @parameter_name DRY
+ * @parameter_type float
+ * @parameter_description 0 < Dry < 1 (default = 0)
+ *
+ * @parameter_name WIDTH
+ * @parameter_type float
+ * @parameter_description 0 < Width < 1 (default = 1)
  *
 END*/
 
@@ -70,10 +90,35 @@ public:
       delete rev;
    }
    
+   void setReverbParams()
+   {
+      if (parameters.exist("ROOMSIZE"))
+      {
+	 rev->setroomsize(dereference_cast<float> (parameters.get("ROOMSIZE")));
+      }
+      if (parameters.exist("DAMP"))
+      {
+	 rev->setdamp(dereference_cast<float> (parameters.get("DAMP")));
+      }
+      if (parameters.exist("WET"))
+      {
+	 rev->setwet(dereference_cast<float> (parameters.get("WET")));
+      }
+      if (parameters.exist("DRY"))
+      {
+	 rev->setdry(dereference_cast<float> (parameters.get("DRY")));
+      }
+      if (parameters.exist("WIDTH"))
+      {
+	 rev->setwidth(dereference_cast<float> (parameters.get("WIDTH")));
+      }
+   }
+
    void specificInitialize()
    {
       BufferedNode::specificInitialize();
       rev = new revmodel;
+      setReverbParams();
    }
 
    void reset()
@@ -81,6 +126,7 @@ public:
       BufferedNode::reset();
       delete rev;
       rev = new revmodel;
+      setReverbParams();
    }
 
    void calculate(int output_id, int count, Buffer &out)
