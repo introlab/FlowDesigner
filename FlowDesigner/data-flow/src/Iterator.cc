@@ -14,8 +14,6 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef _ITERATOR_CC_
-#define _ITERATOR_CC_
 
 #include "Iterator.h"
 #include "Node.h"
@@ -49,7 +47,6 @@ Iterator::Iterator (string nodeName, ParameterSet params)
 ObjectRef Iterator::getOutput (int output_id, int count) {
    
    if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
-   lock();
 
    if (processCount != count) {
 
@@ -108,7 +105,6 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
       processCount = count;
       }
 
-   unlock();
 
    return output[output_id];   
 }
@@ -163,5 +159,3 @@ void Iterator::specificInitialize() {
       doWhile = false;
 }
 
-
-#endif

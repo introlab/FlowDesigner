@@ -89,13 +89,28 @@ public:
       switch (type)
       {
 	 case cpp:
-	    openedFile = ObjectRef (new IFStream(fileName.c_str()));
+	 {
+	    IFStream *file = new IFStream(fileName.c_str());
+	    if (file->fail())
+	       throw new NodeException(this, "InputStream: cannot open file: " + fileName, __FILE__, __LINE__);
+	    openedFile = ObjectRef (file);
+	 }
 	    break;
 	 case fptr:
-	    openedFile = ObjectRef (new FILEPTR(fopen (fileName.c_str(), "r")));
+	 {
+	    FILE *file = fopen (fileName.c_str(), "r");
+	    if (!file)
+	       throw new NodeException(this, "InputStream: cannot open file: " + fileName, __FILE__, __LINE__);
+	    openedFile = ObjectRef (new FILEPTR(file));
+	 }
 	    break;
 	 case fd:
-	    openedFile = ObjectRef (new FILEDES(open (fileName.c_str(), O_RDONLY)));
+	 {
+	    int file = open (fileName.c_str(), O_RDONLY);
+	    if (file == -1)
+	       throw new NodeException(this, "InputStream: cannot open file: " + fileName, __FILE__, __LINE__);
+	    openedFile = ObjectRef (new FILEDES(file));
+	 }
 	    break;
       }
       out[count] = openedFile;
