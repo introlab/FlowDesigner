@@ -3,6 +3,9 @@
 
 #include "Network.h"
 
+//our static factory dictionary
+map<string,_NodeFactory*> Network::factoryDictionary;
+
 /***************************************************************************/
 /*
   Network()
@@ -129,7 +132,7 @@ Node * Network::removeNode (const string &nodeName) {
   Dominic Letourneau
  */
 /***************************************************************************/
-_NodeFactory* Network::getFactoryNamed (const string &name) {
+static _NodeFactory* Network::getFactoryNamed (const string &name) {
 
    _NodeFactory* factory = NULL;
    map<string,_NodeFactory*>::iterator iter;
@@ -202,5 +205,20 @@ void Network::initialize() {
 
 }
 
+void Network::addFactory (const string &factoryName, _NodeFactory* const factory) {
+   if (!getFactoryNamed(factoryName)) {
+      //the factory doesn't exist inserting it...
+      if (factory != NULL) {
+         factoryDictionary.insert (factoryEntry(factoryName,factory));
+      }
+      else {
+         cerr<<"NULL _NodeFactory pointer, exiting"<<endl;
+         exit(-1);
+      }
+   }
+   else {
+      throw (string("The factory already exists"));
+   }
+};
 
 #endif

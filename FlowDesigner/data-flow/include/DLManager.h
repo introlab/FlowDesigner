@@ -29,15 +29,15 @@
 #ifdef HPUX
 #include <dl.h>
 
-typedef shl_t DL_HANDLE_TYPE
+typedef shl_t DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
-   return shl_load (path, BIND_IMMEDIATE, 0);
+   return shl_load (path.c_str(), BIND_IMMEDIATE, 0);
 }
-inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string path) 
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
 {
    void *tmp;
-   shl_find_sym (lib, symbol, TYPE_PROCEDURE, &tmp);
+   shl_findsym (&lib, symbol.c_str(), TYPE_PROCEDURE, &tmp);
    return tmp;
 }
 inline void _DL_CLOSE(DL_HANDLE_TYPE lib) 
@@ -49,7 +49,7 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 #endif
 
 
-#ifdef LINUX
+#if defined (LINUX) || defined(SOLARIS)
 #include <dlfcn.h>
 
 ///The pointer to library type (OS dependent)

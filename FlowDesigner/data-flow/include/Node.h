@@ -37,7 +37,38 @@ private:
    
 };
 
-typedef map<string,ObjectRef> ParameterSet;
+class ParameterSet : public map<string,ObjectRef> {
+public: 
+   void requireParam(string param) 
+   {
+      if (find(param)==end()) 
+         throw string("missing parameter: ") + param;
+   }
+   ObjectRef get(string param) 
+   {
+      if (find(param)==end()) 
+         throw string("missing parameter: ") + param;
+      else return operator[](param);
+   }
+   ObjectRef getDefault(string param, ObjectRef value) 
+   {
+      if (find(param)==end()) 
+         return value;
+      else return operator[](param);
+   }
+   void defaultParam(string param, ObjectRef value)
+   {
+      if (find(param)==end())
+         operator[](param)=value;
+   }
+   void add(string param, ObjectRef value)
+   {
+      operator[](param)=value;
+   }
+
+};
+
+//typedef map<string,ObjectRef> ParameterSet;
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
 ///Base node class

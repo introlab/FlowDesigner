@@ -23,7 +23,7 @@ public:
    
    ///default constructor
    GenericType() {
-      value = (T) 0;
+      //value = (T) 0;
    }
 
    ///destructor
