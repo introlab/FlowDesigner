@@ -5,9 +5,11 @@
     <Node name="node2" type="Constant" x="-623.000000" y="152.000000">
       <Parameter name="VALUE" type="string" value="FuzzyModel.txt"/>
     </Node>
-    <Node name="node3" type="FuzzyLoadModel" x="-378.000000" y="153.000000"/>
+    <Node name="node4" type="Load" x="-382.000000" y="152.000000"/>
+    <Node name="node3" type="TextProbe" x="-277.000000" y="152.000000"/>
     <Link from="node2" output="VALUE" to="node1" input="INPUT"/>
-    <Link from="node1" output="OUTPUT" to="node3" input="STREAM"/>
-    <NetOutput name="MODEL" node="node3" terminal="MODEL"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="STREAM"/>
+    <Link from="node4" output="OUTPUT" to="node3" input="INPUT"/>
+    <NetOutput name="MODEL" node="node3" terminal="OUTPUT"/>
   </Network>
 </Document>

@@ -45,4 +45,7 @@ private:
 
 };
 
+istream &operator >> (istream &in, GenericModel &model);
+
+
 #endif 
