@@ -78,12 +78,16 @@ static GnomeUIInfo doc_menu[] = {
 
 GUIDocument::GUIDocument(string _name)
    : UIDocument(_name)
+   , docproperty(NULL)
+
 //   , untitled(true)
 //   , modified(false)
 {
    //cerr << "GUIDocument::GUIDocument\n";
    gnome_mdi_child_set_name (GNOME_MDI_CHILD(this), (gchar *)docName.c_str());
    create();
+
+   createParamDialog();
 }
 
 
@@ -117,6 +121,11 @@ void GUIDocument::load()
    {
       dynamic_cast<GUINetwork *> (networks[i])->updateScroll();
    }
+   if (docproperty)
+   {
+      gtk_widget_destroy(docproperty);
+   }
+   createParamDialog();
 
 }
 
@@ -272,25 +281,74 @@ void GUIDocument::setFullPath(const string &fullpath)
 
 static void param_apply (GnomePropertyBox *propertybox, gint arg1, gpointer user_data)
 {
-   //((GUINodeParameters *)(user_data))->apply();
+   ((GUIDocument *)(user_data))->applyParams();
 }
 
 static void entry_changed (GtkEntry *entry, gpointer user_data)
 {
-   //((GUINodeParameters *)(user_data))->changed();
+   ((GUIDocument *)(user_data))->changedParams();
 }
 
 static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
 {
-   //((GUINodeParameters *)(user_data))->changed();
+   ((GUIDocument *)(user_data))->changedParams();
+}
+
+void GUIDocument::showParams()
+{
+   gtk_widget_show (docproperty);
+
+}
+
+void GUIDocument::changedParams()
+{
+   gnome_property_box_changed(GNOME_PROPERTY_BOX(docproperty));
+}
+
+void GUIDocument::applyParams()
+{
+   for (int i=0;i<params.size();i++)
+   {
+      //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
+      GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
+      params[i].type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
+
+      GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
+      params[i].value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
+      
+      //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
+   }
+   //cerr << "apply\n";
+   setModified();
+}
+
+static const vector<string> &allDocTypes()
+{
+   static vector<string> types;
+   static int init=false;
+   if (!init)
+   {
+      types.insert(types.end(), "int");
+      types.insert(types.end(), "float");
+      types.insert(types.end(), "string");
+      init=true;
+   }
+   return types;
 }
 
 
 void GUIDocument::createParamDialog()
 {
-
-   //cerr << "GUINodeParameters::GUINodeParameters\n";
    int i;
+
+   vector<string> tmp = getNetParams("MAIN");
+   cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
+   params.resize(tmp.size());
+   for (i=0;i<tmp.size();i++)
+      params[i].name=tmp[i];
+   cerr << "--\n";
+   
+   //cerr << "GUINodeParameters::GUINodeParameters\n";
 
    //GtkWidget *nodeproperty;
   GtkWidget *notebook2;
@@ -405,10 +463,10 @@ void GUIDocument::createParamDialog()
                        (GtkAttachOptions) (0), 0, 0);
      params[i].optionmenu_menu = gtk_menu_new ();
 
-     vector<string> types;
-     types.insert(types.end(), string("Int"));
-     types.insert(types.end(), string("Float"));
-     types.insert(types.end(), string("String"));
+     const vector<string> &types=allDocTypes();
+     //types.insert(types.end(), string("Int"));
+     //types.insert(types.end(), string("Float"));
+     //types.insert(types.end(), string("String"));
      for (int j=0;j<types.size();j++)
      {
         glade_menuitem = gtk_menu_item_new_with_label ((const gchar *)types[j].c_str());
@@ -495,12 +553,44 @@ void GUIDocument::run()
 {
    //cerr << "GUIDocument::run\n";
    try{
-      ParameterSet params;
-   cerr << "building net...\n";
-      Network *net = build("MAIN", params);
-   cerr << "initializing...\n";
+      ParameterSet parameters;
+      {
+	 cerr << "there are " << params.size() << " params\n";
+	 for (int i=0;i<params.size();i++)
+	 {
+	    DocParameterData &curr = params[i];
+	    if (curr.value == "")
+	       continue;
+	    ObjectRef value;
+	    if (curr.type == "int")
+	    {
+	       int val = atoi (curr.value.c_str());
+	       value = ObjectRef(new Int(val));
+	    } 
+	    else if (curr.type == "float")
+	    {
+	       float val = atof (curr.value.c_str());
+	       value = ObjectRef(new Float(val)); 
+	    } 
+	    else if (curr.type == "string")
+	    {
+	       cerr << "string\n";
+	       value = ObjectRef(new String(curr.value));	 	 
+	    }
+	    else {
+	       cerr << "UNKNOWN PARAM TYPE: \"" << curr.type << "\"" << endl;
+	    }
+	    
+	    parameters.add(curr.name,value);
+	 }
+
+      }
+      cerr << "building net...\n";
+      parameters.print();
+      Network *net = build("MAIN", parameters);
+      cerr << "initializing...\n";
       net->initialize();
-   cerr << "running...\n";
+      cerr << "running...\n";
       cout << *net->getOutput(0,0) << endl;
       //ask for params and desired output
       
