@@ -144,6 +144,8 @@ class pipe_streambuf : public streambuf {
    virtual int underflow();
    virtual streamsize xsgetn(char *s, streamsize n);
    virtual int pbackfail(int c);
+   int ll_read(void *buf, size_t count);
+   int ll_write(const void *buf, size_t count);
   public:
    //pipe_streambuf(int _ifd, int _ofd, pid_t _pid, bool _waitOnClose=false);
    pipe_streambuf(const string &command, bool _waitOnClose=false);

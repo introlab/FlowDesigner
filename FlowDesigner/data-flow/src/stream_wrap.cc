@@ -214,21 +214,51 @@ pipe_streambuf::~pipe_streambuf()
    }
 }
 
+int pipe_streambuf::ll_read(void *buf, size_t count)
+{
+   int res = 0;
+   res = read(ifd, buf, count);
+   if (res==0)
+   {
+      if (waitpid(pid, NULL, WNOHANG)==pid)
+      {
+	 pid=0;
+	 return 0;
+      }
+   }
+   return res;
+}
+
+int pipe_streambuf::ll_write(const void *buf, size_t count)
+{
+   int res = 0;
+   res = write(ofd, buf, count);
+   if (res==0)
+   {
+      if (waitpid(pid, NULL, WNOHANG)==pid)
+      {
+	 pid=0;
+	 return 0;
+      }
+   }
+   return res;
+}
+
 
 int pipe_streambuf::overflow(int c = EOF)
 {
+   //FIXME: How to handle ELF, also we're writing an int with size=1. That's not right
    if (ofd!=-1)
-      write(ofd, &c, 1);
+      return ll_write(&c, 1);
    else
       throw new GeneralException("Cannot write to read-only pipe", __FILE__, __LINE__);
-   //FIXME: Find EOF?
 }
 
 
 streamsize pipe_streambuf::xsputn(const char *s, streamsize n)
 {
    if (ofd!=-1)
-      return write(ofd, s, n);
+      return ll_write(s, n);
    else
       throw new GeneralException("Cannot write to read-only pipe", __FILE__, __LINE__);
 }
@@ -244,17 +274,10 @@ int pipe_streambuf::uflow()
 	 takeFromBuf = false;
 	 return charBuf;
       } else {
-	 int res = 0;
-	 res = read(ifd, &charBuf, 1);
-	 if (res==0)
-	 {
-	    if (waitpid(pid, NULL, WNOHANG)==pid)
-	    {
-	       pid=0;
-	       return EOF;
-	    }
-	 }
-	 return charBuf;
+	 if (ll_read(&charBuf, 1))
+	    return charBuf;
+	 else
+	    return EOF;
       }
    } else
       throw new GeneralException("Cannot read from write-only pipe", __FILE__, __LINE__);
@@ -269,9 +292,11 @@ int pipe_streambuf::underflow()
 	 return charBuf;
       } else
       {
-	 read(ifd, &charBuf, 1);
 	 takeFromBuf = true;
-	 return charBuf;
+	 if (ll_read(&charBuf, 1))
+	    return charBuf;
+	 else
+	    return EOF;
       }
    } else
       throw new GeneralException("Cannot read from write-only pipe", __FILE__, __LINE__);
@@ -295,8 +320,9 @@ streamsize pipe_streambuf::xsgetn(char *s, streamsize n)
 {
    if (ifd!=-1)
    {
-      int size = read(ifd, s, n);
-      return size;
+      //int size = read(ifd, s, n);
+      //return size;
+      return ll_read(s,n);
    } else
       throw new GeneralException("Cannot read from write-only pipe", __FILE__, __LINE__);
 }
