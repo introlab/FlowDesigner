@@ -4,6 +4,7 @@ AC_INIT(HMM/include/covariance.h)
 
 dnl Stolen from gtk+:
 
+AC_CONFIG_SUBDIRS(vflow)
 # Making releases:
 #   HMM_MICRO_VERSION += 1;
 #   HMM_INTERFACE_AGE += 1;
