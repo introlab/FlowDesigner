@@ -1,7 +1,6 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 2001 Jean-Marc Valin
 
 #include "Node.h"
-#include "FlowException.h"
 #include <sstream>
 
 class Recover;
@@ -23,6 +22,7 @@ DECLARE_NODE(Recover)
  * @output_description Flow output
  *
  * @output_name EXCEPTION
+ * @output_type String
  * @output_description The error message caught (use only as feedback link)
  *
 END*/
