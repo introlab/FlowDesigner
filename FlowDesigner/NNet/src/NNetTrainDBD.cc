@@ -26,31 +26,39 @@ DECLARE_NODE(NNetTrainDBD)
  *
  * @name NNetTrainDBD
  * @category NNet
- * @description No description available
+ * @description Neural network (MLP) training unsing the Delta-bar-delta algorithm
  *
  * @input_name TRAIN_IN
- * @input_description No description available
+ * @input_parameter Vector
+ * @input_description Input data accumulator
  *
  * @input_name TRAIN_OUT
- * @input_description No description available
+ * @input_parameter Vector
+ * @input_description Output data accumulator
  *
  * @input_name NNET
- * @input_description No description available
+ * @input_parameter FFNet
+ * @input_description Neural network that will be trained
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_parameter FFNet
+ * @output_description Trained network
  *
  * @parameter_name MAX_EPOCH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of training epoch
  *
  * @parameter_name LEARN_RATE
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Initial learning rate (adaptive)
  *
  * @parameter_name INCREASE
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Learning rate increment factor (> 1.0)
  *
  * @parameter_name DECREASE
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Learning rate decrement factor (< 1.0)
  *
 END*/
 
@@ -168,7 +176,7 @@ public:
 
 	       //FFNet *net = new FFNet( topo ); 
 	       FFNet &net = object_cast<FFNet> (netValue);
-	       net.setDerivOffset(.05);
+	       //net.setDerivOffset(.05);
 	       //net.trainRecurrent(in, out, maxEpoch, learnRate, momentum, increase, decrease);
 	       net.trainDeltaBar(in, out, maxEpoch, learnRate, increase, decrease);
 	       //net->trainlm(in, out, maxEpoch);
