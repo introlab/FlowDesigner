@@ -41,7 +41,7 @@ int KMeans::split (const vector<float *> &data, int len)
    }
    
    float max_dist = 0;
-   int maxID;
+   int maxID=0;
    for (i=0; i<nbMeans;i++)
       if (totalDist[i]/accum[i] > max_dist)
       {
@@ -49,6 +49,10 @@ int KMeans::split (const vector<float *> &data, int len)
          maxID=i;
       }
    
+   cerr << "about to perform split\n";
+   cerr << "nbMeans = " << nbMeans << endl;
+   cerr << "length = " << length << endl;
+   cerr << "maxID = " << maxID << endl;
    means.resize(nbMeans+1);
    means[nbMeans].resize(length);
    for (i=0; i<length;i++)
@@ -112,6 +116,7 @@ void KMeans::update (const vector<float *> &data, int len)
 void KMeans::train (int codeSize, const vector<float *> &data, int len)
 {
    int i,j;
+   cerr << "void KMeans::train (" << codeSize << ", " << data << ", "<<len <<")" << endl;
    length=len;
    means.resize(1);
    means[0].resize(length);
@@ -125,9 +130,12 @@ void KMeans::train (int codeSize, const vector<float *> &data, int len)
    for (j=0;j<length;j++)
       means[0][j] /= data.size();
    int splitID=0;
+   cerr << "init done..." << endl;
    for (i=1;i<codeSize;i++)
    {
+      cerr << "spliting\n";
       split (data, len);
+      cerr << "updating\n";
       for (j=0;j<2;j++)
          update(data, len);
    }
