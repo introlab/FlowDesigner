@@ -13,7 +13,7 @@ static GnomeMDIChildClass *parent_class = NULL;
 void create_net(gchar * str, GUIDocument *doc)
 {
    if (str)
-      doc->addNetwork(string(str), false);
+      doc->addNetwork(string(str), UINetwork::subnet);
 }
 static void add_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
@@ -22,10 +22,22 @@ static void add_net_event  (GtkMenuItem     *menuitem,
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
+void create_threaded(gchar * str, GUIDocument *doc)
+{
+   if (str)
+      doc->addNetwork(string(str), UINetwork::threaded);
+}
+static void add_threaded_event  (GtkMenuItem     *menuitem,
+                            gpointer         user_data)
+{
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the threaded iterator name?", "MAIN", 20, create_threaded, mdi->active_child, NULL);
+   gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
+}
+
 void create_iter(gchar * str, GUIDocument *doc)
 {
    if (str)
-      doc->addNetwork(string(str), true);
+      doc->addNetwork(string(str), UINetwork::iterator);
 }
 static void add_iter_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
@@ -46,6 +58,8 @@ static GnomeUIInfo view_menu[] = {
                           N_("Add a new network the document"), add_net_event),
    GNOMEUIINFO_ITEM_NONE (N_("_Add Iterator"),
                           N_("Add a new iterator the document"), add_iter_event),
+   GNOMEUIINFO_ITEM_NONE (N_("_Add Threaded Iterator"),
+                          N_("Add a new threaded iterator the document"), add_threaded_event),
    GNOMEUIINFO_ITEM_NONE (N_("Remove Network"),
                           N_("Remove a network from the document"), remove_net_event),
    GNOMEUIINFO_END
@@ -226,16 +240,16 @@ GUIDocument *GUIDocument_new ()
 }
 
 
-UINetwork *GUIDocument::newNetwork(UIDocument *_doc, const string &_name, bool iter)
+UINetwork *GUIDocument::newNetwork(UIDocument *_doc, const string &_name, UINetwork::Type type)
 {
    //cerr << "GUIDocument::newNetwork\n";
-   return new GUINetwork(_doc, _name, iter);
+   return new GUINetwork(_doc, _name, type);
 }
 
-UINetwork *GUIDocument::newNetwork(UIDocument *_doc, xmlNodePtr _net, bool iter)
+UINetwork *GUIDocument::newNetwork(UIDocument *_doc, xmlNodePtr _net)
 {
    //cerr << "GUIDocument::newNetwork\n";
-   return new GUINetwork(_doc, _net, iter);
+   return new GUINetwork(_doc, _net);
 }
 
 

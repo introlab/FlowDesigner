@@ -20,18 +20,36 @@ static gboolean net_canvas_event   (GtkWidget       *widget,
 }
 
 
-GUINetwork::GUINetwork(UIDocument *_doc, string _name, bool iter)
-   : UINetwork(_doc, _name, iter)
+GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
+   : UINetwork(_doc, _name, _type)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    create();
 }
 
-GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net, bool iter)
-   : UINetwork(_doc, net, iter, false)
+GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
+   : UINetwork(_doc, net, false)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    name = string((char *)xmlGetProp(net, (CHAR *)"name"));
+   char *netType = (char *)xmlGetProp(net, (CHAR *)"type");
+   
+   if (!netType)
+   {
+      type=subnet;
+      //cerr << "netType == NILL\n";
+   }   
+   else {
+      //cerr << "netType = " << netType << endl;
+      if (netType == string("subnet"))
+	 type=subnet;
+      else if (netType == string("iterator"))
+	 type=iterator;
+      else if (netType == string("threaded"))
+	 type=threaded;
+   }
+   //cerr << "type = " << type << endl;
+
    //cerr << "creating network in GUINetwork::GUINetwork\n";
    create();
    //cerr << "loading...\n";
@@ -72,10 +90,22 @@ void GUINetwork::create()
    gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas1), -400, -400, 400, 400);
 
    string tabName=name;
-   if (isIterator)
-      tabName = tabName + " (iterator)";
-   else
-      tabName = tabName + " (subnet)";
+   switch (type)
+   {
+      case subnet:
+	 tabName = tabName + " (subnet)";
+	 break;
+      case iterator:
+	 tabName = tabName + " (iterator)";
+	 break;
+      case threaded:
+	 tabName = tabName + " (threaded iterator)";
+	 break;
+      default:
+	 tabName = tabName + " (unknown)";
+
+	 
+   }
 
    GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
    gtk_widget_ref (label1);
