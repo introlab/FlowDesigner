@@ -1,4 +1,4 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 1999-2001 Jean-Marc Valin
 
 #ifndef VECTOR_POOL_H
 #define VECTOR_POOL_H
@@ -6,22 +6,13 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-//#include "Vector.h"
-//#define NO_HASH_MAP
 
-#ifdef NO_HASH_MAP
-#include <map>
-#else
-#ifdef HAVE_HASH_MAP
-#include <hash_map>
-#elif defined (HAVE_EXT_HASH_MAP)
-#include <ext/hash_map>
-#endif
-#endif
+#include "misc.h"
 
 using namespace std;
 
 #define MAX_SMALL 512
+#define MAX_BITS 32
 
 
 template <class T>
@@ -30,20 +21,15 @@ class VectorPool {
    size_t max_stored;
 
    vector<vector <Vector<T> *> > smallList;
-#ifdef NO_HASH_MAP
-   map<int, vector <Vector<T> *> > stackList;
-#else
-   //hash_map<int, vector <Vector<T> *>, hash<int> > stackList;
-   hash_map<int, vector <Vector<T> *>, hash<int> > stackList;
-#endif
+   vector<vector <Vector<T> *> > largeList;
 
   public:
    VectorPool(int _max_stored=50) 
       : max_stored(_max_stored)
       , smallList (MAX_SMALL+1)
+      , largeList (MAX_BITS+1)
    {}
 
-   //vector <Vector<T> *> &operator [] 
    Vector<T> *newVector (int size)
    {
       if (size <= MAX_SMALL)
@@ -60,7 +46,7 @@ class VectorPool {
 	    return ret;
 	 }
       } else {
-	 vector <Vector<T> *> &stack = stackList[size];
+	 vector <Vector<T> *> &stack = largeList[log2(size)];
 	 if (stack.empty())
 	 {
 	    return new Vector<T> (size);
@@ -68,7 +54,7 @@ class VectorPool {
 	    Vector<T> *ret = stack.back();
 	    stack.pop_back();
 	    ret->ref();
-	    
+	    ret->resize(size);
 	    return ret;
 	    
 	 }
@@ -88,15 +74,12 @@ class VectorPool {
 	 }
 	 
       } else {
-	 //cerr << "send on stack\n";
-	 vector <Vector<T> *> &stack = stackList[sz];
-	 //deque <Vector<T> *> &stack = stackList[vec->size()];
+	 vector <Vector<T> *> &stack = largeList[log2(sz)];
 	 if (stack.size() > max_stored)
 	 {
 	    delete vec;
 	 } else {
 	    stack.push_back(vec);
-	    //stack.insert(stack.end(), vec);
 	 }
       }
    }

@@ -39,7 +39,7 @@ inline T abs(T x) {return x >= 0 ? x : -x;}
 #endif
 
 
-#if defined (VAR_ARRAY)  /* Prefered method is variable-size arrays are supported */
+#if defined (VAR_ARRAY)  /* Prefered method is variable-size arrays is supported */
 
 #define DYN_VEC(type, num, var) type var[num];
 
@@ -49,12 +49,12 @@ inline T abs(T x) {return x >= 0 ? x : -x;}
 
 #define DYN_VEC(type, num, var) type *var=(type*)alloca((num)*sizeof(type));
 
-#elif defined WIN32
+#elif defined WIN32  /* On Win32, it's _alloca */
 
 #include <malloc.h>
 #define DYN_VEC(type, num, var) type *var=(type*)_alloca((num)*sizeof(type));
 
-#else  /* When all else fails, use an STL vector */
+#else  /* When all else fails, allocate on the heap (but it's going to be slow) */
 
 //#define DYN_VEC(type, num, var) vector<type> var(num);
 template <class T>
@@ -70,6 +70,32 @@ public:
 
 #endif
 
+
+
+template<int M, int M2>
+inline int _log2(int i)
+{
+   if (i>>M2)
+   {
+      return M2+_log2<M2,M2/2>(i>>M2);
+   } else {
+      return _log2<M2,M2/2>(i);
+   }
+}
+
+template<>
+inline int _log2<2,1>(int i)
+{
+   if (i&2)
+      return 1;
+   else
+      return 0;
+}
+
+inline int log2(int i)
+{
+   return _log2<32,16>(i);
+}
 
 
 
