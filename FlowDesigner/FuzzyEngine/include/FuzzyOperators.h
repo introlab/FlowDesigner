@@ -61,3 +61,18 @@ inline istream& operator>> (istream &in, FuzzyFunction &fct) {
 inline ostream& operator<< (ostream &out, FuzzyFunction &fct) {
   return out;
 }
+
+inline istream& operator>> (istream &in, FuzzySet *set) {
+  return in;
+}
+
+inline ostream& operator<< (ostream &out, FuzzySet *set) {
+  return out;
+}
+inline istream& operator>> (istream &in, FuzzySet &set) {
+  return in;
+}
+
+inline ostream& operator<< (ostream &out, FuzzySet &set) {
+  return out;
+}

@@ -135,7 +135,26 @@ ObjectRef FunctionConcatVectVect(ObjectRef x, ObjectRef y) {
 REGISTER_DOUBLE_VTABLE(concatVtable, FunctionConcatVectVect, Vector<FuzzyFunction*>, Vector<FuzzyFunction*>);
 
 
+///Vector<FuzzySet*> and Vector<FuzzySet*> concatenation
+ObjectRef SetConcatVectVect(ObjectRef x, ObjectRef y) {
 
+  Vector<FuzzySet*> &vect1 = object_cast<Vector<FuzzySet*> >(x);
+  Vector<FuzzySet*> &vect2 = object_cast<Vector<FuzzySet*> >(y);
+
+  Vector<FuzzySet*> *output = new Vector<FuzzySet*>;
+
+  for (int i = 0; i < vect1.size(); i++) {
+    (*output).push_back(vect1[i]->clone());
+  }
+
+  for (int i = 0; i < vect2.size(); i++) {
+    (*output).push_back(vect2[i]->clone());
+  }
+
+  return ObjectRef(output);
+
+}
+REGISTER_DOUBLE_VTABLE(concatVtable, SetConcatVectVect, Vector<FuzzySet*>, Vector<FuzzySet*>);
 
 
 

@@ -25,7 +25,7 @@
 #include <string>
 #include <iostream>
 #include "Vector.h"
-
+#include "FuzzyOperators.h"
 
 DECLARE_NODE(FuzzySet)
 /*Node
@@ -258,7 +258,7 @@ void FuzzySet::calculate(int output_id, int count, Buffer &out) {
     m_functions.push_back(funct_vect[i]);
   }
 
-  out[count] = ObjectRef(clone());
+  out[count] = ObjectRef(new Vector<FuzzySet*>(1,clone()));
 
 }
 

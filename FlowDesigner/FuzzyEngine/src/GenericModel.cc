@@ -27,16 +27,23 @@ DECLARE_NODE(GenericModel)
  *
  * @name GenericModel
  * @category Fuzzy
- * @description No description available
+ * @description A generic Fuzzy controller
  *
- * @input_name TRAIN_IN
- * @input_description No description available
+ * @input_name RULES
+ * @input_description The Rules to use
+ * @input_type Vector
+ *
+ * @input_name SETS
+ * @input_description The Sets to use
+ * @input_type Vector
+ * 
+ * @input_name INPUT
+ * @input_description The input value of the variables
+ * @input_type Vector
  *
  * @output_name OUTPUT
- * @output_description No description available
- *
- * @parameter_name BATCH_SETS
- * @parameter_description No description available
+ * @output_description The defuzzified values
+ * @output_type Vector
  *
 END*/
 
