@@ -149,7 +149,15 @@ public:
 
 template<class T>
 const string &Object::GetClassName()
-{return TypeidDictionary()[&typeid(T)]->getName();}
+{
+   map<const type_info *, _ObjectFactory*> &m = TypeidDictionary();
+   map<const type_info *, _ObjectFactory*>::iterator found = m.find(&typeid(T));
+   if (found != m.end())
+      return found->second->getName();
+   else
+      throw GeneralException ("Object::GetClassName() failed, object type is not registered",
+			      __FILE__, __LINE__);
+}
 
 
 

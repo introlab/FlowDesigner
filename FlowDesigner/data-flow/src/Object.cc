@@ -22,7 +22,13 @@ map<const type_info *, _ObjectFactory*>& Object::TypeidDictionary()
 
 const string &Object::className() const
 {
-   return TypeidDictionary()[&typeid(*this)]->getName();
+   map<const type_info *, _ObjectFactory*> &m = TypeidDictionary();
+   map<const type_info *, _ObjectFactory*>::iterator found = m.find(&typeid(*this));
+   if (found != m.end())
+      return found->second->getName();
+   else
+      throw GeneralException ("Object::className() failed, object type is not registered",
+			      __FILE__, __LINE__);
 }
 
 ObjectRef Object::newObject(const string &objType)

@@ -22,16 +22,7 @@ class Vector : public vector<T>, public Object
 public:
    Vector() : vector<T>() {}
    explicit Vector(int n, const T &x = T()) : vector<T>(n, x) {}
-   void printOn(ostream &out) const
-   {
-      out << "<" << className();
-      for (int i=0; i < size(); i++)
-      {
-	 out << " " << operator[](i);
-      }
-      out << " > ";
-      //out << *static_cast<const vector<T> *> (this);
-   }
+   void printOn(ostream &out) const;
    
    void readFrom(istream &in=cin);
 
@@ -53,6 +44,33 @@ inline ostream &operator << (ostream &out, const Vector<T> &v)
    }*/
 
 
+template <class T>
+inline void _vector_printOn(const Vector<T> &v, ostream &out)
+{
+   out << "<" << v.className();
+   for (int i=0; i < v.size(); i++)
+   {
+      out << " " << v[i];
+   }
+   out << " > ";
+}
+
+template <class T>
+inline void _vector_printOn(const Vector<T*> &v, ostream &out)
+{
+   out << "<" << v.className();
+   for (int i=0; i < v.size(); i++)
+   {
+      out << " " << *(v[i]);
+   }
+   out << " > ";
+}
+
+template <class T>
+void Vector<T>::printOn(ostream &out) const
+{
+   _vector_printOn(*this, out);
+}
 
 template <class T>
 inline void _vector_readFrom(Vector<T> &v, istream &in)
@@ -332,8 +350,7 @@ istream &operator >> (istream &in, Vector<T> &vec)
    } else {
       in.putback(ch);
    }
-   
-
+   return in;
 }
 
 
