@@ -24,6 +24,7 @@ public:
    typedef T* iterator;
    typedef const T* const_iterator;
 protected:
+  public:
    T *data;
    size_t obj_size;
    int capacity;
@@ -47,6 +48,7 @@ public:
 	 for (iterator i=begin();i!=end();i++)
 	    destr(i);
 	 delete[] (char *)(data);
+	 //free (data);
 	 data = NULL;
       }      
    }
@@ -178,9 +180,9 @@ void Vector<T>::insert(iterator after, const T &x)
       memcpy(tmp, data, pos*sizeof(T));
       constr(tmp+pos,x);
       memcpy(tmp+pos+1, data+pos, (end()-after)*sizeof(T));
-      data = tmp;
       if (data)
 	 delete[] (char *)(data);
+      data = tmp;
 #endif
       capacity = new_capacity;
    } else {
@@ -229,7 +231,9 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
    out << "<" << v.className();
    for (unsigned int i=0; i < v.size(); i++)
    {
-      out << " " << v[i];
+      T f=v.data[i];
+      out << " " << f;
+      //out << " " << v[i];
    }
    out << " > ";
 }
@@ -260,6 +264,7 @@ void Vector<T>::printOn(ostream &out) const
 template <class T>
 inline void _vector_readFrom(Vector<T> &v, istream &in)
 {
+   v.resize(0);
    while (1)
    {
       char ch=' ';
@@ -291,6 +296,7 @@ inline void _vector_readFrom(Vector<string> &v, istream &in);
 template <class T>
 inline void _vector_readFrom(Vector<T*> &v, istream &in)
 {
+   v.resize(0);
    while (1)
    {
       char ch=' ';
