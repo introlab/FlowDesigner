@@ -23,23 +23,27 @@ class Window;
 
 DECLARE_NODE(Window)
 /*Node
-
+ *
  * @name Window
  * @category Signal:DSP
- * @description No description available
-
+ * @description Applies a window on a frame
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input frame
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Windowed frame
+ *
  * @parameter_name LENGTH
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Length of the frames/window
+ *
  * @parameter_name WINDOW
- * @parameter_description No description available
-
+ * @parameter_type string
+ * @parameter_description Window type (HANNING, HAMMING, HALF_HANNING)
+ *
 END*/
 
 

@@ -31,16 +31,19 @@ DECLARE_NODE(Log)
  *
  * @name Log
  * @category Signal:Base
- * @description No description available
+ * @description Computes the natural logarithm of a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description The input of the log
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Result of the log
  *
  * @parameter_name FAST
- * @parameter_description Should we use log approximation
+ * @parameter_type bool
+ * @parameter_description Should we use log approximation?
  *
 END*/
 

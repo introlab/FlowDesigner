@@ -27,15 +27,18 @@ DECLARE_NODE(Exp)
  *
  * @name Exp
  * @category Signal:Base
- * @description No description available
+ * @description Computes the exponential (base-e) of a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description The input of the exponential
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Result of the exponential
  *
  * @parameter_name FAST
+ * @parameter_type bool
  * @parameter_description Should we use exponential approximation
  *
 END*/
