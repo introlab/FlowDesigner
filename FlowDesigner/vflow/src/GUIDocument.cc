@@ -419,7 +419,9 @@ static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
 
 void GUIDocument::showParams() {
 
-  GUINetwork *net = dynamic_cast<GUINetwork*>(getNetworkNamed("MAIN"));
+   UINetwork *uinet = getNetworkNamed("MAIN");
+   
+   GUINetwork *net = dynamic_cast<GUINetwork*>(uinet);
 
 
   //FIXME : FIND A BETTER IMPLEMENTATION !

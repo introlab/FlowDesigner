@@ -889,7 +889,11 @@ Network *UIDocument::buildExternal(const string &type, const string &_name, cons
    //cout<<"loading : "<<fullpath<<endl;
    doc.load();
    
-   return doc.getNetworkNamed("MAIN")->build(_name, params);
+   UINetwork *net = doc.getNetworkNamed("MAIN");
+   if (net)
+      return net->build(_name, params);
+   else
+      throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
 }
 
 
@@ -897,7 +901,10 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
 {
    Network *net = NULL;
    try {
-      net = getNetworkNamed("MAIN")->build(_name, params);
+      UINetwork *uinet = getNetworkNamed("MAIN");
+      if (!uinet)
+	 throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
+      net = uinet->build(_name, params);
       net->verifyConnect();
       return net;
    } catch (BaseException *e)
@@ -1004,7 +1011,10 @@ void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<
       throw new GeneralException(string("External node not found: ") + type, __FILE__, __LINE__);
    UIDocument doc(fullname);
    doc.load();
-   doc.getNetworkNamed("MAIN")->genCode(out, id, nodeList);
+   UINetwork *uinet = doc.getNetworkNamed("MAIN");
+   if (!uinet)
+      throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
+   uinet->genCode(out, id, nodeList);
 }
 
 set<string> UIDocument::genCode(ostream &out, const string &functName, bool localIncludes)
@@ -1025,6 +1035,8 @@ set<string> UIDocument::genCode(ostream &out, const string &functName, bool loca
    }
    int id=0;
    UINetwork *uinet = getNetworkNamed("MAIN");
+   if (!uinet)
+      throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);   
    uinet->genCode(out, id, nodeList);
    out << "Network *" << functName << "(const string &_name, ParameterSet &params)" << endl;
    out << "{\n";
