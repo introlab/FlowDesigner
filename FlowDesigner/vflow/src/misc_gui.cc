@@ -1,5 +1,6 @@
 #include "misc_gui.h"
 #include <gnome.h>
+#include "vflow.h"
 
 #define GLADE_HOOKUP_OBJECT(component,widget,name) \
   g_object_set_data_full (G_OBJECT (component), name, \
@@ -24,6 +25,9 @@ string ask_string_dialog (const char *question, const char *default_str)
 
   dialog1 = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (dialog1), _("dialog1"));
+
+  gtk_window_set_transient_for(GTK_WINDOW(dialog1), GTK_WINDOW(vflowGUI::instance()->get_mdi()));
+  gtk_window_set_position (GTK_WINDOW(dialog1), GTK_WIN_POS_CENTER_ON_PARENT);
 
   dialog_vbox1 = GTK_DIALOG (dialog1)->vbox;
   gtk_widget_show (dialog_vbox1);
@@ -118,6 +122,10 @@ gint close_save_dialog (const char *question)
 
   dialog1 = gtk_dialog_new ();
   gtk_window_set_title (GTK_WINDOW (dialog1), _("dialog1"));
+
+  gtk_window_set_transient_for(GTK_WINDOW(dialog1), GTK_WINDOW(vflowGUI::instance()->get_mdi()));
+  gtk_window_set_position (GTK_WINDOW(dialog1), GTK_WIN_POS_CENTER_ON_PARENT);
+  //gtk_window_set_position (GTK_WINDOW(dialog1), GTK_WIN_POS_CENTER);
 
   dialog_vbox1 = GTK_DIALOG (dialog1)->vbox;
   gtk_widget_show (dialog_vbox1);
