@@ -26,7 +26,7 @@
 \quotes_times 2
 \papercolumns 1
 \papersides 2
-\paperpagestyle default
+\paperpagestyle headings
 
 \layout Title
 
@@ -72,7 +72,6 @@ href{http://freespeech.sourceforge.net/overflow.html}{Overflow}
  building blocks.
  In some way, it has similarities with Simulink and LabView, although it
  is not designed (and far) to be a "clone" of any of them.
- 
 \layout Standard
 
 Overflow features a GUI that allows rapid application development and features
@@ -99,35 +98,35 @@ status Collapsed
 href{http://freespeech.sourceforge.net/}{Open Mind Speech}
 \end_inset 
 
- project) 
+ project)
 \layout Itemize
 
-Vector quantization 
+Vector quantization
 \layout Itemize
 
 Neural network (MLP)
 \layout Itemize
 
-Fuzzy logic 
+Fuzzy logic
 \layout Itemize
 
-Real-time audio effect processing (early stage) 
+Real-time audio effect processing (early stage)
 \layout Itemize
 
-Linear algebra using LAPACK (early stage) 
+Linear algebra using LAPACK (early stage)
 \layout Itemize
 
-Image processing (early stage) 
+Image processing (early stage)
 \layout Standard
 
 Future enhancements could provide toolkits for the following applications
  : 
 \layout Itemize
 
-Artificial Intelligence 
+Artificial Intelligence
 \layout Itemize
 
-Audio Synthesis 
+Audio Synthesis
 \layout Itemize
 
 Robotics (In progres)
