@@ -67,7 +67,7 @@ public:
 	 
       //}
       //processCount = count;
-      return getInput(accumID,count);
+      return accumValue;
    }
 
 
