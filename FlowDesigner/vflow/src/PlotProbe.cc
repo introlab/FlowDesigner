@@ -14,51 +14,64 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "TextProbe.h"
+#include "PlotProbe.h"
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
 #include <strstream>
 
 //DECLARE_NODE(Probe)
-NODE_INFO(TextProbe, "Probe", "INPUT", "OUTPUT", "")
+NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "")
 
 
-TextProbe::TextProbe(string nodeName, ParameterSet params) 
+PlotProbe::PlotProbe(string nodeName, ParameterSet params) 
    : Probe(nodeName, params)
 {
 }
 
-TextProbe::~TextProbe()
+PlotProbe::~PlotProbe()
 {
 
 }
 
-void TextProbe::specificInitialize()
+void PlotProbe::specificInitialize()
 {
    Probe::specificInitialize();
 
    gdk_threads_enter(); 
-   less1 = gnome_less_new ();
-   gtk_widget_ref (less1);
-   gtk_object_set_data_full (GTK_OBJECT (window1), "less1", less1,
+   
+   gdk_rgb_init ();
+   gtk_widget_push_visual (gdk_rgb_get_visual ());
+   gtk_widget_push_colormap (gdk_rgb_get_cmap ());
+  canvas1 = gnome_canvas_new_aa ();
+   gtk_widget_pop_colormap ();
+   gtk_widget_pop_visual ();
+
+   gtk_window_set_default_size(GTK_WINDOW(window1), 400, 300);
+   //gtk_window_set_policy (GTK_WINDOW(window1), FALSE, FALSE, TRUE);
+   //canvas1 = gtk_scrolled_window_new (NULL, NULL);
+   //canvas1 = gtk_layout_new();
+
+   gtk_widget_ref (canvas1);
+   gtk_object_set_data_full (GTK_OBJECT (window1), "canvas1", canvas1,
 			     (GtkDestroyNotify) gtk_widget_unref);
-   gtk_widget_show (less1);
-   gtk_box_pack_start (GTK_BOX (vbox2), less1, TRUE, TRUE, 0);
+
+   gtk_widget_show (canvas1);
+   gtk_box_pack_start (GTK_BOX (vbox2), canvas1, TRUE, TRUE, 0);
    gdk_threads_leave(); 
    
    //gtk_box_pack_start (GTK_BOX (vbox2), scrolledwindow2, TRUE, TRUE, 0);
 }
 
-void TextProbe::reset()
+void PlotProbe::reset()
 {
    Probe::reset();
 }
 
 
-void TextProbe::display()
+void PlotProbe::display()
 {
-   char probeOut[1000];
+   /*char probeOut[1000];
    ostrstream out(probeOut, 999);
    
    out << *inputValue;
@@ -66,6 +79,6 @@ void TextProbe::display()
    gdk_threads_enter();
    gnome_less_clear (GNOME_LESS(less1));
    gnome_less_show_string(GNOME_LESS(less1), probeOut);
-   gdk_threads_leave(); 
+   gdk_threads_leave(); */
 }
 
