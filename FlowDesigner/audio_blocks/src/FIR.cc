@@ -42,10 +42,17 @@ public:
       filterID = addInput("FILTER");
 
       if (parameters.exist("CONTINUOUS"))
+      {
+	 ObjectRef cont = parameters.get("CONTINUOUS");
+	 if (typeid(*cont) == typeid(Bool))
+	    continuous = dereference_cast<bool> (cont);
+	 else if (typeid(*cont) == typeid(Int))
+	    continuous = dereference_cast<int> (cont);
+	 else 
+	    continuous = true;
+      } else
          continuous=true;
-      else
-         continuous=false;
-
+      
       if (parameters.exist("NONCAUSAL"))
          noncausal = dereference_cast<int> (parameters.get("NONCAUSAL"));
       else 
