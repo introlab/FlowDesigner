@@ -34,6 +34,9 @@ public:
    void IntfNode::request(int outputID, const ParameterSet &req);
    void init();
    void setValue(int count, ObjectRef val);
+   
+   int getLookAhead() {return lookAhead;}
+   int getLookBack() {return lookBack;}
 };
 
 #endif
