@@ -7,6 +7,7 @@
 #include <vector>
 #include "Object.h"
 #include <map>
+#include <string>
 
 inline bool isValidType (istream &in, string expectedType, bool binary=false);
 
@@ -169,7 +170,7 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
       } while(dummy != '|');
       o->unserialize(in);
    } else {
-      in.putback(ch);
+      throw new ParsingException(string("Expected '<' or '{' (got '") + ch + "')");
    }
    
    return in;  

@@ -8,8 +8,10 @@
     <Node name="node3" type="InputStream" x="-352.000000" y="100.000000">
       <Parameter name="TYPE" type="String" value=""/>
     </Node>
+    <Node name="node4" type="Print" x="-155.000000" y="100.000000"/>
     <Link from="node3" output="OUTPUT" to="node1" input="STREAM"/>
     <Link from="node2" output="VALUE" to="node3" input="INPUT"/>
-    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
   </Network>
 </Document>

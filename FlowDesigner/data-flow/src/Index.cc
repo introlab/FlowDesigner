@@ -85,6 +85,9 @@ public:
       if (ind >= inputLength)
 	 throw new NodeException(this, "Index larger than vector size", __FILE__, __LINE__);
 
+      if (ind < 0)
+	 throw new NodeException(this, "Negative index", __FILE__, __LINE__);
+
       out[count] = Float::alloc(in[ind]);
    }
 

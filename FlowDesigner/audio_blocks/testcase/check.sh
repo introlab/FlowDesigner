@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for file in *.n non-existant.n
+for file in *.n
 	do
 	if test -f $file.out
 		then
@@ -8,7 +8,7 @@ for file in *.n non-existant.n
 			then
 			echo $file passed
 		else
-			echo $file failed
+			echo "** $file failed **"
 		fi
 	else
 		batchflow $file > /dev/null 2>&1
@@ -16,7 +16,7 @@ for file in *.n non-existant.n
 			then
 			echo $file passed
 		else
-			echo $file failed
+			echo "** $file failed **"
 		fi
 	fi
 done

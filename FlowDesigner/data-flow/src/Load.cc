@@ -54,11 +54,11 @@ public:
 
       IStream &stream = object_cast<IStream> (streamRef);
       
-      try {
+      //try {
 	 ObjectRef obj;
 	 stream >> obj;
 	 out[count] = obj;
-      } catch (BaseException *e)
+	 /*} catch (BaseException *e)
       {
 	 //cerr << "base exception\n";
 	 e->print();
@@ -72,7 +72,7 @@ public:
       {
 	 //cerr << "end!\n";
 	 out[count] =  Object::past_endObject;
-      }         
+	 }*/
    }
 
 };
