@@ -28,6 +28,7 @@ public:
    int lookBack;
 };
 
+/** Node with buffered outputs */
 class BufferedNode : public Node {
 protected:
 

@@ -103,6 +103,7 @@ public:
 
 #else /*ifdef MULTITHREAD*/
 
+
 class AtomicCounter {
    int count;
 public:
