@@ -1,0 +1,31 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(HMM/covariance.cc)
+AC_CONFIG_HEADER(config.h)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+
+dnl Checks for libraries.
+dnl Replace `main' with a function in -ldl:
+AC_CHECK_LIB(dl, main)
+dnl Replace `main' with a function in -lfftw:
+AC_CHECK_LIB(fftw, main)
+dnl Replace `main' with a function in -lm:
+AC_CHECK_LIB(m, main)
+dnl Replace `main' with a function in -lrfftw:
+AC_CHECK_LIB(rfftw, main)
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_FUNC_MMAP
+
+dnl Checks for library functions.
+AC_PROG_GCC_TRADITIONAL
+AC_TYPE_SIGNAL
+
+AC_OUTPUT(front-end/Makefile audio_server/Makefile Makefile HMM/Makefile)
