@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="VarLoad" x="-239.000000" y="100.000000">
+      <Parameter name="VARIABLE" type="string" value="tata"/>
+    </Node>
+    <Node name="node2" type="VarStore" x="-341.000000" y="130.000000">
+      <Parameter name="VARIABLE" type="string" value="tata"/>
+    </Node>
+    <Node name="node3" type="Constant" x="-474.000000" y="120.000000">
+      <Parameter name="VALUE" type="int" value="5"/>
+    </Node>
+    <Node name="node4" type="Action" x="-101.000000" y="117.000000"/>
+    <Node name="node5" type="Print" x="1.000000" y="118.000000"/>
+    <Link from="node4" output="OUTPUT" to="node5" input="INPUT"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="INPUT"/>
+    <Link from="node2" output="OUTPUT" to="node4" input="BEFORE"/>
+    <Link from="node3" output="VALUE" to="node2" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node5" terminal="OUTPUT"/>
+  </Network>
+</Document>

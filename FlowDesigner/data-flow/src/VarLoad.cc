@@ -67,7 +67,7 @@ public:
 	 if (tmp!=Variable::all.end())
 	    return tmp->second;
 	 else 
-	    return Object::nilObject;
+	    throw new NodeException (this, string("VarLoad: Unknown variable: ") + varName, __FILE__, __LINE__);
       }
       else throw new NodeException (this, "VarLoad: Unknown output id", __FILE__, __LINE__);
       

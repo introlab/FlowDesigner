@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Print" x="-239.000000" y="100.000000"/>
+    <Node name="node2" type="VarLoad" x="-335.000000" y="101.000000">
+      <Parameter name="VARIABLE" type="string" value="tata"/>
+    </Node>
+    <Link from="node2" output="OUTPUT" to="node1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>
