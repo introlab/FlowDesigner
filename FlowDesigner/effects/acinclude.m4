@@ -95,7 +95,6 @@ ac_cxxflags_safe="$CXXFLAGS"
 ac_ldflags_safe="$LDFLAGS"
 ac_libs_safe="$LIBS"
 
-#CXXFLAGS="$CXXFLAGS -I$fftw_incdir $all_includes"
 INCLUDE="$INCLUDE -I$fftw_incdir $all_includes"
 LDFLAGS="-L$fftw_libdir $all_libraries"
 LIBS="$LIBS $LIBFFTW"
@@ -248,19 +247,17 @@ dnl AM_PROG_LIBTOOL
 
 case "$host_os" in 
 hpux*) OS=HPUX ;;
-dnl mv libtool libtool-bak  
-dnl cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$CXX\"/; print' > libtool;;
 linux*) OS=LINUX ;;
 freebsd*) OS=FREEBSD ;;
 solaris*) OS=SOLARIS ;;
 esac
-AC_DEFINE_UNQUOTED(${OS})
+dnl AC_DEFINE_UNQUOTED(${OS})
 dnl Initialize libtool.
 
 dnl AC_LIBTOOL_ACC_KLUDGE
 AC_LIBTOOL_KLUDGE
 
-#AM_SANITY_CHECK
+dnl AM_SANITY_CHECK
 
 dnl Checks for programs.
 
@@ -273,7 +270,7 @@ AC_C_BIGENDIAN
 AC_INST_EXTENSIONS
 
 dnl Checks for libraries.
-AC_CHECK_HEADERS(float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h)
+AC_CHECK_HEADERS(dlfcn.h dl.h float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h)
 AC_HASH_MAP
 
 dnl Test for math library, and define LIBS

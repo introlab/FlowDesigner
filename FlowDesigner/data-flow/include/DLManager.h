@@ -22,33 +22,6 @@ using namespace std;
 
 //#define HPUX
 
-#ifdef HPUX
-#include <dl.h>
-
-typedef shl_t DL_HANDLE_TYPE;
-inline DL_HANDLE_TYPE _DL_OPEN(string path) 
-{
-   //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
-   DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
-   //cerr << "library = " << library << endl;
-   if (!library) 
-      perror ("Load error");
-   return library;
-}
-inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
-{
-   void *tmp;
-   shl_findsym (&lib, symbol.c_str(), TYPE_PROCEDURE, &tmp);
-   return tmp;
-}
-inline void _DL_CLOSE(DL_HANDLE_TYPE lib) 
-{
-   shl_unload (lib);
-}
-
-
-#endif
-
 
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
@@ -79,7 +52,34 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
    dlclose(lib);
 }
 
-#endif /*LINUX or SOLARIS*/
+#elif defined (HAVE_DL_H)
+
+#include <dl.h>
+
+typedef shl_t DL_HANDLE_TYPE;
+inline DL_HANDLE_TYPE _DL_OPEN(string path) 
+{
+   //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
+   DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
+   //cerr << "library = " << library << endl;
+   if (!library) 
+      perror ("Load error");
+   return library;
+}
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
+{
+   void *tmp;
+   shl_findsym (&lib, symbol.c_str(), TYPE_PROCEDURE, &tmp);
+   return tmp;
+}
+inline void _DL_CLOSE(DL_HANDLE_TYPE lib) 
+{
+   shl_unload (lib);
+}
+
+
+#endif
+
 
 /**Class for a dynamically loaded library*/
 class LoadedLibrary {
