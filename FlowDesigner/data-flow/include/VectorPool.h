@@ -17,15 +17,26 @@
 #ifndef VECTOR_POOL_H
 #define VECTOR_POOL_H
 
+
 //#include "Vector.h"
+//#define NO_HASH_MAP
 
 #ifdef NO_HASH_MAP
 #include <map>
 #else
+#ifdef HAVE_HASH_MAP
 #include <hash_map>
+#elif defined (HAVE_EXT_HASH_MAP)
+#include <ext/hash_map>
+#endif
 #endif
 
+using namespace std;
+
+hash_map<int, int, hash<int> > stackList;
+
 #define MAX_SMALL 512
+
 
 template <class T>
 class VectorPool {

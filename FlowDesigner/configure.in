@@ -105,11 +105,14 @@ dnl Checks for programs.
 
 AM_C_PROTOTYPES
 AC_PROG_CXX
+AC_LANG_CPLUSPLUS
 AC_PROG_MAKE_SET
 dnl AC_PROG_RANLIB
 
 dnl Checks for libraries.
 AC_CHECK_HEADERS(semaphore.h)
+AC_HASH_MAP
+
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 AC_CHECK_LIB(dl, dlopen)

@@ -61,6 +61,7 @@ dnl AC_PROG_RANLIB
 
 dnl Check for header files
 AC_CHECK_HEADERS(float.h machine/soundcard.h sys/soundcard.h)
+AC_HASH_MAP
 
 dnl Checks for libraries.
 

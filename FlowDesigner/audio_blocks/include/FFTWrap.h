@@ -29,7 +29,11 @@ typedef fftw_complex fft_complex;
 #ifdef NO_HASH_MAP
 #include <map>
 #else
+#ifdef HAVE_HASH_MAP
 #include <hash_map>
+#elif defined (HAVE_EXT_HASH_MAP)
+#include <ext/hash_map>
+#endif
 #endif
 
 class _FFTWrap {

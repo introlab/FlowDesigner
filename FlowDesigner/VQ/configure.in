@@ -54,6 +54,7 @@ AC_LIBTOOL_KLUDGE
 
 dnl Check header files
 AC_CHECK_HEADERS(float.h)
+AC_HASH_MAP
 
 dnl Checks for programs.
 
