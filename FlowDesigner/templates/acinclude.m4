@@ -270,7 +270,7 @@ AC_C_BIGENDIAN
 AC_INST_EXTENSIONS
 
 dnl Checks for libraries.
-AC_CHECK_HEADERS(dlfcn.h dl.h float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h)
+AC_CHECK_HEADERS(dlfcn.h dl.h float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h linux/rtc.h linux/mc146818rtc.h)
 AC_HASH_MAP
 
 dnl Test for math library, and define LIBS

@@ -5,8 +5,19 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
 #include <sys/ioctl.h>
+#include <BaseException.h>
+
+#if defined(HAVE_LINUX_RTC_H) || defined(HAVE_LINUX_MC146818RTC_H)
+#define HAVE_RTC
+
+#ifdef HAVE_LINUX_RTC_H
 #include <linux/rtc.h>
+#else
+#include <linux/mc146818rtc.h>
+#endif
+#endif
 //#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,12 +28,13 @@ RTCUser *RTCTimer::create(int delay)
    pthread_mutex_lock(&instance().lock);
    if (instance().users.empty())
    {
+#ifdef HAVE_RTC
       int retval = ioctl(instance().fd, RTC_PIE_ON, 0);
       if (retval == -1) {
          perror("ioctl");
          //exit(errno);
       }
-
+#endif
    }
 
    instance().users.push_front(u);
@@ -47,12 +59,13 @@ void RTCTimer::destroy(RTCUser *u)
    
    if (instance().users.empty())
    {
+#ifdef HAVE_RTC
       int retval = ioctl(instance().fd, RTC_PIE_OFF, 0);
       if (retval == -1) {
          perror("ioctl");
          //exit(errno);
       }
-
+#endif
    }
    
    pthread_mutex_unlock(&instance().lock);
@@ -67,6 +80,9 @@ static void start_rtc_thread(RTCTimer *t)
 RTCTimer::RTCTimer()
    : exit_status(false)
 {
+#ifndef HAVE_RTC
+   throw new GeneralException("Overflow not compiled with /dev/rtc support");
+#endif
    pthread_mutex_init(&lock, NULL);
       pthread_mutex_lock(&lock);
 
@@ -78,7 +94,9 @@ RTCTimer::~RTCTimer()
 {
    cerr << "Destroying timer..." << endl;
    exit_status=true;
+#ifdef HAVE_RTC
    ioctl(fd, RTC_PIE_ON, 0);
+#endif
    pthread_join(thread, NULL);
    cerr << "Done" << endl;
 }
@@ -97,11 +115,13 @@ void RTCTimer::runThread()
       //exit(errno);
       }
    */
+#ifdef HAVE_RTC
    int retval = ioctl(fd, RTC_IRQP_SET, 64);
    if (retval == -1) {
       perror("ioctl");
       //exit(errno);
    }
+#endif
    pthread_mutex_unlock(&lock);
 
    while(1)
