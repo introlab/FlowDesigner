@@ -766,6 +766,10 @@ void GUIDocument::createParamDialog()
 
   gtk_widget_show(category_combo);
 
+  //signal for entry in the combo box
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO(category_combo)->entry), "changed",
+			GTK_SIGNAL_FUNC(document_category_changed_event), this);
+
   //comments text area
   scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_ref (scrolledwindow2);
@@ -801,6 +805,14 @@ void GUIDocument::createParamDialog()
 
 }
 
+void document_category_changed_event (GtkEntry *entry, GUIDocument *document) {
+
+  //get the entry text
+  string entry_text(gtk_entry_get_text(entry));   
+
+  //change the category
+  document->setCategory(entry_text);
+}
 
 static void threadFunct(GUIDocument *doc)
 {

@@ -33,6 +33,7 @@ protected:
   friend void document_change_current_page_event(GtkNotebook *notebook, gint arg1,  GUIDocument *document);
   friend gboolean document_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, GUIDocument *document);
   friend gboolean document_select_page_event(GtkNotebook *notebook, gboolean arg1, GUIDocument *document);
+  friend void document_category_changed_event (GtkEntry *entry, GUIDocument *document);
 
    GnomeMDIGenericChild *mdiChild;
 
