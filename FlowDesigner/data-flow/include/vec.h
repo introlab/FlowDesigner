@@ -9,6 +9,7 @@
 
 #include "vec_sse.h"
 #include "vec_3dnow.h"
+#include "iextensions.h"
 
 /* Prefetch routines, may be used on any type (not only float and SSE2 double) */
 
@@ -459,6 +460,50 @@ inline void vec_conv_cont(const T *a, T *filt, T *out, int len, int filtLen)
    for (int i=0;i<len;i++)
       out[i] = vec_inner_prod(a-filtLen+1, filt2, filtLen);
 }
+
+
+
+
+/*Here are float (REAL*4) specific versions of the routines */
+
+
+inline float vec_inner_prod_float(const float *a, const float *b, int len)
+{
+   float sum1=0, sum2=0, sum3=0, sum4=0;
+   const float *end = a+len;
+   while (a<end-3)
+   {
+      sum1+=a[0]*b[0];
+      sum2+=a[1]*b[1];
+      sum3+=a[2]*b[2];
+      sum4+=a[3]*b[3];
+      a+=4;
+      b+=4;
+   }
+   while (a<end)
+   {
+      sum1+=a[0]*b[0];
+      a++; b++;
+   }
+   return (sum1+sum2)+(sum3+sum4);
+}
+
+
+
+template <>
+inline float vec_inner_prod<float>(const float *a, const float *b, int len)
+{
+#ifndef WIN32
+   if (_ALLOW_3DNOW && len >= 8 && IExtensions::have3DNow())
+      vec_inner_prod_3dnow(a,b,len);
+   else if (_ALLOW_SSE && len >=8 && IExtensions::haveSSE())
+      vec_inner_prod_sse(a,b,len);
+   else
+#endif
+      vec_inner_prod_float(a,b,len);      
+}
+
+
 
 
 
