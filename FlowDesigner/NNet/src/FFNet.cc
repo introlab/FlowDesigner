@@ -887,6 +887,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 	 alpha *= decrease;
 	 //So that the "bad" iteration doesn't count
 	 iter++;
+	 cerr << "backing off\n";
 	 continue;
       }
 
@@ -896,6 +897,8 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 	    alpha[i] *= increase;
 	 else
 	    alpha[i] *= decrease;
+	 if (alpha[i] < .000001)
+	    alpha[i] = .000001;
       }
       cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
       SSE=nextE;
