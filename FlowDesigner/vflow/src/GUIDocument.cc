@@ -119,7 +119,8 @@ GtkWidget *GUIDocument::createView()
   */
 
   
-  vbox2 = gtk_vbox_new (FALSE, 0);
+   //vbox2 = gtk_vbox_new (FALSE, 0);
+  vbox2 = gtk_vpaned_new ();
   gtk_widget_ref (vbox2);
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "vbox2", vbox2,
   //                          (GtkDestroyNotify) gtk_widget_unref);
@@ -136,7 +137,8 @@ GtkWidget *GUIDocument::createView()
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "notebook1", notebook1,
   //                          (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (notebook1);
-  gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (vbox2), notebook1);
+  //gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
 
   
 
@@ -146,7 +148,8 @@ GtkWidget *GUIDocument::createView()
   //                          (GtkDestroyNotify) gtk_widget_unref);
   
   gtk_widget_show (less2);
-  gtk_box_pack_start (GTK_BOX (vbox2), less2, TRUE, TRUE, 0);
+  //gtk_box_pack_start (GTK_BOX (vbox2), less2, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (vbox2), less2);
 
   
   /*
