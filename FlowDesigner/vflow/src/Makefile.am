@@ -42,7 +42,8 @@ flowdesigner_SOURCES = \
 	GUINodeTooltip.cc \
 	GtkPlotProbe.cc \
 	vflow_pref.cc \
-	misc_gui.cc
+	misc_gui.cc \
+	KeyPad.cc
 
 gflow_SOURCES = \
 	gflow.cc \
@@ -51,7 +52,8 @@ gflow_SOURCES = \
 	PlotProbe.cc \
 	GRunContext.cc \
 	GtkPlotProbe.cc \
-	vflow_pref.cc
+	vflow_pref.cc \
+	KeyPad.cc
 
 LDFLAGS = $(FFTW_LDFLAGS)
 

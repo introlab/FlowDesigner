@@ -77,6 +77,6 @@ void KeyPad::reset() {
 
 void KeyPad::calculate(int output_id, int count, Buffer &out) {
 
-
+  out[count] = nilObject;
 
 }
