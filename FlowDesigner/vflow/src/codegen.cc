@@ -14,6 +14,8 @@
 #include "GUIDocument.h"
 #include "BaseException.h"
 
+using namespace std;
+
 class CodeGenState {
    GtkWidget* dialog;
    GUIDocument *doc;

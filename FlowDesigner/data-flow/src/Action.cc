@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 class Action;
 
 DECLARE_NODE(Action)

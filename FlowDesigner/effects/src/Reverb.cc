@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "reverb.h"
 
+using namespace std;
+
 class Reverb;
 
 DECLARE_NODE(Reverb)

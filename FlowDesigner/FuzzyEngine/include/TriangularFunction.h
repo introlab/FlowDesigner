@@ -9,20 +9,19 @@
 #include "FuzzyFunction.h"
 #include <string>
 
-using namespace std;
 
 class TriangularFunction : public FuzzyFunction  {
 
 public:
 
-  virtual string get_type() {return string("Triangular");}
+  virtual std::string get_type() {return std::string("Triangular");}
   
   //constructor
-  TriangularFunction(const string &name, float a, float b, float c);
+  TriangularFunction(const std::string &name, float a, float b, float c);
 
-  TriangularFunction(string nodeName, ParameterSet params);
+  TriangularFunction(std::string nodeName, ParameterSet params);
 
-  TriangularFunction(istream &in) {readFrom(in);}
+  TriangularFunction(std::istream &in) {readFrom(in);}
 
   TriangularFunction() {}
   
@@ -50,10 +49,9 @@ public:
   //cloning capability
   virtual ObjectRef clone();
   
+  virtual void printOn(std::ostream &out=std::cout) const;
   
-  virtual void printOn(ostream &out=cout) const;
-  
-  virtual void readFrom(istream &in=cin);
+  virtual void readFrom(std::istream &in=std::cin);
   
  private:
   

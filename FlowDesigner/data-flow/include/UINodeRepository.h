@@ -11,14 +11,14 @@
 
 class UINetwork;
 
-using namespace std;
+
 
 class ItemInfo {
   public:
-	string name;
-	string type;
-	string value;
-	string description;
+        std::string name;
+	std::string type;
+	std::string value;
+	std::string description;
 	
 	ItemInfo() : type("any"), value(""), description("No description available") {}
 };
@@ -26,13 +26,13 @@ class ItemInfo {
 class NodeInfo {
   public:
    enum NodeKind {builtin, subnet, external};
-   vector<ItemInfo *> inputs;
-   vector<ItemInfo *> outputs;
-   vector<ItemInfo *> params;
-   string category;
-   string description;
-   string sourceFile;
-   string requireList;
+   std::vector<ItemInfo *> inputs;
+   std::vector<ItemInfo *> outputs;
+   std::vector<ItemInfo *> params;
+   std::string category;
+   std::string description;
+   std::string sourceFile;
+   std::string requireList;
    NodeKind kind;
   public:
    NodeInfo() : category("Unknown"), description("No description available") {}
@@ -46,26 +46,26 @@ class NodeInfo {
 
 class UINodeRepository {
   public:
-   typedef map<string, NodeInfo *>::iterator iterator;
+   typedef std::map<std::string, NodeInfo *>::iterator iterator;
 
   private:
-   map<string, NodeInfo *> info;
+   std::map<std::string, NodeInfo *> info;
 
    static UINodeRepository &GlobalRepository();
 
    /**List of all files required for each module*/
-   static map<string, set<string> > &ModuleDepend();
+   static std::map<std::string, std::set<std::string> > &ModuleDepend();
    
    /**List of all modules required for each file*/
-   static map<string, set<string> > &FileDepend();
+   static std::map<std::string, std::set<std::string> > &FileDepend();
  
    /**List of all headers required for each file*/
-   static map<string, set<string> > &HeaderDepend();
+   static std::map<std::string, std::set<std::string> > &HeaderDepend();
 
-   static void LoadAllInfoRecursive(const string &path);
-   static void LoadNodeDefInfo(const string &path, const string &name);
-   static void LoadExtDocInfo(const string &path, const string &name);
-   //NodeInfo *&operator[] (const string &name) {return info[name];}
+   static void LoadAllInfoRecursive(const std::string &path);
+   static void LoadNodeDefInfo(const std::string &path, const std::string &name);
+   static void LoadExtDocInfo(const std::string &path, const std::string &name);
+   //NodeInfo *&operator[] (const std::string &name) {return info[name];}
   public:
 
    UINodeRepository() {}
@@ -77,9 +77,9 @@ class UINodeRepository {
    iterator begin() {return info.begin();}
    iterator end() {return info.end();}
 
-   NodeInfo *findNode(const string &name);
+   NodeInfo *findNode(const std::string &name);
 
-   void loadDocInfo(xmlDocPtr doc, const string &basename);
+   void loadDocInfo(xmlDocPtr doc, const std::string &basename);
 
    void loadAllSubnetInfo(xmlNodePtr net);
       
@@ -95,17 +95,17 @@ class UINodeRepository {
 
    static void Scan();
 
-   static NodeInfo *Find(const string &name);
+   static NodeInfo *Find(const std::string &name);
 
-   static set<string> &FindFileFromModule(const string &name);
+   static std::set<std::string> &FindFileFromModule(const std::string &name);
    
-   static set<string> &FindModuleFromFile(const string &name);
+   static std::set<std::string> &FindModuleFromFile(const std::string &name);
    
-   static set<string> &FindHeaderFromFile(const string &name);
+   static std::set<std::string> &FindHeaderFromFile(const std::string &name);
    
-   static vector<string> Available();
+   static std::vector<std::string> Available();
 
-   static void ProcessDependencies(set<string> &initial_files, bool toplevel=true);
+   static void ProcessDependencies(std::set<std::string> &initial_files, bool toplevel=true);
 };
 
 #endif

@@ -10,6 +10,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 class Log;
 
 DECLARE_NODE(Log)

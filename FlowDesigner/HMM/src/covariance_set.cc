@@ -3,6 +3,8 @@
 #include "covariance_set.h"
 #include "ObjectParser.h"
 
+using namespace std;
+
 DECLARE_TYPE(CovarianceSet)
 //@implements GMM
 

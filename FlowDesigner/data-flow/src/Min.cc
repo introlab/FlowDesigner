@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "operators.h"
 
+using namespace std;
+
 class Min;
 DECLARE_NODE(Min)
 /*Node

@@ -10,7 +10,7 @@ class TextProbe : public Probe {
    GtkWidget *less1;
   public:
 
-   TextProbe(string nodeName, ParameterSet params);
+   TextProbe(std::string nodeName, ParameterSet params);
 
    virtual ~TextProbe();
 

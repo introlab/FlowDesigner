@@ -24,15 +24,15 @@ class NodeNotFoundException : public BaseException {
 public:
 
    ///This constructor is used to specify which node is not found.
-   NodeNotFoundException(string name) {
+   NodeNotFoundException(std::string name) {
       nodeName = name;
    }   
    ///The print method that prints on stderr by default
-   virtual void print(ostream &out = cerr) {
-      out<<"NodeNotFoundException occured, nodeName: "<<nodeName<<endl;
+   virtual void print(std::ostream &out = std::cerr) {
+      out<<"NodeNotFoundException occured, nodeName: "<<nodeName<<std::endl;
    }
    ///The node name.
-   string nodeName;
+   std::string nodeName;
 };
 
 /***************************************************************************/
@@ -56,8 +56,8 @@ public:
       errorNo = value;
    }
    ///The print method
-   virtual void print(ostream &out = cerr) {
-      out<<"NoSinkNodeException occured, errorNo: "<<errorNo<<endl;
+   virtual void print(std::ostream &out = std::cerr) {
+      out<<"NoSinkNodeException occured, errorNo: "<<errorNo<<std::endl;
    }
    ///the error number
    int errorNo;
@@ -86,8 +86,8 @@ public:
    }
 
    ///the print method
-   virtual void print(ostream &out = cerr) {
-      out<<"NoInputNodeException occured, errorNo: "<<errorNo<<endl;
+   virtual void print(std::ostream &out = std::cerr) {
+      out<<"NoInputNodeException occured, errorNo: "<<errorNo<<std::endl;
    }
 
    ///the error number
@@ -111,15 +111,15 @@ class FactoryNotFoundException : public BaseException {
 public:
 
    ///The constructor with a factory name.
-   FactoryNotFoundException(string name) {
+   FactoryNotFoundException(std::string name) {
       factoryName = name;
    }   
    ///The print method
-   virtual void print(ostream &out = cerr) {
-      out<<"FactoryNotFoundException occured, factoryName: "<<factoryName<<endl;
+   virtual void print(std::ostream &out = std::cerr) {
+      out<<"FactoryNotFoundException occured, factoryName: "<<factoryName<<std::endl;
    }
    ///The factory name
-   string factoryName;
+   std::string factoryName;
 };
 
 #endif

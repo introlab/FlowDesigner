@@ -3,6 +3,8 @@
 #include "Node.h"
 #include <sstream>
 
+using namespace std;
+
 class Recover;
 
 DECLARE_NODE(Recover)

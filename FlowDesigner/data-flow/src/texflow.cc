@@ -5,6 +5,8 @@
 #include "ParameterSet.h"
 #include "ObjectRef.h"
 
+using namespace std;
+
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
    int nb;

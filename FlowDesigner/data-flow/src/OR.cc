@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "Exception.h"
 
+using namespace std;
+
 class OR;
 
 DECLARE_NODE(OR)

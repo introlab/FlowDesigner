@@ -4,6 +4,8 @@
 #include "Buffer.h"
 #include "vmethod.h"
 
+using namespace std;
+
 class VMethod;
 
 DECLARE_NODE(VMethod)

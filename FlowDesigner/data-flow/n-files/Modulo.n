@@ -13,8 +13,9 @@
     <Link from="node_NOP_2" output="OUTPUT" to="node_Mul_1" input="INPUT2">303 107 403 107 440.5 93.5 </Link>
     <Link from="node_NOP_1" output="OUTPUT" to="node_Sub_1" input="INPUT1">303 70 318 47 525 48 574.5 70.5 </Link>
     <Link from="node_Mul_1" output="OUTPUT" to="node_Sub_1" input="INPUT2"/>
-    <NetInput name="DIVIDEND" node="node_NOP_1" terminal="INPUT"/>
-    <NetOutput name="REMAINDER" node="node_Sub_1" terminal="OUTPUT"/>
-    <NetInput name="DIVISOR" node="node_NOP_2" terminal="INPUT"/>
+    <NetInput name="DIVIDEND" node="node_NOP_1" terminal="INPUT" object_type="any" description="No description available"/>
+    <NetOutput name="REMAINDER" node="node_Sub_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetInput name="DIVISOR" node="node_NOP_2" terminal="INPUT" object_type="any" description="No description available"/>
+    <Note x="474" y="290" visible="1" text="The Modulo operator can be inserted as a Sub-network easily with the &quot;New Node&quot; menu. This is a built-in FlowDesigner Network."/>
   </Network>
 </Document>

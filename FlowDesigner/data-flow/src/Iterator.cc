@@ -7,6 +7,7 @@
 #include "UserException.h"
 
 //@implements core
+using namespace std;
 
 /***************************************************************************/
 /*

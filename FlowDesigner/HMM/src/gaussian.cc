@@ -7,6 +7,8 @@
 #include <fstream>
 #include <iostream>
 
+using namespace std;
+
 DECLARE_TYPE(Gaussian)
 //@implements GMM
 

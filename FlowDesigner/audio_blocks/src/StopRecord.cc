@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "vec.h"
 
+using namespace std;
+
 class StopRecord;
 
 DECLARE_NODE(StopRecord)

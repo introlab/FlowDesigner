@@ -14,6 +14,8 @@
 #include "Stream.h"
 #include <errno.h>
 
+using namespace std;
+
 class TCPConnect;
 
 DECLARE_NODE(TCPConnect)

@@ -7,6 +7,8 @@
 #include "gmm.h"
 #include "Vector.h"
 
+using namespace std;
+
 DECLARE_NODE(GMMScore)
 /*Node
  *

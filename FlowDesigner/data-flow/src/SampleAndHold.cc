@@ -4,6 +4,8 @@
 #include "ObjectRef.h"
 #include <math.h>
 
+using namespace std;
+
 class SampleAndHold;
 DECLARE_NODE(SampleAndHold)
 /*Node

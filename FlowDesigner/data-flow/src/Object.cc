@@ -6,6 +6,8 @@
 
 //@implements core
 
+using namespace std;
+
 map<string, _ObjectFactory*>& Object::ObjectFactoryDictionary()
 {
    static map<string, _ObjectFactory*> dict;

@@ -3,6 +3,8 @@
 #include "Node.h"
 #include "Vector.h"
 
+using namespace std;
+
 class Accumulate;
 
 DECLARE_NODE(Accumulate)

@@ -8,6 +8,8 @@
 #include <time.h>
 #include <unistd.h>
 
+using namespace std;
+
 const int ThreadedIterator::STATUS_RUNNING = 1;
 const int ThreadedIterator::STATUS_STOPPED = 0;
 

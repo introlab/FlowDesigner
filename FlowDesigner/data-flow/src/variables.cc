@@ -3,5 +3,5 @@
 #include "variables.h"
 
 //@implements core
-
+using namespace std;
 map<string, ObjectRef> Variable::all;

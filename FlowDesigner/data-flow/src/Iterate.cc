@@ -2,6 +2,7 @@
 
 #include "Node.h"
 
+using namespace std;
 class Iterate;
 
 DECLARE_NODE(Iterate)

@@ -48,16 +48,16 @@ protected:
    GtkWidget *document_notebook;
    GtkWidget *less2;
    GtkWidget *scrolledwindow1;
-   string less_text;
+   std::string less_text;
 
-   vector<DocParameterData> params;
+   std::vector<DocParameterData> params;
 public:
    static pthread_mutex_t del_lock;
    static pthread_t runThread;
    static bool isRunning;
    static Network *runningNet;
 public:
-   GUIDocument(string _name);
+   GUIDocument(std::string _name);
 
    ~GUIDocument();
    
@@ -71,7 +71,7 @@ public:
   
    void remove_notebook_network(GUINetwork *net, GtkWidget *child);
 
-   void less_print(const string &message);
+   void less_print(const std::string &message);
 
    void less_print(const char *message);
 
@@ -91,11 +91,11 @@ public:
 
    UINetwork* getCurrentNet();
 
-   virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
+   virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
 
    virtual UINetwork *newNetwork(xmlNodePtr _net);
 
-   virtual void setFullPath(const string &fullpath);
+   virtual void setFullPath(const std::string &fullpath);
 
    virtual void run();
 
@@ -109,11 +109,11 @@ public:
 
    void updateSubnet();
 
-   void insertLoadedParam(DocParameterData *param, string type, string value);
+   void insertLoadedParam(DocParameterData *param, std::string type, std::string value);
 
    void threadRun();
    
-   string getNewNetName(UINetwork::Type type);
+   std::string getNewNetName(UINetwork::Type type);
    
 
    friend class GUINetPopup;

@@ -51,7 +51,7 @@ public:
       , using_covarianceID(false)
    {}
 
-   Gaussian(istream &in) {in >> *this;}
+   Gaussian(std::istream &in) {in >> *this;}
 
    /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
     *(allows to create gaussians with either diagonal or full covariance*/
@@ -148,14 +148,14 @@ public:
    void toPtrsUsing (const MeanSet &means, const CovarianceSet & covariances);
 
    /**print function for operator <<*/
-   void printOn(ostream &out = cout) const;
+   void printOn(std::ostream &out = std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
-   friend istream &operator >> (istream &in, Gaussian &gauss);
+   friend std::istream &operator >> (std::istream &in, Gaussian &gauss);
    friend class GMM;
 };
 
-istream &operator >> (istream &in, Gaussian &gauss);
+std::istream &operator >> (std::istream &in, Gaussian &gauss);
 #endif

@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <math.h>
 
+using namespace std;
+
 class Pow;
 
 DECLARE_NODE(Pow)

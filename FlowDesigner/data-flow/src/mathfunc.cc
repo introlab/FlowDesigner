@@ -6,8 +6,7 @@
 #include "ObjectRef.h"
 #include "Vector.h"
 
-/*This doesn't compile with MSVC++ broken templates*/
-#ifndef BROKEN_TEMPLATES
+using namespace std;
 
 template<class T>
 ObjectRef logObj(ObjectRef in)
@@ -52,5 +51,3 @@ REGISTER_VTABLE0(sin, Int, sinObj<Int>, 2)
 
 REGISTER_VTABLE0(cos, Float, cosObj<Float>, 1)
 REGISTER_VTABLE0(cos, Int, cosObj<Int>, 2)
-
-#endif

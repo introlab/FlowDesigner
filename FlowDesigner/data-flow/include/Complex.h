@@ -11,44 +11,40 @@
 #include "binio.h"
 #include "net_types.h"
 
-using namespace std;
-
-
-
 /**
    Base class for Complex<T> numbers.
    \author Dominic Letourneau
    \date 18/02/2004
 */
 template <class T>
-class Complex : public complex<T>, public Object {
+class Complex : public std::complex<T>, public Object {
 
  public:
 
   ///You can always get the type of the Complex<T> by using typename Complex<T>::basicType.
-  typedef complex<T> basicType;
+  typedef std::complex<T> basicType;
   
   ///Default constructor
-  Complex() : complex<T>() {}
+  Complex() : std::complex<T>() {}
   
   ///Constructor with a complex<T>
-  Complex(const complex<T> &val) : complex<T>(val) {}
+  Complex(const std::complex<T> &val) : std::complex<T>(val) {}
 
   ///Constructor with a Complex<T>
-  Complex(const Complex<T> &val) : complex<T>(val) {}
+  Complex(const Complex<T> &val) : std::complex<T>(val) {}
 
   ///Constructor with a NetCType<complex<T> >
-  Complex(const NetCType<complex<T> > &obj) : complex<T>(obj.val()) {}
+  Complex(const NetCType<std::complex<T> > &obj) : std::complex<T>(obj.val()) {}
 
   /**
      Formatted output in the FlowDesigner format<br>
      <b>Format : </b> \<Complex\<T\> <i> complex<T> value</i> \>
      \param out the output stream
   */
-  void printOn(ostream &out) const {
+  void printOn(std::ostream &out) const {
     out << "<"<<className()<<" ";
-    out << *((complex<T>*) this);
-    out << ">"<<endl;
+    out << *((std::complex<T>*) this);
+    out << ">"<<std::endl;
   }
   
   /**
@@ -56,14 +52,14 @@ class Complex : public complex<T>, public Object {
      <b>Format : </b> \<Complex\<T\> <i> complex<T> value</i> \>
      \param in the input stream
   */
-  void readFrom(istream &in) {
-    complex<T> value;
+  void readFrom(std::istream &in) {
+    std::complex<T> value;
     in >> value;
     *this = value;
     char ch;
     in >> ch;
     if (ch != '>') {
-      throw new GeneralException(string("Error reading ") + className() + string(" > expected"), __FILE__, __LINE__);
+      throw new GeneralException(std::string("Error reading ") + className() + std::string(" > expected"), __FILE__, __LINE__);
     }
   }
   
@@ -72,9 +68,9 @@ class Complex : public complex<T>, public Object {
       <b>Format : </b> {Complex\<T\> |<i>complex<T> value</i> }
       \param out the output stream
   */
-  void serialize(ostream &out) const {
+  void serialize(std::ostream &out) const {
     out << "{" << className() << " |";
-    BinIO::write(out, (complex<T>*) this, 1);
+    BinIO::write(out, (std::complex<T>*) this, 1);
     out << " }";
   }
   
@@ -83,14 +79,14 @@ class Complex : public complex<T>, public Object {
       <b>Format : </b> {Complex\<T\> |<i>complex<T> value</i> }
       \param in the input stream
   */
-  void unserialize(istream &in) { 
-    complex<T> value;
+  void unserialize(std::istream &in) { 
+    std::complex<T> value;
     BinIO::read(in, &value, 1);
     *this = value;    
     char ch;
     in >> ch;
     if (ch != '}') {
-       throw new GeneralException(string("Error reading ") + className() + string(" } expected"), __FILE__, __LINE__);
+       throw new GeneralException(std::string("Error reading ") + className() + std::string(" } expected"), __FILE__, __LINE__);
     }    
   }
   
@@ -98,15 +94,15 @@ class Complex : public complex<T>, public Object {
      Standard formatted output for Complex<T>
      \param out the output stream
   */
-  void prettyPrint(ostream &out) const { 
-    out << *((complex<T>*) this);
+  void prettyPrint(std::ostream &out) const { 
+    out << *((std::complex<T>*) this);
   }
   
   /**
      Returns the complex<T> wrapped value
      \return complex<T> the complex<T> value wrapped
   */
-  complex<T>& val() const {return *((complex<T>*) this);}
+  std::complex<T>& val() const {return *((std::complex<T>*) this);}
   
   
   /**
@@ -136,7 +132,7 @@ class Complex : public complex<T>, public Object {
      clone a Complex<T>
   */
   virtual ObjectRef clone() {
-    return ObjectRef(Complex<T>::alloc(*(complex<T>*) this));
+    return ObjectRef(Complex<T>::alloc(*(std::complex<T>*) this));
   }
 
 };
@@ -148,15 +144,15 @@ class Complex : public complex<T>, public Object {
    \return istream the input stream
 */
 template <class T> 
-istream &operator >> (istream &in, Complex<T> &value) { 
+std::istream &operator >> (std::istream &in, Complex<T> &value) { 
   
   char ch;
   in >> ch;
   
-  string expected = ObjectGetClassName<Complex<T> >();
+  std::string expected = ObjectGetClassName<Complex<T> >();
   
   if (ch == '<') {
-    string type;
+    std::string type;
     in >> type;
     
     if (expected != type) {
@@ -167,7 +163,7 @@ istream &operator >> (istream &in, Complex<T> &value) {
     value.readFrom(in);
   }
   else if (ch == '{') {
-    string type;
+    std::string type;
     in >> type;
 
     if (expected != type) {

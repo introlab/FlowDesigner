@@ -8,18 +8,18 @@
 
 /**Allows user-defined types (analog to structs in C/C++)*/
 class CompositeType : public Object {
-   typedef map<string, ObjectRef> map_type;
+   typedef std::map<std::string, ObjectRef> map_type;
    map_type fields;
 public:
    CompositeType() {}
-   void printOn(ostream &out) const;
-   void readFrom(istream &in);
-   void addField(const string &name, ObjectRef obj) {fields[name]=obj;}
-   ObjectRef get(const string &name) const
+   void printOn(std::ostream &out) const;
+   void readFrom(std::istream &in);
+   void addField(const std::string &name, ObjectRef obj) {fields[name]=obj;}
+   ObjectRef get(const std::string &name) const
    {
       map_type::const_iterator it = fields.find(name);
       if (it==fields.end())
-         throw new GeneralException(string("Unknown field: ") + name, __FILE__, __LINE__);
+         throw new GeneralException(std::string("Unknown field: ") + name, __FILE__, __LINE__);
       return it->second;
    }
 

@@ -14,6 +14,8 @@
 #include "Complex.h"
 
 //@implements core
+using namespace std;
+
 
 DECLARE_TYPE(Char)
 DECLARE_TYPE(Int)

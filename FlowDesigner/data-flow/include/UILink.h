@@ -3,7 +3,7 @@
 #ifndef UILINK_H
 #define UILINK_H
 
-using namespace std;
+
 
 #include <list>
 #include "misc.h"
@@ -91,7 +91,7 @@ protected:
    UITerminal *to;
    bool complete;
    UINetwork *net;
-   list<GUILinkPoint*> m_points;
+   std::list<GUILinkPoint*> m_points;
 
 public:
    //UILink(UITerminal *_from, UITerminal *_to, double _x1, double _y1, double _x2, double _y2);
@@ -103,9 +103,9 @@ public:
 
    void build(Network *net);
 
-   void genCode(ostream &out);
+   void genCode(std::ostream &out);
 
-   list<GUILinkPoint*> & get_link_points() {return m_points;}
+   std::list<GUILinkPoint*> & get_link_points() {return m_points;}
  
    friend class UITerminal;
    

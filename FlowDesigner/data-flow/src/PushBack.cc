@@ -8,6 +8,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 class PushBack;
 
 DECLARE_NODE(PushBack)

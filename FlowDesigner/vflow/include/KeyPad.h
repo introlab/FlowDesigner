@@ -128,7 +128,7 @@ private:
 
 public:
 
-   KeyPad(string nodeName, ParameterSet params);
+   KeyPad(std::string nodeName, ParameterSet params);
 
    virtual ~KeyPad();
 

@@ -13,6 +13,9 @@
 #include <float.h>
 #endif
 
+
+using namespace std;
+
 class ArgMax;
 
 DECLARE_NODE(ArgMax)

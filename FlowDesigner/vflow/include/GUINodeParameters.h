@@ -31,7 +31,7 @@ class GUINodeParameters : public UINodeParameters{
 
 protected:
    GtkWidget *nodeproperty;
-   vector<ParameterData> params;
+   std::vector<ParameterData> params;
    GtkWidget *text_comments;
    GtkWidget *list1;
    GtkWidget *list2;
@@ -40,14 +40,14 @@ protected:
    void createWindow();
 
 public:
-   GUINodeParameters(UINode *_node, string type);
+   GUINodeParameters(UINode *_node, std::string type);
    virtual ~GUINodeParameters();
    void show();
    void hide();
    void apply();
    void changed();
-   ParameterData *getParamDataNamed(string n);
-   //virtual void insertLoadedParam(ParameterText *param, string type, string value);
+   ParameterData *getParamDataNamed(std::string n);
+   //virtual void insertLoadedParam(ParameterText *param, std::string type, std::string value);
    GUINode *getGUINode() {return dynamic_cast<GUINode*>(node);}
    void addInput();
    void addOutput();

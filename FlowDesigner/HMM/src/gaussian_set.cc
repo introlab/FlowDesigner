@@ -3,6 +3,8 @@
 #include "gaussian_set.h"
 #include "ObjectParser.h"
 
+using namespace std;
+
 DECLARE_TYPE(GaussianSet)
 //@implements GMM
 

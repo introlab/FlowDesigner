@@ -6,6 +6,8 @@
 #include "vec.h"
 #include "Matrix.h"
 
+using namespace std;
+
 class CovarianceAccum;
 
 DECLARE_NODE(CovarianceAccum)

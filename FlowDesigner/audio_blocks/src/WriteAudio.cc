@@ -8,6 +8,8 @@
 #include <math.h>
 #include "Stream.h"
 
+using namespace std;
+
 class WriteAudio;
 
 DECLARE_NODE(WriteAudio)

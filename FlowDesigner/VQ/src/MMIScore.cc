@@ -6,6 +6,8 @@
 #include "Cell.h"
 #include "Vector.h"
 
+using namespace std;
+
 DECLARE_NODE(MMIScore)
 /*Node
  *

@@ -5,6 +5,8 @@
 #include "ObjectParser.h"
 #include "misc.h"
 
+using namespace std;
+
 DECLARE_TYPE(RBF)
 //@implements VQ
 

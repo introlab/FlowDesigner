@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "vec.h"
 
+using namespace std;
+
 class Gain;
 
 DECLARE_NODE(Gain)

@@ -6,7 +6,7 @@
       <Parameter name="IF" type="string" value="TEMPERATURE:MEDIUM HUMIDITY:LOW" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM" description=""/>
     </Node>
-    <Node name="node2" type="FuzzyRule" x="-2105.000000" y="-464.000000">
+    <Node name="node2" type="FuzzyRule" x="-2123.000000" y="-462.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:LOW HUMIDITY:HIGH" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM" description=""/>
     </Node>
@@ -14,129 +14,129 @@
       <Parameter name="IF" type="string" value="TEMPERATURE:LOW HUMIDITY:LOW" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:LOW" description=""/>
     </Node>
-    <Node name="node4" type="FuzzyRule" x="-2106.000000" y="-495.000000">
+    <Node name="node4" type="FuzzyRule" x="-2122.000000" y="-493.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:LOW HUMIDITY:MEDIUM" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:LOW" description=""/>
     </Node>
-    <Node name="node5" type="FuzzyRule" x="-2098.000000" y="-413.000000">
+    <Node name="node5" type="FuzzyRule" x="-2118.000000" y="-413.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:MEDIUM HUMIDITY:MEDIUM" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM" description=""/>
     </Node>
-    <Node name="node6" type="FuzzyRule" x="-2031.000000" y="-396.000000">
+    <Node name="node6" type="FuzzyRule" x="-2030.000000" y="-396.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:MEDIUM HUMIDITY:HIGH" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM" description=""/>
     </Node>
-    <Node name="node7" type="FuzzyRule" x="-2138.000000" y="-333.000000">
+    <Node name="node7" type="FuzzyRule" x="-2246.000000" y="-352.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:HIGH HUMIDITY:LOW" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:MEDIUM" description=""/>
     </Node>
-    <Node name="node8" type="FuzzyRule" x="-2063.000000" y="-316.000000">
+    <Node name="node8" type="FuzzyRule" x="-2171.000000" y="-336.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:HIGH HUMIDITY:MEDIUM" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:HIGH" description=""/>
     </Node>
-    <Node name="node9" type="FuzzyRule" x="-2062.000000" y="-281.000000">
+    <Node name="node9" type="FuzzyRule" x="-2027.000000" y="-308.000000">
       <Parameter name="IF" type="string" value="TEMPERATURE:HIGH HUMIDITY:HIGH" description=""/>
       <Parameter name="THEN" type="string" value="SPEED:HIGH" description=""/>
     </Node>
-    <Node name="node10" type="TrapezoidalFunction" x="-2176.000000" y="-175.000000">
+    <Node name="node10" type="TrapezoidalFunction" x="-2204.000000" y="-97.000000">
       <Parameter name="A" type="float" value="-1" description=""/>
       <Parameter name="B" type="float" value="0" description=""/>
       <Parameter name="C" type="float" value="225" description=""/>
       <Parameter name="D" type="float" value="500" description=""/>
       <Parameter name="NAME" type="string" value="LOW" description=""/>
     </Node>
-    <Node name="node11" type="TriangularFunction" x="-2028.000000" y="-159.000000">
+    <Node name="node11" type="TriangularFunction" x="-2118.000000" y="-70.000000">
       <Parameter name="A" type="float" value="225" description=""/>
       <Parameter name="B" type="float" value="500" description=""/>
       <Parameter name="C" type="float" value="775" description=""/>
       <Parameter name="NAME" type="string" value="MEDIUM" description=""/>
     </Node>
-    <Node name="node12" type="TrapezoidalFunction" x="-2017.000000" y="-132.000000">
+    <Node name="node12" type="TrapezoidalFunction" x="-1948.000000" y="-46.000000">
       <Parameter name="A" type="float" value="500" description=""/>
       <Parameter name="B" type="float" value="775" description=""/>
       <Parameter name="C" type="float" value="1000" description=""/>
       <Parameter name="D" type="float" value="1001" description=""/>
       <Parameter name="NAME" type="string" value="HIGH" description=""/>
     </Node>
-    <Node name="node13" type="FuzzySet" x="-1556.000000" y="-160.000000">
+    <Node name="node13" type="FuzzySet" x="-1652.000000" y="-54.000000">
       <Parameter name="NAME" type="string" value="SPEED" description=""/>
     </Node>
-    <Node name="node18" type="TrapezoidalFunction" x="-2181.000000" y="-85.000000">
+    <Node name="node18" type="TrapezoidalFunction" x="-2211.000000" y="-277.000000">
       <Parameter name="A" type="float" value="-1" description=""/>
       <Parameter name="B" type="float" value="0" description=""/>
       <Parameter name="C" type="float" value="25" description=""/>
       <Parameter name="D" type="float" value="50" description=""/>
       <Parameter name="NAME" type="string" value="LOW" description=""/>
     </Node>
-    <Node name="node19" type="TriangularFunction" x="-2035.000000" y="-69.000000">
+    <Node name="node19" type="TriangularFunction" x="-2124.000000" y="-251.000000">
       <Parameter name="A" type="float" value="25" description=""/>
       <Parameter name="B" type="float" value="50" description=""/>
       <Parameter name="C" type="float" value="75" description=""/>
       <Parameter name="NAME" type="string" value="MEDIUM" description=""/>
     </Node>
-    <Node name="node20" type="TrapezoidalFunction" x="-2020.000000" y="-40.000000">
+    <Node name="node20" type="TrapezoidalFunction" x="-2109.000000" y="-222.000000">
       <Parameter name="A" type="float" value="50" description=""/>
       <Parameter name="B" type="float" value="75" description=""/>
       <Parameter name="C" type="float" value="100" description=""/>
       <Parameter name="D" type="float" value="101" description=""/>
       <Parameter name="NAME" type="string" value="HIGH" description=""/>
     </Node>
-    <Node name="node21" type="FuzzySet" x="-1553.000000" y="-47.000000">
+    <Node name="node21" type="FuzzySet" x="-1657.000000" y="-229.000000">
       <Parameter name="NAME" type="string" value="HUMIDITY" description=""/>
     </Node>
-    <Node name="node24" type="FuzzySet" x="-1553.000000" y="46.000000">
+    <Node name="node24" type="FuzzySet" x="-1654.000000" y="-130.000000">
       <Parameter name="NAME" type="string" value="TEMPERATURE" description=""/>
     </Node>
-    <Node name="node25" type="TrapezoidalFunction" x="-2177.000000" y="13.000000">
+    <Node name="node25" type="TrapezoidalFunction" x="-2212.000000" y="-185.000000">
       <Parameter name="A" type="float" value="39" description=""/>
       <Parameter name="B" type="float" value="40" description=""/>
       <Parameter name="C" type="float" value="60" description=""/>
       <Parameter name="D" type="float" value="80" description=""/>
       <Parameter name="NAME" type="string" value="LOW" description=""/>
     </Node>
-    <Node name="node26" type="TriangularFunction" x="-2026.000000" y="30.000000">
+    <Node name="node26" type="TriangularFunction" x="-2115.000000" y="-152.000000">
       <Parameter name="A" type="float" value="60" description=""/>
       <Parameter name="B" type="float" value="80" description=""/>
       <Parameter name="C" type="float" value="100" description=""/>
       <Parameter name="NAME" type="string" value="MEDIUM" description=""/>
     </Node>
-    <Node name="node27" type="TrapezoidalFunction" x="-2025.000000" y="56.000000">
+    <Node name="node27" type="TrapezoidalFunction" x="-2077.000000" y="-122.000000">
       <Parameter name="A" type="float" value="80" description=""/>
       <Parameter name="B" type="float" value="100" description=""/>
       <Parameter name="C" type="float" value="120" description=""/>
       <Parameter name="D" type="float" value="121" description=""/>
       <Parameter name="NAME" type="string" value="HIGH" description=""/>
     </Node>
-    <Node name="node36" type="GenericModel" x="-1113.000000" y="-241.000000"/>
-    <Node name="node38" type="Constant" x="-1435.000000" y="-104.000000">
+    <Node name="node36" type="GenericModel" x="-1274.000000" y="-182.000000"/>
+    <Node name="node38" type="Constant" x="-1527.000000" y="-33.000000">
       <Parameter name="VALUE" type="object" value="&lt;Vector 70.0 60.0&gt;" description=""/>
     </Node>
     <Node name="node39" type="Concat" x="-1887.000000" y="-501.000000"/>
     <Node name="node28" type="Concat" x="-1888.000000" y="-455.000000"/>
     <Node name="node29" type="Concat" x="-1885.000000" y="-405.000000"/>
-    <Node name="node30" type="Concat" x="-1911.000000" y="-325.000000"/>
-    <Node name="node31" type="Concat" x="-1776.000000" y="-318.000000"/>
+    <Node name="node30" type="Concat" x="-2019.000000" y="-345.000000"/>
+    <Node name="node31" type="Concat" x="-1884.000000" y="-338.000000"/>
     <Node name="node32" type="Concat" x="-1665.000000" y="-495.000000"/>
-    <Node name="node33" type="Concat" x="-1617.000000" y="-397.000000"/>
-    <Node name="node34" type="Concat" x="-1471.000000" y="-450.000000"/>
-    <Node name="node14" type="Concat" x="-1822.000000" y="-168.000000"/>
-    <Node name="node16" type="Concat" x="-1823.000000" y="-78.000000"/>
-    <Node name="node22" type="Concat" x="-1823.000000" y="22.000000"/>
-    <Node name="node15" type="Concat" x="-1659.000000" y="-159.000000"/>
-    <Node name="node17" type="Concat" x="-1659.000000" y="-46.000000"/>
-    <Node name="node23" type="Concat" x="-1660.000000" y="47.000000"/>
-    <Node name="node35" type="Concat" x="-1402.000000" y="-8.000000"/>
-    <Node name="node37" type="Save" x="-805.000000" y="-242.000000">
+    <Node name="node33" type="Concat" x="-1668.000000" y="-398.000000"/>
+    <Node name="node34" type="Concat" x="-1514.000000" y="-452.000000"/>
+    <Node name="node14" type="Concat" x="-1912.000000" y="-79.000000"/>
+    <Node name="node16" type="Concat" x="-1912.000000" y="-260.000000"/>
+    <Node name="node22" type="Concat" x="-1912.000000" y="-160.000000"/>
+    <Node name="node15" type="Concat" x="-1742.000000" y="-54.000000"/>
+    <Node name="node17" type="Concat" x="-1748.000000" y="-228.000000"/>
+    <Node name="node23" type="Concat" x="-1743.000000" y="-131.000000"/>
+    <Node name="node35" type="Concat" x="-1506.000000" y="-190.000000"/>
+    <Node name="node37" type="Save" x="-1008.000000" y="-183.000000">
       <Parameter name="PRETTY_PRINT" type="bool" value="false" description=""/>
     </Node>
-    <Node name="node40" type="Constant" x="-1091.000000" y="-120.000000">
+    <Node name="node40" type="Constant" x="-1297.000000" y="-109.000000">
       <Parameter name="VALUE" type="string" value="FuzzyModel.txt" description=""/>
     </Node>
-    <Node name="node41" type="OutputStream" x="-980.000000" y="-120.000000">
+    <Node name="node41" type="OutputStream" x="-1186.000000" y="-109.000000">
       <Parameter name="TYPE" type="string" value="" description=""/>
     </Node>
-    <Link from="node38" output="VALUE" to="node36" input="INPUT">-1401.5 -104 -1322 -105 -1322 -215 -1282.5 -218.5 </Link>
-    <Link from="node13" output="SET" to="node36" input="CONSEQUENT_SETS">-1522 -160 -1480 -231 -1282.5 -233.5 </Link>
+    <Link from="node38" output="VALUE" to="node36" input="INPUT"/>
+    <Link from="node13" output="SET" to="node36" input="CONSEQUENT_SETS"/>
     <Link from="node3" output="RULE" to="node39" input="INPUT1"/>
     <Link from="node4" output="RULE" to="node39" input="INPUT2"/>
     <Link from="node2" output="RULE" to="node28" input="INPUT1"/>
@@ -152,16 +152,16 @@
     <Link from="node33" output="OUTPUT" to="node34" input="INPUT2"/>
     <Link from="node32" output="OUTPUT" to="node34" input="INPUT1"/>
     <Link from="node11" output="FUNCTION" to="node14" input="INPUT2"/>
-    <Link from="node10" output="FUNCTION" to="node14" input="INPUT1"/>
+    <Link from="node10" output="FUNCTION" to="node14" input="INPUT1">-2137 -97 -2049 -97 -2048 -85 -1993.5 -86.5 </Link>
     <Link from="node19" output="FUNCTION" to="node16" input="INPUT2"/>
-    <Link from="node18" output="FUNCTION" to="node16" input="INPUT1"/>
+    <Link from="node18" output="FUNCTION" to="node16" input="INPUT1">-2144 -277 -2045 -276 -2045 -267 -1993.5 -267.5 </Link>
     <Link from="node26" output="FUNCTION" to="node22" input="INPUT2"/>
-    <Link from="node25" output="FUNCTION" to="node22" input="INPUT1"/>
-    <Link from="node14" output="OUTPUT" to="node15" input="INPUT1"/>
+    <Link from="node25" output="FUNCTION" to="node22" input="INPUT1">-2145 -185 -2043 -185 -2042 -169 -1993.5 -167.5 </Link>
+    <Link from="node14" output="OUTPUT" to="node15" input="INPUT1">-1884.5 -79 -1866 -78 -1866 -63 -1823.5 -61.5 </Link>
     <Link from="node12" output="FUNCTION" to="node15" input="INPUT2"/>
-    <Link from="node16" output="OUTPUT" to="node17" input="INPUT1"/>
+    <Link from="node16" output="OUTPUT" to="node17" input="INPUT1">-1884.5 -260 -1870 -260 -1871 -236 -1829.5 -235.5 </Link>
     <Link from="node20" output="FUNCTION" to="node17" input="INPUT2"/>
-    <Link from="node22" output="OUTPUT" to="node23" input="INPUT1"/>
+    <Link from="node22" output="OUTPUT" to="node23" input="INPUT1">-1884.5 -160 -1867 -159 -1866 -140 -1824.5 -138.5 </Link>
     <Link from="node27" output="FUNCTION" to="node23" input="INPUT2"/>
     <Link from="node23" output="OUTPUT" to="node24" input="FUNCTIONS"/>
     <Link from="node17" output="OUTPUT" to="node21" input="FUNCTIONS"/>

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 class NewAccumulator;
 
 DECLARE_NODE(NewAccumulator)

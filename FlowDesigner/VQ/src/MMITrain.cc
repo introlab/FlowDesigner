@@ -5,6 +5,8 @@
 #include "Cell.h"
 #include "Vector.h"
 
+using namespace std;
+
 class MMITrain;
 DECLARE_NODE(MMITrain)
 /*Node

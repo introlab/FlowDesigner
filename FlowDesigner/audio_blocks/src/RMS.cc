@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <math.h>
 
+using namespace std;
+
 class RMS;
 
 DECLARE_NODE(RMS)

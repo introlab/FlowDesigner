@@ -5,7 +5,10 @@
 #include "Vector.h"
 #include "Matrix.h"
 
+using namespace std;
+
 class MatProduct;
+
 
 DECLARE_NODE(MatProduct)
 /*Node

@@ -8,6 +8,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 class DCVector;
 
 DECLARE_NODE(DCVector)

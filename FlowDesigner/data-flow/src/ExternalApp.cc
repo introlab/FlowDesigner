@@ -2,6 +2,7 @@
 
 #include "ExternalApp.h"
 
+using namespace std;
 
 map<string, AppFactory *> &ExternalApp::factories()
 {

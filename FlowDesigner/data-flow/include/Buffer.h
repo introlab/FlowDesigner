@@ -14,9 +14,9 @@
 class Buffer : public Object {
 protected:
    /**Pointers to objects*/
-   mutable vector<ObjectRef> data;
+   mutable std::vector<ObjectRef> data;
 
-   mutable vector<int> flags;
+   mutable std::vector<int> flags;
 
    /**The number N of objects kept*/
    int bufferLength ;
@@ -57,7 +57,7 @@ public:
    }
 
    /**Prints the Buffer*/
-   void printOn(ostream &out = cout) const;
+   void printOn(std::ostream &out = std::cout) const;
 
    int getCurrentPos() {return currentPos;}
 
@@ -67,16 +67,16 @@ public:
 class BufferException : public BaseException {
 public:
    /**The constructor with the parameters*/
-   BufferException(const Buffer *_buffer, string _message, int _element) 
+   BufferException(const Buffer *_buffer, std::string _message, int _element) 
       : buffer (_buffer)
       , message(_message)
       , element(_element)
    {}
 
    /**The print method*/
-   virtual void print(ostream &out = cerr) 
+   virtual void print(std::ostream &out = std::cerr) 
    {
-      out<< typeid(buffer).name() << " error: "<< message << ".\nElement " << element << endl;
+      out<< typeid(buffer).name() << " error: "<< message << ".\nElement " << element << std::endl;
       out << "Buffer is: \n";
       out << *buffer;
    }
@@ -85,7 +85,7 @@ protected:
    const Buffer *buffer;
 
    /**the error message*/
-   string message;
+   std::string message;
 
    /**The element for which the error occured*/
    int element;
@@ -136,11 +136,11 @@ inline ObjectRef &Buffer::get(int ind) const
 }
 
 
-inline void Buffer::printOn(ostream &out) const
+inline void Buffer::printOn(std::ostream &out) const
 {
    int i;
-   //cerr << "printing... currentPos = " << currentPos << " bufferLength = " << bufferLength << endl;
-   out << "<Buffer" << endl;
+   //cerr << "printing... currentPos = " << currentPos << " bufferLength = " << bufferLength << std::endl;
+   out << "<Buffer" << std::endl;
    for (i=currentPos-bufferLength+1;i<=currentPos;i++)
    {
       if (i>=0)
@@ -152,7 +152,7 @@ inline void Buffer::printOn(ostream &out) const
 	    out << "nil";
       }
    }
-   out << " >" << endl;
+   out << " >" << std::endl;
 }
 
 

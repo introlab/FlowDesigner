@@ -3,6 +3,8 @@
 #include "Node.h"
 #include "ParameterSet.h"
 
+using namespace std;
+
 //@implements core
 
 bool ParameterSet::exist(const string &param) const

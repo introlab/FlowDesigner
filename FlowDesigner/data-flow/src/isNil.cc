@@ -3,6 +3,7 @@
 
 #include "BufferedNode.h"
 
+using namespace std;
 
 class isNil;
 

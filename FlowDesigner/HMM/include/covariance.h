@@ -54,7 +54,7 @@ public:
    virtual void accumFrame(const float *v)=0;
 
    /**accumulates a frame to the covariance*/
-   virtual void accumFrame(const vector<float> &v)=0;
+   virtual void accumFrame(const std::vector<float> &v)=0;
   
    /**Returns the covariance size (dimension)*/
    unsigned int   size() const { return dimension; }
@@ -70,7 +70,7 @@ public:
    virtual void compute_determinant() const =0;
 
    /**Prints the covariance*/
-   virtual void printOn(ostream &out=cout) const = 0;
+   virtual void printOn(std::ostream &out=std::cout) const = 0;
    
    /**Computed the mahalanobis distance between the vectors using the 
       covariance*/
@@ -101,21 +101,21 @@ public:
 /**Diagonal Covariance class*/
 class DiagonalCovariance : public Covariance  {
    /**The covariance data as the diagonal vector*/
-   vector<double> data;
+   std::vector<double> data;
 public:
-   DiagonalCovariance(istream &in)
+   DiagonalCovariance(std::istream &in)
       : Covariance(0)
    {in >> *this;}
    
    DiagonalCovariance() 
       : Covariance(0)
-      , data(vector<double>(0,0.0))
+      , data(std::vector<double>(0,0.0))
    {}
 
    /**Constructs a Diagonal Covariance with dimension dim*/
    DiagonalCovariance(int dim) 
       : Covariance(dim) 
-      , data(vector<double>(dim,0.0)) 
+      , data(std::vector<double>(dim,0.0)) 
    {}
 
    /**Copy Constructor*/
@@ -149,7 +149,7 @@ public:
    }
 
    /**accumulates a frame to the covariance*/
-   void accumFrame(const vector<float> &v)
+   void accumFrame(const std::vector<float> &v)
    {
       for (int i=0;i<dimension;i++)
          data[i] += v[i]*v[i];
@@ -169,13 +169,13 @@ public:
    void processMean(RCPtr<Mean> mean);
 
    /** print function used for operator << */
-   virtual void printOn(ostream &out=cout) const;
+   virtual void printOn(std::ostream &out=std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
    /**extractor operator*/
-   friend istream &operator >> (istream &in, DiagonalCovariance &cov);
+   friend std::istream &operator >> (std::istream &in, DiagonalCovariance &cov);
    friend class GMM;
 }
 ;
@@ -183,6 +183,6 @@ public:
 /**Function that acts as a factory for diagonal covariance*/
 inline Covariance *NewDiagonalCovariance(int dim) {return new DiagonalCovariance (dim);}
 
-istream &operator >> (istream &in, DiagonalCovariance &cov);
+std::istream &operator >> (std::istream &in, DiagonalCovariance &cov);
 
 #endif

@@ -7,7 +7,7 @@
 #include <string>
 #include <libxml/tree.h>
 
-using namespace std;
+
 
 class UINode;
 class UINetwork;
@@ -19,9 +19,9 @@ public:
    enum NetTermType {INPUT, OUTPUT, CONDITION};
 
 protected:
-   string name;
-   string m_objectType;
-   string m_description;
+   std::string name;
+   std::string m_objectType;
+   std::string m_description;
 
    UITerminal *terminal;
    double x,y;
@@ -30,20 +30,20 @@ protected:
 
 public:
 
-   UINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name, 
-		 const string &_objType = "any", const string &_description = "No description available");
+   UINetTerminal(UITerminal *_terminal, NetTermType _type, const std::string &_name, 
+		 const std::string &_objType = "any", const std::string &_description = "No description available");
 
    //void setup();
    virtual ~UINetTerminal();
 
-   void setName(const string &_name) {name = _name;}
-   string getName() {return name;}
+   void setName(const std::string &_name) {name = _name;}
+   std::string getName() {return name;}
 
-   void setObjectType(const string &_objType) {m_objectType = _objType;}
-   string  getObjectType(){return m_objectType;}
+   void setObjectType(const std::string &_objType) {m_objectType = _objType;}
+   std::string  getObjectType(){return m_objectType;}
 
-   void setDescription(const string &description) {m_description = description;}
-   string getDescription(){return m_description;}
+   void setDescription(const std::string &description) {m_description = description;}
+   std::string getDescription(){return m_description;}
 
    void saveXML(xmlNode *root);
    NetTermType getType() {return type;}

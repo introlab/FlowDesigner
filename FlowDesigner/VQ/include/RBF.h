@@ -34,7 +34,7 @@ class RBF : public KMeans {
    }
 
 protected:
-   vector<vector<float> > covar;
+   std::vector<std::vector<float> > covar;
    
    
 public:
@@ -42,13 +42,13 @@ public:
       : KMeans(_dist)
    {}
 
-   void train (int codeSize, const vector<float *> &data/*, const vector<float *> &data_out*/, int len, bool binary=false);
+   void train (int codeSize, const std::vector<float *> &data/*, const std::vector<float *> &data_out*/, int len, bool binary=false);
    
    void calcDist (const float *v, float *dist_return) const;
 
-   void printOn(ostream &out=cout) const;
-   void readFrom (istream &in=cin);
-   friend istream &operator >> (istream &in, RBF &mdl);
+   void printOn(std::ostream &out=std::cout) const;
+   void readFrom (std::istream &in=std::cin);
+   friend std::istream &operator >> (std::istream &in, RBF &mdl);
 };
 
 #endif

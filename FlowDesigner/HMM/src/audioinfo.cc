@@ -4,6 +4,8 @@
 #include "ObjectParser.h"
 #include <string.h>
 
+using namespace std;
+
 DECLARE_TYPE(AudioInfo)
 
 void AudioInfo::printOn(ostream &out) const

@@ -6,6 +6,8 @@
 #include "FFNet.h"
 #include "TrainingAlgo.h"
 
+using namespace std;
+
 class NNetTrainDBD;
 
 DECLARE_NODE(NNetTrainDBD)

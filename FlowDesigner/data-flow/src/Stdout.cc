@@ -3,6 +3,8 @@
 #include "Node.h"
 #include "Stream.h"
 
+using namespace std;
+
 class Stdout;
 
 DECLARE_NODE(Stdout)

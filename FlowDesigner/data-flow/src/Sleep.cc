@@ -7,6 +7,8 @@
 #include "Object.h"
 #include "rtc.h"
 //#include <unistd.h>
+using namespace std;
+
 
 class Sleep;
 

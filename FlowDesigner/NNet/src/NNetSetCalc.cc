@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "NNetSet.h"
 
+using namespace std;
+
 class NNetSetCalc;
 
 DECLARE_NODE(NNetSetCalc)

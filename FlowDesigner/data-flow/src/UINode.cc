@@ -17,6 +17,7 @@ extern "C" {
 
 //@implements UIClasses
 
+using namespace std;
 
 UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit)
    : destroyed(false)

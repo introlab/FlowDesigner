@@ -1,9 +1,11 @@
 // Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
 
 #include "BufferedNode.h"
+#include "UINode.h"
+
 //@implements core
 
-#include "UINode.h"
+using namespace std;
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)

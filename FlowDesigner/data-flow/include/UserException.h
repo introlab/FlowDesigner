@@ -2,7 +2,7 @@
 #ifndef _USEREXCEPTION_H_
 #define _USEREXCEPTION_H_
 
-using namespace std;
+
 
 #include <iostream>
 #include <string>

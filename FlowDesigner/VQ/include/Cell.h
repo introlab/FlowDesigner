@@ -10,17 +10,17 @@ class Cell;
 inline double entropy_funct(double x) 
 {
    if (x==0) {
-      //cerr << "got zero\n"; 
+      //std::cerr << "got zero\n"; 
       return 0;
    }
    return -x*log(x);
 }
 
-ostream &operator << (ostream &out, const Cell &cell);
+std::ostream &operator << (std::ostream &out, const Cell &cell);
 
 class MutualInformation {
 public:
-   inline static float mmi (vector<int> Nij, int Nj, vector<int> Ai)
+   inline static float mmi (std::vector<int> Nij, int Nj, std::vector<int> Ai)
    {
       float ent = 0;
       for (int i = 0; i < Nij.size(); i++)
@@ -55,7 +55,7 @@ public:
 
    Cell(){}
    
-   Cell (const Cell &) {cerr << "don't call the Cell copy constructor\n"; exit(1);}
+   Cell (const Cell &) {std::cerr << "don't call the Cell copy constructor\n"; exit(1);}
 
    ~Cell() 
    {
@@ -66,22 +66,22 @@ public:
       }
    }
 
-   void recursiveSplit (const vector<pair<int, float *> > &data, int level = 2);
+   void recursiveSplit (const std::vector<std::pair<int, float *> > &data, int level = 2);
 
-   void split(const vector<pair<int, float *> > &data, int &bestDim, float &bestThreshold);
+   void split(const std::vector<std::pair<int, float *> > &data, int &bestDim, float &bestThreshold);
 
-   void findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score);
+   void findThreshold(const std::vector<std::pair<int, float *> > &data, int dim, float &thresh, float &score);
    
    int setNumbering(int start=0);
    
    int belongs(float *vect) const;
 
-   void calcTemplate (const vector<float *> &features, vector<int> &templ) const;
+   void calcTemplate (const std::vector<float *> &features, std::vector<int> &templ) const;
 
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
-   void readFrom (istream &in);
+   void readFrom (std::istream &in);
 
-   friend istream &operator >> (istream &in, Cell &cell);
+   friend std::istream &operator >> (std::istream &in, Cell &cell);
 };
 

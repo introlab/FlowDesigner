@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "Vector.h"
 
+using namespace std;
+
 class GCMS2;
 
 DECLARE_NODE(GCMS2)

@@ -45,13 +45,13 @@ class VQ : public Object {
 
    virtual int nbClasses() const = 0;
 
-   //virtual const vector<float> &operator[] (int i) const = 0;
+   //virtual const std::vector<float> &operator[] (int i) const = 0;
 
    virtual int getClassID (const float *v, float *dist_return = NULL) const = 0;
    
    //virtual void calcDist (const float *v, float *dist_return) const = 0;
 
-   virtual void printOn(ostream &out=cout) const = 0;
-   virtual void readFrom (istream &in=cin) = 0;
+   virtual void printOn(std::ostream &out=std::cout) const = 0;
+   virtual void readFrom (std::istream &in=std::cin) = 0;
 };
 #endif

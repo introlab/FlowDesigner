@@ -15,7 +15,7 @@
 //temporarily inserting include of Stream.h
 #include "Stream.h"
 
-using namespace std;
+
 
 /** This is a generic type that FlowDesigner will handle. Subclass GenericType if
     you want to add specific operations and operators */
@@ -60,7 +60,7 @@ public:
       <b>Format : </b> \<Generic Type: typeid(T).name() \>
       \param out the output stream
    */
-   virtual void printOn(ostream &out=cout) const {
+   virtual void printOn(std::ostream &out=std::cout) const {
       out << "<Generic Type: " << typeid(T).name() << ">" << endl;
    }
 
@@ -102,7 +102,7 @@ public:
       <b>Format : </b> \<T <i>value<\i> \>
       \param out the output stream
    */
-   void printOn(ostream &out) const
+   void printOn(std::ostream &out) const
    {
       out << "<" << this->className() << " " << this->value << " >";
    }
@@ -111,7 +111,7 @@ public:
       Formatted output (std)
       \param out output stream
    */
-   virtual void prettyPrint(ostream &out=cout) const {
+   virtual void prettyPrint(std::ostream &out=std::cout) const {
      out << this->value << " ";
    }
 
@@ -120,7 +120,7 @@ public:
       <b>Format : </b> \<T <i>value<\i> \>
       \param in the input stream
    */
-   void readFrom(istream &in)
+   void readFrom(std::istream &in)
    {
       in >> this->value;
       char ch;
@@ -134,7 +134,7 @@ public:
       <b>Format : </b> {T |<i>value<\i> }
       \param out the output stream
    */
-   void serialize(ostream &out) const
+   void serialize(std::ostream &out) const
    {
       out << "{" << this->className() << " |" << this->value << " }";
    }
@@ -144,7 +144,7 @@ public:
       <b>Format : </b> {T |<i>value<\i> }
       \param in the input stream
    */
-   void unserialize(istream &in)
+   void unserialize(std::istream &in)
    {
       in >> this->value;
       char ch;
@@ -259,7 +259,7 @@ typedef NetCType<bool> Bool;
 class FILEPTR : public GenericType<FILE *> {
   public: 
    FILEPTR(FILE *file);
-   FILEPTR(const string &filename, const string &mode);
+   FILEPTR(const std::string &filename, const std::string &mode);
    ~FILEPTR();
 };
 
@@ -270,7 +270,7 @@ class FILEPTR : public GenericType<FILE *> {
 class FILEDES : public GenericType<int> {
   public: 
    FILEDES(int fd);
-   FILEDES(const string &filename, int mode);
+   FILEDES(const std::string &filename, int mode);
    ~FILEDES();
 };
 
@@ -286,69 +286,65 @@ extern ObjectRef FalseObject;
 /**Base FlowDesigner String type, wraps a C++ string
    \author Jean-Marc Valin
 */
-class String : public string, public Object
+class String : public std::string, public Object
 {
  public:
 
    ///You can always get the type wrapped by String by using typename String::basicType.
-   typedef string basicType;
+   typedef std::string basicType;
    
    /** Default constructor */
-   String() : string() {}
+   String() : std::string() {}
 
    /**
       Formatted output in the FlowDesigner format for String.
       <b>Format : </b> \<String <i>the_string_with_escape_characters<\i>\>
       \param out the output stream
    */
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
    /**
       Formatted input in the FlowDesigner format for String.
       <b>Format : </b> \<String <i>the_string_with_escape_characters<\i>\>
       \param in the input stream
    */
-   void readFrom(istream &in);
+   void readFrom(std::istream &in);
 
    /**
       Binary output in the FlowDesigner String format. <br>
       <b>Format : </b> {String |<i>the_string<\i> }
       \param out the output stream
    */
-   void serialize(ostream &out) const;
+   void serialize(std::ostream &out) const;
 
    /**
       Binary input in the FlowDesigner String format. <br>
       <b>Format : </b> {String |<i>the_string<\i> }
       \param in the input stream
    */
-   void unserialize(istream &in);
+   void unserialize(std::istream &in);
 
    /** 
        Std formatted output
        \param out the output stream
    */
-   void prettyPrint(ostream &out) const;
+   void prettyPrint(std::ostream &out) const;
 
    /** Constructor with char* */
-   String(const char *str) : string(str)
+   String(const char *str) : std::string(str)
    {}
 
    /** Constructor with string */
-   String(const string &str) : string(str)
+   String(const std::string &str) : std::string(str)
    {}
    
    /** return the string value */
-   const string& val() { return *this;}
+   const std::string& val() { return *this;}
 };
 
 ///operator >> for String
-istream &operator >> (istream &in, String &str);
+std::istream &operator >> (std::istream &in, String &str);
 
 _DEF_OBJECT_TYPE(String)
-
-
-
-
 
 #endif

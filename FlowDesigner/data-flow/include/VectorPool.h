@@ -10,7 +10,7 @@
 #include "misc.h"
 #include "multithread.h"
 
-using namespace std;
+
 
 #define MAX_SMALL 512
 #define MAX_BITS 32
@@ -21,8 +21,8 @@ class VectorPool {
   protected:
    size_t max_stored;
 
-   vector<vector <Vector<T> *> > smallList;
-   vector<vector <Vector<T> *> > largeList;
+   std::vector<std::vector <Vector<T> *> > smallList;
+   std::vector<std::vector <Vector<T> *> > largeList;
    FastMutex mutex;
 
   public:
@@ -37,7 +37,7 @@ class VectorPool {
       mutex.lock();
       if (size <= MAX_SMALL)
       {
-	 vector <Vector<T> *> &stack = smallList[size];
+	 std::vector <Vector<T> *> &stack = smallList[size];
 	 if (stack.empty())
 	 {
             mutex.unlock();
@@ -50,7 +50,7 @@ class VectorPool {
 	    return ret;
 	 }
       } else {
-	 vector <Vector<T> *> &stack = largeList[log2(size)];
+	 std::vector <Vector<T> *> &stack = largeList[log2(size)];
 	 if (stack.empty())
 	 {
             mutex.unlock();
@@ -72,7 +72,7 @@ class VectorPool {
       int sz = vec->size();
       if (sz <= MAX_SMALL)
       {
-	 vector <Vector<T> *> &stack = smallList[sz];
+	 std::vector <Vector<T> *> &stack = smallList[sz];
 	 if (stack.size() > max_stored)
 	 {
 	    delete vec;
@@ -81,7 +81,7 @@ class VectorPool {
 	 }
 	 
       } else {
-	 vector <Vector<T> *> &stack = largeList[log2(sz)];
+	 std::vector <Vector<T> *> &stack = largeList[log2(sz)];
 	 if (stack.size() > max_stored)
 	 {
 	    delete vec;

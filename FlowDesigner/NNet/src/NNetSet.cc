@@ -3,6 +3,8 @@
 #include "NNetSet.h"
 #include "TrainingAlgo.h"
 
+using namespace std;
+
 DECLARE_TYPE(NNetSet)
 //@implements NNetSet
 //@require FFNet

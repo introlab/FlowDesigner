@@ -5,6 +5,8 @@
 #include "misc.h"
 #include <string>
 
+using namespace std;
+
 DECLARE_TYPE(DiagonalCovariance)
 //@implements GMM
 

@@ -7,6 +7,8 @@
 #include "binio.h"
 #include "iextensions.h"
 
+using namespace std;
+
 DECLARE_TYPE(DiagGMM)
 //@implements DGMM
 

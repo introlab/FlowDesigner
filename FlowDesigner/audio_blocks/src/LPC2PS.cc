@@ -7,6 +7,8 @@
 #include <math.h>
 #include "FFTWrap.h"
 
+using namespace std;
+
 class LPC2PS;
 
 DECLARE_NODE(LPC2PS)

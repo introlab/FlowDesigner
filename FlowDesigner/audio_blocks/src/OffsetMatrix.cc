@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "Matrix.h"
 
+using namespace std;
+
 class OffsetMatrix;
 
 DECLARE_NODE(OffsetMatrix)

@@ -23,7 +23,7 @@ protected:
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   Pack(string nodeName, ParameterSet params);
+   Pack(std::string nodeName, ParameterSet params);
 
    /**Class specific initialization routine.
       Each class will call its superclass initialize() method*/

@@ -32,7 +32,7 @@ public:
    /**Destructor*/
    ~DiagGMM() {if (ptr) delete [] ptr;}
 
-   void train (const vector<float *> &frames, int nb_dim, int nb_gaussians, int nb_splits);
+   void train (const std::vector<float *> &frames, int nb_dim, int nb_gaussians, int nb_splits);
 
    /**Score a frame*/
    float score(const float *vec);
@@ -41,23 +41,22 @@ public:
    int getDim() {return dim;}
 
    /** print function used for operator << */
-   virtual void printOn(ostream &out=cout) const;
+   virtual void printOn(std::ostream &out=std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
    /**extractor for DiagGMM*/
-   friend istream &operator >> (istream &in, DiagGMM &gmm);
+   friend std::istream &operator >> (std::istream &in, DiagGMM &gmm);
 
-   virtual void serialize(ostream &out) const;
+   virtual void serialize(std::ostream &out) const;
 
-   virtual void unserialize(istream &in);
+   virtual void unserialize(std::istream &in);
 
    friend class GMM;
 };
 
-//ostream &operator << (ostream &out, const GMM &gmm);
-istream &operator >> (istream &in, DiagGMM &gmm);
+std::istream &operator >> (std::istream &in, DiagGMM &gmm);
 
 
 #endif /* DIAG_GMM_H */

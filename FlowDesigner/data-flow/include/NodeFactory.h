@@ -19,15 +19,15 @@ class Node;
 //abstract factory class
 class _NodeFactory {
 protected:
-   string name;
+   std::string name;
    
 public:
-   _NodeFactory(string _name)
+   _NodeFactory(std::string _name)
       : name(_name)
    {}   
-   virtual const string &getName() {return name;}
+   virtual const std::string &getName() {return name;}
 
-   virtual Node* Create(const string &name, const ParameterSet &parameters) = 0;
+   virtual Node* Create(const std::string &name, const ParameterSet &parameters) = 0;
    virtual ~_NodeFactory() {;}
 
 private:
@@ -40,10 +40,10 @@ private:
 template <class T>
 class NodeFactory : public _NodeFactory {
 public:
-   NodeFactory(string _name)
+   NodeFactory(std::string _name)
       : _NodeFactory(_name)
    {}
-   virtual Node* Create(const string &name, const ParameterSet &parameters) {
+   virtual Node* Create(const std::string &name, const ParameterSet &parameters) {
       return ((Node*) new T(name,parameters));
    }
 };

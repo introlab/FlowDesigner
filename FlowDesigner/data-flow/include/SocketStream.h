@@ -59,7 +59,7 @@ class network_socket {
      Useful for IStream and OStream (deriving for Object) <br>
      <b>Format :</b> \<network_socket Type <i>m_type</i> Port <i>m_port</i> \>
   */
-  void printOn (ostream &out) const;
+  void printOn (std::ostream &out) const;
 
   ///Init broadcast communication
   void init_broadcast();
@@ -167,15 +167,15 @@ class network_socket {
    \author Dominic Letourneau
    \date 03/10/2001
 */
-class socket_streambuf : public streambuf, public network_socket {
+class socket_streambuf : public std::streambuf, public network_socket {
 
   protected:
    virtual int overflow(int = EOF);
-   virtual streamsize xsputn(const char *s, streamsize n);
+   virtual std::streamsize xsputn(const char *s, std::streamsize n);
 
    virtual int uflow();
    virtual int underflow();
-   virtual streamsize xsgetn(char *s, streamsize n);
+   virtual std::streamsize xsgetn(char *s, std::streamsize n);
    virtual int pbackfail(int c);
 
   public:
@@ -198,7 +198,7 @@ class socket_streambuf : public streambuf, public network_socket {
    \author Dominic Letourneau
    \date 03/10/2001
 */
-class socket_ostream : public ostream {
+class socket_ostream : public std::ostream {
   socket_streambuf _streambuffer; 
   public:
 
@@ -206,7 +206,7 @@ class socket_ostream : public ostream {
 
   socket_ostream(int type, int port)
     : _streambuffer (type,port)
-    , ostream(&_streambuffer)
+    , std::ostream(&_streambuffer)
     {clear();}
 };
 
@@ -216,7 +216,7 @@ class socket_ostream : public ostream {
    \author Dominic Letourneau
    \date 03/10/2001
 */
-class socket_istream : public istream {
+class socket_istream : public std::istream {
   socket_streambuf _streambuffer;
   public:
 
@@ -224,7 +224,7 @@ class socket_istream : public istream {
   
   socket_istream(int type, int port)
     : _streambuffer (type, port)
-    , istream(&_streambuffer)
+    , std::istream(&_streambuffer)
     {clear();}
 };
 
@@ -234,7 +234,7 @@ class socket_istream : public istream {
    \author Dominic Letourneau
    \date 03/10/2001
 */
-class socket_iostream : public iostream {
+class socket_iostream : public std::iostream {
   socket_streambuf _streambuffer;
   public:
 
@@ -242,7 +242,7 @@ class socket_iostream : public iostream {
   
   socket_iostream(int type, int port)
     : _streambuffer (type, port)
-    , iostream(&_streambuffer)
+    , std::iostream(&_streambuffer)
     {clear();}
 };
 

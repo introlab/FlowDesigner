@@ -4,6 +4,8 @@
 #include "Vector.h"
 #include "FuzzyOperators.h"
 
+using namespace std;
+
 DECLARE_NODE(TriangularFunction)
 DECLARE_TYPE(TriangularFunction)
 /*Node

@@ -2,6 +2,8 @@
 
 #include "Constant.h"
 
+using namespace std;
+
 DECLARE_NODE(Constant)
 /*Node
  *

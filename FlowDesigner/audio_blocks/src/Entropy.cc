@@ -13,6 +13,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 class Entropy;
 
 DECLARE_NODE(Entropy)

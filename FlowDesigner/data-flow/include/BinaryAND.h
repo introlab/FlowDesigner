@@ -33,7 +33,7 @@ protected:
 
 public:
 
-   BinaryAND(string nodeName, ParameterSet params);
+   BinaryAND(std::string nodeName, ParameterSet params);
 
    virtual ~BinaryAND();
 

@@ -9,12 +9,12 @@
 
 class NNetSet;
 
-ostream &operator << (ostream &out, const NNetSet &cell);
+std::ostream &operator << (std::ostream &out, const NNetSet &cell);
 
 
 class NNetSet : public Object {
 protected:
-   vector<RCPtr<FFNet> > nets;
+   std::vector<RCPtr<FFNet> > nets;
    float *value;
 public:
    //NNetSet() 
@@ -22,11 +22,11 @@ public:
 
    NNetSet(){value = NULL;}
    
-   NNetSet (const NNetSet &) {cerr << "don't call the NNetSet copy constructor\n"; exit(1);}
+   NNetSet (const NNetSet &) {std::cerr << "don't call the NNetSet copy constructor\n"; exit(1);}
 
-   NNetSet(int nbNets, const Vector<int> &topo, const Vector<string> &functions, vector<int> id, vector<float *> &tin, vector<float *> &tout);
+   NNetSet(int nbNets, const Vector<int> &topo, const Vector<std::string> &functions, std::vector<int> id, std::vector<float *> &tin, std::vector<float *> &tout);
    
-   NNetSet(vector<int> id, vector<float *> &tin, vector<float *> &tout, NNetSet *net1, NNetSet *net2);
+   NNetSet(std::vector<int> id, std::vector<float *> &tin, std::vector<float *> &tout, NNetSet *net1, NNetSet *net2);
 
    ~NNetSet() 
    {
@@ -35,19 +35,19 @@ public:
 
    float *calc(int id, const float *input);
 
-   //void train(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
+   //void train(std::vector<int> id, std::vector<float *> tin, std::vector<float *> tout, int iter, 
 //	      double learnRate, double mom, double increase, double decrease, double errRatio, int nbSets);
 
-   void trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *> tout, 
+   void trainDeltaBar(std::vector<int> id, std::vector<float *> tin, std::vector<float *> tout, 
 		      int iter, double learnRate, double increase, double decrease);
 
-   //void trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, 
+   //void trainCGB(std::vector<int> id, std::vector<float *> tin, std::vector<float *> tout, 
    //	      int iter, double sigma = .03, double lambda = .2);
 
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
-   void readFrom (istream &in);
+   void readFrom (std::istream &in);
 
-   friend istream &operator >> (istream &in, NNetSet &cell);
+   friend std::istream &operator >> (std::istream &in, NNetSet &cell);
 };
 

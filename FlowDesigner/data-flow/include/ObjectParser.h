@@ -9,17 +9,17 @@
 #include <map>
 #include <string>
 
-inline bool isValidType (istream &in, string expectedType, bool binary=false);
+inline bool isValidType (std::istream &in, std::string expectedType, bool binary=false);
 
 template <class T>
-inline ostream &operator << (ostream &out, const RCPtr<T> &ref)
+inline std::ostream &operator << (std::ostream &out, const RCPtr<T> &ref)
 {
    out << *ref;
    return out;
 }
 
 template <class T>
-inline ostream &operator << (ostream &out, const vector<T> &v)
+inline std::ostream &operator << (std::ostream &out, const std::vector<T> &v)
 {
    out << "<Vector ";
    for (int i=0; i < v.size(); i++)
@@ -30,11 +30,8 @@ inline ostream &operator << (ostream &out, const vector<T> &v)
    return out;
 }
 
-/*The following code doesn't compile with MSVC++*/
-#ifndef BROKEN_TEMPLATES
-
 template <class T>
-inline ostream &operator << (ostream &out, const vector<T*> &v)
+inline std::ostream &operator << (std::ostream &out, const std::vector<T*> &v)
 {
    out << "<Vector ";
    for (int i=0; i < v.size(); i++)
@@ -44,10 +41,10 @@ inline ostream &operator << (ostream &out, const vector<T*> &v)
    out << " > ";
    return out;
 }
-#endif
+
 
 template <class T>
-inline istream &operator >> (istream &in, vector<T> &v)
+inline std::istream &operator >> (std::istream &in, std::vector<T> &v)
 {
    int items_found=0;
 
@@ -77,11 +74,8 @@ inline istream &operator >> (istream &in, vector<T> &v)
    }
 }
 
-/*The following code doesn't compile with MSVC++*/
-#ifndef BROKEN_TEMPLATES
-
 template <class T>
-inline istream &operator >> (istream &in, vector<T*> &v)
+inline std::istream &operator >> (std::istream &in, std::vector<T*> &v)
 {
    int items_found=0;
 
@@ -110,32 +104,32 @@ inline istream &operator >> (istream &in, vector<T*> &v)
       v.push_back(tmp);
    }
 }
-#endif
+
 
 class ParsingException : public BaseException{
 public:
-   ParsingException (string _message) 
+   ParsingException (std::string _message) 
       : message(_message) 
    {}
-   void print(ostream &out=cerr)  {out << message << endl;}
+   void print(std::ostream &out=std::cerr)  {out << message << std::endl;}
 protected:
-   string message;
+   std::string message;
 };
 
 
-inline bool isValidType (istream &in, string expectedType, bool binary)
+inline bool isValidType (std::istream &in, std::string expectedType, bool binary)
 {
    char ch;
    in >> ch;
    if ((ch == '<' && !binary) || (ch == '{' && binary))
    {
-      string type;
+      std::string type;
       in >> type;
       if (type != expectedType)
          throw new ParsingException ("ObjectParser::isValidType : Parser expected type " + expectedType + " and got " + type);
    } else {
       in.putback(ch);
-      in.clear(ios::failbit);
+      in.clear(std::ios::failbit);
       return false;
    }
    return true;
@@ -145,19 +139,19 @@ inline bool isValidType (istream &in, string expectedType, bool binary)
 
 
 template <class T>
-inline istream &operator >> (istream &in, RCPtr<T> &o)
+inline std::istream &operator >> (std::istream &in, RCPtr<T> &o)
 {
    char ch;
    in >> ch;
    if (ch == '<')
    {
-      string type;
+      std::string type;
       in >> type;
       o = Object::newObject(type);
       o->readFrom(in);
    } else if (ch == '{')
    {
-      string type;
+      std::string type;
       in >> type;
       o = Object::newObject(type);
       int dummyCount=0;
@@ -170,14 +164,14 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
       } while(dummy != '|');
       o->unserialize(in);
    } else {
-      throw new ParsingException(string("Expected '<' or '{' (got '") + ch + "')");
+      throw new ParsingException(std::string("Expected '<' or '{' (got '") + ch + "')");
    }
    
    return in;  
 }
 
 template <class T>
-inline istream &operator >> (istream &in, T* &o)
+inline std::istream &operator >> (std::istream &in, T* &o)
 {
    RCPtr<T> obj;
    in >> obj;

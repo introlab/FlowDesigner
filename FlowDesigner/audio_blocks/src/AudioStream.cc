@@ -11,6 +11,8 @@
 #endif
 #include "Stream.h"
 
+using namespace std;
+
 class AudioStream;
 
 DECLARE_NODE(AudioStream)

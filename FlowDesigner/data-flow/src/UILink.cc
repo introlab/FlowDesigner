@@ -10,6 +10,7 @@
 #include <sstream>
 
 //@implements UIClasses
+using namespace std;
 
 UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
    : from(_from)

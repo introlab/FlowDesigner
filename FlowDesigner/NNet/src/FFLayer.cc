@@ -6,6 +6,8 @@
 #include "Vector.h"
 #include "misc.h"
 
+using namespace std;
+
 DECLARE_TYPE(FFLayer)
 DECLARE_TYPE(Vector<FFLayer>)
 DECLARE_TYPE(Vector<FFLayer*>)

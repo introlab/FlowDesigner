@@ -10,23 +10,22 @@
 #include <string>
 #include "FuzzyFunction.h"
 
-using namespace std;
 
 class TrapezoidalFunction : public FuzzyFunction  {
 
 public:
 
-  virtual string get_type() {return string("Trapezoidal");}
+  virtual std::string get_type() {return std::string("Trapezoidal");}
   
   //evaluation of the function 
   virtual float evaluate(float x);
   
   //constructor of the function
-  TrapezoidalFunction(const string &name, float a, float b, float c, float d);
+  TrapezoidalFunction(const std::string &name, float a, float b, float c, float d);
   
-  TrapezoidalFunction(string nodeName, ParameterSet params);
+  TrapezoidalFunction(std::string nodeName, ParameterSet params);
 
-  TrapezoidalFunction(istream &in) {readFrom(in);}
+  TrapezoidalFunction(std::istream &in) {readFrom(in);}
 
   TrapezoidalFunction() {}
   
@@ -51,9 +50,9 @@ public:
   //cloning capability
   virtual ObjectRef clone();
   
-  virtual void printOn(ostream &out=cout) const;
+  virtual void printOn(std::ostream &out=std::cout) const;
   
-  virtual void readFrom(istream &in=cin);
+  virtual void readFrom(std::istream &in=std::cin);
   
  private:
   

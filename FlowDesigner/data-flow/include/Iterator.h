@@ -16,7 +16,7 @@ protected:
 public:
    
    /** The constructor with a nodeName and parameters */
-   InputTranslator (string nodeName, ParameterSet params) 
+   InputTranslator (std::string nodeName, ParameterSet params) 
       :BufferedNode(nodeName, params) {
       //nothing to do
       ;
@@ -32,9 +32,9 @@ public:
    virtual void request(int outputID, const ParameterSet &req) 
    {
       if (req.exist("LOOKAHEAD"))
-      outputs[outputID].lookAhead = max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
+      outputs[outputID].lookAhead = std::max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
    if (req.exist("LOOKBACK"))
-      outputs[outputID].lookBack = max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
+      outputs[outputID].lookBack = std::max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
    if (req.exist("INORDER"))
       inOrder = true;
 
@@ -55,13 +55,13 @@ public:
      out[count] = (inputs[output_id].node)->getOutput(outputID,internal_processCount);
    }
 
-   int addInput (const string &inputName)
+   int addInput (const std::string &inputName)
    {
       BufferedNode::addInput(inputName);
       return BufferedNode::addOutput(inputName);
    }
 
-   virtual int translateInput (string inputName) {
+   virtual int translateInput (std::string inputName) {
      for (unsigned int i=0; i< inputs.size(); i++) {
        if (inputs[i].name == inputName) {
          return i;
@@ -70,7 +70,7 @@ public:
      return addInput(inputName);
    }
 
-   virtual int translateOutput (string outputName) {
+   virtual int translateOutput (std::string outputName) {
      // Simply call translateInput because it should return
      // the same integer...
      return translateInput(outputName);
@@ -92,9 +92,6 @@ public:
 
    }
    
-
-
-
 private:
    
    /** The default constructor that should never be used */
@@ -102,11 +99,6 @@ private:
       throw new NodeException (NULL,"The default constructor should not be called from InputTranslator",__FILE__,__LINE__);
    }
 };
-
-
-
-
-
 
 /** Iterator Node */
 class Iterator : public Network {
@@ -118,15 +110,15 @@ protected:
 public:
    
    /** The constructor with a nodeName and parameters */
-   Iterator (string nodeName, ParameterSet params);
+   Iterator (std::string nodeName, ParameterSet params);
    
    /** The getOutput method overloaded from Node */
    virtual ObjectRef getOutput (int output_id, int count);
    
    /** The connectToNode method overloaded from Node */
-   virtual void connectToNode(string in, Node *inNode, string out) {
+   virtual void connectToNode(std::string in, Node *inNode, std::string out) {
       if (!inputNode) {
-         throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
+         throw new NodeException(this,std::string("No input node in iterator :") + name, __FILE__,__LINE__);
       }
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
    }
@@ -169,7 +161,6 @@ protected:
 
    bool exit_status;
 
-
    /** Our special conditionNode*/
    Node *conditionNode;
    
@@ -177,7 +168,7 @@ protected:
    InputTranslator *translator;
    
    /** The output of the iterator*/
-   vector<ObjectRef> output;
+   std::vector<ObjectRef> output;
    
    /** Default constructor that should not be used*/
    Iterator() {

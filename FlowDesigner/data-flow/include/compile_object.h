@@ -7,15 +7,15 @@
 #include "DLManager.h"
 
 class CompileObject {
-   string code;
-   string symname;
-   string filename;
+   std::string code;
+   std::string symname;
+   std::string filename;
    DL_HANDLE_TYPE lib;
    void *sym;
 public:
-   CompileObject(const string &_code="");
+   CompileObject(const std::string &_code="");
    ~CompileObject();
-   void setCode(const string &_code) {code = _code;}
+   void setCode(const std::string &_code) {code = _code;}
    void compile();
    void *getFuncPtr() {return sym;}
 };

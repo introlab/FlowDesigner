@@ -5,6 +5,8 @@
 #include "ObjectRef.h"
 #include "FFNet.h"
 
+using namespace std;
+
 class NNetTrain;
 
 DECLARE_NODE(NNetTrain)

@@ -30,11 +30,11 @@ class Conversion {
          {
             return it2->second(x);
          } else {
-            cerr << "Cannot cast this to type requested\nThis needs to throw an exception\n";
+            std::cerr << "Cannot cast this to type requested\nThis needs to throw an exception\n";
             return nilObject;
          }
       } else {
-         cerr << "Cannot cast\nThis needs to throw an exception\n";
+	 std::cerr << "Cannot cast\nThis needs to throw an exception\n";
          return nilObject;
       }
    }

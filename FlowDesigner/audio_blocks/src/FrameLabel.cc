@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "Stream.h"
 
+using namespace std;
+
 class FrameLabel;
 
 DECLARE_NODE(FrameLabel)

@@ -58,7 +58,7 @@ class vflowGUI {
 
   void set_run_mode (bool isRuning);
 
-  void load_document (const string fname);
+  void load_document (const std::string fname);
 
   void create_empty_document();
 
@@ -66,7 +66,7 @@ class vflowGUI {
   
   void remove_notebook_document(GUIDocument *doc, GtkWidget *child);
 
-  void display_statusbar_text(const string &text);
+  void display_statusbar_text(const std::string &text);
 
   void copy(GUIDocument *doc);
 
@@ -100,7 +100,7 @@ class vflowGUI {
 
   void create_mdi();
 
-  list<GUINode*> clipboard;
+  std::list<GUINode*> clipboard;
 
   int clipboardMode;
 

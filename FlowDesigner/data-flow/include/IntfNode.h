@@ -12,7 +12,7 @@ class IntfNode : public Node {
    int lookAhead;
    int lookBack;
 public:
-   IntfNode(string nodeName, const ParameterSet &params);
+   IntfNode(std::string nodeName, const ParameterSet &params);
    void initialize();
    void reset();
    ObjectRef getOutput(int output_id, int count);

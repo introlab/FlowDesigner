@@ -34,15 +34,15 @@ protected:
 
    int processCount;
 
-   vector<OutputCacheInfo> outputs;
+   std::vector<OutputCacheInfo> outputs;
 
-   vector<InputCacheInfo> inputsCache;
+   std::vector<InputCacheInfo> inputsCache;
    
    /**true if the calculations must be made in order of process count*/
    bool inOrder;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   BufferedNode(string nodeName, const ParameterSet &params);
+   BufferedNode(std::string nodeName, const ParameterSet &params);
    
    /**Destructor*/
    virtual ~BufferedNode() {}
@@ -68,10 +68,10 @@ public:
    virtual void reset();
 
    /**Adding an output to a node*/
-   virtual int addOutput (const string &outputName);
+   virtual int addOutput (const std::string &outputName);
 
    /**Adding an input to a node*/
-   virtual int addInput (const string &inputName);
+   virtual int addInput (const std::string &inputName);
 
    /***/
    virtual void initializeBuffers();

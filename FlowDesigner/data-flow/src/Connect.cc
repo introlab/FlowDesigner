@@ -5,6 +5,8 @@
 #include "Stream.h"
 #include "SocketStream.h"
 
+using namespace std;
+
 class Connect;
 
 DECLARE_NODE(Connect)

@@ -6,6 +6,8 @@
 #include "ObjectRef.h"
 #include <vector>
 
+using namespace std;
+
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
    int nb;

@@ -8,6 +8,8 @@
 #include "FuzzyOperators.h"
 #include "GenericModel.h"
 
+using namespace std;
+
 class FuzzyModelExec;
 
 DECLARE_NODE(FuzzyModelExec)

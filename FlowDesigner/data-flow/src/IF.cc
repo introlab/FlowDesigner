@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 class IF;
 
 DECLARE_NODE(IF)

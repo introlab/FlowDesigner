@@ -2,7 +2,7 @@
 #include "GUINetwork.h"
 
 //Copyright (C) 2004 Dominic Letourneau
-
+using namespace std;
 
 static gint gui_note_event_handler (GnomeCanvasItem *item, GdkEvent *event, GUINote *note) {
    return note->event(event);

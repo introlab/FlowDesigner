@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "Exception.h"
 
+using namespace std;
+
 class NOT;
 
 DECLARE_NODE(NOT)

@@ -7,6 +7,8 @@
 #include <math.h>
 #include "misc.h"
 
+using namespace std;
+
 class LPFilter;
 
 DECLARE_NODE(LPFilter)

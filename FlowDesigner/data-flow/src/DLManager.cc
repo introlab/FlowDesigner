@@ -2,6 +2,8 @@
 
 #include "DLManager.h"
 
+using namespace std;
+
 map<string,LoadedLibrary* > DLManager::loaded;
 map<string, ToolboxData> ToolboxList::loadedToolboxes;
 

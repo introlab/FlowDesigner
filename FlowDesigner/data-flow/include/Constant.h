@@ -20,7 +20,7 @@ protected:
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
-   Constant(string nodeName, ParameterSet params);
+   Constant(std::string nodeName, ParameterSet params);
 
    /**Class specific initialization routine.
       Each class will call its subclass initialize() method*/

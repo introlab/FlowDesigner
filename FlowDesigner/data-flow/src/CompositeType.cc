@@ -4,6 +4,8 @@
 #include <iostream>
 #include "ObjectParser.h"
 
+using namespace std;
+
 DECLARE_TYPE(CompositeType)
 
 void CompositeType::printOn(ostream &out) const

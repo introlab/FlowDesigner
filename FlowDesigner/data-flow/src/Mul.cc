@@ -4,6 +4,8 @@
 #include "Buffer.h"
 #include "operators.h"
 
+using namespace std;
+
 class Mul;
 
 DECLARE_NODE(Mul)

@@ -19,6 +19,9 @@
 
 #include "BinaryOR.h"
 
+using namespace std;
+
+
 DECLARE_NODE(BinaryOR);
 
 /*Node

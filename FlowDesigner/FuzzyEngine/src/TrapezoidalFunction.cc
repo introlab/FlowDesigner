@@ -8,6 +8,7 @@
 #include "Vector.h"
 #include "FuzzyOperators.h"
 
+using namespace std;
 
 DECLARE_NODE(TrapezoidalFunction)
 DECLARE_TYPE(TrapezoidalFunction)

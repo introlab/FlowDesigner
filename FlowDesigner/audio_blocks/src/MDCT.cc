@@ -7,6 +7,8 @@
 #include "window.h"
 #include "mdct.h"
 
+using namespace std;
+
 class MDCT;
 
 DECLARE_NODE(MDCT)

@@ -46,25 +46,25 @@ protected:
    UIDocument *doc;
 
    /**Name of the network*/
-   string name;
+   std::string name;
 
    /**Description of the network*/
-   string m_description;
+   std::string m_description;
 
    /**Network type (subnet, iterator, threaded iterator*/
    Type type;
 
    /**All the links included in the network*/
-   vector <UINode *> nodes;
+   std::vector <UINode *> nodes;
 
    /**All the links included in the network*/
-   vector <UILink *> links;
+   std::vector <UILink *> links;
 
    /**Pointer to all the network terminals*/
-   vector <UINetTerminal *> terminals;
+   std::vector <UINetTerminal *> terminals;
 
    /**All the notes in the network*/
-   vector <UINote*> m_notes;
+   std::vector <UINote*> m_notes;
 
    ///The condition node of the iterator (no meaning for subnets)
    //UINode *conditionNode;
@@ -74,7 +74,7 @@ private:
    bool buildRecurs;
 public:
    /**Basic constructor, allows building the UINetwork gradually*/
-   UINetwork(UIDocument *_doc, string _name, Type _type);
+   UINetwork(UIDocument *_doc, std::string _name, Type _type);
 
    /**Construct a UINetwork from a parsed XML file*/
    UINetwork(UIDocument *_doc, xmlNodePtr net, bool init=true);
@@ -90,7 +90,7 @@ public:
 
    UINode *loadNode (xmlNodePtr node);
    
-   UINode *getNodeNamed(string n);
+   UINode *getNodeNamed(std::string n);
    
    void addNode(UINode *node);
 
@@ -100,11 +100,11 @@ public:
 
    void removeLink (UILink *link);
 
-   const string &getName() {return name;}
+   const std::string &getName() {return name;}
 
-   string getDescription() {return m_description;}
+   std::string getDescription() {return m_description;}
 
-   void setDescription(const string & _description){m_description = _description;}
+   void setDescription(const std::string & _description){m_description = _description;}
 
    
    Type getType() {return type;}
@@ -116,20 +116,20 @@ public:
 
    void saveXML(xmlNode *root);
 
-   virtual void newNetNotify(const string &cat, const string &type);
+   virtual void newNetNotify(const std::string &cat, const std::string &type);
 
    void addTerminal(UINetTerminal *term);
 
    void removeTerminal(UINetTerminal *term);
 
-   vector<string> getTerminals(UINetTerminal::NetTermType termType);
+   std::vector<std::string> getTerminals(UINetTerminal::NetTermType termType);
 
-   void insertNetParams(vector<ItemInfo *> &params);
+   void insertNetParams(std::vector<ItemInfo *> &params);
 
    virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
    
-   virtual UINode *newNode(UINetwork* _net, string _name, 
-						   string _type, double _x, double _y, bool doInit);
+   virtual UINode *newNode(UINetwork* _net, std::string _name, 
+						   std::string _type, double _x, double _y, bool doInit);
 
 //   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
 
@@ -147,20 +147,20 @@ public:
    virtual UINote* newNote(const std::string &text, double x, double y, bool visible);
 
 
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name, 
-					  const string &_objType="any", const string &_description="No description available");
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name, 
+					  const std::string &_objType="any", const std::string &_description="No description available");
 
-   Network *build(const string &netName, const ParameterSet &params);
+   Network *build(const std::string &netName, const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   void genCode(ostream &out, int &id, set<string> &nodeList);
+   void genCode(std::ostream &out, int &id, std::set<std::string> &nodeList);
  
-   vector<UINode *> getNodes() {return nodes;}
-   vector<UILink *> getLinks() {return links;}
-   vector<UINetTerminal *> getTerminals() {return terminals;}
+   std::vector<UINode *> getNodes() {return nodes;}
+   std::vector<UILink *> getLinks() {return links;}
+   std::vector<UINetTerminal *> getTerminals() {return terminals;}
 
    ///Direct access to the note vector
-   vector<UINote*> getNotes() {return m_notes;}
+   std::vector<UINote*> getNotes() {return m_notes;}
 
    void addNote(UINote *note);
 
@@ -168,15 +168,15 @@ public:
    void removeNote(UINote *note);
    
    
-   virtual void rename(string newName);
+   virtual void rename(std::string newName);
 
    void interfaceChangeNotify();
 
-   virtual void updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
+   virtual void updateAllSubnetTerminals(const std::string _nettype, const std::string _terminalname, 
 					 UINetTerminal::NetTermType _terminaltype, bool _remove); 
 
 
-   virtual void updateAllSubnetParameters(const string _nettype, NodeInfo* _info);
+   virtual void updateAllSubnetParameters(const std::string _nettype, NodeInfo* _info);
 
 };
 

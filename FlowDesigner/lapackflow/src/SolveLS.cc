@@ -6,6 +6,8 @@
 #include "Matrix.h"
 #include "lapackflow.h"
 
+using namespace std;
+
 class SolveLS;
 
 DECLARE_NODE(SolveLS)

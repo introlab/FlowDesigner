@@ -4,6 +4,8 @@
 #include "kmeans.h"
 #include "ObjectParser.h"
 
+using namespace std;
+
 DECLARE_TYPE(KMeans)
 //@implements VQ
 

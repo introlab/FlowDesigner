@@ -7,6 +7,7 @@
 #include "InferenceModel.h"
 #include "Exception.h"
 
+using namespace std;
 
 DECLARE_NODE(InferenceModel)
 DECLARE_TYPE(InferenceModel)

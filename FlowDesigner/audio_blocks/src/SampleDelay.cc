@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <stdlib.h>
 
+using namespace std;
+
 class SampleDelay;
 
 DECLARE_NODE(SampleDelay)

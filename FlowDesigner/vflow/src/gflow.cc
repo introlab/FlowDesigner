@@ -23,6 +23,7 @@
 #  include <config.h>
 #endif
 
+using namespace std;
 
 void quit()
 {

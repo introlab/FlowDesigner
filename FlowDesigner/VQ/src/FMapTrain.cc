@@ -6,6 +6,8 @@
 #include "FeatureMap.h"
 #include "Vector.h"
 
+using namespace std;
+
 class FMapTrain;
 
 DECLARE_NODE(FMapTrain)

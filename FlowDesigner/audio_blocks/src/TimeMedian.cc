@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <algorithm>
 
+using namespace std;
+
 class TimeMedian;
 
 DECLARE_NODE(TimeMedian)

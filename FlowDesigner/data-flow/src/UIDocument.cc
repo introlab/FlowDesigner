@@ -21,6 +21,7 @@
 #include "object_param.h"
 
 //@implements UIClasses
+using namespace std;
 
 UIDocument::UIDocument(string _name)
    : modified(false)

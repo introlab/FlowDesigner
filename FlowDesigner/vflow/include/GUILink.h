@@ -9,7 +9,6 @@
 #include <math.h>
 
 
-using namespace std;
 
 class UINode;
 class UINetwork;

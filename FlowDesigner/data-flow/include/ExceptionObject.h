@@ -19,7 +19,7 @@ public:
       throw e;
    }
 
-   void printOn(ostream &out) const
+   void printOn(std::ostream &out) const
    {
       e->print(out);
    }

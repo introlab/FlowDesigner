@@ -5,6 +5,8 @@
 #include "BufferedNode.h"
 #include "Stream.h"
 
+using namespace std;
+
 class List;
 DECLARE_NODE(List)
 /*Node

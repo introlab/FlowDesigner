@@ -11,6 +11,8 @@
 
 //@implements UIClasses
 
+using namespace std;
+
 class ParamTypeChange {
 public:
    char *newParam;

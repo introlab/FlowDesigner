@@ -7,6 +7,8 @@
 #include <sstream>
 #include "Vector.h"
 
+using namespace std;
+
 DECLARE_NODE(KeyPad)
 /*Node
  *

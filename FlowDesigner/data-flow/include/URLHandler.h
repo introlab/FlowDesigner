@@ -9,12 +9,12 @@
 #include "BaseException.h"
 #include "net_types.h"
 
-typedef ObjectRef (*url_func)(const string &url, int flags);
+typedef ObjectRef (*url_func)(const std::string &url, int flags);
 
 class URLHandler {
   
  private:
-  static map<string,url_func> &url_table();
+  static std::map<std::string,url_func> &url_table();
   
  public:
   enum {
@@ -23,21 +23,20 @@ class URLHandler {
     URL_READWRITE
   };
 
-  static int RegisterURLHandler(const string& name, url_func func) 
+  static int RegisterURLHandler(const std::string& name, url_func func) 
   {
     url_table()[name] = func;
-    //cerr<<"inserting "<<name<<" into url table"<<endl;
     return 0;
   }
   
-  static ObjectRef openStream(const string &inputURL, int flags)
+  static ObjectRef openStream(const std::string &inputURL, int flags)
   {
 
     try 
     {      
       int pos = inputURL.find(":");
 
-      if (pos == string::npos) 
+      if (pos == std::string::npos) 
       {
 	//default URL type is file: if nothing specified
 	return url_table()["file"](inputURL, flags);
@@ -52,13 +51,13 @@ class URLHandler {
         }
 	else
 	{
-	  throw new GeneralException(string("Unable to create URL of type : ") + inputURL,__FILE__,__LINE__);
+	  throw new GeneralException(std::string("Unable to create URL of type : ") + inputURL,__FILE__,__LINE__);
 	}
       }
     }
     catch(BaseException *e) 
     {
-      throw e->add(new GeneralException(string("Unable to create URL of type : ") + inputURL,__FILE__,__LINE__));
+      throw e->add(new GeneralException(std::string("Unable to create URL of type : ") + inputURL,__FILE__,__LINE__));
     }
   }   
 };

@@ -12,24 +12,23 @@
 #include "Object.h"
 #include "Vector.h"
 
-using namespace std;
 
 class FuzzyRule : public BufferedNode {
 
 public:
 	
-  friend istream& operator>> (istream &in, FuzzyRule &rule);
-  friend ostream& operator<< (ostream &out, FuzzyRule &rule);
+  friend std::istream& operator>> (std::istream &in, FuzzyRule &rule);
+  friend std::ostream& operator<< (std::ostream &out, FuzzyRule &rule);
   
 
   //printing the rule IF ... AND ... THEN ...
-  void print_rule (ostream &out);
+  void print_rule (std::ostream &out);
 
   //add a consequent in the rule
-  void add_consequent (const string &set_name, const string &funct_name);
+  void add_consequent (const std::string &set_name, const std::string &funct_name);
   
   //add an antecedant in the rule
-  void add_antecedant(const string& set_name, const string &funct_name);
+  void add_antecedant(const std::string& set_name, const std::string &funct_name);
   
   
   FuzzyRule();
@@ -39,18 +38,18 @@ public:
   
   FuzzyRule(const FuzzyRule& cpy);
   
-  FuzzyRule(string nodeName, ParameterSet params);
+  FuzzyRule(std::string nodeName, ParameterSet params);
 
-  FuzzyRule(istream &in);
+  FuzzyRule(std::istream &in);
   
   //destructor
   virtual ~FuzzyRule();
   
   //accessor for the antecedant part of the rule 
-  vector<pair<string,string> >& get_antecedant_part() {return m_antecedant;}
+  std::vector<std::pair<std::string,std::string> >& get_antecedant_part() {return m_antecedant;}
   
   //accessor for the consequent of the rule
-  vector<pair<string,string> >& get_consequent_part() {return m_consequent;}
+  std::vector<std::pair<std::string,std::string> >& get_consequent_part() {return m_consequent;}
   
   //accessor for the rule number
   int get_rule_number() {return m_rule_number;}
@@ -61,17 +60,17 @@ public:
     
   virtual ObjectRef clone();
 
-  virtual void printOn(ostream &out=cout) const;
+  virtual void printOn(std::ostream &out=std::cout) const;
 
-  virtual void readFrom(istream &in=cin);
+  virtual void readFrom(std::istream &in=std::cin);
   
  private:
   
   //vector of antecedant of type (FUZZY_SET,VARIABLE)
-  vector<pair<string,string> > m_antecedant;
+  std::vector<std::pair<std::string,std::string> > m_antecedant;
   
   //vector of consequent of type (FUZZY_SET,VARIABLE)
-  vector<pair<string,string> > m_consequent;
+  std::vector<std::pair<std::string,std::string> > m_consequent;
   
   //the rule number	
   int m_rule_number;
@@ -79,7 +78,7 @@ public:
   int m_ruleID;
 };
 
-inline void Vector<FuzzyRule*>::printOn(ostream &out) const {
+inline void Vector<FuzzyRule*>::printOn(std::ostream &out) const {
   for (int i = 0; i < size(); i++) {
     operator[](i)->printOn(out);
   }

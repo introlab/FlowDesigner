@@ -6,6 +6,8 @@
 #include "Vector.h"
 #include <math.h>
 
+using namespace std;
+
 class Round;
 
 DECLARE_NODE(Round)

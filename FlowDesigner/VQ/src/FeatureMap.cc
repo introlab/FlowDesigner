@@ -14,6 +14,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 DECLARE_TYPE(FeatureMap)
 //@implements FeatureMap
 

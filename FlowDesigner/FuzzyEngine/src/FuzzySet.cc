@@ -13,6 +13,8 @@
 #include "Vector.h"
 #include "FuzzyOperators.h"
 
+using namespace std;
+
 DECLARE_NODE(FuzzySet)
 DECLARE_TYPE(FuzzySet)
 /*Node

@@ -7,7 +7,7 @@
 
 class FeatureMap;
 
-ostream &operator << (ostream &out, const FeatureMap &cell);
+std::ostream &operator << (std::ostream &out, const FeatureMap &cell);
 
 
 class FeatureMap : public Object {
@@ -20,7 +20,7 @@ protected:
    float threshold;
    int splitDimension;
    int cellID;
-   vector<float> mapData;
+   std::vector<float> mapData;
 public:
    FeatureMap(int _inDimension, int _outDimension) 
       : inDimension(_inDimension)
@@ -34,7 +34,7 @@ public:
 
    FeatureMap(){}
    
-   FeatureMap (const FeatureMap &) {cerr << "don't call the FeatureMap copy constructor\n"; exit(1);}
+   FeatureMap (const FeatureMap &) {std::cerr << "don't call the FeatureMap copy constructor\n"; exit(1);}
 
    ~FeatureMap() 
    {
@@ -45,11 +45,11 @@ public:
       }
    }
 
-   void recursiveSplit (const vector<float *> &inData, const vector<float *> &outData, int level = 2);
+   void recursiveSplit (const std::vector<float *> &inData, const std::vector<float *> &outData, int level = 2);
 
-   void split(const vector<float *> &inData, const vector<float *> &outData, int &bestDim, float &bestThreshold);
+   void split(const std::vector<float *> &inData, const std::vector<float *> &outData, int &bestDim, float &bestThreshold);
 
-   void findThreshold(const vector<float *> &inData, const vector<float *> &outData, int dim, float &thresh, float &score);
+   void findThreshold(const std::vector<float *> &inData, const std::vector<float *> &outData, int dim, float &thresh, float &score);
    
    int setNumbering(int start=0);
    
@@ -57,14 +57,14 @@ public:
 
    //int belongs(float *vect) const;
 
-   //void calcTemplate (const vector<float *> &features, vector<int> &templ) const;
+   //void calcTemplate (const std::vector<float *> &features, std::vector<int> &templ) const;
 
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
-   void readFrom (istream &in);
+   void readFrom (std::istream &in);
    
    int getOutDimension() {return outDimension;}
 
-   friend istream &operator >> (istream &in, FeatureMap &cell);
+   friend std::istream &operator >> (std::istream &in, FeatureMap &cell);
 };
 

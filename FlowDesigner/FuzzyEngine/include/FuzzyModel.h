@@ -13,7 +13,6 @@
 #include <string>
 #include "BufferedNode.h"
 
-using namespace std;
 
 class FuzzyModel : public BufferedNode {
 
@@ -23,10 +22,10 @@ public:
   void verify_rules();
   
   //print the rules
-  void print_rules(ostream &out);
+  void print_rules(std::ostream &out);
   
   //print the sets
-  void print_sets(ostream &out);
+  void print_sets(std::ostream &out);
   
   void reset();
   
@@ -42,7 +41,7 @@ public:
   FuzzyModel(const FuzzyModel &model);
   
   
-  FuzzyModel(string nodeName, ParameterSet params);
+  FuzzyModel(std::string nodeName, ParameterSet params);
   
   //destructor
   virtual ~FuzzyModel();
@@ -91,13 +90,13 @@ public:
   Vector<ObjectRef> m_output_set;
   
   //vector of input functions to be evaluated for a rule
-  vector<list<FuzzyFunction*> > m_input_functions;
+  std::vector<std::list<FuzzyFunction*> > m_input_functions;
   
   //vector of output functions to be evaluated for a rule
-  vector<list<FuzzyFunction*> > m_output_functions;
+  std::vector<std::list<FuzzyFunction*> > m_output_functions;
   
   //internal function to get a named set
-  FuzzySet* find_set_named(const string &name, int type);
+  FuzzySet* find_set_named(const std::string &name, int type);
   
   //defuzzification result
   Vector<float> m_defuzzification;

@@ -3,6 +3,8 @@
 #include "gmm_set.h"
 #include "ObjectParser.h"
 
+using namespace std;
+
 DECLARE_TYPE(GMMSet)
 //@implements GMM
 

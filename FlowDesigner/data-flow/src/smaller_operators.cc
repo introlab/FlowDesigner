@@ -11,6 +11,8 @@
 
 //@implements core
 
+using namespace std;
+
 template <class X, class Y, class Z>
 ObjectRef smallerCTypeFunction(ObjectRef op1, ObjectRef op2) {
   RCPtr<Z> op1Value = op1;

@@ -29,7 +29,7 @@ public:
 	\return ObjectRef the newly created Object
    */
    virtual ObjectRef getIndex(int _row, int _col) {
-   	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
+   	throw new GeneralException(std::string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 	
    /**
@@ -39,7 +39,7 @@ public:
 	\param val the new value of the element
    */
    virtual void setIndex(int _row, int _col, ObjectRef val) {
-   	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
+   	throw new GeneralException(std::string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 
    /**
@@ -131,15 +131,12 @@ public:
    */
    void resize(int _rows, int _cols)
    {
-      //cerr << "resizing to " << _rows << " x " << _cols << endl;
       T *new_data = new T [_rows*_cols];
       int min_rows = _rows < rows ? _rows : rows;
       int min_cols = _cols < cols ? _cols : cols;
-      //cerr << min_rows << " " << min_cols << endl;
       for (int i=0;i<min_rows;i++)
 	 for (int j=0;j<min_cols;j++)
 	    new_data[i*_cols+j] = data[i*cols+j];
-      //cerr << "deleting\n";
       if (data)
 	 delete [] data;
       data = new_data;
@@ -223,19 +220,19 @@ public:
       <b>Format :</b> \<Matrix\<T\> \<rows <i>nrows</i> \> \<cols <i>ncols</i> \> \<data <i> element(0,0) element(0,1)  ... element(rows-1,cols-1)</i>\> \>
       \param out the output stream
    */
-   void printOn(ostream &out) const
+   void printOn(std::ostream &out) const
    {
-      out << "<"<<className() << endl;
-      out << "<rows " << rows << ">" << endl;
-      out << "<cols " << cols << ">" << endl;
-      out << "<data " << endl;
+      out << "<"<<className() << std::endl;
+      out << "<rows " << rows << ">" << std::endl;
+      out << "<cols " << cols << ">" << std::endl;
+      out << "<data " << std::endl;
       for (int i=0;i<rows;i++)
       {
 	 for (int j=0;j<cols;j++)
 	    out << data[i*cols + j] << " ";
-	 out << endl;
+	 out << std::endl;
       }
-      out << ">" << endl;
+      out << ">" << std::endl;
       out << ">\n";
    }
    
@@ -252,7 +249,7 @@ public:
       <b>Format :</b> \<Matrix\<T\> \<rows <i>nrows</i> \> \<cols <i>ncols</i> \> \<data <i> element(0,0) element(0,1)  ... element(rows-1,cols-1)</i>\> \>
       \param in the input stream
    */
-   void readFrom(istream &in=cin);
+   void readFrom(std::istream &in=std::cin);
 
    //(DL) 11/02/2004
    /** 
@@ -275,7 +272,7 @@ public:
       <b>Format :</b> {Matrix\<T\> |<i>rows;cols;element(0,0);element(0,1)  ... element(rows-1,cols-1)</i>}
       \param out the output stream
    */
-   virtual void serialize(ostream &out) const;
+   virtual void serialize(std::ostream &out) const;
 
 
    /**
@@ -283,14 +280,14 @@ public:
       <b>Format :</b> {Matrix\<T\> |<i>rows;cols;element(0,0);element(0,1)  ... element(rows-1,cols-1)</i>}
       \param in the input stream
    */
-   virtual void unserialize(istream &in);
+   virtual void unserialize(std::istream &in);
 
    ///returns the class name
-   static string GetClassName()
+   static std::string GetClassName()
    {
-      string name = ObjectGetClassName<Matrix<T> >();
+      std::string name = ObjectGetClassName<Matrix<T> >();
       if (name == "unknown")
-	 return string("Matrix");
+	 return std::string("Matrix");
       else
 	 return name;
    }
@@ -352,10 +349,9 @@ inline ObjectRef Matrix<ObjectRef>::clone() {
 }
 
 template <class T>
-inline void Matrix<T>::readFrom(istream &in)
+inline void Matrix<T>::readFrom(std::istream &in)
 {
-   string tag;
-   //cerr << "reading matrix\n";
+   std::string tag;
    int new_cols, new_rows;
    while (1)
    {
@@ -371,12 +367,9 @@ inline void Matrix<T>::readFrom(istream &in)
          in >> new_cols;
       else if (tag == "data")
       {
-	 //cerr << "resizing\n";
 	 resize(new_rows,new_cols);
-	 //cerr << "reading data...\n";
          for (int i=0;i<rows*cols;i++)
 	    in >> data[i];
-	 //cerr << "done\n";
       } else
          throw new ParsingException ("Matrix<T>::readFrom : unknown argument: " + tag);
 
@@ -392,11 +385,11 @@ inline void Matrix<T>::readFrom(istream &in)
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
 struct MatrixMethod {
-   static inline void serialize(const Matrix<T> &m, ostream &out)
+   static inline void serialize(const Matrix<T> &m, std::ostream &out)
    {
       throw new GeneralException("MatrixMethod default serialize should never be called", __FILE__, __LINE__);
    }
-   static inline void unserialize(Matrix<T> &m, istream &in)
+   static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
       throw new GeneralException("MatrixMethod default unserialize should never be called", __FILE__, __LINE__);
    }
@@ -413,8 +406,8 @@ struct MatrixMethod {
 template<class T>
 struct MatrixMethod<T,TTraits::Object> {
 
-  static inline void serialize(const Matrix<T> &m, ostream &out) {
-    out << "{" << m.className() << endl;
+  static inline void serialize(const Matrix<T> &m, std::ostream &out) {
+    out << "{" << m.className() << std::endl;
     out << "|";
 
     //writing nb rows
@@ -434,10 +427,10 @@ struct MatrixMethod<T,TTraits::Object> {
     out << "}";
   }
   
-  static inline void unserialize(Matrix<T> &m, istream &in)
+  static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
      int ncols, nrows;
-     string expected = Matrix<T>::GetClassName();
+     std::string expected = Matrix<T>::GetClassName();
      
      //reading matrix dimensions
      BinIO::read(in, &nrows, 1);
@@ -485,9 +478,9 @@ struct MatrixMethod<T,TTraits::Object> {
 
 template<class T>
 struct MatrixMethod<T,TTraits::ObjectPointer> {
-   static inline void serialize(const Matrix<T> &m, ostream &out)
+   static inline void serialize(const Matrix<T> &m, std::ostream &out)
    {
-      out << "{" << m.className() << endl;
+      out << "{" << m.className() << std::endl;
       out << "|";
      
       //writing nb rows
@@ -508,7 +501,7 @@ struct MatrixMethod<T,TTraits::ObjectPointer> {
       out << "}";
    }
 
-   static inline void unserialize(Matrix<T> &m, istream &in)
+   static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
      int nrows,ncols;
      
@@ -553,9 +546,9 @@ struct MatrixMethod<T,TTraits::ObjectPointer> {
 
 template<class T>
 struct MatrixMethod<T,TTraits::Basic> {
-   static inline void serialize(const Matrix<T> &m, ostream &out)
+   static inline void serialize(const Matrix<T> &m, std::ostream &out)
    {
-      out << "{" << m.className() << endl;
+      out << "{" << m.className() << std::endl;
       out << "|";
 
       //writing nb rows
@@ -571,7 +564,7 @@ struct MatrixMethod<T,TTraits::Basic> {
 
       out << "}";
    }
-   static inline void unserialize(Matrix<T> &m, istream &in)
+   static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
      int nrows,ncols;
 
@@ -613,37 +606,37 @@ struct MatrixMethod<T,TTraits::Basic> {
 
 template<class T>
 struct MatrixMethod<T,TTraits::Unknown> {
-  static inline void serialize(const Matrix<T> &m, ostream &out)
+  static inline void serialize(const Matrix<T> &m, std::ostream &out)
    {
-      throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
+      throw new GeneralException(std::string("Sorry, can't serialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
-   static inline void unserialize(Matrix<T> &m, istream &in)
+   static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
-      throw new GeneralException(string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
+      throw new GeneralException(std::string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
    static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
    {
-     throw new GeneralException(string("Sorry, can't getIndex this kind of object (") + typeid(T).name()
+     throw new GeneralException(std::string("Sorry, can't getIndex this kind of object (") + typeid(T).name()
 			       + ")", __FILE__, __LINE__);
    }   
    static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
    {
-     throw new GeneralException(string("Sorry, can't setIndex this kind of object (") + typeid(T).name()
+     throw new GeneralException(std::string("Sorry, can't setIndex this kind of object (") + typeid(T).name()
 				+ ")", __FILE__, __LINE__);
    }
 };
 
 
 template <class T>
-inline void Matrix<T>::serialize(ostream &out) const
+inline void Matrix<T>::serialize(std::ostream &out) const
 {
    MatrixMethod<T, TypeTraits<T>::kind>::serialize(*this, out);
 }
 
 template <class T>
-inline void Matrix<T>::unserialize(istream &in)
+inline void Matrix<T>::unserialize(std::istream &in)
 {
    MatrixMethod<T, TypeTraits<T>::kind>::unserialize(*this, in);
 }

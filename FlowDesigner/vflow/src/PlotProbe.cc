@@ -10,6 +10,8 @@
 #  include <config.h>
 #endif
 
+using namespace std;
+
 DECLARE_NODE(PlotProbe)
 /*Node
  *

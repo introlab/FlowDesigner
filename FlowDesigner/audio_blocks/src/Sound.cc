@@ -29,6 +29,8 @@
 
 #include <unistd.h>
 
+using namespace std;
+
 class Sound;
 
 DECLARE_NODE(Sound)

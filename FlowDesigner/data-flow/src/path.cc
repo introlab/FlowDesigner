@@ -8,6 +8,8 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+using namespace std;
+
 vector<string> envList(char *envName, bool include_home)
 {
    vector<string> list;

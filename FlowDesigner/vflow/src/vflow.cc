@@ -15,6 +15,8 @@
 #include "GUINode.h"
 #include "GUINodeParameters.h"
 
+using namespace std;
+
 void GUIDocument_codegen(GUIDocument *doc);
 
 vflowGUI* vflowGUI::vflowApp = NULL;

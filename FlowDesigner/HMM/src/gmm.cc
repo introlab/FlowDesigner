@@ -12,6 +12,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 DECLARE_TYPE(GMM)
 //@implements GMM
 //@require DGMM

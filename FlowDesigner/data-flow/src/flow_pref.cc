@@ -12,6 +12,8 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 
+using namespace std;
+
 FlowPref FlowPref::pref;
 
 FlowPref::FlowPref()

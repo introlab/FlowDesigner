@@ -6,6 +6,8 @@
 #include "BufferedNode.h"
 #include <strstream>
 
+using namespace std;
+
 class MSVQTrain;
 DECLARE_NODE(MSVQTrain)
 /*Node

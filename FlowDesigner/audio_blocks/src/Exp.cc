@@ -6,6 +6,8 @@
 #include <math.h>
 #include "fmath.h"
 
+using namespace std;
+
 class Exp;
 
 DECLARE_NODE(Exp)

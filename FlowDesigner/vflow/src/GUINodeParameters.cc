@@ -8,6 +8,8 @@
 #include "Network.h"
 #include "object_param.h"
 
+using namespace std;
+
 static int user_count = 0;
 
 static void param_apply (GnomePropertyBox *propertybox, gint arg1, GUINodeParameters* user_data)

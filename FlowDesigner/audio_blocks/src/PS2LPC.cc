@@ -9,6 +9,8 @@
 #include "FFTWrap.h"
 #include "misc.h"
 
+using namespace std;
+
 class PS2LPC;
 
 DECLARE_NODE(PS2LPC)

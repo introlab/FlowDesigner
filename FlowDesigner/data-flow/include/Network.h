@@ -30,37 +30,36 @@ public:
 
 
    /**Subnet: NetworkNode constructor*/
-   Network (string nodeName, ParameterSet params);
+   Network (std::string nodeName, ParameterSet params);
 
    /**default destructor*/
    ~Network ();
    
-
    /**
       Returns the associated Node pointer from a lookup dictionary with the node name.
       We return NULL if the node doesn't exist.
    */
-   Node* getNodeNamed (const string &name);
+   Node* getNodeNamed (const std::string &name);
    
    /** Adding a node to the network. We use a factory Name to create an instance
        of the Node and store the node in the node dictionary with an associated name.*/
-   void addNode (const string &factoryName,const string &nodeName, const ParameterSet &parameters);
+   void addNode (const std::string &factoryName,const std::string &nodeName, const ParameterSet &parameters);
   
    /** Adding a already constructed node. WATCHOUT , THE NODE IS NOT COPIED AT THE MOMENT */
    void addNode (Node &node);
 
    /**connecting two nodes. We are using the node names.*/
-   virtual void connect (const string &currentNodeName,const string &inputName, 
-                 const string &inputNodeName, const string &outputName);
+   virtual void connect (const std::string &currentNodeName,const std::string &inputName, 
+                 const std::string &inputNodeName, const std::string &outputName);
  
    /**removing a node. We are using the node name.*/
-   Node* removeNode (const string &nodeName);
+   Node* removeNode (const std::string &nodeName);
    
    /**Returns the name of the node (the same as in the node dictionary)*/
-   string getName() {return name;}
+   std::string getName() {return name;}
 
    /**Naming the current network*/
-   void setName(const string &my_name) {name = my_name;}
+   void setName(const std::string &my_name) {name = my_name;}
 
    /**Returns the sinkNode*/
    Node* getSinkNode () {return sinkNode;}
@@ -75,8 +74,8 @@ public:
    virtual void setInputNode (Node* node) {inputNode = node;}
 
    /**Returns the inputs vector */
-   virtual vector<NodeInput>& getInputs () {
-      if (!inputNode) throw new NodeException(this,"No inputNode",__FILE__,__LINE__);
+   virtual std::vector<NodeInput>& getInputs () {
+      if (!inputNode) throw new NodeException(this,std::string("No inputNode in :") + getName(),__FILE__,__LINE__);
       return inputNode->getInputs();
    }
 
@@ -102,7 +101,7 @@ public:
    virtual bool hasOutput (int output_id) const;
 
    /**Subnet : The connectToNode method overloaded from Node */
-   virtual void connectToNode(string in, Node *inNode, string out);
+   virtual void connectToNode(std::string in, Node *inNode, std::string out);
    
    /**Verify input connections for the node*/
    virtual void verifyConnect();
@@ -111,10 +110,10 @@ protected:
 
    
    /**Subnet : getting the related number of the input description*/
-   virtual int translateInput (string   inputName);
+   virtual int translateInput (std::string inputName);
 
    /**Subnet : getting the related number of the output description*/
-   virtual int translateOutput (string outputName);
+   virtual int translateOutput (std::string outputName);
   
    /**Subnet : Connect an input node using numeric (integer) input/output names*/
    virtual void connectToNode(unsigned int in, Node *inNode, unsigned int out);
@@ -123,7 +122,7 @@ protected:
    int numNodes;
 
    /**The node dictionary*/
-   map<string,Node*> nodeDictionary;
+   std::map<std::string,Node*> nodeDictionary;
    /**The sink node*/
    Node *sinkNode;
    /**The input node*/

@@ -9,6 +9,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 class VQWeightMeans;
 
 DECLARE_NODE(VQWeightMeans)

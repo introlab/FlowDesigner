@@ -7,6 +7,7 @@
 #include "GenericModel.h"
 #include "Exception.h"
 
+using namespace std;
 
 DECLARE_NODE(GenericModel)
 DECLARE_TYPE(GenericModel)

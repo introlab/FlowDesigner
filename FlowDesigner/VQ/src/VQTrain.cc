@@ -5,6 +5,8 @@
 #include "kmeans.h"
 #include "Vector.h"
 
+using namespace std;
+
 class VQTrain;
 DECLARE_NODE(VQTrain)
 /*Node

@@ -11,6 +11,7 @@
 #include "Complex.h"
 
 //@implements core
+using namespace std;
 
 template <class X, class Y, class Z>
 ObjectRef equalCTypeFunction(ObjectRef op1, ObjectRef op2) {

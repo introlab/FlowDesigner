@@ -26,7 +26,7 @@ class ThreadedIterator : public Iterator {
   //virtual void setExitStatus() {thread_status = STATUS_STOPPED; this->Network::setExitStatus();}
 
   /** The constructor with a nodeName and parameters */
-  ThreadedIterator (string nodeName, ParameterSet params);
+  ThreadedIterator (std::string nodeName, ParameterSet params);
   
   /** The getOutput method overloaded from Node */
   virtual ObjectRef getOutput (int output_id, int count);
@@ -65,7 +65,7 @@ class ThreadedIterator : public Iterator {
   
   /** Default constructor that should not be used*/
  /* ThreadedIterator() 
-    :Iterator (string("DUMMY"), new ParameterSet()) {
+    :Iterator (std::string("DUMMY"), new ParameterSet()) {
     throw new NodeException (NULL,"The default constructor should not be called from ThreadedIterator",__FILE__,__LINE__);
   }*/
 

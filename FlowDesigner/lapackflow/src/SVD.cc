@@ -6,6 +6,8 @@
 #include "Matrix.h"
 #include "lapackflow.h"
 
+using namespace std;
+
 class SVD;
 
 DECLARE_NODE(SVD)

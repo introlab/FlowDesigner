@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "Vector.h"
 
+
 class Tag {
 protected:
    int begin;
@@ -30,7 +31,7 @@ public:
 /**Describes the content of an audio file*/
 class AudioInfo : public Object {
 protected:
-   string ortho;
+   std::string ortho;
    int length;
    bool coarse_endpointed;
    int coarse_start;
@@ -42,7 +43,7 @@ protected:
 
 public:
    /**Full constructor*/
-   AudioInfo(string _ortho, int _length) 
+   AudioInfo(std::string _ortho, int _length) 
       : ortho(_ortho)
       , length(_length)
       , coarse_endpointed(false)
@@ -70,13 +71,13 @@ public:
    bool isWithinFine(int sample) {return sample > fine_start && sample < fine_end;}
 
    /** print function used for operator << */
-   virtual void printOn(ostream &out=cout) const;
+   virtual void printOn(std::ostream &out=std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
-   //friend ostream &operator << (ostream &out, const GMM &gmm);
-   friend istream &operator >> (istream &in, AudioInfo &info);
+   //friend std::ostream &operator << (std::ostream &out, const GMM &gmm);
+   friend std::istream &operator >> (std::istream &in, AudioInfo &info);
 
 };
 

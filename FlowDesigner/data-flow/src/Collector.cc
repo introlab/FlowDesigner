@@ -1,8 +1,12 @@
 // Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
 
 #include "Collector.h"
-DECLARE_NODE(Collector)
+
 //@implements core
+
+using namespace std;
+
+DECLARE_NODE(Collector)
 
 /*Node
 

@@ -7,6 +7,8 @@
 #include "FFTWrap.h"
 #include <complex>
 
+using namespace std;
+
 class RFFT;
 
 DECLARE_NODE(RFFT)

@@ -6,6 +6,8 @@
 #include <math.h>
 #include "FFTWrap.h"
 
+using namespace std;
+
 class IDCT;
 
 DECLARE_NODE(IDCT)

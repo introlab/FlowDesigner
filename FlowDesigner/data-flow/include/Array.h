@@ -15,24 +15,24 @@ class Array : public Vector<T>
 public:
    Array() : Vector<T>() {}
    explicit Array(int n, const T &x = T()) : Vector<T>(n, x) {}
-   void printOn(ostream &out) const
+   void printOn(std::ostream &out) const
    {
       out << *static_cast<const Vector<T> *> (this);
    }
 
-   /*virtual void rawWrite(ostream &out) const
+   /*virtual void rawWrite(std::ostream &out) const
    {
       out.write ((const char*) &operator[](0), size()*sizeof(T));
       }*/
    
-   void readFrom(istream &in=cin);
+   void readFrom(std::istream &in=std::cin);
    
    virtual void destroy() {delete this;}
 
    Array<T> &operator+= (const Array<T> &v2) 
    {
       if (this->size() != v2.size())
-	 cerr << "Array size mismatch\n";
+	 std::cerr << "Array size mismatch\n";
       for (int i=0;i<this->size();i++)
 	 this->operator[](i) += v2[i];
       return *this;
@@ -41,7 +41,7 @@ public:
    Array<T> &operator-= (const Array<T> &v2) 
    {
       if (this->size() != v2.size())
-	 cerr << "Array size mismatch\n";
+	 std::cerr << "Array size mismatch\n";
       for (int i=0;i<this->size();i++)
 	 this->operator[](i) -= v2[i];
       return *this;
@@ -72,7 +72,7 @@ public:
    T operator* (const Array<T> &v2) 
    {
       if (this->size() != v2.size())
-	 cerr << "Array size mismatch\n";
+	 std::cerr << "Array size mismatch\n";
       T sum=0;
       for (int i=0;i<this->size();i++)
 	 sum += this->operator[](i)*v2[i];
@@ -123,7 +123,7 @@ public:
 
 
 template <class T>
-inline void Array<T>::readFrom(istream &in)
+inline void Array<T>::readFrom(std::istream &in)
 {
    int items_found=0;
    

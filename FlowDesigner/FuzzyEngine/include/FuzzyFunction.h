@@ -11,20 +11,19 @@
 #include "BufferedNode.h"
 #include "Vector.h"
 
-using namespace std;
 
 class FuzzyFunction : public BufferedNode {
 
 public:
 
-  //friend istream& operator>> (istream &in, FuzzyFunction &function);
+  //friend std::istream& operator>> (std::istream &in, FuzzyFunction &function);
 
-  //friend ostream& operator<< (ostream &out, FuzzyFunction &function);
+  //friend std::ostream& operator<< (std::ostream &out, FuzzyFunction &function);
   
   //accessor for the function name
-  const string & get_name();
+  const std::string & get_name();
   
-  virtual string get_type()=0;
+  virtual std::string get_type()=0;
   
   //virtual destructor
   virtual ~FuzzyFunction();
@@ -33,9 +32,9 @@ public:
   virtual float evaluate(float x) = 0;
   
   //the constructor with a function name
-  FuzzyFunction(const string &name);
+  FuzzyFunction(const std::string &name);
   
-  FuzzyFunction(string nodeName, ParameterSet params);
+  FuzzyFunction(std::string nodeName, ParameterSet params);
   
   
   //reset the inference vector
@@ -70,7 +69,7 @@ public:
  protected:
   
   //the function name (linguistic term)
-  string m_name;
+  std::string m_name;
   
   //the vector used for inference (temporary)
   Vector<float> m_inference_values;
@@ -84,17 +83,17 @@ public:
 
 /*
 
-inline void Vector<FuzzyFunction*>::printOn(ostream &out) const {
+inline void Vector<FuzzyFunction*>::printOn(std::ostream &out) const {
 
-  cerr<<"PrintOn called Vector<FuzzyFunction*>"<<endl;
+  std::cerr<<"PrintOn called Vector<FuzzyFunction*>"<<endl;
   
   for (int i = 0; i < size(); i++) {
-    cerr<<"calling printon"<<endl;
+    std::cerr<<"calling printon"<<endl;
     operator[](i)->printOn(out);
   }
 }
 
-inline void Vector<FuzzyFunction*>::readFrom(istream &in) {
+inline void Vector<FuzzyFunction*>::readFrom(std::istream &in) {
 
 }
 

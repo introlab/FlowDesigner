@@ -13,7 +13,7 @@
 #include "vflow_pref.h"
 #include "flow_pref.h"
 
-
+using namespace std;
 
 static void pref_apply (GnomePropertyBox *propertybox, gint arg1, VFlowPrefDialog* user_data)
 {

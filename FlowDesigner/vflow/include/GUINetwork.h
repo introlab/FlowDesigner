@@ -23,7 +23,7 @@ protected:
    GUINetPopup *popup;
    double zoom;
 
-   list<GUINode*> selectedNodes;
+   std::list<GUINode*> selectedNodes;
    GUINodeTooltip *tooltip;
 
    double x_last_click;
@@ -40,7 +40,7 @@ public:
 
    void removeSelectedNode(GUINode *node);
 
-   list<GUINode*>& getSelectedNodes(){return selectedNodes;}
+   std::list<GUINode*>& getSelectedNodes(){return selectedNodes;}
 
    void moveSelectedNodes(double dx, double dy);
 
@@ -48,13 +48,13 @@ public:
 
    bool isNodeSelected(GUINode *node);
 
-   GUINetwork(UIDocument *_doc, string _name, Type _type);
+   GUINetwork(UIDocument *_doc, std::string _name, Type _type);
 
    GUINetwork(UIDocument *_doc, xmlNodePtr net);
 
    ~GUINetwork();
 
-   UINode *addNode (string type, double xx, double yy);
+   UINode *addNode (std::string type, double xx, double yy);
 
    
 
@@ -69,7 +69,7 @@ public:
 
    gboolean buttonEvent(GdkEvent *event);
 
-   void newNetNotify(const string &cat, const string &type);
+   void newNetNotify(const std::string &cat, const std::string &type);
 
    UITerminal *isNearInputTerminal (double &x, double &y);
 
@@ -77,16 +77,16 @@ public:
 
    virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
 
-   virtual UINode *newNode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit);
+   virtual UINode *newNode(UINetwork* _net, std::string _name, std::string _type, double _x, double _y, bool doInit);
 
-//   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
+//   virtual UITerminal *newTerminal (std::string _name, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to, char *str);
 
    virtual UINote* newNote(const std::string &text, double x, double y, bool visible);
 
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name ,
-					  const string &_objType="any", const string &_description="No description available");
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name ,
+					  const std::string &_objType="any", const std::string &_description="No description available");
 
    void zoomIn() {zoom *= 1.5; gnome_canvas_set_pixels_per_unit (canvas,zoom);}
 
@@ -107,7 +107,7 @@ public:
      gnome_canvas_get_scroll_offsets (GNOME_CANVAS(canvas),&c1,&c2);
    }
    
-   virtual void rename(string newName);
+   virtual void rename(std::string newName);
    
 
    void showProperties();

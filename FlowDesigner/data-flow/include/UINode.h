@@ -13,7 +13,7 @@
 #include "UINetTerminal.h"
 #include <set>
 
-using namespace std;
+
 
 class UINetwork;
 //class GUINetwork;
@@ -38,16 +38,16 @@ protected:
    bool destroyed;
 
    /**Node name*/
-   string name;
+   std::string name;
 
    /**The network in which the node is included*/
    UINetwork *net;
 
    /**Node type (either the name of the .n or the builtin Node subclass)*/
-   string type;
+   std::string type;
    
    /**Node description (unused?)*/
-   string description;
+   std::string description;
 
    /**Position on the canvas*/
    double x,y;
@@ -56,10 +56,10 @@ protected:
    double xtmp,ytmp;
 
    /**Pointers to all the inputs*/
-   vector <UITerminal *> inputs;
+   std::vector <UITerminal *> inputs;
 
    /**Pointers to all the outputs*/
-   vector <UITerminal *> outputs;
+   std::vector <UITerminal *> outputs;
 
    /**All the node parameters*/
    UINodeParameters *parameters;
@@ -68,7 +68,7 @@ protected:
 public:
 
    /**"Normal" constructor*/
-   UINode(UINetwork* _net, string _name, string _type, double x, double y, bool doInit=1);
+   UINode(UINetwork* _net, std::string _name, std::string _type, double x, double y, bool doInit=1);
 
    /**Constructor from XML parse tree*/
    UINode(UINetwork* _net, xmlNodePtr def, bool doInit=1);
@@ -77,33 +77,33 @@ public:
    virtual ~UINode();
 
    /**Returns the node name*/
-   const string &getName() {return name;}
+   const std::string &getName() {return name;}
    
    /**Returns the node type*/
-   const string &getType() {return type;}
+   const std::string &getType() {return type;}
 
    /**Returns the corresponding network*/
    UINetwork * getNetwork() {return net;}
 
 
    /**Rename a node (when network included as a subnet)*/
-   virtual void rename (const string &newName);
+   virtual void rename (const std::string &newName);
 
    /**Adds a new terminal to a node*/
-   virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
-			    const string &_objType="any", const string &_description="No description available");
+   virtual void addTerminal(const std::string &_name, UINetTerminal::NetTermType _type, 
+			    const std::string &_objType="any", const std::string &_description="No description available");
 
    /**Removes a terminal from a node*/
-   virtual void removeTerminal(const string &_name, UINetTerminal::NetTermType _type);
+   virtual void removeTerminal(const std::string &_name, UINetTerminal::NetTermType _type);
 
    /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
 
    /**Returns the input (terminal) corresponding to a certain name*/
-   UITerminal *getInputNamed(string n);
+   UITerminal *getInputNamed(std::string n);
 
    /**Returns the output (terminal) corresponding to a certain name*/
-   UITerminal *getOutputNamed(string n);
+   UITerminal *getOutputNamed(std::string n);
 
    /**Returns the node position*/
    void getPos (double &xx, double &yy)
@@ -123,33 +123,33 @@ public:
 
    void setNodeParameters(UINodeParameters *params);   
    
-   void insertNetParams(vector<ItemInfo *> &params);
+   void insertNetParams(std::vector<ItemInfo *> &params);
 
-   void updateNetParams(vector<ItemInfo *> &params);
+   void updateNetParams(std::vector<ItemInfo *> &params);
 
 //   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
 
-   virtual void notifyError(const string &message) {}
+   virtual void notifyError(const std::string &message) {}
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
 
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
-					  const string &_objType="any", const string &_description="No description available");
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
+					  const std::string &_objType="any", const std::string &_description="No description available");
 
-   virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
+   virtual UINodeParameters *newNodeParameters (UINode *_node, std::string type);
  
    virtual void redraw() {}
 
    Node *build(const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   void genCode(ostream &out, int &id, set<string> &nodeList);
+   void genCode(std::ostream &out, int &id, std::set<std::string> &nodeList);
 
-   vector<UITerminal *> getInputs() {return inputs;}
-   vector <UITerminal *> getOutputs() {return outputs;}
+   std::vector<UITerminal *> getInputs() {return inputs;}
+   std::vector <UITerminal *> getOutputs() {return outputs;}
    UINodeParameters * getParameters() {return parameters;}
-   string getDescription() {return description;}
-   string getComments() const;
+   std::string getDescription() {return description;}
+   std::string getComments() const;
 
    friend class UINetwork;
 //   friend GUINetwork;

@@ -14,6 +14,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include "vflow.h"
 
+using namespace std;
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

@@ -26,7 +26,7 @@ protected:
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   GMMScore(string nodeName, ParameterSet params);
+   GMMScore(std::string nodeName, ParameterSet params);
 
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req)

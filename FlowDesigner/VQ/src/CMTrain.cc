@@ -7,6 +7,8 @@
 #include "Vector.h"
 #include "CodebookMap.h"
 
+using namespace std;
+
 class CMTrain;
 
 DECLARE_NODE(CMTrain)

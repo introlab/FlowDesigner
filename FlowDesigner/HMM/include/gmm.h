@@ -40,10 +40,10 @@ protected:
    
    /**STL vector containing all the gaussians in the GMM*/
    //vector<Gaussian *>  gaussians;
-   vector<RCPtr<Gaussian> >  gaussians;
+   std::vector<RCPtr<Gaussian> >  gaussians;
 
    /**STL vector containing all the apriori weights of the gaussians*/
-   vector<float>       apriori;
+   std::vector<float>       apriori;
 
    /**Number of gaussians in the GMM*/
    int                 nb_gaussians;
@@ -61,15 +61,15 @@ protected:
    bool using_gaussianIDs;
 
    /**STL vector containing all the gaussian IDs in the GMM*/
-   vector<int>  gaussianIDs;
+   std::vector<int>  gaussianIDs;
 
 public:
    /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
       covariance pseudo-factory*/
    GMM(int nb_gauss, int dim, Covariance *(*cov_new)(int)) 
-      : gaussians(vector<RCPtr<Gaussian> >(nb_gauss))
-      //: gaussians(vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
-      , apriori (vector<float>(nb_gauss,0.0)) 
+      : gaussians(std::vector<RCPtr<Gaussian> >(nb_gauss))
+      //: gaussians(std::vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
+      , apriori (std::vector<float>(nb_gauss,0.0)) 
       , nb_gaussians (nb_gauss)
       , mode(accum)
       , nb_frames_aligned(0)
@@ -81,8 +81,8 @@ public:
    }
 
    GMM ()
-   //: gaussians(vector<Gaussian *>(1,(Gaussian *)NULL))
-      : gaussians(vector<RCPtr<Gaussian> >())
+   //: gaussians(std::vector<Gaussian *>(1,(Gaussian *)NULL))
+      : gaussians(std::vector<RCPtr<Gaussian> >())
       , nb_gaussians (0)
       , mode(accum)
       , nb_frames_aligned(0)
@@ -92,7 +92,7 @@ public:
       //gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
    }
 
-   void save(string file);
+   void save(std::string file);
 
    /**Returns the number of gaussians in the GMM*/
    int get_nb_gaussians() const {return nb_gaussians;}
@@ -109,19 +109,19 @@ public:
    }
 
    /**Randomly init the GMM with a list (STL vector) of frames*/
-   void init(vector<float * > frames);
+   void init(std::vector<float * > frames);
 
    /**Performs k-means training*/
-   void kmeans1(vector<float * > frames, int nb_iterations = 1);
+   void kmeans1(std::vector<float * > frames, int nb_iterations = 1);
    
    /**splits the largest gaussian in two*/
    void split1();
 
    /**Performs k-means training (using another GMM to score)*/
-   void kmeans2(vector<float * > frames, GMM *gmm);
+   void kmeans2(std::vector<float * > frames, GMM *gmm);
 
    /**Perform MAP adaptation (using another GMM to score)*/
-   void adaptMAP(vector<float * > frame, GMM *gmm);
+   void adaptMAP(std::vector<float * > frame, GMM *gmm);
 
    /**Converts the GMM from accum mode to real mode*/
    void to_real();
@@ -141,10 +141,10 @@ public:
 
    /**Score a list (STL vector) of frames against the GMM 
       without using the covariances (nearest euclidian distance)*/
-   vector<Score> minDistance(vector <float *> fr) const;
+   std::vector<Score> minDistance(std::vector <float *> fr) const;
 
    /**Score a list (STL vector) of frames against the GMM*/
-   vector<Score> score(vector <float *> fr) const;
+   std::vector<Score> score(std::vector <float *> fr) const;
 
    void toIDsUsing (GaussianSet & gauss);
 
@@ -154,18 +154,18 @@ public:
    DiagGMM *createDiagGMM();
 
    /** print function used for operator << */
-   virtual void printOn(ostream &out=cout) const;
+   virtual void printOn(std::ostream &out=std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
-   //friend ostream &operator << (ostream &out, const GMM &gmm);
+   //friend std::ostream &operator << (std::ostream &out, const GMM &gmm);
    /**extractor for GMM*/
-   friend istream &operator >> (istream &in, GMM &gmm);
+   friend std::istream &operator >> (std::istream &in, GMM &gmm);
 }
 ;
 
 //ostream &operator << (ostream &out, const GMM &gmm);
-istream &operator >> (istream &in, GMM &gmm);
+std::istream &operator >> (std::istream &in, GMM &gmm);
 
 #endif

@@ -35,15 +35,15 @@ class FFNet : public Object {
    int nbWeights;
 
   public:
-   FFNet(const Vector<int> &_topo, const Vector<string> &functions);
+   FFNet(const Vector<int> &_topo, const Vector<std::string> &functions);
    //FFNet(const Vector<int> &_topo);
    FFNet() {}
 
    FFNet(FFNet &net);
 
-   FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<float *> &tin, vector<float *> &tout);
+   FFNet(const Vector<int> &_topo, const Vector<std::string> &functions, std::vector<float *> &tin, std::vector<float *> &tout);
 
-   void init(const Vector<string> &functions);
+   void init(const Vector<std::string> &functions);
 
    void setupLayersAfterRead();
 
@@ -70,7 +70,7 @@ class FFNet : public Object {
    void learn(float *input, float *output, double *gradient, double *err=NULL, float *calc_output=NULL);
 
    /**Calculates the gradient for a set of sample*/
-   void calcGradient(vector<float *> &tin, vector<float *> &tout, Array<float> weights, 
+   void calcGradient(std::vector<float *> &tin, std::vector<float *> &tout, Array<float> weights, 
 		     Array<double> &gradient, double &err);
 
    /**Calculates the gradient for a single sample using variable weight*/
@@ -78,11 +78,11 @@ class FFNet : public Object {
 		      double *err=NULL, float *calc_output=NULL);
 
    /**Calculates the gradient for a set of sample using variable weight*/
-   void weightedCalcGradient(vector<float *> &tin, vector<float *> &tout, vector<float *> &learnWeights, 
+   void weightedCalcGradient(std::vector<float *> &tin, std::vector<float *> &tout, std::vector<float *> &learnWeights, 
 			     Array<float> weights, Array<double> &gradient, double &err);
 
    /**Mean square error for a complete set*/ 
-   float totalError(vector<float *> tin, vector<float *> tout);
+   float totalError(std::vector<float *> tin, std::vector<float *> tout);
 
    int getNbWeights () {return nbWeights;}
 
@@ -99,13 +99,13 @@ class FFNet : public Object {
    void setDerivOffset(float d);
    
    /**Writes an MLP to a stream*/
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
    /**Reads an MLP from a stream*/
-   void readFrom (istream &in);
+   void readFrom (std::istream &in);
 
 };
 
-istream &operator >> (istream &in, FFNet &net);
+std::istream &operator >> (std::istream &in, FFNet &net);
 
 #endif

@@ -14,7 +14,6 @@
 #include "TriangularFunction.h"
 #include "BufferedNode.h"
 
-using namespace std;
 
 class FuzzySet : public BufferedNode {
 
@@ -23,22 +22,22 @@ class FuzzySet : public BufferedNode {
 public:
 	
   //returns the index of the function in the set
-  int find_function_by_index(const string &name);
+  int find_function_by_index(const std::string &name);
     
   //adds a triangular function to the set
-  void add_triangular_function (const string &name, float a, float b, float c);
+  void add_triangular_function (const std::string &name, float a, float b, float c);
   
   //adds a trapezoidal function to the set
-  void add_trapezoidal_function (const string &name, float a, float b, float c, float d);
+  void add_trapezoidal_function (const std::string &name, float a, float b, float c, float d);
   
   //constructor with a name
-  FuzzySet(const string &name);
+  FuzzySet(const std::string &name);
   
-  FuzzySet(string nodeName, ParameterSet params);
+  FuzzySet(std::string nodeName, ParameterSet params);
   
   FuzzySet();
   
-  FuzzySet(istream &in);
+  FuzzySet(std::istream &in);
   
   //destructor
   virtual ~FuzzySet();
@@ -47,10 +46,10 @@ public:
   Vector<float> & get_all_membership_evaluation(float x);
   
   //get the evaluation of the membership function of a given name
-  float get_membership_evaluation(const string &name, float x);
+  float get_membership_evaluation(const std::string &name, float x);
   
   //accessor for the name
-  const string& get_name(){return m_name;}
+  const std::string& get_name(){return m_name;}
   
   //reset all functions inference stacks
   void reset() {
@@ -66,23 +65,23 @@ public:
   int get_function_count() {return m_functions.size();}
   
   //print the membership functions
-  void print_functions(ostream &out);
+  void print_functions(std::ostream &out);
   
   virtual void calculate(int output_id, int count, Buffer &out);
   
   virtual ObjectRef clone();
   
-  virtual void printOn(ostream &out) const;
+  virtual void printOn(std::ostream &out) const;
   
-  virtual void readFrom(istream &in=cin);
+  virtual void readFrom(std::istream &in=std::cin);
   
  private:
   
   //returns the pointer of the function of a given name
-  FuzzyFunction * find_function_by_name (const string &name);
+  FuzzyFunction * find_function_by_name (const std::string &name);
 
   //the set name
-  string m_name;
+  std::string m_name;
   
   //the vector of fuzzy functions
   Vector<ObjectRef> m_functions;
@@ -96,34 +95,5 @@ public:
   //the outputID
   int m_setID;
 };
-
-
-/*
-inline void Vector<FuzzySet*>::printOn(ostream &out) const {
-
-  cerr<<"PrintOn called (Vector<FuzzySet*>)"<<endl;
-  
-  for (int i = 0; i < size(); i++) {
-    cerr<<"calling printon"<<endl;
-    operator[](i)->printOn(out);
-  }
-}
-
-inline void Vector<FuzzySet*>::readFrom(istream &in) {
-
-}
-
-
-inline void Vector<FuzzySet*>::destroy() {
-
- for (Vector<FuzzySet*>::iterator iter = this->begin();
-      iter != this->end(); iter++) {
-   delete (*iter);
- }
-
- delete this;
-}
-*/
-
 
 #endif

@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "BufferedNode.h"
 
+using namespace std;
+
 class RBFTrain;
 DECLARE_NODE(RBFTrain)
 /*Node

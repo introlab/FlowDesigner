@@ -18,9 +18,9 @@ public:
 
 	GenericModel(const GenericModel& model);
 
-	GenericModel(string nodeName, ParameterSet params);
+	GenericModel(std::string nodeName, ParameterSet params);
 
-	GenericModel(istream &in){readFrom(in);}
+	GenericModel(std::istream &in){readFrom(in);}
 
 	//destructor
 	virtual ~GenericModel();
@@ -37,9 +37,9 @@ public:
 	//cloning capability
 	virtual ObjectRef clone();
 
-	virtual void printOn(ostream &out=cout) const;
+	virtual void printOn(std::ostream &out=std::cout) const;
 	
-	virtual void readFrom(istream &in=cin);
+	virtual void readFrom(std::istream &in=std::cin);
 
 private:
 

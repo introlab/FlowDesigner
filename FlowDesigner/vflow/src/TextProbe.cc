@@ -6,6 +6,8 @@
 #include <gnome.h>
 #include <sstream>
 
+using namespace std;
+
 DECLARE_NODE(TextProbe)
 /*Node
  *

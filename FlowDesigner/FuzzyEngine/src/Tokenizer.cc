@@ -3,6 +3,7 @@
 #include <sstream> 
 #include "Tokenizer.h"
 
+using namespace std;
 
 const static string FILE_NAME = __FILE__;
 

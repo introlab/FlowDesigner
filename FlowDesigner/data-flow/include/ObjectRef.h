@@ -20,18 +20,18 @@ template <class T>
 class CastException : public GenericCastException {
 public:
    /**The constructur that takes an error message*/
-   CastException(string _type) : type(_type) 
+   CastException(std::string _type) : type(_type) 
    {} 
   
    /**The print method*/
-   virtual void print(ostream &out = cerr) 
+   virtual void print(std::ostream &out = std::cerr) 
    {
-      out << "Cast error: Trying to cast ObjectRef (" << type << ") into " << typeid(T).name() << endl;
+      out << "Cast error: Trying to cast ObjectRef (" << type << ") into " << typeid(T).name() << std::endl;
    }
 
 protected:
    /**The error message*/
-   string type;
+   std::string type;
 };
 
 /**The object pointer cast from ObjectRef*/

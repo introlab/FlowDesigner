@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include "UserException.h"
 
+using namespace std;
+
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
   gdk_threads_leave();
  

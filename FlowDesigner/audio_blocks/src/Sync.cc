@@ -4,6 +4,8 @@
 #include "ObjectRef.h"
 #include <math.h>
 
+using namespace std;
+
 class Sync;
 DECLARE_NODE(Sync)
 /*Node

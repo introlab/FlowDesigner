@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+using namespace std;
+
 class NLMS;
 
 DECLARE_NODE(NLMS)

@@ -8,6 +8,8 @@
 #include "ObjectParser.h"
 #include "Vector.h"
 
+using namespace std;
+
 class NNetSetChooseBest;
 
 DECLARE_NODE(NNetSetChooseBest)

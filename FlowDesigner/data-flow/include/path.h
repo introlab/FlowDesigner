@@ -3,12 +3,12 @@
 #ifndef PATH_H
 #define PATH_H
 
-using namespace std;
+
 
 #include <vector>
 #include <string>
 
-vector<string> envList(char *envName, bool include_home=true);
+std::vector<std::string> envList(char *envName, bool include_home=true);
 
 extern "C" {
 void scanDL(bool debug=false);

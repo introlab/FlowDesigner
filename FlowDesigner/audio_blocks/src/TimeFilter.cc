@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <strstream>
 
+using namespace std;
+
 class TimeFilter;
 
 DECLARE_NODE(TimeFilter)

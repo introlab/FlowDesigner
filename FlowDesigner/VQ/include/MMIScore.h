@@ -26,7 +26,7 @@ protected:
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   MMIScore(string nodeName, ParameterSet params);
+   MMIScore(std::string nodeName, ParameterSet params);
 
    /**Class specific initialization routine.
       Each class will call its superclass initialize() method*/

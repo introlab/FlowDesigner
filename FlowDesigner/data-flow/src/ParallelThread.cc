@@ -4,9 +4,10 @@
 #include "Buffer.h"
 #include <pthread.h>
 #include "ExceptionObject.h"
-
 #include "pseudosem.h"
 #include "FlowException.h"
+
+using namespace std;
 
 class ParallelThread;
 

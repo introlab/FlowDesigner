@@ -35,7 +35,7 @@ protected:
 
 public:
 
-   BinaryOR(string nodeName, ParameterSet params);
+   BinaryOR(std::string nodeName, ParameterSet params);
 
    virtual ~BinaryOR();
 

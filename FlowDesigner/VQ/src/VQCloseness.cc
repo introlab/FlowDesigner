@@ -10,6 +10,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 class VQCloseness;
 
 DECLARE_NODE(VQCloseness)

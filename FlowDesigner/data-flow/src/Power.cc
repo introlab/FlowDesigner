@@ -19,6 +19,8 @@
 
 #include "Power.h"
 
+using namespace std;
+
 DECLARE_NODE(Power);
 
 /*Node

@@ -3,10 +3,11 @@
 
 #include "BufferedNode.h"
 #include "ObjectParser.h"
-
 #include <stdio.h>
 #include "stream_wrap.h"
 #include "Stream.h"
+
+using namespace std;
 
 class ExecStream;
 

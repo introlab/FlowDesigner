@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "kmeans.h"
 
+using namespace std;
+
 class VQuantize;
 
 DECLARE_NODE(VQuantize)

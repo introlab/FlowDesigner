@@ -19,6 +19,7 @@
 #  include <config.h>
 #endif
 
+using namespace std;
 
 bool GUIDocument::isRunning=false;
 pthread_t GUIDocument::runThread;

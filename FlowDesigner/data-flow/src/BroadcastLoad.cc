@@ -8,6 +8,8 @@
 #include "Stream.h"
 #include "SocketStream.h"
 
+using namespace std;
+
 class BroadcastLoad;
 DECLARE_NODE(BroadcastLoad)
 /*Node

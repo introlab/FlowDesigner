@@ -4,6 +4,8 @@
 #include "Buffer.h"
 #include "operators.h"
 
+using namespace std;
+
 class Equal;
 
 DECLARE_NODE(Equal)

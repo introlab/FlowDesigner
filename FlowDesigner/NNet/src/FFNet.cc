@@ -12,6 +12,8 @@
 #include "misc.h"
 #include "Array.h"
 
+using namespace std;
+
 DECLARE_TYPE(FFNet)
 //DECLARE_TYPE(Vector<FFNet>)
 DECLARE_TYPE(Vector<FFNet*>)

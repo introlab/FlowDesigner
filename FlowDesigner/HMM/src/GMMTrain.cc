@@ -6,6 +6,8 @@
 #include "gmm.h"
 #include "Vector.h"
 
+using namespace std;
+
 class GMMTrain;
 DECLARE_NODE(GMMTrain)
 /*Node

@@ -10,6 +10,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
+using namespace std;
+
 const int network_socket::BROADCAST_TYPE = 0;
 const int network_socket::TCP_STREAM_TYPE = 1;
 

@@ -7,6 +7,8 @@
 #include "pseudosem.h"
 #include "FlowException.h"
 
+using namespace std;
+
 class SerialThread;
 
 DECLARE_NODE(SerialThread)

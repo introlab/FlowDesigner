@@ -4,6 +4,8 @@
 #include "Vector.h"
 #include "DiagGMM.h"
 
+using namespace std;
+
 class DiagGMMScore;
 
 DECLARE_NODE(DiagGMMScore)

@@ -1,8 +1,9 @@
 // Copyright (C) 2001 Jean-Marc Valin & Dominic Letourneau
 
-
 #include "BufferedNode.h"
 #include "operators.h"
+
+using namespace std;
 
 class Smaller;
 DECLARE_NODE(Smaller)

@@ -3,6 +3,8 @@
 #include "Node.h"
 #include <pthread.h>
 
+using namespace std;
+
 class ThreadJoin;
 
 DECLARE_NODE(ThreadJoin)

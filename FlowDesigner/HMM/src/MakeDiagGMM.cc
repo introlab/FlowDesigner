@@ -4,6 +4,8 @@
 #include "gmm.h"
 #include "DiagGMM.h"
 
+using namespace std;
+
 class MakeDiagGMM;
 
 DECLARE_NODE(MakeDiagGMM)

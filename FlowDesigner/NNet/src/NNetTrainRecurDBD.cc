@@ -5,6 +5,8 @@
 #include "ObjectRef.h"
 #include "FFNet.h"
 
+using namespace std;
+
 class NNetTrainRecurDBD;
 
 DECLARE_NODE(NNetTrainRecurDBD)

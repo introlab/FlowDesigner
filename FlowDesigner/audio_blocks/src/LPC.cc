@@ -12,6 +12,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 class LPC;
 
 DECLARE_NODE(LPC)

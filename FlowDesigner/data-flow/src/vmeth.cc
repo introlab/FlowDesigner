@@ -3,7 +3,7 @@
 #include "vmethod.h"
 
 //SymbolSet *symbols = new SymbolSet;
-
+using namespace std;
 
 VirtualMethods* vmethod()
 {

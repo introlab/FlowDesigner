@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "lsp.h"
 
+using namespace std;
+
 class LPC2LSP;
 
 DECLARE_NODE(LPC2LSP)

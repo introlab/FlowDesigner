@@ -6,6 +6,8 @@
 #include <gnome.h>
 #include "UserException.h"
 
+using namespace std;
+
 DECLARE_NODE(Probe)
 /*Node
  *

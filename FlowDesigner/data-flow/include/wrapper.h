@@ -3,7 +3,7 @@
 #ifndef WRAPPER_H
 #define WRAPPER_H
 
-using namespace std;
+
 
 #include "UIDocument.h"
 #include "Network.h"

@@ -33,7 +33,7 @@ protected:
 
 public:
 
-   Power(string nodeName, ParameterSet params);
+   Power(std::string nodeName, ParameterSet params);
 
    virtual ~Power();
 

@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 
+using namespace std;
+
 class StrCat;
 
 DECLARE_NODE(StrCat)

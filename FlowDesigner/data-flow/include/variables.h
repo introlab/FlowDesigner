@@ -11,7 +11,7 @@
 
 class Variable {
   public:
-   static map<string, ObjectRef> all;
+   static std::map<std::string, ObjectRef> all;
    
 };
 

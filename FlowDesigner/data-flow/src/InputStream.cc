@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include "Stream.h"
 
+using namespace std;
+
 class InputStream;
 
 DECLARE_NODE(InputStream)

@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 class IterCount;
 DECLARE_NODE(IterCount)
 /*Node

@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include "Stream.h"
 
+using namespace std;
+
 class OutputStream;
 
 DECLARE_NODE(OutputStream)

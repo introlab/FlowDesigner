@@ -10,6 +10,9 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
+
 class LTP;
 
 DECLARE_NODE(LTP)

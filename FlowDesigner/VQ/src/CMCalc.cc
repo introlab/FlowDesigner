@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "CodebookMap.h"
 
+using namespace std;
+
 class CMCalc;
 
 DECLARE_NODE(CMCalc)

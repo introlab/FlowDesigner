@@ -7,7 +7,7 @@
 #include "pseudosem.h"
 #include <list>
 
-using namespace std;
+
 
 class RTCTimer;
 
@@ -31,7 +31,7 @@ class RTCTimer {
    int fd;
    pthread_t thread;
    pthread_mutex_t lock;
-   list<RTCUser *> users;
+   std::list<RTCUser *> users;
    bool exit_status;
    int freq;
    float dt;

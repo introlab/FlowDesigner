@@ -14,6 +14,9 @@
 
 //@implements core
 
+using namespace std;
+
+
 //static int dummy = Object::addObjectType<Vector<float> > ("Vector", new ObjectFactory<Vector<float> > ("Vector"));
 DECLARE_TYPE2("Vector", Vector<float>)
 DECLARE_TYPE(Vector<float>)

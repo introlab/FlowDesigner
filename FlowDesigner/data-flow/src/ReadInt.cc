@@ -4,6 +4,8 @@
 #include "ObjectRef.h"
 #include "Stream.h"
 
+using namespace std;
+
 class ReadInt;
 DECLARE_NODE(ReadInt)
 /*Node

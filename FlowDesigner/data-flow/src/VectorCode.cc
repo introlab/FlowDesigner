@@ -4,6 +4,8 @@
 #include "Vector.h"
 #include "compile_object.h"
 
+using namespace std;
+
 class VectorCode;
 
 DECLARE_NODE(VectorCode)

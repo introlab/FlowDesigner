@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include <complex>
 
+using namespace std;
+
 class Conj;
 
 DECLARE_NODE(Conj)

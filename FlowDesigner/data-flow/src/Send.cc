@@ -8,6 +8,8 @@
 #include <sys/socket.h> 
 #include <netinet/in.h>
 
+using namespace std;
+
 #define LOOPBACK "127.0.0.1"
 
 class Send;

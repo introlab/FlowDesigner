@@ -10,6 +10,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 DECLARE_TYPE(Cell)
 //@implements VQ
 

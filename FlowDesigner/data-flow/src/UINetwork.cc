@@ -18,6 +18,7 @@
 
 //@implements UIClasses
 
+using namespace std;
 
 UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
    : destroyed(false)

@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "UIDocument.h"
 
+using namespace std;
+
 class LoadDoc;
 
 DECLARE_NODE(LoadDoc)

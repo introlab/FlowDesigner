@@ -2,6 +2,9 @@
 
 #include "mean.h"
 
+using namespace std;
+
+
 DECLARE_TYPE(Mean)
 //@implements GMM
 

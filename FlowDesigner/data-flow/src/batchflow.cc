@@ -14,6 +14,9 @@
 #include "UserException.h"
 #include <libxml/globals.h>
 
+using namespace std;
+
+
 typedef Network *NetworkPtr;
 
 class batchflowApp {

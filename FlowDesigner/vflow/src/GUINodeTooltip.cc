@@ -8,6 +8,8 @@
 #include <map>
 #include "UIDocument.h"
 
+using namespace std;
+
 GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    : node(_node)
 {

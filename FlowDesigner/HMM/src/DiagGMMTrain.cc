@@ -6,6 +6,8 @@
 #include "DiagGMM.h"
 #include "Vector.h"
 
+using namespace std;
+
 class DiagGMMTrain;
 DECLARE_NODE(DiagGMMTrain)
 /*Node

@@ -7,14 +7,14 @@
 class SymbolSet {
   protected:
    int currentID;
-   map<string,int> translationMap;
+   std::map<std::string,int> translationMap;
   public:
    SymbolSet()
       : currentID(0)
    {}
-   int get(const string &str)
+   int get(const std::string &str)
    {
-      map<string,int>::iterator sym = translationMap.find(str);
+      std::map<std::string,int>::iterator sym = translationMap.find(str);
       if (sym == translationMap.end())
       {
 	 translationMap.insert(make_pair(str, currentID++));
@@ -26,19 +26,19 @@ class SymbolSet {
 
    int get (char *str)
    {
-      return get(string(str));
+      return get(std::string(str));
    }
 
-   string reverseLookup (int ID)
+   std::string reverseLookup (int ID)
    {
-      map<string,int>::iterator it = translationMap.begin();
+      std::map<std::string,int>::iterator it = translationMap.begin();
       while (it!=translationMap.end())
       {
 	 if (it->second == ID)
 	    return it->first;
 	 ++it;
       }
-      return string("");
+      return std::string("");
    }
 };
 
@@ -53,22 +53,22 @@ class VirtualMethods {
    typedef ObjectRef (*funct_ptr2) (ObjectRef x, ObjectRef a, ObjectRef b);
    typedef ObjectRef (*funct_ptr3) (ObjectRef x, ObjectRef a, ObjectRef b, ObjectRef c);
 
-   typedef map<const type_info *, funct_ptr0> vtableType0;
-   typedef map<const type_info *, funct_ptr1> vtableType1;
-   typedef map<const type_info *, funct_ptr2> vtableType2;
-   typedef map<const type_info *, funct_ptr3> vtableType3;
+   typedef std::map<const std::type_info *, funct_ptr0> vtableType0;
+   typedef std::map<const std::type_info *, funct_ptr1> vtableType1;
+   typedef std::map<const std::type_info *, funct_ptr2> vtableType2;
+   typedef std::map<const std::type_info *, funct_ptr3> vtableType3;
 
-   vector<vtableType0> tables0;
-   vector<vtableType1> tables1;
-   vector<vtableType2> tables2;
-   vector<vtableType3> tables3;
+   std::vector<vtableType0> tables0;
+   std::vector<vtableType1> tables1;
+   std::vector<vtableType2> tables2;
+   std::vector<vtableType3> tables3;
   public:
    VirtualMethods() 
    {
       symbols=new SymbolSet;
    }
 
-   int lookup(const string &str)
+   int lookup(const std::string &str)
    {
       return symbols->get(str);
    }
@@ -78,7 +78,7 @@ class VirtualMethods {
       return symbols->get(str);
    }
 
-   int registerFunct0(funct_ptr0 ptr, const type_info *x, string name)
+   int registerFunct0(funct_ptr0 ptr, const std::type_info *x, std::string name)
    {
       unsigned int id = symbols->get(name);
       if (id >= tables0.size())
@@ -86,7 +86,7 @@ class VirtualMethods {
       tables0[id][x] = ptr;
    }
 
-   int registerFunct1(funct_ptr1 ptr, const type_info *x, string name)
+   int registerFunct1(funct_ptr1 ptr, const std::type_info *x, std::string name)
    {
       unsigned int id = symbols->get(name);
       if (id >= tables1.size())
@@ -94,7 +94,7 @@ class VirtualMethods {
       tables1[id][x] = ptr;
    }
 
-   int registerFunct2(funct_ptr2 ptr, const type_info *x, string name)
+   int registerFunct2(funct_ptr2 ptr, const std::type_info *x, std::string name)
    {
       unsigned int id = symbols->get(name);
       if (id >= tables2.size())
@@ -102,7 +102,7 @@ class VirtualMethods {
       tables2[id][x] = ptr;
    }
 
-   int registerFunct3(funct_ptr3 ptr, const type_info *x, string name)
+   int registerFunct3(funct_ptr3 ptr, const std::type_info *x, std::string name)
    {
       unsigned int id = symbols->get(name);
       if (id >= tables3.size())
@@ -112,7 +112,7 @@ class VirtualMethods {
 
    ObjectRef call(int id, ObjectRef x)
    {
-      const type_info *t1 = &typeid(*x);
+      const std::type_info *t1 = &typeid(*x);
       vtableType0 &vtable=tables0[id];
       vtableType0::iterator v1 = vtable.find(t1);
       if (v1!=vtable.end())
@@ -126,7 +126,7 @@ class VirtualMethods {
 
    ObjectRef call(int id, ObjectRef x, ObjectRef y)
    {
-      const type_info *t1 = &typeid(*x);
+      const std::type_info *t1 = &typeid(*x);
       vtableType1::iterator v1 = tables1[id].find(t1);
       if (v1!=tables1[id].end())
       {

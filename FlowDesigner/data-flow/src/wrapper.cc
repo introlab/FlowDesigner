@@ -7,6 +7,8 @@
 #include "ParameterSet.h"
 #include "IntfNode.h"
 
+using namespace std;
+
 OFWrapper::OFWrapper(UIDocument* _doc)
    : doc(_doc)
    , net(NULL)

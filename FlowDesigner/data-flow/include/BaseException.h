@@ -3,7 +3,7 @@
 #ifndef _BASEEXCEPTION_H_
 #define _BASEEXCEPTION_H_
 
-using namespace std;
+
 
 //#include "Node.h"
 #include <iostream>
@@ -27,7 +27,7 @@ public:
 
    /** This pure virtual function is intended for debug purposes.
        Every exception should be able to print a message. */
-   virtual void print (ostream &out = cerr) = 0;
+   virtual void print (std::ostream &out = std::cerr) = 0;
 
    /**Freezes the error message. This is used when the object an exception
       refers (or might refer) to will be destroyed*/
@@ -42,7 +42,7 @@ public:
 
 class GenericCastException : public BaseException{
 public:
-   virtual void print(ostream &out = cerr)=0;
+   virtual void print(std::ostream &out = std::cerr)=0;
 };
 
 /***************************************************************************/
@@ -61,24 +61,24 @@ class GeneralException :public BaseException {
 public:
 
    ///The constructor that takes the message the file name and the line number
-   GeneralException(string _message, string _file, int _line) 
+   GeneralException(std::string _message, std::string _file, int _line) 
       : message(_message)
       , file (_file)
       , line (_line)
    {}
 
    ///The print method
-   virtual void print(ostream &out = cerr)
+   virtual void print(std::ostream &out = std::cerr)
    {
-      out << file << " line " << line << ": " << message << endl;
+      out << file << " line " << line << ": " << message << std::endl;
    }
 
 protected:
    ///the message
-   string message;
+   std::string message;
 
    ///the file name
-   string file;
+   std::string file;
    
    ///the line number
    int line;
@@ -95,7 +95,9 @@ protected:
 /***************************************************************************/
 class ExceptionStack : public BaseException {
   protected:
-   vector<BaseException *> stack;
+	  
+   std::vector<BaseException *> stack;
+
 public:
    ExceptionStack() {};
    
@@ -108,7 +110,7 @@ public:
    virtual ~ExceptionStack() 
       {for (size_t i=0;i<stack.size();i++) delete stack[i];}
    ///The print method that prints on stderr by default
-   virtual void print(ostream &out = cerr) {
+   virtual void print(std::ostream &out = std::cerr) {
       for (unsigned int i=0;i<stack.size();i++)
 	 stack[i]->print(out);
    }

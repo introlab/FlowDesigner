@@ -11,6 +11,8 @@
 #include "Vector.h"
 #include "wrapper.h"
 
+using namespace std;
+
 /**Initializes the Overflow library*/
 void overflowInitialize(void)
 {

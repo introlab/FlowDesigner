@@ -3,6 +3,8 @@
 #include "Node.h"
 #include "FlowException.h"
 
+using namespace std;
+
 class Catch;
 
 DECLARE_NODE(Catch)

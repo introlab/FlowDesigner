@@ -10,23 +10,22 @@
 #include <map>
 #include <typeinfo>
 
-using namespace std;
 
 //Yes, this is yet another Visual C++ bug. It seems like the type_info::before() 
 //method is buggy, or it could be the STL map, I don't know. All I know is that
 //the follwing code doesn't work under MSVC++. That's why there's a (ugly) workaround.
 #ifndef WIN32
 
-struct compare_const_type_info_ptr : public binary_function<const type_info *, const type_info *, bool>
+struct compare_const_type_info_ptr : public std::binary_function<const std::type_info *, const std::type_info *, bool>
 {
-   bool operator()(const type_info *lhs, const type_info *rhs) const
+   bool operator()(const std::type_info *lhs, const std::type_info *rhs) const
    {
       return lhs->before(*rhs);
    }
 };
 
 template<typename T>
-class TypeMap : public map<const type_info *, T, compare_const_type_info_ptr >
+class TypeMap : public std::map<const std::type_info *, T, compare_const_type_info_ptr >
 {
 };
 
@@ -39,11 +38,11 @@ class TypeMap : public map<const type_info *, T, compare_const_type_info_ptr >
 template<typename T>
 class TypeMap {
   public:
-   typedef pair<const type_info *, T> element;
+   typedef std::pair<const type_info *, T> element;
    typedef element *iterator;
    typedef const element *const_iterator;
   private:
-   vector<element> tmap;
+   std::vector<element> tmap;
   public:
    
    const_iterator begin() const {return tmap.begin();}

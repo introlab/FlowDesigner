@@ -4,6 +4,8 @@
 #include "ObjectRef.h"
 #include <math.h>
 
+using namespace std;
+
 class Delay;
 DECLARE_NODE(Delay)
 /*Node

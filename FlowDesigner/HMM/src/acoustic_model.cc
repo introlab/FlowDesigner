@@ -4,6 +4,8 @@
 #include "ObjectParser.h"
 #include "Object.h"
 
+using namespace std;
+
 DECLARE_TYPE(AcousticModel)
 
 void AcousticModel::toIDs()

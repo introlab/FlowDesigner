@@ -20,9 +20,9 @@ class ParameterSet;
 //FIXME: Should replace with ItemInfo
 class DocParameterDataText {
   public:
-   string name;
-   string value;
-   string type;
+   std::string name;
+   std::string value;
+   std::string type;
 };
 
 /**
@@ -33,32 +33,31 @@ class UIDocument : public Object {
    
 protected:
    /**Pointers to all networks included (defined) in the document*/
-   vector<UINetwork *> networks;
+   std::vector<UINetwork *> networks;
 
    /**Flag is set to true anytime there's a change that hasn't been saved*/
    bool modified;
    
    /**Info about all internal networks that can be included as nodes - I think (should be cleaned up)*/
-   //map<string, NodeInfo *> preloadInfo;
    UINodeRepository subnetInfo;
 
    /**Document parameters (should be re-written)*/
-   vector<DocParameterDataText *> textParams;
+   std::vector<DocParameterDataText *> textParams;
 
    /**Input for the document if used as an external node*/
-   vector<ParameterText *> docInputs;
+   std::vector<ParameterText *> docInputs;
 
    /**Output for the document if used as an external node*/
-   vector<ParameterText *> docOutputs;
+   std::vector<ParameterText *> docOutputs;
 
    /**Parameters for the document if used as an external node*/
-   vector<ParameterText *> docParams;
+   std::vector<ParameterText *> docParams;
 
    /**File name (no path)*/
-   string docName;
+   std::string docName;
    
    /**Document path*/
-   string path;
+   std::string path;
    
    /**True if document has no real name yet*/
    bool untitled;
@@ -67,15 +66,15 @@ protected:
    bool destroyed;
 
    /**Category of the document, used when the document's MAIN network is to be inserted as a node */
-   string category;
+   std::string category;
 
    /**Comments inserted in the document */
-   string m_comments;
+   std::string m_comments;
 
 public:
 
    /**Document constructor with name, DOES NOT load the document (document created as untitled)*/
-   UIDocument(string _name);
+   UIDocument(std::string _name);
 
    /**Virtual destructor*/
    virtual ~UIDocument();
@@ -90,16 +89,16 @@ public:
    virtual void loadFromMemory(const char *mem, int size);
    
    /**Set the category of the document in the node menu */
-   void setCategory(const string &cat) {category = cat;}
+   void setCategory(const std::string &cat) {category = cat;}
 
    /**Get the category of the document in the node menu */
-   const string &getCategory() {return category;}
+   const std::string &getCategory() {return category;}
 
    /**Set comments for the document */
-   void setComments(const string &comments) {m_comments = comments;}
+   void setComments(const std::string &comments) {m_comments = comments;}
 
    /**Get comments from the document */
-   const string &getComments() {return m_comments;}
+   const std::string &getComments() {return m_comments;}
    
    /**Sets the 'modified' flag*/
    void setModified() {modified=true;}
@@ -111,7 +110,7 @@ public:
    bool isModified() {return modified;}
    
    /**Add a network to the document*/
-   UINetwork *addNetwork(string name, UINetwork::Type type);
+   UINetwork *addNetwork(std::string name, UINetwork::Type type);
    
    /**Add a network to the document from an XML node (used in load())*/
    UINetwork *addNetwork(xmlNodePtr xmlNet);
@@ -123,10 +122,10 @@ public:
    bool isUntitled() {return untitled;}
    
    /**Document name (no path*/
-   virtual const string &getName() {return docName;}
+   virtual const std::string &getName() {return docName;}
    
    /**Document path*/
-   const string &getPath() {return path;}
+   const std::string &getPath() {return path;}
    
    /**Save the document to file specified in internal variables 'path' and 'docName'*/
    virtual void save();
@@ -134,33 +133,33 @@ public:
    /**Convert document to an XML string in memory*/
    char *saveToMemory(int &size);
    
-   void addParameterText(string name, string value, string type);
+   void addParameterText(std::string name, std::string value, std::string type);
    
-   UINetwork *getNetworkNamed(const string &n);
+   UINetwork *getNetworkNamed(const std::string &n);
    
-   vector<ItemInfo *> getNetInputs(const string &netName);
+   std::vector<ItemInfo *> getNetInputs(const std::string &netName);
    
-   vector<ItemInfo *> getNetOutputs(const string &netName);
+   std::vector<ItemInfo *> getNetOutputs(const std::string &netName);
    
-   vector<ItemInfo *> getNetParams(const string &netName);
+   std::vector<ItemInfo *> getNetParams(const std::string &netName);
    
-   string getDescription(const string &type);
+   std::string getDescription(const std::string &type);
    
    /**A UIDocument can print itself*/
-   void printOn(ostream &out=cout) const;
+   void printOn(std::ostream &out=std::cout) const;
 
-   vector<UINetwork *> get_networks() {return networks;}
+   std::vector<UINetwork *> get_networks() {return networks;}
 
-   vector<DocParameterDataText *> get_textParams() {return textParams;}
+   std::vector<DocParameterDataText *> get_textParams() {return textParams;}
 
-   virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
+   virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
    
    virtual UINetwork *newNetwork(xmlNodePtr _net);
    
-   Network *build(const string &_name, const ParameterSet &params);
+   Network *build(const std::string &_name, const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   set<string> genCode(ostream &out, const string &functName, bool localIncludes=false);
+   std::set<std::string> genCode(std::ostream &out, const std::string &functName, bool localIncludes=false);
 
    /** Export a network into XML (for future import) 
       @author Dominic Letourneau (August 9 2004)
@@ -177,23 +176,23 @@ public:
    void importNetwork(const std::string &fileName);
 
 
-   static Network *buildExternal(const string &type, const string &_name, const ParameterSet &params);
+   static Network *buildExternal(const std::string &type, const std::string &_name, const ParameterSet &params);
 
    virtual void run();
 
    virtual void run(ParameterSet &p);
 
-   virtual void setFullPath(const string &fullpath);
+   virtual void setFullPath(const std::string &fullpath);
 
    void updateNetInfo(UINetwork *net); 
 
    void updateAllNetworks();
    
-   static string findExternal(const string &filename, char *searchPath="FLOWDESIGNER_PATH", bool include_home=true, bool fullPathOutput=true);
+   static std::string findExternal(const std::string &filename, char *searchPath="FLOWDESIGNER_PATH", bool include_home=true, bool fullPathOutput=true);
 
-   static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
+   static void genCodeExternal(const std::string &type, std::ostream &out, int &id, std::set<std::string> &nodeList);
 
-   virtual void updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
+   virtual void updateAllSubnetTerminals(const std::string _nettype, const std::string _terminalname, 
 					 UINetTerminal::NetTermType _terminaltype, bool _remove); 
 
    UINodeRepository &getRepository() {return subnetInfo;}
@@ -204,7 +203,7 @@ public:
 
  private:
 
-   static bool findExternalRecursive(const string &basePath, const string &path, const string &type, string &fullname, bool fullPathOutput);
+   static bool findExternalRecursive(const std::string &basePath, const std::string &path, const std::string &type, std::string &fullname, bool fullPathOutput);
 };
 
 

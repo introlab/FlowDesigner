@@ -6,14 +6,14 @@
 #include <vector>
 #include "multithread.h"
 
-using namespace std;
+
 
 #define MAX_STORE 100
 
 template <class T>
 class ObjectPool {
   protected:
-   static vector <T *> stack;
+   static std::vector <T *> stack;
    static FastMutex mutex;
   public:
    ObjectPool() 

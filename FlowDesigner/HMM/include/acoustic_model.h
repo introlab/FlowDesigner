@@ -32,13 +32,13 @@ public:
    void toPtrs();
 
    /** print function used for operator << */
-   virtual void printOn(ostream &out=cout) const;
+   virtual void printOn(std::ostream &out=std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
    /**extractor operator*/
-   friend istream &operator >> (istream &in, AcousticModel &mdl);
+   friend std::istream &operator >> (std::istream &in, AcousticModel &mdl);
    
 };
 

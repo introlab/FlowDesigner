@@ -12,7 +12,7 @@
 
 class CodebookMap;
 
-ostream &operator << (ostream &out, const CodebookMap &cell);
+std::ostream &operator << (std::ostream &out, const CodebookMap &cell);
 
 
 class CodebookMap : public Object {
@@ -27,9 +27,9 @@ public:
 
    CodebookMap(){}
    
-   CodebookMap (const CodebookMap &) {cerr << "don't call the CodebookMap copy constructor\n"; exit(1);}
+   CodebookMap (const CodebookMap &) {std::cerr << "don't call the CodebookMap copy constructor\n"; exit(1);}
 
-   CodebookMap(const RCPtr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length);
+   CodebookMap(const RCPtr<VQ> &_mapIn, const std::vector<float *> dataIn, const std::vector<float *> dataOut, int length);
 
    ~CodebookMap()
    {
@@ -38,11 +38,11 @@ public:
    
    const float * calcOutput(const float *in) const;
 
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
-   void readFrom (istream &in);
+   void readFrom (std::istream &in);
 
-   friend istream &operator >> (istream &in, CodebookMap &cell);
+   friend std::istream &operator >> (std::istream &in, CodebookMap &cell);
 };
 
 #endif

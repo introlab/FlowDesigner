@@ -39,13 +39,13 @@ class Probe : public Node {
 
    bool exit_status;
 
-   string probeName;
+   std::string probeName;
    
    bool traceEnable;
 
    bool displayEnable;
   public:
-   Probe(string nodeName, ParameterSet params);
+   Probe(std::string nodeName, ParameterSet params);
 
    virtual ~Probe();
 

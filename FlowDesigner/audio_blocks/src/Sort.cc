@@ -6,6 +6,8 @@
 #include "vec.h"
 #include <algorithm>
 
+using namespace std;
+
 class Sort;
 
 DECLARE_NODE(Sort)

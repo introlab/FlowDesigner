@@ -2,6 +2,8 @@
 
 #include "CodebookMap.h"
 
+using namespace std;
+
 DECLARE_TYPE(CodebookMap)
 //@implements CMap
 

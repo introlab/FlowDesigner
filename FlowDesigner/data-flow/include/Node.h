@@ -16,8 +16,8 @@
 
 
 /**Definition of the type we need for the dictionaries*/
-typedef map<string, Node*>::value_type nodeEntry;
-typedef map<string, _NodeFactory*>::value_type factoryEntry; 
+typedef std::map<std::string, Node*>::value_type nodeEntry;
+typedef std::map<std::string, _NodeFactory*>::value_type factoryEntry; 
 
 
 //must be defined
@@ -34,9 +34,9 @@ public:
    /**The reference of the node*/
    Node *node;
    /**The name of the input*/
-   string name;
+   std::string name;
    /**Constructor with a node and an outputID*/
-   NodeInput(Node *n, int t, const string &inputName) :outputID(t),node(n),name(inputName) {}
+   NodeInput(Node *n, int t, const std::string &inputName) :outputID(t),node(n),name(inputName) {}
    /**Copy constructor*/
    NodeInput (const NodeInput &in) {
       node = in.node; 
@@ -57,7 +57,7 @@ public:
    NodeInput() : outputID(-1), node(NULL) {} //-1 means unused
 
    /**constructor with a nodeName*/
-   NodeInput(const string &inputName) : outputID(-1), node(NULL), name(inputName) {}
+   NodeInput(const std::string &inputName) : outputID(-1), node(NULL), name(inputName) {}
 
 private:   
 };
@@ -78,13 +78,13 @@ class Node : public Object {
 protected:
    
    /**Node's name*/
-   string name;
+   std::string name;
 
    /**Node's inputs*/
-   vector<NodeInput> inputs;
+   std::vector<NodeInput> inputs;
 
    /**Node's outputs*/
-   vector<string> outputNames;
+   std::vector<std::string> outputNames;
 
    /**Parameters given to the node at construction time*/
    ParameterSet parameters;
@@ -96,19 +96,19 @@ protected:
    virtual void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
 
    /**Adding an output to a node*/
-   virtual int addOutput (const string &outputName);
+   virtual int addOutput (const std::string &outputName);
  
    /**Adding an input to a node*/
-   virtual int addInput (const string &inputName);
+   virtual int addInput (const std::string &inputName);
    
 
    /**Returns the inputs vector */
-   virtual vector<NodeInput>& getInputs () {return inputs;}
+   virtual std::vector<NodeInput>& getInputs () {return inputs;}
 
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
-   Node(string nodeName, const ParameterSet &params);
+   Node(std::string nodeName, const ParameterSet &params);
    
 
    /**Destructor*/
@@ -119,12 +119,12 @@ public:
    virtual ObjectRef getOutput(int output_id, int count) = 0; 
 
    /**Ask for the node's output (named) and for the count iteration */
-   virtual ObjectRef getOutputNamed (const string &outputName, int count) {
+   virtual ObjectRef getOutputNamed (const std::string &outputName, int count) {
       return this->getOutput (this->translateOutput(outputName),count);
    }
 
    /**Connect an input node using symbolic (strings) input/output names*/
-   virtual void connectToNode(string in, Node *inputNode, string out);
+   virtual void connectToNode(std::string in, Node *inputNode, std::string out);
 
    /**Initialize a node*/
    virtual void initialize ();
@@ -148,7 +148,7 @@ public:
    virtual void reset();
 
    /**Returns the node name*/
-   string getName() {return name;}
+   std::string getName() {return name;}
  
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req)
@@ -161,21 +161,21 @@ public:
    virtual void verifyConnect();
 
    /**A node can print itself*/
-   void printOn(ostream &out=cout) const;
+   void printOn(std::ostream &out=std::cout) const;
 
    void setUINode(UINode *_uinode) {uinode = _uinode;}
    
    /**Adding a factory into the static dictionary*/
-   static int addFactory (const string &factoryName, _NodeFactory* const factory);
+   static int addFactory (const std::string &factoryName, _NodeFactory* const factory);
 
    /**Adding a XPM representation into the XPM dictionary*/
-   static int addXPM (const string &nodeName, char **XPMData);
+   static int addXPM (const std::string &nodeName, char **XPMData);
 
    /**Get the XPM representation from the XPM dictionary*/
-   static char**  getXPM (const string &nodeName);
+   static char**  getXPM (const std::string &nodeName);
    
    /**The factory lookup function*/
-   static _NodeFactory* getFactoryNamed (const string &name);
+   static _NodeFactory* getFactoryNamed (const std::string &name);
 
 protected:
 
@@ -183,32 +183,32 @@ protected:
    Node() {throw new GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 
    /**symbolic to numeric translation for input names*/
-   virtual int translateInput(string inputName);
+   virtual int translateInput(std::string inputName);
 
    /**symbolic to numeric translation for output names*/
-   virtual int translateOutput(string inputName);
+   virtual int translateOutput(std::string inputName);
 
    /**Run-time assertions*/
-   virtual void rt_assert(bool cond, string message="", char *_file="unknown", int _line=0);
+   virtual void rt_assert(bool cond, std::string message="", char *_file="unknown", int _line=0);
 
    /**Construct-time assertions*/
-   virtual void construct_assert(bool cond, string message="", char *_file="unknown", int _line=0);
+   virtual void construct_assert(bool cond, std::string message="", char *_file="unknown", int _line=0);
 
    /**Error with the node*/
-   virtual void throw_error(bool send_ptr, string message, char *_file, int _line);
+   virtual void throw_error(bool send_ptr, std::string message, char *_file, int _line);
 
 public:
    /**The node instance factory*/
-   static map<string,_NodeFactory*> &factoryDictionary();
+   static std::map<std::string,_NodeFactory*> &factoryDictionary();
 
    /**The node information map*/
-   static vector<string> &nodeInfo();
+   static std::vector<std::string> &nodeInfo();
 
    /**The node visual representation map (XPM)*/
-   static map<string,char**> &XPMDictionary();
+   static std::map<std::string,char**> &XPMDictionary();
 
    /**Routine to add info for a node*/
-   static int addNodeInfo (const string &info);
+   static int addNodeInfo (const std::string &info);
 };
 
 
@@ -230,22 +230,22 @@ class NotInitializedException : public BaseException {
 
 public:
    /**The constructor that takes a map of nodes not properly initialized*/
-   NotInitializedException (map<string,Node * > aMap) {
+   NotInitializedException (std::map<std::string,Node * > aMap) {
       nodeMap = aMap;
    }
    /**The print method*/
-   virtual void print(ostream &out = cerr) {
-      out<<"NotInitializedException occured"<<endl;
+   virtual void print(std::ostream &out = std::cerr) {
+      out<<"NotInitializedException occured"<<std::endl;
       
-      map<string,Node*>::iterator iter;
+      std::map<std::string,Node*>::iterator iter;
       
       for (iter = nodeMap.begin(); iter != nodeMap.end(); iter++) {
-         out<<"This node is not initialized: "<<(*iter).first<<endl;
+         out<<"This node is not initialized: "<<(*iter).first<<std::endl;
       }
    }   
 
    /**The node map*/
-   map<string,Node*> nodeMap;
+   std::map<std::string,Node*> nodeMap;
 };
 
 /** The NodeException is a easy way to send a message for an general 
@@ -258,7 +258,7 @@ class NodeException : public BaseException {
 public:
 
    /**The constructor with a message a file name and a line number*/
-   NodeException( Node *_node, string _message, char *_file, int _line) 
+   NodeException( Node *_node, std::string _message, char *_file, int _line) 
       : message(_message)
       , node(_node)
       , file(_file)
@@ -266,19 +266,19 @@ public:
       , frozen(false)
    {}   
    /**the print method*/
-   virtual void print(ostream &out = cerr);
+   virtual void print(std::ostream &out = std::cerr);
 
    virtual void freeze();
 
 protected:
    /**the message*/
-   string message;
+   std::string message;
 
    /**the node pointer*/
    Node *node;
 
    /**the file name*/
-   string file;
+   std::string file;
 
    /**the line number*/
    int line;

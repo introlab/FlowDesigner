@@ -16,6 +16,8 @@
 
 #include "gtkextra/gtkextra.h"
 
+using namespace std;
+
 DECLARE_NODE(GtkPlotProbe)
 /*Node
  *

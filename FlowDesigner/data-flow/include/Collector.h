@@ -13,7 +13,7 @@ class Collector : public Node
 public:
 
    ///Constructor, takes the name of the node and a set of parameters
-   Collector(string nodeName, ParameterSet params);
+   Collector(std::string nodeName, ParameterSet params);
 
    /**Class specific initialization routine.
       Each class will call its subclass initialize() method*/
@@ -24,7 +24,7 @@ public:
    virtual ObjectRef getOutput(int output_id, int count); 
   
    /**Ask for the node's output (named) and for the count iteration */
-   virtual ObjectRef getOutputNamed (const string &outputName, int count);
+   virtual ObjectRef getOutputNamed (const std::string &outputName, int count);
    
 
    ///Checks whether node really has a certain output
@@ -40,10 +40,10 @@ public:
 
 protected:
    ///symbolic to numeric translation for input names
-   virtual int translateInput(string inputName);
+   virtual int translateInput(std::string inputName);
 
    ///symbolic to numeric translation for output names
-   virtual int translateOutput(string inputName);
+   virtual int translateOutput(std::string inputName);
 
 protected:
    ///Default constructor, should not be used

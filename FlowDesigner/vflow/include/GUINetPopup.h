@@ -7,7 +7,6 @@
 #include <map>
 #include <string>
 
-using namespace std;
 
 class UINetwork;
 class UIDocument;
@@ -18,13 +17,13 @@ protected:
    UINetwork *net;
    GtkWidget *menu;
    GtkWidget *newMenu;
-   map<string,GtkWidget *> categories;
+   std::map<std::string,GtkWidget *> categories;
 public:
    GUINetPopup(UIDocument *_doc, UINetwork *_net);
    ~GUINetPopup();
    void popup(GdkEvent *event);
-   void addCategory(string name);
-   void addType(string cat, string type);
+   void addCategory(std::string name);
+   void addType(std::string cat, std::string type);
 };
 
 

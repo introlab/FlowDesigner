@@ -18,7 +18,7 @@ class FlowException : public Object {
       return thrown;
    }
 
-   void printOn(ostream &out=cout) const
+   void printOn(std::ostream &out=std::cout) const
    {
       out << "<FlowException " << thrown << " >";
    }

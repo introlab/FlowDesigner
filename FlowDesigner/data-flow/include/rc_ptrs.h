@@ -48,7 +48,7 @@
 template <class T, class U>
 class PtrCastException : public GenericCastException {
 protected:
-   string type;
+	std::string type;
 public:
    /**The constructur that takes an error message*/
    PtrCastException(const T *obj)
@@ -56,26 +56,26 @@ public:
    {}
   
    /**The print method*/
-   virtual void print(ostream &out = cerr) 
+   virtual void print(std::ostream &out = std::cerr) 
    {
       out << "Cast error: Trying to cast RCPtr <" << typeid(T).name() << "> (" 
-          << type << ") into RCPtr<" << typeid(U).name() << ">" << endl;
+          << type << ") into RCPtr<" << typeid(U).name() << ">" << std::endl;
    }
 };
 
 class PtrException : public BaseException {
 protected:
-   string message;
+	std::string message;
 public:
    /**The constructur that takes an error message*/
-   PtrException(const string &_message)
+   PtrException(const std::string &_message)
       : message(_message)
    {}
   
    /**The print method*/
-   virtual void print(ostream &out = cerr) 
+   virtual void print(std::ostream &out = std::cerr) 
    {
-      out << message << endl;
+      out << message << std::endl;
    }
 };
 
@@ -112,7 +112,7 @@ public:
      RCPtr(const RCPtr<Z> &r);
 
    /*{
-     cerr << "RCPtr(const RCPtr<Z> &r)" << endl;
+     cerr << "RCPtr(const RCPtr<Z> &r)" << std::endl;
       ptr=dynamic_cast<X*> (r.ptr);
       if (!ptr) 
          {

@@ -4,6 +4,7 @@
 #include "Object.h"
 
 //@implements core
+using namespace std;
 
 DECLARE_TYPE(EOFObject)
 

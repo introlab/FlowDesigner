@@ -8,6 +8,8 @@
 #include <math.h>
 #include "misc.h"
 
+using namespace std;
+
 class Noise;
 
 DECLARE_NODE(Noise)

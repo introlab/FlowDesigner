@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "gmm.h"
 
+using namespace std;
+
 class AdaptMAP;
 
 DECLARE_NODE(AdaptMAP)

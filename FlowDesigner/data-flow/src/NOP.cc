@@ -6,6 +6,8 @@
 
 #include "BufferedNode.h"
 
+using namespace std;
+
 class NOP;
 
 DECLARE_NODE(NOP)

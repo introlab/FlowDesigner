@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 class Feedback;
 
 DECLARE_NODE(Feedback)

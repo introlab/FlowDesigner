@@ -13,16 +13,14 @@ class InferenceModel : public FuzzyModel  {
 
 public:
 
-  
-
 	//constructor
 	InferenceModel();
 
 	InferenceModel(const InferenceModel& model);
 
-	InferenceModel(string nodeName, ParameterSet params);
+	InferenceModel(std::string nodeName, ParameterSet params);
 
-	InferenceModel(istream &in){readFrom(in);}
+	InferenceModel(std::istream &in){readFrom(in);}
 
 	//destructor
 	virtual ~InferenceModel();
@@ -39,9 +37,9 @@ public:
 	//cloning capability
 	virtual ObjectRef clone();
 
-	virtual void printOn(ostream &out=cout) const;
+	virtual void printOn(std::ostream &out=std::cout) const;
 	
-	virtual void readFrom(istream &in=cin);
+	virtual void readFrom(std::istream &in=std::cin);
 
 	virtual void calculate(int output_id, int count, Buffer &out);
 

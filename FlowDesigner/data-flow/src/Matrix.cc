@@ -9,6 +9,7 @@
 #include "Complex.h"
 
 //@implements core
+using namespace std;
 
 DECLARE_TYPE2("Matrix", Matrix<float>)
 DECLARE_TYPE(Matrix<bool>)

@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 class Trace;
 
 DECLARE_NODE(Trace)

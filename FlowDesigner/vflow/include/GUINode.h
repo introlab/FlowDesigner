@@ -35,7 +35,7 @@ protected:
 public:
 
   
-   GUINode(UINetwork* _net, string _name, string _type, double x, double y);
+   GUINode(UINetwork* _net, std::string _name, std::string _type, double x, double y);
 
    GUINode(UINetwork* _net, xmlNodePtr def);
   
@@ -45,7 +45,7 @@ public:
   
    void createPopup();
   
-   virtual void rename(const string &newName);
+   virtual void rename(const std::string &newName);
 
    gint event(GdkEvent *event);
   
@@ -66,18 +66,18 @@ public:
    void help();
 
 
-   virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
-			    const string &_objType="any", const string &_description="No description available");
+   virtual void addTerminal(const std::string &_name, UINetTerminal::NetTermType _type, 
+			    const std::string &_objType="any", const std::string &_description="No description available");
    
 
-   virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
+   virtual UINodeParameters *newNodeParameters (UINode *_node, std::string type);
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
 
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
-					  const string &_objType="any", const string &_description="No description available");
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
+					  const std::string &_objType="any", const std::string &_description="No description available");
    
-   virtual void notifyError(const string &message);
+   virtual void notifyError(const std::string &message);
 
    virtual void redraw();
 

@@ -4,6 +4,8 @@
 #include "Vector.h"
 #include <math.h>
 
+using namespace std;
+
 class Floor;
 
 DECLARE_NODE(Floor)

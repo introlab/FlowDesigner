@@ -6,11 +6,11 @@
 #include <map>
 #include <string>
 
-using namespace std;
+
 
 class FlowPref {
    int modified;
-   map<string, map<string,string> > params;
+   std::map<std::string, std::map<std::string,std::string> > params;
 
    static FlowPref pref;
   public:
@@ -19,11 +19,11 @@ class FlowPref {
    void load();
    void save();
 
-   static bool getBool(const string &cat, const string &str);
-   static void setBool(const string &cat, const string &str, bool val);
+   static bool getBool(const std::string &cat, const std::string &str);
+   static void setBool(const std::string &cat, const std::string &str, bool val);
 
-   static unsigned int getColor(const string &cat, const string &str);
-   static void setColor(const string &cat, const string &str, unsigned int col);
+   static unsigned int getColor(const std::string &cat, const std::string &str);
+   static void setColor(const std::string &cat, const std::string &str, unsigned int col);
 
    static void Save();
 };

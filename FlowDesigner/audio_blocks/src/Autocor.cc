@@ -11,6 +11,8 @@
 #include <float.h>
 #endif
 
+using namespace std;
+
 class Autocor;
 
 DECLARE_NODE(Autocor)

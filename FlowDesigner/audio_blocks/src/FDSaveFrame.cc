@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <math.h>
 
+using namespace std;
+
 class FDSaveFrame;
 
 DECLARE_NODE(FDSaveFrame)

@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "Exception.h"
 
+using namespace std;
+
 class VectorSetIndex;
 
 DECLARE_NODE(VectorSetIndex)

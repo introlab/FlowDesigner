@@ -2,6 +2,8 @@
 
 #include "Node.h"
 
+using namespace std;
+
 class IterWall;
 
 DECLARE_NODE(IterWall)

@@ -6,6 +6,8 @@
 #include <math.h>
 #include "vec.h"
 
+using namespace std;
+
 class Sqrt;
 
 DECLARE_NODE(Sqrt)

@@ -16,7 +16,7 @@ class PlotProbe : public Probe {
 
   public:
 
-   PlotProbe(string nodeName, ParameterSet params);
+   PlotProbe(std::string nodeName, ParameterSet params);
 
    virtual ~PlotProbe();
 

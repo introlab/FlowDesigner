@@ -1,9 +1,9 @@
 // Copyright (C) 2000 Jean-Marc Valin
+#ifndef _EXTERNALAPP_H_
+#define _EXTERNALAPP_H_
 
 #include <map>
 #include <string>
-
-using namespace std;
 
 class ExternalApp;
 
@@ -19,9 +19,11 @@ class _AppFactory : public AppFactory{
 };
 
 class ExternalApp {
-   static map<string, AppFactory *> &factories();
+   static std::map<std::string, AppFactory *> &factories();
   protected:
   public:
-   static int addAppFactory(string name, AppFactory *f) {factories()[name] = f;}
-   static ExternalApp *startApp(string name) {return factories()[name]->create();}
+   static int addAppFactory(std::string name, AppFactory *f) {factories()[name] = f;}
+   static ExternalApp *startApp(std::string name) {return factories()[name]->create();}
 };
+
+#endif

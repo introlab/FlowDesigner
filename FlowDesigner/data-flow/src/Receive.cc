@@ -1,16 +1,15 @@
 // Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
 
-
 #include "Node.h"
 #include "ObjectParser.h"
 #include <iostream>
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <string>
 
-#include <string.h>
+using namespace std;
 
 class Receive;
 

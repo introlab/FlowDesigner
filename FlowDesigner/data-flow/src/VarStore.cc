@@ -6,6 +6,8 @@
 
 #include "variables.h"
 
+using namespace std;
+
 class VarStore;
 
 DECLARE_NODE(VarStore)

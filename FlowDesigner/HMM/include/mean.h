@@ -9,6 +9,7 @@
 #include "misc.h"
 #include "Vector.h"
 
+
 class Mean : public Vector<double>
 {
 protected:
@@ -40,7 +41,7 @@ public:
       accum_count++;
    }
 
-   void accumFrame(const vector<float> &v)
+   void accumFrame(const std::vector<float> &v)
    {
       for (int i=0;i<v.size();i++)
          this->operator[] (i) += v[i];
@@ -64,13 +65,13 @@ public:
    }
 
    /** print function used for operator << */
-   virtual void printOn(ostream &out=cout) const;
+   virtual void printOn(std::ostream &out=std::cout) const;
 
    /**Read function used for operator >> */
-   void readFrom (istream &in=cin);
+   void readFrom (std::istream &in=std::cin);
 
    /**extractor operator*/
-   friend istream &operator >> (istream &in, Mean &cov);
+   friend std::istream &operator >> (std::istream &in, Mean &cov);
 
 };
 

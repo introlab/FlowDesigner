@@ -4,6 +4,8 @@
 #include "operators.h"
 #include "test.xpm"
 
+using namespace std;
+
 class XPMTest;
 DECLARE_NODE_XPM(XPMTest, test_xpm)
 /*Node

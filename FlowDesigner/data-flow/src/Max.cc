@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "operators.h"
 
+using namespace std;
+
 class Max;
 DECLARE_NODE(Max)
 /*Node

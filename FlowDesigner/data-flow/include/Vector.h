@@ -12,7 +12,7 @@
 #include <string>
 
 
-using namespace std;
+
 
 /**Base class for all vector types, it holds the size and handles some 
    common operations for all vector types.
@@ -67,7 +67,7 @@ class BaseVector  : public Object {
    @author Jean-Marc Valin
 */
 template<class T>
-class Vector : public BaseVector , public vector<T> {
+class Vector : public BaseVector , public std::vector<T> {
 public:
 
    ///You can always get the type of the Vector elements by using typename Vector<T>::basicType.
@@ -76,13 +76,13 @@ public:
    ///Default constructor, size of the vector is 0.
    Vector()
       : BaseVector()
-      , vector<T> ()
+      , std::vector<T> ()
    {}
 
    ///Copy constructor
    Vector(const Vector<T> &v)
       : BaseVector()
-      , vector<T> (v)
+      , std::vector<T> (v)
    {
    }
 
@@ -93,7 +93,7 @@ public:
    */
    explicit Vector(size_t n, const T &x = T())
       : BaseVector()
-      , vector<T> (n, x)
+      , std::vector<T> (n, x)
    {}
 
    ///Destructor
@@ -109,35 +109,35 @@ public:
       Formatted output (only values) for Vectors <br>
       <b>Format : </b> <i> element0 element1 ... element(size-1)</i>
    */
-   void prettyPrint(ostream &out=cout) const;
+   void prettyPrint(std::ostream &out=std::cout) const;
 
    /**
       Formatted output in the FlowDesigner format<br>
       <b>Format : </b> \<Vector\<T\> <i> element0 element1 ... element(size - 1)</i> \>
       \param out the output stream
    */
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
    
    /**
       Formatted input in the FlowDesigner format<br>
       <b>Format : </b> \<Vector\<T\> <i> element0 element1 ... element(size - 1)</i> \>
       \param in the input stream
    */
-   void readFrom(istream &in=cin);
+   void readFrom(std::istream &in=std::cin);
 
    /**
       Binary output in the FlowDesigner format<br>
       <b>Format : </b> {Vector\<T\> |<i>element0;element1;...; element(size - 1)</i> }
       \param out the output stream
    */
-   virtual void serialize(ostream &out) const;
+   virtual void serialize(std::ostream &out) const;
 
    /**
       Binary input in the FlowDesigner format<br>
       <b>Format : </b> {Vector\<T\> |<i>element0;element1;...; element(size - 1)</i> }
       \param in the input stream
    */
-   virtual void unserialize(istream &in);
+   virtual void unserialize(std::istream &in);
 
    ///destroy() will be called by the vector pool to permanently delete a Vector<T> object
    virtual void destroy();
@@ -153,11 +153,11 @@ public:
       Returns the class name : Vector<T>
       \return string the class name
    */
-   static string GetClassName()
+   static std::string GetClassName()
    {
-      string name = ObjectGetClassName<Vector<T> >();
+      std::string name = ObjectGetClassName<Vector<T> >();
       if (name == "unknown")
-	 return string("Vector");
+	 return std::string("Vector");
       //return string("Vector<") + Object::GetClassName<T>() + ">";
       else
 	 return name;
@@ -167,7 +167,7 @@ public:
       Returns the class name : Vector<T>
       \return string the class name
    */
-   string getClassName() {return GetClassName();}
+   std::string getClassName() {return GetClassName();}
 
    
    /**
@@ -238,7 +238,7 @@ inline ObjectRef Vector<ObjectRef>::clone() {
 
 
 /*template <class T>
-inline ostream &operator << (ostream &out, const Vector<T> &v)
+inline std::ostream &operator << (std::ostream &out, const Vector<T> &v)
 {
    v.printOn(out);
    return out;
@@ -246,7 +246,7 @@ inline ostream &operator << (ostream &out, const Vector<T> &v)
 
 
 template <class T>
-inline void _vector_printOn(const Vector<T> &v, ostream &out)
+inline void _vector_printOn(const Vector<T> &v, std::ostream &out)
 {
    out << "<" << v.className();
    for (size_t i=0; i < v.size(); i++)
@@ -257,13 +257,13 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
 }
 
 template <>
-inline void _vector_printOn(const Vector<string> &v, ostream &out)
+inline void _vector_printOn(const Vector<std::string> &v, std::ostream &out)
 {
    out << "<Vector<string>";
    for (unsigned int n=0; n < v.size(); n++)
    {
       out << " ";
-      const string &str = v[n];
+      const std::string &str = v[n];
       for (unsigned int i=0;i<str.size();i++)
       {
 	 if (str[i] == '>')
@@ -286,7 +286,7 @@ inline void _vector_printOn(const Vector<string> &v, ostream &out)
 }
 
 template <class T>
-inline void _vector_printOn(const Vector<T*> &v, ostream &out)
+inline void _vector_printOn(const Vector<T*> &v, std::ostream &out)
 {
    out << "<" << v.className();
    for (size_t i=0; i < v.size(); i++)
@@ -297,21 +297,20 @@ inline void _vector_printOn(const Vector<T*> &v, ostream &out)
 }
 
 template <class T>
-void Vector<T>::printOn(ostream &out) const
+void Vector<T>::printOn(std::ostream &out) const
 {
    _vector_printOn(*this, out);
 }
 
 template <class T>
-void Vector<T>::prettyPrint(ostream &out) const
+void Vector<T>::prettyPrint(std::ostream &out) const
 {
   _vector_printOn(*this,out);
 }
 
 template <class T>
-inline void _vector_readFrom(Vector<T> &v, istream &in)
+inline void _vector_readFrom(Vector<T> &v, std::istream &in)
 {
-   //cerr << "Reading vector" << endl;
    bool a=false;
    v.resize(0);
    while (1)
@@ -328,7 +327,6 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
 	 }
 	 if (in.fail()) 
          {
-            //cerr << "Error here!" << endl;
 	    //throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
             a=true;
             break;
@@ -338,7 +336,6 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
       in >> tmp;
       if (in.fail()) 
       {
-         //cerr << "Error there" << endl;
 	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
       }
       v.push_back(tmp);
@@ -349,12 +346,12 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
 
 
 template <>
-inline void _vector_readFrom(Vector<string> &v, istream &in)
+inline void _vector_readFrom(Vector<std::string> &v, std::istream &in)
 {
    bool done=false;
    while (1)
    {      
-      string tmp;
+      std::string tmp;
       int i=0;
       while(1)
       {
@@ -400,7 +397,7 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
 }
 
 template <class T>
-inline void _vector_readFrom(Vector<T*> &v, istream &in)
+inline void _vector_readFrom(Vector<T*> &v, std::istream &in)
 {
    v.resize(0);
    while (1)
@@ -428,7 +425,7 @@ inline void _vector_readFrom(Vector<T*> &v, istream &in)
 
 
 template <class T>
-inline void Vector<T>::readFrom(istream &in)
+inline void Vector<T>::readFrom(std::istream &in)
 {
    _vector_readFrom(*this, in);
 }
@@ -436,11 +433,11 @@ inline void Vector<T>::readFrom(istream &in)
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
 struct VecMethod {
-   static inline void serialize(const Vector<T> &v, ostream &out)
+   static inline void serialize(const Vector<T> &v, std::ostream &out)
    {
      throw new GeneralException("VecMethod default serialize should never be called", __FILE__, __LINE__);
    }
-   static inline void unserialize(Vector<T> &v, istream &in)
+   static inline void unserialize(Vector<T> &v, std::istream &in)
    {
      throw new GeneralException("VecMethod default unserialize should never be called", __FILE__, __LINE__);
    }  
@@ -456,9 +453,9 @@ struct VecMethod {
 
 template<class T>
 struct VecMethod<T,TTraits::Object> {
-   static inline void serialize(const Vector<T> &v, ostream &out)
+   static inline void serialize(const Vector<T> &v, std::ostream &out)
    {
-      out << "{" << v.className() << endl;
+      out << "{" << v.className() << std::endl;
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
@@ -468,10 +465,10 @@ struct VecMethod<T,TTraits::Object> {
       }
       out << "}";
    }
-   static inline void unserialize(Vector<T> &v, istream &in)
+   static inline void unserialize(Vector<T> &v, std::istream &in)
    {
       int tmp;
-      string expected = Vector<T>::GetClassName();
+      std::string expected = Vector<T>::GetClassName();
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
       for (size_t i=0;i<v.size();i++)
@@ -505,9 +502,9 @@ struct VecMethod<T,TTraits::Object> {
 
 template<class T>
 struct VecMethod<T,TTraits::ObjectPointer> {
-   static inline void serialize(const Vector<T> &v, ostream &out)
+   static inline void serialize(const Vector<T> &v, std::ostream &out)
    {
-      out << "{" << v.className() << endl;
+      out << "{" << v.className() << std::endl;
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
@@ -517,7 +514,7 @@ struct VecMethod<T,TTraits::ObjectPointer> {
       }
       out << "}";
    }
-   static inline void unserialize(Vector<T> &v, istream &in)
+   static inline void unserialize(Vector<T> &v, std::istream &in)
    {
       int tmp;
       BinIO::read(in, &tmp, 1);
@@ -550,16 +547,16 @@ struct VecMethod<T,TTraits::ObjectPointer> {
 
 template<class T>
 struct VecMethod<T,TTraits::Basic> {
-   static inline void serialize(const Vector<T> &v, ostream &out)
+   static inline void serialize(const Vector<T> &v, std::ostream &out)
    {
-      out << "{" << v.className() << endl;
+      out << "{" << v.className() << std::endl;
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
       BinIO::write(out, &v[0], v.size());
       out << "}";
    }
-   static inline void unserialize(Vector<T> &v, istream &in)
+   static inline void unserialize(Vector<T> &v, std::istream &in)
    {
       int tmp;
       BinIO::read(in, &tmp, 1);
@@ -589,38 +586,38 @@ struct VecMethod<T,TTraits::Basic> {
 
 template<class T>
 struct VecMethod<T,TTraits::Unknown> {
-   static inline void serialize(const Vector<T> &v, ostream &out)
+   static inline void serialize(const Vector<T> &v, std::ostream &out)
    {
-      throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
+      throw new GeneralException(std::string("Sorry, can't serialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
-   static inline void unserialize(Vector<T> &v, istream &in)
+   static inline void unserialize(Vector<T> &v, std::istream &in)
    {
-      throw new GeneralException(string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
+      throw new GeneralException(std::string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
 
    static inline ObjectRef getIndex(Vector<T> &v, int pos) 
    {
-     throw new GeneralException(string("Sorry, can't getIndex for this type of vector (") + typeid(T).name()
+     throw new GeneralException(std::string("Sorry, can't getIndex for this type of vector (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
    
    static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
    {
-     throw new GeneralException(string("Sorry, can't getIndex for this type of vector (") + typeid(T).name()
+     throw new GeneralException(std::string("Sorry, can't getIndex for this type of vector (") + typeid(T).name()
 				+ ")", __FILE__, __LINE__);
    }
 };
 
 template <class T>
-inline void Vector<T>::serialize(ostream &out) const
+inline void Vector<T>::serialize(std::ostream &out) const
 {
    VecMethod<T, TypeTraits<T>::kind>::serialize(*this, out);
 }
 
 template <class T>
-inline void Vector<T>::unserialize(istream &in)
+inline void Vector<T>::unserialize(std::istream &in)
 {
    VecMethod<T, TypeTraits<T>::kind>::unserialize(*this, in);
 }
@@ -680,7 +677,7 @@ inline Vector<double> *Vector<double>::alloc(size_t size)
    return doubleVectorPool.newVector(size);
 }
 
-inline bool isValidVectorType (istream &in, string type, const string &className)
+inline bool isValidVectorType (std::istream &in, std::string type, const std::string &className)
 {
    if (type != "Vector" && type != className)
       return false;
@@ -689,23 +686,23 @@ inline bool isValidVectorType (istream &in, string type, const string &className
 
 
 template<class T>
-istream &operator >> (istream &in, Vector<T> &vec)
+std::istream &operator >> (std::istream &in, Vector<T> &vec)
 {
    char ch;
    in >> ch;
 
-   string expected = ObjectGetClassName<Vector<T> >();
+   std::string expected = ObjectGetClassName<Vector<T> >();
 
    if (ch == '<')
    {
-      string type;
+      std::string type;
       in >> type;
       if (!isValidVectorType(in, type, expected))
 	 throw new ParsingException ("Parser expected type " + expected + " and got " + type);
       vec.readFrom(in);
    } else if (ch == '{')
    {
-      string type;
+      std::string type;
       in >> type;
       if (!isValidVectorType(in, type, expected))
 	 throw new ParsingException ("Parser expected type " + expected + " and got " + type);

@@ -7,8 +7,6 @@
 #include <algorithm>
 #include "Vector.h"
 
-using namespace std;
-
 
 #ifndef NL_SYS_STRING_TO_TOKEN_H
 #define NL_SYS_STRING_TO_TOKEN_H
@@ -25,10 +23,9 @@ test file for a demonstration of the behavior.
 @param inputString A string that will be cut into tokens
 @param keepToken A vector of character that specify some character that should be made into a single character token
 @param discardToken A vector of character that are to be used like white spaces to break tokens
-
 @author Luc Lussier
 */
-void string_to_token(Vector<string> &outputVector, const string &inputString, Vector<char> &keepToken, Vector<char> &discardToken);
+void string_to_token(Vector<std::string> &outputVector, const std::string &inputString, Vector<char> &keepToken, Vector<char> &discardToken);
 
 
 
@@ -40,12 +37,10 @@ commands which can contain an arbitrary number of parameters.
 
 @param outputVector A vector<string> to which string tokens are added.
 @param inputString A string that will be cut into tokens.
-
 @return True if the string contain a command and False if no command is found inside the string.
-
 @author Luc Lussier
 */
-bool string_contain_nl_sys_command(Vector<string> &outputVector, string &inputString);
+bool string_contain_nl_sys_command(Vector<std::string> &outputVector, std::string &inputString);
 
 
 
@@ -56,23 +51,19 @@ string separator or by default by a white space.
 @param startOfStringIt Iterator pointing to the first element to add to the string.
 @param inputVector A vector<string> that will be transformed back into a string.
 @param cSeparator Default parameter. The string added between the string token as a separator while forming the new string. The default is " ".
-
 @return A string formed from the inputVector
-
 @author Luc Lussier
 */
-string vector_of_string_to_string(Vector<string>::iterator &startOfStringIt, Vector<string> &inputVector, string stringSeparator = " ");
+std::string vector_of_string_to_string(Vector<std::string>::iterator &startOfStringIt, Vector<std::string> &inputVector, std::string stringSeparator = " ");
 
 /** Global function.
 This function is used to transform an integer into a string.
 
 @param inputInteger The integer to transform into a string.
-
 @return a string.
-
 @author Luc Lussier
 */
-string int_to_string(int inputInteger);
+std::string int_to_string(int inputInteger);
 
 
 #endif

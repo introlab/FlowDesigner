@@ -23,12 +23,12 @@ protected:
       
 public:
 
-   GUINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name,
-		  const string &_objType = "any", const string &_description = "No description available");
+   GUINetTerminal(UITerminal *_terminal, NetTermType _type, const std::string &_name,
+		  const std::string &_objType = "any", const std::string &_description = "No description available");
    void setup();
    ~GUINetTerminal();
    gint event(GdkEvent *event);
-   string find_unique_name(const string &_name, NetTermType _type);
+   std::string find_unique_name(const std::string &_name, NetTermType _type);
    void setAbsPos(double x, double y);
 
 };

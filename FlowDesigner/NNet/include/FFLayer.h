@@ -32,7 +32,7 @@ class FFLayer : public Object {
    float *weights;
 
    /*type of activation function (tansig, sigmoid, lin)*/
-   string funcType;
+   std::string funcType;
 
    /**Offset of the layer weight vector in the network weight vector*/
    int weightOffset;
@@ -53,10 +53,10 @@ class FFLayer : public Object {
    //FFLayer(float *_weights) : weights(_weights) {};
 
    /**Standard constructor*/
-   FFLayer(int _nbNeurons, int _nbInputs, float *_weights, int _weightOffset, int _neuronOffset, string type = "tansig");
+   FFLayer(int _nbNeurons, int _nbInputs, float *_weights, int _weightOffset, int _neuronOffset, std::string type = "tansig");
 
    /**Unimplemented yet (not sure if we *should* implement it)*/
-   FFLayer(const FFLayer &layer) {cerr << "I wouldn't do that if I were you\n";}
+   FFLayer(const FFLayer &layer) {std::cerr << "I wouldn't do that if I were you\n";}
    
    /**Called after reading a layer to setup the weight vector correctly*/
    void setupAfterRead(float *_weights, int _weightOffset, int _neuronOffset);
@@ -91,7 +91,7 @@ class FFLayer : public Object {
 	 if (deriv)
 	    deriv_sigmoid(value, deriv, nbNeurons);
       } else {
-	 cerr << "unknown\n";
+	 std::cerr << "unknown\n";
 	 func(value, value, nbNeurons);
 	 if (deriv)
 	    deriv_func(value, deriv, nbNeurons);
@@ -126,15 +126,15 @@ class FFLayer : public Object {
    float *getWeights(int i) {return weights + i*(nbInputs+1);}
 
    /**Writes the layer to a stream*/
-   void printOn(ostream &out) const;
+   void printOn(std::ostream &out) const;
 
    /**Reads the layer from a stream (remember to call setupAfterRead after that*/
-   void readFrom (istream &in);
+   void readFrom (std::istream &in);
 
    void setDerivOffset(float d) {derivOffset=d;}
 };
 
 /**Extraction operator for FFLayer*/
-istream &operator >> (istream &in, FFLayer &layer);
+std::istream &operator >> (std::istream &in, FFLayer &layer);
 
 #endif

@@ -10,6 +10,7 @@
 #include "Vector.h"
 #include "FuzzyOperators.h"
 
+using namespace std;
 
 DECLARE_NODE(FuzzyRule)
 DECLARE_TYPE(FuzzyRule)

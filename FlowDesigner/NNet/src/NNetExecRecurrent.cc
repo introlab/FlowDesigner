@@ -5,6 +5,8 @@
 #include "Vector.h"
 #include "FFNet.h"
 
+using namespace std;
+
 class NNetExecRecurrent;
 
 DECLARE_NODE(NNetExecRecurrent)

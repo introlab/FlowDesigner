@@ -1,6 +1,5 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
-
 #ifndef TYPE_TRAITS_H
 #define TYPE_TRAITS_H
 
@@ -37,17 +36,25 @@ _DEF_C_TYPE(unsigned long)
 
 _DEF_OBJECTPTR_TYPE(ObjectRef)
 
-//_DEF_C_TYPE(string)
+//_DEF_C_TYPE(std::string)
 
-#ifndef BROKEN_TEMPLATES
+template<class T>
+struct TypeTraits<std::complex<T> > 
+{
+	enum {kind=TTraits::Basic};
+};
 
-template<class T>struct TypeTraits<complex<T> > {enum {kind=TTraits::Basic};};
-template<class T>struct TypeTraits<RCPtr<T> > {enum {kind=TTraits::ObjectPointer};};
+template<class T>
+struct TypeTraits<RCPtr<T> > 
+{
+	enum {kind=TTraits::ObjectPointer};
+};
 
 //KLUDGE: This is a kludge but it should get the right traits for pointer types
-template<class T>struct TypeTraits<T*> {enum {kind=TTraits::ObjectPointer+TypeTraits<T>::kind};};
-
-#endif /*ifndef BROKEN_TEMPLATES*/
-
+template<class T>
+struct TypeTraits<T*> 
+{
+	enum {kind=TTraits::ObjectPointer+TypeTraits<T>::kind};
+};
 
 #endif

@@ -3,7 +3,7 @@
 #ifndef UITERMINAL_H
 #define UITERMINAL_H
 
-using namespace std;
+
 
 #include <vector>
 #include <string>
@@ -19,13 +19,13 @@ class UITerminal {
 protected:
 
    /**The terminal name*/
-   string name;
+   std::string name;
    
    /**The terminal type*/
-   string type;
+   std::string type;
   
    /**The description of the terminal */
-   string description;
+   std::string description;
 
    /**The node that owns this terminal*/
    UINode *node;
@@ -37,7 +37,7 @@ protected:
    bool isInput;
 
    /**All connected links (only one allowed for inputs)*/
-   vector <UILink *> connections;
+   std::vector <UILink *> connections;
 
    /**The net input/output connected to the terminal (NULL if none)*/
    UINetTerminal *netTerminal;
@@ -73,7 +73,7 @@ public:
    void disconnect(UILink *link) 
    {
       //Now, this should comply to ANSI C++
-      vector<UILink *>::iterator i=connections.begin();
+      std::vector<UILink *>::iterator i=connections.begin();
       while (i != connections.end())
       {
 	 if (*i == link)
@@ -95,14 +95,14 @@ public:
    /**connect to a network terminal*/
    void disconnectNetTerminal();
 
-   const string &getName() const {return name;}
-   const string &getType() const {return type;}
-   const string &getDescription() const {return description;}
+   const std::string &getName() const {return name;}
+   const std::string &getType() const {return type;}
+   const std::string &getDescription() const {return description;}
    bool isInputTerminal() const {return isInput;}
    
    bool isConnected() const {return connections.size()!=0 || netTerminal;}
    
-   vector<UILink *> getConnections() const {return connections;}
+   std::vector<UILink *> getConnections() const {return connections;}
 
    UINetTerminal* getNetTerminal() {return netTerminal;}
 

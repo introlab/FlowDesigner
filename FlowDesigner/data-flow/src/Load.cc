@@ -5,6 +5,8 @@
 #include "ObjectParser.h"
 #include "Stream.h"
 
+using namespace std;
+
 class Load;
 DECLARE_NODE(Load)
 /*Node

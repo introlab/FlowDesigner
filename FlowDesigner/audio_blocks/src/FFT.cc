@@ -6,6 +6,7 @@
 #include <map>
 #include "FFTWrap.h"
 
+using namespace std;
 
 class FFT;
 

@@ -4,6 +4,8 @@
 #include "Buffer.h"
 #include "Vector.h"
 
+using namespace std;
+
 class Normalize;
 
 DECLARE_NODE(Normalize)

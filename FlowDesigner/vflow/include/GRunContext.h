@@ -22,13 +22,13 @@ class GRunContext {
    ParameterSet &params;
    GtkWidget *win;
    GtkWidget *less;
-   string less_text;
+   std::string less_text;
    Network *net;
 
   public:
    GRunContext(UIDocument *_doc, ParameterSet &_params);
    
-   void less_print(const string &message);
+   void less_print(const std::string &message);
    
    void less_print(const char *message);
    

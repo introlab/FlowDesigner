@@ -8,6 +8,7 @@
 #include "ObjectParser.h"
 
 //@implements core
+using namespace std;
 
 const vector<string> &ObjectParam::allTypes(bool allowSubnetParam)
 {

@@ -4,6 +4,8 @@
 #include "UIDocument.h"
 #include "Network.h"
 
+using namespace std;
+
 class BuildDoc;
 
 DECLARE_NODE(BuildDoc)

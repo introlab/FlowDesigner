@@ -6,6 +6,8 @@
 #include "Matrix.h"
 #include "Vector.h"
 
+using namespace std;
+
 class TransMatrix;
 
 DECLARE_NODE(TransMatrix)

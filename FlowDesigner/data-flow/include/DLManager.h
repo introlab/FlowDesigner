@@ -3,7 +3,7 @@
 #ifndef DLMANAGER_H
 #define DLMANAGER_H
 
-using namespace std;
+
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -30,18 +30,18 @@ using namespace std;
 typedef void *DL_HANDLE_TYPE;
 
 /**How to open a library*/
-inline DL_HANDLE_TYPE _DL_OPEN(string path, int debug = 1) 
+inline DL_HANDLE_TYPE _DL_OPEN(std::string path, int debug = 1) 
 {
-   //cerr << "opening lib " << path.c_str() << endl;
+   //std::cerr << "opening lib " << path.c_str() << std::endl;
    DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY|RTLD_GLOBAL);
    if (!library && debug) 
-      cerr << "Toolbox load error: " << dlerror() << endl;
+      std::cerr << "Toolbox load error: " << dlerror() << std::endl;
 
    return library;
 }
 
 /**How to search for a specific symbol */
-inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, const string &symbol) 
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, const std::string &symbol) 
 {
    return dlsym (lib, symbol.c_str());
 }
@@ -66,7 +66,7 @@ inline DL_HANDLE_TYPE _DL_OPEN(string path, int debug = 0)
       perror ("Load error");
    return library;
 }
-inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, std::string symbol) 
 {
    void *tmp;
    shl_findsym (&lib, symbol.c_str(), TYPE_PROCEDURE, &tmp);
@@ -92,13 +92,13 @@ class LoadedLibrary {
 
 public:
    /**Default constructor (takes the path to the shared library)*/
-   LoadedLibrary(const string &path) 
+   LoadedLibrary(const std::string &path) 
       : lib(_DL_OPEN(path))
       , count(1)
-   {if (!lib) throw new GeneralException(string("couldn't load library ")+path,__FILE__,__LINE__);}
+   {if (!lib) throw new GeneralException(std::string("couldn't load library ")+path,__FILE__,__LINE__);}
    
    /**returns a pointer to the function named 'symbol'*/
-   void *get_proc (string symbol) 
+   void *get_proc (std::string symbol) 
    {return _DL_GET_SYM(lib,symbol);}
    
    /**Destructor*/
@@ -115,32 +115,32 @@ public:
 class DLManager {
 
    /**a list (STL map) of loaded libraries indexed by name (path)*/
-   static map<string,LoadedLibrary* > loaded;
+   static std::map<std::string,LoadedLibrary* > loaded;
 
 public:
 
    /**Returns a pointer to a Library specified by 'name' 
       (loads it if it hasn't been done before)*/
-   static LoadedLibrary *getLib(const string &name);
+   static LoadedLibrary *getLib(const std::string &name);
 
 
 };
 
 class ToolboxData {
-   string fullname;
+   std::string fullname;
    DL_HANDLE_TYPE handle;
   public:
    ToolboxData() {}
-   ToolboxData(string _fullname, DL_HANDLE_TYPE _handle)
+   ToolboxData(std::string _fullname, DL_HANDLE_TYPE _handle)
       : fullname(_fullname)
       , handle(_handle)
       {}
 };
 
 class ToolboxList {
-   static map<string, ToolboxData> loadedToolboxes;
+   static std::map<std::string, ToolboxData> loadedToolboxes;
   public:
-   static vector<string> load(const vector<string> &list, int debug);
+   static std::vector<std::string> load(const std::vector<std::string> &list, int debug);
 };
 
 

@@ -16,6 +16,8 @@
 #include <sstream>
 #include "GUINote.h"
 
+using namespace std;
+
 /*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
                                      GUINetwork      *net)

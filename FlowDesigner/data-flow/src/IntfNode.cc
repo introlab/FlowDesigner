@@ -3,6 +3,7 @@
 #include "IntfNode.h"
 
 //@implements core
+using namespace std;
 
 IntfNode::IntfNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)

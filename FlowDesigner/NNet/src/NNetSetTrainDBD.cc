@@ -5,6 +5,8 @@
 #include "ObjectRef.h"
 #include "NNetSet.h"
 
+using namespace std;
+
 class NNetSetTrainDBD;
 
 DECLARE_NODE(NNetSetTrainDBD)

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 class ConstantVector;
 
 DECLARE_NODE(ConstantVector)

@@ -4,6 +4,8 @@
 #include "BufferedNode.h"
 #include "operators.h"
 
+using namespace std;
+
 class Greater;
 DECLARE_NODE(Greater)
 /*Node

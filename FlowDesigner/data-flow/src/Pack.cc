@@ -4,6 +4,8 @@
 #include "net_types.h"
 #include "Vector.h"
 
+using namespace std;
+
 DECLARE_NODE(Pack)
 /*Node
  *

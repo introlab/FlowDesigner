@@ -8,6 +8,8 @@
 #include "ObjectParser.h"
 #include "Vector.h"
 
+using namespace std;
+
 class NNetSetInit;
 
 DECLARE_NODE(NNetSetInit)

@@ -3,6 +3,8 @@
 #include "BufferedNode.h"
 #include "CompositeType.h"
 
+using namespace std;
+
 class MakeComposite;
 
 DECLARE_NODE(MakeComposite)

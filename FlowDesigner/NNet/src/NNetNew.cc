@@ -8,6 +8,8 @@
 #include <strstream>
 #include "Vector.h"
 
+using namespace std;
+
 class NNetNew;
 
 DECLARE_NODE(NNetNew)

@@ -19,6 +19,8 @@
 
 #include "BinaryAND.h"
 
+using namespace std;
+
 DECLARE_NODE(BinaryAND);
 
 /*Node
