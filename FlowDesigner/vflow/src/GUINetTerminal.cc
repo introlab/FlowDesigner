@@ -91,7 +91,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
 	 && my_terminals[i] != static_cast<UINetTerminal*>(this)
 	 && my_terminals[i]->getType() == type) {
        
-       cerr<<"*WARNING* duplicate terminal name"<<endl;
+       cerr<<"*WARNING* duplicate terminal name : "<<name<<endl;
        
        if (type == INPUT || type == OUTPUT) {
 	 //updating input/output
