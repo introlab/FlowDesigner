@@ -3,9 +3,9 @@
 #ifndef GUINODEPARAMETERS_H
 #define GUINODEPARAMETERS_H
 
-#include <gnome.h>
 #include <string>
 #include <vector>
+#include <gnome.h>
 //#include <tree.h>
 #include "UINodeParameters.h"
 #include "GUINode.h"
