@@ -20,6 +20,9 @@ protected:
 
 
 public:
+
+   GnomeCanvasItem * getItem() {return item;}
+
    GUITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
    ~GUITerminal() {}
@@ -45,6 +48,22 @@ public:
       wy=y;
       gnome_canvas_item_i2w(item->parent, &wx, &wy);
    }
+
+   void updatePos() {
+
+     double x1,y1,x2,y2;
+     
+     
+     gnome_canvas_item_get_bounds(item,&x1,&y1,&x2,&y2);
+     
+     x = (x1+x2) /2.0;
+     y = (y1+y2) /2.0;
+     
+
+
+   }
+
+
 
 };
 

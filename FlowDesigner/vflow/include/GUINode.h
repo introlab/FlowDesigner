@@ -9,60 +9,109 @@
 #include <tree.h>
 #include <fstream.h>
 
+
+class TerminalWidget {
+
+ public:
+
+  //constructor
+  TerminalWidget(GnomeCanvasItem *terminal, GnomeCanvasItem *text, bool display = true)
+    :m_terminal(terminal),m_text(text), m_display(display){
+  }
+
+  //copy constructor
+  TerminalWidget(const TerminalWidget &cpy) {
+    m_terminal = cpy.m_terminal;
+    m_text = cpy.m_text;
+    m_display = cpy.m_display;
+  }
+
+  //operator =
+  TerminalWidget & operator = (const TerminalWidget &eqs) {
+    m_terminal = eqs.m_terminal;
+    m_text = eqs.m_text;
+    m_display = eqs.m_display;
+    return *this;
+  }
+
+  //destructor
+  ~TerminalWidget() {;}
+
+  //the terminal (ellipse)
+  GnomeCanvasItem *m_terminal;
+  //the terminal name
+  GnomeCanvasItem *m_text;
+  //display text flag
+  bool m_display;
+
+};
+
+
 class GUINetwork;
 
 class GUINode : public UINode {
-  protected:
-   GnomeCanvasGroup *group;
+ protected:
+  
+  GnomeCanvasGroup *group;
+  
+  GtkWidget *popupMenu;
+  
+  bool grab;
+  
+  bool dragging;
+  
 
-   GnomeCanvasItem *nodeRect;
+  //widgets to draw
+  vector<TerminalWidget> m_input_widgets;
+  vector<TerminalWidget> m_output_widgets;
 
-   GtkWidget *popupMenu;
+  GnomeCanvasItem *nodeRect;
+  GnomeCanvasItem *nodeText;
 
-   bool grab;
-
-   bool dragging;
+  void initialize_widgets();
+  void redraw();
+  
 
   public:
 
 
-   //test (DL)
-   void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
-
-
-   GUINode(UINetwork* _net, string _name, string _type, double x, double y);
-
-   GUINode(UINetwork* _net, xmlNodePtr def);
-
-   ~GUINode();
-
-   GnomeCanvasGroup * getGroup() {return group;}
-
-   void draw();
-
-   void createPopup();
-
-   gint event(GdkEvent *event);
-
-   void doGrab();
-
-   void move (double dx,double dy);
-
-   void propertiesShow();
-/*
-   void setAsCondition();
-   
-   void unsetAsCondition();
-*/
-//   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
-
-   virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
-
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
-
-   virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
-   
-   friend GUINetwork;
+  //test (DL)
+  void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
+  
+  
+  GUINode(UINetwork* _net, string _name, string _type, double x, double y);
+  
+  GUINode(UINetwork* _net, xmlNodePtr def);
+  
+  ~GUINode();
+  
+  GnomeCanvasGroup * getGroup() {return group;}
+  
+  void draw();
+  
+  void createPopup();
+  
+  gint event(GdkEvent *event);
+  
+  void doGrab();
+  
+  void move (double dx,double dy);
+  
+  void propertiesShow();
+  /*
+    void setAsCondition();
+    
+    void unsetAsCondition();
+  */
+  //   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
+  
+  virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
+  
+  virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
+  
+  virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
+  
+  friend GUINetwork;
 
 };
 

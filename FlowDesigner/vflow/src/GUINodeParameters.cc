@@ -46,7 +46,14 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, gpointer user_
 
 
   //let's add the required UITerminal & GUITerminal
-
+  GUINode *node = dynamic_cast<GUINode*>(static_cast<GUINodeParameters*>(user_data)->getUINode());
+  
+  char input_name[9];
+  sprintf(input_name,"USER_%3.3i",user_count++);
+  
+  
+  cerr<<"creating input : "<<input_name<<endl;
+  node->addTerminal(string(input_name), UINetTerminal::OUTPUT);
 
 
   cout<<"output adjustment callback"<<endl;

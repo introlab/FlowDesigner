@@ -47,6 +47,10 @@ gint GUITerminal::event(GdkEvent *event)
   item_y = event->button.y;
   //gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
 
+
+  updatePos();
+
+
   switch (event->type) 
     {
     case GDK_BUTTON_PRESS:
