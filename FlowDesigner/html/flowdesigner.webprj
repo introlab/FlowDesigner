@@ -1,6 +1,6 @@
 <!DOCTYPE webproject>
 <webproject>
-<project usePreviewPrefix="0" type="Local" previewPrefix="file:file%3A//" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
+<project usePreviewPrefix="0" previewPrefix="file:file%3A//" type="Local" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
 <upload remote_host="shell.sf.net" remote_port="22" remote_path="/home/groups/f/fl/flowdesigner/htdocs" remote_protocol="sftp" user="maestro" />
 <defaultDTD>-//w3c//dtd html 4.01 frameset//en</defaultDTD>
 <templates>templates/</templates>
@@ -8,7 +8,7 @@
 <author>Dominic Letourneau</author>
 <email>Dominic.Letourneau@USherbrooke.ca</email>
 <item upload_time="" url="CVS/" />
-<item upload_time="1074461169" modified_time="1074461169" url="CVS/Entries" />
+<item upload_time="1074553194" modified_time="1074553194" url="CVS/Entries" />
 <item upload_time="1074453989" modified_time="1074453989" url="CVS/Repository" />
 <item upload_time="1074453989" modified_time="1074453989" url="CVS/Root" />
 <item upload_time="" url="images/" />
@@ -48,7 +48,7 @@
 <item upload_time="1074455331" modified_time="1074455331" url="decoding.html" />
 <item upload_time="1074455331" modified_time="1074455331" url="description.html" />
 <item upload_time="1074455187" modified_time="1074455187" url="doc.css" />
-<item upload_time="1074460922" modified_time="1074460922" url="doc.html" />
+<item upload_time="1074556330" modified_time="1074556330" url="doc.html" />
 <item upload_time="1074460922" modified_time="1074460922" url="download.html" />
 <item upload_time="1074455187" modified_time="1074455187" url="extend.html" />
 <item upload_time="1074455187" modified_time="1074455187" url="FAQ.html" />
