@@ -4,6 +4,7 @@
 #include <string>
 #include <typeinfo>
 #include "Object.h"
+#include <sstream>
 
 using namespace std;
 
@@ -334,6 +335,41 @@ void Node::throw_error(bool send_ptr, string message, char *_file, int _line)
 {
    throw new NodeException (send_ptr ? this : NULL,message,_file,_line);
 }
+
+
+
+
+
+
+
+void NodeException::print(ostream &out = cerr) 
+{
+   if (frozen)
+   {
+      out << message;
+   } else {
+      if (node)
+      {
+	 out << file << " line " << line << ": Node " << node->getName() 
+	     << " (type " << typeid(*node).name() << ") " << message << endl;
+      } else {
+	 out << file << ", line " << line << ": " << message << endl;
+      }
+   }
+}
+
+void NodeException::freeze()
+{
+   if (frozen)
+      return;
+   
+   ostringstream outStr;
+   print(outStr);
+   message = outStr.str();
+   frozen = true;
+}
+
+
 
 
 //} //namespace DataFlow

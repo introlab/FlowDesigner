@@ -29,6 +29,10 @@ public:
        Every exception should be able to print a message. */
    virtual void print (ostream &out = cerr) = 0;
 
+   /**Freezes the error message. This is used when the object an exception
+      refers (or might refer) to will be destroyed*/
+   virtual void freeze() {}
+
    ///Destructor
    virtual ~BaseException(){;}
 
@@ -107,6 +111,12 @@ public:
    virtual void print(ostream &out = cerr) {
       for (int i=0;i<stack.size();i++)
 	 stack[i]->print(out);
+   }
+
+   virtual void freeze()
+   {
+      for (int i=0;i<stack.size();i++)
+	 stack[i]->freeze();
    }
 };
 

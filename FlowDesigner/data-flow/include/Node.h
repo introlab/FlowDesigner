@@ -14,6 +14,7 @@
 #include "ParameterSet.h"
 
 #include "NodeFactory.h"
+
 //class _NodeFactory;
 
 //using namespace std;
@@ -272,24 +273,29 @@ public:
       , node(_node)
       , file(_file)
       , line(_line)
+      , frozen(false)
    {}   
    /**the print method*/
-   virtual void print(ostream &out = cerr) 
-   {
-      if (node)
-         out << file << " line " << line << ": Node " << node->getName() 
-             << " (type " << typeid(*node).name() << ") " << message << endl;
-      else out << file << ", line " << line << ": " << message << endl;
-   }
+   virtual void print(ostream &out = cerr);
+
+   virtual void freeze();
+
 protected:
    /**the message*/
    string message;
+
    /**the node pointer*/
    Node *node;
+
    /**the file name*/
    string file;
+
    /**the line number*/
    int line;
+
+   /**Whether the exception is frozen*/
+   bool frozen;
+
 };
 
 #define DECLARE_NODE(NodeTypeName) int dummy_initializer_for ## NodeTypeName = \

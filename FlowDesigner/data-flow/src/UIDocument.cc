@@ -742,6 +742,15 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
       net = getNetworkNamed("MAIN")->build(_name, params);
       net->verifyConnect();
       return net;
+   } catch (BaseException *e)
+   {
+      e->freeze();
+      if (net)
+      {
+	 net->cleanupNotify();
+	 delete net;
+      }
+      throw e;
    } catch (...)
    {
       if (net)

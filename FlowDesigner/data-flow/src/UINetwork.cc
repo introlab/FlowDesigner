@@ -565,6 +565,12 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    if (type!=subnet && !found_condition)
       throw new GeneralException("No condition defined for iterator", __FILE__,__LINE__);
    //insert netTerminals
+   } catch (BaseException *e)
+   {
+      e->freeze();
+      net->cleanupNotify();
+      delete net;
+      throw e;
    } catch (...)
    {
       net->cleanupNotify();
