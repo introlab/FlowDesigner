@@ -381,6 +381,7 @@ void Probe::trace()
 
 ObjectRef Probe::getOutput(int output_id, int count)
 {
+   //cerr << "before\n";
    if (output_id==outputID)
    {
 
@@ -402,6 +403,7 @@ ObjectRef Probe::getOutput(int output_id, int count)
 	 display();
       if (traceEnable && (count % skip == 0) && count >= breakAt)
 	 trace();
+      //cerr << "after\n";
       return inputValue;
       
    }

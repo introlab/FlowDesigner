@@ -69,13 +69,14 @@ public:
 
    ObjectRef getOutput(int output_id, int count)
    {
-      int i,j;
+      //cerr << "Accum" << endl;
+      //int i,j;
       //for (i=processCount+1;i<=count;i++)
       //{
-	 ObjectRef inputValue = getInput(inputID,i);
+	 ObjectRef inputValue = getInput(inputID,count);
 	 if (inputValue->status == Object::valid)
 	 {
-	    ObjectRef accumValue = getInput(accumID,i);
+	    ObjectRef accumValue = getInput(accumID,count);
 	    Vector<ObjectRef> &accum = object_cast<Vector<ObjectRef> > (accumValue);
 	    
 	    accum.push_back(inputValue);
