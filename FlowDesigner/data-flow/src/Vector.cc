@@ -25,8 +25,64 @@ DECLARE_TYPE(Vector<string>)
 DECLARE_TYPE(Vector<String>)
 
 VectorPool<float> floatVectorPool;
-
 VectorPool<double> doubleVectorPool;
+
+//pretty print specialization
+
+void Vector<float>::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<endl;
+}
+
+void Vector<double>::prettyPrint(ostream &out) const {
+ for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<endl;
+}
+
+void Vector<int>::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<endl;
+}
+
+void Vector<ObjectRef>::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    (*this)[i]->prettyPrint(out);
+    out<<endl;
+  } 
+}
+
+void Vector<complex<float> >::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<endl;
+}
+
+void Vector<complex<double> >::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<endl;
+}
+
+
+void Vector<string>::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<endl;
+  }
+}
+
+void Vector<String>::prettyPrint(ostream &out) const {
+  for (int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<endl;
+  }
+}
 
 template <>
 inline void _vector_printOn(const Vector<string> &v, ostream &out)

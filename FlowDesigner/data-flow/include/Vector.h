@@ -141,6 +141,8 @@ public:
 
    inline void erase(iterator item);
 
+   void prettyPrint(ostream &out=cout) const;
+
    void printOn(ostream &out) const;
    
    void readFrom(istream &in=cin);
@@ -338,6 +340,12 @@ template <class T>
 void Vector<T>::printOn(ostream &out) const
 {
    _vector_printOn(*this, out);
+}
+
+template <class T>
+void Vector<T>::prettyPrint(ostream &out) const
+{
+  _vector_printOn(*this,out);
 }
 
 template <class T>

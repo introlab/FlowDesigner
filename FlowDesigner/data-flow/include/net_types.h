@@ -75,6 +75,11 @@ public:
    {
       out << "<" << className() << " " << value << " >";
    }
+
+   virtual void prettyPrint(ostream &out=cout) const {
+     out << value << " ";
+   }
+
    void readFrom(istream &in)
    {
       in >> value;
