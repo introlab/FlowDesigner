@@ -89,7 +89,7 @@ void GMM::split1()
       }
    }
    //cout << "spliting " << max_gauss << endl;
-   gaussians[nb_gaussians]=new Gaussian(*(gaussians[max_gauss]));
+   gaussians[nb_gaussians]= Ptr<Gaussian> (new Gaussian(*(gaussians[max_gauss])));
    vector <float> &mean = gaussians[nb_gaussians]->getMean();
    for (unsigned int j=0;j<mean.size();j++)
       mean[j]+=.00001*(rand()%100-49.5);
@@ -104,7 +104,7 @@ void GMM::binary_split()
    apriori.resize(nb_gaussians);
    for (int i=0;i<old_size;i++)
    {
-      gaussians[i+old_size]=new Gaussian(*(gaussians[i]));
+      gaussians[i+old_size]= Ptr<Gaussian> (new Gaussian(*(gaussians[i])));
       vector <float> &mean = gaussians[i+old_size]->getMean();
       for (unsigned int j=0;j<mean.size();j++)
       {
@@ -254,7 +254,14 @@ void GMM::readFrom (istream &in)
       else if (tag == "dimensions")
          in >> dimensions;
       else if (tag == "gaussians")
-         in >> gaussians;
+      {
+         vector<ObjectRef > tmp;
+         in >> tmp;
+         gaussians.resize(tmp.size());
+         for (int i = 0; i<tmp.size();i++)
+            gaussians[i] = tmp[i];
+         //in >> gaussians;
+      }
       else if (tag == "mode")
          in >> mode;
       else if (tag == "nb_frames_aligned")

@@ -95,7 +95,7 @@ public:
             output.status = inputValue->status;
             return;
          }
-         frames[j] = inputValue.detach();
+         frames[j] = inputValue.get();
          //frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
       }      
       

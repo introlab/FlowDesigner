@@ -42,6 +42,18 @@ protected:
    /**Dimension (same as the mean and covariance dimension)*/
    int            dimension;
 
+   /**Was the gaussian loaded using indexes for mean*/
+   bool using_meanID;
+   
+   /**Was the gaussian loaded using indexes for covariance*/
+   bool using_covarianceID;
+   
+   /***/
+   int meanID;
+
+   /***/
+   int covarianceID;
+
 public:
    /**Empty gaussian constructor*/
    Gaussian() : dimension(0) {}
@@ -50,11 +62,22 @@ public:
 
    /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
     *(allows to create gaussians with either diagonal or full covariance*/
-   Gaussian(int dim, Covariance *(*cov_new)(int)) 
+   Gaussian(int dim, Covariance *(*cov_new)(int))
       : mean(new Vector<float> (dim,0.0))
       , covariance(cov_new (dim))
       , accum_count(0)
       , dimension(dim)
+      , using_meanID(false)
+      , using_covarianceID(false)
+   {}
+
+   Gaussian(int dim, int _meanID, int _covarianceID)
+      : accum_count(0)
+      , dimension(dim)
+      , using_meanID(true)
+      , using_covarianceID(true)
+      , meanID(_meanID)
+      , covarianceID(_covarianceID)
    {}
 
    /**Copy constructor*/

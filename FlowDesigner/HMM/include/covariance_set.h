@@ -18,8 +18,9 @@
 #define COVARIANCE_SET_H
 
 #include "covariance.h"
+#include "Object.h"
 
-class {
+class CovarianceSet {
 protected:
    Vector<Ptr<Covariance> > covariances;
 public:

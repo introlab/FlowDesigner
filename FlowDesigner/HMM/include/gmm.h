@@ -22,57 +22,62 @@
 
 class GMM;
 
-///The result of scoring a frame against a GMM
+/**The result of scoring a frame against a GMM*/
 class Score {
 public:
-   ///The log score
+   /**The log score*/
    float score;
 
-   ///The ID of the nearest gaussian in the GMM used
+   /**The ID of the nearest gaussian in the GMM used*/
    int gaussian_id;
 
-   ///Pointer to the frame scored
+   /**Pointer to the frame scored*/
    float * frame;
 
-   ///Pointer to the GMM used when scoring
+   /**Pointer to the GMM used when scoring*/
    const GMM *gmm;
 public:
 
-   ///Friend of GMM class
+   /**Friend of GMM class*/
    friend class GMM;
 }
 ;
 
-///Gaussian Mixture Model (GMM) class
+/**Gaussian Mixture Model (GMM) class*/
 class GMM : public Object{
 public:
 
    typedef enum {real, accum} GMM_Mode;
 protected:
    
-   ///STL vector containing all the gaussians in the GMM
-   vector<Gaussian *>  gaussians;
+   /**STL vector containing all the gaussians in the GMM*/
+   //vector<Gaussian *>  gaussians;
+   vector<Ptr<Gaussian> >  gaussians;
 
-   ///STL vector containing all the apriori weights of the gaussians
+   /**STL vector containing all the apriori weights of the gaussians*/
    vector<float>       apriori;
 
-   ///Number of gaussians in the GMM
+   /**Number of gaussians in the GMM*/
    int                 nb_gaussians;
 
-   ///Whether of not the GMM trained (like real/accum mode) (GMM_Mode)
+   /**Whether of not the GMM trained (like real/accum mode) (GMM_Mode)*/
    int                 mode;
 
-   ///Number of frames aligned to (used to train) the GMM
+   /**Number of frames aligned to (used to train) the GMM*/
    int                 nb_frames_aligned;
 
-   ///Number of dimensions
+   /**Number of dimensions*/
    int dimensions;
+
+   /**STL vector containing all the gaussian IDs in the GMM*/
+   vector<int>  gaussianIDs;
 
 public:
    /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
       covariance pseudo-factory*/
    GMM(int nb_gauss, int dim, Covariance *(*cov_new)(int)) 
-      : gaussians(vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
+      : gaussians(vector<Ptr<Gaussian> >(nb_gauss))
+      //: gaussians(vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
       , apriori (vector<float>(nb_gauss,0.0)) 
       , nb_gaussians (nb_gauss)
       , mode(accum)
@@ -80,18 +85,19 @@ public:
       , dimensions (dim)
    {
       for (int i=0;i<nb_gauss;i++)
-         gaussians[i] = new Gaussian (dim, cov_new);
+         gaussians[i] = Ptr<Gaussian> (new Gaussian (dim, cov_new));
    }
 
    GMM ()
-      : gaussians(vector<Gaussian *>(1,(Gaussian *)NULL))
+   //: gaussians(vector<Gaussian *>(1,(Gaussian *)NULL))
+      : gaussians(vector<Ptr<Gaussian> >())
       , apriori (vector<float>(1,0.0))
       , nb_gaussians (1)
       , mode(accum)
       , nb_frames_aligned(0)
       , dimensions(1)
    {
-      gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
+      //gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
    }
 
    GMM (string file);

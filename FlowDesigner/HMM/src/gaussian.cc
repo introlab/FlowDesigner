@@ -42,17 +42,6 @@ void Gaussian::to_real()
 
 Gaussian::~Gaussian()
 {
-   /*if (mean != 0)
-  {
-    delete mean;
-    mean       = 0;
-  }
-  
-  if (covariance != 0)
-  {
-    delete covariance;
-    covariance = 0;
-    }*/
 }
 
 
@@ -84,16 +73,22 @@ void Gaussian::readFrom (istream &in)
          Ptr<Vector<float> > tmp(new Vector<float>);
          in >> *tmp;
          mean = tmp;
-         //ObjectRef tmp;
-         //in >> tmp;
-         //mean = tmp;
+         using_meanID=false;
       }
       else if (tag == "covariance")
       {
-         //covariance = Ptr<Covariance> (new DiagonalCovariance (in));
          ObjectRef tmp;
          in >> tmp;
-         covariance = tmp;         
+         covariance = tmp;
+         using_covarianceID=false;
+      } else if (tag == "covarianceID")
+      {
+         in >> covarianceID;
+         using_covarianceID=true;
+      } else if (tag == "meanID")
+      {
+         in >> meanID;
+         using_meanID=true;
       } else 
          throw ParsingException ("unknown argument: " + tag);
       if (!in) throw ParsingException ("Parse error trying to build " + tag);
