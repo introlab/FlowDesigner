@@ -78,7 +78,15 @@ public:
 
       for (int i=0;i<outputLength;i++)
          output[i]=mean[i];
-       
+      {
+	 static int count=0;
+	 static double sse=0;
+	 for (int i=0;i<outputLength;i++)
+	    sse += (mean[i]-in[i]) * (mean[i]-in[i]);
+	 count++;
+	 if (count % 100 == 0)
+	    cout << sse/outputLength/count << endl;
+      }   
       output.status = Object::valid;
    }
 
