@@ -10,6 +10,7 @@ INCLUDES = \
 	$(GNOME_XML_INCLUDE) \
 	$(FFTW_INCLUDES) \
 	$(GNOME_GTHR_INCLUDE) \
+	$(GNOME_PIXBUF_INCLUDE) \
 	-I$(top_srcdir)/../data-flow/include \
 	-I$(top_srcdir)/../audio_blocks/include \
 	-I$(top_srcdir)/include
@@ -47,4 +48,4 @@ LDFLAGS = $(FFTW_LDFLAGS)
 
 LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \
-	$(LIB_FFTW)
+	$(LIB_FFTW) $(GNOME_PIXBUF_LIB)
