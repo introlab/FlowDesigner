@@ -1,14 +1,16 @@
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 
-INCLUDES = -I$(top_srcdir)/data-flow/include 
+bin_SCRIPTS = info2def.pl
 
-bin_PROGRAMS = dist matdist
+# INCLUDES = -I$(top_srcdir)/data-flow/include 
 
-dist_SOURCES = dist.cc 
+# bin_PROGRAMS = dist matdist
 
-matdist_SOURCES = matdist.cc 
+# dist_SOURCES = dist.cc 
 
-LDFLAGS=
+# matdist_SOURCES = matdist.cc 
 
-LDADD =
+# LDFLAGS=
+
+# LDADD =
 
