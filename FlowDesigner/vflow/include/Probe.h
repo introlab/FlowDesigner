@@ -4,7 +4,11 @@
 
 #include "Node.h"
 #include <gnome.h>
-#include <semaphore.h>
+//
+//#ifdef HAVE_SEMAPHORE_H
+//#include <semaphore.h>
+//#endif
+
 #include <pthread.h>
 
 #ifdef HAVE_PTHREAD_CANCEL

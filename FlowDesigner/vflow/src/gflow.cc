@@ -1,10 +1,10 @@
+#include <locale.h>
 #include "UIDocument.h"
 #include <string>
 #include "ParameterSet.h"
 #include "ObjectRef.h"
 #include <pthread.h>
 #include <gnome.h>
-#include <locale.h>
 #include "Network.h"
 #include <sstream>
 #include "GRunContext.h"
