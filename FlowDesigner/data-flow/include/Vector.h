@@ -65,6 +65,8 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
    out << " > ";
 }
 
+/*The following code doesn't compile on MSVC++*/
+#ifndef BROKEN_TEMPLATES
 template <class T>
 inline void _vector_printOn(const Vector<T*> &v, ostream &out)
 {
@@ -75,6 +77,7 @@ inline void _vector_printOn(const Vector<T*> &v, ostream &out)
    }
    out << " > ";
 }
+#endif
 
 template <class T>
 void Vector<T>::printOn(ostream &out) const
@@ -108,7 +111,8 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
    }
 }
 
-
+/*The following code doesn't compile on MSVC++*/
+#ifndef BROKEN_TEMPLATES
 template <class T>
 inline void _vector_readFrom(Vector<T*> &v, istream &in)
 {
@@ -135,6 +139,7 @@ inline void _vector_readFrom(Vector<T*> &v, istream &in)
    }
 }
 
+#endif
 
 template <class T>
 inline void Vector<T>::readFrom(istream &in)
@@ -142,7 +147,8 @@ inline void Vector<T>::readFrom(istream &in)
    _vector_readFrom(*this, in);
 }
 
-
+/*The following code requires template partial specialization*/
+#ifndef BROKEN_TEMPLATES
 
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
@@ -253,6 +259,22 @@ struct VecBinary<T,TTraits::Unknown> {
    }
 };
 
+#else /* #ifndef BROKEN_TEMPLATES */
+
+/* This is for broken compilers */
+template<class T, int I>
+struct VecBinary {
+   static inline void serialize(const Vector<T> &v, ostream &out)
+   {
+      throw new GeneralException("Binary IO not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);
+   }
+   static inline void unserialize(Vector<T> &v, istream &in)
+   {
+      throw new GeneralException("Binary IO not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);
+   }
+};
+
+#endif
 
 template <class T>
 inline void Vector<T>::serialize(ostream &out) const

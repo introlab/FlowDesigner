@@ -9,7 +9,7 @@ DoubleDispatchException::DoubleDispatchException(DoubleDispatch *_table, string 
 {
 }
 
-void DoubleDispatchException::print(ostream &out = cerr) 
+void DoubleDispatchException::print(ostream &out) 
 {
    out << "Vtable error: no match for " << table->getName() << "(" << type1 << ", " << type2 << ")" << endl;
 }

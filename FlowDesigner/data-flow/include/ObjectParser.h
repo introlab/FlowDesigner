@@ -29,6 +29,9 @@ inline ostream &operator << (ostream &out, const vector<T> &v)
    return out;
 }
 
+/*The following code doesn't compile with MSVC++*/
+#ifndef BROKEN_TEMPLATES
+
 template <class T>
 inline ostream &operator << (ostream &out, const vector<T*> &v)
 {
@@ -40,6 +43,7 @@ inline ostream &operator << (ostream &out, const vector<T*> &v)
    out << " > ";
    return out;
 }
+#endif
 
 template <class T>
 inline istream &operator >> (istream &in, vector<T> &v)
@@ -72,6 +76,9 @@ inline istream &operator >> (istream &in, vector<T> &v)
    }
 }
 
+/*The following code doesn't compile with MSVC++*/
+#ifndef BROKEN_TEMPLATES
+
 template <class T>
 inline istream &operator >> (istream &in, vector<T*> &v)
 {
@@ -102,6 +109,7 @@ inline istream &operator >> (istream &in, vector<T*> &v)
       v.push_back(tmp);
    }
 }
+#endif
 
 class ParsingException : public BaseException{
 public:
@@ -114,7 +122,7 @@ protected:
 };
 
 
-inline bool isValidType (istream &in, string expectedType, bool binary=false)
+inline bool isValidType (istream &in, string expectedType, bool binary)
 {
    char ch;
    in >> ch;

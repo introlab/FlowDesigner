@@ -85,10 +85,13 @@ public:
    typedef X* pointer_type;
    typedef size_t size_type;
 
+#ifndef WIN32
 protected:
    X* ptr;
    //size_type *count;
    
+#endif
+
 public:
    explicit RCPtr(X* p=0) : ptr(p)
    {
@@ -223,8 +226,10 @@ protected:
       // cerr << "crisse de vraiment grosse erreur\n";
    }
 
+#ifndef WIN32
    template <class Z>
    friend class RCPtr;
+#endif
 };
 
 
