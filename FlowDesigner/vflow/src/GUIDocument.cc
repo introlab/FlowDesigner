@@ -341,6 +341,7 @@ static const vector<string> &allDocTypes()
       types.insert(types.end(), "int");
       types.insert(types.end(), "float");
       types.insert(types.end(), "string");
+      types.insert(types.end(), "bool");
       init=true;
    }
    return types;
@@ -629,6 +630,13 @@ void GUIDocument::run()
 	    {
 	       int val = atoi (curr.value.c_str());
 	       value = ObjectRef(new Int(val));
+	    } 
+	    else if (curr.type == "bool")
+	    {
+	       if (curr.value == "true")
+		  value = ObjectRef(new Bool(true));
+	       else 
+		  value = ObjectRef(new Bool(false));
 	    } 
 	    else if (curr.type == "float")
 	    {
