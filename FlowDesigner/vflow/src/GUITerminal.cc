@@ -98,9 +98,7 @@ gint GUITerminal::event(GdkEvent *event)
   item_y = event->button.y;
   //gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
 
-  string my_text = getName() + " (" + getType() + ") " + getDescription();
-
-  vflowGUI::instance()->display_statusbar_text(my_text);
+ 
 
   switch (event->type) 
     {
@@ -175,6 +173,9 @@ gint GUITerminal::event(GdkEvent *event)
       break;
       
     case GDK_MOTION_NOTIFY:
+      vflowGUI::instance()->display_statusbar_text( getName() + " (" + getType() + ") " + getDescription());
+      return TRUE;
+
       break;
           
     case GDK_BUTTON_RELEASE:

@@ -246,14 +246,6 @@ gint GUINode::event(GdkEvent *event)
 
    NodeInfo *my_info = getNetwork()->getDocument()->getRepository().findNode(getType());
 
-   if (my_info) {
-     vflowGUI::instance()->display_statusbar_text(getName() + getDescription() + string(" : ") + my_info->description);
-   }
-   else {
-     vflowGUI::instance()->display_statusbar_text(getName());
-   }
-
-
    switch (event->type) 
    {
    case GDK_BUTTON_PRESS:
@@ -356,6 +348,17 @@ gint GUINode::event(GdkEvent *event)
       break;
 
    case GDK_MOTION_NOTIFY:
+     
+    
+     
+     if (my_info) {
+       vflowGUI::instance()->display_statusbar_text(getName() + getDescription() + string(" : ") + my_info->description);
+     }
+     else {
+       vflowGUI::instance()->display_statusbar_text(getName());
+     }
+
+    
       /*if (event->button.state & GDK_SHIFT_MASK)
       {
 	 dynamic_cast<GUINetwork *>(net)->popTooltip(this);
@@ -375,6 +378,9 @@ gint GUINode::event(GdkEvent *event)
 
 	 net->setModified();
       }
+
+      return TRUE;
+
       break;
       
    case GDK_ENTER_NOTIFY:
