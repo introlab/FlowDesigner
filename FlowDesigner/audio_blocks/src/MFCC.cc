@@ -22,6 +22,10 @@
 #include <fftw.h>
 #include <rfftw.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 class MFCC;
 
 //DECLARE_NODE(MFCC)

@@ -25,7 +25,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
+
+#ifdef HAVE_MACHINE_SOUNDCARD_H
+#include <machine/soundcard.h>
+#endif
+
+#ifdef HAVE_SYS_SOUNDCARD_H
 #include <sys/soundcard.h>
+#endif
+
 #include <unistd.h>
 
 class Sound;

@@ -21,6 +21,10 @@
 #include <strstream.h>
 #include <values.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 class Entropy;
 
 //DECLARE_NODE(Entropy)

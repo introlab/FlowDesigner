@@ -21,6 +21,10 @@
 #include <stdlib.h>
 #include <math.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 class LTP;
 
 //DECLARE_NODE(LTP)

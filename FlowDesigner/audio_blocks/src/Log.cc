@@ -20,6 +20,11 @@
 #include "Vector.h"
 #include <math.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
+
 class Log;
 
 //DECLARE_NODE(Log)
