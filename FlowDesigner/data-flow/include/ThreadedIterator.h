@@ -10,7 +10,14 @@
 #include "Iterator.h"
 #include <pthread.h>
 
+
+
+void * workloop (void *param);
+
 class ThreadedIterator : public Iterator {
+
+  //the thread workloop
+  friend void * workloop (void *param);
 
  public:
 
@@ -45,23 +52,24 @@ class ThreadedIterator : public Iterator {
     }
 
     //destroying the mutex
-    pthread_mutex_destroy(mutex);
+    pthread_mutex_destroy(&mutex);
   }
 
  private:
   
   /** Default constructor that should not be used*/
-  ThreadedIterator() {
+ /* ThreadedIterator() 
+    :Iterator (string("DUMMY"), new ParameterSet()) {
     throw NodeException (NULL,"The default constructor should not be called from ThreadedIterator",__FILE__,__LINE__);
-  }
+  }*/
    
-  void loop();
+  void* loop(void *param);
 
-  unsigned int rate_per_second;
+  int rate_per_second;
 
   int internal_pc;
 
-  int status;
+  int thread_status;
 
   static const int STATUS_RUNNING;
 
@@ -69,7 +77,7 @@ class ThreadedIterator : public Iterator {
 
   pthread_mutex_t mutex;
 
-  pthread_t my_thread;
+  pthread_t work_thread;
 
 };
 #endif

@@ -84,8 +84,6 @@ protected:
    /** Connect an input node using numeric (integer) input/output names*/
    virtual void connectToNode(unsigned int in, Node *inNode, unsigned int out);
    
-private:
-
    /** It true, the iterator is a do; while()  (the condition is tested last)*/
    bool doWhile;
 

@@ -46,4 +46,5 @@ noinst_HEADERS = Node.h \
 	net_types.h \
 	rc_ptrs.h \
         BaseException.h \
-	AND.h
+	AND.h \
+	ThreadedIterator.h
