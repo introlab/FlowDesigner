@@ -42,6 +42,8 @@ public:
       this->FrameOperation::specificInitialize();
    }
 
+      //virtual void request(int outputID, const ParameterSet &req) {inputs[inputID].node->request(outputID,req);}
+      
    void calculate(int output_id, int count, Buffer &out)
    {
       NodeInput input = inputs[inputID];

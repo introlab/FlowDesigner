@@ -42,6 +42,8 @@ void MMIScore::reset()
    this->Node::reset();
 }
 
+void MMIScore::request(int outputID, const ParameterSet &req) {inputs[framesInputID].node->request(outputID,req);}
+
 ObjectRef MMIScore::getOutput(int output_id, int count)
 {
    //cerr << "Getting output in MMIScore with count = " << count << endl;

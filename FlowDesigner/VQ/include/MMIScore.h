@@ -44,6 +44,8 @@ public:
       Each class will call its superclass specificInitialize() method*/
    virtual void specificInitialize();
 
+   virtual void MMIScore::request(int outputID, const ParameterSet &req);
+
    /**Class reset routine.
       Each class will call its superclass reset() method*/
    virtual void reset();

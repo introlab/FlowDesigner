@@ -9,6 +9,7 @@ DECLARE_TYPE(Cell)
 void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)
 {
    if (level <= 0) 
+   //if (data.size() < 50) 
    {
       cout << "LEAF: " << data.size() << endl;
       return;
@@ -44,6 +45,7 @@ void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)
 void Cell::split(const vector<pair<int, float *> > &data, int &bestDim, float &bestThreshold)
 {
    bestDim=0;
+   int nbEqual=0;
    bestThreshold=0;
    float bestMutual = -FLT_MAX;
    for (int i=0;i<dimension;i++)
@@ -52,7 +54,19 @@ void Cell::split(const vector<pair<int, float *> > &data, int &bestDim, float &b
       float currentMutual;
       findThreshold(data, i, threshold, currentMutual);
       //cerr << "threshold: " << threshold << " currentMutual: " << currentMutual << endl;
+      bool isBest = false;
       if (currentMutual > bestMutual)
+      {
+	 isBest=true;
+	 nbEqual=0;
+      }
+      if (currentMutual == bestMutual)
+      {
+	 nbEqual++;
+	 if (rand()%nbEqual==0)
+	    isBest=true;
+      }
+      if (isBest)
       {
          bestMutual=currentMutual;
          bestDim=i;
@@ -151,11 +165,11 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    sum /= data.size();
    s2=sqrt(s2/data.size() - sqr(sum) );
    //cerr << "s2 = " << s2 << " N = " << data.size() << endl;
-   float min_value = sum - 1.5*s2;
-   float max_value = sum + 1.5*s2;
+   float min_value = sum - 1.*s2;
+   float max_value = sum + 1.*s2;
    //thresh=sum/data.size();
    //if (data.size()==0) thresh=0;
-
+ 
    bestThresh = 0;
    bestScore = -FLT_MAX;
    float thresh;
@@ -194,6 +208,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    
 }
 */
+
 
 static int float_less(const void *a, const void *b)
 {
@@ -302,6 +317,70 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
 
 }*/
 
+/*
+void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &bestThresh, float &bestScore)
+{
+   float sum = 0, s2 = 0;
+   int i,k;
+   for (i=0;i<data.size();i++)
+   {
+      sum += data[i].second[dim];
+      s2+= sqr(data[i].second[dim]);
+   }
+   if (data.size()<=1)
+   {
+      bestThresh=0;
+      bestScore=0;
+      return;
+   }
+   sum /= data.size();
+   s2=sqrt(s2/data.size() - sqr(sum) );
+   //cerr << "s2 = " << s2 << " N = " << data.size() << endl;
+   float min_value = sum - 1.5*s2;
+   float max_value = sum + 1.5*s2;
+   //thresh=sum/data.size();
+   //if (data.size()==0) thresh=0;
+
+   bestThresh = 0;
+   bestScore = -FLT_MAX;
+   float thresh;
+   float score;
+   for (thresh = min_value; thresh < max_value; thresh += (max_value-min_value)/15.0)
+   {
+      int diff=0;
+      //vector<int> scores (numberClasses, 0);
+      int binA[numberClasses];
+      int binB[numberClasses];
+      for (i=0;i<numberClasses;i++)
+      {
+	 binA[i]=0;
+	 binB[i]=0;
+      }
+      for (i=0;i<data.size();i++)
+	 if (data[i].second[dim] >= thresh) 
+	 {
+	    diff++;
+	    binA[data[i].first]++;
+	 }
+	 else 
+	 {
+	    diff--;
+	    binB[data[i].first]++;
+	 }
+      score = 0.0;
+      for (i=0;i<numberClasses;i++)
+	 score += abs(binA[i]-binB[i])/(binA[i]+binB[i]+15);
+      score -= .3*numberClasses*abs(diff)/data.size();
+      //cerr << .49*numberClasses*abs(diff)/data.size() << endl;
+      if (score > bestScore)
+      {
+         bestThresh = thresh;
+         bestScore = score;
+      }
+   }
+   
+}
+*/
 
 int Cell::setNumbering(int start)
 {

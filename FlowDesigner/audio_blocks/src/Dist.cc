@@ -50,7 +50,28 @@ class Dist : public FrameOperation {
       }
       return xy/sqrt(xx*yy);
    }
-      
+/*  
+   static float cos_dist(const float *x1, const float *x2, int len)
+   {
+      double xx=0,xy=0,yy=0;
+      double sx=0,sy=0;
+      for (int i=0;i<len;i++)
+      {
+	 sy+=x2[i];
+	 sx+=x1[i];
+      }
+      sx/=len;
+      sy/=len;
+      for (int i=0;i<len;i++)
+      {
+	 //cerr << x1[i] << " " << x2[i] << endl;
+	 xx+=(x1[i])*(x1[i]);
+	 xy+=(x1[i])*(x2[i]);
+	 yy+=(x2[i])*(x2[i]);
+      }
+      return xy/sqrt(xx*yy);
+   }
+*/
 public:
    Dist(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
