@@ -1,7 +1,5 @@
 implement variable number of inputs/outputs
 
-(debug BREAT_AT in probes)
-
 manage to handle subnet dependencies
 
 vflow preferences...

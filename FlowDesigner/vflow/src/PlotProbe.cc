@@ -138,6 +138,7 @@ void PlotProbe::specificInitialize()
 
    } catch (BaseException *e)
    {
+      gdk_threads_leave();
       throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
    

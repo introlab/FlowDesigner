@@ -22,26 +22,26 @@
 
 DECLARE_NODE(TextProbe)
 /*Node
-
+ *
  * @name TextProbe
  * @category Probe
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name BREAK_AT
  * @parameter_description No description available
-
+ *
  * @parameter_name SHOW
  * @parameter_description No description available
-
+ *
  * @parameter_name SKIP
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -79,14 +79,9 @@ void TextProbe::reset()
 
 void TextProbe::display()
 {
-   /*char probeOut[3000];
-   for (int i=0;i<3000;i++)
-      probeOut[i]=0;
-      ostrstream out(probeOut, 2999);*/
    ostringstream out;
    
    out << *inputValue;
-   //cerr << "Probe value = " << *inputValue << endl;
 
    #ifdef HAVE_PTHREAD_CANCEL
    pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
@@ -95,7 +90,7 @@ void TextProbe::display()
    gdk_threads_enter();
 
    gnome_less_clear (GNOME_LESS(less1));
-   //gnome_less_show_string(GNOME_LESS(less1), probeOut);
+
    gnome_less_show_string(GNOME_LESS(less1), out.str().c_str());
 
    gdk_threads_leave();

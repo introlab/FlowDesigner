@@ -21,26 +21,26 @@
 
 DECLARE_NODE(Probe)
 /*Node
-
+ *
  * @name Probe
  * @category Probe
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name BREAK_AT
  * @parameter_description No description available
-
+ *
  * @parameter_name SHOW
  * @parameter_description No description available
-
+ *
  * @parameter_name SKIP
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -118,10 +118,10 @@ void Probe::specificInitialize()
 {
    this->Node::specificInitialize();
 
-   
-   gdk_threads_enter(); 
-   
-   try {   
+
+   gdk_threads_enter();
+
+   try {
    //GtkWidget *window1;
    //GtkWidget *vbox2;
    GtkWidget *handlebox2;
@@ -257,6 +257,7 @@ void Probe::specificInitialize()
 
    } catch (BaseException *e)
    {
+      gdk_threads_leave(); 
       throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
    gdk_threads_leave(); 
@@ -347,18 +348,16 @@ ObjectRef Probe::getOutput(int output_id, int count)
 
       if (count % skip == 0)
       {
-	 gdk_threads_enter(); 
 	 char tmp[16];
 	 sprintf (tmp,"%d",count);
+	 gdk_threads_enter(); 
 	 gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
 	 gdk_threads_leave(); 
       }
       
       if (displayEnable && (count % skip == 0))
 	 display();
-      if (count==breakAt)
-	 traceEnable = true;
-      if (traceEnable && (count % skip == 0))
+      if (traceEnable && (count % skip == 0) && count >= breakAt)
 	 trace();
       return inputValue;
       
