@@ -19,6 +19,7 @@
 
 #include "covariance.h"
 #include "Object.h"
+#include "mean_set.h"
 
 class CovarianceSet : public Object {
 protected:
@@ -29,6 +30,15 @@ public:
    CovarianceSet() 
    : nb_covariances (0)
    {};
+
+   /**Converts the covariances from accum mode to invert mode*/
+   void toInvert (const MeanSet &means);
+
+   /**Returns the number of elements*/
+   int size() {return nb_covariances;}
+
+   /**Indexing operator, returns the Ptr to the specified ID*/
+   Ptr<Covariance> operator [] (int id) {return covariances[id];}
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
    int getIDFor(Ptr<Covariance>);

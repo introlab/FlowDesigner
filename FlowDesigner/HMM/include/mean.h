@@ -1,4 +1,4 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 1998-1999  Jean-Marc Valin
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,24 +12,35 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, write to the Free Software Foundation,
-// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.#ifndef STATE_H
-#ifndef MODEL_H
-#define MODEL_H
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#ifndef MEAN_H
+#define MEAN_H
 
+#include <math.h>
 #include <vector>
-#include "state.h"
+#include "Object.h"
+#include "ObjectParser.h"
+#include "misc.h"
+#include "Vector.h"
 
+class Mean : public Vector<float>
+{
+protected:
+   int mode;
+   int accum_count;
+public:
+   Mean() 
+      : Vector<float>() 
+      , mode(0)
+      , accum_count(0)
+   {}
 
-/**Base model class, can be used for phonemes, allophones, ...*/
-class Model {
-
-   /**The model name*/
-   string name;
-
-   /**Set of states for the model*/
-   vector<Ptr<State> > states;
+   Mean(int n, const float &x = 0) 
+      : Vector<float>(n, x)
+      , mode(0)
+      , accum_count(0)
+   {}
 
 };
-
 
 #endif

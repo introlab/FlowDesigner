@@ -236,6 +236,8 @@ sub parse_node_indo {
 	      $istype=0;
 	    } else {
 	      s/&quot;/\"/g;
+	      s/&lt;/</g;
+	      s/&gt;/>/g;
 	      s/sp:/subnet_param:/;
 	      /(.*)=(.*)\#<\/dia:string>/;
 	      $curr_net[$nb_nodes]{"param"}[$param_count][0]=$1;
@@ -253,6 +255,8 @@ sub parse_node_indo {
 	      $istype=0;
 	    } else {
 	      s/&quot;/\"/g;
+	      s/&lt;/</g;
+	      s/&gt;/>/g;
 	      s/sp:/subnet_param:/;
 	      /(.*)=(.*)/;
 	      $curr_net[$nb_nodes]{"param"}[$param_count][0]=$1;

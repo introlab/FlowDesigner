@@ -31,13 +31,13 @@ public:
 };
 
 
-///State class
+/**State class*/
 class State {
-   ///Corresponding GMM
-   GMM *mixture;
+   /**Corresponding GMM*/
+   Ptr<GMM> mixture;
 
    ///Log probability for transition to next state
-   vector<Transition> transitions;
+   //vector<Transition> transitions;
    
 };
 

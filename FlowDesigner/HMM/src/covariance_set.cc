@@ -19,6 +19,26 @@
 
 DECLARE_TYPE(CovarianceSet)
 
+   /*void CovarianceSet::toInvert (MeanSet &means)
+{
+   int i;
+   means.toPtrs();
+   vector <vector<float> > sums(nb_covariances);
+   for (i=0;i<nb_covariances;i++)
+      sums[i].resize(covariance[i].size(),0.0);
+   for (i=0;i<means.size();i++)
+   {
+      Vector<float> &mean = means[i];
+      for (int j=0;j<mean.size();j++)
+         sums[i][j]+=mean[j];
+   }
+   for (i=0;i<nb_covariances;i++)
+   {
+      //covariances[i].toInvert
+   }
+   }*/
+
+
 int CovarianceSet::getIDFor(Ptr<Covariance> cov)
 {
    for (int i=0;i<nb_covariances;i++)

@@ -105,7 +105,8 @@ void Gaussian::readFrom (istream &in)
          in >> accum_count;
       else if (tag == "mean")
       {
-         Ptr<Vector<float> > tmp(new Vector<float>);
+         Ptr<Mean> tmp(new Mean);
+         //Ptr<Vector<float> > tmp(new Vector<float>);
          in >> *tmp;
          mean = tmp;
          using_meanID=false;

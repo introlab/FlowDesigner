@@ -12,24 +12,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, write to the Free Software Foundation,
-// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.#ifndef STATE_H
-#ifndef MODEL_H
-#define MODEL_H
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <vector>
-#include "state.h"
+#include "mean.h"
 
-
-/**Base model class, can be used for phonemes, allophones, ...*/
-class Model {
-
-   /**The model name*/
-   string name;
-
-   /**Set of states for the model*/
-   vector<Ptr<State> > states;
-
-};
-
-
-#endif
+DECLARE_TYPE(Mean)
