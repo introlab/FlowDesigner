@@ -268,6 +268,28 @@ Overflow node parameters are also equivalent to C/Matlab function arguments.
  as this allows more flexibility.
 \layout Subsection
 
+Links
+\layout Standard
+
+There's no real correspondence between Overflow links and C or Matlab constructs.
+ The best analogy would be to say that Links represent the order of the
+ lines in a C/Matlab function.
+ You also need to keep in mind that Overflow uses a "pull method" in order
+ to compute data.
+ What does that mean? When you run a network, the last node (output node)
+ of the main network (called "MAIN" -- how original!) is asked for its output.
+ In order to compute its output, it needs to ask its input nodes for their
+ output.
+ That way everything propagates from the end to the beginning recursively.
+ 
+\layout Standard
+
+Now, why going backwards like that? That's a bit long to explain.
+ The quick answer is "because".
+ The longer answer involves faster handling of dependencies, faster processing,
+ buffer management and things like that.
+\layout Subsection
+
 Data Types
 \layout Standard
 
@@ -282,7 +304,7 @@ basic
 \begin_inset Quotes erd
 \end_inset 
 
- Overflow types are: Bool, Int, Float, Double, Stream and Vector.
+ Overflow types are: Bool, Int, Float, Stream, String and Vector.
  There are also toolbox-specific types, like FFNet (neural network), VQ
  (Vector Quantizer), GMM (Gaussian Mixture Model), ...
  
@@ -304,28 +326,6 @@ Some Overflow Nodes expect a certain type of data as input/parameter and
  floats, two Vectors of the same dimension, but cannot add a Bool and a
  Vector.
  
-\layout Subsection
-
-Links
-\layout Standard
-
-There's no real correspondence between Overflow links and C or Matlab constructs.
- The best analogy would be to say that Links represent the order of the
- lines in a C/Matlab function.
- You also need to keep in mind that Overflow uses a "pull method" in order
- to compute data.
- What does that mean? When you run a network, the last node (output node)
- of the main network (called "MAIN" -- how original!) is asked for its output.
- In order to compute its output, it needs to ask its input nodes for their
- output.
- That way everything propagates from the end to the beginning recursively.
- 
-\layout Standard
-
-Now, why going backwards like that? That's a bit long to explain.
- The quick answer is "because".
- The longer answer involves faster handling of dependencies, faster processing,
- buffer management and things like that.
 \layout Chapter
 
 Getting Started with 
@@ -369,7 +369,7 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 100 100
+\begin_inset Figure size 267 199
 file vflow
 width 4 90
 flags 9
@@ -430,6 +430,135 @@ All networks must have at least one output.
  Inputs and outputs can be added by left clicking on a terminal with the
  SHIFT modifier on.
  You will be asked to provide the input/output name.
+\layout Standard
+\align center 
+
+\emph on 
+
+\begin_inset  Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features rotate="false" islongtable="false" firstHeadTopDL="false" firstHeadBottomDL="false" firstHeadEmpty="false" headTopDL="false" headBottomDL="false" footTopDL="false" footBottomDL="false" lastFootTopDL="false" lastFootBottomDL="false" lastFootEmpty="false">
+<column alignment="center" valignment="top" leftline="true" rightline="false" width="0pt" special="">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0pt" special="">
+<row topline="true" bottomline="true" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+GUI Controls
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Actions to do
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Add nodes to the network
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Click on the right button on the background and select the node you want
+ to add.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Connect two nodes
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Click on the terminal and drag the mouse the other terminal.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Delete links
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Click on them with the SHIFT modifier on.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Set a node parameters
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Right-click on the node.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Add an output/input name to a node
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+\begin_inset Text
+
+\layout Standard
+
+Left-click on the terminal with the SHIFT modifier on.
+\end_inset 
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset 
+
+
+\layout Standard
+\align center 
+
+\series bold 
+Basic GUI Controls
 \layout Section
 
 Using Sub-networks (subnets) and Iterators
@@ -442,7 +571,71 @@ In order to simplify programming, you can create sub-networks (main menu
  than "MAIN" for obvious reasons.
  Those networks must absolutely have "named" inputs and outputs in order
  to be used in higher level networks as explained in the previous section.
- 
+ To add sub-networks into a network of higher level, right-click on the
+ background and select the sub-network you want from the menu (New Node->
+ Subnet
+\emph on 
+).
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 201
+file overflow_main
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Including a subnet with Overflow
+\begin_inset LatexCommand \label{cap:sample_main}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 201
+file overflow_subnet
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Subnet with Overflow
+\begin_inset LatexCommand \label{cap:sample_subnet}
+
+\end_inset 
+
+
+\end_inset 
+
+
 \layout Standard
 
 Another useful type of network you can create is the Iterator (main menu
@@ -454,6 +647,66 @@ Another useful type of network you can create is the Iterator (main menu
  the CONTROL (or ALT) modifier.
  Note that there is a bug in some versions of gnome for which CONTROL does
  not work with the canvas, so you'll have to use ALT.
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 201
+file overflow_main3
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Including an iterator with Overflow
+\begin_inset LatexCommand \label{cap:sample_main3}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 201
+file overflow_iterator2
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Iterator with Overflow
+\begin_inset LatexCommand \label{cap:sample_iterator2}
+
+\end_inset 
+
+
+\end_inset 
+
+
 \layout Standard
 
 For now, Threaded Iterators are experimental.
@@ -472,18 +725,28 @@ When your program is complete, you can execute it by clicking "Run" in the
  is in the path.
 \layout Chapter
 
-Using basic nodes
-\layout Section
-
-Hello World!
+Using nodes
 \layout Standard
 
-We cannot present our development environment without first presenting the
- most popular program ever written: 
+This section presents the different Overflow node categories.
+ For every category, one or more nodes are presented and given in example.
+\layout Section
+
+Basics nodes
+\layout Subsection
+
+Category: General
+\layout Subsubsection
+
+Constant
+\layout Standard
+
+Among the nodes of this category, the most often used is certainly the node
+ 
 \begin_inset Quotes eld
 \end_inset 
 
-Hello World!
+Constant
 \begin_inset Quotes erd
 \end_inset 
 
@@ -518,7 +781,7 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 100 100
+\begin_inset Figure size 267 199
 file overflow_hello
 width 4 90
 flags 9
@@ -537,9 +800,252 @@ Hello World!
 \end_inset 
 
 
-\layout Section
+\layout Standard
 
-IF/conditions
+In the previous example, the node 
+\begin_inset Quotes eld
+\end_inset 
+
+Constant
+\begin_inset Quotes erd
+\end_inset 
+
+ took the data type 
+\begin_inset Quotes eld
+\end_inset 
+
+string
+\begin_inset Quotes erd
+\end_inset 
+
+, however, the node can take other data types.
+ Here is a list of all data types that a node 
+\begin_inset Quotes eld
+\end_inset 
+
+Constant
+\begin_inset Quotes erd
+\end_inset 
+
+can take:
+\layout List
+\labelwidthstring 00.00.0000
+
+int: This data type has a representation that can take the value of -2 147
+ 483 648 to 2 147 483 647.
+\layout List
+\labelwidthstring 00.00.0000
+
+float: Floats have the same size as 
+\begin_inset Quotes eld
+\end_inset 
+
+int
+\begin_inset Quotes erd
+\end_inset 
+
+, but are read as floating point numbers.
+ They range from the value -1.4013e-45 to 1.4013e-45 and from -3.4e38 to 3.4e38.
+\layout List
+\labelwidthstring 00.00.0000
+
+bool: Object that can take the values: 
+\begin_inset Quotes eld
+\end_inset 
+
+true
+\begin_inset Quotes erd
+\end_inset 
+
+ or 
+\begin_inset Quotes eld
+\end_inset 
+
+false
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ This data type is often used for condition input.
+ For example, in a node IF, the input 
+\begin_inset Quotes eld
+\end_inset 
+
+COND
+\begin_inset Quotes erd
+\end_inset 
+
+ is set by a constant of type bool.
+ When the constant is 
+\begin_inset Quotes eld
+\end_inset 
+
+true
+\begin_inset Quotes erd
+\end_inset 
+
+, the input THEN is pulled and when the constant is 
+\begin_inset Quotes eld
+\end_inset 
+
+false
+\begin_inset Quotes erd
+\end_inset 
+
+, the input ELSE is pulled.
+\layout List
+\labelwidthstring 00.00.0000
+
+object: An object is a data type defined by developpers.
+ However, you can create an exiting object by typing its corresponding command.
+ For instance, you can create a string 
+\begin_inset Quotes eld
+\end_inset 
+
+hello world
+\begin_inset Quotes erd
+\end_inset 
+
+ by typing 
+\begin_inset Quotes eld
+\end_inset 
+
+<String hello world>
+\begin_inset Quotes erd
+\end_inset 
+
+ ( 
+\begin_inset Quotes eld
+\end_inset 
+
+<Vector 1 2 3 4 5 6 7 8>
+\begin_inset Quotes erd
+\end_inset 
+
+ , 
+\begin_inset Quotes eld
+\end_inset 
+
+<Int 23>
+\begin_inset Quotes erd
+\end_inset 
+
+ and  
+\begin_inset Quotes eld
+\end_inset 
+
+<Float 23.67>
+\begin_inset Quotes erd
+\end_inset 
+
+ are some other examples ).
+\layout List
+\labelwidthstring 00.00.0000
+
+string: Strings are series of characters ('a'-'z', '0'-'9','A'-'Z', or some
+ other symbol)
+\layout List
+\labelwidthstring 00.00.0000
+
+subnet_param: Subnet_param set parameter's name of higher level.
+ For example, create a network SUBNET0 in a file.
+ In SUBNET0 add and set a subnet_param to 
+\begin_inset Quotes eld
+\end_inset 
+
+hello
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ Add the node SUBNET0 to the main network and double-click on it.
+ Then, you will see in the tab 
+\begin_inset Quotes eld
+\end_inset 
+
+Parameters
+\begin_inset Quotes erd
+\end_inset 
+
+ a parameter to set named 
+\begin_inset Quotes eld
+\end_inset 
+
+hello
+\begin_inset Quotes erd
+\end_inset 
+
+.
+\layout Subsection
+
+Category: IO
+\layout Subsubsection
+
+Save
+\layout Standard
+
+This section gives an example on the node 
+\emph on 
+save
+\emph default 
+ .
+ As the name mentions, it is used to save an object in a file or a network
+ stream.
+\layout Standard
+
+Figure 
+\begin_inset LatexCommand \ref{cap:sample_IO}
+
+\end_inset 
+
+ shows how it works.
+ The 
+\emph on 
+Save
+\emph default 
+ node takes two inputs: an object to save and an Overflow write stream where
+ to save the object.
+ The write stream is opened using the 
+\emph on 
+OutputStream
+\emph default 
+ node which takes a file name as input.
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 198
+file overflow_IO
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+I/O with Overflow
+\begin_inset LatexCommand \label{cap:sample_IO}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Subsection
+
+Category: Logic
+\layout Subsubsection
+
+IF
 \layout Standard
 
 The most important control structure in a language is conditional branching.
@@ -579,7 +1085,7 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 100 100
+\begin_inset Figure size 267 188
 file overflow_if
 width 4 90
 flags 9
@@ -598,29 +1104,9 @@ If/then/else with Overflow
 \end_inset 
 
 
-\layout Section
+\layout Subsection
 
-I/O
-\layout Standard
-
-Figure 
-\begin_inset LatexCommand \ref{cap:sample_IO}
-
-\end_inset 
-
- shows how to save data to a file.
- The 
-\emph on 
-Save
-\emph default 
- node takes two inputs: an object to save and an Overflow write stream (in
- this situation a file, but it could have been a network stream) where to
- save the object.
- The write stream is opened using the 
-\emph on 
-OutputStream
-\emph default 
- node which takes a file name as input.
+Category: Matrix
 \layout Standard
 
 
@@ -632,8 +1118,8 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 100 100
-file overflow_IO
+\begin_inset Figure size 267 204
+file overflow_matrix
 width 4 90
 flags 9
 
@@ -642,8 +1128,8 @@ flags 9
 
 \layout Caption
 
-I/O with Overflow
-\begin_inset LatexCommand \label{cap:sample_IO}
+If/then/else with Overflow
+\begin_inset LatexCommand \label{cap:sample_matrix}
 
 \end_inset 
 
@@ -651,22 +1137,115 @@ I/O with Overflow
 \end_inset 
 
 
-\layout Section
+\layout Subsection
+
+Category: Operator
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 204
+file overflow_min
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Min with Overflow
+\begin_inset LatexCommand \label{cap:overflow_min}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Subsection
+
+Category: Probes
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 204
+file overflow_textProbe
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+textProbe with Overflow
+\begin_inset LatexCommand \label{cap:overflow_textProbe}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Subsection
+
+Category: Vector
+\layout Standard
+
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Figure size 267 204
+file overflow_vector
+width 4 90
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+If/then/else with Overflow
+\begin_inset LatexCommand \label{cap:sample_if}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Subsection
 
 Loops
-\layout Section
+\layout Subsection
 
 Subnets
 \layout Section
 
-Operators
-\layout Section
-
-Probes
-\layout Chapter
-
 Advanced features
-\layout Section
+\layout Subsection
 
 Feed-back Loops
 \layout Standard
@@ -679,10 +1258,10 @@ In some circumstances, it is desirable to insert feed-back loops into a
 Feedback
 \emph default 
  node.
-\layout Section
+\layout Subsection
 
 Exceptions
-\layout Subsection
+\layout Subsubsection
 
 Run-time Exceptions
 \layout Standard
@@ -701,7 +1280,7 @@ First, it is important to note that there are two types of exceptions that
 
 It is possible to prevent a run-time exception from stopping a program.
  This can be done with the Recover node, that catches all run-time exceptions.
-\layout Subsection
+\layout Subsubsection
 
 User Exceptions
 \layout Standard
@@ -710,7 +1289,7 @@ The second type of exceptions, user exceptions, can be thrown and caught
  by a user program using the Throw and Catch nodes.
  They are serve the same function as the throw and catch statements in a
  C++ program.
-\layout Section
+\layout Subsection
 
 Multi-threading
 \layout Standard
@@ -765,7 +1344,7 @@ ThreadJoin
 \emph default 
  node acts like a mutex and prevents two Overflow threads from accessing
  the same (input) node at the same time.
-\layout Section
+\layout Subsection
 
 Threaded Iterators
 \layout Standard
@@ -798,7 +1377,7 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 100 100
+\begin_inset Figure size 178 112
 file codegen
 width 4 60
 flags 9
@@ -902,7 +1481,7 @@ getOutput(...)
 The Node class is an abstract class from which all types of nodes must derive
  (directly or indirectly).
  Information on how to derive new types of nodes is given in Extending Overflow
- chapter.
+ chapter 7.
  
 \layout Subsection
 
@@ -969,6 +1548,162 @@ Main Overflow classes
 \layout Section
 
 Data Types
+\layout List
+\labelwidthstring 00.00.0000
+
+int: This data type has a representation that can take the value of -2 147
+ 483 648 to 2 147 483 647.
+\layout List
+\labelwidthstring 00.00.0000
+
+float: Floats have the same size as 
+\begin_inset Quotes eld
+\end_inset 
+
+int
+\begin_inset Quotes erd
+\end_inset 
+
+, but are read as floating point numbers.
+ They range from the value -1.4013e-45 to 1.4013e-45 and from -3.4e38 to 3.4e38.
+\layout List
+\labelwidthstring 00.00.0000
+
+bool: Object that can take the values: 
+\begin_inset Quotes eld
+\end_inset 
+
+true
+\begin_inset Quotes erd
+\end_inset 
+
+ or 
+\begin_inset Quotes eld
+\end_inset 
+
+false
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ This data type is often used for condition input.
+ For example, in a node IF, the input 
+\begin_inset Quotes eld
+\end_inset 
+
+COND
+\begin_inset Quotes erd
+\end_inset 
+
+ is set by a constant of type bool.
+ When the constant is 
+\begin_inset Quotes eld
+\end_inset 
+
+true
+\begin_inset Quotes erd
+\end_inset 
+
+, the input THEN is pulled and when the constant is 
+\begin_inset Quotes eld
+\end_inset 
+
+false
+\begin_inset Quotes erd
+\end_inset 
+
+, the input ELSE is pulled.
+\layout List
+\labelwidthstring 00.00.0000
+
+object: An object is a data type defined by developpers.
+ However, you can create an exiting object by typing its corresponding command.
+ For instance, you can create a string 
+\begin_inset Quotes eld
+\end_inset 
+
+hello world
+\begin_inset Quotes erd
+\end_inset 
+
+ by typing 
+\begin_inset Quotes eld
+\end_inset 
+
+<String hello world>
+\begin_inset Quotes erd
+\end_inset 
+
+ ( 
+\begin_inset Quotes eld
+\end_inset 
+
+<Vector 1 2 3 4 5 6 7 8>
+\begin_inset Quotes erd
+\end_inset 
+
+ , 
+\begin_inset Quotes eld
+\end_inset 
+
+<Int 23>
+\begin_inset Quotes erd
+\end_inset 
+
+ and  
+\begin_inset Quotes eld
+\end_inset 
+
+<Float 23.67>
+\begin_inset Quotes erd
+\end_inset 
+
+ are some other examples ).
+\layout List
+\labelwidthstring 00.00.0000
+
+stream: 
+\layout List
+\labelwidthstring 00.00.0000
+
+string: Strings are series of characters ('a'-'z', '0'-'9','A'-'Z', or some
+ other symbol)
+\layout List
+\labelwidthstring 00.00.0000
+
+subnet_param: Subnet_param set parameter's name of higher level.
+ For example, create a network SUBNET0 in a file.
+ In SUBNET0 add and set a subnet_param to 
+\begin_inset Quotes eld
+\end_inset 
+
+hello
+\begin_inset Quotes erd
+\end_inset 
+
+.
+ Add the node SUBNET0 to the main network and double-click on it.
+ Then, you will see in the tab 
+\begin_inset Quotes eld
+\end_inset 
+
+Parameters
+\begin_inset Quotes erd
+\end_inset 
+
+ a parameter to set named 
+\begin_inset Quotes eld
+\end_inset 
+
+hello
+\begin_inset Quotes erd
+\end_inset 
+
+.
+\layout List
+\labelwidthstring 00.00.0000
+
+vector: 
 \layout Section
 
 Operators
@@ -1815,12 +2550,4 @@ Node Documentation
 
 This documentation is generated automatically from the comments included
  in the Overflow C++ source code.
-\layout Standard
-
-
-\begin_inset Include \input{nodes.tex}
-
-\end_inset 
-
-
 \the_end
