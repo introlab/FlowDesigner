@@ -23,7 +23,7 @@
 class Overlap;
 
 //DECLARE_NODE(Overlap)
-NODE_INFO(Overlap,"Maitrise", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(Overlap,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
    //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
 
