@@ -9,22 +9,47 @@
 #include "typetraits.h"
 #include "binio.h"
 
+/**
+
+Matrix class (template). Registered Matrices are : Matrix<bool>, Matrix<int>, Matrix<float>, 
+Matrix<double>, Matrix<complex<float>>, Matrix<complex<double>>, Matrix<ObjectRef>.
+
+\author Jean-Marc Valin (initial implementation)
+\author Dominic Letourneau (added I/O capabilities)
+\date 18/02/2004
+
+*/
 template<class T>
 class Matrix : public Object
 {
 protected:
-   int rows, cols;
-   T *data;
+
+  ///number of rows in the Matrix
+  int rows;
+  
+  ///number of cols in the Matrix
+  int cols;
+    
+  //data pointer
+  T *data;
+
 public:
 
+   ///You can always get the type of the Matrix by using typename Matrix<T>::basicType.
    typedef T basicType;
 
+   ///Default constructor, will initialize Matrix dimensions to (0,0).
    Matrix() 
       : rows(0)
       , cols(0)
       , data(NULL)
    {}
 
+   /**
+      Copy constructor
+      \param mat The matrix to copy
+      \param transpose transpose matrix if true, defaults to false
+   */
    Matrix(const Matrix &mat, bool transpose=false) 
       : rows(mat.rows)
       , cols(mat.cols)
@@ -43,14 +68,27 @@ public:
       }
    }
 
+   /**
+      Constructor with _rows and _cols
+      \param _rows number of rows in the matrix
+      \param _cols number of cols in the matrix
+   */
    Matrix(int _rows, int _cols) 
       : rows(_rows)
       , cols(_cols)
       , data(new T [_rows*_cols])
    {}
    
+   ///Destructor delete matrix data
    virtual ~Matrix() {delete [] data;}
 
+
+   /**
+      Resize a matrix (keeps elements already inserted into the Matrix). 
+      Elements out of range in the new matrix are discarded.
+      \param _rows new number of rows of the matrix
+      \param _cols new number of cols of the matrix
+   */
    void resize(int _rows, int _cols)
    {
       //cerr << "resizing to " << _rows << " x " << _cols << endl;
@@ -69,30 +107,56 @@ public:
       rows = _rows;
    }
 
+   /**
+      operator[] returns the data pointer at a determined row.
+      \param i the row number
+      \return T* The data pointer to the first element of the row i   
+   */
    T *operator [] (int i)
    {
       return data+i*cols;
    }
 
+   /**
+      operator[] returns the data pointer at a determined row.
+      \param i the row number
+      \return T* The data pointer to the first element of the row i   
+   */
    const T *operator [] (int i) const
    {
       return data+i*cols;
    }
 
+
+   /**
+      operator(i,j) returns the element at row i, col j.
+      \param i the row number
+      \param j the col number
+      \return T The element at position (i,j)
+   */
    T &operator () (int i, int j)
    {
       return data[i*cols+j];
    }
 
+   /**
+      operator(i,j) returns the element at row i, col j.
+      \param i the row number
+      \param j the col number
+      \return T The element at position (i,j)
+   */
    const T &operator () (int i, int j) const
    {
       return data[i*cols+j];
    }
 
+   ///returns the number of rows
    int nrows() const {return rows;} 
 
+   ///returns the number of cols
    int ncols() const {return cols;}
 
+   ///transpose the matrix (i,j) becomes (j,i), cols = rows, rows = cols.
    void transpose()
    {
       if (rows==cols)
@@ -111,7 +175,12 @@ public:
 	       data[i*cols+j] = mat.data[j*mat.cols+i];
       }
    }
-
+   
+   /**
+      Formatted Matrix output in the FlowDesigner Format.<br>
+      <b>Format :</b> \<Matrix\<T\> \<rows <i>nrows</i> \> \<cols <i>ncols</i> \> \<data <i> element(0,0) element(0,1)  ... element(rows-1,cols-1)</i>\> \>
+      \param out the output stream
+   */
    void printOn(ostream &out) const
    {
       out << "<"<<className() << endl;
@@ -128,21 +197,44 @@ public:
       out << ">\n";
    }
    
-   /*virtual void rawWrite(ostream &out) const
+   /*
+   virtual void rawWrite(ostream &out) const
    {
-      //out.write ((const unsigned char*) begin(), size()*sizeof(T));
-      }*/
+       //out.write ((const unsigned char*) begin(), size()*sizeof(T));
+   }
+   */
    
+
+   /**
+      Formatted Matrix input in the FlowDesigner Format.<br>
+      <b>Format :</b> \<Matrix\<T\> \<rows <i>nrows</i> \> \<cols <i>ncols</i> \> \<data <i> element(0,0) element(0,1)  ... element(rows-1,cols-1)</i>\> \>
+      \param in the input stream
+   */
    void readFrom(istream &in=cin);
 
    //(DL) 11/02/2004
-   /** Returns the size of the matrix */
+   /** 
+       Returns the size of the matrix 
+       \return int size (cols * rows)
+   */
    int size() const {
      return (cols * rows);
    }
-   
+
+
+   /**
+      Binary Matrix output in the FlowDesigner Format.<br>
+      <b>Format :</b> {Matrix\<T\> |<i>rows;cols;element(0,0);element(0,1)  ... element(rows-1,cols-1)</i>}
+      \param out the output stream
+   */
    virtual void serialize(ostream &out) const;
 
+
+   /**
+      Binary Matrix input in the FlowDesigner Format.<br>
+      <b>Format :</b> {Matrix\<T\> |<i>rows;cols;element(0,0);element(0,1)  ... element(rows-1,cols-1)</i>}
+      \param in the input stream
+   */
    virtual void unserialize(istream &in);
 
    static string GetClassName()
