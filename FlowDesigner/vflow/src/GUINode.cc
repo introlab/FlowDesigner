@@ -83,7 +83,22 @@ static void node_prop (GtkMenuItem *menuitem, gpointer user_data)
 
 static void node_delete (GtkMenuItem *menuitem, gpointer user_data)
 {
-   delete ((GUINode *)(user_data));
+
+  GUINode* my_node = reinterpret_cast<GUINode*>(user_data);
+  GUINetwork* my_net = dynamic_cast<GUINetwork*>(my_node->getNetwork());
+
+  //delete all selected nodes...
+  if (my_net) {    
+    if (my_net->isNodeSelected(my_node)) {
+      my_net->clearSelectedNodes();
+    }
+    else {
+      delete my_node;
+    }
+  }
+  else {
+    delete my_node;
+  }
 }
 
 
