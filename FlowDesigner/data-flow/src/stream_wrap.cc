@@ -104,6 +104,8 @@ int fd_streambuf::overflow(int c)
 }
 
 
+
+
 streamsize fd_streambuf::xsputn(const char *s, streamsize n)
 {
    return write(fd, s, n);
@@ -123,6 +125,8 @@ int fd_streambuf::uflow()
          return EOF;
    }
 }
+
+
 
 int fd_streambuf::underflow()
 {
@@ -154,6 +158,18 @@ int fd_streambuf::pbackfail(int c)
    }
 }
 
+
+streamsize fd_streambuf::xsgetn(char *s, streamsize n)
+{
+   int nbytes = read(fd, s, n);
+   if (nbytes > 0)
+      return nbytes;
+   else
+      return EOF;
+}
+
+
+/*
 streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 {
    int tot_read = 0;
@@ -171,16 +187,16 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
             return tot_read;
       }
    }
-   /*cerr << "fd_streambuf::xsgetn read " << nbytes << " byte." << endl;
-   if (nbytes > 0)
-      return nbytes;
-   else
-   {
-      cerr << "read only " << nbytes << " bytes " << endl;
-      return EOF;
-   }*/
+   //cerr << "fd_streambuf::xsgetn read " << nbytes << " byte." << endl;
+   //if (nbytes > 0)
+   //   return nbytes;
+   //else
+   //{
+   //   cerr << "read only " << nbytes << " bytes " << endl;
+   //   return EOF;
+   //}
 }
-
+*/
 
 
 pipe_streambuf::pipe_streambuf(const string &command, bool _waitOnClose)
