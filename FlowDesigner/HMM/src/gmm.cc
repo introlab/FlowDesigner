@@ -72,16 +72,52 @@ void GMM::kmeans2(vector<float *> frames, GMM *gmm)
    to_real();
 }
 
-void GMM::adaptMAP(vector<float *> frames)
+void GMM::adaptMAP(vector<float *> frames, GMM *gmm)
 {
+   /*dimensions = gmm->dimensions;
+   apriori = gmm->apriori; //(vector<float>(nb_gauss,0.0)) 
+   nb_gaussians = gmm->nb_gaussians;
+   mode = real;
+   nb_frames_aligned=0;
+   using_gaussianIDs = false;
+   //for (int i=0;i<nb_gaussians;i++)
+   //   gaussians.push_back(RCPtr<Gaussian> (new Gaussian(dimensions, NewDiagonalCovariance)));
+   */
+   
+
    vector<Score> scores;
-   scores = minDistance(frames);
-   //scores = gmm->score(frames);
-   reset_to_accum_mode();
-   for (int i=0;i<frames.size();i++)
+   //scores = gmm->minDistance(frames);
+   scores = gmm->score(frames);
+   //reset_to_accum_mode();
+   
+   for (int i=0;i<nb_gaussians;i++)
    {
-      //FIXME: We should weight the adaptation instead of just accumulating
-      accum_to_gaussian(scores[i].gaussian_id,(frames[i]));
+      int adaptCount=0;
+      vector<float> adaptMean(dimensions, 0);
+      for (int j=0;j<frames.size();j++)
+      {
+	 if (scores[j].gaussian_id == i)
+	 {
+	    for (int k=0;k<dimensions;k++)
+	       adaptMean[k] += frames[j][k];
+	    adaptCount++;
+	 }
+      }
+      if (adaptCount)
+	 for (int j=0;j<dimensions;j++)
+	    adaptMean[j] /= adaptCount;
+
+      //FIXME: This is not a correct MAP implementation
+      float weight = float(adaptCount)/30.0;
+      if (weight > 1)
+	 weight = 1;
+      //weight=0;
+      vector<float> &mean = *gaussians[i]->mean;
+      for (int j=0;j<mean.size();j++)
+	 mean[j] = weight*adaptMean[j] + (1-weight)*mean[j];
+      //gaussians[i+old_size]= RCPtr<Gaussian> (new Gaussian(*(gaussians[i])));
+      //gaussians[i].
+      //perform adaptation
    }
 }
 
