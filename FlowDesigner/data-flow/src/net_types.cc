@@ -55,8 +55,6 @@ void String::printOn(ostream &out) const
 }
 void String::readFrom(istream &in)
 {
-
-   //string myString;
    int i=0;
    while(1)
    {
@@ -72,18 +70,16 @@ void String::readFrom(istream &in)
      else if (ch == ' ')
      {
 	if (i)
-	   ;//break;
+	   (*this) += ch;
 	else
 	   continue;
 	   }
      else if (ch == '>')
      {
-        //in.putback(ch);
         break;
      }
      else if (ch == '}')
      {
-        //in.putback(ch);
         break;
      }
      else
@@ -95,7 +91,7 @@ void String::readFrom(istream &in)
 }
 void String::serialize(ostream &out) const
 {
-   out << "{String ";
+   out << "{String |";
    writeString(out, *this);
    out.put('}');
    //out << "{String |" << *(string*) (this) << " }";

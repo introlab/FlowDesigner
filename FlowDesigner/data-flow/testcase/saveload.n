@@ -6,7 +6,7 @@
     <Node name="node3" type="Accumulate" x="64.000000" y="113.000000"/>
     <Node name="node4" type="Accumulate" x="297.000000" y="114.000000"/>
     <Node name="node7" type="Constant" x="-433.000000" y="33.000000">
-      <Parameter name="VALUE" type="string" value="Hello"/>
+      <Parameter name="VALUE" type="string" value="Hello "/>
     </Node>
     <Node name="node8" type="Concat" x="-289.000000" y="53.000000"/>
     <Node name="node9" type="Constant" x="-432.000000" y="69.000000">
