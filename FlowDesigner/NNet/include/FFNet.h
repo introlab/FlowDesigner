@@ -41,7 +41,7 @@ class FFNet : public Object {
 
    void traincg(vector<float *> in, vector<float *> out, int iter);
 
-   void trainCGB(vector<float *> tin, vector<float *> tout, int iter);
+   void trainCGB(vector<float *> tin, vector<float *> tout, int iter, double sigma=.03, double lambda=.2);
 
    void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 		      double mom, double increase, double decrease, int nbSets);

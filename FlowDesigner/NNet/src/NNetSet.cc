@@ -57,6 +57,30 @@ void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *>
    
 }
 
+void NNetSet::trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
+		    double sigma, double lambda)
+{
+   int nbNets = nets.size();
+   cerr << "nbNets = " << nbNets << endl;
+   vector<vector <float *> > in(nbNets);
+   cerr << "tata\n";
+   vector<vector <float *> > out(nbNets);
+   cerr << "classification...\n";
+   for (int i=0;i<tin.size();i++)
+   {
+      in[id[i]].insert(in[id[i]].end(), tin[i]);
+      out[id[i]].insert(out[id[i]].end(), tout[i]);
+   }
+   
+   cerr << "low-level training...\n";
+   for (int i=0;i<nbNets;i++)
+   {
+      //if (i==47 || i==56)
+      nets[i]->trainCGB(in[i],out[i],iter,sigma,lambda);
+   }
+   
+}
+
 void NNetSet::printOn(ostream &out) const
 {
    out << "<NNetSet " << endl;

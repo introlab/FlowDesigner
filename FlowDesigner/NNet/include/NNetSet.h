@@ -34,6 +34,9 @@ public:
 		      int iter, double learnRate, double mom, double increase, 
 		      double decrease, int nbSets);
 
+   void trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, 
+		      int iter, double sigma = .03, double lambda = .2);
+
    void printOn(ostream &out) const;
 
    void readFrom (istream &in);

@@ -336,15 +336,15 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
 
 }
 
-void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
+void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double sigma, double lambda)
 {
    int i,j;
    //double *in = new double [topo[0]];
    //double *out = new double [topo[topo.size()-1]];
    double SSE;
    int k=1;
-   double sigma = .03;
-   double lambda = .2;
+   //double sigma = .03;
+   //double lambda = .2;
    double lambdaBar = 0;
    double sigmak;
    bool success = true;
@@ -395,7 +395,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       //4. Hessian
       if (deltak <= 0)
       {
-	 cerr << "RESCALING\n";
+	 cerr << "Hessian not positive definite\n";
 	 sk += pk*(lambda - 2*deltak/norm2);
 	 lambdaBar = 2*(lambda - deltak/norm2);
 	 deltak = -deltak + lambda*norm2;
