@@ -22,15 +22,15 @@
 #include "Vector.h"
 
 //DECLARE_NODE(Probe)
-NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW")
+NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW:SKIP")
 
 
 PlotProbe::PlotProbe(string nodeName, ParameterSet params) 
    : Probe(nodeName, params)
    , xmin(0.0)
-   , xmax(500)
+   , xmax(400)
    , ymin(0.0)
-   , ymax(300)
+   , ymax(250)
 {
 }
 
@@ -144,7 +144,7 @@ void PlotProbe::display()
    {
       //points->coords[2*i]=(100.0*i)/length;
       points->coords[2*i]=xmin+((xmax-xmin)*i)/(data.size()-1);
-      points->coords[2*i+1]= ymin + (ymax-ymin)*(data[i]-datamin)/(datamax-datamin);
+      points->coords[2*i+1]= ymin + (ymax-ymin)*(1-(data[i]-datamin)/(datamax-datamin));
    }
 
    gnome_canvas_item_set(item, "points", points, NULL);

@@ -21,7 +21,7 @@
 #include <strstream>
 
 //DECLARE_NODE(Probe)
-NODE_INFO(TextProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW")
+NODE_INFO(TextProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW:SKIP")
 
 
 TextProbe::TextProbe(string nodeName, ParameterSet params) 

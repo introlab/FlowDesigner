@@ -20,7 +20,7 @@
 #include <gnome.h>
 
 //DECLARE_NODE(Probe)
-NODE_INFO(Probe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW")
+NODE_INFO(Probe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW:SKIP")
 
 static void rename_button(GtkWidget *button, char *str)
 {
@@ -58,6 +58,8 @@ Probe::Probe(string nodeName, ParameterSet params)
    traceEnable=true;
    displayEnable=false;
 
+   skip = 1;
+   breakAt=0;
    if (parameters.exist("BREAK_AT"))
    {
       breakAt = dereference_cast<int> (parameters.get("BREAK_AT"));
@@ -67,6 +69,11 @@ Probe::Probe(string nodeName, ParameterSet params)
    if (parameters.exist("SHOW"))
    {
       displayEnable = dereference_cast<bool> (parameters.get("SHOW"));
+   }
+
+   if (parameters.exist("SKIP"))
+   {
+      skip = dereference_cast<int> (parameters.get("SKIP"));
    }
 
 }
@@ -294,11 +301,11 @@ ObjectRef Probe::getOutput(int output_id, int count)
 
       NodeInput input = inputs[inputID];
       inputValue = input.node->getOutput(input.outputID,count);
-      if (displayEnable)
+      if (displayEnable && (count % skip == 0))
 	 display();
       if (count==breakAt)
 	 traceEnable = true;
-      if (traceEnable)
+      if (traceEnable && (count % skip == 0))
 	 trace();
       return inputValue;
       
