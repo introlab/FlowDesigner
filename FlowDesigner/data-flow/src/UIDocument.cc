@@ -245,13 +245,13 @@ void UIDocument::load()
 {
    string fullpath=path+docName;
    xmlDocPtr doc = xmlParseFile(fullpath.c_str());
-   xmlNodePtr root=doc->root;
    if (!doc || !doc->root || !doc->root->name)
    {
       cerr << "load: error loading " << fullpath << "\n";
       xmlFreeDoc (doc);
       return;
    }
+   xmlNodePtr root=doc->root;
    loadXML(root);
    xmlFreeDoc(doc);
 
