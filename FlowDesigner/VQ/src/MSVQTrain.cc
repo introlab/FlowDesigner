@@ -3,7 +3,7 @@
 #include "net_types.h"
 #include "msvq.h"
 #include "Vector.h"
-#include "Node.h"
+#include "BufferedNode.h"
 #include <strstream>
 
 class MSVQTrain;
@@ -30,35 +30,30 @@ DECLARE_NODE(MSVQTrain)
 END*/
 
 
-class MSVQTrain : public Node {
+class MSVQTrain : public BufferedNode {
       
-  protected:
-      
+protected:
+   
    /**The ID of the 'output' output*/
    int outputID;
-
+   
    /**The ID of the 'frames' input*/
    int framesInputID;
-
-   /**Reference to the current object*/
-   ObjectRef current;
-
+   
    /**Number of means to train model*/
    vector<int> stages;
 
-   int processCount;
-
-  public:
-
+public:
+   
    MSVQTrain(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
+      : BufferedNode(nodeName, params)
    { 
       try {
-	 //cerr << "MSVQTrain initialize\n";
+
 	 outputID = addOutput("OUTPUT");
 	 framesInputID = addInput("FRAMES");
 	 //cerr << "MSVQTrain initialization done\n";
-
+         
          //stages = ObjectRef(new Vector<int>);
 	 //Vector<int> &val = object_cast<Vector<int> > (stages);
 	 istrstream str_vector(object_cast <String> (parameters.get("STAGES")).c_str());
@@ -85,13 +80,10 @@ class MSVQTrain : public Node {
       this->Node::reset();
    }
 
-   ObjectRef getOutput(int output_id, int count)
+   /**Ask for the node's output which ID (number) is output_id 
+      and for the 'count' iteration */
+   virtual void calculate(int output_id, int count, Buffer &out)
    {
-      //cerr << "Getting output in MSVQTrain\n";
-      if (output_id==outputID)
-      {
-	 if (count != processCount)
-	 {
 	    bool binary = false;
 	    if (parameters.exist("BINARY"))
 	       binary = dereference_cast<bool> (parameters.get("BINARY"));
@@ -114,16 +106,7 @@ class MSVQTrain : public Node {
 	    vq->train(data,length,binary);
 	    cerr << "training complete." << endl;
 
-	    current = ObjectRef(vq);
-	 }
-	 return current;
-      }
-      else 
-	 throw new NodeException (this, "MSVQTrain: Unknown output id", __FILE__, __LINE__);
+	    out[count] = ObjectRef(vq);
    }
-      
-  protected:
-   /**Default constructor, should not be used*/
-   MSVQTrain() {throw new GeneralException("MSVQTrain copy constructor should not be called",__FILE__,__LINE__);}
 
 };
