@@ -15,6 +15,7 @@ toolbox_DATA = LoadFile.n \
 	       ToBool.n \
 	       ToDouble.n \
 	       ToString.n \
+		   ToVect.n \
 	       Modulo.n \
 	       Step.n \
 	       Trigger.n \

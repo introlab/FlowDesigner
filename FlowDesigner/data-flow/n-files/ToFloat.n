@@ -3,19 +3,9 @@
 <Document category="Conversion">
   <Network type="subnet" name="MAIN">
     <Node name="node_VMethod_1" type="VMethod" x="62.000000" y="242.000000">
-      <Parameter name="METHOD" type="string" value="toFloat"/>
+      <Parameter name="METHOD" type="string" value="toFloat" description=""/>
     </Node>
-    <Node name="node_IF_1" type="IF" x="188.000000" y="228.000000">
-      <Parameter name="PULL_ANYWAY" type="bool" value=""/>
-    </Node>
-    <Node name="node_NOP_1" type="NOP" x="-107.000000" y="229.000000"/>
-    <Node name="node_isNil_1" type="isNil" x="-13.000000" y="213.000000"/>
-    <Link from="node_isNil_1" output="OUTPUT" to="node_IF_1" input="COND"/>
-    <Link from="node_NOP_1" output="OUTPUT" to="node_IF_1" input="THEN"/>
-    <Link from="node_NOP_1" output="OUTPUT" to="node_isNil_1" input="INPUT"/>
-    <Link from="node_VMethod_1" output="OUTPUT" to="node_IF_1" input="ELSE"/>
-    <Link from="node_NOP_1" output="OUTPUT" to="node_VMethod_1" input="INPUT">-87.5 229 -33 242 31.5 242 </Link>
-    <NetOutput name="OUTPUT" node="node_IF_1" terminal="OUTPUT"/>
-    <NetInput name="INPUT" node="node_NOP_1" terminal="INPUT"/>
+    <NetInput name="INPUT" node="node_VMethod_1" terminal="INPUT" object_type="int or float" description="Object on wich the method will be applied"/>
+    <NetOutput name="OUTPUT" node="node_VMethod_1" terminal="OUTPUT" object_type="int or float" description="Return value of the method"/>
   </Network>
 </Document>
