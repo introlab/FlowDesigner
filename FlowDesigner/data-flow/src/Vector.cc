@@ -10,6 +10,7 @@
 #include "operators.h"
 #include "vec.h"
 #include <complex>
+#include "Complex.h"
 
 //@implements core
 
@@ -197,6 +198,65 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
    }
 
 }
+
+//index implementation for Vector<bool>
+ObjectRef Vector<bool>::index(int pos) {
+	//look for range ?
+	return ObjectRef(Bool::alloc(static_cast<basicType> ((*this)[pos])));
+}
+
+//index implementation for Vector<int>
+ObjectRef Vector<int>::index(int pos) {
+	//look for range ?
+	return ObjectRef(Int::alloc(static_cast<basicType> ((*this)[pos])));
+}
+
+//index implementation for Vector<float>
+ObjectRef Vector<float>::index(int pos) {
+	//look for range ?
+	return ObjectRef(Float::alloc(static_cast<basicType> ((*this)[pos])));
+}
+
+//index implementation for Vector<double>
+ObjectRef Vector<double>::index(int pos) {
+	//look for range ?
+	return ObjectRef(Double::alloc(static_cast<basicType> ((*this)[pos])));
+}
+
+//index implementation for Vector<complex<float> >
+ObjectRef Vector<complex<float> >::index(int pos) {
+	//look for range ?
+	return ObjectRef(Complex<float>::alloc(static_cast<basicType> ((*this)[pos])));
+}
+
+//index implementation for Vector<complex<double> >
+ObjectRef Vector<complex<double> >::index(int pos) {
+	//look for range ?
+	return ObjectRef(Complex<double>::alloc(static_cast<basicType> ((*this)[pos])));
+}
+
+//index implementation for Vector<ObjectRef>
+ObjectRef Vector<ObjectRef>::index(int pos) {
+	//look for range ?
+	return ObjectRef((*this)[pos]);
+}
+
+//index implementation for Vector<String>
+ObjectRef Vector<String>::index(int pos) {
+	//look for range ?
+	String *new_string = new String();
+	*new_string = (*this)[pos];
+	return ObjectRef(new_string);
+}
+
+//index implementation for Vector<string>
+ObjectRef Vector<string>::index(int pos) {
+	//look for range ?
+	String *new_string = new String();
+	*new_string = (*this)[pos];
+	return ObjectRef(new_string);
+}
+
 
 
 //Implemented in add_operators.cc

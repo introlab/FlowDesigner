@@ -11,6 +11,7 @@
 #include "typetraits.h"
 #include <string>
 
+
 using namespace std;
 
 /**Base class for all vector types, it holds the size and handles some 
@@ -28,12 +29,18 @@ class BaseVector  : public Object {
       {}
 
    size_t vsize() const {return obj_size;}
+   
+   virtual size_t vector_size() const = 0;
 
    bool vempty() const {return vsize()==0;}
 
    size_t vcapacity() {return obj_capacity;}
    
    virtual ObjectRef range(size_t startInd, size_t endInd)=0;
+   
+   virtual ObjectRef index(int pos) {
+   	throw new GeneralException(string("index not implemented for object : ") + className(),__FILE__,__LINE__);
+   }
 };
 
 /**The (template) Overflow Vector type, it adds functionnality to the 
@@ -74,7 +81,9 @@ public:
    ~Vector()
    {
    }
-
+ 
+   virtual size_t vector_size() const {return size();}
+   
    /**
       Formatted output (only values) for Vectors <br>
       <b>Format : </b> <i> element0 element1 ... element(size-1)</i>
@@ -157,9 +166,15 @@ public:
       }
       return ObjectRef(v);
    }
+   
+   /**	
+   	Returns an element at a desired position in the vector
+   	\param pos the position in the vector
+	\return ObjectRef Element at the desired position
+   */
+   virtual ObjectRef index(int pos);
 
 };
-
 
 
 

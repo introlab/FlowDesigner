@@ -37,7 +37,7 @@ class Index : public BufferedNode {
    int inputID;
    int outputID;
    int indexID;
-   int index;
+   RCPtr<Int> index;
 
 public:
    Index(string nodeName, ParameterSet params)
@@ -48,27 +48,26 @@ public:
 
       if (parameters.exist("INDEX"))
       {
-	 index = dereference_cast<int> (parameters.get("INDEX"));
+	 index = parameters.get("INDEX");
       } else {
-	 index=-1;
+	 index=RCPtr<Int>(Int::alloc(-1));
 	 indexID = addInput("INDEX");
       }
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-     RCPtr<Vector<float> > in = getInput(inputID,count);
+     RCPtr<BaseVector> in = getInput(inputID,count);
 
-     int inputLength = in->size();
-
+     int inputLength = in->vector_size();
      int ind;
 
-     if (index == -1)
+     if (index->val() == -1)
        {
-	 ObjectRef indexValue = getInput(indexID, count);
-	 ind = dereference_cast<int> (indexValue);
+	 RCPtr<Int> indexValue = getInput(indexID, count);
+	 ind = indexValue->val();
       } else {
-	 ind = index;
+	 ind = index->val();
       }
 
      if (ind >= inputLength)
@@ -77,7 +76,8 @@ public:
      if (ind < 0)
        throw new NodeException(this, "Negative index", __FILE__, __LINE__);
      
-     out[count] = Float::alloc((*in)[ind]);
+     //out[count] = Float::alloc((*in)[ind]);
+     out[count] = in->index(ind);
    }
   
       
