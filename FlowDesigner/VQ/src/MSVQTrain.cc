@@ -24,23 +24,23 @@
 class MSVQTrain;
 DECLARE_NODE(MSVQTrain)
 /*Node
-
+ *
  * @name MSVQTrain
  * @category VQ
- * @description No description available
-
+ * @description Training of a multi-stage vector quantizer
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name STAGES
  * @parameter_description No description available
-
+ *
  * @parameter_name BINARY
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -59,6 +59,9 @@ class MSVQTrain : public Node {
 
    /**Number of means to train model*/
    vector<int> stages;
+
+   int processCount;
+
   public:
 
    MSVQTrain(string nodeName, ParameterSet params) 
@@ -86,11 +89,13 @@ class MSVQTrain : public Node {
 
    void specificInitialize()
    {
+      processCount=-1;
       this->Node::specificInitialize();
    }
 
    void reset()
    {
+      processCount=-1;
       this->Node::reset();
    }
 

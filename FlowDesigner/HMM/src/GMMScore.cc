@@ -50,11 +50,13 @@ GMMScore::GMMScore(string nodeName, ParameterSet params)
 
 void GMMScore::specificInitialize()
 {
+   processCount = -1;
    this->Node::specificInitialize();
 }
 
 void GMMScore::reset()
 {
+   processCount = -1;
    this->Node::reset();
 }
 

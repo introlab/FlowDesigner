@@ -21,7 +21,11 @@
 
 /** Input translator node used only for the Iterator class */
 class InputTranslator : public Collector {
-   
+
+protected:
+
+   int processCount;
+
 public:
    
    /** The constructor with a nodeName and parameters */
@@ -55,9 +59,18 @@ private:
    }
 };
 
+
+
+
+
+
 /** Iterator Node */
 class Iterator : public Network {
-   
+
+protected:
+
+   int processCount;
+ 
 public:
    
    /** The constructor with a nodeName and parameters */
@@ -80,8 +93,14 @@ public:
    /** returning the condition Node */
    Node* getConditionNode() {return conditionNode;}
 
-   /**Subnet : NetworkNode specific initialize*/
+   /**Iterator specific initialize*/
    virtual void specificInitialize();
+
+   /**Resets the Iterator and all the internal nodes */
+   virtual void reset();
+
+   /**Notify the node that is will be destroyed shortly*/
+   virtual void cleanupNotify();
 
 protected:
    
@@ -90,6 +109,9 @@ protected:
    
    /** It true, the iterator is a do; while()  (the condition is tested last)*/
    bool doWhile;
+
+   bool exit_status;
+
 
    /** Our special conditionNode*/
    Node *conditionNode;

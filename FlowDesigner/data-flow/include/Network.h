@@ -35,7 +35,7 @@
    the input node.A network can be included as a node as well.
  */
 
-//@author Dominic Letourneau
+//@author Dominic Letourneau & Jean-Marc Valin
 //@version 1.0
 
 class Network : public Node {
@@ -94,12 +94,11 @@ public:
       return inputNode->getInputs();
    }
 
-   virtual void setExitStatus();
-
-   virtual void resetExitStatus();
-
    /** resets the Network and all the internal nodes */
    virtual void reset();
+   
+   /**Notify the node that is will be destroyed shortly*/
+   virtual void cleanupNotify();
    
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req) {sinkNode->request(outputID,req);}
@@ -114,12 +113,7 @@ public:
    virtual bool hasOutput (int output_id) const;
 
    /**Subnet : The connectToNode method overloaded from Node */
-   virtual void connectToNode(string in, Node *inNode, string out) {
-      if (!inputNode) {
-         throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
-      }
-      connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
-   }
+   virtual void connectToNode(string in, Node *inNode, string out);
    
    /**Verify input connections for the node*/
    virtual void verifyConnect();
@@ -146,9 +140,6 @@ protected:
    /**The input node*/
    Node *inputNode;
  
-   //The exit status
-   bool exit_status;
-
 
    
    /**default constructor should never be used*/

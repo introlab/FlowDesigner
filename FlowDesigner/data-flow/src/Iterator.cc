@@ -27,7 +27,7 @@
 /***************************************************************************/
 Iterator::Iterator (string nodeName, ParameterSet params) 
    : Network(nodeName, params)
-   //, output(new Object(Object::nil)) 
+   , exit_status(false) 
 
 {
    translator = NULL;
@@ -35,6 +35,12 @@ Iterator::Iterator (string nodeName, ParameterSet params)
    
    //FIXME: this should be set dynamically.
    output.resize(30,Object::nilObject);
+}
+
+void Iterator::cleanupNotify() {
+
+   exit_status = true;
+   Network::cleanupNotify();
 }
 
 
@@ -157,5 +163,12 @@ void Iterator::specificInitialize() {
       doWhile = true;
    else 
       doWhile = false;
+   
+   processCount = -1;
 }
 
+void Iterator::reset()
+{
+   processCount = -1;
+   Network::reset();
+}

@@ -25,16 +25,19 @@ DECLARE_NODE(MMITrain)
  *
  * @name MMITrain
  * @category VQ
- * @description No description available
+ * @description Train Maximum Mutual Information (MMI) Tree
  *
  * @input_name FRAMES
+ * @input_type GrowingBuffer
  * @input_description No description available
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Cell
+ * @output_description MMI tree
  *
  * @parameter_name LEVELS
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of levels for the tree
  *
 END*/
 
@@ -50,11 +53,13 @@ MMITrain::MMITrain(string nodeName, ParameterSet params)
 
 void MMITrain::specificInitialize()
 {
+   processCount=-1;
    this->Node::specificInitialize();
 }
 
 void MMITrain::reset()
 {
+   processCount=-1;
    this->Node::reset();
 }
 

@@ -30,38 +30,27 @@ Network::Network (string nodeName, ParameterSet params)
    numNodes = 0;
    sinkNode = NULL;
    inputNode = NULL;
-   exit_status = false;
 }
 
-void Network::setExitStatus() {
 
+/***************************************************************************/
+/*
+  cleanupNotify(...)
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+void Network::cleanupNotify()
+{
    map<string,Node*>::iterator nodeIter;
-   Node *node = NULL;
-  
-   cerr<<"setting exit_status (Network)"<<endl;
-   exit_status = true;
-   
-   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
-      node = (*nodeIter).second;
-      node->setExitStatus();
+
+   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++)
+   {
+      Node *node = (*nodeIter).second;
+      node->cleanupNotify();
    }
 
 }
 
-
-
-void Network::resetExitStatus() {
-  
-   map<string,Node*>::iterator nodeIter;
-   Node *node = NULL;
-   
-   exit_status = false;
-   
-   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
-      node = (*nodeIter).second;
-      node->resetExitStatus();
-   }
-}
 
 
 
@@ -86,6 +75,8 @@ Network::~Network() {
       delete node;
    }
 }
+
+
 /***************************************************************************/
 /*
   Network::getNodeNamed (...)
@@ -133,7 +124,9 @@ void Network::addNode (const string &factoryName,const string &nodeName, const P
    numNodes++;
    //cout<<"Node inserted: "<< nodeName <<" node pointer :"<<node<<endl;
 
-} 
+}
+
+
 /***************************************************************************/
 /*
   Network::addNode (...)
@@ -145,6 +138,8 @@ void Network::addNode (Node &node) {
    nodeDictionary.insert(nodeEntry (node.getName(),&node));
    numNodes++;
 }
+
+
 /***************************************************************************/
 /*
   Network::removeNode (...)
@@ -290,6 +285,7 @@ int Network::translateInput (string   inputName) {
    }
    return inputNode->translateInput (inputName);
 }
+
 /***************************************************************************/
 /*
   Network::translateOutput(...)
@@ -315,6 +311,16 @@ void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
       throw new NoInputNodeException();
    
    inputNode->connectToNode(in,inNode,out);
+}
+
+/**Subnet : The connectToNode method overloaded from Node */
+void Network::connectToNode(string in, Node *inNode, string out) 
+{
+   if (!inputNode) 
+   {
+      throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
+   }
+   connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
 }
 
 /***************************************************************************/

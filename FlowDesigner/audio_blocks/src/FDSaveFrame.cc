@@ -14,37 +14,42 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "Node.h"
+#include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "Vector.h"
 
 #include <unistd.h>
+#include <math.h>
 
 class FDSaveFrame;
 
 DECLARE_NODE(FDSaveFrame)
 /*Node
-
+ *
  * @name FDSaveFrame
  * @category Signal:Audio
- * @description No description available
-
+ * @description Writes audio frames to the sound card (or any other) file descriptor
+ *
  * @input_name OBJECT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Audio frames
+ *
  * @input_name FD
- * @input_description No description available
-
+ * @input_type FILEDES
+ * @input_description (Sound card) File descriptor
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Returning the input audio frames
+ *
  * @parameter_name LEAD_IN
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Number of zero frames to send before starting (for synchronization)
+ *
 END*/
 
 
-class FDSaveFrame : public Node {
+class FDSaveFrame : public BufferedNode {
 
 protected:
    
@@ -57,78 +62,60 @@ protected:
    /**The ID of the 'object' input*/
    int objectInputID;
 
-   /**Reference to the opened stream*/
-   ObjectRef openedFile;
-
+   int lead;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    FDSaveFrame(string nodeName, ParameterSet params) 
-      : Node(nodeName, params)
+      : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
       streamInputID = addInput("FD");
       objectInputID = addInput("OBJECT");
+      inOrder = true;
+      if (parameters.exist("LEAD_IN"))
+	 lead = dereference_cast<int> (parameters.get("LEAD_IN"));
+      else
+	 lead = 0;
    }
    
 
-   /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize()
+   void calculate(int output_id, int count, Buffer &out)
    {
-      this->Node::specificInitialize();
-   }
 
-   /**Class reset routine.
-      Each class will call its superclass reset() method*/
-   virtual void reset()
-   {
-      this->Node::reset();
-   }
+      ObjectRef inputValue = getInput(objectInputID,count);
 
-   /**Ask for the node's output which ID (number) is output_id 
-      and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count)
-   {
-      if (output_id==outputID)
+      if (inputValue->status != Object::valid)
       {
-         if (count != processCount)
-         {
-            NodeInput streamInput = inputs[streamInputID];
-            int stream = dereference_cast<int> (streamInput.node->getOutput(streamInput.outputID,count));
-            NodeInput objectInput = inputs[objectInputID];
-            ObjectRef inputValue = objectInput.node->getOutput(objectInput.outputID,count);
-            if (inputValue->status != Object::valid)
-               return ObjectRef (new Object(inputValue->status));
-            //Vector<unsigned char> &v = object_cast<Vector<unsigned char> > (inputValue);
-            //stream.write (v.begin(), v.size());
-            //cerr << "stream: " << &stream << endl;
-            /*inputValue->rawWrite(stream);
-	      stream.flush();*/
-	    Vector<float> &vec = object_cast<Vector<float> > (inputValue);
-	    short buff[vec.size()];
-
-	    if (count == 0 && parameters.exist("LEAD_IN"))
-	    {
-	       cerr << "lead\n";
-	       for (int i=0;i<vec.size();i++)
-		  buff[i]=0;
-	       write(stream, (const char *) buff, sizeof(short)*vec.size());
-
-	    }
-
-	    for (int i=0;i<vec.size();i++)
-	       buff[i]=vec[i];
-	    write(stream, (const char *) buff, sizeof(short)*vec.size());
-            processCount=count;
-         }
-         return ObjectRef(Object::nilObject);
-         //return ObjectRef(new Object(Object::nil));
+	 out[count] = inputValue;
+	 return;
       }
-      else 
-         throw new NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
-   }
-protected:
-   /**Default constructor, should not be used*/
-   FDSaveFrame() {throw new GeneralException("FDSaveFrame copy constructor should not be called",__FILE__,__LINE__);}
 
+      ObjectRef streamValue = getInput(streamInputID,count);
+      if (streamValue->status != Object::valid)
+      {
+	 out[count] = streamValue;
+	 return;
+      }
+      
+      int stream = dereference_cast<int> (streamValue);
+
+      Vector<float> &vec = object_cast<Vector<float> > (inputValue);
+      short buff[vec.size()];
+      
+      if (count == 0)
+      {
+	 
+	 for (int i=0;i<vec.size();i++)
+	    buff[i]=0;
+	 for (int i=0;i<lead;i++)
+	    write(stream, (const char *) buff, sizeof(short)*vec.size());
+	 
+      }
+      
+      for (int i=0;i<vec.size();i++)
+	 buff[i]= short(rint(vec[i]));
+      write(stream, (const char *) buff, sizeof(short)*vec.size());
+
+      out[count] = inputValue;
+   }
 };

@@ -45,6 +45,8 @@ public:
 class BufferedNode : public Node {
 protected:
 
+   int processCount;
+
    vector<OutputCacheInfo> outputs;
 
    vector<InputCacheInfo> inputsCache;

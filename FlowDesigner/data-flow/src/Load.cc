@@ -14,10 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef LOAD_H
-#define LOAD_H
-
-#include "Node.h"
+#include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "ObjectParser.h"
 
@@ -39,7 +36,7 @@ DECLARE_NODE(Load)
 END*/
 
 
-class Load : public Node {
+class Load : public BufferedNode {
 
 protected:
    
@@ -53,77 +50,46 @@ protected:
    ObjectRef currentObject;
 
 public:
-   /**Constructor, takes the name of the node and a set of parameters*/
-   Load(string nodeName, ParameterSet params);
+   Load(string nodeName, ParameterSet params) 
+      : BufferedNode(nodeName, params)
+   {
+      outputID = addOutput("OUTPUT");
+      streamInputID = addInput("STREAM");
+      inOrder = true;
+   }
 
-   /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize();
 
-   /**Class reset routine.
-      Each class will call its superclass reset() method*/
-   virtual void reset() {this->Node::reset();} 
 
-   /**Ask for the node's output which ID (number) is output_id 
-      and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count); 
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      ObjectRef streamRef = getInput(streamInputID,count);
+      if (streamRef->valid != Object::valid)
+      {
+	 out[count] = streamRef;
+	 return;
+      }
 
-protected:
-   /**Default constructor, should not be used*/
-   Load() {throw new GeneralException("Load copy constructor should not be called",__FILE__,__LINE__);}
+      Stream &stream = object_cast<Stream> (streamRef);
+      
+      try {
+	 ObjectRef obj;
+	 stream >> obj;
+	 out[count] = obj;
+      } catch (BaseException *e)
+      {
+	 //cerr << "base exception\n";
+	 //e->print();
+	 out[count] = Object::past_endObject;
+      } catch (...)
+      {
+	 //cerr << "nil!\n";
+	 out[count] =  Object::past_endObject;
+      }
+      if (stream.eof())
+      {
+	 //cerr << "end!\n";
+	 out[count] =  Object::past_endObject;
+      }         
+   }
 
 };
-
-inline Load::Load(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
-{
-   outputID = addOutput("OUTPUT");
-   streamInputID = addInput("STREAM");
-}
-
-inline void Load::specificInitialize()
-{
-   this->Node::specificInitialize();
-}
-
-inline ObjectRef Load::getOutput(int output_id, int count)
-{
-   if (output_id==outputID)
-   {
-      if (count != processCount)
-      {
-         NodeInput streamInput = inputs[streamInputID];
-         ObjectRef streamRef = streamInput.node->getOutput(streamInput.outputID,count);
-         Stream &stream = object_cast<Stream> (streamRef);
-         
-         //T *loadedObject = new T;
-         //stream >> *loadedObject;
-         //currentObject = ObjectRef(loadedObject);
-	 //cerr << "reading for count = " << count << endl;
-	 try {
-	    stream >> currentObject;
-	 } catch (BaseException *e)
-	 {
-	    cerr << "base exception\n";
-	    e->print();
-	    return Object::past_endObject;
-	 } catch (...)
-	 {
-	    cerr << "nil!\n";
-	    return Object::past_endObject;
-	 }
-	 if (stream.eof())
-	 {
-	    cerr << "end!\n";
-	    return Object::past_endObject;
-	 }         
-	 processCount = count;
-      }
-      return currentObject;
-   }
-   else 
-      throw new NodeException (this, "Load: Unknown output id", __FILE__, __LINE__);
-}
-
-
-#endif

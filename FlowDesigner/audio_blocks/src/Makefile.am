@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.74 2001/04/06 18:14:19 jmvalin Exp $
+# $Id: Makefile.am,v 1.75 2001/04/10 16:07:34 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -16,7 +16,6 @@ libablocks_la_SOURCES =	\
 	GCMS.cc \
 	MMIAccumulator.cc \
 	Histogram.cc \
-	PitchDecision.cc \
 	Sync.cc \
 	FFT.cc \
 	PS.cc \
@@ -29,7 +28,6 @@ libablocks_la_SOURCES =	\
 	Exp.cc \
 	Abs.cc \
 	Entropy.cc \
-	SaveFrame.cc \
 	OverlapAndAdd.cc \
 	Gain.cc \
 	CAllPole.cc \

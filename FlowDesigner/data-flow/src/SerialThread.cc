@@ -20,7 +20,14 @@
 #include <pthread.h>
 #include "pseudosem.h"
 
-
+/*
+#include <semaphore.h>
+#define pseudosem_t sem_t
+#define pseudosem_post sem_post
+#define pseudosem_wait sem_wait
+#define pseudosem_init sem_init
+#define pseudosem_destroy sem_destroy
+*/
 
 class SerialThread;
 
@@ -50,6 +57,8 @@ class SerialThread : public Node {
 
    int inputID;
    int outputID;
+      
+   int processCount;
 
    int lookAhead;
    int reqLookAhead;
@@ -75,17 +84,24 @@ class SerialThread : public Node {
    //Incremented (by threadLoop) when a new result is available
    pseudosem_t recSem;
 
-   //Destroy thread data
-   void destroyThread()
+   void endThread()
    {
       resetState=true;
       pseudosem_post(&sendSem);
+      //cerr << "Joining " << name << "\n";
       pthread_join (thread, NULL);
+      //cerr << "done\n";
+      resetState=false;
+   }
+
+   //Destroy thread data
+   void destroyThread()
+   {
       pthread_mutex_destroy(&bufferLock);
       pseudosem_destroy(&sendSem);
       pseudosem_destroy(&recSem);
-      resetState=false;
    }
+
 
    //Init thread data
    void initThread()
@@ -116,6 +132,7 @@ public:
 
    void specificInitialize()
    {
+      processCount = -1;
       initThread();
       buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
       ParameterSet req;
@@ -125,9 +142,15 @@ public:
       Node::specificInitialize();
    }
 
+   void cleanupNotify()
+   {
+      endThread();
+   }
 
    void reset()
    {
+      processCount = -1;
+      endThread();
       destroyThread();
       initThread();
       buff = RCPtr<Buffer>(new Buffer (lookAhead + 1));

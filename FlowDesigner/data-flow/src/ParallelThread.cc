@@ -74,21 +74,28 @@ class ParallelThread : public BufferedNode {
 
    int calcCount;
 
-   //Destroy thread data
-   void destroyThread()
+   void endThread()
    {
       resetState = true;
+      //cerr << "lock\n";
       pthread_mutex_lock(&lock);
       calcCount = 1;
       pthread_mutex_unlock(&lock);
+      //cerr << "join\n";
       pthread_cond_signal(&sendSem);
+      //cerr << "done\n";
       pthread_join (thread, NULL);
+      resetState = false;      
+   }
+
+   //Destroy thread data
+   void destroyThread()
+   {
       pthread_cond_destroy(&sendSem);
       pthread_cond_destroy(&recSem);
       pthread_mutex_destroy(&lock);
       pthread_mutex_destroy(&lock2);
       pthread_mutex_destroy(&bigLock);
-      resetState = false;
    }
 
    //Init thread data
@@ -149,6 +156,11 @@ public:
 	 pthread_cond_signal(&recSem);
 	 pthread_mutex_unlock(&lock2);
       }
+   }
+
+   void cleanupNotify()
+   {
+      endThread();
    }
 
    void calc()

@@ -49,11 +49,13 @@ MMIScore::MMIScore(string nodeName, ParameterSet params)
 
 void MMIScore::specificInitialize()
 {
+   processCount=-1;
    this->Node::specificInitialize();
 }
 
 void MMIScore::reset()
 {
+   processCount=-1;
    this->Node::reset();
 }
 

@@ -49,10 +49,8 @@ Node::Node(string nodeName, const ParameterSet &params)
    : name (nodeName)
    , inputs (vector<NodeInput>(0))
    , initialized (false)
-   , processCount(-1)
    , outputInitializeCount (0)
    , parameters(params)
-   , exit_status(false)
    , uinode(NULL)
 {
 }
@@ -256,7 +254,6 @@ void Node::initialize ()
 void Node::specificInitialize()
 {
    initialized = true;
-   processCount = -1;
 }
 
 
@@ -268,7 +265,6 @@ void Node::specificInitialize()
 /***************************************************************************/
 void Node::reset()
 {
-   processCount=-1;
 }
 
 

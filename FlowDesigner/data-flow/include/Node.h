@@ -96,8 +96,6 @@ class Node {
    friend class Iterator;
 
 protected:
-
-   bool exit_status;
    
    /**Node's name*/
    string name;
@@ -110,12 +108,7 @@ protected:
 
    /**Whether the node has been initialized*/
    bool initialized;
-   
-   /**Internal processing counter for synchronization.
-      This counter is used to find out whether the output of the node
-      needs to be updated */
-   int processCount;
-   
+      
    /**Used during initialization.
       Becomes zero when all the node's outputs have been initialized*/
    int outputInitializeCount;
@@ -178,12 +171,9 @@ public:
       NodeInput input = inputs[inputID];
       return input.node->getOutput(input.outputID, count);
    }
-
-   virtual void setExitStatus(){exit_status = true;}
-
-   bool isExitStatus() {return exit_status;}
-
-   virtual void resetExitStatus() {exit_status = false;}
+   
+   /**Notify the node that is will be destroyed shortly*/
+   virtual void cleanupNotify() {}
 
    /**Resets the node internal values and buffers*/
    virtual void reset();

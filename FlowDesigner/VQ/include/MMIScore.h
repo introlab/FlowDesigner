@@ -36,6 +36,8 @@ protected:
    /**Reference to the current stream*/
    ObjectRef currentScore;
 
+   int processCount;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    MMIScore(string nodeName, ParameterSet params);

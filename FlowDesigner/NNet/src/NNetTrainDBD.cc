@@ -92,6 +92,9 @@ protected:
    double increase;
 
    int nbSets;
+
+   int processCount;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrainDBD(string nodeName, ParameterSet params)
@@ -131,21 +134,23 @@ public:
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize()
-      {
-	 NodeInput trainInInput = inputs[trainInID];
-	 cerr << "in name = " << trainInInput.outputID << endl ;
-	 
-	 NodeInput trainOutInput = inputs[trainOutID];
-	 cerr << "out name = " << trainOutInput.outputID << endl;
-	 this->Node::specificInitialize();
-      }
+   {
+      processCount = -1;
+      NodeInput trainInInput = inputs[trainInID];
+      cerr << "in name = " << trainInInput.outputID << endl ;
+      
+      NodeInput trainOutInput = inputs[trainOutID];
+      cerr << "out name = " << trainOutInput.outputID << endl;
+      this->Node::specificInitialize();
+   }
 
    /**Class reset routine.
       Each class will call its superclass reset() method*/
    virtual void reset()
-      {
-	 this->Node::reset();
-      }
+   {
+      processCount = -1;
+      this->Node::reset();
+   }
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */

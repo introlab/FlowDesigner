@@ -30,6 +30,8 @@ protected:
    /**The ID of the 'stream' input*/
    int inputID;
 
+   int processCount;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    UnPack(string nodeName, ParameterSet params);

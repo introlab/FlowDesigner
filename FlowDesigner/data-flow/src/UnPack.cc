@@ -43,11 +43,13 @@ UnPack::UnPack(string nodeName, ParameterSet params)
 
 void UnPack::specificInitialize()
 {
+   processCount = -1;
    this->Node::specificInitialize();
 }
 
 void UnPack::reset()
 {
+   processCount = -1;
    this->Node::reset();
 }
 

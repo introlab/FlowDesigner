@@ -79,8 +79,15 @@ public:
 
    ObjectRef getOutput(int output_id, int count)
    {
+      ObjectRef inputValue;
       pthread_mutex_lock(&lock);
-      ObjectRef inputValue = getInput(inputID,count);
+      try {
+	 inputValue = getInput(inputID,count);
+      } catch (...)
+      {
+	 pthread_mutex_unlock(&lock);
+	 throw;
+      }
       pthread_mutex_unlock(&lock);  
       return inputValue;
    }

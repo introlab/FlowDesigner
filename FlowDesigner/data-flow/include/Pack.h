@@ -33,6 +33,8 @@ protected:
    /**Reference to the output*/
    ObjectRef output;
 
+   int processCount;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    Pack(string nodeName, ParameterSet params);

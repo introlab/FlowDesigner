@@ -26,17 +26,19 @@ class NNetNew;
 
 DECLARE_NODE(NNetNew)
 /*Node
-
+ *
  * @name NNetNew
  * @category NNet
- * @description No description available
-
+ * @description Returns a new (MLP) neural network
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type NNet
+ * @output_description New (MLP) neural network
+ *
  * @parameter_name TOPO
+ * @parameter_type Vector
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -51,6 +53,8 @@ protected:
 
    Vector<int> topo;
   
+   int processCount;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetNew(string nodeName, ParameterSet params)
@@ -66,16 +70,18 @@ public:
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize()
-      {
-	 this->Node::specificInitialize();
-      }
+   {
+      processCount = -1;
+      this->Node::specificInitialize();
+   }
 
    /**Class reset routine.
       Each class will call its superclass reset() method*/
    virtual void reset()
-      {
-	 this->Node::reset();
-      }
+   {
+      processCount = -1;
+      this->Node::reset();
+   }
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */

@@ -14,13 +14,14 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "Save.h"
+#include "BufferedNode.h"
 #include "net_types.h"
 #include "Object.h"
 
 #include <iostream>
 using namespace std;
 
+class Save;
 DECLARE_NODE(Save)
 /*Node
  *
@@ -40,60 +41,60 @@ DECLARE_NODE(Save)
  *
 END*/
 
+class Save : public BufferedNode {
 
-Save::Save(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
-{
-   outputID = addOutput("OUTPUT");
-   streamInputID = addInput("STREAM");
-   objectInputID = addInput("OBJECT");
-}
+protected:
+   
+   /**The ID of the 'output' output*/
+   int outputID;
 
-void Save::specificInitialize()
-{
-   this->Node::specificInitialize();
-}
+   /**The ID of the 'stream' input*/
+   int streamInputID;
 
-void Save::reset()
-{
-   this->Node::reset();
-}
+   /**The ID of the 'object' input*/
+   int objectInputID;
 
-ObjectRef Save::getOutput(int output_id, int count)
-{
-   if (output_id==outputID)
+   /**Reference to the opened stream*/
+   ObjectRef openedFile;
+
+public:
+   Save(string nodeName, ParameterSet params) 
+      : BufferedNode(nodeName, params)
    {
-      if (count > processCount)
-      {
-	 ObjectRef objectValue;
-	 for (int i = processCount+1 ; i<=count; i++)
-	 {
-	    NodeInput objectInput = inputs[objectInputID];
-	    objectValue = objectInput.node->getOutput(objectInput.outputID,i);
-	    Object &object = *objectValue;
-	    
-	    NodeInput streamInput = inputs[streamInputID];
-	    ObjectRef streamValue = streamInput.node->getOutput(streamInput.outputID,i);
-	    Stream &stream = object_cast<Stream> (streamValue);
-	    
-	    //stream << object << endl;
-            //FIXME: this is a kludge
-	    stream << object;
-            ostream &tmp = stream;
-	    tmp << endl;
-
-	    stream.flush();
-	    
-	 }
-	 processCount = count;
-	 return objectValue;
-      } else {
-         NodeInput objectInput = inputs[objectInputID];
-         ObjectRef objectValue = objectInput.node->getOutput(objectInput.outputID,count);
-         return objectValue;         
-      }
-      //return ObjectRef(new Object(Object::nil));
+      outputID = addOutput("OUTPUT");
+      streamInputID = addInput("STREAM");
+      objectInputID = addInput("OBJECT");
    }
-   else 
-      throw new NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
-}
+
+
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      ObjectRef objectValue = getInput(objectInputID,count);
+      Object &object = *objectValue;
+      
+      ObjectRef streamValue = getInput(streamInputID,count);
+      if (streamValue->valid != Object::valid)
+      {
+	 out[count] = streamValue;
+	 return;
+      }
+
+      Stream &stream = object_cast<Stream> (streamValue);
+      
+      stream << object;
+      ostream &tmp = stream;
+      tmp << endl;
+      stream.flush();
+      out[count] = objectValue;
+   }
+
+   virtual void request(int outputID, const ParameterSet &req) 
+   {
+      inputs[objectInputID].node->request(outputID,req);
+   }
+
+
+};
+
+
+

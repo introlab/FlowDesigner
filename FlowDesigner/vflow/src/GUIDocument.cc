@@ -675,11 +675,12 @@ extern void set_run_mode (bool isRuning);
 
 static void disposeFunct(void *dummy)
 {
-   cerr << "disposeFunct called\n";
+   //cerr << "disposeFunct called\n";
    if (dummy != NULL) {
      GUIDocument *doc = (GUIDocument*) dummy;
      GUIDocument::isRunning = false;
-     cerr <<  "Deleting the running network.\n"; 
+     //cerr <<  "Deleting the running network.\n"; 
+     GUIDocument::runningNet->cleanupNotify();
      delete GUIDocument::runningNet;
      //gdk_threads_leave();
      GUIDocument::runningNet=NULL;
@@ -727,6 +728,7 @@ void GUIDocument::threadStop()
    if (isRunning) {
       //cerr << "stopping...\n";
       isRunning=false;
+      //runningNet->cleanupNotify();
       #ifdef HAVE_PTHREAD_CANCEL
       pthread_cancel(runThread);
       #endif

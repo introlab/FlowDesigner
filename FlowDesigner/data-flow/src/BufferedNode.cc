@@ -71,15 +71,15 @@ void BufferedNode::performRequests ()
 
 void BufferedNode::specificInitialize()
 {
-   //cerr << "FrameOperation initialize...\n";
+   processCount = -1;
    this->Node::specificInitialize();
    this->initializeBuffers();
-
    this->performRequests();
 }
 
 void BufferedNode::reset()
 {
+   processCount = -1;
    this->Node::reset();
    this->initializeBuffers();
 }

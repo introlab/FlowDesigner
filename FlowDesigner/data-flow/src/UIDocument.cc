@@ -798,19 +798,20 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
 //Run without a GUI
 void UIDocument::run()
 {
+   Network *net;
    try {
       ParameterSet params;
       //cerr << "building net...\n";
-      Network *net = build("MAIN", params);
+      net = build("MAIN", params);
       if (net->getInputNode())
-     throw new GeneralException ("main network has input node", __FILE__, __LINE__);
+	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       //cerr << "initializing...\n";
       net->initialize();
       //cerr << "running (UIDocument)...\n";
       
       for (int i = 0; ;i++) {
-     if (!net->hasOutput(i)) break;
-     cout << *net->getOutput(i,0);
+	 if (!net->hasOutput(i)) break;
+	 cout << *net->getOutput(i,0);
       }
    }
    catch (BaseException &e) {
@@ -819,24 +820,27 @@ void UIDocument::run()
    catch (BaseException *e) {
       e->print();
    }
+   net->cleanupNotify();
+   delete net;
    
 }
 
 void UIDocument::run(ParameterSet &p)
 {
+   Network *net;
    try {
       //cerr << "building net...\n";
-      Network *net = build("MAIN", p);
+      net = build("MAIN", p);
       if (net->getInputNode())
-     throw new GeneralException ("main network has input node", __FILE__, __LINE__);
+	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       //cerr << "initializing...\n";
       net->initialize();
       //cerr << "running (UIDocument)...\n";
       for (int i = 0; ;i++) 
       {
-     if (!net->hasOutput(i)) 
-        break;
-        *net->getOutput(i,0);
+	 if (!net->hasOutput(i)) 
+	    break;
+	 *net->getOutput(i,0);
       }
    } 
    catch (BaseException &e) {
@@ -845,7 +849,8 @@ void UIDocument::run(ParameterSet &p)
    catch (BaseException *e) {
       e->print();
    }
-   
+   net->cleanupNotify();
+   delete net;
 }
 
 void UIDocument::setFullPath(const string &fullpath)

@@ -44,12 +44,14 @@ Pack::Pack(string nodeName, ParameterSet params)
 
 void Pack::specificInitialize()
 {
+   processCount=-1;
    this->Node::specificInitialize();
    output = ObjectRef (new Vector<ObjectRef>);
 }
 
 void Pack::reset()
 {
+   processCount = -1;
    this->Node::reset();
    output = ObjectRef (new Vector<ObjectRef>);
 }

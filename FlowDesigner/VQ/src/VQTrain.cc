@@ -60,11 +60,13 @@ VQTrain::VQTrain(string nodeName, ParameterSet params)
 
 void VQTrain::specificInitialize()
 {
+   processCount=-1;
    this->Node::specificInitialize();
 }
 
 void VQTrain::reset()
 {
+   processCount=-1;
    this->Node::reset();
 }
 

@@ -47,11 +47,13 @@ GMMTrain::GMMTrain(string nodeName, ParameterSet params)
 
 void GMMTrain::specificInitialize()
 {
+   processCount = -1;
    this->Node::specificInitialize();
 }
 
 void GMMTrain::reset()
 {
+   processCount = -1;
    this->Node::reset();
 }
 

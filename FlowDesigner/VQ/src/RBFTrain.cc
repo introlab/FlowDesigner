@@ -24,20 +24,20 @@
 class RBFTrain;
 DECLARE_NODE(RBFTrain)
 /*Node
-
+ *
  * @name RBFTrain
  * @category VQ
  * @description No description available
-
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name NB_GAUSSIANS
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -56,6 +56,9 @@ class RBFTrain : public Node {
 
    /**Number of means to train model*/
    int nb_gaussians;
+
+   int processCount;
+
   public:
 
    RBFTrain(string nodeName, ParameterSet params) 
@@ -78,11 +81,13 @@ class RBFTrain : public Node {
 
    void specificInitialize()
    {
+      processCount=-1;
       this->Node::specificInitialize();
    }
 
    void reset()
    {
+      processCount=-1;
       this->Node::reset();
    }
 
