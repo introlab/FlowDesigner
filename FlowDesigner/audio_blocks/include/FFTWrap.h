@@ -35,7 +35,7 @@
 #endif /*ifdef HAVE_FFTW*/
 
 using namespace std;
-#if (__GNUC__ == 3 && __GNUC_MINOR__ == 1 && HAVE_EXT_HASH_MAP)
+#if (__GNUC__ == 3 && __GNUC_MINOR__ >= 1 && HAVE_EXT_HASH_MAP)
 using namespace __gnu_cxx;
 #endif
 
@@ -46,6 +46,8 @@ class _FFTWrap {
 #else
    typedef hash_map<int, rfftw_plan, hash<int> > FFTPlanMap;
    typedef hash_map<int, rfftw_plan, hash<int> > RFFTPlanMap;
+//typedef map<int, rfftw_plan> FFTPlanMap;
+  // typedef map<int, rfftw_plan> RFFTPlanMap;
 #endif
    
    FFTPlanMap FFTPlans[2];
