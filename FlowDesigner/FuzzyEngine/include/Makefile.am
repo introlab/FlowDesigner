@@ -8,4 +8,5 @@ include_HEADERS = FuzzyFunction.h \
 	TrapezoidalFunction.h \
 	TriangularFunction.h \
 	FuzzyOperators.h \
-	Tokenizer.h
+	Tokenizer.h \
+	InferenceModel.h

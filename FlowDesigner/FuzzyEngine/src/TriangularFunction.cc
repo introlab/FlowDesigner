@@ -46,7 +46,12 @@ TriangularFunction::TriangularFunction(const string &name, float a, float b, flo
 }
 
 ObjectRef TriangularFunction::clone() {
-  return ObjectRef(new TriangularFunction(m_name,m_a,m_b,m_c));
+
+  TriangularFunction* my_clone = new TriangularFunction(m_name,m_a,m_b,m_c);
+
+  my_clone->get_inference_values() = get_inference_values();
+
+  return ObjectRef(my_clone);
 }
 
 

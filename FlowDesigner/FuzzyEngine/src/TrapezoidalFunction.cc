@@ -53,7 +53,12 @@ TrapezoidalFunction::TrapezoidalFunction(const string &name, float a,
 }
 
 ObjectRef TrapezoidalFunction::clone() {
-  return ObjectRef(new TrapezoidalFunction(m_name,m_a,m_b,m_c,m_d));
+
+  TrapezoidalFunction* my_clone = new TrapezoidalFunction(m_name,m_a,m_b,m_c,m_d);
+
+  my_clone->get_inference_values() = get_inference_values();
+
+  return ObjectRef(my_clone);
 }
 
 
