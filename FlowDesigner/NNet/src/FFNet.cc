@@ -911,6 +911,193 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 }
 
 
+
+
+
+
+/*Training using simulated annealing*/
+void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double Ti, 
+			  double Tf, double increase, double decrease)
+{
+   int i,j;
+   double *in = new double [topo[0]];
+   double *out = new double [topo[topo.size()-1]];
+
+   int nbWeights = 0;
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+
+   cerr << "found " << nbWeights << " weights\n";
+
+   Array<double> weights(nbWeights);
+   Array<double> nextWeights(nbWeights);
+   Array<double> delta(nbWeights);
+   //Array<double> best(nbWeights);
+   double T=Ti;
+   double step=.001;
+
+   getWeights(weights.begin());
+
+   //best = weights;
+
+   double dec = (Ti-Tf)/iter;
+   while (iter--)
+   {
+      //Find displacement
+      step = .01;//*T;
+      for (i=0;i<nbWeights;i++)
+	 delta[i] = 2 * step * ( float(rand())/(RAND_MAX+1.0) -.5 );
+      
+      nextWeights = weights + delta;
+      
+      
+      //Evaluate error variation and transition probability
+      int N = 0;
+      double sx = 0, sx2 = 0;
+      int BATCH_SIZE = 100;
+      double sigma;
+      while (1)
+      {
+	 double deltaErr[BATCH_SIZE];
+	 for (i=0;i<BATCH_SIZE;i++)
+	    deltaErr[i]=0;
+	 double choices[BATCH_SIZE];
+	 for (i=0;i<BATCH_SIZE;i++)
+	    choices[i] = rand() % tin.size();
+	 
+	 //Calculate initial errors
+	 setWeights(weights.begin());
+	 for (i=0;i<BATCH_SIZE;i++)
+	 {
+	    for (j=0;j<topo[0];j++)
+	       in[j] = tin[choices[i]][j];
+	    for (j=0;j<topo[topo.size()-1];j++)
+	       out[j] = tout[choices[i]][j];
+	    double *calc_out = calc(in);
+	    int outputSize = topo[topo.size()-1];
+	    double err=0;
+	    for (j=0;j<outputSize;j++)
+	       err += (out[j]-calc_out[j]) * (out[j]-calc_out[j]);
+	    err = sqrt(err);
+	    deltaErr[i] -= err;
+	 }
+	 
+	 //calculate final errors
+	 setWeights(nextWeights.begin());
+	 for (i=0;i<BATCH_SIZE;i++)
+	 {
+	    for (j=0;j<topo[0];j++)
+	       in[j] = tin[choices[i]][j];
+	    for (j=0;j<topo[topo.size()-1];j++)
+	       out[j] = tout[choices[i]][j];
+	    double *calc_out = calc(in);
+	    int outputSize = topo[topo.size()-1];
+	    double err=0;
+	    for (j=0;j<outputSize;j++)
+	       err += (out[j]-calc_out[j]) * (out[j]-calc_out[j]);
+	    err = sqrt(err);
+	    deltaErr[i] += err;
+	 }
+	 for (i=0;i<BATCH_SIZE;i++)
+	 {
+	    sx += deltaErr[i];
+	    sx2 += deltaErr[i]*deltaErr[i];
+	 }
+	 N += BATCH_SIZE;
+	 
+	 //Estimation accuracy
+	 sigma = sqrt(sx2 - sx*sx/N)/N;
+	 //cerr << sx2 << " " << sx*sx/N << " " << N << " " << sigma << "\n";
+	 //Is the estimation accurate enough?
+	 if (sigma < .1*T)
+	    break;
+	 //Does it really matter?
+	 if (exp(- (sx/N - 3*sigma)/T) < .001)
+	    break;
+	 if (N>tin.size()/2 || (iter%100)==0)
+	 {
+	    sx=0;
+	    double SSE=0;
+	    sx2=0;
+	    sigma = 0;
+	    N=tin.size();
+	    setWeights(weights.begin());
+	    for (i=0;i<tin.size();i++)
+	    {
+	       for (j=0;j<topo[0];j++)
+		  in[j] = tin[i][j];
+	       for (j=0;j<topo[topo.size()-1];j++)
+		  out[j] = tout[i][j];
+	       double *calc_out = calc(in);
+	       int outputSize = topo[topo.size()-1];
+	       double err=0;
+	       for (j=0;j<outputSize;j++)
+		  err += (out[j]-calc_out[j]) * (out[j]-calc_out[j]);
+	       SSE += err;
+	       err = sqrt(err);
+	       sx -= err;
+	    }
+	    
+	    //calculate final errors
+	    setWeights(nextWeights.begin());
+	    for (i=0;i<tin.size();i++)
+	    {
+	       for (j=0;j<topo[0];j++)
+		  in[j] = tin[i][j];
+	       for (j=0;j<topo[topo.size()-1];j++)
+		  out[j] = tout[i][j];
+	       double *calc_out = calc(in);
+	       int outputSize = topo[topo.size()-1];
+	       double err=0;
+	       for (j=0;j<outputSize;j++)
+		  err += (out[j]-calc_out[j]) * (out[j]-calc_out[j]);
+	       err = sqrt(err);
+	       sx += err;
+	    }
+	    cout << "total error: " << SSE/16/tin.size() << endl;
+	    break;
+	 }
+	 
+      }
+      
+      //Now, our estimation should be OK
+      double deltaE = sx/N;
+      cout << deltaE << "\t" << sigma << "\t" << step << "\t" << T << "\t" << N << "\t";
+      if (deltaE < 0)
+	 cout << "+";
+      if (exp(-(deltaE)/T) > (rand()/(RAND_MAX+1.0)))
+      {
+	 //Take the step
+	 setWeights(nextWeights.begin());
+	 weights = nextWeights;
+	 cout << "+\n";
+	 //step *= increase;
+      } else {
+	 //Do not take the step
+	 cout << "-\n";
+	 setWeights(weights.begin());
+	 //step *= decrease;
+      }
+      if (deltaE > 0)
+	 step *= decrease;
+      else
+	 step *= increase;
+      T -= dec;
+      cout.flush();
+   }
+
+
+   //setWeights(best.begin());
+}
+
+
+
+
+
+
+
 /*
 void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 			  double mom, double increase, double decrease, int nbSets)

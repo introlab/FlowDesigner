@@ -53,6 +53,9 @@ class FFNet : public Object {
 		       double mom, double increase, double decrease);
    //void trainlm(vector<float *> in, vector<float *> out, int maxIter);
    
+   void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double Ti, 
+		       double Tf, double increase, double decrease);
+
    void printOn(ostream &out) const;
    void readFrom (istream &in);
 };

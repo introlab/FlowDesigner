@@ -101,12 +101,12 @@ public:
       
       //int classID = vq.getClassID(in.begin());
       //const vector<float> &mean = vq[classID];
-      vector<float> scal(inputLength);
+      /*vector<float> scal(inputLength);
       for (int i=0;i<inputLength;i++)
       {
 	 float tmp = .5*(in[i]+1);
 	 scal[i] = tmp*tmp;
-      }
+	 }*/
 
       vq.weightMeans(in, output);
 

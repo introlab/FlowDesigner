@@ -43,13 +43,17 @@ public:
 
    void resize(int _rows, int _cols)
    {
+      cerr << "resizing to " << _rows << " x " << _cols << endl;
       T *new_data = new T [_rows*_cols];
-      int min_row = _rows < rows ? _rows : rows;
+      int min_rows = _rows < rows ? _rows : rows;
       int min_cols = _cols < cols ? _cols : cols;
-      for (i=0;i<min_rows;i++)
-	 for (j=0;j<min_cols;j++)
+      cerr << min_rows << " " << min_cols << endl;
+      for (int i=0;i<min_rows;i++)
+	 for (int j=0;j<min_cols;j++)
 	    new_data[i*_cols+j] = data[i*cols+j];
-      delete [] data;
+      cerr << "deleting\n";
+      if (data)
+	 delete [] data;
       data = new_data;
       cols = _cols;
       rows = _rows;
@@ -108,7 +112,8 @@ template <class T>
 inline void Matrix<T>::readFrom(istream &in)
 {
    string tag;
-
+   cerr << "reading matrix\n";
+   int new_cols, new_rows;
    while (1)
    {
       char ch;
@@ -118,13 +123,17 @@ inline void Matrix<T>::readFrom(istream &in)
        throw new ParsingException ("Parse error: '<' expected");
       in >> tag;
       if (tag == "rows")
-         in >> rows;
+         in >> new_rows;
       else if (tag == "cols")
-         in >> cols;
+         in >> new_cols;
       else if (tag == "data")
       {
+	 cerr << "resizing\n";
+	 resize(new_rows,new_cols);
+	 cerr << "reading data...\n";
          for (int i=0;i<rows*cols;i++)
 	    in >> data[i];
+	 cerr << "done\n";
       } else
          throw new ParsingException ("unknown argument: " + tag);
 

@@ -86,7 +86,7 @@ public:
       {
 	 output[i] = 0;
 	 for (int j=0;j<inputLength;j++)
-	    output[i] += mat[i][j] + in[j];
+	    output[i] += mat[i][j] * in[j];
       }
       
    }
