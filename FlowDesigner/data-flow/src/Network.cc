@@ -214,37 +214,18 @@ void Network::verifyConnect()
  */
 /***************************************************************************/
 void Network::specificInitialize() {
+
    this->Node::specificInitialize();
    
    //We need a sink Node
    if (!sinkNode) {
-      throw new NoSinkNodeException();
+     throw new NoSinkNodeException();
    }
    
-   map<string,Node*>::iterator iter;
-
-
-   map<string,Node*> connectionMap;
-   
-  
-   sinkNode->initialize();
-   
-   //we must verify if all the nodes are initialized properly
-
-   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) 
-   {
-      if (!((*iter).second)->isInitialized()) 
-      {
-         //adding the nodes that are not properly initialized
-         connectionMap.insert(nodeEntry((*iter).first, (*iter).second));
-      }
+   //We must call specificInitialize to all our nodes
+   for (map<string,Node*>::iterator iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
+     (*iter).second->specificInitialize();
    }
-
-   if (connectionMap.size() > 0) {
-      throw new NotInitializedException(connectionMap);
-   }
-
-
 }
 
 /***************************************************************************/
