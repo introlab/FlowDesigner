@@ -48,6 +48,8 @@ public:
        //backlog = 1
        my_socket.server_listen(1);
 
+       my_socket.server_accept();
+
      }
      else {
        throw new GeneralException("NetworkSocket is not of type TCP_SERVER_STREAM_TYPE",__FILE__,__LINE__);

@@ -52,7 +52,7 @@ public:
      if (my_socket.get_type() == NetworkSocket::TCP_CLIENT_STREAM_TYPE) {
 
 
-       string &hostname = dereference_cast<string>(hostValue);
+       const String &hostname = object_cast<String>(hostValue);
 
        my_socket.client_connect(hostname.c_str());
 

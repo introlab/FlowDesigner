@@ -43,6 +43,8 @@ public:
      
      m_socketRef = nilObject;
 
+     cerr<<"got socketTYpe : "<<socketType<<endl;
+
      if (socketType == "BROADCAST") {
        m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::BROADCAST_TYPE, port));
      }
