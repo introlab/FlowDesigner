@@ -59,7 +59,7 @@ class Complex : public complex<T>, public Object {
     out << *((complex<T>*) this);
   }
   
-
+  complex<T>& val() const {return *this;}
 
 };
 

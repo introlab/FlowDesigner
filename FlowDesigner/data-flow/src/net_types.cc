@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "Complex.h"
 
 //@implements core
 
@@ -27,6 +28,7 @@ vector<Int *> ObjectPool<Int>::stack;
 vector<Bool *> ObjectPool<Bool>::stack;
 vector<Float *> ObjectPool<Float>::stack;
 vector<Double *> ObjectPool<Double>::stack;
+
 
 FastMutex ObjectPool<Int>::mutex;
 FastMutex ObjectPool<Bool>::mutex;
