@@ -96,8 +96,7 @@ public:
    GMM ()
    //: gaussians(vector<Gaussian *>(1,(Gaussian *)NULL))
       : gaussians(vector<RCPtr<Gaussian> >())
-      , apriori (vector<float>(1,0.0))
-      , nb_gaussians (1)
+      , nb_gaussians (0)
       , mode(accum)
       , nb_frames_aligned(0)
       , dimensions(1)
@@ -135,7 +134,7 @@ public:
    void kmeans2(vector<float * > frames, GMM *gmm);
 
    /**Perform MAP adaptation (using another GMM to score)*/
-   void adaptMAP(vector<float * > frame);
+   void adaptMAP(vector<float * > frame, GMM *gmm);
 
    /**Converts the GMM from accum mode to real mode*/
    void to_real();

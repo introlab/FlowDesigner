@@ -62,8 +62,8 @@ public:
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
 
-      Vector<float> &output = *Vector<float>::alloc(1);
-      out[count] = &output;
+      //Vector<float> &output = *Vector<float>::alloc(1);
+      //out[count] = &output;
 
       double energy=0;
       for (int i=0;i<inputLength;i++)
@@ -71,7 +71,8 @@ public:
 	 energy+=in[i]*in[i];
       }
 
-      output[0]=sqrt(energy/inputLength);
+      out[count] = Float::alloc(energy/inputLength);
+      //output[0]=sqrt(energy/inputLength);
    }
 
 };
