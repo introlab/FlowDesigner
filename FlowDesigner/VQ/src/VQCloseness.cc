@@ -102,7 +102,7 @@ public:
       //int classID = vq.getClassID(in.begin());
       //const vector<float> &mean = vq[classID];
       
-      vq.calcDist(in.begin(), output.begin());
+      vq.calcDist(&in[0], &output[0]);
 
       float sum = 10*FLT_MIN;
       float epsilon = 100*FLT_MIN;

@@ -120,13 +120,13 @@ public:
    /**Returns the mahalanobis distance between the gaussian and a frame*/
    float mahalanobis(const float * fr) const
    {
-      return covariance->mahalanobisDistance(fr,mean->begin());
+      return covariance->mahalanobisDistance(fr,&(*mean)[0]);
    }
 
    /**Returns the mahalanobis distance between the gaussian and a frame*/
    float mahalanobis(const float * fr, Covariance *cov) const
    {
-      return cov->mahalanobisDistance(fr,mean->begin());
+      return cov->mahalanobisDistance(fr,&(*mean)[0]);
    }
 
    /**Returns the euclidian distance between the gaussian and a frame*/

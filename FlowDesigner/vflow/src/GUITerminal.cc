@@ -3,6 +3,9 @@
 #include "GUILink.h"
 #include "GUINetTerminal.h"
 #include "UIDocument.h"
+#include <iostream>
+
+using namespace std;
 
 static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

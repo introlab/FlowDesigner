@@ -7,6 +7,7 @@
 #include <fstream>
 #include "UITerminal.h"
 #include "GUILink.h"
+#include <math.h>
 
 class UINode;
 class UILink;

@@ -104,7 +104,7 @@ int MSVQ::getClassID (const float *v, float *dist_return = NULL) const
    int globalID = 0;
    for (int i=0;i<stagesSizes.size();i++)
    {
-      int id = stages[i].getClassID(remaining.begin(),dist_return);
+      int id = stages[i].getClassID(&remaining[0],dist_return);
       globalID = globalID*stagesSizes[i] + id;
 
       const vector<float> &mean = stages[i][id];

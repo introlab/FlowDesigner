@@ -90,7 +90,7 @@ public:
       
       //int classID = vq.getClassID(in.begin());
       //const vector<float> &mean = vq[classID];
-      const float *netOut = cmap.calcOutput(in.begin());
+      const float *netOut = cmap.calcOutput(&in[0]);
       
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];

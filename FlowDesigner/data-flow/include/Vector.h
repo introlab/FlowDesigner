@@ -20,7 +20,7 @@
 #include "Object.h"
 #include <vector>
 #include "ObjectParser.h"
-
+using namespace std;
 
 template<class T>
 class Vector : public vector<T>, public Object
@@ -34,7 +34,7 @@ public:
    }
    virtual void rawWrite(ostream &out) const
    {
-      out.write ((const unsigned char*) begin(), size()*sizeof(T));
+      out.write ((char*) (&(operator[](0))), int(size()*sizeof(T)));
    }
    
    void readFrom(istream &in=cin);

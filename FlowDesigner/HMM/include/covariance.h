@@ -23,10 +23,9 @@
 #include "misc.h"
 #include "Vector.h"
 #include "mean.h"
+#include <fstream>
 
 class GMM; 
-class ifstream;
-class ofstream;
 
 /**Abstract covariance class*/
 class Covariance : public Object

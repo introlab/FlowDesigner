@@ -102,7 +102,7 @@ public:
       for (int i=0;i<inputLength*2;i++)
 	 pcm[i]=buffer[i]*window[i];
 
-      mdct_forward(&m_look,pcm.begin(),pcm.begin());
+      mdct_forward(&m_look,&pcm[0],&pcm[0]);
 
       for (int i=0;i<outputLength;i++)
       {

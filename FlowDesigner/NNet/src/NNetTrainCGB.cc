@@ -147,11 +147,11 @@ public:
 	       //cerr << "inputs converted\n";
 	       vector <float *> in(inBuff.getCurrentPos());
 	       for (i=0;i<inBuff.getCurrentPos();i++)
-		  in[i]=object_cast <Vector<float> > (inBuff[i]).begin();
+		  in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
 
 	       vector <float *> out(outBuff.getCurrentPos());
 	       for (i=0;i<outBuff.getCurrentPos();i++)
-		  out[i]=object_cast <Vector<float> > (outBuff[i]).begin();
+		  out[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
 
 	       //FFNet *net = new FFNet( topo ); 

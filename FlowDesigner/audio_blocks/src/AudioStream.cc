@@ -251,7 +251,8 @@ public:
 	 }
       }
       int convert = min(advance, outputLength);
-      raw2Float (tmpBuffer, output.end() - convert, convert, encoding);
+      int outSz = output.size();
+      raw2Float (tmpBuffer, &output[outSz] - convert, convert, encoding);
       
    }
 

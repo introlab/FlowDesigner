@@ -57,7 +57,7 @@ CodebookMap::CodebookMap(const Ptr<VQ> &_mapIn, const vector<float *> dataIn, co
 const float * CodebookMap::calcOutput(const float *in) const
 {
    //looks up the input vector, uses the ID to find the corresponding output
-   return mapOut[mapIn->getClassID(in)].begin();
+   return &mapOut[mapIn->getClassID(in)][0];
 }
 
 void CodebookMap::printOn(ostream &out) const

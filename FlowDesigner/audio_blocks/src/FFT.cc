@@ -67,7 +67,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
       
-      FFTWrap.rfft(in.begin(), output.begin(), inputLength);
+      FFTWrap.rfft(&in[0], &output[0], inputLength);
    }
 
 };

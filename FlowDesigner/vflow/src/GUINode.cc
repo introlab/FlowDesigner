@@ -6,6 +6,7 @@
 #include "GUINodeParameters.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
+#include <math.h>
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

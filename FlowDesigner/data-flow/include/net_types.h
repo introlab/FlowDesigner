@@ -203,7 +203,7 @@ class Stream : public Object
    void flush() {dynamic_cast<ostream *> (int_stream)->flush();}
    
    Stream &read (char *ch, int len) {dynamic_cast<istream *> (int_stream)->read(ch,len); return *this;}
-   Stream &write (char *ch, int len) {dynamic_cast<ostream *> (int_stream)->write(ch,len); return *this;}
+   Stream &write (const char *ch, int len) {dynamic_cast<ostream *> (int_stream)->write(ch,len); return *this;}
    Stream &getline (char *ch, int len) {dynamic_cast<istream *> (int_stream)->getline(ch,len); return *this;}
    Stream &seekg (int pos, ios::seekdir dir) {dynamic_cast<istream *> (int_stream)->seekg(pos, dir); return *this;}
    Stream &seekp (int pos, ios::seekdir dir) {dynamic_cast<ostream *> (int_stream)->seekp(pos, dir); return *this;}

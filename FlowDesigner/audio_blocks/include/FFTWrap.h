@@ -20,6 +20,8 @@
 #include <fftw.h>
 #include <rfftw.h>
 
+using namespace std;
+
 #ifdef NO_HASH_MAP
 #include <map>
 #else

@@ -33,7 +33,7 @@ void create_net(gchar * str, GUIDocument *doc)
 static void add_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the network name?", "MAIN", 20, create_net, mdi->active_child, NULL);
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the network name?", "MAIN", 20, (GnomeStringCallback)create_net, mdi->active_child, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -45,7 +45,7 @@ void create_threaded(gchar * str, GUIDocument *doc)
 static void add_threaded_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the threaded iterator name?", "MAIN", 20, create_threaded, mdi->active_child, NULL);
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the threaded iterator name?", "MAIN", 20, (GnomeStringCallback)create_threaded, mdi->active_child, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -57,7 +57,7 @@ void create_iter(gchar * str, GUIDocument *doc)
 static void add_iter_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the iterator's name?", "MAIN", 20, create_iter, mdi->active_child, NULL);
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the iterator's name?", "MAIN", 20, (GnomeStringCallback)create_iter, mdi->active_child, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -269,8 +269,10 @@ GtkType GUIDocument_get_type ()
          sizeof (GUIDocument_class),
          (GtkClassInitFunc) GUIDocument_class_init,
          (GtkObjectInitFunc) GUIDocument_init,
-         (GtkArgSetFunc) NULL,
-         (GtkArgGetFunc) NULL,
+         //(GtkArgSetFunc) NULL,
+         //(GtkArgSetFunc) NULL,
+         (gpointer) NULL,
+         (gpointer) NULL,
 	  
       };
 	  

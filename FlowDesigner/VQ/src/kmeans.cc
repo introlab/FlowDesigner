@@ -147,7 +147,7 @@ void KMeans::update (const vector<float *> &data, int len)
       //cerr << "meanID = " << meanID << endl;
       accum[meanID]++;
 
-      float *theMean = means[meanID].begin();
+      float *theMean = &means[meanID][0];
       float *theData = data[i];
       float *end = theData+length;
       while (theData < end-3)
@@ -235,15 +235,15 @@ void KMeans::train (int codeSize, const vector<float *> &data, int len, bool bin
 
 int KMeans::getClassID (const float *v, float *dist_return = NULL) const
 {
-   float min_dist = dist(means[0].begin(), v, length);
+   float min_dist = dist(&means[0][0], v, length);
    int minID=0;
    for (int i=1;i<means.size();i++)
    {
       float tmp;
       if (dist==euclidian)
-	 tmp = euclidian(means[i].begin(), v, length);
+	 tmp = euclidian(&means[i][0], v, length);
       else
-	 tmp = dist(means[i].begin(), v, length);
+	 tmp = dist(&means[i][0], v, length);
       if (tmp < min_dist) 
       {
          minID=i;
@@ -261,9 +261,9 @@ void KMeans::calcDist (const float *v, float *dist_return) const
    for (int i=0;i<means.size();i++)
    {
       if (dist==euclidian)
-	 dist_return[i] = euclidian(means[i].begin(), v, length);
+	 dist_return[i] = euclidian(&means[i][0], v, length);
       else
-	 dist_return[i] = dist(means[i].begin(), v, length);
+	 dist_return[i] = dist(&means[i][0], v, length);
    }
 }
 

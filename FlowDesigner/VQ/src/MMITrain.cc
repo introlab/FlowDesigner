@@ -89,7 +89,7 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
             for (j=0;j<speaker.getCurrentPos(); j++)
             {
                data.insert (data.end(), 
-                            make_pair<int, float *> (i, object_cast <Vector<float> > (speaker[j]).begin()));
+                            make_pair<int, float *> (i, &object_cast <Vector<float> > (speaker[j])[0]));
             }
          }
          //cerr << "splitting...\n";

@@ -75,7 +75,7 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
          //cerr << "mat.getCurrentPos(): " << mat.getCurrentPos() << endl;
          vector <float *> data(mat.getCurrentPos());
          for (i=0;i<mat.getCurrentPos();i++)
-            data[i]=object_cast <Vector<float> > (mat[i]).begin();
+            data[i]=&object_cast <Vector<float> > (mat[i])[0];
          gmm->init(data);
          gmm->to_real();
          for (i=0;i<5;i++)

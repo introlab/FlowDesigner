@@ -3,6 +3,10 @@
 #include "UIDocument.h"
 #include "GUIDocument.h"
 #include "Node.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 static GtkMenuItemClass *parent_class = NULL;
 
@@ -264,8 +268,10 @@ GtkType NodeLabel_get_type ()
          sizeof (NodeLabel_class),
          (GtkClassInitFunc) NodeLabel_class_init,
          (GtkObjectInitFunc) NodeLabel_init,
-         (GtkArgSetFunc) NULL,
-         (GtkArgGetFunc) NULL,
+         //(GtkArgSetFunc) NULL,
+         //(GtkArgGetFunc) NULL,
+         (gpointer) NULL,
+         (gpointer) NULL,
 	  
       };
 	  

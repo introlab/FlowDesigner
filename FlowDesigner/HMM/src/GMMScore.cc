@@ -79,7 +79,7 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
          
          GMM &gmm = object_cast<GMM> (gmmInput.node->getOutput(gmmInput.outputID,count));
 
-         float score = gmm.score(inputFrame.begin()).score;
+         float score = gmm.score(&inputFrame[0]).score;
          //for (i=0; i<mat.ncols(); i++)
          //   cerr << mat[count][i] << " ";
          //cerr << endl;

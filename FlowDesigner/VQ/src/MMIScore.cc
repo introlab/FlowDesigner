@@ -80,7 +80,7 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
          
          Cell &mmi = object_cast<Cell> (mmiInput.node->getOutput(mmiInput.outputID,count));
 
-         int cellID = mmi.belongs(inputFrame.begin());
+         int cellID = mmi.belongs(&inputFrame[0]);
          //cerr << "Cell: " << cellID << endl;
          currentScore = ObjectRef(new Int(cellID));
          processCount=count;

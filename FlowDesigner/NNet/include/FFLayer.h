@@ -359,4 +359,4 @@ class FFLayer : public Object {
 
 istream &operator >> (istream &in, FFLayer &layer);
 
-#endif;
+#endif

@@ -34,7 +34,7 @@ public:
    }
    virtual void rawWrite(ostream &out) const
    {
-      out.write ((const unsigned char*) begin(), size()*sizeof(T));
+      out.write ((const char*) &operator[](0), size()*sizeof(T));
    }
    
    void readFrom(istream &in=cin);
@@ -122,12 +122,12 @@ public:
 
    T norm() 
    {
-      return vec_norm(begin(), size());
+      return vec_norm(&operator[](0), size());
    }
 
    T norm2() 
    {
-      return vec_norm2(begin(), size());
+      return vec_norm2(&operator[](0), size());
    }
 
 };

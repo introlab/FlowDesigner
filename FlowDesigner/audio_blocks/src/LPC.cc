@@ -106,13 +106,13 @@ public:
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
-      autocorr(in.begin(), r, outputLength-1, in.size());
+      autocorr(&in[0], r, outputLength-1, in.size());
       float er=0;
       for (int i=0;i<outputLength;i++)
 	 r[i] *= lag_window[i];
       //r[0] *= 1.0001;
       r[0] += 1; //just in case of a null frame
-      wld(output.begin(), r, rc, outputLength-1);
+      wld(&output[0], r, rc, outputLength-1);
       if (radius != 1)
       {
 	 for (int i=0;i<outputLength;i++)

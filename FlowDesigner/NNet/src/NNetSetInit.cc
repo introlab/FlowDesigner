@@ -128,15 +128,15 @@ public:
       //cerr << "inputs converted\n";
       vector <float *> tin(inBuff.getCurrentPos());
       for (i=0;i<inBuff.getCurrentPos();i++)
-	 tin[i]=object_cast <Vector<float> > (inBuff[i]).begin();
+	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
       
       vector <float *> tout(outBuff.getCurrentPos());
       for (i=0;i<outBuff.getCurrentPos();i++)
-	 tout[i]=object_cast <Vector<float> > (outBuff[i]).begin();
+	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
       vector <int> id(idBuff.getCurrentPos());
       for (i=0;i<idBuff.getCurrentPos();i++)
-	 id[i]=int(floor((object_cast <Vector<float> > (idBuff[i]).begin())[0]+.5));
+	 id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
       
       //srand(6827375);
       NNetSet *net = new NNetSet(nbNets, topo, functions, id, tin, tout);

@@ -17,6 +17,8 @@
 #include <map>
 #include <string>
 
+using namespace std;
+
 class ExternalApp;
 
 class AppFactory {

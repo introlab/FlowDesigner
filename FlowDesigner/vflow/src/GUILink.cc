@@ -1,7 +1,9 @@
 #include "GUILink.h"
 #include "GUITerminal.h"
 #include "GUINetwork.h"
+#include <iostream>
 
+using namespace std;
 
 static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

@@ -107,11 +107,11 @@ public:
       //cerr << "inputs converted\n";
       vector <float *> tin(inBuff.getCurrentPos());
       for (i=0;i<inBuff.getCurrentPos();i++)
-	 tin[i]=object_cast <Vector<float> > (inBuff[i]).begin();
+	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
       
       vector <float *> tout(outBuff.getCurrentPos());
       for (i=0;i<outBuff.getCurrentPos();i++)
-	 tout[i]=object_cast <Vector<float> > (outBuff[i]).begin();
+	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
       
       /*Vector<int> topo(4);
       topo[0] = 16;

@@ -89,14 +89,14 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
       layers[i]=new FFLayer(topo[i+1],topo[i], functions[i]);
       if (i==0)
       {
-	 layers[i]->init(inputMeans.begin(), inputStd.begin());
+	 layers[i]->init(&inputMeans[0], &inputStd[0]);
 	 //layers[i]->init(10);
       } else { 
 	 //layers[i]->init(10.0);
 	 layers[i]->init(1.0);
       }
       if (i==topo.size()-2)
-	 layers[i]->setBias(outputMeans.begin());
+	 layers[i]->setBias(&outputMeans[0]);
    }
 }
 
@@ -487,7 +487,7 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
       layers[i]->saveWeights();
 
    //if (weights)
-      setWeights(weights.begin());
+      setWeights(&weights[0]);
    
    err=0;
    for (i=0;i<layers.size();i++)
@@ -501,7 +501,7 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
       learn (in, out, &err);
    }
 
-   getGradient(gradient.begin());
+   getGradient(&gradient[0]);
    gradient = -gradient;
 
    //vec_prod_scalar(gradient, -1.0, gradient, );
@@ -523,7 +523,7 @@ void FFNet::calcGradientBounds(vector<float *> &tin, vector<float *> &tout, vect
       layers[i]->saveWeights();
 
    //if (weights)
-      setWeights(weights.begin());
+      setWeights(&weights[0]);
    
    err=0;
    for (i=0;i<layers.size();i++)
@@ -539,7 +539,7 @@ void FFNet::calcGradientBounds(vector<float *> &tin, vector<float *> &tout, vect
       learn_bounds (in, out, bounds, &err);
    }
 
-   getGradient(gradient.begin());
+   getGradient(&gradient[0]);
    gradient = -gradient;
 
    //vec_prod_scalar(gradient, -1.0, gradient, );
@@ -583,7 +583,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
    double nextE;
    double deltak;
 
-   getWeights(wk.begin());
+   getWeights(&wk[0]);
 
    calcGradient(tin, tout, wk, dEk, SSE);
    pk=-dEk;
@@ -670,7 +670,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
 	 break;
       //k++;
    }
-   setWeights(wk.begin());
+   setWeights(&wk[0]);
 }
 
 /*Scaled conjugate gradient with bounds */
@@ -705,7 +705,7 @@ void FFNet::trainSCGBounds(vector<float *> tin, vector<float *> tout, vector<flo
    double nextE;
    double deltak;
 
-   getWeights(wk.begin());
+   getWeights(&wk[0]);
 
    calcGradientBounds(tin, tout, tbounds, wk, dEk, SSE);
    pk=-dEk;
@@ -792,7 +792,7 @@ void FFNet::trainSCGBounds(vector<float *> tin, vector<float *> tout, vector<flo
 	 break;
       //k++;
    }
-   setWeights(wk.begin());
+   setWeights(&wk[0]);
 }
 
 double FFNet::calcError(const vector<float *> &tin, const vector<float *> &tout)
@@ -920,7 +920,7 @@ double FFNet::totalError(vector<float *> tin, vector<float *> tout)
    double SSE=0;
 
    Array<double> wk(nbWeights);
-   getWeights(wk.begin());
+   getWeights(&wk[0]);
    Array<double> dEk(nbWeights);
    calcGradient(tin, tout, wk, dEk, SSE);
    return SSE;
@@ -948,7 +948,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
    Array<double> nextdE(nbWeights);
    double nextE;
 
-   getWeights(wk.begin());
+   getWeights(&wk[0]);
 
    for (i=0;i<nbWeights;i++)
       alpha[i] = learnRate;
@@ -990,7 +990,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
       wk = nextW;
 
    }
-   setWeights(wk.begin());
+   setWeights(&wk[0]);
 }
 
 
@@ -1021,7 +1021,7 @@ void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double 
    double T=Ti;
    double step=.001;
 
-   getWeights(weights.begin());
+   getWeights(&weights[0]);
 
    //best = weights;
 
@@ -1051,7 +1051,7 @@ void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double 
 	    choices[i] = rand() % tin.size();
 	 
 	 //Calculate initial errors
-	 setWeights(weights.begin());
+	 setWeights(&weights[0]);
 	 for (i=0;i<BATCH_SIZE;i++)
 	 {
 	    for (j=0;j<topo[0];j++)
@@ -1068,7 +1068,7 @@ void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double 
 	 }
 	 
 	 //calculate final errors
-	 setWeights(nextWeights.begin());
+	 setWeights(&nextWeights[0]);
 	 for (i=0;i<BATCH_SIZE;i++)
 	 {
 	    for (j=0;j<topo[0];j++)
@@ -1106,7 +1106,7 @@ void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double 
 	    sx2=0;
 	    sigma = 0;
 	    N=tin.size();
-	    setWeights(weights.begin());
+	    setWeights(&weights[0]);
 	    for (i=0;i<tin.size();i++)
 	    {
 	       for (j=0;j<topo[0];j++)
@@ -1124,7 +1124,7 @@ void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double 
 	    }
 	    
 	    //calculate final errors
-	    setWeights(nextWeights.begin());
+	    setWeights(&nextWeights[0]);
 	    for (i=0;i<tin.size();i++)
 	    {
 	       for (j=0;j<topo[0];j++)
@@ -1153,14 +1153,14 @@ void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, double 
       if (exp(-(deltaE)/T) > (rand()/(RAND_MAX+1.0)))
       {
 	 //Take the step
-	 setWeights(nextWeights.begin());
+	 setWeights(&nextWeights[0]);
 	 weights = nextWeights;
 	 cout << "+\n";
 	 //step *= increase;
       } else {
 	 //Do not take the step
 	 cout << "-\n";
-	 setWeights(weights.begin());
+	 setWeights(&weights[0]);
 	 //step *= decrease;
       }
       if (deltaE > 0)

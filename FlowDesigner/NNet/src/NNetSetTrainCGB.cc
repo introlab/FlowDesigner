@@ -158,15 +158,15 @@ public:
 	       cerr << "inputs casted\n";
 	       vector <float *> in(inBuff.getCurrentPos());
 	       for (i=0;i<inBuff.getCurrentPos();i++)
-		  in[i]=object_cast <Vector<float> > (inBuff[i]).begin();
+		  in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
 
 	       vector <float *> out(outBuff.getCurrentPos());
 	       for (i=0;i<outBuff.getCurrentPos();i++)
-		  out[i]=object_cast <Vector<float> > (outBuff[i]).begin();
+		  out[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
 	       vector <int> id(idBuff.getCurrentPos());
 	       for (i=0;i<idBuff.getCurrentPos();i++)
-		  id[i]=int(floor((object_cast <Vector<float> > (idBuff[i]).begin())[0]+.5));
+		  id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
 
 	       cerr << "vectors filled\n";
 	       //FFNet *net = new FFNet( topo ); 

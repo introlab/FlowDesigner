@@ -17,6 +17,7 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
+#include <math.h>
 
 class Dist;
 
@@ -130,7 +131,7 @@ public:
       Vector<ObjectRef> &ref = object_cast<Vector<ObjectRef> > (refValue);
       for (int i=0;i<outputLength;i++)
       {
-	 output[i]=cos_dist(in.begin(), object_cast<Vector<float> > (ref[i]).begin(), in.size());
+	 output[i]=cos_dist(&in[0], &object_cast<Vector<float> > (ref[i])[0], in.size());
 	 }
       
       /*NodeInput refInput = inputs[refID];

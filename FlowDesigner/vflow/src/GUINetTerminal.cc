@@ -2,6 +2,9 @@
 #include "GUITerminal.h"
 #include "GUINode.h"
 #include "GUINetwork.h"
+#include <iostream>
+
+using namespace std;
 
 static void create_net_terminal(gchar * str, GUINetTerminal *term)
 {
@@ -62,7 +65,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       if (type == INPUT || type == OUTPUT)
       {
          GtkWidget *dialog = gnome_request_dialog (FALSE, prompt.c_str(), defaultName.c_str(), 
-                                                   20, create_net_terminal, this, NULL);
+                                                   20, (GnomeStringCallback)create_net_terminal, this, NULL);
          gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
       }
    }

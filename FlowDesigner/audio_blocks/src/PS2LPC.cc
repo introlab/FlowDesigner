@@ -138,7 +138,7 @@ public:
       float er=0;
 
       //response[0] *= 1.0001;
-      wld(output.begin(), response, rc, outputLength-1);
+      wld(&output[0], response, rc, outputLength-1);
       /*for (int i=0;i<outputLength;i++)
         output[i] *= pow(.99,i);*/
    }

@@ -117,8 +117,8 @@ class MSVQTrain : public Node {
 	    
 	    vector <float *> data(mat.getCurrentPos()+1);
 	    for (i=0;i<=mat.getCurrentPos();i++)
-	       data[i]=object_cast <Vector<float> > (mat[i]).begin();
-	    int length = object_cast <Vector<float> > (mat[0]).size();
+	       data[i]= &object_cast <Vector<float> > (mat[i])[0];
+	    int length =  object_cast <Vector<float> > (mat[0]).size();
 	    
 	    cerr << "training..." << endl;
 	    vq->train(data,length,binary);

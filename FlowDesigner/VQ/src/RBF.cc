@@ -54,7 +54,7 @@ void RBF::calcDist (const float *v, float *dist_return) const
 {
    for (int i=0;i<means.size();i++)
    {
-      dist_return[i] = mahalanobis(means[i].begin(), covar[i].begin(), v, length);
+      dist_return[i] = mahalanobis(&means[i][0], &covar[i][0], v, length);
    }
 }
 

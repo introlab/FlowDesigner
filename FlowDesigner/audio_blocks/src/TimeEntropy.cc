@@ -136,7 +136,7 @@ public:
       for (i=0;i<numberFrames;i++)
             for (j=i+1;j<numberFrames;j++)
             {
-               float tmp=dist(frames[i]->begin(), frames[j]->begin(), inputLength);
+               float tmp=dist(&(*frames[i])[0], &(*frames[j])[0], inputLength);
                if (tmp < min[i]) min[i]=tmp;
                if (tmp < min[j]) min[j]=tmp;
             }

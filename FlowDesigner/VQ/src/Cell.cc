@@ -2,7 +2,7 @@
 #include <string>
 #include "ObjectParser.h"
 #include "misc.h"
-#include <algo.h>
+#include <algorithm>
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>

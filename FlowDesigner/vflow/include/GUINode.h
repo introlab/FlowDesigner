@@ -70,7 +70,7 @@ class GUINode : public UINode {
   
   virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
   
-  friend GUINetwork;
+  friend class GUINetwork;
 
 };
 

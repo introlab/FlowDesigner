@@ -78,7 +78,7 @@ public:
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const KMeans &vq = object_cast<KMeans> (VQValue);
       
-      int classID = vq.getClassID(in.begin());
+      int classID = vq.getClassID(&in[0]);
       //const vector<float> &mean = vq[classID];
 
       //for (int i=0;i<outputLength;i++)
