@@ -111,13 +111,10 @@ public:
 
    /** resets the Network and all the internal nodes */
    virtual void reset();
-
-   /** 
-       Network initialization. Must be done after all connections.
-       The sink node must be set.
-   */
-   //virtual void initialize (); 
    
+   /**Standard request-passing method between nodes during initialization*/
+   virtual void request(const ParameterSet &req) {sinkNode->request(req);}
+
    ///Adding a factory into the static dictionary
    static void addFactory (const string &factoryName, _NodeFactory* const factory);
 

@@ -41,7 +41,7 @@ protected:
    mutable bool  determinant_is_valid;
    
    /**Mode*/
-   Mode mode;
+   int mode;
 
 public:
    ///Create a Covariance with dim dimensions

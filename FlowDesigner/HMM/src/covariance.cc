@@ -65,6 +65,7 @@ void DiagonalCovariance::printOn(ostream &out) const
    out << "<DiagonalCovariance" << endl;
    out << "<dimension " << dimension << ">" << endl;
    out << "<data " << data << ">" << endl;
+   out << "<mode " << mode << ">" << endl;
    out << ">\n";
    return;
 }
@@ -83,6 +84,8 @@ istream &operator >> (istream &in, DiagonalCovariance &cov)
          in >> cov.dimension;
       else if (tag == "data")
          in >> cov.data;
+      else if (tag == "mode")
+         in >> cov.mode;
       else 
          throw ParsingException ("unknown argument: " + tag);
       if (!in) throw ParsingException ("Parse error trying to build " + tag);

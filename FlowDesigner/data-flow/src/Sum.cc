@@ -31,7 +31,7 @@ ObjectRef Sum::getOutput(int output_id, int count)
          if (!inputResult->status)
          {
             sum += dereference_cast<float> (inputResult);
-            cerr << "sum = " << sum << endl;
+            //cerr << "sum = " << sum << endl;
          }
          processCount = i;
       }

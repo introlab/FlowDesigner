@@ -25,6 +25,9 @@ void Network::initializeFactories() {
       Network::addFactory ("SAVE", new NodeFactory<Save>);
       Network::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
       Network::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
+      Network::addFactory ("SWITCH", new NodeFactory<Switch>);
+      Network::addFactory ("NOTDONE", new NodeFactory<NotDone>);
+      Network::addFactory ("OR",new NodeFactory<ORNode>); 
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;

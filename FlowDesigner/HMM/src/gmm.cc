@@ -207,7 +207,7 @@ istream &operator >> (istream &in, GMM &gmm)
    {
       char ch;
       in >> ch;
-      cerr << "ch: " << ch << endl;
+      //cerr << "ch: " << ch << endl;
       if (ch == '>') break;
       else if (ch != '<') 
        throw ParsingException ("Parse error: '<' expected");
