@@ -11,7 +11,7 @@ fileptr_streambuf::fileptr_streambuf(FILE *_file, bool _owner)
 
 }
 
-int fileptr_streambuf::overflow(int c = EOF)
+int fileptr_streambuf::overflow(int c)
 {
    fputc(c, file);
    if (feof(file))
