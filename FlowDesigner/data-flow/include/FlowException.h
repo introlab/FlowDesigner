@@ -17,6 +17,11 @@ class FlowException : public Object {
    {
       return thrown;
    }
+
+   void printOn(ostream &out=cout) const
+   {
+      out << "<FlowException " << thrown << " >";
+   }
 };
 
 #endif /* ifdef _FLOW_EXCEPTION_H */

@@ -1,5 +1,8 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#ifndef EXCEPTION_OBJECT_H
+#define EXCEPTION_OBJECT_H
+
 class ExceptionObject : public Object {
 
    BaseException *e;
@@ -10,8 +13,16 @@ public:
    {
       
    }
+
    void doThrow()
    {
       throw e;
    }
+
+   void printOn(ostream &out) const
+   {
+      e->print(out);
+   }
 };
+
+#endif

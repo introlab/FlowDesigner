@@ -6,6 +6,7 @@
 #include "ObjectRef.h"
 #include "path.h"
 #include "Network.h"
+#include "FlowException.h"
 
 int main(int argc, char **argv)
 {
@@ -41,10 +42,18 @@ int main(int argc, char **argv)
   catch (BaseException *e) 
   {
      e->print();
+     cerr << endl;
+     return 1;
+  }  
+  catch (RCPtr<FlowException> e) 
+  {
+     cerr << "Unhandled FlowException: " << endl;
+     e->printOn(cerr);
+     cerr << endl;
      return 1;
   }  
   catch (...) {
-    cerr<<"Unhandled exception in "<<argv[1]<<endl;
+    cerr<<"Unknown unhandled exception in "<<argv[1]<<endl;
     cerr<<"Exiting"<<endl;
     return 2;
   }
