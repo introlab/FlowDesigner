@@ -107,14 +107,13 @@ dnl Output the makefiles and version.h.
 
 AC_OUTPUT([Makefile HMM/Makefile HMM/src/Makefile HMM/include/Makefile \
 	HMM/doc/Makefile HMM/doc/html/Makefile \
-	MMI/Makefile MMI/src/Makefile MMI/include/Makefile \
 	VQ/Makefile VQ/src/Makefile VQ/include/Makefile \
 	data-flow/Makefile \
 	data-flow/src/Makefile data-flow/include/Makefile \
 	data-flow/doc/Makefile data-flow/doc/html/Makefile \
 	data-flow/doc/html/images/Makefile \
 	audio_blocks/Makefile audio_blocks/include/Makefile \
-	audio_blocks/src/Makefile audio_blocks/blocks/Makefile \
+	audio_blocks/src/Makefile \
 	audio_blocks/doc/Makefile audio_blocks/doc/html/Makefile \
 	audio_blocks/config/Makefile \
 	tools/Makefile tools/src/Makefile tools/m/Makefile \

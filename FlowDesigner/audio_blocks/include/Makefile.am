@@ -16,4 +16,5 @@ noinst_HEADERS = AudioFile.h \
 	RotatingFrameBuffer.h \
 	RotatingMatrix.h \
 	MMIAccumulator.h \
-	Histogram.h
+	Histogram.h \
+	lpc.h

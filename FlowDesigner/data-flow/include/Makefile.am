@@ -44,4 +44,6 @@ noinst_HEADERS = Node.h \
 	misc.h \
 	multithread.h \
 	net_types.h \
-	rc_ptrs.h 
+	rc_ptrs.h \
+        BaseException.h \
+	AND.h
