@@ -37,13 +37,21 @@ vflow_SOURCES = \
 	TextProbe.cc TextProbe.h \
 	PlotProbe.cc PlotProbe.h \
 	SpectrumProbe.cc \
-	canvas-background.c canvas-background.h
+	canvas-background.c canvas-background.h \
+	GUINode.h GUINode.cc \
+	GUINetwork.h GUINetwork.cc \
+	GUIDocument.h GUIDocument.cc \
+	GUITerminal.h GUITerminal.cc \
+	GUILink.h GUILink.cc \
+	GUINodeParameters.h GUINodeParameters.cc \
+	GUINetTerminal.h GUINetTerminal.cc \
+	GUINetPopup.h GUINetPopup.cc
 
 batchflow_SOURCES = \
 	batchflow.cc
 
 vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
-	$(top_srcdir)/../data-flow/src/libnetwork.la ./libflowui.la ./libflowgui.la\
+	$(top_srcdir)/../data-flow/src/libnetwork.la ./libflowui.la \
 	$(LIB_FFTW)
 
 batchflow_LDADD = $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
