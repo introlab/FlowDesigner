@@ -1,0 +1,3 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document><Network type="subnet" name="MAIN" category="Conversion"><Node name="node_VMethod_1" type="VMethod" x="-29.000000" y="118.000000"><Parameter name="METHOD" type="string" value="toString"/></Node><NetInput name="INPUT" node="node_VMethod_1" terminal="INPUT"/><NetOutput name="OUTPUT" node="node_VMethod_1" terminal="OUTPUT"/></Network></Document>
