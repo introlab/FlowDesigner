@@ -76,7 +76,7 @@ class ThreadedIterator : public Iterator {
 
   int internal_pc;
 
-  int thread_status;
+  volatile int thread_status;
 
   static const int STATUS_RUNNING;
 
