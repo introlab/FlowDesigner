@@ -102,10 +102,6 @@ ObjectRef concatVectorObjectRef(ObjectRef op1, ObjectRef op2) {
   //creating new vector
   RCPtr<Vector<ObjectRef> > resultValue(new Vector<ObjectRef>(op1Value->size() + op2Value->size()));
 
-  cerr<<"op1 size "<<op1Value->size()<<endl;
-  cerr<<"op2 size "<<op2Value->size()<<endl;
-  cerr<<"result size "<<resultValue->size()<<endl;
-
   //copying first part of the vector
   for (int i = 0; i < op1Value->size(); i++) {        
     (*resultValue)[i] = (*op1Value)[i]->clone();
@@ -119,6 +115,15 @@ ObjectRef concatVectorObjectRef(ObjectRef op1, ObjectRef op2) {
   return resultValue;
 }
 REGISTER_DOUBLE_VTABLE(concatVtable,concatVectorObjectRef,Vector<ObjectRef>,Vector<ObjectRef>);
+
+
+ObjectRef concatStringString(ObjectRef op1, ObjectRef op2) {
+  RCPtr<String> op1Value = op1;
+  RCPtr<String> op2Value = op2;
+  return ObjectRef(new String((*op1Value) + (*op2Value)));
+}
+REGISTER_DOUBLE_VTABLE(concatVtable,concatStringString,String,String);
+
 
 
 
