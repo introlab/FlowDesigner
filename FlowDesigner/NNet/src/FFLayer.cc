@@ -49,64 +49,28 @@ void FFLayer::setupAfterRead(float *_weights, int _weightOffset, int _neuronOffs
    delete [] tmp;
 }
 
-/*
-FFLayer::FFLayer(const FFLayer &layer)
-   : nbNeurons(layer.nbNeurons)
-   , nbInputs(layer.nbInputs)
-   , funcType(layer.funcType)
-   , func(layer.func)
-   , deriv_func(layer.deriv_func)
-   , alloc(true)
-{
-
-   weights = new float [nbNeurons*(nbInputs+1)];
-
-   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-      weights[i] = layer.weights[i];
-
-   momentum = new float [nbNeurons*(nbInputs+1)];
-
-   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-      momentum[i]=0;
-   
-   gradient = new float [nbNeurons*(nbInputs+1)];
-
-   saved_weights = new float [nbNeurons*(nbInputs+1)];
-   
-   deriv = new float [nbNeurons];
-   value = new float [nbNeurons];
-   error = new float [nbNeurons];
-}
-*/
-
 
 void FFLayer::init(float minmax)
 {
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
    {
       //weights[i]=1.0;
-      weights[i]=sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/minmax;
+      weights[i]=gauss_rand(sqrt(1.0/nbInputs))/minmax;
    }
 }
 
 void FFLayer::init(double *mean, double *std)
 {
-   cerr << "init layer\n";
-   float meanSum = 0;
-   for (int j=0;j<nbInputs;j++)
-      meanSum += mean[j];
    for (int i=0;i<nbNeurons;i++)
    {
       float meanSum = 0;
       for (int j=0;j<nbInputs;j++)
       {
-	 cerr << std[j] << " ";
 	 weights[i*(nbInputs+1) + j] = gauss_rand(sqrt(1.0/nbInputs)/(1e-5+std[j]));
 	 meanSum += weights[i*(nbInputs+1) + j] * mean[j];
       }
-      weights[i*(nbInputs+1) + nbInputs] = gauss_rand(sqrt(3.0/nbInputs)) - meanSum;
+      weights[i*(nbInputs+1) + nbInputs] = gauss_rand(sqrt(1.0/nbInputs)) - meanSum;
    }
-   cerr << endl;
 }
 
 void FFLayer::setBias(double *minmax)
