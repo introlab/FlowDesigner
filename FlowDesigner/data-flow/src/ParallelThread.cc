@@ -148,7 +148,14 @@ public:
 	 (*outputs[output1ID].buffer)[calcCount] = 
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
+      
+   }
 
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      calcCount = count;
+      if (sem_post(&sendSem))
+	 perror("sem_post(&sendSem) ");
       try {
 	 ObjectRef input2Value = getInput(input2ID, calcCount);
 	 (*outputs[output2ID].buffer)[calcCount] = input2Value;
@@ -163,28 +170,19 @@ public:
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
-      
-      //ObjectRef input2Value = getInput(input2ID, calcCount);
-      //(*outputs[output2ID].buffer)[calcCount] = input2Value;      
-   }
-
-   void calculate(int output_id, int count, Buffer &out)
-   {
-      calcCount = count;
-      if (sem_post(&sendSem))
-	 perror("sem_post(&sendSem) ");
       if (sem_wait(&recSem))
 	 perror("sem_wait(&recSem) ");
       //cerr << "calculate\n";
-      if (typeid(*(*outputs[output2ID].buffer)[calcCount]) == typeid(ExceptionObject))
-      {
-	 //cerr << "throwing2\n";
-	 object_cast<ExceptionObject> ((*outputs[output2ID].buffer)[calcCount]).doThrow();
-      }
+
       if (typeid(*(*outputs[output1ID].buffer)[calcCount]) == typeid(ExceptionObject))
       {
 	 //cerr << "throwing1\n";
 	 object_cast<ExceptionObject> ((*outputs[output1ID].buffer)[calcCount]).doThrow();
+      }
+      if (typeid(*(*outputs[output2ID].buffer)[calcCount]) == typeid(ExceptionObject))
+      {
+	 //cerr << "throwing2\n";
+	 object_cast<ExceptionObject> ((*outputs[output2ID].buffer)[calcCount]).doThrow();
       }
    }
 
