@@ -253,66 +253,84 @@ _DEF_OBJECT_TYPE(String)
 class Stream : public Object
 {
   protected:
-   ios *int_stream;
-   bool owner;
+   int owner;
   public:
-   Stream(ios *_str, bool _owner=true)
-      : int_stream(_str)
-      , owner(_owner)
+   Stream(bool _owner=true)
+      : owner(_owner)
       {}
-   virtual void printOn(ostream &out) const {out << "<Stream>";}
-   int eof() {return int_stream->eof();}
-   int fail() {return int_stream->fail();}
-   void flush() {dynamic_cast<ostream *> (int_stream)->flush();}
-   
-   Stream &read (char *ch, int len) {dynamic_cast<istream *> (int_stream)->read(ch,len); return *this;}
-   Stream &write (const char *ch, int len) {dynamic_cast<ostream *> (int_stream)->write(ch,len); return *this;}
-   Stream &getline (char *ch, int len) {dynamic_cast<istream *> (int_stream)->getline(ch,len); return *this;}
-   Stream &seekg (int pos, ios::seekdir dir) {dynamic_cast<istream *> (int_stream)->seekg(pos, dir); return *this;}
-   Stream &seekp (int pos, ios::seekdir dir) {dynamic_cast<ostream *> (int_stream)->seekp(pos, dir); return *this;}
-
-   operator istream &() {return *dynamic_cast<istream *> (int_stream);}
-   operator ostream &() {return *dynamic_cast<ostream *> (int_stream);}
-   operator iostream &() {return *dynamic_cast<iostream *> (int_stream);}
-   
-   template <class T>
-      Stream &operator >> (T &obj) {*dynamic_cast<istream *> (int_stream) >> obj; return *this;}
-   template <class T>
-      Stream &operator << (T &obj) {*dynamic_cast<ostream *> (int_stream) << obj; return *this;}
    virtual ~Stream() {}
-   
-
 };
 
+/**Overflow IStream (input Stream) type, wraps a C++ istream
+   @author Jean-Marc Valin
+*/
 class IStream : virtual public Stream {
+   istream *int_istream;
   public:
    IStream(istream *_str, bool _owner=true)
-      : Stream(_str, _owner)
+      : Stream(_owner)
+      , int_istream(_str)
       {}
+   IStream &read (char *ch, int len) {int_istream->read(ch,len); return *this;}
+   int eof() {return int_istream->eof();}
+   int fail() {return int_istream->fail();}
+   IStream &getline (char *ch, int len) {int_istream->getline(ch,len); return *this;}
+   operator istream &() {return *int_istream;}
    void printOn(ostream &out) const {out << "<IStream unknown>";}
-   ~IStream() {if (owner) delete dynamic_cast<istream *>(int_stream);}
+   ~IStream() {if (owner) {delete dynamic_cast<istream *>(int_istream);owner=false;}}
+
+   IStream &seekg (int pos, ios::seekdir dir) {int_istream->seekg(pos, dir); return *this;}
+
+   template <class T>
+   IStream &operator >> (T &obj) {*int_istream >> obj; return *this;}
 
 };
 
+/**Overflow OStream (output Stream) type, wraps a C++ ostream
+   @author Jean-Marc Valin
+*/
 class OStream : virtual public Stream {
+   ostream *int_ostream;
   public:
    OStream(ostream *_str, bool _owner=true)
-      : Stream(_str, _owner)
+      : Stream(_owner)
+      , int_ostream(_str)
       {}
+   OStream &write (const char *ch, int len) {int_ostream->write(ch,len); return *this;}
+   int eof() {return int_ostream->eof();}
+   int fail() {return int_ostream->fail();}
+   void flush() {int_ostream->flush();}
+   operator ostream &() {return *int_ostream;}
    void printOn(ostream &out) const {out << "<OStream unknown>";}
-   ~OStream() {if (owner) delete dynamic_cast<ostream *>(int_stream);}
+   ~OStream() {if (owner) {delete dynamic_cast<ostream *>(int_ostream);owner=false;}}
+
+   OStream &seekp (int pos, ios::seekdir dir) {int_ostream->seekp(pos, dir); return *this;}
+
+   template <class T>
+   OStream &operator << (const T &obj) {*int_ostream << obj; return *this;}
 
 };
 
+/**Overflow IOStream (input/output Stream) type, wraps a C++ iostream
+   @author Jean-Marc Valin
+*/
 class IOStream : public IStream, public OStream {
+   iostream *int_iostream;
   public:
    IOStream(iostream *_str, bool _owner=true)
-      : Stream(_str, _owner)
+      : Stream(_owner)
       , IStream(_str, _owner)
       , OStream(_str, _owner)
+      , int_iostream(_str)
       {}
+   int eof() {return int_iostream->eof();}
+   int fail() {return int_iostream->fail();}
+   operator iostream &() {return *int_iostream;}
    void printOn(ostream &out) const {out << "<IOStream unknown>";}
-   ~IOStream() {if (owner) delete dynamic_cast<iostream *>(int_stream);}
+   ~IOStream() {if (owner) {delete dynamic_cast<iostream *>(int_iostream);owner=false;}}
+
+   IOStream &seekg (int pos, ios::seekdir dir) {int_iostream->seekg(pos, dir); return *this;}
+   IOStream &seekp (int pos, ios::seekdir dir) {int_iostream->seekp(pos, dir); return *this;}
 
 };
 

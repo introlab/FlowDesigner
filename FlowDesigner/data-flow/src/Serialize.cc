@@ -65,10 +65,9 @@ public:
 	 return;
       }
 
-      Stream &stream = object_cast<Stream> (streamValue);
+      OStream &stream = object_cast<OStream> (streamValue);
       
-      ostream &tmp = stream;
-      object.serialize(tmp);
+      object.serialize(stream);
       stream.flush();
       out[count] = objectValue;
    }

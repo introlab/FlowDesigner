@@ -83,7 +83,7 @@ public:
 	 return;
       }
       
-      Stream &stream = object_cast<Stream> (streamValue);
+      OStream &stream = object_cast<OStream> (streamValue);
 
       Vector<float> &vec = object_cast<Vector<float> > (inputValue);
       short buff[vec.size()];

@@ -52,7 +52,7 @@ public:
 	 return;
       }
 
-      Stream &stream = object_cast<Stream> (streamRef);
+      IStream &stream = object_cast<IStream> (streamRef);
       int i;
       try {
 	 stream >> i;

@@ -62,7 +62,7 @@ public:
       FILE *tmp = popen(cmd.c_str(), "r");
       if (!tmp)
 	 NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
-      out[count] = ObjectRef (new Stream(new fileptr_istream(tmp)));
+      out[count] = ObjectRef (new IStream(new fileptr_istream(tmp)));
    }
 
 protected:

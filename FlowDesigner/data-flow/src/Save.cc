@@ -65,7 +65,7 @@ public:
 	 return;
       }
 
-      Stream &stream = object_cast<Stream> (streamValue);
+      OStream &stream = object_cast<OStream> (streamValue);
       
       stream << object;
       ostream &tmp = stream;

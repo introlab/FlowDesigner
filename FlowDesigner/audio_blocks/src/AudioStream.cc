@@ -20,9 +20,11 @@ DECLARE_NODE(AudioStream)
  * @description Reads an audio stream and outputs frames
  *
  * @input_name INPUT
- * @input_description An audio Stream (stream, fd or FILE *)
+ * @input_type IStream
+ * @input_description An audio input stream (IStream, fd or FILE *)
  *
  * @output_name OUTPUT
+ * @output_type Vector<float>
  * @output_description Frames read
  *
  * @parameter_name LENGTH
@@ -313,7 +315,7 @@ protected:
    {
       if (strType == cpp)
       {
-	 Stream &file = object_cast<Stream> (inputValue);
+	 IStream &file = object_cast<IStream> (inputValue);
 	 file.read(buffer,itemSize*length);
 	 if (file.eof())
 	 {

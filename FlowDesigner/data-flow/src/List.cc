@@ -47,7 +47,7 @@ public:
       NodeInput input = inputs[streamInputID];
       ObjectRef inputValue = input.node->getOutput(input.outputID,count);
       
-      Stream &file = object_cast<Stream> (inputValue);
+      IStream &file = object_cast<IStream> (inputValue);
       
       char tmpLine[256];
       while (true)

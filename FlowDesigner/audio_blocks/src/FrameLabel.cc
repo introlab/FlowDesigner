@@ -60,9 +60,6 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
-
-      //String &output = *Vector<float>::alloc(outputLength);
-      //out[count] = &output;
       
       if (inputValue->status != Object::valid)
       {
@@ -73,7 +70,7 @@ public:
       int sample = (count*frameAdv)+1;
       while (sample > currEnd)
       {
-	 Stream &file = object_cast<Stream> (inputValue);
+	 IStream &file = object_cast<IStream> (inputValue);
 	 currentTag = new String();
 	 file >> currStart;
 	 if (currStart != currEnd+1)
