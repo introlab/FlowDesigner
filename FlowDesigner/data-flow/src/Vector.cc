@@ -198,6 +198,10 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
 
 }
 
+
+//Implemented in add_operators.cc
+
+/*
 ObjectRef addVectorFloat(ObjectRef x, ObjectRef y)
 {
    Vector<float> &v1 = object_cast<Vector<float> > (x);
@@ -259,7 +263,7 @@ ObjectRef divVectorFloat(ObjectRef x, ObjectRef y)
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divVectorFloat, Vector<float>, Vector<float>);
-
+*/
 
 
 ObjectRef addVectorFloatFloat (ObjectRef x, ObjectRef y)
@@ -299,7 +303,7 @@ ObjectRef mulVectorFloatFloat (ObjectRef x, ObjectRef y)
 REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorFloatFloat, Vector<float>, Float);
 
 
-
+/*
 ObjectRef addVectorComplexFloat(ObjectRef x, ObjectRef y)
 {
    Vector<complex<float> > &v1 = object_cast<Vector<complex<float> > > (x);
@@ -386,7 +390,7 @@ ObjectRef concatVectorFloat(ObjectRef x, ObjectRef y)
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloat, Vector<float>, Vector<float>);
-
+*/
 
 ObjectRef concatVectorFloatFloat(ObjectRef x, ObjectRef y)
 {
@@ -412,6 +416,9 @@ ObjectRef concatFloatVectorFloat(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatVectorFloat, Float, Vector<float>);
 
+
+
+/*
 ObjectRef concatFloatFloat(ObjectRef x, ObjectRef y)
 {
    float f1 = dereference_cast<float> (x);
@@ -423,3 +430,4 @@ ObjectRef concatFloatFloat(ObjectRef x, ObjectRef y)
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatFloat, Float, Float);
+*/
