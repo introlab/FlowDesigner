@@ -32,7 +32,7 @@ cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*
 
 AC_DEFUN(AC_PATH_FFTW,
 [
-LIBFFTW="-lfftw -lrfftw"
+LIBFFTW="-lrfftw -lfftw"
 
 AC_MSG_CHECKING([for fftw])
 
