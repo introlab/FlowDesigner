@@ -18,49 +18,32 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <stdlib.h>
-#include <fftw.h>
-#include <rfftw.h>
 #include <math.h>
 
-class LPC2PS;
+class Abs;
 
-DECLARE_NODE(LPC2PS)
+DECLARE_NODE(Abs)
 
-class LPC2PS : public FrameOperation {
+class Abs : public FrameOperation {
    
    int inputID;
    int inputLength;
-   rfftw_plan plan1;
-   rfftw_plan plan2;
-   float *hamming;
-   int SAMP_SIZE;
-   int SAMP_SIZE_2;
 
 public:
-   LPC2PS(string nodeName, ParameterSet params)
+   Abs(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
    {
       inputID = addInput("INPUT");
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-
-      SAMP_SIZE_2 = outputLength;
-      SAMP_SIZE   = 2 * SAMP_SIZE_2;
-
    }
 
-   ~LPC2PS() {rfftw_destroy_plan(plan1); rfftw_destroy_plan(plan2); delete hamming;}
+   ~Abs() {}
 
    virtual void specificInitialize()
    {
-      plan1 = rfftw_create_plan (SAMP_SIZE, FFTW_FORWARD, FFTW_ESTIMATE);
-      plan2 = rfftw_create_plan (SAMP_SIZE, FFTW_BACKWARD, FFTW_ESTIMATE);
       this->FrameOperation::specificInitialize();
-      hamming = new float[SAMP_SIZE];
-      for (int i=0;i<SAMP_SIZE;i++)
-         hamming[i]= 0.54 - 0.46*cos(2*M_PI*i/float(SAMP_SIZE));
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -76,27 +59,12 @@ public:
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
-      float response[SAMP_SIZE];
-      float ps[SAMP_SIZE];
-
-      for (int i=0;i<min(int(in.size()),SAMP_SIZE);i++)
-         response[i]=in[i];
-      for (int i=in.size();i<SAMP_SIZE;i++)
-         response[i]=0;
-
-      rfftw_one(plan1, response, ps);
-      
-      ps[0]=ps[0]*ps[0];
-      for (int i=1;i<SAMP_SIZE_2;i++)
-         ps[i]=ps[i]*ps[i]+ps[SAMP_SIZE-i]*ps[SAMP_SIZE-i];
-      for (int i=SAMP_SIZE_2;i<SAMP_SIZE;i++)
-         ps[i]=0.0;
-      for (int i=0;i<SAMP_SIZE_2;i++)
-         output[i]=1/ps[i];
-
+      for (int i=0;i<outputLength;i++)
+      {
+         output[i]=abs(in[i]);
+      }
 
       output.status = Object::valid;
-
    }
 
 };
