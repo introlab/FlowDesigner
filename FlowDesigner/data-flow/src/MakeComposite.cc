@@ -19,7 +19,6 @@ END*/
 
 class MakeComposite : public BufferedNode {
    
-   //vector<int> inputID;
    int outputID;
 
 public:

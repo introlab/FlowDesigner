@@ -1,4 +1,4 @@
-// Copyright (C) 2001 Jean-Marc Valin
+// Copyright (C) 2002 Jean-Marc Valin
 
 #ifndef COMPOSITE_TYPE_H
 #define COMPOSITE_TYPE_H

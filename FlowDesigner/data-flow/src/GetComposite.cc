@@ -21,7 +21,6 @@ END*/
 class GetComposite : public BufferedNode {
    
    int inputID;
-   //vector<string> outputs;
 
 public:
    GetComposite(string nodeName, ParameterSet params)
