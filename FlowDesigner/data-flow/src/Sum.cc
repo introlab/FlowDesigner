@@ -14,61 +14,63 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "Sum.h"
-#include "net_types.h"
-#include "Object.h"
+#include "BufferedNode.h"
+#include "Buffer.h"
+#include "Vector.h"
+
+class Sum;
 
 DECLARE_NODE(Sum)
 /*Node
-
+ *
  * @name Sum
  * @category Math
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 
-Sum::Sum(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
-{
-   outputID = addOutput("OUTPUT");
-   inputID = addInput("INPUT");
-}
+class Sum : public BufferedNode {
+   
+   int inputID;
+   int outputID;
+   float gain;
 
-void Sum::specificInitialize()
-{
-   this->Node::specificInitialize();
-   sum = 0;
-}
-
-void Sum::reset()
-{
-   this->Node::reset();
-}
-
-ObjectRef Sum::getOutput(int output_id, int count)
-{
-   if (output_id==outputID)
+public:
+   Sum(string nodeName, ParameterSet params)
+   : BufferedNode(nodeName, params)
    {
-      for (int i=processCount+1 ; i<=count ; i++ )
-      {
-         NodeInput input = inputs[inputID];
-         ObjectRef inputResult = input.node->getOutput(input.outputID, i);
-         if (!inputResult->status)
-         {
-            sum += dereference_cast<float> (inputResult);
-            //cerr << "sum = " << sum << endl;
-         }
-         processCount = i;
-      }
-      return ObjectRef(new Float(sum));
+      inputID = addInput("INPUT");
+      outputID = addOutput("OUTPUT");
    }
-   else 
-      throw new NodeException (this, "Sum: Unknown output id", __FILE__, __LINE__);
-}
+
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      ObjectRef inputValue = getInput(inputID, count);
+
+      if (inputValue->status != Object::valid)
+      {
+	 out[count] = inputValue;
+         return;
+      }
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();      
+
+      float val = 0;
+      for (int i=0;i<inputLength;i++)
+      {
+         val+=in[i];
+      }
+      
+      out[count] = new Float (val);
+
+   }
+
+      
+};
