@@ -17,7 +17,18 @@ while (<>)
 	$outputs = $4;
 	$params = $5;
 
-	print "   <NodeClass classname=\"$name\" category=\"$category\">\n";
+	print "   <NodeClass name=\"$name\" category=\"$category\">\n";
+
+	if ($params)
+	  {
+	    @par = split(/:/, $params);
+	    for ($i=0;$i<=$#par;$i++)
+	      {	    
+		print "      <Parameter name=\"$par[$i]\" type=\"ANY\" opt=\"optional\">\n";
+		print "         Info for $par[$i] not available\n";
+		print "      </Parameter>\n";
+	      }
+	  }
 	if ($inputs)
 	  {
 	    @in = split(/:/, $inputs);
@@ -37,16 +48,6 @@ while (<>)
 		print "      <Output name=\"$out[$i]\" type=\"ANY\">\n";
 		print "         Info for $out[$i] not available\n";
 		print "      </Output>\n";
-	      }
-	  }
-	if ($params)
-	  {
-	    @par = split(/:/, $params);
-	    for ($i=0;$i<=$#par;$i++)
-	      {	    
-		print "      <Parameter name=\"$par[$i]\" type=\"ANY\" opt=\"optional\">\n";
-		print "         Info for $par[$i] not available\n";
-		print "      </Parameter>\n";
 	      }
 	  }
 	print "      <Description>\n";
