@@ -3,6 +3,7 @@
 #include "CodebookMap.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(CodebookMap)
 //@implements CMap

@@ -8,6 +8,7 @@
 #include <complex>
 
 using namespace std;
+using namespace FD;
 
 class IRFFT;
 

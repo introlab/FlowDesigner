@@ -13,6 +13,7 @@
 #endif
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(GMM)
 //@implements GMM

@@ -10,6 +10,8 @@
 
 #include <stdlib.h>
 
+namespace FD {
+	
 #define FLOWDESIGNER_ABI_VERSION "dev-2004-05-25"
 
 extern "C" {
@@ -19,4 +21,5 @@ int version_check(const char *vers, const char *abi_vers, const char *unused_ver
 static int dummy_version_check = version_check(FLOWDESIGNER_VERSION, FLOWDESIGNER_ABI_VERSION);
 
 
+}//namespace FD
 #endif

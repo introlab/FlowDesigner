@@ -7,8 +7,9 @@
 #include "FFLayer.h"
 #include <vector>
 #include <iostream>
-
 #include "Array.h"
+
+namespace FD {
 
 class TrainingAlgo;
 
@@ -108,4 +109,5 @@ class FFNet : public Object {
 
 std::istream &operator >> (std::istream &in, FFNet &net);
 
+}//namespace FD
 #endif

@@ -22,6 +22,7 @@
 //@implements core
 
 using namespace std;
+using namespace FD;
 
 map<string,url_func>  &URLHandler::url_table()
 {

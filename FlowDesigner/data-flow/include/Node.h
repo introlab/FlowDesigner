@@ -11,9 +11,9 @@
 #include "BaseException.h"
 #include <typeinfo>
 #include "ParameterSet.h"
-
 #include "NodeFactory.h"
 
+namespace FD {
 
 /**Definition of the type we need for the dictionaries*/
 typedef std::map<std::string, Node*>::value_type nodeEntry;
@@ -297,4 +297,6 @@ protected:
 
 #define DECLARE_NODE(NodeTypeName) DECLARE_NODE_XPM(NodeTypeName,NULL)
 
+
+}//namespace FD
 #endif

@@ -5,9 +5,11 @@
 #ifndef VEC_SSE_H
 #define VEC_SSE_H
 
+#include "BaseException.h"
+
+namespace FD {
 
 #ifdef _ENABLE_SSE
-
 
 #define CLOBBER_SSE : "memory"
 
@@ -350,20 +352,19 @@ inline float vec_dist2_mul4_sse(const float *a, const float *b, int len)
 #else /* _ENABLE_SSE */
 
 
-#include "BaseException.h"
-
-#define ERROR_SSE_NI {throw new GeneralException("Trying to use SSE, but Overflow not compiled with _ENABLE_SSE. Bad, bad, this should never happen", __FILE__, __LINE__);}
+#define ERROR_SSE_NI {throw new FD::GeneralException("Trying to use SSE, but Overflow not compiled with _ENABLE_SSE. Bad, bad, this should never happen", __FILE__, __LINE__);}
 
 inline float vec_inner_prod_sse(const float *a, const float *b, int len)
-ERROR_SSE_NI
+  ERROR_SSE_NI
 
 inline float vec_mahalanobis2_mul4_sse(const float *a, const float *b, const float *c, int len)
-ERROR_SSE_NI
+  ERROR_SSE_NI
 
 inline float vec_dist2_mul4_sse(const float *a, const float *b, int len)
-ERROR_SSE_NI
+  ERROR_SSE_NI
 
 #endif /* !_ENABLE_SSE */
 
+}//namespace FD
 
 #endif

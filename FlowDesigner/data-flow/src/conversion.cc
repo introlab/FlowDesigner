@@ -12,6 +12,7 @@
 #include "Matrix.h"
 
 using namespace std;
+using namespace FD;
 
 //@implements core
 

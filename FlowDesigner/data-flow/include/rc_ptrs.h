@@ -29,6 +29,8 @@
    valj01@gel.usherb.ca
 */
 
+
+
 #include <stddef.h>
 #include <iostream>
 #include <typeinfo>
@@ -38,6 +40,8 @@
 #ifdef WIN32 /*Work around bug in MSVC++ (for) variable scope*/
 #define for if(0);else for
 #endif
+
+namespace FD {
 
 /** 
     The PtrCastException occurs when we are unable to cast a RCPtr<T>
@@ -306,6 +310,8 @@ RCPtr<X>::RCPtr (const RCPtr<Z> &r)
     acquire();
   }
 }
+
+}//end namespace FD
 
 #endif
 

@@ -7,6 +7,8 @@
 #include "GUINode.h"
 #include <gnome.h>
 
+namespace FD {
+
 class UIDocument;
 class GUINetPopup;
 class GUINodeTooltip;
@@ -114,5 +116,7 @@ public:
 
    void applyNetworkProperties();
 };
+
+}//namespace FD
 
 #endif

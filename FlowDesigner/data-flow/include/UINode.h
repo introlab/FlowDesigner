@@ -9,11 +9,10 @@
 #include <string>
 #include <libxml/tree.h>
 #include <fstream>
-
 #include "UINetTerminal.h"
 #include <set>
 
-
+namespace FD {
 
 class UINetwork;
 //class GUINetwork;
@@ -155,5 +154,5 @@ public:
 //   friend GUINetwork;
 };
 
-
+}//namespace FD
 #endif

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.126 2004/07/29 18:09:57 carle_cote Exp $
+# $Id: Makefile.am,v 1.127 2004/08/04 14:15:51 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -96,8 +96,6 @@ libflow_la_SOURCES = Node.cc \
 	ThreadJoin.cc \
 	path.cc \
 	IntfNode.cc \
-	wrapper.cc \
-	cwrapper.cc \
 	NewAccumulator.cc \
 	Accumulate.cc \
 	Equal.cc \
@@ -148,7 +146,9 @@ libflow_la_SOURCES = Node.cc \
   	BinaryAND.cc \
   	BinaryOR.cc \
   	Power.cc \
-	UINote.cc
+	UINote.cc \
+	wrapper.cc \
+	cwrapper.cc
 
 
 

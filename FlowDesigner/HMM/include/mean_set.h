@@ -7,6 +7,8 @@
 #include "Object.h"
 #include "mean.h"
 
+namespace FD {
+
 class MeanSet : public Object {
 protected:
    int nb_means;
@@ -40,5 +42,7 @@ public:
    friend std::istream &operator >> (std::istream &in, MeanSet &cov);
 
 };
+
+}//namespace FD
 
 #endif

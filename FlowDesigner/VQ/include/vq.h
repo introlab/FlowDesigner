@@ -7,6 +7,8 @@
 #include "Object.h"
 #include <vector>
 
+namespace FD {
+
 /**This is a vector quantization class*/
 class VQ : public Object {
   protected:
@@ -54,4 +56,7 @@ class VQ : public Object {
    virtual void printOn(std::ostream &out=std::cout) const = 0;
    virtual void readFrom (std::istream &in=std::cin) = 0;
 };
+
+}//namespace FD
+
 #endif

@@ -10,11 +10,14 @@
 #include "misc.h"
 #include "multithread.h"
 
+namespace FD {
 
+  //forward declaration of class Vector
+template <class T>
+class Vector;
 
 #define MAX_SMALL 512
 #define MAX_BITS 32
-
 
 template <class T>
 class VectorPool {
@@ -93,4 +96,5 @@ class VectorPool {
    }
 };
 
+}//namespace FD
 #endif

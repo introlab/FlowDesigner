@@ -10,6 +10,8 @@
 #include "binio.h"
 #include "net_types.h"
 
+namespace FD {
+
 class BaseMatrix : public Object {
 
 public:   
@@ -653,5 +655,6 @@ inline void Matrix<T>::setIndex(int _row, int _col, ObjectRef val)
   MatrixMethod<T,TypeTraits<T>::kind>::setIndex(*this,_row,_col,val);
 }
 
+}//end namespace FD
 
 #endif

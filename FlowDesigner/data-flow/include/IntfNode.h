@@ -6,6 +6,8 @@
 #include "Node.h"
 #include "Buffer.h"
 
+namespace FD {
+
 class IntfNode : public Node {
    int outputID;
    RCPtr<Buffer> buff;
@@ -24,5 +26,7 @@ public:
    int getLookAhead() {return lookAhead;}
    int getLookBack() {return lookBack;}
 };
+
+}//namespace FD
 
 #endif

@@ -6,6 +6,7 @@
 #include <strstream>
 
 using namespace std;
+using namespace FD;
 
 class TimeFilter;
 

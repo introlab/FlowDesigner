@@ -4,6 +4,7 @@
 
 //@implements core
 using namespace std;
+using namespace FD;
 
 DoubleDispatchException::DoubleDispatchException(DoubleDispatch *_table, string _type1, string _type2)
    : table(_table)

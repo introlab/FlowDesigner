@@ -9,6 +9,7 @@
 #include "UIDocument.h"
 
 using namespace std;
+using namespace FD;
 
 GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    : node(_node)

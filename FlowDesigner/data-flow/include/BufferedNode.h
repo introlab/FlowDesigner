@@ -6,6 +6,8 @@
 #include "Node.h"
 #include "Buffer.h"
 
+namespace FD {
+
 class OutputCacheInfo {
 public:
    OutputCacheInfo () 
@@ -141,5 +143,7 @@ ObjectRef getOutput(int output_id, int count)               \
 
 
 #endif
+
+}//namespace FD
 
 #endif

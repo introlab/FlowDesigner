@@ -3,6 +3,8 @@
 #include "Node.h"
 
 using namespace std;
+using namespace FD;
+
 class Iterate;
 
 DECLARE_NODE(Iterate)

@@ -4,6 +4,8 @@
 #ifndef IEXTENSIONS_H
 #define IEXTENSIONS_H
 
+namespace FD {
+
 class IExtensions {
    static bool isse;
    static bool i3dnow;
@@ -88,6 +90,6 @@ inline void emms() {}
 #endif /*defined(_ENABLE_SSE) || defined(_ENABLE_3DNOW)*/
 
 
-
+}//namespace FD
 
 #endif /*IEXTENSIONS_H*/

@@ -23,6 +23,8 @@
 
 #include "ExternalApp.h"
 
+namespace FD {
+
 class vflowGUI {
 
   //callbacks
@@ -105,10 +107,8 @@ class vflowGUI {
   int clipboardMode;
 
   GtkWidget* get_notebook() {return notebook1;}
-
-  
-
-
 };
+
+}//namespace FD
 
 #endif

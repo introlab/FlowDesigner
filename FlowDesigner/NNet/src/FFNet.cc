@@ -13,6 +13,7 @@
 #include "Array.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(FFNet)
 //DECLARE_TYPE(Vector<FFNet>)

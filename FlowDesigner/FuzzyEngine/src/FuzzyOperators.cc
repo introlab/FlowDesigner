@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 #include "FuzzyOperators.h"
 
+using namespace FD;
+
 /*
 
 ///Vector<ObjectRef> and Vector<ObjectRef> concatenation

@@ -8,6 +8,7 @@
 
 //@implements core
 using namespace std;
+using namespace FD;
 
 /***************************************************************************/
 /*

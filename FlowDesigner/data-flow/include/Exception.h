@@ -9,6 +9,8 @@
 #include "rc_ptrs.h"
 #include "BaseException.h"
 
+namespace FD {
+
 /***************************************************************************/
 /*
   NodeNotFoundException
@@ -121,5 +123,7 @@ public:
    ///The factory name
    std::string factoryName;
 };
+
+}//end namespace FD
 
 #endif

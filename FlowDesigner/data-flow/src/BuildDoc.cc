@@ -5,6 +5,7 @@
 #include "Network.h"
 
 using namespace std;
+using namespace FD;
 
 class BuildDoc;
 

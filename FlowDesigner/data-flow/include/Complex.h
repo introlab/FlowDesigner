@@ -11,6 +11,8 @@
 #include "binio.h"
 #include "net_types.h"
 
+namespace FD {
+
 /**
    Base class for Complex<T> numbers.
    \author Dominic Letourneau
@@ -188,4 +190,5 @@ std::istream &operator >> (std::istream &in, Complex<T> &value) {
 _DEF_OBJECT_TYPE(Complex<float>)
 _DEF_OBJECT_TYPE(Complex<double>)
 
+}//namespace FD
 #endif

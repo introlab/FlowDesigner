@@ -6,6 +6,7 @@
 #include "vec.h"
 
 using namespace std;
+using namespace FD;
 
 class Gain;
 

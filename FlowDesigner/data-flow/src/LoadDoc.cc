@@ -4,6 +4,7 @@
 #include "UIDocument.h"
 
 using namespace std;
+using namespace FD;
 
 class LoadDoc;
 

@@ -6,6 +6,8 @@
 #include "Object.h"
 #include "ObjectRef.h"
 
+namespace FD {
+
 class FlowException : public Object {
   protected:
    ObjectRef thrown;
@@ -23,5 +25,7 @@ class FlowException : public Object {
       out << "<FlowException " << thrown << " >";
    }
 };
+
+}//namespace FD
 
 #endif /* ifdef _FLOW_EXCEPTION_H */

@@ -5,6 +5,8 @@
 #include "Object.h"
 #include <vector>
 
+namespace FD {
+
 class GMM;
 
 /**Gaussian Mixture Model (GMM) implementation using diagonal covariances and
@@ -58,5 +60,6 @@ public:
 
 std::istream &operator >> (std::istream &in, DiagGMM &gmm);
 
+}//namespace FD
 
 #endif /* DIAG_GMM_H */

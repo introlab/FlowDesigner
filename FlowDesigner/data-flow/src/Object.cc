@@ -8,6 +8,8 @@
 
 using namespace std;
 
+namespace FD {
+
 map<string, _ObjectFactory*>& Object::ObjectFactoryDictionary()
 {
    static map<string, _ObjectFactory*> dict;
@@ -61,3 +63,4 @@ void Object::doesNotUnderstand(string method)
 
 
 ObjectRef nilObject = ObjectRef(new NilObject);
+}//namespace FD

@@ -2,9 +2,9 @@
 
 #ifndef _CONSTANT_NODE_H_
 #define _CONSTANT_NODE_H_
-
-
 #include "Node.h"
+
+namespace FD {
 
 /** A constant node contains a value that will never changes. */
 class Constant : public Node
@@ -40,4 +40,5 @@ protected:
 
 };
 
+}//namespace FD
 #endif

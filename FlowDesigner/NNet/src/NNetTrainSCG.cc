@@ -7,6 +7,7 @@
 #include "TrainingAlgo.h"
 
 using namespace std;
+using namespace FD;
 
 class NNetTrainSCG;
 

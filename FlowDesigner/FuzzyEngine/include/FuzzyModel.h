@@ -14,6 +14,8 @@
 #include "BufferedNode.h"
 
 
+namespace FD {
+
 class FuzzyModel : public BufferedNode {
 
 public:
@@ -102,5 +104,7 @@ public:
   Vector<float> m_defuzzification;
   
 };
+
+}//namespace FD
 
 #endif

@@ -4,6 +4,7 @@
 #include "CompositeType.h"
 
 using namespace std;
+using namespace FD;
 
 class GetComposite;
 

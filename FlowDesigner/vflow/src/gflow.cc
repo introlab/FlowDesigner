@@ -24,6 +24,7 @@
 #endif
 
 using namespace std;
+using namespace FD;
 
 void quit()
 {

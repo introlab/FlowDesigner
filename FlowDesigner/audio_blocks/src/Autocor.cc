@@ -12,6 +12,7 @@
 #endif
 
 using namespace std;
+using namespace FD;
 
 class Autocor;
 

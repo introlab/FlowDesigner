@@ -6,6 +6,7 @@
 #include "kmeans.h"
 
 using namespace std;
+using namespace FD;
 
 class VQuantize;
 

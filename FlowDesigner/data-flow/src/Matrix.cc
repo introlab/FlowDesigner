@@ -10,6 +10,7 @@
 
 //@implements core
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE2("Matrix", Matrix<float>)
 DECLARE_TYPE(Matrix<bool>)

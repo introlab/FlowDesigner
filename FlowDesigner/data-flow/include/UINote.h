@@ -5,6 +5,8 @@
 #include <vector>
 #include <libxml/tree.h>
 
+namespace FD {
+
 //Copyright (C) Dominic Letourneau 2004
 //
 
@@ -67,4 +69,6 @@ class UINote {
   void setVisible(bool visible) {m_visible = visible;}
 
 };
+
+}//namespace FD
 #endif

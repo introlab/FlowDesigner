@@ -9,6 +9,7 @@
 #include "FuzzyFunction.h"
 #include <string>
 
+namespace FD {
 
 class TriangularFunction : public FuzzyFunction  {
 
@@ -62,4 +63,6 @@ public:
   
 };
 
+
+}//namespace FD
 #endif 

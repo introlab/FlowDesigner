@@ -11,6 +11,8 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+namespace FD {
+
 /**Max function*/
 template <class T>
 T &max(T &a, T &b) {return a > b ? a : b;}
@@ -123,5 +125,6 @@ inline float gauss_rand(float sd)
    //y = sd*sqrt(-2 * log(S) / S) * U2;
    return x;
 }
+}//namespace FD
 
 #endif

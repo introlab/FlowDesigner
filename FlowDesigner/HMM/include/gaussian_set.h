@@ -8,6 +8,8 @@
 #include "covariance_set.h"
 #include "Object.h"
 
+namespace FD {
+
 class GaussianSet : public Object {
 protected:
    int nb_gaussians;
@@ -40,5 +42,7 @@ public:
    friend std::istream &operator >> (std::istream &in, GaussianSet &cov);
 
 };
+
+}//namespace FD
 
 #endif

@@ -9,6 +9,7 @@
 
 //@implements core
 using namespace std;
+using namespace FD;
 
 const vector<string> &ObjectParam::allTypes(bool allowSubnetParam)
 {

@@ -14,6 +14,7 @@
 #include "TriangularFunction.h"
 #include "BufferedNode.h"
 
+namespace FD {
 
 class FuzzySet : public BufferedNode {
 
@@ -95,5 +96,7 @@ public:
   //the outputID
   int m_setID;
 };
+
+}//namespace FD
 
 #endif

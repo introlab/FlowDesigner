@@ -15,6 +15,7 @@
 #include "UINodeRepository.h"
 #include <set>
 
+namespace FD {
 //struct xmlNode;
 class ItemInfo;
 class UINode;
@@ -180,5 +181,5 @@ public:
 
 };
 
-
+}//namespace FD
 #endif

@@ -5,8 +5,9 @@
 
 #include "gmm.h"
 #include "gaussian_set.h"
-
 #include "Object.h"
+
+namespace FD {
 
 class GMMSet : public Object {
 protected:
@@ -40,5 +41,6 @@ public:
    friend std::istream &operator >> (std::istream &in, GMMSet &cov);
 
 };
+}//namespace FD
 
 #endif

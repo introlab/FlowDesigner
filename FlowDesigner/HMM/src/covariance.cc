@@ -6,6 +6,7 @@
 #include <string>
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(DiagonalCovariance)
 //@implements GMM

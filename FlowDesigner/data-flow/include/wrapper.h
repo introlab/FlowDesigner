@@ -4,11 +4,12 @@
 #define WRAPPER_H
 
 
-
 #include "UIDocument.h"
 #include "Network.h"
 #include "ParameterSet.h"
 #include "IntfNode.h"
+
+namespace FD {
 
 class OFWrapper {
    UIDocument *doc;
@@ -24,7 +25,7 @@ public:
    ObjectRef process();
 };
 
-
+}//end namespace FD
 
 
 #endif

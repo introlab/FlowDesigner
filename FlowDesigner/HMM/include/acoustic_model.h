@@ -15,6 +15,9 @@
 #include "gmm_set.h"
 
 //#include "state.h"
+
+namespace FD {
+
 class AcousticModel : public Object{
 protected:
    CovarianceSet covariances;
@@ -42,4 +45,5 @@ public:
    
 };
 
+}//namespace FD
 #endif

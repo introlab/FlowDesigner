@@ -12,6 +12,7 @@
 //@implements UIClasses
 
 using namespace std;
+using namespace FD;
 
 class ParamTypeChange {
 public:

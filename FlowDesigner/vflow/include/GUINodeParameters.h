@@ -10,6 +10,8 @@
 #include "UINodeParameters.h"
 #include "GUINode.h"
 
+namespace FD {
+
 class UINode;
 
 class ParameterData {
@@ -58,4 +60,7 @@ public:
    void unsetInputSelect(GtkWidget *w) {if (inputSelect==w) inputSelect=NULL;}
    void unsetOutputSelect(GtkWidget *w) {if (outputSelect==w) outputSelect=NULL;}
 };
+
+}//namespace FD
+
 #endif

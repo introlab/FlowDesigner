@@ -5,6 +5,7 @@
 #include "operators.h"
 
 using namespace std;
+using namespace FD;
 
 class Div;
 

@@ -9,6 +9,7 @@
 #include "misc.h"
 #include "Vector.h"
 
+namespace FD {
 
 class Mean : public Vector<double>
 {
@@ -74,5 +75,7 @@ public:
    friend std::istream &operator >> (std::istream &in, Mean &cov);
 
 };
+
+}//namespace FD
 
 #endif

@@ -5,6 +5,7 @@
 
 #include <vector>
 
+namespace FD {
 
 class FFNet;
 
@@ -36,5 +37,7 @@ class TrainingWeightDeltaBarDelta : public TrainingAlgo {
    static void train(FFNet *net, std::vector<float *> tin, std::vector<float *> tout, std::vector<float *> learnWeights, int iter, float learnRate, 
 	      float increase, float decrease);
 };
+
+}//namespace FD
 
 #endif

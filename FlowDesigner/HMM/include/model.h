@@ -5,6 +5,7 @@
 #include <vector>
 #include "state.h"
 
+namespace FD {
 
 /**Base model class, can be used for phonemes, allophones, ...*/
 class Model {
@@ -17,5 +18,6 @@ class Model {
 
 };
 
+}//namespace FD
 
 #endif

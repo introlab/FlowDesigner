@@ -9,6 +9,8 @@
 #include "FuzzyOperators.h"
 
 using namespace std;
+using namespace FD;
+
 
 DECLARE_NODE(TrapezoidalFunction)
 DECLARE_TYPE(TrapezoidalFunction)

@@ -1,5 +1,4 @@
 // Copyright (C) 2001 Jean-Marc Valin
-
 #ifndef FFLAYER_H
 #define FFLAYER_H
 
@@ -9,6 +8,7 @@
 #include <stdlib.h>
 #include "functions.h"
 
+namespace FD {
 
 /**Represents one (fully-connected) layer from a multi-layer percetron (FFNet)
    @author: Jean-Marc Valin
@@ -136,5 +136,8 @@ class FFLayer : public Object {
 
 /**Extraction operator for FFLayer*/
 std::istream &operator >> (std::istream &in, FFLayer &layer);
+
+}//namespace FD
+
 
 #endif

@@ -7,6 +7,7 @@
 #include "BufferedNode.h"
 
 using namespace std;
+using namespace FD;
 
 class NOP;
 

@@ -9,9 +9,9 @@
 //@implements core
 
 using namespace std;
+using namespace FD;
 
-//using namespace DataFlow;
-//namespace DataFlow {
+namespace FD {
 
 //our static factory dictionary
 map<string,_NodeFactory*> &Node::factoryDictionary()
@@ -391,7 +391,4 @@ void NodeException::freeze()
    frozen = true;
 }
 
-
-
-
-//} //namespace DataFlow
+} //namespace FD

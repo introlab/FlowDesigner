@@ -7,6 +7,8 @@
 #include "Exception.h"
 #include <map>
 
+namespace FD {
+
 class Collector : public Node
 {
  
@@ -50,5 +52,5 @@ protected:
    Collector() {throw new GeneralException("Collector default constructor should not be called",__FILE__,__LINE__);}
 
 };
-
+}//namespace FD
 #endif

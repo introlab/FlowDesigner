@@ -19,6 +19,8 @@
 
 #include "BufferedNode.h"
 
+namespace FD {
+
 class Power : public BufferedNode
 {
 protected:
@@ -40,5 +42,7 @@ public:
    void calculate(int output_id, int count, Buffer &out);
 
 };
+
+}//namespace FD
 
 #endif //_POWER_H_

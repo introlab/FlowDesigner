@@ -4,6 +4,7 @@
 #include <fstream>
 
 using namespace std;
+using namespace FD;
 
 CompileObject::CompileObject(const string &_code)
    : code(_code)

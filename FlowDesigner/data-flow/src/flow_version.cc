@@ -6,6 +6,8 @@
 
 using namespace std;
 
+namespace FD {
+
 int version_check(const char *vers, const char *abi_vers, const char *unused_vers)
 {
    static string lib_version = FLOWDESIGNER_VERSION;
@@ -27,3 +29,4 @@ int version_check(const char *vers, const char *abi_vers, const char *unused_ver
    return 1;
 }
 
+}//namespace FD

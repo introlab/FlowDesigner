@@ -6,6 +6,7 @@
 #include "GUINetwork.h"
 
 using namespace std;
+using namespace FD;
 
 static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

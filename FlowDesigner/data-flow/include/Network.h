@@ -10,6 +10,7 @@
 //#include "NodeHeaders.h"
 #include "Exception.h"
 
+namespace FD {
 
 /**
    The Pull Network Class. It holds the nodes which are connected by the Network.
@@ -136,4 +137,6 @@ protected:
    } 
    
 };
+
+}//namespace FD
 #endif

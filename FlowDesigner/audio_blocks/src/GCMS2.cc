@@ -4,6 +4,7 @@
 #include "Vector.h"
 
 using namespace std;
+using namespace FD;
 
 class GCMS2;
 

@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 
 using namespace std;
+using namespace FD;
 
 vector<string> envList(char *envName, bool include_home)
 {

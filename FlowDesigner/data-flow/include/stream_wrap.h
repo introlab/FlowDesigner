@@ -19,7 +19,7 @@
 #include "Object.h"
 
 
-
+namespace FD {
 
 class EOFObject : public Object {
   public:
@@ -183,5 +183,5 @@ class pipe_iostream : public std::iostream {
 
 #endif
 
-
+}//namespace FD
 #endif

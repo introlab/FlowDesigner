@@ -9,6 +9,7 @@
 #include "SocketStream.h"
 
 using namespace std;
+using namespace FD;
 
 class BroadcastSave;
 DECLARE_NODE(BroadcastSave)

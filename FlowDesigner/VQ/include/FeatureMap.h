@@ -1,9 +1,14 @@
+#ifndef _FEATURE_MAP_H_
+#define _FEATURE_MAP_H_
+
 // Copyright (C) 2001 Jean-Marc Valin
 
 #include <math.h>
 #include <vector>
 #include <iostream>
 #include "Object.h"
+
+namespace FD {
 
 class FeatureMap;
 
@@ -68,3 +73,6 @@ public:
    friend std::istream &operator >> (std::istream &in, FeatureMap &cell);
 };
 
+}//namespace FD
+
+#endif

@@ -8,6 +8,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(Gaussian)
 //@implements GMM

@@ -9,6 +9,7 @@
 #include "misc_gui.h"
 
 using namespace std;
+using namespace FD;
 
 static void create_net_terminal(gchar * str, GUINetTerminal *term)
 {

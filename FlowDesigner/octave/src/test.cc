@@ -12,6 +12,7 @@
 #include <string>
 
 using namespace std;
+//using namespace FD;
 
 extern void install_builtins (void);
 

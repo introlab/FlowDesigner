@@ -10,6 +10,8 @@
 
 using namespace std;
 
+namespace FD {
+
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
   gdk_threads_leave();
  
@@ -185,3 +187,5 @@ void GRunContext::run()
    }
    pthread_mutex_unlock(&del_lock);
 }
+
+}//namespace FD

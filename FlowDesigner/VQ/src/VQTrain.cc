@@ -6,6 +6,7 @@
 #include "Vector.h"
 
 using namespace std;
+using namespace FD;
 
 class VQTrain;
 DECLARE_NODE(VQTrain)

@@ -3,6 +3,7 @@
 #include "DLManager.h"
 
 using namespace std;
+using namespace FD;
 
 map<string,LoadedLibrary* > DLManager::loaded;
 map<string, ToolboxData> ToolboxList::loadedToolboxes;
@@ -21,6 +22,7 @@ LoadedLibrary *DLManager::getLib(const string &name)
 
 vector<string> ToolboxList::load(const vector<string> &list, int debug)
 {
+	
    vector<string> remain(list);
    vector<string> errors;
 

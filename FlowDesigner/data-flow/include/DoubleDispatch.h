@@ -13,6 +13,8 @@
 //#include <hash_map>
 //#endif
 
+namespace FD {
+
 class DoubleDispatch;
 
 class DoubleDispatchException : public BaseException {
@@ -98,5 +100,5 @@ class DoubleDispatch {
         int dummy_vtable_init_for ## klass ## func ## _ ## id =\
 	  klass::reg(func<type1,type2,type3>, &typeid(type1), &typeid(type2));
 
-
+}//namespace FD
 #endif

@@ -4,6 +4,7 @@
 #include "TrainingAlgo.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(NNetSet)
 //@implements NNetSet

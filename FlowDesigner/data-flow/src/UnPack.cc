@@ -5,6 +5,7 @@
 #include "Vector.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(UnPack)
 /*Node

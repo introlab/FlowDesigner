@@ -6,6 +6,8 @@
 #include "Node.h"
 #include "ObjectRef.h"
 
+namespace FD {
+
 class MMIScore : public Node {
 
 protected:
@@ -46,4 +48,5 @@ protected:
 
 };
 
+}//namespace FD
 #endif

@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+namespace FD {
+
 class ObjectParam {
 public:
 
@@ -20,5 +22,6 @@ public:
    static ObjectRef stringParam(std::string type, std::string value, ParameterSet &param);
    
 };
+}//namespace FD
 
 #endif

@@ -10,6 +10,8 @@
 #include "vq.h"
 #include "Vector.h"
 
+namespace FD {
+
 class CodebookMap;
 
 std::ostream &operator << (std::ostream &out, const CodebookMap &cell);
@@ -44,5 +46,7 @@ public:
 
    friend std::istream &operator >> (std::istream &in, CodebookMap &cell);
 };
+
+}//namespace FD
 
 #endif

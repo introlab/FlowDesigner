@@ -6,6 +6,7 @@
 #include "gmm.h"
 
 using namespace std;
+using namespace FD;
 
 class AdaptMAP;
 

@@ -1,10 +1,11 @@
 // Copyright (C) 2001 Jean-Marc Valin
-
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
 
 #include "vec.h"
+
+namespace FD {
 
 static float *calc_tansig_table()
 {
@@ -141,5 +142,5 @@ inline void deriv_lin(float *x, float *y, int len)
    for (int i=0;i<len;i++)
       *y++ = 1;
 }
-
+}//namespace FD
 #endif

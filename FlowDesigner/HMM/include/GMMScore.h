@@ -6,6 +6,8 @@
 #include "Node.h"
 #include "ObjectRef.h"
 
+namespace FD {
+
 class GMMScore : public Node {
 
 protected:
@@ -52,5 +54,7 @@ protected:
    GMMScore() {throw new GeneralException("GMMScore copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD
 
 #endif

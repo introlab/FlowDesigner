@@ -20,7 +20,7 @@
 #include "BinaryOR.h"
 
 using namespace std;
-
+using namespace FD;
 
 DECLARE_NODE(BinaryOR);
 

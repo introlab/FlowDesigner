@@ -6,6 +6,8 @@
 #include "UINetwork.h"
 #include <gnome.h>
 
+namespace FD {
+
 class GUINote : public UINote {
 
  private:
@@ -26,7 +28,7 @@ class GUINote : public UINote {
   void update_text();
 };
 
-
+}//namespace FD
 
 
 #endif

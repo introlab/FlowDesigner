@@ -4,6 +4,7 @@
 #include "Exception.h"
 
 using namespace std;
+using namespace FD;
 
 class NOT;
 

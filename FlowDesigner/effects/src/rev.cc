@@ -9,6 +9,7 @@
 #include "reverb.h"
 
 //@implements Reverb
+using namespace FD;
 
 allpass::allpass()
 {

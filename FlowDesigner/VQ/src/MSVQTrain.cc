@@ -7,6 +7,7 @@
 #include <strstream>
 
 using namespace std;
+using namespace FD;
 
 class MSVQTrain;
 DECLARE_NODE(MSVQTrain)

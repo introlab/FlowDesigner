@@ -6,6 +6,7 @@
 //@implements core
 
 using namespace std;
+using namespace FD;
 
 //Operators for Float and Float
 /*

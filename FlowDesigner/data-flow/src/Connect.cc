@@ -6,6 +6,7 @@
 #include "SocketStream.h"
 
 using namespace std;
+using namespace FD;
 
 class Connect;
 

@@ -6,6 +6,7 @@
 #include "NNetSet.h"
 
 using namespace std;
+using namespace FD;
 
 class NNetSetCalc;
 

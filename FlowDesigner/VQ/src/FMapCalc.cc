@@ -7,6 +7,7 @@
 #include "FeatureMap.h"
 
 using namespace std;
+using namespace FD;
 
 class FMapCalc;
 

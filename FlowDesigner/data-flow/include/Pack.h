@@ -6,6 +6,8 @@
 #include "Node.h"
 #include "ObjectRef.h"
 
+namespace FD {
+
 class Pack : public Node {
 
 protected:
@@ -42,5 +44,5 @@ protected:
    Pack() {throw new GeneralException("Pack copy constructor should not be called",__FILE__,__LINE__);}
 
 };
-
+}//namespace FD
 #endif

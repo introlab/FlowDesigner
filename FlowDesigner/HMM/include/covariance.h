@@ -11,6 +11,8 @@
 #include "mean.h"
 #include <fstream>
 
+namespace FD {
+
 class GMM; 
 
 /**Abstract covariance class*/
@@ -184,5 +186,6 @@ public:
 inline Covariance *NewDiagonalCovariance(int dim) {return new DiagonalCovariance (dim);}
 
 std::istream &operator >> (std::istream &in, DiagonalCovariance &cov);
+}//namespace FD
 
 #endif

@@ -6,6 +6,7 @@
 //@implements UIClasses
 
 using namespace std;
+using namespace FD;
 
 UINote::UINote(const std::string &text, double x, double y, bool visible) 
   : m_text(text), m_x(x), m_y(y), m_visible(visible) {

@@ -9,6 +9,7 @@
 #include "UIDocument.h"
 
 using namespace std;
+using namespace FD;
 
 static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

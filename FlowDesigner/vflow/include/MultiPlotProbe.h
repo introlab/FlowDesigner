@@ -6,6 +6,8 @@
 #include "Probe.h"
 #include "gtkextra/gtkextra.h"
 
+namespace FD {
+
 class MultiPlotProbe : public Probe {
   protected:
    GtkWidget *canvas;
@@ -43,5 +45,6 @@ class MultiPlotProbe : public Probe {
 
 };
 
+}//namespace FD
 
 #endif

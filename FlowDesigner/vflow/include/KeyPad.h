@@ -8,6 +8,8 @@
 #include <map>
 #include <sys/time.h>
 
+namespace FD {
+
 class KeyPad : public BufferedNode
 {
 
@@ -146,5 +148,6 @@ public:
    void setKeyValue(char keyValue, int timer = -1);
 };
 
+}//namespace FD
 
 #endif

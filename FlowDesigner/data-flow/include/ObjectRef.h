@@ -9,7 +9,7 @@
 #include "BaseException.h"
 #include <typeinfo>
 
-
+namespace FD {
 
 /** 
     The CastException occurs when we are unable to cast an ObjectRef.
@@ -80,6 +80,6 @@ inline bool &object_has_type (const ObjectRef &ref)
    return typeid(*ref) == typeid(T);
 }
 
-
+}//end namespace FD
 
 #endif

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 using namespace std;
+using namespace FD;
 
 class FIR;
 

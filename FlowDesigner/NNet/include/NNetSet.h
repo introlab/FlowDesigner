@@ -1,4 +1,6 @@
 // Copyright (C) 2001 Jean-Marc Valin
+#ifndef _NNET_SET_H_
+#define _NNET_SET_H_
 
 #include <math.h>
 #include <vector>
@@ -6,6 +8,7 @@
 #include "Object.h"
 #include "FFNet.h"
 
+namespace FD {
 
 class NNetSet;
 
@@ -51,3 +54,6 @@ public:
    friend std::istream &operator >> (std::istream &in, NNetSet &cell);
 };
 
+}//namespace FD
+
+#endif

@@ -10,6 +10,7 @@
 #include "misc.h"
 
 using namespace std;
+using namespace FD;
 
 class PS2LPC;
 

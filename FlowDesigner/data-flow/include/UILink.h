@@ -3,14 +3,14 @@
 #ifndef UILINK_H
 #define UILINK_H
 
-
-
 #include <list>
 #include "misc.h"
 #include <math.h>
 
 //#include <gnome.h>
 #include <libxml/tree.h>
+
+namespace FD {
 
 class UINode;
 class UINetwork;
@@ -112,5 +112,7 @@ public:
    UITerminal *getFromTerminal() {return from;}
    UITerminal *getToTerminal() {return to;}
 };
+
+}//namespace FD
 
 #endif

@@ -11,6 +11,7 @@
 #include "FuzzyOperators.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(FuzzyRule)
 DECLARE_TYPE(FuzzyRule)

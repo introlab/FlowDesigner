@@ -11,7 +11,7 @@
 #include <typeinfo>
 #include "multithread.h"
 
-
+namespace FD {
 
 class _ObjectFactory;
 
@@ -195,5 +195,5 @@ extern ObjectRef nilObject;
 
 //ObjectRef ObjectFactory<NilObject>::create() {return nilObject;}
 
-
+}//namespace FD
 #endif

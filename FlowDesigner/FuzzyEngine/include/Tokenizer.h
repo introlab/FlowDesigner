@@ -11,6 +11,8 @@
 #ifndef NL_SYS_STRING_TO_TOKEN_H
 #define NL_SYS_STRING_TO_TOKEN_H
 
+namespace FD {
+
 //extern vector<char> globalKeepTokenVector;
 //Should be moved to a less module specific location
 
@@ -65,5 +67,5 @@ This function is used to transform an integer into a string.
 */
 std::string int_to_string(int inputInteger);
 
-
+}//namespace FD
 #endif

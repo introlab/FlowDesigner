@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 
-
+namespace FD {
 
 class FlowPref {
    int modified;
@@ -29,4 +29,5 @@ class FlowPref {
 };
 
 
+}//namespace FD
 #endif

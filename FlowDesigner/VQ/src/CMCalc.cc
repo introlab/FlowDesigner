@@ -6,6 +6,7 @@
 #include "CodebookMap.h"
 
 using namespace std;
+using namespace FD;
 
 class CMCalc;
 

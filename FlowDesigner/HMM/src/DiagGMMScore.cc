@@ -5,6 +5,7 @@
 #include "DiagGMM.h"
 
 using namespace std;
+using namespace FD;
 
 class DiagGMMScore;
 

@@ -10,6 +10,8 @@
 #include <fstream>
 #include <pthread.h>
 
+namespace FD {
+
 class UINode;
 class UILink;
 class UINetTerminal;
@@ -107,5 +109,7 @@ public:
    UINetTerminal* getNetTerminal() {return netTerminal;}
 
 };
+
+}//namespace FD
 
 #endif

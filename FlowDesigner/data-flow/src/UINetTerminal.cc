@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace FD;
 
 UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name, 
 			     const string &_objType, const string &_description)

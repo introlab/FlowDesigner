@@ -5,6 +5,7 @@
 #include "FuzzyOperators.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(TriangularFunction)
 DECLARE_TYPE(TriangularFunction)

@@ -12,6 +12,7 @@
 #include "wrapper.h"
 
 using namespace std;
+using namespace FD;
 
 /**Initializes the Overflow library*/
 void overflowInitialize(void)

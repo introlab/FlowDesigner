@@ -1,7 +1,12 @@
+#ifndef _OPERATORS_H_
+#define _OPERATORS_H_
+
 // Copyright (C) 1999 Jean-Marc Valin
 
 #include "DoubleDispatch.h"
 #include "misc.h"
+
+namespace FD {
 
 DEFINE_DOUBLE_VTABLE(addVtable);
 
@@ -326,3 +331,6 @@ REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Complex<double>,Ma
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<std::complex<float> >,Complex<double>,Matrix<std::complex<double> >,23) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<std::complex<double> >,Complex<double>,Matrix<std::complex<double> >,24) 
 
+}//namespace FD
+
+#endif

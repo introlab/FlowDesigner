@@ -9,6 +9,7 @@
 #include <unistd.h>
 
 using namespace std;
+using namespace FD;
 
 const int ThreadedIterator::STATUS_RUNNING = 1;
 const int ThreadedIterator::STATUS_STOPPED = 0;
@@ -149,7 +150,7 @@ void ThreadedIterator::initialize() {
    
 }
 
-void * workloop (void *param) {
+void * FD::workloop (void *param) {
   
   if (param == NULL) {
     throw new NodeException (NULL,string("Error in ThreadedIterator::getOutput workloop: NULL param."), __FILE__,__LINE__);

@@ -12,14 +12,14 @@
 #include "Iterator.h"
 #include <pthread.h>
 
-
+namespace FD {
 
 void * workloop (void *param);
 
 class ThreadedIterator : public Iterator {
 
   //the thread workloop
-  friend void * workloop (void *param);
+  friend void * FD::workloop (void *param);
 
  public:
   
@@ -61,6 +61,7 @@ class ThreadedIterator : public Iterator {
     pthread_mutex_destroy(&mutex);
   }
 
+  
  private:
   
   /** Default constructor that should not be used*/
@@ -71,7 +72,10 @@ class ThreadedIterator : public Iterator {
 
   bool  m_in_getOutput;
 
-   
+  static const int STATUS_RUNNING;
+
+  static const int STATUS_STOPPED;
+  
   void* loop(void *param);
 
   int rate_per_second;
@@ -80,9 +84,6 @@ class ThreadedIterator : public Iterator {
 
   volatile int thread_status;
 
-  static const int STATUS_RUNNING;
-
-  static const int STATUS_STOPPED;
 
   int status;
 
@@ -91,4 +92,6 @@ class ThreadedIterator : public Iterator {
   pthread_t work_thread;
 
 };
+
+}//namespace FD
 #endif

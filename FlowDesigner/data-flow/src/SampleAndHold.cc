@@ -5,6 +5,7 @@
 #include <math.h>
 
 using namespace std;
+using namespace FD;
 
 class SampleAndHold;
 DECLARE_NODE(SampleAndHold)

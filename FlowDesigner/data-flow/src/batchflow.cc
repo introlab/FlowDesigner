@@ -15,7 +15,7 @@
 #include <libxml/globals.h>
 
 using namespace std;
-
+using namespace FD;
 
 typedef Network *NetworkPtr;
 

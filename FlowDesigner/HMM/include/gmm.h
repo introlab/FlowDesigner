@@ -6,8 +6,9 @@
 #include "Object.h"
 #include "ObjectParser.h"
 #include "gaussian_set.h"
-
 #include "DiagGMM.h"
+
+namespace FD {
 
 class GMM;
 
@@ -167,5 +168,7 @@ public:
 
 //ostream &operator << (ostream &out, const GMM &gmm);
 std::istream &operator >> (std::istream &in, GMM &gmm);
+
+}//namespace FD
 
 #endif

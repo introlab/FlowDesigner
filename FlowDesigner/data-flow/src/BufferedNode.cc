@@ -6,6 +6,7 @@
 //@implements core
 
 using namespace std;
+using namespace FD;
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)

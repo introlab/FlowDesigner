@@ -6,6 +6,7 @@
 #include "misc.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(RBF)
 //@implements VQ

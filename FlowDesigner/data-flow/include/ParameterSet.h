@@ -4,10 +4,11 @@
 #define PARAMETERSET_H
 
 #include "Object.h"
-
 #include <map>
 #include <string>
 #include "BaseException.h"
+
+namespace FD {
 
 /** A ParameterSet is a data structure that holds all the parameters 
     needed for the construction of a new node.
@@ -69,4 +70,5 @@ protected:
    std::string message;
 };
 
+}//end namespace FD
 #endif

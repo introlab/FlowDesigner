@@ -9,6 +9,8 @@
 
 #include "FuzzyModel.h"
 
+namespace FD {
+
 class GenericModel : public FuzzyModel  {
 
 public:
@@ -44,4 +46,6 @@ public:
 private:
 
 };
+}//namespace FD
+
 #endif 

@@ -12,6 +12,7 @@
 #include "Object.h"
 #include "Vector.h"
 
+namespace FD {
 
 class FuzzyRule : public BufferedNode {
 
@@ -93,5 +94,7 @@ inline void Vector<FuzzyRule*>::destroy() {
 
  delete this;
 }
+
+}//namespace FD
 
 #endif 

@@ -10,6 +10,8 @@
 #include "Network.h"
 #include <pthread.h>
 
+namespace FD {
+
 class GRunContext {
 
   friend gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context);
@@ -37,5 +39,7 @@ class GRunContext {
    void set_thread(pthread_t *thread);
    
 };
+
+}//namespace FD
 
 #endif

@@ -5,8 +5,9 @@
 
 #include <map>
 #include <string>
-
 #include "flow_pref.h"
+
+namespace FD {
 
 class VFlowPrefDialog {
    GtkWidget *propertybox1;
@@ -24,5 +25,5 @@ class VFlowPrefDialog {
    void close();
 };
 
-
+}//namespace FD
 #endif

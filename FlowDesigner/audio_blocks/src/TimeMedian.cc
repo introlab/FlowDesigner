@@ -6,6 +6,7 @@
 #include <algorithm>
 
 using namespace std;
+using namespace FD;
 
 class TimeMedian;
 

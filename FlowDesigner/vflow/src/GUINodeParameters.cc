@@ -9,6 +9,7 @@
 #include "object_param.h"
 
 using namespace std;
+using namespace FD;
 
 static int user_count = 0;
 

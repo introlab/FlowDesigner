@@ -3,6 +3,8 @@
 #ifndef EXCEPTION_OBJECT_H
 #define EXCEPTION_OBJECT_H
 
+namespace FD {
+
 class ExceptionObject : public Object {
 
    BaseException *e;
@@ -24,5 +26,7 @@ public:
       e->print(out);
    }
 };
+
+}//namespace FD
 
 #endif

@@ -19,6 +19,8 @@
 
 #include "BufferedNode.h"
 
+namespace FD {
+
 class BinaryOR : public BufferedNode
 {
 protected:
@@ -42,5 +44,8 @@ public:
    void calculate(int output_id, int count, Buffer &out);
 
 };
+
+
+}//namespace FD
 
 #endif //_BINARY_OR_H_

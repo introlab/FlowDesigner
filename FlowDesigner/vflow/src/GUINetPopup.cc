@@ -11,6 +11,8 @@
 
 using namespace std;
 
+namespace FD {
+
 static GtkMenuItemClass *parent_class = NULL;
 
 extern int theTime;
@@ -371,3 +373,4 @@ GtkWidget *node_item_new (gchar *label, UINetwork *net)
    return NULL;
 	
 }
+}//namespace FD

@@ -19,6 +19,8 @@
 
 #include "BufferedNode.h"
 
+namespace FD {
+
 class BinaryAND : public BufferedNode
 {
 protected:
@@ -41,4 +43,6 @@ public:
 
 };
 
+
+}//namespace FD
 #endif //_BINARY_AND_H_

@@ -5,6 +5,7 @@
 #include "Stream.h"
 
 using namespace std;
+using namespace FD;
 
 class ReadInt;
 DECLARE_NODE(ReadInt)

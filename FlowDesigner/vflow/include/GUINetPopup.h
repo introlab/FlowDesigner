@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 
+namespace FD {
 
 class UINetwork;
 class UIDocument;
@@ -48,5 +49,7 @@ class NodeLabel_class {
 GtkType NodeLabel_get_type ();
 GtkWidget *node_item_new (gchar *label, UINetwork *net);
 //NodeLabel *NodeLabel_new ();
+
+}//namespace FD
 
 #endif

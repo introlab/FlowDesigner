@@ -2,6 +2,8 @@
 #ifndef VITERBI_H
 #define VITERBI_H
 
+namespace FD {
+
 class ViterbiNode {
    
 }
@@ -20,5 +22,5 @@ protected:
 public:
 
 };
-
+}//namespace FD
 #endif

@@ -8,6 +8,8 @@
 #include <gnome.h>
 #include <pthread.h>
 
+namespace FD {
+
 class Probe : public Node {
   protected:
 
@@ -84,6 +86,8 @@ protected:
    Probe() {throw new GeneralException("Probe copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD
 
 #endif
 

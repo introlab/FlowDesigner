@@ -8,6 +8,7 @@
 #include "IntfNode.h"
 
 using namespace std;
+using namespace FD;
 
 OFWrapper::OFWrapper(UIDocument* _doc)
    : doc(_doc)

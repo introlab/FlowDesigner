@@ -10,6 +10,7 @@
 #include <string>
 
 using namespace std;
+using namespace FD;
 
 class Receive;
 

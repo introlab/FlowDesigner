@@ -9,6 +9,8 @@
 #include "misc.h"
 #include "vec.h"
 
+namespace FD {
+
 template<class T>
 class Array : public Vector<T>
 {
@@ -142,6 +144,6 @@ inline void Array<T>::readFrom(std::istream &in)
 }
 
 
-
+}//namespace FD
 
 #endif

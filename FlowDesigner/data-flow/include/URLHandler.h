@@ -9,6 +9,8 @@
 #include "BaseException.h"
 #include "net_types.h"
 
+namespace FD {
+
 typedef ObjectRef (*url_func)(const std::string &url, int flags);
 
 class URLHandler {
@@ -66,5 +68,7 @@ class URLHandler {
 #define REGISTER_URL_HANDLER(name, func) \
   int dummy_url_handler_for ## _ ## name = \
     URLHandler::RegisterURLHandler(# name,func);
+
+}//using namespace FD
 
 #endif

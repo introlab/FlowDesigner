@@ -18,6 +18,8 @@
 
 using namespace std;
 
+namespace FD {
+
 /*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
                                      GUINetwork      *net)
@@ -684,3 +686,5 @@ void GUINetwork::applyNetworkProperties() {
 UINote* GUINetwork::newNote(const std::string &text, double x, double y, bool visible) {
   return new GUINote(text,x,y,visible,this);
 }
+
+}//namespace FD

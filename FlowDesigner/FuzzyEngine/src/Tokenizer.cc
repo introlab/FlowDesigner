@@ -5,6 +5,8 @@
 
 using namespace std;
 
+namespace FD {
+
 const static string FILE_NAME = __FILE__;
 
 void string_to_token(Vector<string> &outputVector, const string &inputString, Vector<char> &keepToken, Vector<char> &discardToken)
@@ -148,3 +150,5 @@ string int_to_string(int inputInteger)
   tempString = tempBuf.str();
   return tempString;
 }
+
+}//namespace FD

@@ -3,6 +3,7 @@
 #include "Constant.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(Constant)
 /*Node

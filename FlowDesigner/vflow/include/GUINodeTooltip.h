@@ -6,6 +6,8 @@
 #include "GUINode.h"
 #include <gnome.h>
 
+namespace FD {
+
 class GUINodeTooltip {
   protected:
    GUINode *node;
@@ -20,5 +22,6 @@ class GUINodeTooltip {
    ~GUINodeTooltip();
 };
 
+}//namespace FD
 
 #endif

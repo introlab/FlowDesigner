@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "Vector.h"
 
+namespace FD {
 
 class Tag {
 protected:
@@ -80,5 +81,7 @@ public:
    friend std::istream &operator >> (std::istream &in, AudioInfo &info);
 
 };
+
+}//namespace FD
 
 #endif

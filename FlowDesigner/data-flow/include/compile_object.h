@@ -6,6 +6,8 @@
 #include <string>
 #include "DLManager.h"
 
+namespace FD {
+
 class CompileObject {
    std::string code;
    std::string symname;
@@ -19,5 +21,5 @@ public:
    void compile();
    void *getFuncPtr() {return sym;}
 };
-
+}//namespace FD
 #endif

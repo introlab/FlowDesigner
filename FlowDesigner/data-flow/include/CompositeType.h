@@ -6,6 +6,8 @@
 #include "Object.h"
 #include <map>
 
+namespace FD {
+
 /**Allows user-defined types (analog to structs in C/C++)*/
 class CompositeType : public Object {
    typedef std::map<std::string, ObjectRef> map_type;
@@ -29,4 +31,5 @@ public:
    }
 };
 
+}//namespace FD
 #endif

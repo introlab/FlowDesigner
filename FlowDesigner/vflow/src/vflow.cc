@@ -16,6 +16,9 @@
 #include "GUINodeParameters.h"
 
 using namespace std;
+using namespace FD;
+
+namespace FD {
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -1628,7 +1631,7 @@ gboolean vflow_select_page_event(GtkNotebook *notebook, gboolean arg1, vflowGUI 
   return true;
 }
 
-
+}//namespace FD
 
 int main (int argc, char *argv[]) 
 {
@@ -1684,4 +1687,5 @@ int main (int argc, char *argv[])
    
    return 0;
 }
+
 

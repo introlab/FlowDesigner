@@ -4,6 +4,7 @@
 #include "ObjectParser.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(MeanSet)
 //@implements GMM

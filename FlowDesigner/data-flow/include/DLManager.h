@@ -22,9 +22,10 @@
 
 //#define HPUX
 
-
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
+
+namespace FD {
 
 /**The pointer to library type (OS dependent)*/
 typedef void *DL_HANDLE_TYPE;
@@ -143,6 +144,6 @@ class ToolboxList {
    static std::vector<std::string> load(const std::vector<std::string> &list, int debug);
 };
 
-
+}//namespace FD
 
 #endif

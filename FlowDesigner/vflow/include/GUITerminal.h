@@ -11,6 +11,8 @@
 #include "GUILink.h"
 #include <math.h>
 
+namespace FD {
+
 class UINode;
 class UILink;
 class UINetTerminal;
@@ -133,5 +135,5 @@ public:
 
 };
 
-
+}//namespace FD
 #endif

@@ -16,6 +16,7 @@
 //@implements core
 using namespace std;
 
+namespace FD {
 
 DECLARE_TYPE(Char)
 DECLARE_TYPE(Int)
@@ -181,4 +182,9 @@ FILEDES::~FILEDES()
 }
 
 
+
+
 #endif /*ifdef WIN32*/
+
+}//namespace FD
+

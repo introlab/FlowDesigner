@@ -7,6 +7,7 @@
 #include "Vector.h"
 
 using namespace std;
+using namespace FD;
 
 template<class T>
 ObjectRef logObj(ObjectRef in)

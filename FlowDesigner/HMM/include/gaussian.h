@@ -12,6 +12,9 @@
 #include "mean.h"
 #include "mean_set.h"
 
+
+namespace FD {
+
 class GMM;
 
 /**Gaussian class*/
@@ -158,4 +161,6 @@ public:
 };
 
 std::istream &operator >> (std::istream &in, Gaussian &gauss);
+
+}//namespace FD
 #endif

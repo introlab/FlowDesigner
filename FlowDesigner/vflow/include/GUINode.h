@@ -15,6 +15,8 @@
 #include "UINetTerminal.h"
 #include "UITerminal.h"
 
+namespace FD {
+
 class GUINode : public UINode {
 
 protected:
@@ -84,5 +86,7 @@ public:
    friend class GUINetwork;
 
 };
+
+}//namespace FD
 
 #endif

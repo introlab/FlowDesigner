@@ -5,6 +5,8 @@
 #include <map>
 #include <string>
 
+namespace FD {
+
 class ExternalApp;
 
 class AppFactory {
@@ -26,4 +28,5 @@ class ExternalApp {
    static ExternalApp *startApp(std::string name) {return factories()[name]->create();}
 };
 
+}//namespace FD
 #endif

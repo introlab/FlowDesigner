@@ -9,6 +9,8 @@
 #include <typeinfo>
 #include <vector>
 
+namespace FD {
+
 /**A rotating buffer implementation.
    This buffer keeps the last N lines (frames) it has*/
 class Buffer : public Object {
@@ -158,5 +160,7 @@ inline void Buffer::printOn(std::ostream &out) const
 
 inline Buffer::Buffer(const Buffer&)
 {throw new BufferException(NULL,"use an ObjectRef instead",0);}
+
+}//namespace FD
 
 #endif

@@ -21,6 +21,8 @@
 
 using namespace std;
 
+namespace FD {
+
 bool GUIDocument::isRunning=false;
 pthread_t GUIDocument::runThread;
 Network * GUIDocument::runningNet=NULL;
@@ -1128,4 +1130,6 @@ void GUIDocument::updateSubnet() {
     }
   }
 }
+
+}//namespace FD
 

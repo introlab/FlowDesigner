@@ -4,6 +4,7 @@
 
 //@implements core
 using namespace std;
+using namespace FD;
 
 IntfNode::IntfNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)

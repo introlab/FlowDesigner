@@ -9,6 +9,8 @@
 
 using namespace std;
 
+namespace FD {
+
 DECLARE_NODE(KeyPad)
 /*Node
  *
@@ -559,4 +561,4 @@ void on_button_equa_pressed(GtkButton *button, gpointer user_data)
    ((KeyPad*)user_data)->setKeyValue('=');
 }
 
-
+}//namespace FD

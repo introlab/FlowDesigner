@@ -12,6 +12,7 @@
 //@implements core
 
 using namespace std;
+using namespace FD;
 
 template <class X, class Y, class Z>
 ObjectRef smallerCTypeFunction(ObjectRef op1, ObjectRef op2) {

@@ -11,6 +11,7 @@
 #endif
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(Cell)
 //@implements VQ

@@ -6,6 +6,8 @@
 #include "Node.h"
 #include "ObjectRef.h"
 
+namespace FD {
+
 class UnPack : public Node {
 
 protected:
@@ -42,5 +44,5 @@ protected:
    UnPack() {throw new GeneralException("UnPack copy constructor should not be called",__FILE__,__LINE__);}
 
 };
-
+}//namespace FD
 #endif

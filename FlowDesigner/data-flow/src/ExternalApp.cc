@@ -3,6 +3,7 @@
 #include "ExternalApp.h"
 
 using namespace std;
+using namespace FD;
 
 map<string, AppFactory *> &ExternalApp::factories()
 {

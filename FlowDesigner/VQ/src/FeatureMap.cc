@@ -15,6 +15,7 @@
 #endif
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(FeatureMap)
 //@implements FeatureMap

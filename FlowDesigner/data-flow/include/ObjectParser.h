@@ -9,6 +9,8 @@
 #include <map>
 #include <string>
 
+namespace FD {
+
 inline bool isValidType (std::istream &in, std::string expectedType, bool binary=false);
 
 template <class T>
@@ -178,5 +180,7 @@ inline std::istream &operator >> (std::istream &in, T* &o)
    o = obj.detach();
    return in;
 }
+
+}//end namespace FD
 
 #endif

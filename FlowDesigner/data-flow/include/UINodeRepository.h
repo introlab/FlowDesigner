@@ -9,9 +9,9 @@
 #include <set>
 #include <libxml/tree.h>
 
+namespace FD {
+
 class UINetwork;
-
-
 
 class ItemInfo {
   public:
@@ -107,5 +107,6 @@ class UINodeRepository {
 
    static void ProcessDependencies(std::set<std::string> &initial_files, bool toplevel=true);
 };
+}//namespace FD
 
 #endif

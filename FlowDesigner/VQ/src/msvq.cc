@@ -6,6 +6,7 @@
 #include "ObjectParser.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_TYPE(MSVQ)
 //@implements MSVQ

@@ -4,4 +4,7 @@
 
 //@implements core
 using namespace std;
-map<string, ObjectRef> Variable::all;
+
+map<string, FD::ObjectRef> FD::Variable::all;
+
+

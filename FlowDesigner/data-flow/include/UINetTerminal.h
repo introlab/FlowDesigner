@@ -7,7 +7,7 @@
 #include <string>
 #include <libxml/tree.h>
 
-
+namespace FD {
 
 class UINode;
 class UINetwork;
@@ -51,5 +51,5 @@ public:
 
 };
 
-
+}//namespace FD
 #endif

@@ -16,6 +16,8 @@
 
 using namespace std;
 
+namespace FD {
+
 class CodeGenState {
    GtkWidget* dialog;
    GUIDocument *doc;
@@ -412,4 +414,6 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
    gtk_widget_show(dialog);
 
 }
+
+}//namespace FD
 

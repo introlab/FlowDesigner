@@ -8,6 +8,8 @@
 #include "Object.h"
 #include "kmeans.h"
 
+namespace FD {
+
 class RBF : public KMeans {
   public:
    static float mahalanobis (const float *x, const float *c, const float *y, int len)
@@ -50,5 +52,5 @@ public:
    void readFrom (std::istream &in=std::cin);
    friend std::istream &operator >> (std::istream &in, RBF &mdl);
 };
-
+}//namespace FD
 #endif

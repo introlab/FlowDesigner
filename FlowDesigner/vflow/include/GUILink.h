@@ -8,7 +8,7 @@
 #include "UILink.h"
 #include <math.h>
 
-
+namespace FD {
 
 class UINode;
 class UINetwork;
@@ -44,5 +44,6 @@ public:
 
 };
 
+}//namespace FD
 
 #endif

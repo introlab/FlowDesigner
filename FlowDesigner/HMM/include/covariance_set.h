@@ -7,6 +7,8 @@
 #include "Object.h"
 #include "mean_set.h"
 
+namespace FD {
+
 class CovarianceSet : public Object {
 protected:
    int nb_covariances;
@@ -42,5 +44,7 @@ public:
    friend std::istream &operator >> (std::istream &in, CovarianceSet &cov);
 
 };
+
+}//namespace FD
 
 #endif

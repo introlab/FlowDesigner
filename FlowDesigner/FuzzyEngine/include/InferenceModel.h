@@ -9,6 +9,8 @@
 
 #include "FuzzyModel.h"
 
+namespace FD {
+
 class InferenceModel : public FuzzyModel  {
 
 public:
@@ -48,4 +50,7 @@ private:
 	int m_outputSetsID;
 
 };
+
+}//namespace FD
+
 #endif 

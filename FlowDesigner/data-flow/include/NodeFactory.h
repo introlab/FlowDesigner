@@ -3,20 +3,19 @@
 #ifndef _NODEFACTORY_H_
 #define _NODEFACTORY_H_
 
-
-/*
-  author: Dominic Letourneau
-  date  : 09/06/99 
- */
-
-//#include "Node.h"
 #include "ParameterSet.h"
 #include <vector>
 #include <string>
 
+namespace FD {
+
 class Node;
 
-//abstract factory class
+/**
+  author: Dominic Letourneau
+  date  : 09/06/99 
+  Abstract Factory class
+*/
 class _NodeFactory {
 protected:
    std::string name;
@@ -48,5 +47,5 @@ public:
    }
 };
 
-
+}//end namespace FD
 #endif

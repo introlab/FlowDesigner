@@ -5,6 +5,8 @@
 
 #include "Probe.h"
 
+namespace FD {
+
 class TextProbe : public Probe {
   protected:
    GtkWidget *less1;
@@ -29,5 +31,5 @@ class TextProbe : public Probe {
    virtual void display();
 };
 
-
+}//namespace FD
 #endif

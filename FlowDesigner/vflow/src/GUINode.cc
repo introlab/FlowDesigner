@@ -15,6 +15,7 @@
 #include "vflow.h"
 
 using namespace std;
+using namespace FD;
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {

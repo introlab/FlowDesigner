@@ -14,6 +14,7 @@
 #include <unistd.h>
 
 using namespace std;
+using namespace FD;
 
 class URLStream;
 

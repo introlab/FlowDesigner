@@ -11,6 +11,7 @@
 
 //@implements core
 using namespace std;
+using namespace FD;
 
 template <class X, class Y, class Z>
 ObjectRef maxCTypeFunction(ObjectRef op1, ObjectRef op2) {

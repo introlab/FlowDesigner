@@ -13,6 +13,8 @@
 #include "Object.h"
 #include "UINodeRepository.h"
 
+namespace FD {
+
 class UINodeMenu;
 class Network;
 class ParameterSet;
@@ -207,6 +209,6 @@ public:
 };
 
 
-
+}//namespace FD
 
 #endif

@@ -5,8 +5,12 @@
 //SymbolSet *symbols = new SymbolSet;
 using namespace std;
 
+namespace FD {
+
 VirtualMethods* vmethod()
 {
    static VirtualMethods *vt = new VirtualMethods;
    return vt;
 }
+
+}//namespace FD

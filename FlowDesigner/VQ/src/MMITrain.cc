@@ -6,6 +6,7 @@
 #include "Vector.h"
 
 using namespace std;
+using namespace FD;
 
 class MMITrain;
 DECLARE_NODE(MMITrain)

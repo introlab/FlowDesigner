@@ -8,6 +8,8 @@
 
 using namespace std;
 
+namespace FD {
+
 DECLARE_NODE(Probe)
 /*Node
  *
@@ -450,3 +452,5 @@ ObjectRef Probe::getOutput(int output_id, int count)
    else 
       throw new NodeException (this, "Probe: Unknown output id", __FILE__, __LINE__);
 }
+
+}//namespace FD

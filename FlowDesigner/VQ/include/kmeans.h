@@ -8,6 +8,8 @@
 #include "Object.h"
 #include "vq.h"
 
+namespace FD {
+
 class KMeans : public VQ {
 protected:
    //int length;
@@ -40,5 +42,7 @@ public:
    void readFrom (std::istream &in=std::cin);
    friend std::istream &operator >> (std::istream &in, KMeans &mdl);
 };
+
+}//namespace FD
 
 #endif

@@ -14,6 +14,7 @@
 #include "FuzzyOperators.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(FuzzySet)
 DECLARE_TYPE(FuzzySet)

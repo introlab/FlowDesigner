@@ -22,6 +22,7 @@
 
 //@implements UIClasses
 using namespace std;
+using namespace FD;
 
 UIDocument::UIDocument(string _name)
    : modified(false)

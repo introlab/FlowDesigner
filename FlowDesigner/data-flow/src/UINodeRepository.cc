@@ -20,6 +20,7 @@
 //@implements UIClasses
 
 using namespace std;
+using namespace FD;
 
 UINodeRepository::UINodeRepository(const UINodeRepository &)
 {

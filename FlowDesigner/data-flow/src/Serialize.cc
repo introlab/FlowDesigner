@@ -8,6 +8,7 @@
 #include "Stream.h"
 
 using namespace std;
+using namespace FD;
 
 class Serialize;
 DECLARE_NODE(Serialize)

@@ -5,6 +5,8 @@
 
 #include "Probe.h"
 
+namespace FD {
+
 class PlotProbe : public Probe {
   protected:
    GnomeCanvas *canvas;
@@ -38,5 +40,6 @@ class PlotProbe : public Probe {
 
 };
 
+}//namespace FD
 
 #endif

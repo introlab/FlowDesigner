@@ -10,6 +10,7 @@
 #include "ObjectParser.h"
 #include "typetraits.h"
 
+namespace FD {
 
 //(DL 19/02/2004)
 //Moved stream code here instead of net_types.h
@@ -105,7 +106,7 @@ class IOStream : public IStream, public OStream {
 };
 
 
-
+}//end namespace FD
 
 
 

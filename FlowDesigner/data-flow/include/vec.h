@@ -6,11 +6,11 @@
 #define VEC_H
 
 #include <math.h>
-
 #include "vec_sse.h"
 #include "vec_3dnow.h"
 #include "iextensions.h"
 
+namespace FD {
 /* Prefetch routines, may be used on any type (not only float and SSE2 double) */
 
 #ifdef _USE_3DNOW /*This means we're likely to have 64-byte cache lines (unless it's a K6-II)*/
@@ -454,19 +454,22 @@ template <>
 inline float vec_inner_prod<float>(const float *a, const float *b, int len)
 {
 #ifndef WIN32
+
 #ifdef _ENABLE_3DNOW
-   if (len >= 8 && IExtensions::have3DNow())
-      return vec_inner_prod_3dnow(a,b,len);
-   else 
+  if (len >= 8 && IExtensions::have3DNow()) 
+      return vec_inner_prod_3dnow(a,b,len);   
+  else 
 #endif
 #ifdef _ENABLE_SSE
-      if (len >=8 && IExtensions::haveSSE())
+    if (len >=8 && IExtensions::haveSSE()) 
       return vec_inner_prod_sse(a,b,len);
-   else
+    else 
 #endif
 #endif
       return vec_inner_prod_float(a,b,len);
 }
 
+
+}//namespace FD
 
 #endif /* ifndef VEC_H*/

@@ -7,6 +7,8 @@
 #include "Object.h"
 #include <vector>
 
+namespace FD {
+
 /**This is a multi-stage vector quantization class, and has nothing to do with microsoft :-)*/
 class MSVQ : public VQ {
   protected:
@@ -38,4 +40,6 @@ class MSVQ : public VQ {
    void readFrom (std::istream &in=std::cin);
    friend std::istream &operator >> (std::istream &in, MSVQ &mdl);
 };
+
+}//namespace FD
 #endif

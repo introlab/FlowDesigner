@@ -10,6 +10,7 @@
 #endif
 
 using namespace std;
+using namespace FD;
 
 class MarkovProb;
 

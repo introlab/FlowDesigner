@@ -11,6 +11,8 @@
 #include "BufferedNode.h"
 #include "Vector.h"
 
+namespace FD {
+
 
 class FuzzyFunction : public BufferedNode {
 
@@ -108,5 +110,8 @@ inline void Vector<FuzzyFunction*>::destroy() {
  delete this;
 }
 */
+
+
+}//namespace FD
 
 #endif

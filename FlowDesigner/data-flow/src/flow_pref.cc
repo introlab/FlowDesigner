@@ -13,6 +13,7 @@
 #include <libxml/parser.h>
 
 using namespace std;
+using namespace FD;
 
 FlowPref FlowPref::pref;
 

@@ -16,6 +16,7 @@
 
 using namespace std;
 
+namespace FD {
 
 //static int dummy = Object::addObjectType<Vector<float> > ("Vector", new ObjectFactory<Vector<float> > ("Vector"));
 DECLARE_TYPE2("Vector", Vector<float>)
@@ -182,3 +183,5 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
    }
 }
 */
+
+}//namespace FD

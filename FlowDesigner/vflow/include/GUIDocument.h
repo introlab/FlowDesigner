@@ -9,6 +9,8 @@
 #include <gnome.h>
 #include <pthread.h>
 
+namespace FD {
+
 class DocParameterData {
 public:
 
@@ -129,5 +131,6 @@ public:
 
 };
 
+}//namespace FD
 
 #endif

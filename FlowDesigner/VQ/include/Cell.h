@@ -1,9 +1,14 @@
+#ifndef _CELL_H_
+#define _CELL_H_
+
 // Copyright (C) 2001 Jean-Marc Valin
 
 #include <math.h>
 #include <vector>
 #include <iostream>
 #include "Object.h"
+
+namespace FD {
 
 class Cell;
 
@@ -85,3 +90,7 @@ public:
    friend std::istream &operator >> (std::istream &in, Cell &cell);
 };
 
+
+}//namespace FD
+
+#endif

@@ -6,6 +6,8 @@
 #include "Collector.h"
 #include "BufferedNode.h"
 
+namespace FD {
+
 /** Input translator node used only for the Iterator class */
 class InputTranslator : public BufferedNode {
 
@@ -176,4 +178,6 @@ protected:
    }
    
 };
+
+}//namespace FD
 #endif

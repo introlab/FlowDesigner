@@ -1,8 +1,12 @@
 // Copyright (C) 2001 Jean-Marc Valin
+#ifndef _VMETHOD_H_
+#define _VMETHOD_H_
 
 #include <string>
 #include <map>
 #include "Object.h"
+
+namespace FD {
 
 class SymbolSet {
   protected:
@@ -146,3 +150,7 @@ VirtualMethods* vmethod();
 #define REGISTER_VTABLE0(name, type, func, id) \
         static int dummy_vtable_init_for ## _ ## name ## id =\
         vmethod()->registerFunct0(func, &typeid(type), # name);
+
+}//namespace FD
+
+#endif

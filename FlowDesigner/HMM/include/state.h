@@ -2,8 +2,9 @@
 #ifndef STATE_H
 #define STATE_H
 
-
 #include "gmm.h"
+
+namespace FD {
 
 class Transition {
 protected:
@@ -27,5 +28,6 @@ class State {
    
 };
 
+}//namespace FD
 
 #endif

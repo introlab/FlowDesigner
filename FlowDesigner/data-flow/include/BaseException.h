@@ -3,12 +3,13 @@
 #ifndef _BASEEXCEPTION_H_
 #define _BASEEXCEPTION_H_
 
-
-
 //#include "Node.h"
 #include <iostream>
 #include <string>
+#include <vector>
 //#include "rc_ptrs.h"
+
+namespace FD {
 
 /***************************************************************************/
 /*
@@ -85,7 +86,7 @@ protected:
 };
 
 
-#include <vector>
+
 
 /***************************************************************************/
 /*
@@ -126,5 +127,7 @@ inline BaseException *BaseException::add(BaseException *e)
 {
    return (new ExceptionStack)->add(this)->add(e);
 }
+
+}//end namespace FD
 
 #endif

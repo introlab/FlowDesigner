@@ -11,6 +11,8 @@
 #include "FuzzyFunction.h"
 
 
+namespace FD {
+
 class TrapezoidalFunction : public FuzzyFunction  {
 
 public:
@@ -63,5 +65,7 @@ public:
   float m_d;
   
 };
+
+}//namespace FD
 
 #endif 

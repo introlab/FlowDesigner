@@ -15,7 +15,7 @@
 //temporarily inserting include of Stream.h
 #include "Stream.h"
 
-
+namespace FD {
 
 /** This is a generic type that FlowDesigner will handle. Subclass GenericType if
     you want to add specific operations and operators */
@@ -347,4 +347,5 @@ std::istream &operator >> (std::istream &in, String &str);
 
 _DEF_OBJECT_TYPE(String)
 
+}//namespace FD
 #endif

@@ -3,12 +3,12 @@
 #ifndef UINODEPARAMETERS_H
 #define UINODEPARAMETERS_H
 
-
-
 //#include <gnome.h>
 #include <string>
 #include <vector>
 #include <libxml/tree.h>
+
+namespace FD {
 
 class UINode;
 class ParameterSet;
@@ -61,5 +61,5 @@ class UINodeParameters
 
 };
 
-
+}//namespace FD
 #endif

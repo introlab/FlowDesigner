@@ -11,6 +11,7 @@
 
 //@implements UIClasses
 using namespace std;
+using namespace FD;
 
 UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
    : from(_from)

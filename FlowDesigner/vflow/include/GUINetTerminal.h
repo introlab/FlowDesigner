@@ -8,6 +8,8 @@
 #include <libxml/tree.h>
 #include "UINetTerminal.h"
 
+namespace FD {
+
 class UINode;
 class UINetwork;
 class UITerminal;
@@ -33,5 +35,6 @@ public:
 
 };
 
+}//namespace FD
 
 #endif

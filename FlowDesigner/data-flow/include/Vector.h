@@ -10,8 +10,9 @@
 #include "binio.h"
 #include "typetraits.h"
 #include <string>
+#include "VectorPool.h"
 
-
+namespace FD {
 
 
 /**Base class for all vector types, it holds the size and handles some 
@@ -641,8 +642,7 @@ inline void Vector<T>::destroy()
    delete this;
 }
 
-
-#include "VectorPool.h"
+//#include "VectorPool.h"
 extern VectorPool<float> floatVectorPool;
 extern VectorPool<double> doubleVectorPool;
 
@@ -871,7 +871,7 @@ inline Vector<T> operator/ (const Vector<T> &v1, T scal)
 }
 
 
-
+}//end namespace FD
 
 
 #endif

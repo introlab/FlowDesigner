@@ -8,6 +8,7 @@
 #include "Exception.h"
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(GenericModel)
 DECLARE_TYPE(GenericModel)

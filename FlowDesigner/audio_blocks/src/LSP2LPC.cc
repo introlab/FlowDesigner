@@ -6,6 +6,7 @@
 #include "lsp.h"
 
 using namespace std;
+using namespace FD;
 
 class LSP2LPC;
 

@@ -7,6 +7,7 @@
 #include <sstream>
 
 using namespace std;
+using namespace FD;
 
 DECLARE_NODE(TextProbe)
 /*Node

@@ -4,6 +4,8 @@
 
 using namespace std;
 
+namespace FD {
+
 #define GLADE_HOOKUP_OBJECT(component,widget,name) \
   g_object_set_data_full (G_OBJECT (component), name, \
     gtk_widget_ref (widget), (GDestroyNotify) gtk_widget_unref)
@@ -207,3 +209,5 @@ gint close_save_dialog (const char *question)
   gtk_widget_destroy (dialog1);
   return ret;
 }
+
+}//namespace FD

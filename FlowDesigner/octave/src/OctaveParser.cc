@@ -12,6 +12,8 @@
 #include "octave/ops.h"
 #include "octave/error.h"
 
+namespace FD {
+
 class OctaveParser;
 
 DECLARE_NODE(OctaveParser)
@@ -98,5 +100,6 @@ public:
 };
 
 
+}//namespace FD
 
 #endif

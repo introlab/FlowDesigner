@@ -6,6 +6,8 @@
 #include "Object.h"
 #include <complex>
 
+namespace FD {
+
 class TTraits {
 public:
    enum Kind {Object=0, Basic=1, Unknown=2, ObjectPointer=3, BasicPointer=4, UnknownPointer=5};
@@ -57,4 +59,5 @@ struct TypeTraits<T*>
 	enum {kind=TTraits::ObjectPointer+TypeTraits<T>::kind};
 };
 
+}//namespace FD
 #endif
