@@ -18,7 +18,7 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "NNetSet.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 #include <sstream>
 #include "ObjectParser.h"
 #include "Vector.h"
@@ -121,9 +121,9 @@ public:
 
       int i,j;
 
-      Buffer &inBuff = object_cast<Buffer> (trainInValue);
-      Buffer &outBuff = object_cast<Buffer> (trainOutValue);
-      Buffer &idBuff = object_cast<Buffer> (trainIDValue);
+      GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
+      GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
+      GrowingBuffer &idBuff = object_cast<GrowingBuffer> (trainIDValue);
       
       //cerr << "inputs converted\n";
       vector <float *> tin(inBuff.getCurrentPos());
