@@ -14,58 +14,47 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "fftw.h"
-#include "rfftw.h"
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
+#include <map>
+#include "FFTWrap.h"
+
 
 class FFT;
 
-//DECLARE_NODE(FFT)
-NODE_INFO(FFT,"Signal:DSP", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(FFT,"Signal:DSP", "INPUT", "OUTPUT", "")
 
-class FFT : public FrameOperation {
+class FFT : public BufferedNode {
    
    int inputID;
-   rfftw_plan plan;
-   int inputLength;
+   int outputID;
 
 public:
    FFT(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
-
-   ~FFT() {rfftw_destroy_plan(plan);}
-
-   virtual void specificInitialize()
-   {
-      plan = rfftw_create_plan (inputLength, FFTW_FORWARD, FFTW_ESTIMATE);
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-      //Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      rfftw_one (plan, const_cast <float *> (in.begin()), output.begin());
-      //rfftw_one (plan, const_cast <float *> (inputValue->begin()), output.begin());
-      output.status = Object::valid;
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+      
+      FFTWrap.rfft(in.begin(), output.begin(), inputLength);
    }
 
 };

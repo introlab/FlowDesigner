@@ -1,5 +1,7 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
+include_HEADERS = FFTWrap.h
+
 noinst_HEADERS = AudioFile.h \
 	Concatenate.h \
 	DLFrameUnaryOperation.h \
