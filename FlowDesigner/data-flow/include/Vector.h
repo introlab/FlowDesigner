@@ -120,7 +120,7 @@ struct VecBinary {
       for (int i=0;i<v.size();i++)
       {
 	 out << "|";
-	 v[i].serialize();
+	 v[i].serialize(out);
 	 out << "|";
       }
       out << "}";
