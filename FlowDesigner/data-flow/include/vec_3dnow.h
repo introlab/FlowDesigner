@@ -1,10 +1,15 @@
 // Copyright (C) 2001 Jean-Marc Valin
-
-
 //This file contains 3DNow!-optimized vector primitives
+
+
 #ifndef VEC_3DNOW_H
 #define VEC_3DNOW_H
 
+
+#ifdef _ALLOW_3DNOW
+
+
+#define CLOBBER_3DNOW   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
 
 inline float vec_inner_prod_3dnow(const float *a, const float *b, int len)
 {
@@ -72,7 +77,7 @@ even%=:
   femms
   "
   : : "a" (a), "D" (b), "c" (len), "d" (sum)
-FP_DIRTY
+CLOBBER_3DNOW
   );
     
   return sum[0];
@@ -142,7 +147,7 @@ even%=:
   femms
   "
   : : "a" (a), "D" (b), "c" (len), "d" (c)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
 
@@ -210,7 +215,7 @@ even%=:
   femms
   "
   : : "a" (a), "D" (b), "c" (len), "d" (c)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
 
@@ -278,7 +283,7 @@ even%=:
   femms
   "
   : : "a" (a), "D" (b), "c" (len), "d" (c)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
 
@@ -342,7 +347,7 @@ even%=:
   femms
   "
   : : "a" (tmp), "D" (b), "c" (len), "d" (c)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
 
@@ -406,7 +411,7 @@ even%=:
   femms
   "
   : : "a" (tmp), "D" (b), "c" (len), "d" (c)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
 
@@ -483,7 +488,7 @@ even%=:
   femms
   "
   : : "a" (a), "D" (b), "c" (len), "d" (sum)
-FP_DIRTY
+CLOBBER_3DNOW
   );
     
   return sum[0];
@@ -579,7 +584,7 @@ even%=:
    femms
    "
    : : "a" (a), "S" (c), "D" (b), "c" (len), "d" (sum)
-   FP_DIRTY
+   CLOBBER_3DNOW
    );
     
    return sum[0];
@@ -640,7 +645,7 @@ even%=:
   femms
   "
   : : "a" (a), "c" (len), "d" (sum)
-FP_DIRTY
+CLOBBER_3DNOW
   );
     
   return sum[0];
@@ -705,7 +710,7 @@ even%=:
   femms
   "
   : : "a" (a), "c" (len), "d" (sum)
-FP_DIRTY
+CLOBBER_3DNOW
   );
     
   return sum[0];
@@ -763,7 +768,7 @@ even%=:
   femms
   "
   : : "a" (a), "c" (len), "d" (b)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
 
@@ -829,9 +834,54 @@ even%=:
   femms
   "
   : : "a" (a), "c" (len), "d" (b)
-FP_DIRTY
+CLOBBER_3DNOW
   );
 }
+
+#else /* _ALLOW_3DNOW */
+
+
+#include "BaseException.h"
+
+#define ERROR_3DNOW_NI {throw new GeneralException("Trying to use 3DNow!, but Overflow not compiled with _ALLOW_3DNOW. Bad, bad, this should never happen", __FILE__, __LINE__);}
+
+inline float vec_inner_prod_3dnow(const float *a, const float *b, int len)
+ERROR_3DNOW_NI
+
+inline void vec_add_vec_3dnow(const float *a, const float *b, float *c, int len)
+ERROR_3DNOW_NI
+
+inline void vec_sub_vec_3dnow(const float *a, const float *b, float *c, int len)
+ERROR_3DNOW_NI
+
+inline void vec_mul_vec_3dnow(const float *a, const float *b, float *c, int len)
+ERROR_3DNOW_NI
+
+inline void vec_add_scal_3dnow(const float a, const float *b, float *c, int len)
+ERROR_3DNOW_NI
+
+inline void vec_mul_scal_3dnow(const float a, const float *b, float *c, int len)
+ERROR_3DNOW_NI
+
+inline float vec_dist_3dnow(const float *a, const float *b, int len)
+ERROR_3DNOW_NI
+
+inline float vec_mahalanobis_3dnow(const float *a, const float *b, const float *c, int len)
+ERROR_3DNOW_NI
+
+inline float vec_sum_3dnow(const float *a, int len)
+ERROR_3DNOW_NI
+
+inline float vec_norm2_3dnow(const float *a, int len)
+ERROR_3DNOW_NI
+
+inline void vec_inv_3dnow(const float *a, float *b, int len)
+ERROR_3DNOW_NI
+
+inline void vec_sqrt_3dnow(const float *a, float *b, int len)
+ERROR_3DNOW_NI
+
+#endif /* !_ALLOW_3DNOW */
 
 
 
