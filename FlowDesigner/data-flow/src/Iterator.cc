@@ -88,23 +88,17 @@ void Iterator::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
  */
 /***************************************************************************/   
 void Iterator::specificInitialize() {
-   this->Network::specificInitialize();
-   
+
    if (!conditionNode) {
       throw NodeException(this,"No condition Node specified in Iterator",__FILE__,__LINE__);
    }
 
-}
-void Iterator::initialize() {
-   
-   if (!conditionNode) {
-      throw NodeException(this,"No condition Node specified in Iterator",__FILE__,__LINE__);
-   }
-   
    // We must initialize the conditionNode before
    conditionNode->initialize();
+
+   this->Network::specificInitialize();
    
-   // We need to initialize the other nodes.
-   this->Network::initialize();
 }
+
+
 #endif

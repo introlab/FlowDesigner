@@ -55,7 +55,7 @@ void Network::setDebugMode() {
    
    for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
       node = (*nodeIter).second;
-      node->debugMode = true;
+      node->setDebugMode();
    }
 
 }
@@ -74,7 +74,7 @@ void Network::resetDebugMode() {
    
    for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
       node = (*nodeIter).second;
-      node->debugMode = false;
+      node->resetDebugMode();
    }
 }
 /***************************************************************************/
@@ -251,14 +251,15 @@ void Network::connect (const string &currentNodeName,const string &inputName,
   Dominic Letourneau
  */
 /***************************************************************************/
-void Network::initialize() {
+/*void Network::initialize() {
 
    Node* node = NULL;
    map<string,Node*>::iterator iter;
    map<string,Node*> connectionMap;
    
-
+   cerr << "Network::initialize\n";
    if (sinkNode) {
+      cerr << "initializing: sinkNode->initialize() " << sinkNode->getName() << endl;
       sinkNode->initialize();
    }
    else {
@@ -277,7 +278,7 @@ void Network::initialize() {
    if (connectionMap.size() > 0) {
       throw NotInitializedException(connectionMap);
    }
-}
+   }*/
 /***************************************************************************/
 /*
   Network::addFactory()
@@ -307,16 +308,33 @@ void Network::addFactory (const string &factoryName, _NodeFactory* const factory
 /***************************************************************************/
 void Network::specificInitialize() {
    this->Node::specificInitialize();
-
-   //We need an input Node
-   if (!inputNode) {
-      throw NoInputNodeException();
-   }
    
    //We need a sink Node
    if (!sinkNode) {
       throw NoSinkNodeException();
    }
+
+   Node* node = NULL;
+   map<string,Node*>::iterator iter;
+   map<string,Node*> connectionMap;
+   
+   cerr << "Network::initialize\n";
+      cerr << "initializing: sinkNode->initialize() " << sinkNode->getName() << endl;
+      sinkNode->initialize();
+   
+   //we must verify if all the nodes are initialized properly
+
+   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
+      if (!((*iter).second)->isInitialized()) {
+         //adding the nodes that are not properly initialized
+         connectionMap.insert(nodeEntry((*iter).first, (*iter).second));
+      }
+   }
+
+   if (connectionMap.size() > 0) {
+      throw NotInitializedException(connectionMap);
+   }
+
 
 }
 
@@ -381,6 +399,10 @@ int Network::translateOutput (string outputName) {
  */
 /***************************************************************************/
 void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
+   if (!inputNode) 
+   {
+      throw NoInputNodeException();
+   }
    inputNode->connectToNode(in,inNode,out);
 }
 

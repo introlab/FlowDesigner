@@ -107,7 +107,7 @@ public:
        Network initialization. Must be done after all connections.
        The sink node must be set.
    */
-   virtual void initialize (); 
+   //virtual void initialize (); 
    
    ///Adding a factory into the static dictionary
    static void addFactory (const string &factoryName, _NodeFactory* const factory);

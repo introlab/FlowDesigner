@@ -212,7 +212,7 @@ public:
    virtual void connectToNode(string in, Node *inputNode, string out);
 
    ///Initialize a node
-   void initialize ();
+   virtual void initialize ();
 
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/

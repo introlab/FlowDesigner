@@ -127,6 +127,7 @@ typedef NetCType<bool> Bool;
 ///STL types
 typedef GenericType<string> String;
 typedef GenericType<ifstream> IFStream;
+typedef GenericType<ofstream> OFStream;
 //@}
 
 #endif

@@ -75,9 +75,6 @@ public:
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
    }
 
-   /** the initialize from Node */
-   virtual void initialize();
-   
    /** setting the condition Node */
    void setConditionNode(Node* aNode) {conditionNode = aNode;}
    

@@ -47,7 +47,8 @@ public:
     *(allows to create gaussians with either diagonal or full covariance*/
    Gaussian(int dim, Covariance *(*cov_new)(int)) 
       : mean(new vector<float> (dim,0.0))
-      , covariance(cov_new (dim)) 
+      , covariance(cov_new (dim))
+      , accum_count(0)
       , dimension(dim)
    {}
 
