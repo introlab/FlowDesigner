@@ -106,9 +106,13 @@ public:
 	 //cout << corr/energy << endl;
 	 if (score > best)
 	 {
-	    best = score;
-	    best_T = lag;
-	    best_gain = corr/energy;
+	    //prevents period doubling
+	    if (score/best > 1.2 || abs(lag-2*best_T) > 3)
+	    {
+	       best = score;
+	       best_T = lag;
+	       best_gain = corr/energy;
+	    }
 	 }
       }
 

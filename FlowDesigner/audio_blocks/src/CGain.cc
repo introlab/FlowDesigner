@@ -73,7 +73,12 @@ public:
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const Vector<float> &gain = object_cast<Vector<float> > (gainValue);
-      
+
+      float g=gain[0];
+
+      if (g>10) g=10;
+      if (g<-10) g=-10;
+
       for (int i=0;i<outputLength;i++)
       {
          output[i]=gain[0]*in[i];
