@@ -19,6 +19,9 @@
 #include <pthread.h>
 #include "ExceptionObject.h"
 
+#include "pseudosem.h"
+
+
 class ParallelThread;
 
 DECLARE_NODE(ParallelThread)
@@ -57,20 +60,20 @@ class ParallelThread : public BufferedNode {
    //True when the calculation thread is asked to terminate
    bool resetState;
 
+   //True when the calculation thread is started
+   bool threadStarted;
+
    //Main calculation thread
    pthread_t thread;
 
    //Incremented (by getOutput) when a new calculation can be done
-   pthread_cond_t sendSem;
+   pseudosem_t sendSem;
 
    //Incremented (by threadLoop) when a new result is available
-   pthread_cond_t recSem;
-
-   pthread_mutex_t lock;
-   pthread_mutex_t lock2;
+   pseudosem_t recSem;
 
    //Protecting the whole getOutput() method
-   pthread_mutex_t bigLock;
+   //pthread_mutex_t bigLock;
 
    int calcCount;
 
@@ -78,11 +81,7 @@ class ParallelThread : public BufferedNode {
    {
       resetState = true;
       //cerr << "lock\n";
-      pthread_mutex_lock(&lock);
-      calcCount = 1;
-      pthread_mutex_unlock(&lock);
-      //cerr << "join\n";
-      pthread_cond_signal(&sendSem);
+      pseudosem_post(&sendSem);
       //cerr << "done\n";
       pthread_join (thread, NULL);
       resetState = false;      
@@ -91,21 +90,17 @@ class ParallelThread : public BufferedNode {
    //Destroy thread data
    void destroyThread()
    {
-      pthread_cond_destroy(&sendSem);
-      pthread_cond_destroy(&recSem);
-      pthread_mutex_destroy(&lock);
-      pthread_mutex_destroy(&lock2);
-      pthread_mutex_destroy(&bigLock);
+      pseudosem_destroy(&sendSem);
+      pseudosem_destroy(&recSem);
+      //pthread_mutex_destroy(&bigLock);
    }
 
    //Init thread data
    void initThread()
    {
-      pthread_cond_init(&sendSem,NULL);
-      pthread_cond_init(&recSem,NULL);
-      pthread_mutex_init(&lock, NULL);
-      pthread_mutex_init(&lock2, NULL);
-      pthread_mutex_init(&bigLock, NULL);
+      pseudosem_init(&sendSem,0,0);
+      pseudosem_init(&recSem,0,0);
+      //pthread_mutex_init(&bigLock, NULL);
    }
 
 public:
@@ -113,6 +108,7 @@ public:
       : BufferedNode(nodeName, params)
       , resetState(false)
       , calcCount(-1)
+      , threadStarted(false)
    {
       input1ID = addInput("INPUT1");
       input2ID = addInput("INPUT2");
@@ -129,6 +125,7 @@ public:
    void specificInitialize()
    {
       BufferedNode::specificInitialize();
+      threadStarted=true;
       pthread_create(&thread, NULL, runThread, (void *) this);
    }
 
@@ -142,25 +139,20 @@ public:
    {
       while (1)
       {
-	 pthread_mutex_lock(&lock);
-	 if (calcCount == -1)
-	    pthread_cond_wait(&sendSem, &lock);
-	 pthread_mutex_unlock(&lock);
+	 pseudosem_wait(&sendSem);
 
 	 if (resetState)
 	    break;
 	 //cerr << calcCount << endl;
 	 calc();
-	 pthread_mutex_lock(&lock2);
-	 calcCount = -1;
-	 pthread_cond_signal(&recSem);
-	 pthread_mutex_unlock(&lock2);
+	 pseudosem_post(&recSem);
       }
    }
 
    void cleanupNotify()
    {
-      endThread();
+      if (threadStarted)
+	 endThread();
    }
 
    void calc()
@@ -188,7 +180,7 @@ public:
 
    ObjectRef getOutput(int output_id, int count)      
    {
-      pthread_mutex_lock(&bigLock);
+      //pthread_mutex_lock(&bigLock);
       Buffer &out1 = *(outputs[output1ID].buffer);
       Buffer &out2 = *(outputs[output2ID].buffer);
       
@@ -214,14 +206,12 @@ public:
       
       if (result->status == Object::valid)
       {
-	 pthread_mutex_unlock(&bigLock);
+	 //pthread_mutex_unlock(&bigLock);
 	 return result;
       }
       
-      pthread_mutex_lock(&lock);
       calcCount = count;
-      pthread_cond_signal(&sendSem);	 
-      pthread_mutex_unlock(&lock);
+      pseudosem_post(&sendSem);	 
 
       try {
 	 ObjectRef input2Value = getInput(input2ID, count);
@@ -237,10 +227,7 @@ public:
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
-      pthread_mutex_lock(&lock2);
-      if (calcCount != -1)
-	 pthread_cond_wait(&recSem, &lock2);
-      pthread_mutex_unlock(&lock2);
+      pseudosem_wait(&recSem);
       
 
       if (output_id == output1ID)
@@ -260,7 +247,7 @@ public:
       } else 
 	 throw NodeException (this, "Wrong output ID", __FILE__, __LINE__);
 
-      pthread_mutex_unlock(&bigLock);
+      //pthread_mutex_unlock(&bigLock);
       return result;
    }
 

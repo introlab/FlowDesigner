@@ -21,7 +21,6 @@
 #include "pseudosem.h"
 
 
-
 class SerialThread;
 
 DECLARE_NODE(SerialThread)
@@ -85,6 +84,7 @@ class SerialThread : public Node {
       pthread_join (thread, NULL);
       //cerr << "done\n";
       resetState=false;
+      threadStarted=false;
    }
 
    //Destroy thread data
@@ -137,7 +137,8 @@ public:
 
    void cleanupNotify()
    {
-      endThread();
+      if (threadStarted)
+	 endThread();
    }
 
    void reset()
@@ -196,7 +197,8 @@ public:
 	    pthread_mutex_unlock(&bufferLock);
 	 } catch (...)
 	 {
-	    pthread_mutex_lock(&bufferLock);
+	    if (!inside_lock)
+	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = new ExceptionObject(new GeneralException ("Unknown exception caught in SerialThread", __FILE__, __LINE__));
 	    pthread_mutex_unlock(&bufferLock);
 	 }
@@ -223,7 +225,7 @@ public:
 
    ObjectRef getOutput(int output_id, int count)
    {
-      //Start computation thread if not started
+      //Start computation thread
       if (!threadStarted)
 	 startThread();
 
