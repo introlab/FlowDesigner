@@ -23,19 +23,20 @@ DECLARE_NODE(Feedback)
  *
  * @name Feedback
  * @category Flow
- * @description No description available
+ * @description Feedback object with a delay of n iteration
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input object
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The output object = input object
  *
  * @output_name DELAY
- * @output_description No description available
+ * @output_description The delayed output of DELAY iteration
  *
  * @parameter_name DELAY
- * @parameter_description No description available
+ * @parameter_description Number of iteration for the delay
+ * @parameter_type int
  *
 END*/
 

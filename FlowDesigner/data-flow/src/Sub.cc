@@ -25,7 +25,7 @@ DECLARE_NODE(Sub)
  *
  * @name Sub
  * @category Math
- * @description Subtracts two values
+ * @description Subtracts two values, Vectors, Objects
  *
  * @input_name INPUT1
  * @input_description The value to subtract from

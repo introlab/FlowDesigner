@@ -25,13 +25,15 @@ DECLARE_NODE(Length)
  *
  * @name Length
  * @category Vector
- * @description No description available
+ * @description Get the length of a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The vector input
+ * @input_type Vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The length of the vector
+ * @output_type int
  *
 END*/
 

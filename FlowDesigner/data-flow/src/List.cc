@@ -24,13 +24,15 @@ DECLARE_NODE(List)
 
  * @name List
  * @category General
- * @description No description available
+ * @description Load a string from a file (seperated into chunks of 256 bytes)
 
  * @input_name STREAM
- * @input_description No description available
+ * @input_description The stream to load from
+ * @input_type Stream
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The vector output
+ * @output_type Vector
 
 END*/
 

@@ -24,16 +24,17 @@ DECLARE_NODE(Delay)
  *
  * @name Delay
  * @category Flow
- * @description No description available
+ * @description Delay the input of DELAY iterations
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input object
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The output object = input object with a delay
  *
  * @parameter_name DELAY
- * @parameter_description No description available
+ * @parameter_description The delay
+ * @parameter_type int
  *
 END*/
 

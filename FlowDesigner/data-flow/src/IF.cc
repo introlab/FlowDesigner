@@ -27,6 +27,7 @@ DECLARE_NODE(IF)
  *
  * @input_name COND
  * @input_description The condition for the if statement
+ * @input_type bool
  *
  * @input_name THEN
  * @input_description What to do if the condition is true
@@ -35,7 +36,7 @@ DECLARE_NODE(IF)
  * @input_description What to do if the condition is false
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The object from THEN or ELSE depending on COND
  *
 END*/
 

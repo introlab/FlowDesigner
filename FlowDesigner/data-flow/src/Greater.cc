@@ -24,16 +24,17 @@ DECLARE_NODE(Greater)
  *
  * @name Greater
  * @category Logic
- * @description No description available
+ * @description Verifies if INPUT1 > INPUT2
  *
  * @input_name INPUT1
- * @input_description No description available
+ * @input_description The first operand
  *
  * @input_name INPUT2
- * @input_description No description available
+ * @input_description The second operand
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description bool value
+ * @output_type bool
  *
 END*/
 

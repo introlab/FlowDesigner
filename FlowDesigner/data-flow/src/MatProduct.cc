@@ -30,12 +30,15 @@ DECLARE_NODE(MatProduct)
  *
  * @input_name INPUT
  * @input_description Input vector
+ * @input_type Vector
  *
  * @input_name MATRIX
  * @input_description Matrix
+ * @input_type Matrix
  *
  * @output_name OUTPUT
  * @output_description Result
+ * @output_type Vector
  *
 END*/
 

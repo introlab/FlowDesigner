@@ -22,10 +22,11 @@ DECLARE_NODE(IterCount)
 
  * @name IterCount
  * @category Logic
- * @description No description available
+ * @description Get the iterator count (iteration number)
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The iteration count
+ * @output_type int
 
 END*/
 

@@ -23,13 +23,13 @@ DECLARE_NODE(Collector)
 
  * @name Collector
  * @category Flow
- * @description No description available
+ * @description Pass through with unlimited number of input/output pairs
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The output = The input (same name)
 
 END*/
 

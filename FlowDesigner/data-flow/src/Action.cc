@@ -23,19 +23,19 @@ DECLARE_NODE(Action)
  *
  * @name Action
  * @category General
- * @description No description available
+ * @description Pulls in order (BEFORE,INPUT,AFTER)
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input
  *
  * @input_name BEFORE
- * @input_description No description available
+ * @input_description To be pulled before
  *
  * @input_name AFTER
- * @input_description No description available
+ * @input_description To be pulled after
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The output = The input
  *
 END*/
 

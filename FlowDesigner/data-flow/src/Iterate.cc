@@ -23,13 +23,15 @@ DECLARE_NODE(Iterate)
 
  * @name Iterate
  * @category Flow
- * @description No description available
+ * @description Specify the number of iteration to do (max)
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description Return true if count < MAX_ITER
+ * @output_type bool
 
  * @parameter_name MAX_ITER
  * @parameter_description No description available
+ * @parameter_type int
 
 END*/
 

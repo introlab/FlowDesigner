@@ -23,16 +23,16 @@ DECLARE_NODE(MinValue)
  *
  * @name MinValue
  * @category Math
- * @description No description available
+ * @description Selects the minimum between two values
  *
  * @input_name INPUT1
- * @input_description No description available
+ * @input_description The first value
  *
  * @input_name INPUT2
- * @input_description No description available
+ * @input_description The second value
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The minimum value between INPUT1 and INPUT2
  *
 END*/
 

@@ -23,13 +23,13 @@ DECLARE_NODE(IterWall)
  *
  * @name IterWall
  * @category Flow
- * @description No description available
+ * @description Get the input object only once
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input object
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The output object = the input object (calculated once)
  *
 END*/
 

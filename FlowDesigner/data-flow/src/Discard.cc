@@ -23,13 +23,13 @@ DECLARE_NODE(Discard)
 
  * @name Discard
  * @category General
- * @description No description available
+ * @description Discards the object pulled
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input object
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description Always return Object::nilObject
 
 END*/
 

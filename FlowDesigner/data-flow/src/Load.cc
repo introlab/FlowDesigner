@@ -27,13 +27,14 @@ DECLARE_NODE(Load)
 
  * @name Load
  * @category IO
- * @description No description available
+ * @description Load an object from file (registered type)
 
  * @input_name STREAM
- * @input_description No description available
+ * @input_description The stream we are loading from
+ * @input_type Stream
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The loaded object
 
 END*/
 

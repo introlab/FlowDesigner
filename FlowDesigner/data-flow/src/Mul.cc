@@ -25,16 +25,16 @@ DECLARE_NODE(Mul)
  *
  * @name Mul
  * @category Math
- * @description No description available
+ * @description Multiplication between two values, vectors, objects (operator* must be defined)
  *
  * @input_name INPUT1
- * @input_description No description available
+ * @input_description The first operand
  *
  * @input_name INPUT2
- * @input_description No description available
+ * @input_description The second operand 
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The result of INPUT1 * INPUT2
  *
 END*/
 

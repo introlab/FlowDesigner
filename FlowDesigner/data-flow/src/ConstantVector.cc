@@ -28,13 +28,15 @@ DECLARE_NODE(ConstantVector)
 
  * @name ConstantVector
  * @category General
- * @description No description available
+ * @description Creates a Constant vector
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The vector
+ * @output_type Vector
 
  * @parameter_name VALUE
- * @parameter_description No description available
+ * @parameter_description The string representation of the vector
+ * @parameter_type string
 
 END*/
 

@@ -21,13 +21,13 @@ DECLARE_NODE(Constant)
  *
  * @name Constant
  * @category General
- * @description No description available
+ * @description Defines a constant
  *
  * @output_name VALUE
- * @output_description No description available
+ * @output_description The value (parameter)
  *
  * @parameter_name VALUE
- * @parameter_description No description available
+ * @parameter_description The value
  *
 END*/
 

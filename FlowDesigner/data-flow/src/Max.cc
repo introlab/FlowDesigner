@@ -23,16 +23,16 @@ DECLARE_NODE(MaxValue)
  *
  * @name MaxValue
  * @category Math
- * @description No description available
+ * @description The maximum value
  *
  * @input_name INPUT1
- * @input_description No description available
+ * @input_description First value
  *
  * @input_name INPUT2
- * @input_description No description available
+ * @input_description Second value
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The maximum value between INPUT1 and INPUT2
  *
 END*/
 

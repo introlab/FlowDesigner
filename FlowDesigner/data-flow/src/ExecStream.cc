@@ -28,16 +28,19 @@ DECLARE_NODE(ExecStream)
 
  * @name ExecStream
  * @category IO
- * @description No description available
+ * @description A command to be executed (stdout is streamed)
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The command arg
+ * @input_type string
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The stream
+ * @output_type Stream
 
  * @parameter_name COMMAND
- * @parameter_description No description available
+ * @parameter_description The command
+ * @parameter_type string
 
 END*/
 
