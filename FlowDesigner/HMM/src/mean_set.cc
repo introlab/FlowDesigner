@@ -40,7 +40,7 @@ Ptr<Mean> MeanSet::getPtrFor(int id) const
 }
 
 
-void MeanSet::printOn(ostream &out=cout) const
+void MeanSet::printOn(ostream &out) const
 {
    out << "<MeanSet " << endl;
    out << "<means " << means << ">" << endl;
@@ -48,7 +48,7 @@ void MeanSet::printOn(ostream &out=cout) const
    out << ">\n";
 }
 
-void MeanSet::readFrom (istream &in=cin)
+void MeanSet::readFrom (istream &in)
 {
    string tag;
 

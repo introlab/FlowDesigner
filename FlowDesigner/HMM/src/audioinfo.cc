@@ -20,7 +20,7 @@
 
 DECLARE_TYPE(AudioInfo)
 
-void AudioInfo::printOn(ostream &out=cout) const
+void AudioInfo::printOn(ostream &out) const
 {
    out << "<AudioInfo " << endl;
    out << "<ortho \"" << ortho << "\" >" << endl;

@@ -55,7 +55,7 @@ void GaussianSet::toPtrs(const MeanSet & means, const CovarianceSet & covariance
    }
 }
 
-void GaussianSet::printOn(ostream &out=cout) const
+void GaussianSet::printOn(ostream &out) const
 {
    out << "<GaussianSet " << endl;
    out << "<gaussians " << gaussians << ">" << endl;
@@ -63,7 +63,7 @@ void GaussianSet::printOn(ostream &out=cout) const
    out << ">\n";
 }
 
-void GaussianSet::readFrom (istream &in=cin)
+void GaussianSet::readFrom (istream &in)
 {
    string tag;
 

@@ -33,7 +33,7 @@ void AcousticModel::toPtrs()
    
 }
 
-void AcousticModel::printOn(ostream &out=cout) const
+void AcousticModel::printOn(ostream &out) const
 {
    out << "<AcousticModel " << endl;
    out << "<covariances " << covariances << ">" << endl;
@@ -45,7 +45,7 @@ void AcousticModel::printOn(ostream &out=cout) const
    out << ">\n";
 }
 
-void AcousticModel::readFrom (istream &in=cin)
+void AcousticModel::readFrom (istream &in)
 {
    string tag;
 

@@ -223,7 +223,7 @@ int KMeans::getClassID (const float *v, float *dist_return = NULL) const
    return minID;
 }
 
-void KMeans::printOn(ostream &out=cout) const
+void KMeans::printOn(ostream &out) const
 {
    out << "<KMeans " << endl;
    out << "<means " << means << ">" << endl;
@@ -231,7 +231,7 @@ void KMeans::printOn(ostream &out=cout) const
    out << ">\n";
 }
 
-void KMeans::readFrom (istream &in=cin)
+void KMeans::readFrom (istream &in)
 {
    string tag;
 

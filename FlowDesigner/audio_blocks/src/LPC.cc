@@ -31,7 +31,8 @@ class LPC : public FrameOperation {
    
    int inputID;
    int inputLength;
-
+   float *r;
+   float *rc;
 public:
    LPC(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
@@ -40,9 +41,11 @@ public:
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      r=new float[outputLength];
+      rc=new float[outputLength];
    }
 
-   ~LPC() {}
+   ~LPC() {delete [] r; delete [] rc;}
 
    virtual void specificInitialize()
    {
@@ -63,10 +66,8 @@ public:
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
             
       //vector<float> r(outputLength+1,0.0);
-      float r[outputLength];
       //vector<float> filter(outputLength+1,0.0);
       autocorr(in.begin(), r, outputLength-1, in.size());
-      float rc[outputLength];
       float er=0;
       r[0] *= 1.00001;
       r[0] += 1; //just in case of a null frame

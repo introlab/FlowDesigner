@@ -33,10 +33,13 @@ class LPC2PS : public FrameOperation {
    int inputID;
    int inputLength;
    rfftw_plan plan1;
-   rfftw_plan plan2;
+      //rfftw_plan plan2;
    float *hamming;
    int SAMP_SIZE;
    int SAMP_SIZE_2;
+
+   float *response;
+   float *ps;
 
 public:
    LPC2PS(string nodeName, ParameterSet params)
@@ -50,14 +53,24 @@ public:
       SAMP_SIZE_2 = outputLength;
       SAMP_SIZE   = 2 * SAMP_SIZE_2;
 
+      response=new float[SAMP_SIZE];
+      ps=new float[SAMP_SIZE];
+
    }
 
-   ~LPC2PS() {rfftw_destroy_plan(plan1); rfftw_destroy_plan(plan2); delete hamming;}
+      ~LPC2PS() 
+      {
+	 rfftw_destroy_plan(plan1); 
+         //rfftw_destroy_plan(plan2); 
+	 delete [] hamming;
+	 delete [] response;
+	 delete [] ps;
+      }
 
    virtual void specificInitialize()
    {
       plan1 = rfftw_create_plan (SAMP_SIZE, FFTW_FORWARD, FFTW_ESTIMATE);
-      plan2 = rfftw_create_plan (SAMP_SIZE, FFTW_BACKWARD, FFTW_ESTIMATE);
+      //plan2 = rfftw_create_plan (SAMP_SIZE, FFTW_BACKWARD, FFTW_ESTIMATE);
       this->FrameOperation::specificInitialize();
       hamming = new float[SAMP_SIZE];
       for (int i=0;i<SAMP_SIZE;i++)
@@ -77,8 +90,8 @@ public:
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
-      float response[SAMP_SIZE];
-      float ps[SAMP_SIZE];
+      //float response[SAMP_SIZE];
+      //float ps[SAMP_SIZE];
 
       for (int i=0;i<min(int(in.size()),SAMP_SIZE);i++)
          response[i]=in[i];

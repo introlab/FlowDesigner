@@ -60,7 +60,7 @@ Ptr<Covariance> CovarianceSet::getPtrFor(int id) const
 }
 
 
-void CovarianceSet::printOn(ostream &out=cout) const
+void CovarianceSet::printOn(ostream &out) const
 {
    out << "<CovarianceSet " << endl;
    out << "<covariances " << covariances << ">" << endl;
@@ -68,7 +68,7 @@ void CovarianceSet::printOn(ostream &out=cout) const
    out << ">\n";
 }
 
-void CovarianceSet::readFrom (istream &in=cin)
+void CovarianceSet::readFrom (istream &in)
 {
    string tag;
 

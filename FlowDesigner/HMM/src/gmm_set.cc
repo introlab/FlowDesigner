@@ -55,7 +55,7 @@ void GMMSet::toPtrs(const GaussianSet & gauss) const
    }
 }
 
-void GMMSet::printOn(ostream &out=cout) const
+void GMMSet::printOn(ostream &out) const
 {
    out << "<GMMSet " << endl;
    out << "<gmms " << gmms << ">" << endl;
@@ -63,7 +63,7 @@ void GMMSet::printOn(ostream &out=cout) const
    out << ">\n";
 }
 
-void GMMSet::readFrom (istream &in=cin)
+void GMMSet::readFrom (istream &in)
 {
    string tag;
 
