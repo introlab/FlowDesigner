@@ -26,7 +26,7 @@ vflow_SOURCES = \
 	GUILink.h GUILink.cc \
 	GUINodeParameters.h GUINodeParameters.cc \
 	GUINetTerminal.h GUINetTerminal.cc \
-	Probe.cc
+	Probe.cc TextProbe.cc
 
 batchflow_SOURCES = \
 	batchflow.cc \

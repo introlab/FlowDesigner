@@ -55,7 +55,7 @@ void Probe::specificInitialize()
 
 
   //GtkWidget *window1;
-  GtkWidget *vbox2;
+  //GtkWidget *vbox2;
   GtkWidget *handlebox2;
   GtkWidget *toolbar2;
   GtkWidget *tmp_toolbar_icon;
@@ -215,10 +215,10 @@ ObjectRef Probe::getOutput(int output_id, int count)
 {
    if (output_id==outputID)
    {
-      trace();
 
       NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
+      inputValue = input.node->getOutput(input.outputID,count);
+      trace();
       return inputValue;
       
    }
