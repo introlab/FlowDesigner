@@ -24,6 +24,7 @@ DECLARE_TYPE(MSVQ)
 MSVQ::MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const float*, int) = KMeans::euclidian)
    : stagesSizes(_stagesSizes)
    , VQ(_dist)
+   , stages(stagesSizes.size())
 {
 }
 
@@ -66,7 +67,7 @@ int MSVQ::nbClasses() const
    return ret;
    }*/
 
-void MSVQ::train (int codeSize, const vector<float *> &data, int len, bool binary=false)
+void MSVQ::train (const vector<float *> &data, int len, bool binary=false)
 {
    length = len;
    vector<float *> train(data.size());
