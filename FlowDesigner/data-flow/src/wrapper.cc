@@ -21,21 +21,12 @@
 #include "ParameterSet.h"
 #include "IntfNode.h"
 
-OFWrapper::OFWrapper()
-   : doc(NULL)
+OFWrapper::OFWrapper(UIDocument* _doc)
+   : doc(_doc)
    , net(NULL)
    , count(0)
    , intf(NULL)
 {
-}
-
-OFWrapper::OFWrapper(string name)
-   : doc(NULL)
-   , net(NULL)
-   , count(0)
-   , intf(NULL)
-{
-   open(name);
 }
 
 OFWrapper::~OFWrapper()
@@ -47,23 +38,6 @@ OFWrapper::~OFWrapper()
    }
    if (intf)
       delete intf;
-   if (doc)
-      delete doc;
-}
-
-void OFWrapper::open(string name)
-{
-   if (net)
-   {
-      net->cleanupNotify();
-      delete net;
-   }
-   if (intf)
-      delete intf;
-   if (doc)
-      delete doc;
-   doc = new UIDocument(name);
-   doc->load();
 }
 
 void OFWrapper::init(const ParameterSet &params)
@@ -74,8 +48,8 @@ void OFWrapper::init(const ParameterSet &params)
    count=0;
    if (intf)
       delete intf;
-   if (doc)
-      delete doc;
+   if (net)
+      delete net;
    try 
    {
       net = doc->getNetworkNamed("MAIN")->build("wrapper", params);

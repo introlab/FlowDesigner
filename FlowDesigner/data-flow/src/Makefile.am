@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.54 2001/04/25 17:04:27 jmvalin Exp $
+# $Id: Makefile.am,v 1.55 2001/04/25 19:58:59 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -89,7 +89,8 @@ libflow_la_SOURCES = Node.cc \
 	ThreadJoin.cc \
 	path.cc \
 	IntfNode.cc \
-	wrapper.cc
+	wrapper.cc \
+	cwrapper.cc
 
 
 

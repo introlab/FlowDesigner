@@ -40,7 +40,8 @@ include_HEADERS = Array.h \
 	ExceptionObject.h \
 	pseudosem.h \
 	path.h \
-	wrapper.h
+	wrapper.h \
+	cwrapper.h
 	
 noinst_HEADERS = \
 	Iterator.h \

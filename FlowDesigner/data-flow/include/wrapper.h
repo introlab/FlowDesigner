@@ -30,10 +30,8 @@ class OFWrapper {
    int count;
    IntfNode *intf;
 public:
-   OFWrapper();
+   OFWrapper(UIDocument *_doc);
    ~OFWrapper();
-   OFWrapper(string name);
-   void open(string name);
    void init(const ParameterSet &params);
    ObjectRef process(ObjectRef in);
 };
