@@ -69,7 +69,7 @@ float GenericModel::conjunction(vector<float> &c_values) {
 
   
   if (c_values.empty()) {
-    throw GeneralException("Conjunction values vector empty",__FILE__,__LINE__);
+    throw new GeneralException("Conjunction values vector empty",__FILE__,__LINE__);
   }
   
   float value = c_values[0];
@@ -90,7 +90,7 @@ float GenericModel::conjunction(vector<float> &c_values) {
 float GenericModel::disjunction(vector<float> &d_values) {
 
   if (d_values.empty()) {
-    throw GeneralException("Disjunction values vector empty",__FILE__,__LINE__);
+    throw new GeneralException("Disjunction values vector empty",__FILE__,__LINE__);
   }
   
   float value = d_values[0];

@@ -94,7 +94,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
     if (!m_input_names[rule_number -1].empty()) {
       char message[256];	
       sprintf(message,"RULE %i ALREADY EXISTS",rule_number);
-      throw GeneralException(message,__FILE__,__LINE__);
+      throw new GeneralException(message,__FILE__,__LINE__);
     }
   }
   if (m_output_functions.size() < rule_number) {
@@ -104,7 +104,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
     if (!m_output_functions[rule_number -1].empty()) {
       char message[256];	
       sprintf(message,"RULE %i ALREADY EXISTS",rule_number);
-      throw GeneralException(message,__FILE__,__LINE__);
+      throw new GeneralException(message,__FILE__,__LINE__);
     }
   }
   
@@ -117,7 +117,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
     if (!set) {
       char message[256];
       sprintf(message,"SET NOT FOUND (%s)",antecedant[i].first.c_str());
-      throw GeneralException(message,__FILE__,__LINE__);
+      throw new GeneralException(message,__FILE__,__LINE__);
     }
     else {
       function = set->find_function_by_name(antecedant[i].second);
@@ -127,7 +127,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
 	char message[256];
 	sprintf(message,"SET VARIABLE NOT FOUND (%s)(%s)",
 		antecedant[i].first.c_str(),antecedant[i].second.c_str());
-	throw GeneralException(message,__FILE__,__LINE__);
+	throw new GeneralException(message,__FILE__,__LINE__);
       }
       else {
 	//keeping the name of the antecedant
@@ -147,7 +147,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
     if (!set) {
       char message[256];
       sprintf(message,"SET NOT FOUND (%s)",consequent[i].first.c_str());
-      throw GeneralException(message,__FILE__,__LINE__);
+      throw new GeneralException(message,__FILE__,__LINE__);
     }
     else {
       function = set->find_function_by_name(consequent[i].second);
@@ -157,7 +157,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
 	char message[256];
 	sprintf(message,"SET VARIABLE NOT FOUND (%s)(%s)",
 		consequent[i].first.c_str(),consequent[i].second.c_str());
-	throw GeneralException(message,__FILE__,__LINE__);
+	throw new GeneralException(message,__FILE__,__LINE__);
       }
       else {
 	//keeping a pointer to this function for rule evaluation
@@ -180,7 +180,7 @@ void FuzzyModel::add_fuzzy_set(FuzzySet *set, int type) {
   
   
   if (!set) {
-    throw GeneralException("NULL SET",__FILE__,__LINE__);
+    throw new GeneralException("NULL SET",__FILE__,__LINE__);
   }
   
   switch (type) {
@@ -191,7 +191,7 @@ void FuzzyModel::add_fuzzy_set(FuzzySet *set, int type) {
     m_output_set.push_back(set);
     break;
   default:
-    throw GeneralException("UNKNOWN SET TYPE",__FILE__,__LINE__);
+    throw new GeneralException("UNKNOWN SET TYPE",__FILE__,__LINE__);
     break;
     
   }
@@ -224,7 +224,7 @@ void FuzzyModel::verify_rules() {
   if (count != m_rules.size()) {
     char message[256];
     sprintf(message,"NUMBER OF RULES INCORRECT %i INSTEAD OF %i",m_rules.size(),count);
-    throw GeneralException(message,__FILE__,__LINE__);
+    throw new GeneralException(message,__FILE__,__LINE__);
   }
   
   
@@ -258,7 +258,7 @@ FuzzySet* FuzzyModel::find_set_named(const string &name, int type) {
     break;
     
   default:
-    throw GeneralException("UNKNOWN SET TYPE",__FILE__,__LINE__);
+    throw new GeneralException("UNKNOWN SET TYPE",__FILE__,__LINE__);
     break;
   }
   
@@ -273,7 +273,7 @@ vector<pair<string,float> >& FuzzyModel::evaluate(list<pair<string, float> > &in
   vector<float> inputs;
   
   if (input_values.size() != m_input_set.size()) {		
-    throw GeneralException("NOT ENOUGH INPUT VARIABLES",__FILE__,__LINE__);	
+    throw new GeneralException("NOT ENOUGH INPUT VARIABLES",__FILE__,__LINE__);	
   }
   
   
@@ -298,7 +298,7 @@ vector<pair<string,float> >& FuzzyModel::evaluate(list<pair<string, float> > &in
     if (!set) {
       char message[256];
       sprintf(message,"SET NOT FOUND (%s)",(*iter).first.c_str());
-      throw GeneralException(message,__FILE__,__LINE__);		
+      throw new GeneralException(message,__FILE__,__LINE__);		
     }
     else {
       inputs.push_back((*iter).second);

@@ -158,7 +158,7 @@ int FuzzySet::find_function_by_index(const string &name) {
   
   sprintf(message,"CANNOT GET MEMBERSHIP FUNCTION CALLED : %s",name.c_str());
   
-  throw GeneralException(message,__FILE__,__LINE__);
+  throw new GeneralException(message,__FILE__,__LINE__);
   
   return -1;
 }
@@ -179,7 +179,7 @@ FuzzyFunction * FuzzySet::find_function_by_name (const string &name) {
   
   sprintf(message,"CANNOT GET MEMBERSHIP FUNCTION CALLED : %s",name.c_str());
   
-  throw GeneralException(message,__FILE__,__LINE__);
+  throw new GeneralException(message,__FILE__,__LINE__);
   
   return NULL;
   

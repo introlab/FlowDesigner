@@ -71,7 +71,7 @@ FuzzyRule::FuzzyRule(const FuzzyRule& cpy)
 }
 
 FuzzyRule::FuzzyRule(string nodeName, ParameterSet params) 
-: BufferedNode(nodeName,params) {
+  : BufferedNode(nodeName,params), m_rule_number(-1) {
   
   
   String antecedant  = object_cast<String>(parameters.get("IF"));
