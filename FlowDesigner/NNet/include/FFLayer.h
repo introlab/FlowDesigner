@@ -252,8 +252,8 @@ class FFLayer : public Object {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
 	    double x = gradient[i]/momentum[i];
-	    if (fabs(momentum[i]) < 1e-12)
-	       x=0;
+	    if (fabs(momentum[i]) < 1e-15)
+	       x=1;
 	    if (x<-10)
 	       x=-10;
 	    if (x>10)
