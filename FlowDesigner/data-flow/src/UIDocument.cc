@@ -12,10 +12,11 @@
 #include <dlfcn.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <sys/stat.h>
 #include <unistd.h>
 #include <sstream>
 #include <fstream>
+#include <fcntl.h>
+#include "stream_wrap.h"
 
 //@implements UIClasses
 
@@ -331,7 +332,13 @@ void UIDocument::save()
    string fullname = path+docName;
    int size;
 
-   ofstream outFile(fullname.c_str());
+   int save_fd = open(fullname.c_str(), O_CREAT|O_WRONLY, 00755);
+   if (save_fd==-1)
+   {
+      error("Error while saving file: cannot open");
+      return;
+   }
+   fd_ostream outFile(save_fd);
    if (outFile.fail())
    {
       error("Error while saving file");
