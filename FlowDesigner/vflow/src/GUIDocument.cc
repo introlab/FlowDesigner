@@ -320,6 +320,9 @@ void GUIDocument::load()
       dynamic_cast<GUINetwork *> (networks[i])->updateScroll();
    }
 
+   //resizing parameters
+   params.resize(textParams.size());
+   
 }
 
 
