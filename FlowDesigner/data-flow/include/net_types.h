@@ -72,7 +72,7 @@ public:
 
    void printOn(ostream &out) const
    {
-      out << "<" << Object::GetClassName<T>() << " " << value << " >";
+      out << "<" << className() << " " << value << " >";
    }
    void readFrom(istream &in)
    {
@@ -84,7 +84,7 @@ public:
    }
    void serialize(ostream &out) const
    {
-      out << "{" << Object::GetClassName<T>() << " " << value << " }";
+      out << "{" << className() << " " << value << " }";
    }
    void unserialize(istream &in)
    {
