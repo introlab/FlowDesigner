@@ -47,6 +47,9 @@ DECLARE_NODE(NNetInit)
  * @parameter_name FUNCTIONS
  * @parameter_description No description available
  *
+ * @parameter_name RAND_SEED
+ * @parameter_description No description available
+ *
 END*/
 
 
@@ -91,7 +94,10 @@ public:
 
       //ostringstream funcss(string(funcStr));
       //funcss >> functions;
-      
+
+      if (parameters.exist("RAND_SEED"))
+	 srand(dereference_cast<int> (parameters.get("RAND_SEED")));
+
    }
       
    void calculate(int output_id, int count, Buffer &out)

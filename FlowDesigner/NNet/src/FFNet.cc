@@ -1104,6 +1104,11 @@ void FFNet::trainRecurDeltaBar(vector<float *> tin, vector<float *> tout, int it
 	    alpha[i] *= decrease;
 	 if (alpha[i] < 1e-58)
 	    alpha[i] = 1e-58;
+	 if (alpha[i] > 1e25)
+	 {
+	    alpha[i] = 1e25;
+	    cerr << "overflow\n";
+	 }
       }
       //if (SSE/tin.size()/topo[topo.size()-1]<.08) break;
       cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
