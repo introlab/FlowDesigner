@@ -519,6 +519,54 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
    delete [] out;
 }
 
+void FFNet::calcGradientRecur(vector<float *> &tin, vector<float *> &tout, Array<double> weights, Array<double> &gradient, double &err)
+{
+   int i,j;
+   double *in = new double [topo[0]];
+   double *out = new double [topo[topo.size()-1]];
+   double *old_out = new double [topo[topo.size()-1]];
+
+   for (j=0;j<topo[topo.size()-1];j++)
+      old_out[j] = 0;
+
+   for (i=0;i<layers.size();i++)
+      layers[i]->saveWeights();
+
+   //if (weights)
+      setWeights(&weights[0]);
+   
+   err=0;
+   for (i=0;i<layers.size();i++)
+      layers[i]->resetGradient();
+   for (i=0;i<tin.size();i++)
+   {
+      int inSize = topo[0] - topo[topo.size()-1];
+      for (j=0;j<inSize;j++)
+	 in[j]=tin[i][j];
+      for (j=inSize;j<topo[topo.size()-1];j++)
+	 in[j]=old_out[j-inSize];
+      
+      for (j=0;j<topo[topo.size()-1];j++)
+	 out[j]=tout[i][j];
+      //learn (in, out, &err);
+      learn (in, out, &err, old_out);
+
+   }
+
+   getGradient(&gradient[0]);
+   gradient = -gradient;
+
+   //vec_prod_scalar(gradient, -1.0, gradient, );
+
+   for (i=0;i<layers.size();i++)
+      layers[i]->loadWeights();
+
+   delete [] in;
+   delete [] out;
+   delete [] old_out;
+}
+
+
 void FFNet::calcGradientBounds(vector<float *> &tin, vector<float *> &tout, vector<float *> &tbounds, Array<double> weights, Array<double> &gradient, double &err)
 {
    int i,j;
@@ -1000,7 +1048,72 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
 }
 
 
+void FFNet::trainRecurDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
+			  double mom, double increase, double decrease, int nbSets)
+{
+   int i,j;
+   double SSE;
+   int k=1;
 
+   int nbWeights = 0;
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+
+   cerr << "found " << nbWeights << " weights\n";
+
+   Array<double> alpha(nbWeights);
+   Array<double> wk(nbWeights);
+   Array<double> nextW(nbWeights);
+   Array<double> dEk(nbWeights);
+   Array<double> nextdE(nbWeights);
+   double nextE;
+
+   getWeights(&wk[0]);
+
+   for (i=0;i<nbWeights;i++)
+      alpha[i] = learnRate;
+
+   calcGradientRecur(tin, tout, wk, dEk, SSE);
+   while (iter--)
+   {
+
+      double norm = dEk.norm();
+      double norm_1 = 1;// / norm;
+      
+      for (i=0;i<nbWeights;i++)
+	 nextW[i] = wk[i] - alpha[i] * norm_1 * dEk[i];
+
+      calcGradientRecur(tin, tout, nextW, nextdE, nextE);
+
+      if (nextE > SSE)
+      {
+	 alpha *= decrease;
+	 //So that the "bad" iteration doesn't count
+	 iter++;
+	 cerr << "backing off\n";
+	 continue;
+      }
+
+      for (i=0;i<nbWeights;i++)
+      {
+	 if (nextdE[i]*dEk[i] >= 0)
+	    alpha[i] *= increase;
+	 else
+	    alpha[i] *= decrease;
+	 if (alpha[i] < 1e-58)
+	    alpha[i] = 1e-58;
+      }
+      //if (SSE/tin.size()/topo[topo.size()-1]<.08) break;
+      cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
+      SSE=nextE;
+      dEk = nextdE;
+      wk = nextW;
+
+   }
+   setWeights(&wk[0]);
+}
 
 
 
