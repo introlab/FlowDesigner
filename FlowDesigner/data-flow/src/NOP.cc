@@ -23,13 +23,13 @@ DECLARE_NODE(NOP)
  *
  * @name NOP
  * @category General
- * @description No description available
+ * @description Pass Through
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The output = The input
  *
 END*/
 

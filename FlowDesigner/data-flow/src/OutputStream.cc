@@ -22,13 +22,15 @@ DECLARE_NODE(OutputStream)
 
  * @name OutputStream
  * @category IO
- * @description No description available
+ * @description Create an OuputStream from a filename
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The file name
+ * @input_type string
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The newly created stream
+ * @output_type Stream
 
 END*/
 
