@@ -96,13 +96,22 @@ int main(int argc, char **argv)
 
    GRunContext *ctx = new GRunContext(doc, params);
    
+
+  
    
    pthread_t runThread;
+   
+   /*
    pthread_attr_t tattr;
    pthread_attr_init(&tattr);
    pthread_attr_setdetachstate(&tattr,PTHREAD_CREATE_DETACHED);
-   pthread_create(&runThread, &tattr, (void * (*)(void *))run2, (void *) ctx);
-   
+   */
+
+   ctx->set_thread(&runThread);
+
+   //pthread_create(&runThread, &tattr, (void * (*)(void *))run2, (void *) ctx);
+   pthread_create(&runThread, NULL, (void * (*)(void *))run2, (void *) ctx);
+
    gdk_threads_enter(); 
    gtk_main ();
    gdk_threads_leave();

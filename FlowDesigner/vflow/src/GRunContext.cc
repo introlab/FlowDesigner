@@ -10,16 +10,35 @@
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
 
   if (my_context->net) {
-    alarm(3);
+
+    alarm(5);
+
+    //stopping processing thread
+    if (my_context->running_thread) {
+      cerr<<"Stopping processing thread"<<endl;
+      pthread_cancel(*(my_context->running_thread));
+    }
+
+    cerr<<"Stopping GTK"<<endl;
+    gtk_main_quit();
+    gdk_threads_leave();
+
+    cerr<<"Deleting network..."<<endl;
     delete my_context->net;
-    alarm(0);
-    my_context->net = NULL;
+
+    cerr<<"Terminating program"<<endl;
+    exit(0);
   }
-  exit(0);
+
+  return TRUE;
+}
+
+void GRunContext::set_thread(pthread_t *thread) {
+   running_thread = thread;
 }
 
 GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
-   : doc(_doc) , params(_params) , net(NULL)
+  : doc(_doc) , params(_params) , net(NULL), running_thread(NULL)
 {
    //cerr << "opening...\n";
    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);

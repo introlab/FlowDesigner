@@ -15,6 +15,8 @@ class GRunContext {
   friend gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context);
 
   protected:
+
+  pthread_t *running_thread;
    UIDocument *doc;
    ParameterSet &params;
    GtkWidget *win;
@@ -30,6 +32,8 @@ class GRunContext {
    void less_print(const char *message);
    
    void run();
+
+   void set_thread(pthread_t *thread);
    
 };
 
