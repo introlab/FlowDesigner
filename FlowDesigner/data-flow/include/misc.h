@@ -35,7 +35,7 @@ inline T abs(T x) {return x >= 0 ? x : -x;}
 
 /**Norm of a vector*/
 template <class T>
-inline T norm(T *x, int len)
+inline T vec_norm(T *x, int len)
 {
    T sum1=0,sum2=0,sum3=0,sum4=0;
    while (len > 3)
@@ -61,7 +61,7 @@ inline T norm(T *x, int len)
 
 /**Squared norm of a vector*/
 template <class T>
-inline T norm2(T *x, int len)
+inline T vec_norm2(T *x, int len)
 {
    T sum1=0,sum2=0,sum3=0,sum4=0;
    while (len > 3)
@@ -87,7 +87,7 @@ inline T norm2(T *x, int len)
 
 /**dot product of two vector*/
 template <class T>
-inline T dot_prod(T *x, T *y, int len)
+inline T vec_dot_prod(T *x, T *y, int len)
 {
    T sum1=0,sum2=0,sum3=0,sum4=0;
    while (len > 3)
@@ -104,6 +104,60 @@ inline T dot_prod(T *x, T *y, int len)
    }
 
    return (sum1+sum2)+(sum3+sum4);
+}
+
+/**vector product by a scalar*/
+template <class T>
+inline void vec_prod_scalar(T *x, T a, T *y, int len)
+{
+   while (len > 3)
+   {
+      *y++ = *x++ * a;
+      *y++ = *x++ * a;
+      *y++ = *x++ * a;
+      *y++ = *x++ * a;
+      len -= 4;
+   }
+   while (len)
+   {
+      *y++ = *x++ * a;
+   }
+}
+
+/**vector add*/
+template <class T>
+inline void vec_add(T *x1, T *x2, T *y, int len)
+{
+   while (len > 3)
+   {
+      *y++ = *x1++ + *x2++;
+      *y++ = *x1++ + *x2++;
+      *y++ = *x1++ + *x2++;
+      *y++ = *x1++ + *x2++;
+      len -= 4;
+   }
+   while (len)
+   {
+      *y++ = *x1++ + *x2++;
+   }
+}
+
+/**vector copy*/
+template <class T>
+inline void vec_copy(T *x, T *y, int len)
+{
+   while (len > 3)
+   {
+      *y++ = *x++;
+      *y++ = *x++;
+      *y++ = *x++;
+      *y++ = *x++;
+      len -= 4;
+   }
+   while (len)
+   {
+      *y++ = *x++;
+   }
 }
 
 #endif

@@ -37,7 +37,7 @@ public:
    }
    
    void readFrom(istream &in=cin);
-   
+
 };
 
 
@@ -68,5 +68,7 @@ inline void Vector<FFLayer*>::readFrom(istream &in)
 {
    cerr << "fuck off!\n";
 }
+
+
 
 #endif

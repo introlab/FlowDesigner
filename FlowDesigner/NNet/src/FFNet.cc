@@ -7,6 +7,9 @@
 #include <float.h>
 #endif
 
+#include "misc.h"
+#include "Array.h"
+
 DECLARE_TYPE(FFNet)
 
 FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
@@ -266,9 +269,75 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
    }
 }
 
-/*
+void FFNet::getGradient(double *ptr)
+{
+   for (int i=0;i<layers.size();i++)
+   {
+      int layerWeights = layers[i]->getNbWeights();
+      vec_copy(layers[i]->getGradient(0), ptr, layerWeights);
+      ptr += layerWeights;
+   }
+}
+
+void FFNet::getWeights(double *ptr)
+{
+   for (int i=0;i<layers.size();i++)
+   {
+      int layerWeights = layers[i]->getNbWeights();
+      vec_copy(layers[i]->getWeights(0), ptr, layerWeights);
+      ptr += layerWeights;
+   }
+}
+
+void FFNet::setWeights(double *ptr)
+{
+   for (int i=0;i<layers.size();i++)
+   {
+      int layerWeights = layers[i]->getNbWeights();
+      vec_copy(ptr, layers[i]->getWeights(0), layerWeights);
+      ptr += layerWeights;
+   }
+}
+
+void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<double> weights, Array<double> &gradient, double &err)
+{
+   int i,j;
+   double *in = new double [topo[0]];
+   double *out = new double [topo[topo.size()-1]];
+   for (i=0;i<layers.size();i++)
+      layers[i]->saveWeights();
+
+   //if (weights)
+   //   setWeights(weights);
+   
+   err=0;
+   for (i=0;i<layers.size();i++)
+      layers[i]->resetGradient();
+   for (i=0;i<tin.size();i++)
+   {
+      for (j=0;j<topo[0];j++)
+	 in[j]=tin[i][j];
+      for (j=0;j<topo[topo.size()-1];j++)
+	 out[j]=tout[i][j];
+      learn (in, out, &err);
+   }
+
+   getGradient(gradient.begin());
+   gradient = -gradient;
+
+   //vec_prod_scalar(gradient, -1.0, gradient, );
+
+   for (i=0;i<layers.size();i++)
+      layers[i]->loadWeights();
+
+}
+
 void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
 {
+   int i,j;
+   double *in = new double [topo[0]];
+   double *out = new double [topo[topo.size()-1]];
+   double SSE;
    int k=1;
    double sigma = 1;
    double lambda = .5;
@@ -276,22 +345,43 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    double sigmak;
    bool success = true;
 
-   int nbWeights = ;
-   vector<double> pk(nbWeights);
-   vector<double> rk(nbWeights);
-   
-   pk = rk = -gradient
+   int nbWeights = 0;
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+
+   Array<double> pk(nbWeights);
+   Array<double> rk(nbWeights);
+   Array<double> sk(nbWeights);
+   Array<double> wk(nbWeights);
+   Array<double> dEk(nbWeights);
+   Array<double> dEp(nbWeights);
+   double deltak;
+
+   getWeights(wk.begin());
+
+   //pk = rk = gradient;
+   calcGradient(tin, tout, wk, dEk, SSE);
+   pk=dEk;
+   rk=dEk;
 
    if (success)
    {
-      sigmak = sigma / norm(pk);
-      sk = ...;
-      deltak = ...;
+      sigmak = sigma / pk.norm();
+      calcGradient(tin, tout, wk+pk*sigmak, dEp, SSE);
+      sk = (dEp - dEk)*(1/sigmak);
+      deltak = pk*sk;
+
+      //vec_prod_scal(pk, sigmak, tmp2, nbWeights);
+      
+      //sk = ...;
+      //deltak = ...;
    }
 
 
 }
-*/
+
 
 double FFNet::calcError(const vector<float *> &tin, const vector<float *> &tout)
 {

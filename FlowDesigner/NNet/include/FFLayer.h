@@ -278,6 +278,7 @@ class FFLayer : public Object {
 	    weights[i]-=momentum[i];
 	 }
       }
+   int getNbWeights() {return nbNeurons*(nbInputs+1);}
    void init(double minmax);
    double *getValue() {return value;}
    double *getWeights(int i) {return weights + i*(nbInputs+1);}

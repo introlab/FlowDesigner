@@ -6,7 +6,7 @@
 
 #include "FFLayer.h"
 #include "Object.h"
-#include "Vector.h"
+#include "Array.h"
 
 //#define alpha .0000005
 
@@ -27,6 +27,11 @@ class FFNet : public Object {
    }
 
    double calcError(const vector<float *> &tin, const vector<float *> &tout);
+   void getGradient(double *ptr);
+   void getWeights(double *ptr);
+   void setWeights(double *ptr);
+   //void calcGradient(vector<float *> &tin, vector<float *> &tout, double *weights, double *gradient, double &err);
+   void calcGradient(vector<float *> &tin, vector<float *> &tout, Array<double> weights, Array<double> &gradient, double &err);
 
    void learn(double *input, double *output, double *err=NULL, double *calc_output=NULL);
    //void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
@@ -35,6 +40,8 @@ class FFNet : public Object {
 	      double increase=1.05, double decrease=.7, double errRatio=1.04, int nbSets=1);
 
    void traincg(vector<float *> in, vector<float *> out, int iter);
+
+   void trainCGB(vector<float *> tin, vector<float *> tout, int iter);
 
    void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 		      double mom, double increase, double decrease, int nbSets);
