@@ -247,6 +247,7 @@ if $libs_l; then
     done
 fi
 
+
 echo $other_flags $lib_L_flags $ord_libs
 
 exit 0
