@@ -286,7 +286,8 @@ void network_socket::init_tcp_stream(bool blocking) {
    * let's say that our process should get the SIGIO's when it's
    * readable
    */
-
+   //Carle : Remove set ownership, error on my system
+   /*
   if(fcntl(m_listen_socket, F_SETOWN, getpid()) == -1) {
 
     perror("network_socket::init_tcp_stream : call to fcntl() failed while setting socket "
@@ -296,6 +297,7 @@ void network_socket::init_tcp_stream(bool blocking) {
     throw new GeneralException("network_socket::init_tcp_stream : could not change ownership of the socket."
 			       ,__FILE__,__LINE__);    
   }
+  */
 
   /*
    * get the current access flags

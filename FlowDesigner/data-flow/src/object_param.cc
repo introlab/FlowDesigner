@@ -43,7 +43,10 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
    //ObjectRef value;
    if (type == "int")
    {
-      int val = atoi (value.c_str());
+      //Carle : Change atoi conversion to stringstream conversion
+      int val = 0;
+      std::stringstream tempStream(value);
+      tempStream >> val;
       return ObjectRef(Int::alloc(val));
    }
    else if (type == "bool")
@@ -61,7 +64,12 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
    }
    else if (type == "float")
    {
-      float val = atof (value.c_str());
+      //Carle : Change atof conversion to stringstream conversion 
+      float val = 0;
+      
+      std::stringstream tempStream(value);
+      tempStream >> val;
+      
       return ObjectRef(Float::alloc(val)); 
    } 
    else if (type == "string")
