@@ -11,145 +11,8 @@
 #include "vflow_pref.h"
 #include <fstream>
 #include <sstream>
+#include "flow_pref.h"
 
-VFlowPref VFlowPref::pref;
-
-VFlowPref::VFlowPref()
-{
-   params["ShowAllInOut"] = "no";
-   params["ShowTooltips"] = "yes";
-   params["PrintOutput"]  = "yes";
-   params["RunProcess"]   = "no";
-   params["RegularColor"] = "0x8cd0afff";
-   //params["SelectedColor"]= "0x8ca0af20";
-   //params["SelectedColor"]= "0x8087c020";
-   params["SelectedColor"]= "0xa8b2fcff";
-   //params["ErrorColor"]   = "0xc02020ff";
-   params["ErrorColor"]   = "0xfc9595ff";
-
-   string filename = getenv("HOME");
-   filename += "/.vflowrc";
-   ifstream prefFile(filename.c_str());
-   if (prefFile.fail())
-   {
-      save();
-      modified=false;
-      return;
-   }
-   while (1)
-   {
-      string key;
-      string value;
-      char ch;
-      while(1)
-      {
-	 prefFile >> ch;
-	 if (!prefFile)
-	    return;
-	 if (ch=='=')
-	    break;
-	 if (ch!=' ')
-	    key += ch;
-      }
-      prefFile >> value;
-      params[key]   = value;
-      //cerr << key << "->" << value << endl;
-   }
-   modified=false;
-}
-
-VFlowPref::~VFlowPref()
-{
-   //if (modified)
-   //   save();
-}
-
-bool VFlowPref::getBool(const string &str)
-{
-   string val = pref.params[str];
-   //cerr << "str = " << val << endl;
-   if (val=="yes" || val=="YES" || val=="true" || val=="TRUE")
-      return true;
-   else
-      return false;
-}
-
-void VFlowPref::setBool(const string &str, bool val)
-{
-   if (val)
-      pref.params[str] = "yes";
-   else
-      pref.params[str] = "no";
-   pref.modified=true;
-}
-
-guint32 VFlowPref::getColor(const string &str)
-{
-   string val = pref.params[str];
-   istringstream valStr(val);
-   char ch1, ch2;
-   guint32 col=0;
-   valStr >> ch1 >> ch2;
-   if (ch1 != '0' || ch2 != 'x')
-   {
-      cerr << "invalid color\n";
-      return col;
-   }
-   for (int i=0;i<8;i++)
-   {
-      col <<= 4;
-      valStr >> ch1;
-      if (ch1 >= '0' && ch1 <= '9')
-	 col += (ch1-'0');
-      else if (ch1 >= 'a' && ch1 <= 'f')
-	 col += 10+(ch1-'a');
-      else
-	 cerr << "invalid color char: " << ch1 << endl;
-   }
-   return col;
-}
-
-void VFlowPref::setColor(const string &str, guint32 col)
-{
-   char colStr[11];
-   colStr[10]=0;
-   colStr[0]='0';
-   colStr[1]='x';
-   for (int i=0;i<8;i++)
-   {
-      int dhex = col&15;
-      if (dhex<=9)
-	 colStr[9-i]=dhex+'0';
-      else
-	 colStr[9-i]=dhex-10+'a';
-      col>>=4;
-   }
-   pref.params[str]=colStr;
-}
-
-
-void VFlowPref::Save()
-{
-   pref.save();
-}
-
-void VFlowPref::save()
-{
-   string filename = getenv("HOME");
-   filename += "/.vflowrc";
-   //cerr << "save " << filename << endl;
-   ofstream prefFile(filename.c_str());
-   if (prefFile.fail())
-      return;
-   map<string,string>::iterator p = params.begin();
-   while (p != params.end())
-   {
-      prefFile << p->first << "=" << p->second << endl;
-      p++;
-   }
-   modified=false;
-   //cerr << "pref save\n";
-}
 
 
 static void pref_apply (GnomePropertyBox *propertybox, gint arg1, VFlowPrefDialog* user_data)
@@ -246,7 +109,7 @@ VFlowPrefDialog::VFlowPrefDialog()
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (showallio);
   gtk_box_pack_start (GTK_BOX (vbox4), showallio, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showallio), VFlowPref::getBool("ShowAllInOut"));
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showallio), FlowPref::getBool("ShowAllInOut"));
   gtk_signal_connect (GTK_OBJECT (showallio), "toggled",
 		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
@@ -258,7 +121,7 @@ VFlowPrefDialog::VFlowPrefDialog()
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (showtooltip);
   gtk_box_pack_start (GTK_BOX (vbox4), showtooltip, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showtooltip), VFlowPref::getBool("ShowTooltips"));
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showtooltip), FlowPref::getBool("ShowTooltips"));
   gtk_signal_connect (GTK_OBJECT (showtooltip), "toggled",
 		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
@@ -282,7 +145,7 @@ VFlowPrefDialog::VFlowPrefDialog()
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (printout);
   gtk_box_pack_start (GTK_BOX (vbox5), printout, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(printout), VFlowPref::getBool("PrintOutput"));
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(printout), FlowPref::getBool("PrintOutput"));
   gtk_signal_connect (GTK_OBJECT (printout), "toggled",
 		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
@@ -292,7 +155,7 @@ VFlowPrefDialog::VFlowPrefDialog()
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (runprocess);
   gtk_box_pack_start (GTK_BOX (vbox5), runprocess, FALSE, FALSE, 0);
-  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(runprocess), VFlowPref::getBool("RunProcess"));
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(runprocess), FlowPref::getBool("RunProcess"));
   gtk_signal_connect (GTK_OBJECT (runprocess), "toggled",
 		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
 
@@ -426,7 +289,7 @@ VFlowPrefDialog::VFlowPrefDialog()
   gtk_widget_ref (colorpicker1);
   gtk_object_set_data_full (GTK_OBJECT (propertybox1), "colorpicker1", colorpicker1,
                             (GtkDestroyNotify) gtk_widget_unref);
-  guint32 col = VFlowPref::getColor("RegularColor");
+  guint32 col = FlowPref::getColor("RegularColor");
   gnome_color_picker_set_i8(GNOME_COLOR_PICKER(colorpicker1), (col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, (col&0xff));
   gtk_widget_show (colorpicker1);
   gtk_table_attach (GTK_TABLE (table1), colorpicker1, 0, 1, 0, 1,
@@ -439,7 +302,7 @@ VFlowPrefDialog::VFlowPrefDialog()
   gtk_widget_ref (colorpicker2);
   gtk_object_set_data_full (GTK_OBJECT (propertybox1), "colorpicker2", colorpicker2,
                             (GtkDestroyNotify) gtk_widget_unref);
-  col = VFlowPref::getColor("SelectedColor");
+  col = FlowPref::getColor("SelectedColor");
   gnome_color_picker_set_i8(GNOME_COLOR_PICKER(colorpicker2), (col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, (col&0xff));
   gtk_widget_show (colorpicker2);
   gtk_table_attach (GTK_TABLE (table1), colorpicker2, 0, 1, 1, 2,
@@ -452,7 +315,7 @@ VFlowPrefDialog::VFlowPrefDialog()
   gtk_widget_ref (colorpicker3);
   gtk_object_set_data_full (GTK_OBJECT (propertybox1), "colorpicker3", colorpicker3,
                             (GtkDestroyNotify) gtk_widget_unref);
-  col = VFlowPref::getColor("ErrorColor");
+  col = FlowPref::getColor("ErrorColor");
   gnome_color_picker_set_i8(GNOME_COLOR_PICKER(colorpicker3), (col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, (col&0xff));
   gtk_widget_show (colorpicker3);
   gtk_table_attach (GTK_TABLE (table1), colorpicker3, 0, 1, 2, 3,
@@ -518,10 +381,10 @@ VFlowPrefDialog::~VFlowPrefDialog()
 void VFlowPrefDialog::apply()
 {
    //cerr << "apply\n";
-   VFlowPref::setBool("RunProcess", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(runprocess)));
-   VFlowPref::setBool("PrintOutput", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(printout)));
-   VFlowPref::setBool("ShowAllInOut", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showallio)));
-   VFlowPref::setBool("ShowTooltips", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showtooltip)));
+   FlowPref::setBool("RunProcess", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(runprocess)));
+   FlowPref::setBool("PrintOutput", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(printout)));
+   FlowPref::setBool("ShowAllInOut", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showallio)));
+   FlowPref::setBool("ShowTooltips", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showtooltip)));
 
    guint8 r, g, b, a;
    guint32 rr, gg, bb, aa;
@@ -529,18 +392,18 @@ void VFlowPrefDialog::apply()
    gnome_color_picker_get_i8(GNOME_COLOR_PICKER(colorpicker1), &r, &g, &b, &a);
    rr=r;gg=g;bb=b;aa=a;
    guint32 col = (rr<<24) + (gg<<16) + (bb<<8) + aa;
-   VFlowPref::setColor("RegularColor", col);
+   FlowPref::setColor("RegularColor", col);
 
    gnome_color_picker_get_i8(GNOME_COLOR_PICKER(colorpicker2), &r, &g, &b, &a);
    rr=r;gg=g;bb=b;aa=a;
    col = (rr<<24) + (gg<<16) + (bb<<8) + aa;
-   VFlowPref::setColor("SelectedColor", col);
+   FlowPref::setColor("SelectedColor", col);
 
    gnome_color_picker_get_i8(GNOME_COLOR_PICKER(colorpicker3), &r, &g, &b, &a);
    rr=r;gg=g;bb=b;aa=a;
    col = (rr<<24) + (gg<<16) + (bb<<8) + aa;
-   VFlowPref::setColor("ErrorColor", col);
-   VFlowPref::Save();
+   FlowPref::setColor("ErrorColor", col);
+   FlowPref::Save();
 }
 
 

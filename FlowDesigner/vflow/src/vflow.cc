@@ -488,7 +488,7 @@ void run_doc_event(GtkWidget *widget, vflowGUI *vflow) {
 
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(vflow->mdi->active_child), "doc");
 
-   if (VFlowPref::getBool("RunProcess"))
+   if (FlowPref::getBool("RunProcess"))
    {
       int size;
       char *mem = doc->saveToMemory(size);

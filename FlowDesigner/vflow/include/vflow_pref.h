@@ -6,26 +6,7 @@
 #include <map>
 #include <string>
 
-class VFlowPref {
-   int modified;
-   map<string,string> params;
-
-   static VFlowPref pref;
-  public:
-   VFlowPref();
-   ~VFlowPref();
-   void load();
-   void save();
-
-   static bool getBool(const string &str);
-   static void setBool(const string &str, bool val);
-
-   static guint32 getColor(const string &str);
-   static void setColor(const string &str, guint32 col);
-
-   static void Save();
-};
-
+#include "flow_pref.h"
 
 class VFlowPrefDialog {
    GtkWidget *propertybox1;

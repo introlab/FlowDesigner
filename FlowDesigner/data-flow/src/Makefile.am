@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.91 2001/10/12 04:15:18 jmvalin Exp $
+# $Id: Makefile.am,v 1.92 2001/10/17 16:42:16 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -113,7 +113,8 @@ libflow_la_SOURCES = Node.cc \
 	SampleAndHold.cc \
 	iextensions.cc \
 	UINodeRepository.cc \
-	DCMatrix.cc
+	DCMatrix.cc \
+	flow_pref.cc
 
 
 

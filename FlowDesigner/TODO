@@ -17,7 +17,6 @@ Red nodes when exception
 **For 0.6.0**
 
 Message for save
-Permission 755
 Concat for float+vector
 Examples
 Clear less sub-window
@@ -25,5 +24,4 @@ Fix doc parameters
 Network renaming
 Preference classes + XML
 Speaker verification (OMS)
-fix stream wrapper ownership
 remove default -g compile switch
