@@ -35,7 +35,7 @@ include_HEADERS = Array.h \
 	UITerminal.h \
 	UILink.h \
 	UINetwork.h \
-	UINodeParameters.h \
+	UINodeParameters.h
 	
 noinst_HEADERS = \
 	InputStream.h \
