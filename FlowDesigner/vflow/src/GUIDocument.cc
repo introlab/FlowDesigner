@@ -982,7 +982,7 @@ void GUIDocument::error(char *err)
 		       GTK_SIGNAL_FUNC( error_dismiss), NULL);
 }
 
-void GUIDocument::updateTooltip() {
+void GUIDocument::updateSubnet() {
 
   for (int j = 0; j < networks.size(); j++) {
     for (int i= 0; i < networks.size(); i++) {

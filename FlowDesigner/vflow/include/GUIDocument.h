@@ -88,7 +88,7 @@ public:
 
    void applyParams();
 
-   void updateTooltip();
+   void updateSubnet();
 
    void insertLoadedParam(DocParameterData *param, string type, string value);
 
