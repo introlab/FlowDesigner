@@ -14,3 +14,10 @@ Terminal name as popup (option)
 
 Red nodes when exception
 
+Design work:
+
+Get rid of Collector for networks?
+
+Make sure global resources are thread-safe
+
+Cleanup/remove the (very dangerous) pthread_cancel stuff
