@@ -9,32 +9,39 @@ class Mel;
 
 DECLARE_NODE(Mel)
 /*Node
-
+ *
  * @name Mel
  * @category Signal:DSP
- * @description No description available
-
+ * @description calculates Mel-scale channel energies from power-spectrum
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input power-spectrum
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Mel-scale channel energies
+ *
  * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Power-spectrum size
+ *
  * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Number of channel energies
+ *
  * @parameter_name SAMPLING
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Sampling rate used (used for power-spectrum range)
+ *
  * @parameter_name LOW
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Lowest frequency
+ *
  * @parameter_name HIGH
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Highest frequency
+ *
 END*/
 
 

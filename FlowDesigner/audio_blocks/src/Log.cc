@@ -29,7 +29,7 @@ DECLARE_NODE(Log)
  *
  * @parameter_name FAST
  * @parameter_type bool
- * @parameter_description Should we use log approximation?
+ * @parameter_description Should we use fast log approximation?
  *
 END*/
 
