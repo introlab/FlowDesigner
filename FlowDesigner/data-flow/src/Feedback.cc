@@ -75,6 +75,9 @@ public:
       inputs[inputID].node->request(inputs[inputID].outputID,req);
    }
 
+   /*WARNING: Do not try this at home. Overriding the registerOutput() method should not be 
+              done unless you REALLY know what you're doing... and I'm not even sure 
+              I know what I'm doing here*/
    void registerOutput (int out) 
    {
       if (out == outputID)
@@ -83,41 +86,7 @@ public:
       }
    }
 
-   /*Warning: Do not try this at home. Overriding the initialize function should not be 
-              done unless you REALLY know what you're doing... and I'm not even sure 
-              I know what I'm doing here*/
-      /*void Feedback::initialize ()
-   {
-      if (initialized) return;
-      //FIXME: This is a big kludge, it won't work if more than 1 link is connected to "OUTPUT"
-      if (1 || --outputInitializeCount <=0)
-      {
-	 
-	 specificInitialize();
-	 //parameters.checkUnused();
-	 
-	 vector<NodeInput>::iterator in;
-	 
-	 for (in = inputs.begin(); in < inputs.end(); in++)
-	 {        
-	    if (!in->node || in->outputID == -1) {
-	       throw new NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
-	    }
-	    else {
-	       if (!in->node->hasOutput(in->outputID)) 
-		  throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
-	       try {
-		  in->node->initialize();
-	       } catch (BaseException *e)
-	       {
-		  throw e->add(new NodeException(this, "Exception caught in node initialization", __FILE__, __LINE__));
-	       }
-	    }
-	 }
-	 
-      }
-   }      
-      */
+
    /**Modified the request passing method in order to avoid strange behaviours*/
       virtual void request(int output_id, const ParameterSet &req) 
    {
@@ -135,7 +104,7 @@ public:
 	    return Object::before_beginningObject;
 	 return getInput(inputID, count-delay);
       } else {
-	 //error
+	 throw NodeException (this, "Output not found", __FILE__, __LINE__);
       }
    }
       

@@ -67,6 +67,9 @@ public:
       
    }
 
+   /*WARNING: Do not try this at home. Overriding the registerOutput() method should not be 
+              done unless you REALLY know what you're doing... and I'm not even sure 
+              I know what I'm doing here*/
    void registerOutput (int out) 
    {
       if (out == outputID)
@@ -112,7 +115,7 @@ public:
 	 }
 	 return currentException;
       } else {
-	 throw NodeException (this, "output not found", __FILE__, __LINE__);
+	 throw NodeException (this, "Output not found", __FILE__, __LINE__);
       }
    }
 
