@@ -2,6 +2,7 @@
 #define FFNET_H
 
 #include <vector>
+#include <stream.h>
 
 #include "FFLayer.h"
 
@@ -25,29 +26,12 @@ class FFNet {
    void learn(float *input, float *output)
       {
 	 int outputLayer = topo.size()-2;
-	 float *current = calc(input);
-	 int outSize = topo[topo.size()-1];
-	 int hSize = topo[topo.size()-2];
-	 //float err[outSize];
-	 
-	 float *previous;
-	 if (topo.size() >= 3)
-	    previous = layers[topo.size()-3]->getValue();
-	 else 
-	    previous = input;
-	 for (int i=0;i<outSize;i++)
-	 {
-	    float *w=layers[topo.size()-2]->getWeights(i);
-	    float err = output[i]-current[i];
-	    for (int j=0;j<hSize;j++)
-	    {
-	       w[i] += alpha * previous[j] * err ; // * g'(x)
-	    }
-	    w[i] += alpha * err; // * g'(x)
-	 }
+	 calc(input);
 
-	 for (int k=outputLayer-1;k>=0;k++)
+
+	 for (int k=outputLayer;k>=0;k--)
 	 {
+	    float *previous, *current;
 	    if (k==0)
 	       previous = input;
 	    else 
@@ -55,9 +39,34 @@ class FFNet {
 	    current = layers[k]->getValue();
 	    int layerSize = topo[k+1];
 	    int layerInputs = topo[k];
+	    float *err = layers[k]->getError();
 	    for (int i=0;i<layerSize;i++)
 	    {
 	       float *w = layers[k]->getWeights(i);
+	       if (k==outputLayer)
+	       {
+		  //cerr << "output layer\n";
+		  err[i]=output[i]-current[i];
+		  cout << "error = " << err[i] << endl;
+	       }
+	       else
+	       {
+		  err[i] = 0;
+		  float *prevErr = layers[k+1]->getError();
+		  cerr << "topo: " << topo[k+2] << endl;
+		  for (int j=0;j<topo[k+2];j++)
+		  {
+		     float *prevW = layers[k+1]->getWeights(j);
+		     err[i]+= prevErr[j]*prevW[i];
+		  }
+	       }
+	       for (int j=0;j<layerInputs;j++)
+	       {
+		  //cout << w[j] << " -> ";
+		  w[j] += alpha * previous[j] * err[i] ; // * g'(x)
+	       }
+	       w[layerInputs] += alpha * err[i];  // * g'(x)
+	       //cout << w[i] << endl;
 	    }
 	 }
 

@@ -25,6 +25,7 @@ class FFLayer {
       }
    float *getValue() {return value;}
    float *getWeights(int i) {return weights + i*(nbInputs+1);}
+   float *getError() {return error;}
 
 };
 
