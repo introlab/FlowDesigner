@@ -11,7 +11,7 @@ DECLARE_NODE(Concatenate)
  *
  * @name Concatenate
  * @category Signal:Manip
- * @description Concatenates two vectors together
+ * @description Concatenates two vectors together (deprecated, use Concat instead)
  *
  * @input_name INPUT1
  * @input_type Vector

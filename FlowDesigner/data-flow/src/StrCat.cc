@@ -11,7 +11,7 @@ DECLARE_NODE(StrCat)
  *
  * @name StrCat
  * @category General
- * @description Concatenates two strings together
+ * @description Concatenates two strings together (deprecated, use Concat instead)
  *
  * @input_name INPUT1
  * @input_type String
