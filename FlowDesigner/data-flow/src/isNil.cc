@@ -10,7 +10,7 @@ DECLARE_NODE(isNil)
 
 /*Node
  * @name isNil
- * @category RobotFlow:Generic
+ * @category Logic
  * @description No description available
  *
  * @input_name INPUT
