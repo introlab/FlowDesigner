@@ -482,17 +482,21 @@ UINetTerminal *GUINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal:
 
 void GUINetwork::moveSelectedNodes(double dx, double dy) {
 
-  for (int i = 0; i < selectedNodes.size(); i++) {
-    selectedNodes[i]->selectedMove(dx,dy);
+  for (list<GUINode*>::iterator iter = selectedNodes.begin();
+       iter != selectedNodes.end(); iter++) {
+    (*iter)->selectedMove(dx,dy);
   }
+
 
 }
 
 bool GUINetwork::isNodeSelected(GUINode *node) {
 
-  for (int i = 0; i < selectedNodes.size(); i++) {
-    if (selectedNodes[i] == node) return true;
+  for (list<GUINode*>::iterator iter = selectedNodes.begin();
+       iter != selectedNodes.end(); iter++) {
+    if ((*iter) == node) return true;
   }
+
 
   return false;
 }

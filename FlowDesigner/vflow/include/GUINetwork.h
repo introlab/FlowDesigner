@@ -18,13 +18,11 @@ protected:
    GUINetPopup *popup;
    double zoom;
 
-   vector<GUINode*> selectedNodes;
-
-   GUINode *movedFrom;
+   list<GUINode*> selectedNodes;
 
 public:
 
-   vector<GUINode*>& getSelectedNodes(){return selectedNodes;}
+   list<GUINode*>& getSelectedNodes(){return selectedNodes;}
 
    void moveSelectedNodes(double dx, double dy);
 
