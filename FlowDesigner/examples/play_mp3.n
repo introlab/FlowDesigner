@@ -11,12 +11,12 @@
       <Parameter name="DUMMY" type="int" value=""/>
     </Node>
     <Node name="node2" type="Constant" x="-375.000000" y="33.000000">
-      <Parameter name="VALUE" type="string" value="~/song.mp3"/>
+      <Parameter name="VALUE" type="subnet_param" value="ARG1"/>
     </Node>
     <Node name="node4" type="MAIN_LOOP" x="59.000000" y="52.000000">
       <Parameter name="FRAME_SIZE" type="int" value="256"/>
     </Node>
-    <Node name="node3" type="ExecStream" x="-186.000000" y="34.000000">
+    <Node name="node3" type="ExecStream" x="-187.000000" y="34.000000">
       <Parameter name="COMMAND" type="string" value="mpg123 --stdout "/>
     </Node>
     <Link from="node1" output="OUTPUT" to="node4" input="OUT_FILE"/>
@@ -66,4 +66,5 @@
     <NetOutput name="OUTPUT" node="node_WriteAudio_1" terminal="OUTPUT"/>
     <NetInput name="OUT_FILE" node="node_WriteAudio_1" terminal="DEVICE"/>
   </Network>
+  <Parameter name="ARG1" type="string" value="/path/to/your.mp3"/>
 </Document>
