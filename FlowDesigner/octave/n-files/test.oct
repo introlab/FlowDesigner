@@ -5,3 +5,7 @@ size(A)
 size(B)
 size(C)
 C
+C'
+inv(C)
+D = C .* C';
+D
