@@ -57,30 +57,29 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      ObjectRef inputValue = getInput(inputID, count);
+     RCPtr<Vector<float> > in = getInput(inputID,count);
 
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
+     int inputLength = in->size();
 
-      int ind;
+     int ind;
 
-      if (index == -1)
-      {
+     if (index == -1)
+       {
 	 ObjectRef indexValue = getInput(indexID, count);
 	 ind = dereference_cast<int> (indexValue);
       } else {
 	 ind = index;
       }
 
-      if (ind >= inputLength)
-	 throw new NodeException(this, "Index larger than vector size", __FILE__, __LINE__);
-
-      if (ind < 0)
-	 throw new NodeException(this, "Negative index", __FILE__, __LINE__);
-
-      out[count] = Float::alloc(in[ind]);
+     if (ind >= inputLength)
+       throw new NodeException(this, "Index larger than vector size", __FILE__, __LINE__);
+     
+     if (ind < 0)
+       throw new NodeException(this, "Negative index", __FILE__, __LINE__);
+     
+     out[count] = Float::alloc((*in)[ind]);
    }
-
+  
       
 NO_ORDER_NODE_SPEEDUP(Index)
 };

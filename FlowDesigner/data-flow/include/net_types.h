@@ -22,11 +22,16 @@ template <class T>
 class GenericType : public Object {
 
 protected:
+
+   ///The value wrapped by a GenericType<T>
    T value;
 
 public:
+  
+   ///You can always get the type wrapped by GenericType<T> by using typename GenericType<T>::basicType.
    typedef T basicType;
 
+   ///Returns the value
    T &val() {return value;}
    
    /**default constructor*/
@@ -49,6 +54,11 @@ public:
 
    //static GenericType<T> *alloc()  {return ObjectPool<GenericType<T> >::alloc();}
 
+   /**
+      Formatted output in the FlowDesigner format. Not very useful at this stage.<br>
+      <b>Format : </b> \<Generic Type: typeid(T).name() \>
+      \param out the output stream
+   */
    virtual void printOn(ostream &out=cout) const {
       out << "<Generic Type: " << typeid(T).name() << ">" << endl;
    }
