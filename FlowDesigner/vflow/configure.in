@@ -1,0 +1,49 @@
+AC_INIT(src/main.cc)
+
+AM_CONFIG_HEADER(config.h)
+
+AM_INIT_AUTOMAKE(VFlow, 0.1)
+
+AM_MAINTAINER_MODE
+
+AM_ACLOCAL_INCLUDE(macros)
+
+GNOME_INIT
+
+AC_PROG_CC
+AC_ISC_POSIX
+AC_HEADER_STDC
+AC_PROG_CXX
+AC_ARG_PROGRAM
+AM_PROG_LIBTOOL
+
+GNOME_COMPILE_WARNINGS
+
+GNOME_XML_LIB=`gnome-config --libs xml`
+GNOME_XML_INCLUDE=`gnome-config --cflags xml`
+AC_SUBST(GNOME_XML_LIB)
+AC_SUBST(GNOME_XML_INCLUDE)
+
+ALL_LINGUAS=""
+AM_GNU_GETTEXT
+
+AC_SUBST(CFLAGS)
+AC_SUBST(CPPFLAGS)
+AC_SUBST(LDFLAGS)
+
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale")
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale")
+fi
+
+AC_OUTPUT([
+Makefile
+macros/Makefile
+src/Makefile
+intl/Makefile
+po/Makefile.in
+pixmaps/Makefile
+])
+
+
