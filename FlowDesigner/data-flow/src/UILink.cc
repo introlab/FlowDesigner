@@ -43,7 +43,6 @@ UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
    //net->setModified();
    if (points_str)
    {
-      cerr << points_str << endl;
       stringstream str(points_str);
       while(1)
       {
