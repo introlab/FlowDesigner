@@ -149,13 +149,12 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
 
 GUINetTerminal::~GUINetTerminal()
 {
-
   UIDocument *doc = terminal->getNode()->getNetwork()->getDocument();
-
   doc->updateAllSubnetTerminals(terminal->getNode()->getNetwork()->getName(),getName(),getType(),true);
 
-  if (item)
+  if (item) {
     gtk_object_destroy(GTK_OBJECT(item));
+  }
 }
 
 

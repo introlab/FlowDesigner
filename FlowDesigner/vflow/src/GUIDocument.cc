@@ -52,7 +52,7 @@ GUIDocument::GUIDocument(string _name)
 {
 
   GtkWidget *vflow_notebook = vflowGUI::instance()->get_notebook();
-  cerr<<"GUIDocument getting notebook ptr (vflow app): "<<vflow_notebook<<endl;
+  //cerr<<"GUIDocument getting notebook ptr (vflow app): "<<vflow_notebook<<endl;
 
   vbox2 = gtk_vpaned_new ();
   //gtk_widget_set_usize(vbox2, -1, 400);
@@ -61,8 +61,8 @@ GUIDocument::GUIDocument(string _name)
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "vbox2", vbox2,
   //                          (GtkDestroyNotify) gtk_widget_unref);
 
-  cerr<<"GUIDocument creating document : "<<_name<<endl;
-  cerr<<"GUIDocument setting document data ""doc"" to vbox2 : "<<this<<endl;
+  //cerr<<"GUIDocument creating document : "<<_name<<endl;
+  //cerr<<"GUIDocument setting document data ""doc"" to vbox2 : "<<this<<endl;
   gtk_object_set_data(GTK_OBJECT(vbox2), "doc", this);
   gtk_widget_show (vbox2);
   
@@ -72,7 +72,7 @@ GUIDocument::GUIDocument(string _name)
   
 
   document_notebook = gtk_notebook_new ();
-  cerr<<"GUIDocument creating document notebook: "<<document_notebook<<endl;
+  //cerr<<"GUIDocument creating document notebook: "<<document_notebook<<endl;
   
 
   gtk_widget_set_usize(document_notebook, -1, 320);
@@ -327,13 +327,11 @@ UINetwork* GUIDocument::getCurrentNet() {
 
 UINetwork *GUIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
-   cerr << "GUIDocument::newNetwork (STD)\n";
    return new GUINetwork(this, _name, type);
 }
 
 UINetwork *GUIDocument::newNetwork(xmlNodePtr _net)
 {
-   cerr << "GUIDocument::newNetwork (XML)\n";
    return new GUINetwork(this, _net);
 }
 
@@ -353,8 +351,6 @@ void GUIDocument::setFullPath(const string &fullpath)
    }
 
 }
-
-
 
 static void param_apply (GnomePropertyBox *propertybox, gint arg1, gpointer user_data)
 {
@@ -929,8 +925,6 @@ void GUIDocument::error(char *err)
 }
 
 void GUIDocument::updateSubnet() {
-
-  cerr<<"updateSubnet"<<endl;
 
   for (int j = 0; j < networks.size(); j++) {
     for (int i= 0; i < networks.size(); i++) {

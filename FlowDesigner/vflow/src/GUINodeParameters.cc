@@ -166,7 +166,6 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
 
 GUINodeParameters::~GUINodeParameters()
 {
-
   if (nodeproperty) {
     gtk_widget_destroy(nodeproperty);
   }
@@ -207,13 +206,9 @@ void GUINodeParameters::apply()
 	if (newType != textParams[i]->type || newValue != textParams[i]->value) {
 	  //subnet param 
 	  changedNetInterface=true;
-	  cerr<<"changedNetInterface = true"<<endl;
-	  cerr<<"type : "<<newType<<endl;
-	  cerr<<"value: "<<newValue<<endl;
-
-	  //TODO : Should be done otherwise...
-	  //(DL) Adding parameters properly
-	  //insertLoadedParam(textParams[i],newType, newValue);
+	  //cerr<<"changedNetInterface = true"<<endl;
+	  //cerr<<"type : "<<newType<<endl;
+	  //cerr<<"value: "<<newValue<<endl;
 	}
       }
       textParams[i]->type = newType;
@@ -231,7 +226,6 @@ void GUINodeParameters::apply()
    
    node->getNetwork()->setModified();
 
-   cerr<<"Calling interfaceChangeNotify"<<endl;
    node->getNetwork()->interfaceChangeNotify();   
 }
 

@@ -75,8 +75,12 @@ GUINetwork::~GUINetwork()
    //on methods that are called indirectly from the destructor.
    destroyed=true;
    //Links are deleted through the nodes destructor
-   for (int i=0;i<nodes.size();i++)
-      delete nodes[i];
+   for (int i=0;i<nodes.size();i++) {
+     string my_name = nodes[i]->getName();
+     //cerr<<"GUINetwork::~GUINetwork deleting node "<<nodes[i]->getName()<<endl;
+     delete nodes[i];
+      
+   }
 
    delete popup;
    gtk_object_destroy(GTK_OBJECT(group));
@@ -89,8 +93,8 @@ void GUINetwork::create()
    //cerr << "GUINetwork::create()\n";
    GtkWidget *document_notebook = dynamic_cast<GUIDocument *>(doc)->getNotebook();
 
-   cerr << "GUINetwork::create() name : "<<name<<endl;
-   cerr << "GUINetwork::create() with notebook : "<<document_notebook<<endl;
+   //cerr << "GUINetwork::create() name : "<<name<<endl;
+   //cerr << "GUINetwork::create() with notebook : "<<document_notebook<<endl;
 
    //gtk_widget_show (notebook1);
 
@@ -460,16 +464,11 @@ UITerminal *GUINetwork::isNearOutputTerminal (double &x, double &y)
 
 
 UINode *GUINetwork::newNode(UINetwork* _net, xmlNodePtr def) {
-  
-  cerr<<"GUINetwork::newNode called (XML)"<<endl;
   return new GUINode(_net, def);
 }
 
 
 UINode *GUINetwork::newNode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit) {
-  
-  cerr<<"GUINetwork::newNode called (STD)"<<endl;
-
   return new GUINode(_net, _name, _type, _x, _y);
 }
 

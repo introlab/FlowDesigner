@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <libxml/parser.h>
+#include "object_param.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -43,6 +44,12 @@ void run2(GRunContext *ctx)
 int main(int argc, char **argv)
 {
    xmlKeepBlanksDefault(0);
+
+   if (argc < 2) {
+     cout<<"Usage : "<<argv[0]<<" <document> [arguments]"<<endl;
+     return -1;
+   }
+
    if (string(argv[1]) == "/dev/stdin")
    {
       if (fork())
@@ -51,7 +58,7 @@ int main(int argc, char **argv)
 
    g_thread_init(NULL);
    gdk_threads_init();
-   gnome_init ("vflow", VERSION, argc, argv);
+   gnome_init ("GFlow", VERSION, argc, argv);
    setlocale (LC_NUMERIC, "C");
    signal(11,SIG_DFL);
 
@@ -61,8 +68,9 @@ int main(int argc, char **argv)
    {
       e->print();
       delete e;
-      exit(1);
+      //exit(1);
    }
+
    UINodeRepository::Scan();
    IExtensions::detect();
 
@@ -73,6 +81,20 @@ int main(int argc, char **argv)
       char arg_name[100];
       sprintf (arg_name, "ARG%d", arg-1);
       params.add(arg_name, ObjectRef (new String (argv[arg])));
+      sprintf (arg_name, "string:ARG%d", arg-1);
+      params.add(arg_name, ObjectRef (new String (argv[arg])));
+      sprintf (arg_name, "int:ARG%d", arg-1);
+      params.add(arg_name, ObjectRef (Int::alloc (atoi(argv[arg]))));
+      sprintf (arg_name, "float:ARG%d", arg-1);
+      params.add(arg_name, ObjectRef (Float::alloc (atof(argv[arg]))));
+      if (strlen(argv[arg]) > 2 && argv[arg][0]=='<' && argv[arg][strlen(argv[arg])-1]=='>') {
+	sprintf (arg_name, "object:ARG%d", arg-1);
+	try {
+	  string val(argv[arg]);
+	  ParameterSet p;
+	  params.add(arg_name, ObjectParam::stringParam("object", val, p));
+	} catch (...) {}
+      }
    }
    UIDocument *doc;
    /*if (string(argv[1]) == "/dev/stdin")

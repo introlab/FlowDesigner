@@ -46,11 +46,19 @@ GUINode::~GUINode()
 {
    dynamic_cast<GUINetwork*>(net)->removeSelectedNode(this);
 
-   for (int i=0;i<inputs.size();i++)
-      delete inputs[i];
-   for (int i=0;i<outputs.size();i++)
-      delete outputs[i];
+   for (int i=0;i<inputs.size();i++) {
+     //cerr<<"GUINode::~GUINode("<<getName()<<")"<< "deleting input name "<<inputs[i]->getName()<<endl;
+     delete inputs[i];
+      
+   }
+
+   for (int i=0;i<outputs.size();i++) {
+     //cerr<<"GUINode::~GUINode("<<getName()<<")"<<  "deleting output name "<<outputs[i]->getName()<<endl;
+     delete outputs[i];
+     
+   }
    
+   //parameters will be deleted in UINode destructor
    //delete parameters;
    net->removeNode(this);
    gtk_object_destroy(GTK_OBJECT(group));
@@ -701,8 +709,5 @@ void GUINode::rename(const string &newName) {
 }
 
 UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type) {
-  
-  cerr<<"GUINode::newNodeParameters"<<endl;
   return new GUINodeParameters (_node, type);
-
 }

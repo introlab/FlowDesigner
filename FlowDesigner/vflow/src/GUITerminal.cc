@@ -16,8 +16,11 @@ static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer d
 
 GUITerminal::~GUITerminal()
 {
+  
    gtk_object_destroy(GTK_OBJECT(item));
    gtk_object_destroy(GTK_OBJECT(item_text));
+
+   //cerr<<"GUITerminal::~GUITerminal("<<getName()<<") from node"<<node->getName()<<endl;
 }
 
 GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, double _x, double _y)
@@ -127,7 +130,7 @@ gint GUITerminal::event(GdkEvent *event)
               
            } else {
 
-              printf("terminal click\n");
+              //printf("terminal click\n");
 
 	      static int last_time = 0;
 
@@ -158,7 +161,7 @@ gint GUITerminal::event(GdkEvent *event)
            }
 	   } catch (bool b)
 	   {
-	      cerr << "net terminal cancelled\n";
+	      //cerr << "net terminal cancelled\n";
 	      return TRUE;
 	   }
 	   break;
