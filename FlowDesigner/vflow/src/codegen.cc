@@ -132,7 +132,7 @@ void CodeGenState::ok()
 	 set<string>::iterator file = fileList.begin();
 	 while (file != fileList.end())
 	 {
-	    string fullPath = UIDocument::findExternal(*file, "VFLOW_SOURCE", false);
+	    string fullPath = UIDocument::findExternal(*file, "FLOWDESIGNER_SOURCE", false);
 	    if (fullPath == "")
 	    {
 	       cerr << "cannot find " << *file << endl;

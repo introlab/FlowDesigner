@@ -173,7 +173,7 @@ public:
 
    void updateAllNetworks();
    
-   static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true, bool fullPathOutput=true);
+   static string findExternal(const string &filename, char *searchPath="FLOWDESIGNER_PATH", bool include_home=true, bool fullPathOutput=true);
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 

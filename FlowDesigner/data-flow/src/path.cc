@@ -13,7 +13,7 @@ vector<string> envList(char *envName, bool include_home)
    if (include_home)
    {
       string prefix = INSTALL_PREFIX;
-      char *home = getenv("VFLOW_HOME");
+      char *home = getenv("FLOWDESIGNER_HOME");
       if (home && strcmp(home, "")!=0)
 	 prefix=home;
       list.insert(list.end(), prefix+ "/share/flowdesigner/toolbox");
@@ -50,9 +50,9 @@ void scanDL(bool debug)
    if (debug)
       cerr << "Overflow loading all toolbox code (DL)" << endl;
 #ifdef PIC
-   vector<string> dirs=envList("VFLOW_PATH");
+   vector<string> dirs=envList("FLOWDESIGNER_PATH");
 #else
-   vector<string> dirs=envList("VFLOW_PATH", false);
+   vector<string> dirs=envList("FLOWDESIGNER_PATH", false);
 #endif
    if (dirs.size() == 0)
    {

@@ -321,12 +321,12 @@ Some FlowDesigner Nodes expect a certain type of data as input/parameter
 
 Getting Started with 
 \emph on 
-vflow
+flowdesigner
 \layout Standard
 
 If called with no argument, the 
 \emph on 
-vflow
+flowdesigner
 \emph default 
  program will start with a new empty FlowDesigner document (fig.
  
@@ -364,7 +364,7 @@ collapsed false
 
 \layout Caption
 
-vflow main window
+flowdesigner main window
 \begin_inset LatexCommand \label{fig:vflow_main}
 
 \end_inset 
@@ -1845,8 +1845,8 @@ Static linkage: This will copy all the required FlowDesigner files in the
 Generate makefile: Unimplemented yet 
 \layout Standard
 
-Note: the VFLOW_SOURCE environment variable must be set to your FlowDesigner
- source directory in order for the "static linkage" option to work.
+Note: the FLOWDESIGNER_SOURCE environment variable must be set to your FlowDesig
+ner source directory in order for the "static linkage" option to work.
 \layout Chapter
 
 Software Architecture
@@ -2148,7 +2148,7 @@ all
 
 At last for a new node to be visible in 
 \emph on 
-vflow
+flowdesigner
 \emph default 
 , a special header must be present.
  An example of this is:
@@ -2716,7 +2716,7 @@ You might also need to set your LD_LIBRARY_PATH to <flowdesigner prefix>/lib
 You can now start the FlowDesigner environment by typing : 
 \layout Standard
 
-% vflow (assuming <flowdesigner prefix>/bin is in your path)
+% flowdesigner (assuming <flowdesigner prefix>/bin is in your path)
 \layout Section*
 
 Compiling on Win32
@@ -2781,7 +2781,7 @@ This can happen if you compile FlowDesigner and then move the installation
  directory (It can sometimes happen for other reasons).
  You can set the LD_LIBRARY_PATH to <flowdesigner install dir>/lib.
  Note that if you moved the FlowDesigner directory, you'll also need to
- set VFLOW_HOME.
+ set FLOWDESIGNER_HOME.
 \layout Subsection*
 
 4) The 

@@ -151,7 +151,7 @@ void categContent( string categName, string nextcateg, ostream &out, UINodeRepos
   out << "<p><a NAME=\"" << categName << "\"></a>"
       << "<h2>" << "<br><br><br><br><br><br><hr><br>* "  << categName << " (" << nbnodes << ")"
       <<"</h2>"  
-      << "<h3>List of available Overflow Nodes "<< "</h3>\n\n";
+      << "<h3>List of available FlowDesigner nodes "<< "</h3>\n\n";
 
 
 // Affichage du tableau : noeuds de la categorie
@@ -240,8 +240,8 @@ void categContent( string categName, string nextcateg, ostream &out, UINodeRepos
 	   << nextcateg << "</a><br>";
      }
    out << "<br>Return to: "
-       << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">"
-       << "Categories of available Overflow Nodes</a><br><br><hr><br><br>";
+       << "<a href=\"#" << "Categories of available FlowDesigner nodes" << "\">"
+       << "Categories of available FlowDesigner nodes</a><br><br><hr><br><br>";
 
 
 // Affichage des informations sur les noeuds
@@ -269,8 +269,8 @@ void categContent( string categName, string nextcateg, ostream &out, UINodeRepos
 		       << nextcateg << "</a><br>";
 		 }
 	       out << "<br>Return to: "
-		   << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">"
-		   << "Categories of available Overflow Nodes</a><br>";
+		   << "<a href=\"#" << "Categories of available FlowDesigner nodes" << "\">"
+		   << "Categories of available FlowDesigner nodes</a><br>";
 	     }
 	   i++;
 	 }
@@ -313,10 +313,10 @@ int main(int argc, char **argv)
        << "<html>\n"
        << "<head>\n"
        << "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n"
-       << "<meta name=\"GENERATOR\" content=\"Overflow\">\n"
+       << "<meta name=\"GENERATOR\" content=\"FlowDesigner\">\n"
        << "<meta name=\"Author\" content=\"Jean-Marc Valin\">\n"
-       << "<title>Overflow node documentation</title>\n"
-       << "<!-- This page was created by the Overflow documentation generator -->\n"
+       << "<title>FlowDesigner node documentation</title>\n"
+       << "<!-- This page was created by the FlowDesigner documentation generator -->\n"
        << "</head>\n"
        << "<body>";
    
@@ -369,10 +369,10 @@ int main(int argc, char **argv)
 
 // Affichage du tableau : categories de noeuds
 
-   out << "<a NAME=\"" << "Categories of available Overflow Nodes" << "\"></a>"; 
+   out << "<a NAME=\"" << "Categories of available FlowDesigner nodes" << "\"></a>"; 
 
    out << "<p><br><center><h1><b>" << "* NODE" <<"&nbsp " <<" DOCUMENTATION *</b><br><br>";
-   out << "Categories of available Overflow Nodes"
+   out << "Categories of available FlowDesigner nodes"
        << "</h1>\n<br>";
    out << "<table BORDER COLS=2 WIDTH=\"40% \" NOSAVE >\n\n";
 
@@ -414,10 +414,10 @@ int main(int argc, char **argv)
 //       << "<html>\n"
 //       << "<head>\n"
 //       << "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n"
-//       << "<meta name=\"GENERATOR\" content=\"Overflow\">\n"
+//       << "<meta name=\"GENERATOR\" content=\"FlowDesigner\">\n"
 //       << "<meta name=\"Author\" content=\"Jean-Marc Valin\">\n"
-//       << "<title>Overflow node documentation</title>\n"
-//       << "<!-- This page was created by the Overflow documentation generator -->\n"
+//       << "<title>FlowDesigner node documentation</title>\n"
+//       << "<!-- This page was created by the FlowDesigner documentation generator -->\n"
 //       << "</head>\n"
 //       << "<body>\n";
    
@@ -426,7 +426,7 @@ int main(int argc, char **argv)
 //Parcours la banque de donnees et affiche le grand tableau
 
 
-//   out << "<h1>List of available Overflow Nodes Category</h1>\n\n";
+//   out << "<h1>List of available FlowDesigner nodes Category</h1>\n\n";
 //   out << "<center><table BORDER COLS=3 WIDTH=\"100%\" NOSAVE >\n\n";
 //   int count=0;
 //   i = UINodeRepository::Begin();

@@ -966,7 +966,7 @@ void on_preferences1_activate  (GtkMenuItem *menuitem, vflowGUI *vflow)
 void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
    const gchar *authors[] = {
-      "Jean-Marc Valin (jean-marc.valin@hermes.usherbrooke.ca)", 
+      "Jean-Marc Valin (jean-marc.valin@usherbrooke.ca)", 
       "Dominic Letourneau (dominic.letourneau@usherbrooke.ca)",
       NULL
    };
@@ -978,7 +978,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
   if (!strcmp (translators, "translator_credits"))
     translators = NULL;
   about2 = gnome_about_new ("VFlow", VERSION,
-                        _("(C) 1999-2003 Jean-Marc Valin & Dominic Letourneau"),
+                        _("(C) 1999-2004 Jean-Marc Valin & Dominic Letourneau"),
                         _("FlowDesigner (http://flowdesigner.sourceforge.net/) is a free (LGPL) \"data flow oriented\" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a \"clone\" of any of them."),
                         authors,
                         documenters,

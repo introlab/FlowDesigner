@@ -20,9 +20,9 @@ INCLUDES = \
 	-I$(top_srcdir)/../audio_blocks/include \
 	-I$(top_srcdir)/include
 
-bin_PROGRAMS = vflow gflow
+bin_PROGRAMS = flowdesigner gflow
 
-vflow_SOURCES = \
+flowdesigner_SOURCES = \
 	vflow.cc \
 	Probe.cc \
 	TextProbe.cc \
