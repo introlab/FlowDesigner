@@ -50,5 +50,6 @@ noinst_HEADERS = \
 	AND.h \
 	Matrix.h \
 	DoubleDispatch.h \
-	operators.h
+	operators.h \
+	iotraits.h  sstream  sstream.cc  sstream.h
 
