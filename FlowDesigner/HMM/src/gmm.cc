@@ -96,14 +96,22 @@ void GMM::adaptMAP(vector<float *> frames, GMM *gmm)
 	 }
       }
       if (adaptCount)
+      {
 	 for (int j=0;j<dimensions;j++)
 	    adaptMean[j] /= adaptCount;
-
+      } else {
+         cerr << "no data for gaussian " << i << endl;
+      }
+      
       //FIXME: This is not a correct MAP implementation
       //float weight = float(adaptCount)/30.0;
+#if 0
       float weight = 1 - exp(float(-adaptCount)/20);
       if (weight > 1)
 	 weight = 1;
+#else
+      float weight = float(adaptCount)/(float(adaptCount)+15);
+#endif
       //weight=0;
       Vector<double> &mean = *gaussians[i]->mean;
       for (int j=0;j<mean.size();j++)

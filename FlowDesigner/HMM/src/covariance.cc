@@ -14,7 +14,7 @@ void DiagonalCovariance::processMean(RCPtr<Mean> mean)
    if (mode != accum) throw string("DiagonalCovariance::processMean");
 
    Mean &v=*mean;
-   double accum_1 = 1.0/v.getAccum();
+   double accum_1 = 1.0/(.001+v.getAccum());
    for(int i = 0; i < dimension; i++ )
       data[i] -= sqr(v[i])*accum_1;
 }
@@ -23,7 +23,7 @@ void DiagonalCovariance::invert()
 {
    if (mode == inverted) return;
    if (mode != accum) throw string("DiagonalCovariance::invert");
-   double accum_1 = 1.0/accum_count;
+   double accum_1 = 1.0/(.001+accum_count);
 for(int i = 0; i < data.size(); i++ )
    {
       data[i] = 1.0 / (.001 + data[i] * accum_1);

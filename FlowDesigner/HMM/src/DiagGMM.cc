@@ -277,6 +277,225 @@ void DiagGMM::printOn(ostream &out) const
 }
 
 
+void DiagGMM::train (const vector<float *> &frames, int nb_dim, int nb_gaussians, int nb_splits)
+{
+   int i, j, k;
+   dim = nb_dim;
+   nbGauss = nb_gaussians;
+   augDim = (dim+4)&0xfffffffc;
+   int allocSize = 2 * augDim * nbGauss * sizeof(float)  +  CACHE_LINES;
+   ptr = new char [allocSize];
+   base = (float *) (((unsigned long)(ptr) + (CACHE_LINES-1))&CACHE_MASK);
+   
+   float mean[nbGauss][dim];
+   float cov[nbGauss][dim];
+   float gweight[nbGauss];
+   double amean[nbGauss][dim];
+   double acov[nbGauss][dim];
+   double accum[nbGauss];
+   double bias[nbGauss];
+
+   for (i=0;i<dim;i++)
+      amean[0][i] = acov[0][i] = 0;
+   accum[0] = 0;
+   for (i=0;i<frames.size();i++)
+   {
+      for (j=0;j<dim;j++)
+         amean[0][j] += frames[i][j];
+      for (j=0;j<dim;j++)
+         acov[0][j] += frames[i][j]*frames[i][j];
+      accum[0] += 1;
+   }
+   bias[0] = 1;
+   for (j=0;j<dim;j++)
+   {
+      mean[0][j] = amean[0][j]/accum[0];
+      cov[0][j] = acov[0][j]/accum[0] - mean[0][j]*mean[0][j];
+      if (cov[0][j]<.001)
+         cov[0][j]=.001;
+      bias[0] *= cov[0][j];
+   }
+   bias[0] = 1/sqrt(bias[0]);
+   gweight[0] = 1;
+
+   /*for (i=0;i<1;i++)
+   {
+      cout << "weight: " << gweight[i] << endl;
+      cout << "mean: ";
+      for (k=0;k<dim;k++)
+         cout << mean[i][k] << " ";
+      cout << endl << "cov: ";
+      for (k=0;k<dim;k++)
+         cout << cov[i][k] << " ";
+      cout << endl;
+      }*/
+
+
+   for (int level = 0;level<nb_splits;level++) 
+   {
+      cerr << "level " << level << endl;
+      //Split
+      int tmp = 1<<level;
+      for (i=0;i<tmp;i++)
+      {
+         bias[i+tmp] = bias[i];
+         for (k=0;k<dim;k++)
+         {
+            cov[i+tmp][k] = cov[i][k];
+            float deviation = (.01*(rand()%100)-.495)*sqrt(cov[i][k]);
+            //cout << cov[i][k] << " " << deviation << " ";
+            mean[i+tmp][k] = mean[i][k] + deviation;
+            mean[i][k] -= deviation;
+         }
+      }
+      //cout << endl;
+
+      int max_gauss = 2<<level;
+      for (int iter=0;iter<20;iter++)
+      {
+         float cov_acc[dim];
+         for (k=0;k<dim;k++)
+            cov_acc[k] = 0;
+         for (j=0;j<max_gauss;j++)
+         {
+            accum[j] = 0;
+            for (k=0;k<dim;k++)
+               amean[j][k] = acov[j][k] = 0;
+            for (k=0;k<dim;k++)
+               cov_acc[k] += cov[j][k];
+         }
+
+
+         for (j=0;j<max_gauss;j++)
+         {
+            for (k=0;k<dim;k++)
+            {
+               cov[j][k] = .7*cov[j][k] + .3*cov_acc[k]/max_gauss;
+               cov[j][k] = 1/cov[j][k];
+               //cov[j][k] = 1;
+            }
+         }
+         for (i=0;i<frames.size();i++)
+         {
+            double prob[max_gauss], sum_prob=0;
+            for (j=0;j<max_gauss;j++)
+            {
+               prob[j] = 0;
+               for (k=0;k<dim;k++)
+                  prob[j] += (frames[i][k]-mean[j][k])*(frames[i][k]-mean[j][k])*cov[j][k];
+               prob[j] = bias[j]*exp(-prob[j]);
+               sum_prob += prob[j];
+            }
+            if (sum_prob < 1e-120)
+               cout << sum_prob << " ";
+            for (j=0;j<max_gauss;j++)
+            {
+               float weight = prob[j] / (1e-120+sum_prob);
+               for (k=0;k<dim;k++)
+                  amean[j][k] += weight*frames[i][k];
+               for (k=0;k<dim;k++)
+                  acov[j][k] += weight*frames[i][k]*frames[i][k];
+               accum[j] += weight;
+            
+            }
+         }
+
+         float sum_accum = 0;
+         for (j=0;j<max_gauss;j++)
+         {
+            sum_accum += accum[j];
+            float accum_1 = 1./(1e-10+accum[j]);
+            bias[j] = 1;
+            for (k=0;k<dim;k++)
+            {
+               mean[j][k] = amean[j][k]*accum_1;
+               cov[j][k] = accum_1*acov[j][k] - mean[j][k]*mean[j][k];
+               if (cov[j][k]<.001)
+                  cov[j][k]=.001;
+               bias[j] *= cov[j][k];
+            }
+            bias[j] = 1/sqrt(bias[j]);
+         }
+         for (j=0;j<max_gauss;j++)
+            gweight[j] = accum[j]/(1e-10+sum_accum);
+      }
+   }
+
+   /*
+   for (i=0;i<nbGauss;i++)
+   {
+      cout << "weight: " << gweight[i] << endl;
+      cout << "mean: ";
+      for (k=0;k<dim;k++)
+         cout << mean[i][k] << " ";
+      cout << endl << "cov: ";
+      for (k=0;k<dim;k++)
+         cout << cov[i][k] << " ";
+      cout << endl;
+   }
+   */
+
+   for (j=0;j<nbGauss;j++)
+   {
+      for (k=0;k<dim;k++)
+         cov[j][k] = 1/cov[j][k];
+   }
+
+   float *ptr = base;
+   for (int j=0;j<nbGauss;j++)
+   {
+      for (int k=0;k<dim;k++)
+	 ptr[k] = mean[j][k];
+      for (int k=dim;k<augDim;k++)
+	 ptr[k]=0;
+      ptr += augDim;
+      float norm = 0;
+      for (int k=0;k<dim;k++)
+      {
+	 norm += .5*log(cov[j][k]);
+	 ptr[k] = -cov[j][k];
+      }
+      ptr[dim] = log(1e-10+gweight[j])+norm;
+      for (int k=dim+1;k<augDim;k++)
+	 ptr[k]=0;
+      ptr += augDim;
+   }
+
+
+   if (1)
+   {
+      cout << "<GMM\n<nb_gaussians " << nbGauss << ">\n";
+      cout << "<mode 0>\n<nb_frames_aligned 242926>\n";
+      cout << "<dimensions " << dim << ">\n";
+      cout << "<apriori <Vector ";
+      for (j=0;j<nbGauss;j++)
+         cout << log(1.0/nbGauss) << " ";
+      cout << "> >" << endl;
+      cout << "<gaussians <Vector ";
+      for (j=0;j<nbGauss;j++)
+      {
+         cout << " <Gaussian" << endl;
+         cout << "<dimension " << dim << "> <accum_count 1998>" << endl;
+         cout << "<mean <Mean" << endl;
+         cout << "<dimension " << dim << " > <mode 1>" << endl;
+         cout << "<data ";
+         for (k=0;k<dim;k++)
+            cout << mean[j][k] << " ";
+         cout << "> >" << endl;
+         cout << ">" << endl;
+         
+         cout << "<covariance <DiagonalCovariance" << endl;
+         cout << "<dimension " << dim << ">\n<mode 3>\n";
+         cout << "<data ";
+         for (k=0;k<dim;k++)
+            cout << cov[j][k] << " ";
+         cout << ">\n>\n>\n>\n";
+         
+      }
+      cout << ">\n>\n>\n";
+   }
+}
+
 void DiagGMM::readFrom (istream &in)
 {
    string tag;

@@ -3,14 +3,14 @@
 #include "BufferedNode.h"
 #include "net_types.h"
 #include "covariance.h"
-#include "gmm.h"
+#include "DiagGMM.h"
 #include "Vector.h"
 
-class GMMTrain;
-DECLARE_NODE(GMMTrain)
+class DiagGMMTrain;
+DECLARE_NODE(DiagGMMTrain)
 /*Node
  *
- * @name GMMTrain
+ * @name DiagGMMTrain
  * @category HMM
  * @description Trains a GMM using an accumulator of frames
  *
@@ -29,7 +29,7 @@ DECLARE_NODE(GMMTrain)
 END*/
 
 
-class GMMTrain : public BufferedNode {
+class DiagGMMTrain : public BufferedNode {
 
 protected:
    
@@ -40,7 +40,7 @@ protected:
       
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   GMMTrain(string nodeName, ParameterSet params)
+   DiagGMMTrain(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
@@ -60,23 +60,13 @@ public:
 
       Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
 
-      GMM *gmm = new GMM(1, object_cast <Vector<float> > (mat[0]).size(), NewDiagonalCovariance);
+      DiagGMM *gmm = new DiagGMM;
       //cerr << "mat.size(): " << mat.getCurrentPos() << endl;
       vector <float *> data(mat.size());
       for (i=0;i<mat.size();i++)
          data[i]=&object_cast <Vector<float> > (mat[i])[0];
-      gmm->init(data);
-      gmm->to_real();
-      for (i=0;i<splitLevels;i++)
-      {
-         //gmm->split1();
-         gmm->binary_split();
-         gmm->kmeans1(data,20);
-         cerr << "*******  " << i << "  *******"<<endl;
-      }
-      //cerr << endl;
-      gmm->kmeans1(data,20);
 
+      gmm->train(data, object_cast <Vector<float> > (mat[0]).size(), 1<<splitLevels, splitLevels);
       out[count] = ObjectRef(gmm);
 
    }
