@@ -3,7 +3,7 @@ lib_LTLIBRARIES = liblapackflow.la
 install:
 	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.so lapackflow.tlb)
 	mkdir -p $(datadir)/toolbox/lapackflow
-	perl $(top_srcdir)/../tools/src/info2def.pl $(top_srcdir)/src/*.cc > $(datadir)/toolbox/lapackflow/lapackflow.def
+	(cd $(top_srcdir)/..; perl tools/src/info2def.pl lapackflow/src/*.cc > $(datadir)/toolbox/lapackflow/lapackflow.def)
 
 liblapackflow_la_SOURCES = lapackflow.cc \
 	flapack.f \

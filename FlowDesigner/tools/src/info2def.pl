@@ -83,10 +83,19 @@ $in_comment = 0;
 $current_input = hash_copy($default_input);
 $current_output =  hash_copy($default_output);
 $current_param = hash_copy($default_param);
-	      
+
+$curr_file=0;
+$curr_line=0;
+$curr_filename=$ARGV[0];
+$next_filename=$ARGV[1];
 # read through the file
 while (<>)
   {
+    if ($next_filename ne $ARGV[0])
+      {
+	$curr_filename = $next_filename;
+	$next_filename = $ARGV[0];
+      }
     # if we are in a comment, look for the information to parse.
     if ($in_comment == 1) {
 
@@ -101,6 +110,9 @@ while (<>)
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@category') {
+	  $node_info{substr($pname, 1)} = $pval;
+	}
+	elsif ($pname eq '@require') {
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@description') {
@@ -180,10 +192,17 @@ while (<>)
 	if ($$current_param{parameter_name} ne 'No Name') {
 	  push @{$node_info{params}}, $current_param;
 	}
-	
+
 	print "  <NodeClass name=\"$node_info{name}\" ",
-	"category =\"$node_info{category}\">\n";
-	
+	"category=\"$node_info{category}\"";
+	#$curr_filename=$ARGV[$curr_file];
+	#print $tata;
+	print " source=\"$curr_filename\"";
+	if ($node_info{require} ne "") {
+	  print " require=\"$node_info{require}\"";
+	}
+	print ">\n";
+
 	foreach $input (@{$node_info{inputs}}) {
 	  print "    <Input name=\"$$input{input_name}\" ",
 	  "type=\"$$input{input_type}\">\n";
