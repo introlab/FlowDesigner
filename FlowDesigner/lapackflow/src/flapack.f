@@ -1,4 +1,4 @@
-
+c//@implements LapackFlow
 
       SUBROUTINE SOLVE(N, NRHS, A, B, X)
       INTEGER N
