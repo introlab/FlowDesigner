@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.29 2000/02/10 07:34:03 jmvalin Exp $
+# $Id: Makefile.am,v 1.30 2000/02/11 20:22:50 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -57,20 +57,9 @@ libablocks_la_SOURCES =	\
 
 libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
-INCLUDES = -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include $(FFTW_INCLUDES)
+INCLUDES = -I$(top_srcdir)/../data-flow/include -I$(top_srcdir)/include $(FFTW_INCLUDES)
 
-LDADD = $(top_srcdir)/data-flow/src/libnetwork.la \
+LDADD = $(top_srcdir)/../data-flow/src/libnetwork.la \
 	$(LIB_FFTW)
 
-#bin_PROGRAMS = AudioNetwork
-
-#AudioNetwork_SOURCES = AudioNetwork.cc 
-
-#LDFLAGS=$(FFTW_LDFLAGS)
-
-#LDADD = $(top_srcdir)/audio_blocks/src/libablocks.la \
-#	$(top_srcdir)/HMM/src/libhmm.la \
-#	$(top_srcdir)/VQ/src/libvq.la \
-#	$(top_srcdir)/data-flow/src/libnetwork.la \
-#	$(LIB_FFTW)
 
