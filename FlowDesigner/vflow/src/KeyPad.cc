@@ -15,7 +15,7 @@ DECLARE_NODE(KeyPad)
  * @description No description available
  *
  * @output_name KEYPAD
- * @output_type Vector
+ * @output_type Vector<int>
  * @output_description A vector of size 2 representing the tuple Line/column of the pressed key.
  *
  * @output_name KEYPAD_ID

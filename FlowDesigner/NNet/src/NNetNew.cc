@@ -22,7 +22,7 @@ DECLARE_NODE(NNetNew)
  * @output_description New (MLP) neural network
  *
  * @parameter_name TOPO
- * @parameter_type Vector
+ * @parameter_type Vector<string>
  * @parameter_description No description available
  *
 END*/

@@ -17,15 +17,15 @@ DECLARE_NODE(NNetTrainWeightDBD)
  * @description Neural network (MLP) training unsing the Delta-bar-delta algorithm
  *
  * @input_name TRAIN_IN
- * @input_type Vector
+ * @input_type Vector<ObjectRef>
  * @input_description Input data accumulator
  *
  * @input_name TRAIN_OUT
- * @input_type Vector
+ * @input_type Vector<ObjectRef>
  * @input_description Output data accumulator
  *
  * @input_name TRAIN_WEIGHT
- * @input_type Vector
+ * @input_type Vector<ObjectRef>
  * @input_description Error weights for training
  *
  * @input_name NNET

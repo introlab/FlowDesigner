@@ -23,7 +23,7 @@ DECLARE_NODE(DiagGMMSetScore)
  * @input_description Input GMM set (pdf's)
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description GMM scores
  *
 END*/
