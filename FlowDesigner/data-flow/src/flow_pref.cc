@@ -9,6 +9,8 @@
 #include "flow_pref.h"
 #include <fstream>
 #include <sstream>
+#include <tree.h>
+#include <parser.h>
 
 FlowPref FlowPref::pref;
 
@@ -19,48 +21,56 @@ FlowPref::FlowPref()
    params["VFLOW"]["PrintOutput"]  = "yes";
    params["VFLOW"]["RunProcess"]   = "no";
    params["VFLOW"]["RegularColor"] = "0x8cd0afff";
-   //params["SelectedColor"]= "0x8ca0af20";
-   //params["SelectedColor"]= "0x8087c020";
    params["VFLOW"]["SelectedColor"]= "0xa8b2fcff";
-   //params["ErrorColor"]   = "0xc02020ff";
    params["VFLOW"]["ErrorColor"]   = "0xfc9595ff";
-   /*
+   
    string filename = getenv("HOME");
-   filename += "/.vflowrc";
-   ifstream prefFile(filename.c_str());
-   if (prefFile.fail())
+   filename += "/.overflowrc";
+
+   xmlDocPtr doc = xmlParseFile (filename.c_str());
+   if (!doc || !doc->root || !doc->root->name)
    {
-      save();
-      modified=false;
+      cerr << "corrupted preference file, will be over-written when saving" << endl;
+      modified=true;
       return;
    }
-   while (1)
+   xmlNodePtr root=doc->root;
+   xmlNodePtr cat = root->childs;
+   while(cat)
    {
-      string key;
-      string value;
-      char ch;
-      while(1)
+      if (string((char*)cat->name) == "Category")
       {
-	 prefFile >> ch;
-	 if (!prefFile)
-	    return;
-	 if (ch=='=')
-	    break;
-	 if (ch!=' ')
-	    key += ch;
+	 xmlNodePtr par=cat->childs;
+	 char *str_catname = (char *) xmlGetProp(cat, (CHAR *)"name");
+	 if (str_catname)
+	 {
+	    while (par)
+	    {
+	       if (string((char*)par->name) == "Parameter")
+	       {
+		  char *str_name = (char *) xmlGetProp(par, (CHAR *)"name");
+		  char *str_value = (char *) xmlGetProp(par, (CHAR *)"value");
+		  if (str_name && str_value)
+		  {
+		     params[str_catname][str_name] = str_value;
+		     free(str_name); free(str_value);
+		  }
+	       }
+	       par=par->next;
+	    }
+	    free(str_catname);
+	 }
       }
-      prefFile >> value;
-      params[key]   = value;
-      //cerr << key << "->" << value << endl;
+      cat=cat->next;
    }
-   */
+   
    modified=false;
 }
 
 FlowPref::~FlowPref()
 {
-   //if (modified)
-   //   save();
+   if (modified)
+      save();
 }
 
 bool FlowPref::getBool(const string &cat, const string &str)
@@ -134,19 +144,36 @@ void FlowPref::Save()
 
 void FlowPref::save()
 {
-  /*string filename = getenv("HOME");
-   filename += "/.vflowrc";
-   //cerr << "save " << filename << endl;
-   ofstream prefFile(filename.c_str());
-   if (prefFile.fail())
-      return;
-   map<string, map<string,string> >::iterator p = params.begin();
-   while (p != params.end())
+   string filename = getenv("HOME");
+   filename += "/.overflowrc";
+   xmlDocPtr doc;
+   doc = xmlNewDoc((CHAR *)"1.0");
+   doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Preferences", NULL);
+   xmlSetProp(doc->root, (CHAR *)"version", (CHAR *)/*VERSION*/"0.6.0");
+
+   xmlNodePtr tree;
+
+   map<string, map<string,string> >::iterator cat = params.begin();
+   while (cat != params.end())
    {
-      prefFile << p->first << "=" << p->second << endl;
-      p++;
-      }*/
+      xmlNodePtr catNode = xmlNewChild(doc->root, NULL, (CHAR *)"Category", NULL);
+	 xmlSetProp(catNode, (CHAR *)"name", (CHAR *)cat->first.c_str());
+	 map<string,string>::iterator it = cat->second.begin();
+      while (it!=cat->second.end())
+      {
+	 xmlNodePtr paramNode = xmlNewChild(catNode, NULL, (CHAR *)"Parameter", NULL);
+	 xmlSetProp(paramNode, (CHAR *)"name", (CHAR *)it->first.c_str());
+	 xmlSetProp(paramNode, (CHAR *)"value", (CHAR *)it->second.c_str());	 
+	 it++;
+      }
+      cat++;
+   }
+   
+   xmlSaveFile(filename.c_str(), doc);
+   
+   xmlFreeDoc(doc);
+
+
    modified=false;
-   //cerr << "pref save\n";
 }
 
