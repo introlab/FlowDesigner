@@ -11,6 +11,7 @@ INCLUDES = \
 	$(FFTW_INCLUDES) \
 	$(GNOME_GTHR_INCLUDE) \
 	-I$(top_srcdir)/../data-flow/include \
+	-I$(top_srcdir)/../audio_blocks/include \
 	-I$(top_srcdir)/include
 
 bin_PROGRAMS = vflow

@@ -118,7 +118,7 @@ GNOME_XML_INCLUDE=`gnome-config --cflags xml`
 AC_SUBST(GNOME_XML_LIB)
 AC_SUBST(GNOME_XML_INCLUDE)
 
-AC_PATH_FFTW
+dnl AC_PATH_FFTW
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(pthread_cancel)

@@ -17,4 +17,5 @@ noinst_HEADERS = AudioFile.h \
 	codebook.h \
 	internal.h \
 	codec.h \
-	scales.h
+	scales.h \
+	FFTWrap.h
