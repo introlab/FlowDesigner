@@ -28,26 +28,27 @@ class LTP;
 
 DECLARE_NODE(LTP)
 /*Node
-
+ *
  * @name LTP
  * @category Signal:DSP
- * @description No description available
-
+ * @description Long-term predictor, finds best correlation (pitch) within (START <= sample delay <= END)
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input frame
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description [pitch gain, pitch period]
+ *
  * @parameter_name START
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Smallest pitch allowed
+ *
  * @parameter_name END
- * @parameter_description No description available
-
- * @parameter_name GAIN_FACTOR
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Largest pitch allowed
+ *
 END*/
 
 
@@ -57,7 +58,6 @@ class LTP : public BufferedNode {
    int outputID;
    int start;
    int end;
-   float factor;
 
 public:
    LTP(string nodeName, ParameterSet params)
@@ -68,10 +68,6 @@ public:
 
       start = dereference_cast<int> (parameters.get("START"));
       end = dereference_cast<int> (parameters.get("END"));
-      if (parameters.exist("GAIN_FACTOR"))
-	 factor = dereference_cast<float> (parameters.get("GAIN_FACTOR"));
-      else 
-	 factor = 1;
       inputsCache[inputID].lookBack=1;
    }
 
@@ -207,7 +203,7 @@ public:
       if (best_gain < -.2)
 	 best_gain = -.2;
       //cout << endl;
-      output[0] = best_gain * factor;
+      output[0] = best_gain;
       output[1] = best_T;
       //cout << output[0] << " " << output[1] << endl;
    }
