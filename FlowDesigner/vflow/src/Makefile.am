@@ -14,7 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir)/../audio_blocks/include \
 	-I$(top_srcdir)/include
 
-bin_PROGRAMS = vflow
+bin_PROGRAMS = vflow gflow
 
 vflow_SOURCES = \
 	main.cc \
@@ -32,8 +32,15 @@ vflow_SOURCES = \
 	GUINetTerminal.cc \
 	GUINetPopup.cc
 
+gflow_SOURCES = \
+	gflow.cc \
+	Probe.cc \
+	TextProbe.cc \
+	PlotProbe.cc \
+	SpectrumProbe.cc
+
 LDFLAGS = $(FFTW_LDFLAGS)
 
-vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
+LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \
 	$(LIB_FFTW)
