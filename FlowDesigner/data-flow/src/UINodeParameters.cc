@@ -1,7 +1,7 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
 #include "UINodeParameters.h"
-#include <tree.h>
+#include <libxml/tree.h>
 #include "Node.h"
 #include "UINode.h"
 #include "UINetwork.h"

@@ -4,7 +4,6 @@
 #include "Node.h"
 #include "Vector.h"
 #include "ObjectParser.h"
-#include <strstream>
 #include <math.h>
 #include "misc.h"
 

@@ -4,7 +4,6 @@
 #include "RBF.h"
 #include "Vector.h"
 #include "BufferedNode.h"
-#include <strstream>
 
 class RBFTrain;
 DECLARE_NODE(RBFTrain)

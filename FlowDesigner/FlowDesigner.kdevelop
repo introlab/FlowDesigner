@@ -9,7 +9,7 @@
     <ignoreparts/>
     <projectdirectory>.</projectdirectory>
     <absoluteprojectpath>false</absoluteprojectpath>
-    <description/>
+    <description></description>
     <secondaryLanguages/>
   </general>
   <kdevautoproject>
@@ -21,7 +21,7 @@
       <mainprogram>src/FlowDesigner</mainprogram>
       <directoryradio>executable</directoryradio>
       <customdirectory>/</customdirectory>
-      <programargs/>
+      <programargs></programargs>
       <terminal>false</terminal>
       <autocompile>true</autocompile>
       <envvars/>
@@ -51,17 +51,17 @@
       <abortonerror>false</abortonerror>
       <numberofjobs>1</numberofjobs>
       <dontact>false</dontact>
-      <makebin/>
+      <makebin></makebin>
     </make>
   </kdevautoproject>
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
-      <programargs/>
-      <gdbpath/>
-      <configGdbScript/>
-      <runShellScript/>
-      <runGdbScript/>
+      <programargs></programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
       <breakonloadinglibs>true</breakonloadinglibs>
       <separatetty>false</separatetty>
       <floatingtoolbar>false</floatingtoolbar>
@@ -95,13 +95,10 @@
     </codecompletion>
   </kdevcppsupport>
   <kdevfileview>
-    <groups>
-      <hidenonprojectfiles>false</hidenonprojectfiles>
-    </groups>
+    <groups/>
     <tree>
       <hidepatterns>*.o,*.lo,CVS</hidepatterns>
       <hidenonprojectfiles>true</hidenonprojectfiles>
-      <showvcsfields>false</showvcsfields>
     </tree>
   </kdevfileview>
   <kdevdoctreeview>
@@ -121,11 +118,4 @@
       <implementationsuffix>.cc</implementationsuffix>
     </filetemplates>
   </cppsupportpart>
-  <kdevcvsservice>
-    <recursivewhenupdate>true</recursivewhenupdate>
-    <prunedirswhenupdate>true</prunedirswhenupdate>
-    <createdirswhenupdate>true</createdirswhenupdate>
-    <recursivewhencommitremove>true</recursivewhencommitremove>
-    <revertoptions>-C</revertoptions>
-  </kdevcvsservice>
 </kdevelop>

@@ -4,7 +4,6 @@
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
-//#include <strstream>
 #include "Vector.h"
 
 #ifdef HAVE_CONFIG_H

@@ -706,6 +706,7 @@ void GUINode::notifyError(const string &message)
    gnome_canvas_item_set (nodeRect,
 			  "fill_color_rgba", col,
 			  NULL);
+   //cerr << "color" << endl;
    //dynamic_cast<GUINetwork *> (getNetwork())->updateScroll();
 }
 

@@ -3,7 +3,7 @@
 #include "BufferedNode.h"
 //@implements core
 
-//#include "UINode.h"
+#include "UINode.h"
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)

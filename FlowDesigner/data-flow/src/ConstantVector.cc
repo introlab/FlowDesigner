@@ -50,8 +50,6 @@ public:
       
       value = ObjectRef(new Vector<float>);
       Vector<float> &val = object_cast<Vector<float> > (value);
-      //istrstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
-      //str_vector >> val;
       istringstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
       str_vector >> val;
 

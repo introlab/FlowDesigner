@@ -3,7 +3,6 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <strstream>
 #include <math.h>
 
 #ifdef HAVE_VALUES_H

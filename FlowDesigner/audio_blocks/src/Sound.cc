@@ -4,7 +4,6 @@
 #include "Vector.h"
 #include "ObjectParser.h"
 #include <iostream>
-#include <strstream>
 
 #include <stdio.h>
 #include <sys/stat.h>

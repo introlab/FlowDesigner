@@ -6,7 +6,6 @@
 #include <typeinfo>
 #include <stream>
 #include <string>
-#include <strstream>
 
 
 #endif
