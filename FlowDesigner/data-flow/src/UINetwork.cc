@@ -8,6 +8,7 @@
 #include "UILink.h"
 #include "Node.h"
 #include "UINetTerminal.h"
+#include "UINote.h"
 
 #include "Network.h"
 #include "Iterator.h"
@@ -26,6 +27,13 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
    , buildRecurs(false)
 {
    //create();
+
+  //(DL 04/08/2004)
+  //TODO DEBUG CODE TO BE REMOVED WHEN NOTES ARE FULLY TESTED
+  //lets add a dummy note
+  m_notes.push_back(new UINote(string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
+  //ENDDEBUG
+
 }
 
 UINetwork::UINetwork(UIDocument *_doc, xmlNodePtr net, bool init)
@@ -226,9 +234,43 @@ void UINetwork::load (xmlNodePtr net)
 	    cerr << "Invalid netTerminal at " << termNode << ":" << termTerm << endl;
 	 }
       }
+      else if (string((char*)node->name) == "Note")
+      {
+	//(DL 04/08/2004) Added Note (Post-It like) in the network description	
+	char *str_noteText = (char *) xmlGetProp(node,(xmlChar*)"text");
+	char *str_noteX = (char*) xmlGetProp(node,(xmlChar*)"x");
+	char *str_noteY = (char*) xmlGetProp(node,(xmlChar*)"y");
+	char *str_noteVisible = (char*) xmlGetProp(node,(xmlChar*)"visible");
+
+	//convert that into strings
+	string noteText(str_noteText);
+	string noteX(str_noteX);
+	string noteY(str_noteY);
+	string noteVisible(str_noteVisible);
+
+	//Must absolutely free memory to avoid leaks
+	free(str_noteText);
+	free(str_noteX);
+	free(str_noteY);
+	free(str_noteVisible);
+
+	stringstream noteXStream(noteX);
+	stringstream noteYStream(noteY);
+	stringstream noteVisibleStream(noteVisible);
+	
+	double x,y;
+	noteXStream>>x;
+	noteYStream>>y;
+	bool visible;
+	noteVisibleStream>>visible;
+	
+	//Creating / Adding new note
+	m_notes.push_back(new UINote(noteText,x,y,visible));
+      }
       node = node->next;
    }
    //cerr << "done...\n";
+
 
 }
 
@@ -241,9 +283,11 @@ UINetwork::~UINetwork()
       destroyed=true;
       //Links are deleted through the nodes destructor
       for (unsigned int i=0;i<nodes.size();i++)
-	 delete nodes[i];
+	delete nodes[i];
       for (unsigned int i=0;i<terminals.size();i++)
-	 delete terminals[i];
+	delete terminals[i];
+      for (unsigned int i=0;i<m_notes.size();i++)
+	delete m_notes[i];
    }
 }
 
@@ -361,7 +405,11 @@ void UINetwork::saveXML(xmlNode *root)
    {
       terminals[i]->saveXML(tree);
    }
- 
+   //(DL 04/08/2004) Saving notes
+   for (unsigned int i=0;i<m_notes.size(); i++)
+   {
+     m_notes[i]->saveXML(tree);
+   }
 
 }
 

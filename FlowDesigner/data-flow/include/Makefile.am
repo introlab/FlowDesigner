@@ -71,9 +71,10 @@ include_HEADERS = Array.h \
 	Complex.h \
 	Stream.h \
 	URLHandler.h \
-  BinaryAND.h \
-  BinaryOR.h \
-  Power.h
+  	BinaryAND.h \
+  	BinaryOR.h \
+  	Power.h \
+	UINote.h
 	
 noinst_HEADERS = \
 	Pack.h \

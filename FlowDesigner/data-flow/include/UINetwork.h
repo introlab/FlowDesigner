@@ -22,6 +22,7 @@ class UITerminal;
 class UILink;
 class UINodeMenu;
 class UIDocument;
+class UINote;
 //class UINetTerminal;
 
 class Network;
@@ -61,6 +62,9 @@ protected:
 
    /**Pointer to all the network terminals*/
    vector <UINetTerminal *> terminals;
+
+   /**All the notes in the network*/
+   vector <UINote*> m_notes;
 
    ///The condition node of the iterator (no meaning for subnets)
    //UINode *conditionNode;

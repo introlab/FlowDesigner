@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.125 2004/07/29 14:43:18 carle_cote Exp $
+# $Id: Makefile.am,v 1.126 2004/07/29 18:09:57 carle_cote Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -145,9 +145,10 @@ libflow_la_SOURCES = Node.cc \
 	TCPConnect.cc \
 	URLHandler.cc \
 	URLStream.cc \
-  BinaryAND.cc \
-  BinaryOR.cc \
-  Power.cc
+  	BinaryAND.cc \
+  	BinaryOR.cc \
+  	Power.cc \
+	UINote.cc
 
 
 
