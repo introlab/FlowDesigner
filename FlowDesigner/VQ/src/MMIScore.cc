@@ -19,24 +19,23 @@
 #include "Buffer.h"
 #include "Cell.h"
 #include "Vector.h"
-#include "multithread.h"
 
 DECLARE_NODE(MMIScore)
 /*Node
-
+ *
  * @name MMIScore
  * @category VQ
  * @description No description available
-
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @input_name MMI
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 
@@ -65,7 +64,6 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
    //cerr << "Getting output in MMIScore with count = " << count << endl;
    if (output_id==outputID)
    {
-      lock();
       if (count != processCount)
       {
          int i;
@@ -86,7 +84,7 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
          processCount=count;
       }
       //cerr << "MMIScore returning: " << currentScore << " (" << typeid(currentScore).name() << ")" << endl;
-      return unlock_and_return(currentScore);
+      return currentScore;
    }
    else 
       throw new NodeException (this, "MMIScore: Unknown output id", __FILE__, __LINE__);

@@ -21,19 +21,19 @@
 
 DECLARE_NODE(NOT)
 /*Node
-
+ *
  * @name NOT
  * @category Logic
  * @description Binary NOT
-
+ *
  * @input_name INPUT
  * @input_description The Bool Input
  * @input_type bool
-
+ *
  * @output_name OUTPUT
  * @output_description The Inverted Bool Output
  * @output_type bool
-
+ *
 END*/
 
 

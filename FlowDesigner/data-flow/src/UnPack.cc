@@ -17,21 +17,20 @@
 #include "UnPack.h"
 #include "net_types.h"
 #include "Vector.h"
-#include "multithread.h"
 
 DECLARE_NODE(UnPack)
 /*Node
-
+ *
  * @name UnPack
  * @category Flow
  * @description Unpack data already packed
-
+ *
  * @input_name INPUT
  * @input_description The packed vector
-
+ *
  * @output_name OUTPUT
  * @output_description The single unpacked Object
-
+ *
 END*/
 
 

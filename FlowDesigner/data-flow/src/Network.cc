@@ -220,6 +220,22 @@ void Network::connect (const string &currentNodeName,const string &inputName,
 }
 
 
+/***************************************************************************/
+/*
+  verifyConnect(...)
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+void Network::verifyConnect()
+{
+   map<string,Node*>::iterator iter;
+
+   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) 
+   {
+      (*iter).second->verifyConnect();
+   }
+}
+
 
 /***************************************************************************/
 /*
@@ -234,9 +250,15 @@ void Network::specificInitialize() {
    if (!sinkNode) {
       throw new NoSinkNodeException();
    }
-
-
+   
    map<string,Node*>::iterator iter;
+
+   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) 
+   {
+      (*iter).second->verifyConnect();
+   }
+
+
    map<string,Node*> connectionMap;
    
   
@@ -244,8 +266,10 @@ void Network::specificInitialize() {
    
    //we must verify if all the nodes are initialized properly
 
-   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-      if (!((*iter).second)->isInitialized()) {
+   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) 
+   {
+      if (!((*iter).second)->isInitialized()) 
+      {
          //adding the nodes that are not properly initialized
          connectionMap.insert(nodeEntry((*iter).first, (*iter).second));
       }
@@ -269,9 +293,7 @@ ObjectRef Network::getOutput (int output_id, int count) {
    if (!sinkNode) {
       throw new NoSinkNodeException();
    }
-   lock();
    return sinkNode->getOutput(output_id, count);
-   unlock();
 }
 
 /***************************************************************************/

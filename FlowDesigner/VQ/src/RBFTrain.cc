@@ -20,7 +20,6 @@
 #include "Vector.h"
 #include "Node.h"
 #include <strstream>
-//#include "multithread.h"
 
 class RBFTrain;
 DECLARE_NODE(RBFTrain)

@@ -14,8 +14,8 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef _NETWORKNODE_H_
-#define _NETWORKNODE_H_
+#ifndef _NODE_H_
+#define _NODE_H_
 
 
 #include <string>
@@ -29,10 +29,6 @@
 
 #include "NodeFactory.h"
 //class _NodeFactory;
-
-#ifdef MULTITHREAD
-#include <pthread.h>
-#endif
 
 //using namespace std;
 //namespace DataFlow {
@@ -127,11 +123,7 @@ protected:
    /**Parameters given to the node at construction time*/
    ParameterSet parameters;
 
-#ifdef MULTITHREAD
-   /**pthread mutex*/
-   pthread_mutex_t mutex;
-#endif
-
+   /**Corresponding UINode*/
    UINode *uinode;
 
    /**Connect an input node using numeric (integer) input/output names*/
@@ -201,42 +193,9 @@ public:
  
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req) {}
-
-   /**Standard request-passing method between nodes during initialization
-    This one will be removed*/
-   //virtual void request(const ParameterSet &req) {}
-
-   /**locks the node's mutex*/
-   void lock() 
-   { 
-#ifdef MULTITHREAD
-      pthread_mutex_lock(&mutex); 
-#endif
-   }
    
-   /**unlocks the node's mutex*/
-   void unlock() 
-   { 
-#ifdef MULTITHREAD
-      pthread_mutex_unlock(&mutex);
-#endif
-   }
-
-#ifdef MULTITHREAD
-   template <class T>
-   T unlock_and_return(T &var)
-   {
-      T tmp = var;
-      unlock();
-      return tmp;
-   }
-#else
-   template <class T>
-   T &unlock_and_return(T &var)
-   {
-      return var;
-   }
-#endif
+   /**Verify input connections for the node*/
+   virtual void verifyConnect();
 
    void setUINode(UINode *_uinode) {uinode = _uinode;}
    

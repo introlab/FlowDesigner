@@ -55,9 +55,6 @@ Node::Node(string nodeName, const ParameterSet &params)
    , exit_status(false)
    , uinode(NULL)
 {
-#ifdef MULTITHREAD
-   pthread_mutex_init(&mutex, NULL);
-#endif
 }
 /***************************************************************************/
 /*
@@ -135,6 +132,8 @@ int Node::addOutput(const string &output_name) {
    outputNames[position] = output_name;
    return position;
 }
+
+
 /***************************************************************************/
 /*
   hasOutput(...)
@@ -144,6 +143,30 @@ int Node::addOutput(const string &output_name) {
 bool Node::hasOutput (int output_id) const {
    return (output_id < outputNames.size());
 }
+
+
+/***************************************************************************/
+/*
+  verifyConnect(...)
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+void Node::verifyConnect()
+{
+   vector<NodeInput>::iterator in;
+   for (in = inputs.begin(); in < inputs.end(); in++)
+   {        
+      if (!in->node || in->outputID == -1)
+	 throw new NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
+      
+      if (!in->node->hasOutput(in->outputID))
+	 throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
+      
+   }
+   
+}
+
+
 /***************************************************************************/
 /*
   translateOutput(...)
@@ -163,6 +186,8 @@ int Node::translateOutput (string output_name) {
    //should never return...
    return -1;
 }
+
+
 /***************************************************************************/
 /*
   translateInput(...)
@@ -181,6 +206,8 @@ int Node::translateInput (string input_name) {
    throw new NodeException(this,string("Unknown input in translateInput : ") + input_name, __FILE__,__LINE__);
    return -1;
 }
+
+
 /***************************************************************************/
 /*
   connectToNode()
@@ -191,6 +218,9 @@ void Node::connectToNode(string in, Node *inputNode, string out)
 {
    connectToNode(translateInput(in), inputNode, inputNode->translateOutput(out));
 }
+
+
+
 /***************************************************************************/
 /*
   initialize()
@@ -202,23 +232,10 @@ void Node::initialize ()
    if (initialized) return;
    if (--outputInitializeCount <=0)
    {
-      
-  
-      vector<NodeInput>::iterator in;
-
-      for (in = inputs.begin(); in < inputs.end(); in++)
-      {        
-         if (!in->node || in->outputID == -1) 
-            throw new NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
-         
-         if (!in->node->hasOutput(in->outputID)) 
-	    throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
-         
-      }
-
       specificInitialize();
       //parameters.checkUnused();
 
+      vector<NodeInput>::iterator in;
       for (in = inputs.begin(); in < inputs.end(); in++)
       {        
 	 try {
@@ -232,6 +249,8 @@ void Node::initialize ()
       
    }
 }
+
+
 /***************************************************************************/
 /*
   specificInitialize(...)
@@ -243,6 +262,8 @@ void Node::specificInitialize()
    initialized = true;
    processCount = -1;
 }
+
+
 /***************************************************************************/
 /*
   reset()
@@ -253,6 +274,7 @@ void Node::reset()
 {
    processCount=-1;
 }
+
 
 /***************************************************************************/
 /*
@@ -275,6 +297,7 @@ _NodeFactory* Node::getFactoryNamed (const string &name) {
    }
    return factory;
 }
+
 
 /***************************************************************************/
 /*
@@ -312,6 +335,7 @@ int Node::addNodeInfo (const string &info) {
    nodeInfo().insert(nodeInfo().end(),info);
    return 0;
 };
+
 
 /**Run-time assertions*/
 void Node::rt_assert(bool cond, string message="", char *_file, int _line)

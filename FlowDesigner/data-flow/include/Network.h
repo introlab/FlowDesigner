@@ -121,6 +121,8 @@ public:
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
    }
    
+   /**Verify input connections for the node*/
+   virtual void verifyConnect();
 
 protected: 
 

@@ -22,20 +22,20 @@
 
 DECLARE_NODE(MMITrain)
 /*Node
-
+ *
  * @name MMITrain
  * @category VQ
  * @description No description available
-
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name LEVELS
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -63,7 +63,6 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
    //cerr << "Getting output in MMITrain\n";
    if (output_id==outputID)
    {
-      lock();
       if (count != processCount)
       {
          int i,j;
@@ -98,7 +97,7 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
          currentMMI = ObjectRef(mmi);
          //exit(1);
       }
-      return unlock_and_return(currentMMI);
+      return currentMMI;
    }
    else 
       throw new NodeException (this, "MMITrain: Unknown output id", __FILE__, __LINE__);

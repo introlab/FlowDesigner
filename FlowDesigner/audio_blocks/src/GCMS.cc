@@ -16,25 +16,23 @@
 #include "GCMS.h"
 #include "FrameOperation.h"
 #include "Vector.h"
-//#include "multithread.h"
-//#include "Buffer.h"
 
 DECLARE_NODE(GCMS)
 /*Node
-
+ *
  * @name GCMS
  * @category Signal:DSP
- * @description No description available
-
+ * @description Deprecated
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name LENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -70,7 +68,6 @@ void GCMS::reset()
 
 ObjectRef GCMS::getOutput(int output_id, int count)
 {
-   lock();
    try {
       Buffer &out = object_cast<Buffer> (output);
       
@@ -104,14 +101,12 @@ ObjectRef GCMS::getOutput(int output_id, int count)
          out[count]->status = Object::valid;
       }
       
-      //unlock();
       //cerr << "leaving GCMS::getOutput for " << name << " count: " << count << endl;
       //cerr << "returning status " << out[count]->status << endl;
-      return unlock_and_return(out[count]);
+      return out[count];
    } catch (BaseException *e)
    {
       //e->print();
-      unlock();
       throw e->add(new NodeException (this, "Exception in GCMS::getOutput", __FILE__, __LINE__));
    }
 }

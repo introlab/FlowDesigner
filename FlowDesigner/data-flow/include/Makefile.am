@@ -18,7 +18,6 @@ include_HEADERS = Array.h \
 	ParameterSet.h \
 	Vector.h \
 	misc.h \
-	multithread.h \
 	net_types.h \
 	rc_ptrs.h \
         BaseException.h \

@@ -14,9 +14,6 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef _AND_CC_
-#define _AND_CC_
-
 #include "AND.h"
 #include "Object.h"
 #include "ObjectRef.h"
@@ -111,5 +108,3 @@ int AND::translateInput(string inputName) {
    return addInput(inputName);
 }
 
-
-#endif

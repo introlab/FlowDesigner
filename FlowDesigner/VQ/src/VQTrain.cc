@@ -19,7 +19,6 @@
 #include "GrowingBuffer.h"
 #include "kmeans.h"
 #include "Vector.h"
-//#include "multithread.h"
 
 DECLARE_NODE(VQTrain)
 /*Node

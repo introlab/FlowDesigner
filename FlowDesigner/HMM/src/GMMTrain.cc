@@ -20,21 +20,20 @@
 #include "covariance.h"
 #include "gmm.h"
 #include "Vector.h"
-#include "multithread.h"
 
 DECLARE_NODE(GMMTrain)
 /*Node
-
+ *
  * @name GMMTrain
  * @category VQ
  * @description No description available
-
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 
@@ -61,7 +60,6 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
    //cerr << "Getting output in GMMTrain\n";
    if (output_id==outputID)
    {
-      lock();
       if (count != processCount)
       {
          int i;
@@ -90,7 +88,7 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
 
          currentGMM = ObjectRef(gmm);
       }
-      return unlock_and_return(currentGMM);
+      return currentGMM;
    }
    else 
       throw new NodeException (this, "GMMTrain: Unknown output id", __FILE__, __LINE__);

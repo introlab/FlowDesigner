@@ -20,24 +20,23 @@
 #include "covariance.h"
 #include "gmm.h"
 #include "Vector.h"
-#include "multithread.h"
 
 DECLARE_NODE(GMMScore)
 /*Node
-
+ *
  * @name GMMScore
  * @category VQ
  * @description No description available
-
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @input_name GMM
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 
@@ -64,7 +63,6 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
    //cerr << "Getting output in GMMScore\n";
    if (output_id==outputID)
    {
-      lock();
       if (count != processCount)
       {
          int i;
@@ -88,7 +86,7 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
          processCount=count;
       }
       //cerr << "GMMScore returning: " << currentScore << " (" << typeid(currentScore).name() << ")" << endl;
-      return unlock_and_return(currentScore);
+      return currentScore;
    }
    else 
       throw new NodeException (this, "GMMScore: Unknown output id", __FILE__, __LINE__);

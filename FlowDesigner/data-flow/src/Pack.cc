@@ -17,22 +17,21 @@
 #include "Pack.h"
 #include "net_types.h"
 #include "Vector.h"
-#include "multithread.h"
 
 DECLARE_NODE(Pack)
 /*Node
-
+ *
  * @name Pack
  * @category Flow
  * @description Pack Data into a vector
-
+ *
  * @input_name INPUT
  * @input_description Inputs to be packed (until processCount reached)
-
+ *
  * @output_name OUTPUT
  * @output_description A vector of ObjectRef(s)
  * @output_type Vector
-
+ *
 END*/
 
 
@@ -60,7 +59,6 @@ ObjectRef Pack::getOutput(int output_id, int count)
    //cerr << "Getting output in Pack\n";
    if (output_id==outputID)
    {
-      lock();
       while (processCount < count)
       {
          processCount++;
@@ -72,7 +70,7 @@ ObjectRef Pack::getOutput(int output_id, int count)
          pack.insert(pack.end(), inputValue);
       }
       //cerr << "Pack returning: " << output << " (" << typeid(output).name() << ")" << endl;
-      return unlock_and_return(output);
+      return output;
    }
    else 
       throw new NodeException (this, "Pack: Unknown output id", __FILE__, __LINE__);
