@@ -19,8 +19,14 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
+#include "window.h"
+#include "mdct.h"
+//#include "codec.h"
+//#include "psy.h"
 
 class MDCT;
+
+
 
 //DECLARE_NODE(MDCT)
 NODE_INFO(MDCT,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
@@ -29,6 +35,11 @@ class MDCT : public FrameOperation {
    
    int inputID;
    int inputLength;
+   vector<float> buffer;
+   vector<double> pcm;
+   double *window;
+   mdct_lookup m_look;
+      //vorbis_look_psy p_look;
 
 public:
    MDCT(string nodeName, ParameterSet params)
@@ -38,12 +49,22 @@ public:
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+
+      buffer.resize(inputLength*2);
+      pcm.resize(inputLength*2);
+      for (int i=0;i<inputLength*2;i++)
+	 buffer[i]=0;
+      inOrder = true;
    }
 
-   ~MDCT() {}
+   ~MDCT() {free(window);}
 
    virtual void specificInitialize()
    {
+      window=_vorbis_window(0,inputLength*2,inputLength,inputLength);
+      mdct_init(&m_look,inputLength*2);
+      //_vp_psy_init(&p_look,&_psy_set0,inputLength,16000);
+      
       this->FrameOperation::specificInitialize();
    }
 
@@ -60,9 +81,17 @@ public:
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
+      for (int i=0;i<inputLength;i++)
+	 buffer[i+inputLength] = in[i];
+
+      for (int i=0;i<inputLength;i++)
+	 pcm[i]=buffer[i]*window[i];
+
+      mdct_forward(&m_look,pcm.begin(),pcm.begin());
+
       for (int i=0;i<outputLength;i++)
       {
-         output[i]=log(in[i]+FLT_MIN);
+         output[i]=pcm[i];
       }
       
       output.status = Object::valid;

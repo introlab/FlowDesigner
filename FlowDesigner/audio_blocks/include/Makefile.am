@@ -13,5 +13,10 @@ noinst_HEADERS = AudioFile.h \
 	MMIAccumulator.h \
 	Histogram.h \
 	lpc.h \
-	window.h
-	mdct.h
+	window.h \
+	mdct.h \
+	masking.h \
+	psy.h \
+	codebook.h \
+	internal.h \
+	codec.h
