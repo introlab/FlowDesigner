@@ -70,7 +70,7 @@ public:
 
       //write everything at once in the stream
       stream.write(temp_stream.str().c_str(), temp_stream.str().size());
-
+      stream.flush();
 
       out[count] = objectValue;
    }
