@@ -13,12 +13,11 @@ To compile everything you need:
 
 How to compile:
 
-% aclocal
-% automake
-% autoconf
 % ./configure <options>
 % make
 % make install
+
+NOTE: if you are using a CVS tarball, use ./autogen.sh insteand of ./configure
 
 
 notes about configure
@@ -38,7 +37,7 @@ The important options are:
 --prefix=install-path=/path/where/to/install
 --with-fftw-dir=/path/to/fftw
 --with-libtool-acc-kludge     (you MUST use this options ONLY if you are 
-                               using aCC as the C++ compiler)
+                               using HP's aCC as the C++ compiler)
 
 If you plan to use the audio modules, then only shared libraries will work 
 (because the program makes use of dynamically loaded "plugins"). 
