@@ -6,6 +6,7 @@
 #include "GUINodeParameters.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
+#include "misc.h"
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -504,11 +505,13 @@ void GUINode::initialize_widgets() {
 
   //creating input items
   for (int i=0;i<inputname.size();i++) {
+    cout<<"insert input"<<endl;
     inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1,y1));
   }
 
   //creating output items
   for (int i=0;i<outputname.size();i++) {
+    cout<<"insert output"<<endl;
     outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2, y2));
   }
 
@@ -556,18 +559,17 @@ void GUINode::redraw() {
   rx2 = tx2;
   ry2 = ty2;
 
-
   //centering on label
 
-  start_y1 = (ty1 + ty2) / 2.0 - max((double)inputs.size() - 1.0,0.0)* 15.0 / 2.0;
-  start_y2 = (ty1 + ty2) / 2.0 - max((double)outputs.size() - 1.0,0.0)* 15.0 / 2.0;
+  start_y1 = (ty1 + ty2) / 2.0 - (inputs.size()  - 1.0) * 15.0 / 2.0;
+  start_y2 = (ty1 + ty2) / 2.0 - (outputs.size() - 1.0) * 15.0 / 2.0;
 
 
   //finding max size for text + input terminal
 
   if (inputs.size() > 1) {
     for (int i = 0; i < inputs.size(); i++) {
-      max_inputs = max(max_inputs,dynamic_cast<GUITerminal*>(inputs[i])->getWidth() + 10);    
+      max_inputs = max(max_inputs,dynamic_cast<GUITerminal*>(inputs[i])->getWidth() + 10.0);    
     }
   }
 
@@ -575,9 +577,10 @@ void GUINode::redraw() {
   //finding max size for text + output terminal
   if (outputs.size() > 1) {
     for (int i = 0; i < outputs.size(); i++) {
-      max_outputs = max(max_outputs,dynamic_cast<GUITerminal*>(outputs[i])->getWidth() + 10);
+      max_outputs = max(max_outputs,dynamic_cast<GUITerminal*>(outputs[i])->getWidth() + 10.0);
     }
   }
+
 
   //let's position the inputs
   for (int i = 0; i < inputs.size(); i++) { 
@@ -616,7 +619,8 @@ void GUINode::redraw() {
 
   //dont forget text size
   ry1 = min(start_y1,start_y2) - 10;
-  ry2 = min(start_y1,start_y2) + 15.0 * max(inputs.size() -1,outputs.size() -1) + 10;
+
+  ry2 = min(start_y1,start_y2) + 15.0 * max((double)inputs.size() -1.0,(double)outputs.size() -1.0) + 10;
 
 
   
