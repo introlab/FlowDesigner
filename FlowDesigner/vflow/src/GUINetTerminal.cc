@@ -22,6 +22,7 @@ static gint net_terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpoint
 
 GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string _name)
    : UINetTerminal(_terminal, _type, _name)
+   , item(NULL)
 {
 
    string defaultName;
@@ -75,8 +76,9 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       terminal->disconnectNetTerminal();
       //cerr << "throwing\n";
       //throw false;
-      //BUG, there's a leak here      
-      cerr<< "returning"<<endl;  
+      cerr<< "returning"<<endl;
+      //Now, it doesn't leak, but it's really ugly
+      delete this;
       return;
       
    }
@@ -100,7 +102,8 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
 
 GUINetTerminal::~GUINetTerminal()
 {
-   gtk_object_destroy(GTK_OBJECT(item));
+   if (item)
+      gtk_object_destroy(GTK_OBJECT(item));
 }
 
 

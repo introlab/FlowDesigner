@@ -91,6 +91,14 @@ gint GUITerminal::event(GdkEvent *event)
 	   {
 	      cerr << "net terminal cancelled\n";
 	      return TRUE;
+	   } catch (int b)
+	   {
+	      cerr << "int net terminal cancelled\n";
+	      return TRUE;
+	   } catch (...)
+	   {
+	      cerr << "... net terminal cancelled\n";
+	      return TRUE;
 	   }
 	   break;
         default:

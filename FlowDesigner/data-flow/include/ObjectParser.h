@@ -81,7 +81,6 @@ template <class T>
 inline istream &operator >> (istream &in, vector<T*> &v)
 {
    int items_found=0;
-   string nimportequoi;
 
    if (!isValidType(in,"Vector"))
       return in;

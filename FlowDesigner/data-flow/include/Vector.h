@@ -56,15 +56,34 @@ inline void Vector<T>::readFrom(istream &in)
    {
       T tmp;
       in >> tmp;
-	 if (in.fail()) break;
-	 items_found++;
-	 resize(items_found);
-	 operator[] (items_found-1)=tmp;
+      if (in.fail()) break;
+      items_found++;
+      resize(items_found);
+      operator[] (items_found-1)=tmp;
    }
    in.clear();
    char ch;
    in >> ch;       
 }
+
+/*template <>
+inline void Vector<FFLayer *>::readFrom(istream &in)
+{
+   int items_found=0;
+   
+   while (!in.eof())
+   {
+      FFLayer *tmp = new FFLayer;
+      in >> *tmp;
+      if (in.fail()) break;
+      items_found++;
+      resize(items_found);
+      operator[] (items_found-1)=tmp;
+   }
+   in.clear();
+   char ch;
+   in >> ch;       
+   }*/
 
 //This thing's pissing me off!
 class FFLayer;
@@ -102,13 +121,13 @@ inline Vector<float> *Vector<float>::alloc(int size)
    return floatVectorPool.newVector(size);
 }
 
-template<class T>
+/*template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
 {
    if (!isValidType(in, "Vector")) return in;
    vec.readFrom(in);
    return in;
-}
+   }*/
 
 
 #endif
