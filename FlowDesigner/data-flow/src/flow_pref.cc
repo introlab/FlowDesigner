@@ -25,12 +25,12 @@ FlowPref::FlowPref()
    params["VFLOW"]["ErrorColor"]   = "0xfc9595ff";
    
    string filename = getenv("HOME");
-   filename += "/.overflowrc";
+   filename += "/.flowrc";
 
    xmlDocPtr doc = xmlParseFile (filename.c_str());
    if (!doc || !doc->root || !doc->root->name)
    {
-      cerr << "corrupted preference file, will be over-written when saving" << endl;
+      cerr << "No (valid) preference file found, one will be created in ~/.flowrc" << endl;
       modified=true;
       return;
    }
@@ -145,7 +145,7 @@ void FlowPref::Save()
 void FlowPref::save()
 {
    string filename = getenv("HOME");
-   filename += "/.overflowrc";
+   filename += "/.flowrc";
    xmlDocPtr doc;
    doc = xmlNewDoc((CHAR *)"1.0");
    doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Preferences", NULL);
