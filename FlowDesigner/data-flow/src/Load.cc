@@ -24,18 +24,18 @@
 class Load;
 DECLARE_NODE(Load)
 /*Node
-
+ *
  * @name Load
  * @category IO
  * @description Load an object from file (registered type)
-
+ *
  * @input_name STREAM
  * @input_description The stream we are loading from
  * @input_type Stream
-
+ *
  * @output_name OUTPUT
  * @output_description The loaded object
-
+ *
 END*/
 
 
