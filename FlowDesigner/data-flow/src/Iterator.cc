@@ -166,8 +166,13 @@ void Iterator::specificInitialize() {
    this->Network::specificInitialize();
    
    if (parameters.exist("DOWHILE"))
-      doWhile = true;
-   else 
+   {
+      if (dereference_cast<bool> (parameters.get("DOWHILE")))
+         doWhile = true;
+      else
+         doWhile = false;
+          
+   } else 
       doWhile = false;
    
    processCount = -1;
