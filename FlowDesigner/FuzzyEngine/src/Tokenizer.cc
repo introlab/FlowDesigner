@@ -119,7 +119,7 @@ bool string_contain_nl_sys_command(Vector<string> &outputVector, string &inputSt
 }
 
 
-string vector_of_string_to_string(Vector<string>::iterator &startOfStringIt, Vector<string> &inputVector, string stringSeparator = " ")
+string vector_of_string_to_string(Vector<string>::iterator &startOfStringIt, Vector<string> &inputVector, string stringSeparator)
 {
   string returnString = "";
 

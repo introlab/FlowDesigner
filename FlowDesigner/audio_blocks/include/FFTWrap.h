@@ -35,6 +35,7 @@
 #endif /*ifdef HAVE_FFTW*/
 
 using namespace std;
+using namespace __gnu_cxx;
 
 class _FFTWrap {
 #ifdef NO_HASH_MAP

@@ -95,7 +95,7 @@ fd_streambuf::fd_streambuf(int _fd, bool _owner)
    
 }
 
-int fd_streambuf::overflow(int c = EOF)
+int fd_streambuf::overflow(int c)
 {
    unsigned char _c = c;
    //FIXME: How about EOF?
@@ -261,7 +261,7 @@ int pipe_streambuf::ll_write(const void *buf, size_t count)
 }
 
 
-int pipe_streambuf::overflow(int c = EOF)
+int pipe_streambuf::overflow(int c)
 {
    unsigned char _c = c;
    //FIXME: How to handle EOF?

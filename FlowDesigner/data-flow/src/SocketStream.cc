@@ -496,7 +496,7 @@ socket_streambuf::socket_streambuf(int type, int port)
    
 }
 
-int socket_streambuf::overflow(int c = EOF)
+int socket_streambuf::overflow(int c)
 {
 
    send_packet((unsigned char*) &c, 1);
