@@ -38,6 +38,7 @@ public:
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
       inputsCache[inputID].lookBack = 1;
+      inputsCache[inputID].lookAhead = 1;
    }
 
    ~OverlapAndAdd() {}
@@ -49,14 +50,8 @@ public:
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      if (count <= 0)
-      {
-         out[count]->status = Object::before_beginning;
-         return;
-      }
       NodeInput input = inputs[inputID];
       ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-      ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-1);
 
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
@@ -64,20 +59,76 @@ public:
          output.status = inputValue->status;
          return;
       }
-      if (pastInputValue->status != Object::valid)
+
+      const Vector<float> *past;
+      const Vector<float> *next;
+      bool can_look_back = false;
+      bool can_look_ahead = false;
+      if (count > 0)   
       {
-         output.status = pastInputValue->status;
-         return;
+         ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-1);
+         if (pastInputValue->status == Object::valid)
+         {
+            can_look_back=true;
+            past = &object_cast<Vector<float> > (pastInputValue);
+         }      
+      }
+      
+      ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+1);
+      if (nextInputValue->status == Object::valid)
+      {
+	 can_look_ahead=true;
+	 next = &object_cast<Vector<float> > (nextInputValue);
       }
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      const Vector<float> &past = object_cast<Vector<float> > (pastInputValue);
-      
+
+
+      int before = (inputLength-outputLength)/2;
+      int after = inputLength - outputLength - before;
+      int i,j;
+
       for (int i=0;i<outputLength;i++)
       {
-         output[i]=in[i]+past[i+outputLength];
+	 output[i]=in[i+before];
+      }
+
+      if (can_look_back)
+	 for (i=0, j=inputLength-before ; i < before ; i++, j++)
+	    output[i]+=(*past)[j];
+      
+
+      if (can_look_ahead)
+      	 for (i=0, j=outputLength-after ; i < after ; i++, j++)
+	    output[j]+=(*next)[i];
+
+
+  
+      /*
+      int begin = (inputLength-outputLength)/2;
+      int end = outputLength+begin;
+
+      cerr << begin << " " << end << endl;
+      int i,j;
+
+      for (i=begin,j=0;i<end;i++,j++)
+      {
+         output[j]=in[i];
+      }
+
+      if (can_look_back)
+      {
+	 for (i=end,j=0;i<inputLength;i++,j++)
+	    output[j] += (*past)[i];
+      }
+
+      if (can_look_ahead)
+      {
+	 for (i=0,j=outputLength-begin;i<begin;i++,j++)
+	    output[j] += (*next)[i];
       }
       
+      */
       output.status = Object::valid;
    }
 
