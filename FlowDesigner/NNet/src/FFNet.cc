@@ -185,6 +185,7 @@ void FFNet::learnlm(double *input, double *output, double **jacob, double *err, 
    int woffset2=0;
    int prev_offset=0;
    //start with the output layer, towards the input
+
    for (int k=outputLayer;k>=0;k--)
    {
       FFLayer *currentLayer = layers[k];
@@ -207,12 +208,12 @@ void FFNet::learnlm(double *input, double *output, double **jacob, double *err, 
 	 //double *w = currentLayer->getTmpWeights(i);
 	 for (int ei=0;ei<layerSize;ei++)
 	 {
-	    err[ei]+=currentValue[ei]-output[ei];
+	    err[ei] = currentValue[ei]-output[ei];
 	    sse += (currentValue[ei]-output[ei])*(currentValue[ei]-output[ei]);
 
 	    for (int wi=0;wi<layerInputs;wi++)
-	       jacob[ei][woffset2+wi] += currentLayer->deriv[ei]*previousValue[wi];
-	    jacob[ei][woffset2+layerInputs] += currentLayer->deriv[ei];
+	       jacob[ei][woffset2+wi] = currentLayer->deriv[ei]*previousValue[wi];
+	    jacob[ei][woffset2+layerInputs] = currentLayer->deriv[ei];
 	    woffset2+=layerInputs+1;
 	 }
 	 woffset1 += (layerInputs+1)*layerSize;
@@ -256,6 +257,11 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
    for (int i=0;i<nb_outputs;i++)
       jacob[i] = new double [nb_weights];
 
+   double **jacob2 = new double * [nb_weights];
+   for (int i=0;i<nb_weights;i++)
+      jacob2[i] = new double [nb_weights];
+
+
    for (int iter=0; iter<maxIter; iter++)
    {
       double sse=0;
@@ -264,15 +270,26 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
       for (int i=0;i<nb_outputs;i++)
 	 for (int j=0;j<nb_weights;j++)
 	    jacob[i][j]=0;
-
+      
       //initializes error
       double err[nb_outputs];
       for (int i=0;i<nb_outputs;i++)
 	 err[i]=0;
 
+      //initialize gradient
+      double grad[nb_weights];
+      for (int i=0;i<nb_weights;i++)
+	 grad[i]=0;
+
       //iterate on all data
       for (int i=0;i<tin.size();i++)
+	 //for (int i=0;i<tin.size();i+=100)
       {
+	 /*for (int j=0;j<nb_outputs;j++)
+	    for (int k=0;k<nb_weights;k++)
+	       jacob[j][k]=0;
+	 */
+
 	 double in[topo[0]];
 	 double out[topo[topo.size()-1]];
 	 for (int j=0;j<topo[0];j++)
@@ -281,27 +298,28 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
 	    out[j]=tout[i][j];
 	 learnlm (in, out, jacob, err, sse);
 	 
+	 for (int j=0;j<nb_weights;j++)
+	    for (int k=0;k<nb_outputs;k++)
+	    grad[j]+=jacob[k][j]*err[k];
+	 
       }
-
-      /*for (int i=0;i<nb_outputs;i++)
+/*
+      for (int i=0;i<nb_outputs;i++)
       {
 	 for (int j=0;j<nb_weights;j++)
 	    cerr << jacob[i][j] << " ";
 	 cerr << endl;
-	 }*/
-      //initialize gradient
-      double grad[nb_weights];
-      for (int i=0;i<nb_weights;i++)
-	 grad[i]=0;
-
+	 }
+*/
       //calculate gradient
-      for (int i=0;i<nb_weights;i++)
+      /*for (int i=0;i<nb_weights;i++)
 	 for (int j=0;j<nb_outputs;j++)
 	    grad[i] += jacob[j][i]*err[j];
-      
+      */
+
       double delta[nb_weights];
       for (int i=0;i<nb_weights;i++)
-	 delta[i] = -.000000000001*grad[i];
+	 delta[i] = -.0000001*grad[i];
 /*
       for (int i=0;i<nb_outputs;i++)
 	 cerr << err[i] << " ";
@@ -340,6 +358,10 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
    for (int i=0;i<nb_outputs;i++)
       delete [] jacob[i];
    delete [] jacob;
+
+   for (int i=0;i<nb_weights;i++)
+      delete [] jacob2[i];
+   delete [] jacob2;
 
 }
 

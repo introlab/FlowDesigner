@@ -148,12 +148,16 @@ public:
 	       Vector<int> topo(3);
 	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
 	       topo[1]=hidden;
-	       //topo[2]=20;
 	       topo[2]=object_cast <Vector<float> > (outBuff[0]).size();
-
+	       /*
+	       Vector<int> topo(2);
+	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
+	       topo[1]=object_cast <Vector<float> > (outBuff[0]).size();
+	       */
 	       FFNet *net = new FFNet( topo ); 
 	       
 	       net->train(in, out, maxEpoch, learnRate, momentum, increase, decrease, errRatio);
+	       //net->trainlm(in, out, maxEpoch);
 
 	       currentNet = ObjectRef(net);
 	       //exit(1);

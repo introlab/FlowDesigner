@@ -106,7 +106,8 @@ class FFLayer : public Object {
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    momentum[i] = mom*momentum[i] + (1-mom)*tmp_weights[i];
+	    //momentum[i] = mom*momentum[i] + (1-mom)*tmp_weights[i];
+	    momentum[i] = mom*momentum[i] + tmp_weights[i];
 	    //momentum[i] += weights[i]*.00001*(rand()%100-50);
 	    weights[i]+=momentum[i];
 	 }
