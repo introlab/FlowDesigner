@@ -29,7 +29,7 @@ class Saturate : public FrameOperation {
    
    int inputID;
    int inputLength;
-   enum Type {HARD, TANH, ATAN};
+   enum Type {HARD, TANH, ATAN, SOFT4};
 
    float threshold;
    Type saturation;
@@ -54,6 +54,8 @@ public:
 	    saturation = TANH;
 	 else if (satur == "atan")
 	    saturation = ATAN;
+	 else if (satur == "soft4")
+	    saturation = SOFT4;
 	 else saturation = HARD;
       } else saturation = HARD;
    }
