@@ -715,7 +715,9 @@ void GUIDocument::threadStop()
    if (isRunning) {
       //cerr << "stopping...\n";
       isRunning=false;
+      #ifdef HAVE_PTHREAD_CANCEL
       pthread_cancel(runThread);
+      #endif
       //less_print("Stopping " + docName);
    }
 

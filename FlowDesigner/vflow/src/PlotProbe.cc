@@ -128,8 +128,9 @@ void PlotProbe::reset()
 void PlotProbe::display()
 {
    GnomeCanvasPoints *points;
-
+   #ifdef HAVE_PTHREAD_CANCEL
    pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+   #endif
    gdk_threads_enter();
    
 
@@ -160,7 +161,9 @@ void PlotProbe::display()
    //cerr << "plot done...\n";
 
    gdk_threads_leave();
+   #ifdef HAVE_PTHREAD_CANCEL
    pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+   #endif
 
 }
 

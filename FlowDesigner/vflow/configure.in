@@ -21,6 +21,8 @@ GNOME_COMPILE_WARNINGS
 
 AC_CHECK_LIB(pthread, pthread_create)
 
+AC_CHECK_FUNCS(pthread_cancel)
+
 GNOME_XML_LIB=`gnome-config --libs xml`
 GNOME_XML_INCLUDE=`gnome-config --cflags xml`
 AC_SUBST(GNOME_XML_LIB)
@@ -54,5 +56,6 @@ intl/Makefile
 po/Makefile.in
 pixmaps/Makefile
 ])
+
 
 
