@@ -49,7 +49,8 @@ include_HEADERS = Array.h \
 	FlowException.h \
 	Matrix.h \
 	IntfNode.h \
-	object_param.h
+	object_param.h \
+	typetraits.h
 	
 noinst_HEADERS = \
 	NOT.h \

@@ -15,10 +15,10 @@ public:
       _read(in, (void *)data, sizeof(T), length);
    }
 
-   static void _write(ostream &out, void* data, size_t typeSize, size_t length);
+   static void _write(ostream &out, const void* data, size_t typeSize, size_t length);
 
    template<class T>
-   static inline void write(ostream &out, T* data, int length)
+   static inline void write(ostream &out, const T* data, int length)
    {
       _write(out, (void *)data, sizeof(T), length);
    }

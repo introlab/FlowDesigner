@@ -8,6 +8,7 @@
 #include "ObjectParser.h"
 #include "ObjectRef.h"
 #include "binio.h"
+#include "typetraits.h"
 
 using namespace std;
 
@@ -97,10 +98,34 @@ inline void Vector<T>::readFrom(istream &in)
 
 
 
+
+template<class T, int I>
+struct VecBinary {
+   static inline void serialize(const Vector<T> &v, ostream &out)
+   {
+      throw new GeneralException("serialization not supported for vectors of object", __FILE__, __LINE__);
+      /*out << "{Vector<float>" << endl;
+      out << "|";
+      BinIO::write(out, &v[0], v.size());
+      out << "}";*/
+   }
+};
+
+template<class T>
+struct VecBinary<T,1> {
+   static inline void serialize(const Vector<T> &v, ostream &out)
+   {
+      out << "{Vector<float>" << endl;
+      out << "|";
+      BinIO::write(out, &(const_cast<Vector<T> &>(v))[0], v.size());
+      out << "}";
+   }
+};
+
 template <class T>
 inline void Vector<T>::serialize(ostream &out) const
 {
-   Object::serialize(out);
+   VecBinary<T, TypeTraits<T>::isBasic>::serialize(*this, out);
 }
 
 template <class T>
@@ -109,14 +134,6 @@ inline void Vector<T>::unserialize(istream &in)
    Object::unserialize(in);
 }
 
-template <>
-inline void Vector<float>::serialize(ostream &out) const
-{
-   out << "{Vector<float>" << endl;
-   out << "|";
-   BinIO::write(out, &this->operator[](0), size());
-   out << "}";
-}
 
 
 template <class T>

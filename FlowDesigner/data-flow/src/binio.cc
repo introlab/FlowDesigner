@@ -16,7 +16,7 @@ void BinIO::_read(istream &in, void* data, size_t typeSize, size_t length)
 #endif
 }
 
-void BinIO::_write(ostream &out, void* data, size_t typeSize, size_t length)
+void BinIO::_write(ostream &out, const void* data, size_t typeSize, size_t length)
 {
 #ifdef WORDS_BIGENDIAN
    out.write(data, typeSize*length);
