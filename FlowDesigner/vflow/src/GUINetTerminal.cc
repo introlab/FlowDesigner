@@ -90,13 +90,11 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       return;
       
    }
-   
-   terminal->getNode()->getNetwork()->interfaceChangeNotify();
-
-   UIDocument *doc = terminal->getNode()->getNetwork()->getDocument();
-
-   doc->updateAllSubnetTerminals(terminal->getNode()->getNetwork()->getName(),getName(),getType(),false);
-
+   if (type ==OUTPUT || type == INPUT) {
+     terminal->getNode()->getNetwork()->interfaceChangeNotify();
+     UIDocument *doc = terminal->getNode()->getNetwork()->getDocument();
+     doc->updateAllSubnetTerminals(terminal->getNode()->getNetwork()->getName(),getName(),getType(),false);
+   }
    item = gnome_canvas_item_new(dynamic_cast<GUINode *>(terminal->getNode())->getGroup(),
                          gnome_canvas_text_get_type(),
                          "x", x,
