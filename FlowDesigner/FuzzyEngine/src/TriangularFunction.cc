@@ -26,7 +26,7 @@ DECLARE_TYPE(TriangularFunction)
  *
  * @output_name FUNCTION
  * @output_description The FuzzyFunction object
- * @output_type FuzzyFunction
+ * @output_type Vector<ObjectRef>
  *
  * @parameter_name NAME
  * @parameter_type string

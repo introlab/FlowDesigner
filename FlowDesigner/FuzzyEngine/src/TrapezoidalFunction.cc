@@ -18,7 +18,7 @@ DECLARE_TYPE(TrapezoidalFunction)
  *
  * @output_name FUNCTION
  * @output_description The FuzzyFunction object
- * @output_type FuzzyFunction
+ * @output_type Vector<ObjectRef>
  *
  * @parameter_name A
  * @parameter_type float

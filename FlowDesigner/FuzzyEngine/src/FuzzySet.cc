@@ -27,7 +27,7 @@ DECLARE_TYPE(FuzzySet)
  *
  * @output_name SET
  * @output_description The FuzzySet with multiple Fuzzy Functions
- * @output_type FuzzySet
+ * @output_type Vector<ObjectRef>
  *
  * @parameter_name NAME
  * @parameter_description The name of the set

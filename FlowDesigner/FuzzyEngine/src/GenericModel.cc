@@ -18,15 +18,15 @@ DECLARE_TYPE(GenericModel)
  *
  * @input_name RULES
  * @input_description The Rules to use
- * @input_type Vector
+ * @input_type Vector<ObjectRef>
  *
  * @input_name ANTECEDENT_SETS
  * @input_description The Sets to use
- * @input_type Vector
+ * @input_type Vector<ObjectRef>
  *
  * @input_name CONSEQUENT_SETS
  * @input_description The Sets to use
- * @input_type Vecto
+ * @input_type Vector<ObjectRef>
  * 
  * @input_name INPUT
  * @input_description The input value of the variables

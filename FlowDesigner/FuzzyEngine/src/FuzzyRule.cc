@@ -29,7 +29,7 @@ DECLARE_TYPE(FuzzyRule)
  * 
  * @output_name RULE
  * @output_description The FuzzyRule Object
- * @output_type FuzzyRule
+ * @output_type Vector<ObjectRef>
  *
 END*/
 
@@ -193,8 +193,6 @@ void FuzzyRule::printOn(ostream &out) const {
 
   out <<"<FuzzyRule "<<endl; 
   out <<"<Number "<<m_rule_number<<" >"<<endl;
-  out <<"<AntecedantSize "<<m_antecedant.size()<<" >"<<endl;
-  out <<"<ConsequentSize "<<m_consequent.size()<<" >"<<endl;
   for (int i = 0; i < m_antecedant.size(); i++) {
     out<<"<Antecedant "<<m_antecedant[i].first<<" "<<m_antecedant[i].second<<" >"<<endl;
   }
@@ -224,12 +222,6 @@ void FuzzyRule::readFrom(istream &in) {
 
       if (tag == "Number") {
          in >> m_rule_number;
-      }
-      else if (tag == "AntecedantSize") {
-	in >> antecedant_size;
-      }
-      else if (tag == "ConsequentSize") {
-	in >> consequent_size;
       }
       else if (tag == "Antecedant") {
 	string first,second;

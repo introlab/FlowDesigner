@@ -427,21 +427,21 @@ void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
     ObjectRef Input = getInput(m_InputID, count);
         
     //First add antecedant sets
-    Vector<FuzzySet*> &vect_sets1 = object_cast<Vector<FuzzySet*> >(ASets);
+    Vector<ObjectRef> &vect_sets1 = object_cast<Vector<ObjectRef> >(ASets);
     for (int i = 0; i < vect_sets1.size(); i++) {
       //vect_sets1[i]->printOn(cerr);
       add_fuzzy_set(vect_sets1[i]->clone(),FuzzyModel::FUZZY_INPUT_SET);
     }
     
     //Then add consequent sets
-    Vector<FuzzySet*> &vect_sets2 = object_cast<Vector<FuzzySet*> >(CSets);
+    Vector<ObjectRef> &vect_sets2 = object_cast<Vector<ObjectRef> >(CSets);
     for (int i = 0; i < vect_sets2.size(); i++) {
       //vect_sets2[i]->printOn(cerr);
       add_fuzzy_set(vect_sets2[i]->clone(),FuzzyModel::FUZZY_OUTPUT_SET);
     }
     
     //Finally add rules
-    Vector<FuzzyRule*> &vect_rules = object_cast<Vector<FuzzyRule*> >(Rules);
+    Vector<ObjectRef> &vect_rules = object_cast<Vector<ObjectRef> >(Rules);
     for (int i = 0; i < vect_rules.size(); i++) {
       //vect_rules[i]->printOn(cerr);
       add_fuzzy_rule(vect_rules[i]->clone());
@@ -466,11 +466,11 @@ void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
     }
     
     if (output_id == m_ModelID) {
-      out[count] = ObjectRef(clone());
+      out[count] = clone();
     }
   }//try
   catch (BaseException *e) {
-    throw e->add (new GeneralException("Exception caught while processing GeneralModel", __FILE__, __LINE__));
+    throw e->add (new GeneralException("Exception caught while processing FuzzyModel", __FILE__, __LINE__));
   }
 
 
