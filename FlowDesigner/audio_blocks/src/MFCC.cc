@@ -25,7 +25,7 @@
 class MFCC;
 
 //DECLARE_NODE(MFCC)
-NODE_INFO(MFCC, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:WINDOW:SAMPLING:LOW:HIGH:MELBANKS")
+NODE_INFO(MFCC, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:WINDOW:SAMPLING:LOW:HIGH")
 
 class MFCC : public FrameOperation {
    
@@ -43,7 +43,9 @@ class MFCC : public FrameOperation {
    float *outputCopy;
    float *tmpBuffer1;
    float *tmpBuffer2;
-   float dctNormalize;
+   float *rNormalize;
+   float *iNormalize;
+
 
 public:
    MFCC(string nodeName, ParameterSet params)
@@ -56,9 +58,9 @@ public:
          else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
          
          psLength = inputLength/2;
-         if (parameters.exist("MELBANKS"))
-            melLength = dereference_cast<int> (parameters.get("MELBANKS"));
-         else
+         //if (parameters.exist("MELBANKS"))
+         //   melLength = dereference_cast<int> (parameters.get("MELBANKS"));
+         //else
             melLength = outputLength;
          
          filters.resize(outputLength);
@@ -78,6 +80,8 @@ public:
       rfftw_destroy_plan(dctPlan);
       delete [] inputCopy;
       delete [] outputCopy;
+      delete [] rNormalize;
+      delete [] iNormalize;
       delete [] tmpBuffer1;
       delete [] tmpBuffer2;
    }
@@ -137,10 +141,19 @@ public:
       }
       
 
-      inputCopy = new float [melLength*2];
-      outputCopy =new float [melLength*2];
-      dctNormalize = .5/melLength;
-      dctPlan = rfftw_create_plan (melLength*2, FFTW_FORWARD, FFTW_ESTIMATE);
+      inputCopy = new float [melLength];
+      outputCopy =new float [melLength];
+      rNormalize =new float [melLength];
+      iNormalize =new float [melLength];
+      float sqrt2n=sqrt(2.0/inputLength);
+      for (int i=0;i<inputLength;i++)
+      {
+	 rNormalize[i]=cos(M_PI*i/(2*inputLength))*sqrt2n;
+	 iNormalize[i]=-sin(M_PI*i/(2*inputLength))*sqrt2n;
+      }
+      rNormalize[0] /= sqrt(2);
+
+      dctPlan = rfftw_create_plan (melLength, FFTW_FORWARD, FFTW_ESTIMATE);
       
    }
 
@@ -184,17 +197,25 @@ public:
          }
       }
       
-      for (i=0, j=melLength*2-1 ;i<melLength ; i++, j--)
-      {
-         inputCopy[i]=inputCopy[j] = log(tmpBuffer1[i]+FLT_MIN);
-      }
+
+      for (i=0, j=0 ;i<melLength ; i+=2, j++)
+         inputCopy[j]=log(tmpBuffer1[i]+FLT_MIN);
+
+      for (i = melLength-1; i>=0 ; i-=2, j++)
+         inputCopy[j]=log(tmpBuffer1[i]+FLT_MIN);
+      
 
       rfftw_one(dctPlan, inputCopy, outputCopy);
-
-      for (i=0;i<outputLength;i++)
+      
+      
+      for (i=1;i<melLength/2;i++)
       {
-         output[i]=dctNormalize*outputCopy[i];
+	 output[i]=rNormalize[i]*outputCopy[i] - iNormalize[i]*outputCopy[melLength-i];
+	 output[melLength-i]=rNormalize[melLength-i]*outputCopy[i] + iNormalize[melLength-i]*outputCopy[melLength-i];
       }
+
+      output[0]=outputCopy[0]*rNormalize[0];
+      output[melLength/2] = outputCopy[melLength/2]*rNormalize[melLength/2];
 
       output.status = Object::valid;
    }
