@@ -17,7 +17,15 @@ vflow_SOURCES = \
 	UILink.h UILink.cc \
 	UINodeParameters.h UINodeParameters.cc \
 	UINetPopup.h UINetPopup.cc \
-	UINetTerminal.h UINetTerminal.cc
+	UINetTerminal.h UINetTerminal.cc \
+	GUINode.h GUINode.cc \
+	GUINetwork.h GUINetwork.cc \
+	GUIDocument.h GUIDocument.cc \
+	GUITerminal.h GUITerminal.cc \
+	GUILink.h GUILink.cc \
+	GUINodeParameters.h GUINodeParameters.cc \
+	GUINetTerminal.h GUINetTerminal.cc 
+
 
 vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) \
 	$(top_srcdir)/../audio_blocks/src/libablocks.la \
