@@ -425,6 +425,7 @@ UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::Ne
    return new GUINetTerminal (_terminal, _type, _name);
 }
 
+//FIXME: This method should be removed
 UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type)
 {
    //cerr << "GUINode::newNodeParameters\n";

@@ -7,8 +7,8 @@
 #include "Network.h"
 #include <pthread.h>
 #include "rc_ptrs.h"
-//#include <strstream>
 #include <sstream>
+#include "object_param.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -156,7 +156,7 @@ void GUIDocument::create()
 }
 
 
-GtkWidget *GUIDocument::createView()
+void GUIDocument::createView()
 {
    
   /*
@@ -390,7 +390,7 @@ static const vector<string> &allDocTypes()
 
 void GUIDocument::insertLoadedParam(DocParameterData *param, string type, string value)
 {
-   const vector<string> &types=allDocTypes();
+   const vector<string> &types=ObjectParam::allTypes(false);
    for (int i=0;i<types.size();i++)
       if (types[i] == type)
          gtk_option_menu_set_history (GTK_OPTION_MENU (param->optionmenu), i);
@@ -525,10 +525,7 @@ void GUIDocument::createParamDialog()
                        (GtkAttachOptions) (0), 0, 0);
      params[i].optionmenu_menu = gtk_menu_new ();
 
-     const vector<string> &types=allDocTypes();
-     //types.insert(types.end(), string("Int"));
-     //types.insert(types.end(), string("Float"));
-     //types.insert(types.end(), string("String"));
+     const vector<string> &types=ObjectParam::allTypes(false);
      for (int j=0;j<types.size();j++)
      {
         glade_menuitem = gtk_menu_item_new_with_label ((const gchar *)types[j].c_str());

@@ -9,6 +9,7 @@
 #include <tree.h>
 #include <map>
 #include "UINetwork.h"
+#include "UINodeParameters.h"
 
 //class UINetwork;
 class UINodeMenu;
@@ -55,6 +56,10 @@ protected:
 
    map<string, SubnetInfo *> preloadInfo;
    vector<DocParameterDataText *> textParams;
+
+   vector<ParameterText *> docInputs;
+   vector<ParameterText *> docOutputs;
+   vector<ParameterText *> docParams;
 
    string docName;
    string path;

@@ -59,7 +59,7 @@ public:
 
    void create();
 
-   GtkWidget *createView();
+   void createView();
 
    virtual void load();
 

@@ -140,8 +140,8 @@ void UIDocument::loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap,
       netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
    
    CHAR *category = xmlGetProp(net, (CHAR *)"category");
-           
-
+   
+   
    if (infoMap.find(netName) != infoMap.end())
    {
       cerr << "error: net " << netName << " already existed\n";
@@ -153,67 +153,68 @@ void UIDocument::loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap,
    
    if (category)
       info->category = string((char *)category);
-    
-     //cerr << "scan all nodes\n";
+   
+   //cerr << "scan all nodes\n";
    xmlNodePtr node = net->childs;
    while (node != NULL)
    {
       if (string((char*)node->name) == "Node")
       {
-
-           
-     xmlNodePtr par = node->childs;
-     //cerr << "par = " << par << endl;
-     while (par)
-     {
-        if (string((char*)par->name) == "Parameter")
-        {
-           string paramName = string ((char *) xmlGetProp(par, (CHAR *)"value"));
-           string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
-           if (type == "subnet_param")
-           {
-          bool alreadyPresent = false;
-          for (int j=0;j<info->params.size();j++)
-             if (info->params[j]->name == paramName)
-            alreadyPresent=true;
-          if (!alreadyPresent)
-              {
-                  ItemInfo *newInfo = new ItemInfo;
-                  newInfo->name = paramName;
-                  newInfo->type = type;
-                  info->params.insert (info->params.end(), newInfo);
-              }
-           }          
-        }
-        par = par->next;
-          
-     }
-
-
-
-     //check for params
+	 
+	 
+	 xmlNodePtr par = node->childs;
+	 //cerr << "par = " << par << endl;
+	 while (par)
+	 {
+	    if (string((char*)par->name) == "Parameter")
+	    {
+	       string paramName = string ((char *) xmlGetProp(par, (CHAR *)"value"));
+	       string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
+	       if (type == "subnet_param")
+	       {
+		  bool alreadyPresent = false;
+		  for (int j=0;j<info->params.size();j++)
+		     if (info->params[j]->name == paramName)
+			alreadyPresent=true;
+		  if (!alreadyPresent)
+		  {
+		     ItemInfo *newInfo = new ItemInfo;
+		     newInfo->name = paramName;
+		     //FIXME: This always sets the type to subnet_info, which is incorrect
+		     newInfo->type = type;
+		     info->params.insert (info->params.end(), newInfo);
+		  }
+	       }          
+	    }
+	    par = par->next;
+	    
+	 }
+	 
+	 
+	 
+	 //check for params
       }
       node = node->next;
    }
-
+   
    //scan all net inputs/outputs
    node = net->childs;
    while (node != NULL)
    {
       if (string((char*)node->name) == "NetInput")
       {
-     string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
-     ItemInfo *newInfo = new ItemInfo;
-     newInfo->name = termName;
-     info->inputs.insert (info->inputs.end(), newInfo);
-           
+	 string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 ItemInfo *newInfo = new ItemInfo;
+	 newInfo->name = termName;
+	 info->inputs.insert (info->inputs.end(), newInfo);
+	 
       } else if (string((char*)node->name) == "NetOutput")
       {
-     string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
-     ItemInfo *newInfo = new ItemInfo;
-     newInfo->name = termName;
-     info->outputs.insert (info->outputs.end(), newInfo);
-           
+	 string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 ItemInfo *newInfo = new ItemInfo;
+	 newInfo->name = termName;
+	 info->outputs.insert (info->outputs.end(), newInfo);
+	 
       }
       node = node->next;
    }

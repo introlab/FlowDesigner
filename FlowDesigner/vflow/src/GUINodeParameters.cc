@@ -4,6 +4,7 @@
 #include "GUINode.h"
 #include "GUINetwork.h"
 #include "Network.h"
+#include "object_param.h"
 
 static int user_count = 0;
 
@@ -209,7 +210,7 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
 			(GtkAttachOptions) (0), 0, 0);
       params[i].optionmenu_menu = gtk_menu_new ();
 
-      const vector<string> &types=UINodeParameters::allTypes();
+      const vector<string> &types=ObjectParam::allTypes();
       for (int j=0;j<types.size();j++)
       {
 	 glade_menuitem = gtk_menu_item_new_with_label ((const gchar *)types[j].c_str());
@@ -495,7 +496,7 @@ ParameterData *GUINodeParameters::getParamDataNamed(string n)
 void GUINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
 {
    ParameterData *data = getParamDataNamed(param->name);
-   const vector<string> &types=UINodeParameters::allTypes();
+   const vector<string> &types=ObjectParam::allTypes();
    for (int i=0;i<types.size();i++)
       if (types[i] == type)
 	 gtk_option_menu_set_history (GTK_OPTION_MENU (data->optionmenu), i);

@@ -6,7 +6,7 @@
 #include "UINode.h"
 #include "UINetwork.h"
 #include "UIDocument.h"
-
+#include "object_param.h"
 #include "ParameterSet.h"
 
 class ParamTypeChange {
@@ -212,48 +212,12 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
    for (int i=0;i<textParams.size();i++)
    {
       ParameterText *curr = textParams[i];
-      if (curr->value == "")
-	 continue;
-      ObjectRef value;
-      if (curr->type == "int")
-      {
-	 int val = atoi (curr->value.c_str());
-	 value = ObjectRef(new Int(val));
-      } 
-      else if (curr->type == "bool")
-      {
-	 if (curr->value == "true" || curr->value == "TRUE")
-	    value = ObjectRef(new Bool(true));
-	 else 
-	    value = ObjectRef(new Bool(false));
-      } 
-      else if (curr->type == "float")
-      {
-	 float val = atof (curr->value.c_str());
-	 value = ObjectRef(new Float(val)); 
-      } 
-      else if (curr->type == "string")
-      {
-	 value = ObjectRef(new String(curr->value));         
-      } 
-      else if (curr->type == "subnet_param")
-      {
-	 //FIXME: Shouldn't have to use const_cast
-	 if (par.exist(curr->value))
-	    value = const_cast<ParameterSet &> (par).get(curr->value);
-	 else
-	 {
-	    //cerr << "unknown is " << curr->value << ":" << curr->name << endl;
-	    continue;
-	 }
-	 //cerr << "Subnet_params not supported\n";
-      } 
-      else {
-	 cerr << "UNKNOWN PARAM TYPE: \"" << curr->type << "\"" << endl;
-      }
+
+      //FIXME: Shouldn't have to use const_cast
+      ObjectRef value = ObjectParam::stringParam(curr->type, curr->value, const_cast<ParameterSet &> (par));
       
-      parameters->add(curr->name,value);
+      if (value->status == Object::valid)
+	 parameters->add(curr->name,value);
    }
    return parameters;
-   //perform substitution
 }
