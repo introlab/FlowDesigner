@@ -50,7 +50,6 @@ protected:
    vector<UINetwork *> networks;
    bool modified;
    
-   static map<string, SubnetInfo *> externalDocInfo;
 
    map<string, SubnetInfo *> preloadInfo;
    vector<DocParameterDataText *> textParams;
@@ -60,6 +59,8 @@ protected:
    bool untitled;
 
 public:
+   static map<string, SubnetInfo *> externalDocInfo;
+
    UIDocument(string _name);
 
    virtual ~UIDocument();
