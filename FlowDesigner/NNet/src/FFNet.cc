@@ -148,6 +148,113 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
    }	 
 }
 
+void FFNet::learn_bounds(double *input, double *output, double *low_bound, double *err, double *calc_output)
+{
+   int outputLayer = topo.size()-2;
+   double *calc_out = calc(input);
+
+   if (calc_output)
+      for (int i=0;i<topo[topo.size()-1];i++)
+      {
+	 calc_output[i]=calc_out[i];
+      }
+   //double *calc_out = output;
+   if (err)
+   {
+      for (int i=0;i<topo[topo.size()-1];i++)
+      {
+	 if (output[i] > low_bound[i])
+	    *err += (calc_out[i]-output[i]) * (calc_out[i]-output[i]);
+	 else if (calc_out[i] > low_bound[i])
+	    *err += (calc_out[i]-low_bound[i]) * (calc_out[i]-low_bound[i]);
+      }
+   }
+   //start with the output layer, towards the input
+   for (int k=outputLayer;k>=0;k--)
+   {
+      FFLayer *currentLayer = layers[k];
+      double *previousValue, *currentValue;
+      if (k==0)
+	 previousValue = input;
+      else 
+	 previousValue = layers[k-1]->getValue();
+
+      currentValue = currentLayer->getValue();
+
+      int layerSize = topo[k+1];
+      int layerInputs = topo[k];
+      double *delta = currentLayer->getError();
+      for (int i=0;i<layerSize;i++)
+      {
+	 double *w = currentLayer->getGradient(i);
+	 //cerr << k << endl;
+	 if (k==outputLayer)
+	 {
+	    //cerr << "output layer\n";
+	    if (output[i] > low_bound[i])
+	       delta[i]=output[i]-currentValue[i];
+	    else if (currentValue[i] > low_bound[i])
+	       delta[i] = low_bound[i] - currentValue[i];
+	    else 
+	       delta[i] = 0;
+	       
+	    //error += delta[i]*delta[i];
+	    //cout << "error = " << delta[i] << endl;
+	    delta[i] = currentLayer->deriv[i]*delta[i];
+	 }
+	 else
+	 {
+	    delta[i] = 0;
+	    double *outErr = layers[k+1]->getError();
+	    /*
+	    for (int j=0;j<topo[k+2];j++)
+	    {
+	       double *outW = layers[k+1]->getWeights(j);
+	       delta[i]+= outErr[j]*outW[i];
+	    }
+	    delta[i] = currentLayer->deriv[i]*delta[i];
+                 */
+
+	    //This section is an optimized version of the commented one
+	    double *outW = layers[k+1]->getWeights(0)+i;
+	    int incr = layerSize+1;
+
+	    for (int j=0;j<topo[k+2];j++)
+	    {
+	       delta[i]+= *outErr++ * *outW;
+	       outW += incr;
+            }
+	    delta[i] = currentLayer->deriv[i]*delta[i];
+	    
+	 }
+
+         /*
+	 for (int j=0;j<layerInputs;j++)
+	 {
+	    w[j] += previousValue[j] * delta[i];
+	 }
+	 w[layerInputs] += delta[i];
+         */
+	 //This section is an optimized version of the commented one
+         double *p=previousValue;
+         double d=delta[i];
+         double *end=w+layerInputs;
+
+	 while (w<end-3)
+	 {
+	    *w++ += *p++ * d;
+	    *w++ += *p++ * d;
+	    *w++ += *p++ * d;
+	    *w++ += *p++ * d;
+	 }
+
+	 while (w<end)
+	    *w++ += *p++ * d;
+	 *w += d;
+
+      }
+   }	 
+}
 
 
 void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double learnRate, double mom, 
@@ -338,6 +445,45 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
    delete [] out;
 }
 
+void FFNet::calcGradientBounds(vector<float *> &tin, vector<float *> &tout, vector<float *> &tbounds, Array<double> weights, Array<double> &gradient, double &err)
+{
+   int i,j;
+   double *in = new double [topo[0]];
+   double *out = new double [topo[topo.size()-1]];
+   double *bounds = new double [topo[topo.size()-1]];
+   for (i=0;i<layers.size();i++)
+      layers[i]->saveWeights();
+
+   //if (weights)
+      setWeights(weights.begin());
+   
+   err=0;
+   for (i=0;i<layers.size();i++)
+      layers[i]->resetGradient();
+   for (i=0;i<tin.size();i++)
+   {
+      for (j=0;j<topo[0];j++)
+	 in[j]=tin[i][j];
+      for (j=0;j<topo[topo.size()-1];j++)
+	 out[j]=tout[i][j];
+      for (j=0;j<topo[topo.size()-1];j++)
+	 bounds[j]=tbounds[i][j];
+      learn_bounds (in, out, bounds, &err);
+   }
+
+   getGradient(gradient.begin());
+   gradient = -gradient;
+
+   //vec_prod_scalar(gradient, -1.0, gradient, );
+
+   for (i=0;i<layers.size();i++)
+      layers[i]->loadWeights();
+
+   delete [] in;
+   delete [] out;
+   delete [] bounds;
+}
+
 void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double sigma, double lambda)
 {
    int i,j;
@@ -459,6 +605,127 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
    setWeights(wk.begin());
 }
 
+/*Scaled conjugate gradient with bounds */
+void FFNet::trainSCGBounds(vector<float *> tin, vector<float *> tout, vector<float *> tbounds, int iter, double sigma, double lambda)
+{
+   int i,j;
+   //double *in = new double [topo[0]];
+   //double *out = new double [topo[topo.size()-1]];
+   double SSE;
+   int k=1;
+   //double sigma = .03;
+   double lambda_init = lambda;
+   double lambdaBar = 0;
+   double sigmak;
+   bool success = true;
+
+   int nbWeights = 0;
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+
+   cerr << "found " << nbWeights << " weights\n";
+
+   Array<double> pk(nbWeights);
+   Array<double> rk(nbWeights);
+   Array<double> sk(nbWeights);
+   Array<double> wk(nbWeights);
+   Array<double> dEk(nbWeights);
+   Array<double> dEp(nbWeights);
+   Array<double> nextdE(nbWeights);
+   double nextE;
+   double deltak;
+
+   getWeights(wk.begin());
+
+   calcGradientBounds(tin, tout, tbounds, wk, dEk, SSE);
+   pk=-dEk;
+   rk=-dEk;
+   while (k < iter)
+   {
+
+      double norm2 = pk.norm2();
+      double norm = sqrt(norm2);
+
+      //2. If success
+      if (success)
+      {
+	 sigmak = sigma / norm;
+	 double dummy = 0;
+	 calcGradientBounds(tin, tout, tbounds, wk+pk*sigmak, dEp, dummy);
+	 sk = (dEp - dEk)*(1/sigmak);
+	 deltak = pk*sk;
+      }
+      
+      //3. Scale
+      sk += pk*(lambda - lambdaBar);
+      deltak += (lambda - lambdaBar) * norm2;
+      
+      //4. Hessian
+      if (deltak <= 0)
+      {
+	 cerr << "Hessian not positive definite\n";
+	 sk += pk*(lambda - 2*deltak/norm2);
+	 lambdaBar = 2*(lambda - deltak/norm2);
+	 deltak = -deltak + lambda*norm2;
+	 lambda = lambdaBar;
+      }
+
+      //5. Step size
+      double uk = pk * rk;
+      double ak = uk/deltak;
+
+      //ak = .000000001;
+      //pk = -rk;
+
+      //6. Comparison
+      calcGradientBounds(tin, tout, tbounds, wk+pk*ak, nextdE, nextE);
+      double DK = 2*deltak*(SSE -  nextE) / (uk*uk);
+
+      //cerr << SSE << " " << nextE << " " << ak << " " << uk << " " << norm << endl;
+
+      //7. Can we reduce the error
+      if (DK >= 0)
+      {
+	 wk += pk*ak;
+	 Array<double> oldR = rk;
+	 SSE=nextE;
+	 rk = -nextdE;
+	 lambdaBar = 0;
+	 success = true;
+	 cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << norm << "\t" << ak << "\t" << endl;
+	 if (k%nbWeights == 0)
+	 {
+	    pk = rk;
+	    k++;
+	    lambda = lambda_init;
+	    lambdaBar = 0;
+	    cerr << "restarting\n";
+	    continue;
+	 } else {
+	    double bk = (rk.norm2() - rk*oldR)/uk;
+	    pk = rk + pk * bk;
+	 }
+	 if (DK >= .75 && lambda > 1e-100)
+	    lambda *= .5;
+	 k++;
+      } else {
+	 lambdaBar = lambda;
+	 success = false;
+      }
+
+      //8. increase scale
+      if (DK < .25 && lambda < 1e200)
+	 lambda *= 4;
+      
+      //9. Have we found the minimum
+      if (rk.norm() == 0)
+	 break;
+      //k++;
+   }
+   setWeights(wk.begin());
+}
 
 double FFNet::calcError(const vector<float *> &tin, const vector<float *> &tout)
 {

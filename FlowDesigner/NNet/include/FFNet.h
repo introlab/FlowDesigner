@@ -32,8 +32,10 @@ class FFNet : public Object {
    void setWeights(double *ptr);
    //void calcGradient(vector<float *> &tin, vector<float *> &tout, double *weights, double *gradient, double &err);
    void calcGradient(vector<float *> &tin, vector<float *> &tout, Array<double> weights, Array<double> &gradient, double &err);
+   void calcGradientBounds(vector<float *> &tin, vector<float *> &tout, vector<float *> &tbounds, Array<double> weights, Array<double> &gradient, double &err);
 
    void learn(double *input, double *output, double *err=NULL, double *calc_output=NULL);
+   void learn_bounds(double *input, double *output, double *low_bound, double *err=NULL, double *calc_output=NULL);
    //void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
 
    void train(vector<float *> in, vector<float *> out, int iter, double learnRate=.00001, double mom=.9, 
@@ -42,6 +44,8 @@ class FFNet : public Object {
    void traincg(vector<float *> in, vector<float *> out, int iter);
 
    void trainCGB(vector<float *> tin, vector<float *> tout, int iter, double sigma=.03, double lambda=.2);
+
+   void trainSCGBounds(vector<float *> tin, vector<float *> tout, vector<float *> tbounds, int iter, double sigma=.03, double lambda=.2);
 
    void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 		      double mom, double increase, double decrease, int nbSets);

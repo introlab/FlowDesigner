@@ -69,7 +69,7 @@ public:
       //vector<float> filter(outputLength+1,0.0);
       autocorr(in.begin(), r, outputLength-1, in.size());
       float er=0;
-      r[0] *= 1.001;
+      r[0] *= 1.00001;
       r[0] += 1; //just in case of a null frame
       wld(output.begin(), r, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)

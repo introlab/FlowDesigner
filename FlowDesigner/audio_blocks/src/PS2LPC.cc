@@ -108,7 +108,7 @@ public:
       
       float er=0;
       //float rc[outputLength];
-      response[0] *= 1.001;
+      response[0] *= 1.00001;
       wld(output.begin(), response, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
         output[i] *= pow(.999,i);
