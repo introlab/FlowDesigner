@@ -185,19 +185,19 @@ FuzzyRule* FuzzyRule::clone() {
 
 void FuzzyRule::printOn(ostream &out) const {
 
-  out << "<FuzzyRule "; 
-  out <<m_rule_number<<" ";
-  out<<m_antecedant.size()<<" ";
-
+  out <<"<FuzzyRule "<<endl; 
+  out <<"<Number "<<m_rule_number<<" >"<<endl;
+  out <<"<AntecedantSize "<<m_antecedant.size()<<" >"<<endl;
+  out <<"<ConsequentSize "<<m_consequent.size()<<" >"<<endl;
   for (int i = 0; i < m_antecedant.size(); i++) {
     out<<m_antecedant[i].first<<" "<<m_antecedant[i].second<<" ";
   }
-  
-  out<<m_consequent.size()<<" ";
-  
+  out<<endl;
+
   for (int i = 0; i < m_consequent.size(); i++) {
     out<<m_consequent[i].first<<" "<<m_consequent[i].second<<" ";
   }
- 
+  out<<endl;
+
   out <<" >\n";
 }

@@ -150,5 +150,11 @@ float TrapezoidalFunction::get_center_of_gravity() {
   return cog;
 }
 void TrapezoidalFunction::printOn(ostream &out) const {
-  out << "<TrapezoidalFunction " << m_name<<" "<<m_a<<" "<<m_b<<" "<<m_c<<" "<<m_d<<" >\n";
+  out << "<TrapezoidalFunction "<<endl;
+  out << "<Name "<< m_name<<" >"<<endl;
+  out << "<A "<<m_a<<" >"<<endl;
+  out << "<B "<<m_b<<" >"<<endl;
+  out << "<C "<<m_c<<" >"<<endl;
+  out << "<D "<<m_d<<" >"<<endl;
+  out<<" >\n";
 }

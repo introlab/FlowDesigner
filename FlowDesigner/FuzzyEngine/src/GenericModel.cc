@@ -171,23 +171,24 @@ FuzzyModel* GenericModel::clone() {
 
 void GenericModel::printOn(ostream &out) const {
 
-  out << "<GenericModel "; 
-  out<<m_rules.size()<<endl;
+  out << "<GenericModel "<<endl; 
+  out << "<RuleSize "<<m_rules.size()<<" >"<<endl;
+  out << "<InputSetSize "<<m_input_set.size()<<" >"<<endl;
+  out << "<OutputSetSize "<<m_output_set.size()<<" >"<<endl;
 
+  //rules
   for (int i = 0; i < m_rules.size(); i++) {
     m_rules[i]->printOn(out);
     out<<endl;
   }
   
-  out<<m_input_set.size()<<endl;
-  
+  //inputset
   for (int i = 0; i < m_input_set.size(); i++) {
     m_input_set[i]->printOn(out);
     out<<endl;
   }
   
-  out<<m_output_set.size()<<endl;
-  
+  //outputset
   for (int i = 0; i < m_output_set.size(); i++) {
     m_output_set[i]->printOn(out);
     out<<endl;

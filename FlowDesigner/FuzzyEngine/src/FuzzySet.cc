@@ -263,9 +263,9 @@ FuzzySet* FuzzySet::clone() {
 
 void FuzzySet::printOn(ostream &out) {
 
-  out << "<FuzzySet "; 
-  out <<m_name<<" ";
-  out<<m_functions.size()<<endl;
+  out << "<FuzzySet "<<endl; 
+  out << "<Name "<<m_name<<" >"<<endl;
+  out << "<Size "<<m_functions.size()<<" >"<<endl;
 
   for (int i = 0; i < m_functions.size(); i++) {
     m_functions[i]->printOn(out);
