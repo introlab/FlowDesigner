@@ -12,6 +12,7 @@
 #include "canvas-background.h"
 #include "misc.h"
 #include "GUINodeTooltip.h"
+#include <sstream>
 
 /*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
@@ -554,40 +555,43 @@ void GUINetwork::rename(string newName) {
 
   try {
     UINetwork::rename(newName);
+
+
+    //updating text
+    
+    string tabName=newName;
+    
+    switch (type) {
+    case subnet:
+      tabName = tabName + " (subnet)";
+      break;
+    case iterator:
+      tabName = tabName + " (iterator)";
+      break;
+    case threaded:
+      tabName = tabName + " (threaded iterator)";
+      break;
+    default:
+    tabName = tabName + " (unknown)";  
+    }
+    
+    GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
+    gtk_widget_ref (label1);
+    
+    GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getNotebook();
+    
+    int page = gtk_notebook_get_current_page   (GTK_NOTEBOOK(notebook1));
+    
+    gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), 
+				gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), page), label1);
+    
+    gtk_widget_unref(label1);
   }
   catch (BaseException *e) {
-    e->print(cerr);
+    stringstream str;
+    e->print(str);
+    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
     delete e;
   }
-
-  //updating text
   
-  string tabName=newName;
-  
-  switch (type) {
-  case subnet:
-    tabName = tabName + " (subnet)";
-    break;
-  case iterator:
-    tabName = tabName + " (iterator)";
-    break;
-  case threaded:
-    tabName = tabName + " (threaded iterator)";
-    break;
-  default:
-    tabName = tabName + " (unknown)";  
-  }
-  
-  GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
-  gtk_widget_ref (label1);
-
-  GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getNotebook();
-
-  int page = gtk_notebook_get_current_page   (GTK_NOTEBOOK(notebook1));
-
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), 
-			      gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), page), label1);
-
-  gtk_widget_unref(label1);
-
 }

@@ -85,7 +85,10 @@ void create_net(gchar * str, GUIDocument *doc)
     }
   }
   catch (BaseException *e) {
-    e->print(cerr);
+
+    stringstream str;
+    e->print(str);
+    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
     delete e;
   }
 
@@ -112,7 +115,10 @@ void create_threaded(gchar * str, GUIDocument *doc)
     }
   }
   catch (BaseException *e) {
-    e->print(cerr);
+
+    stringstream str;
+    e->print(str);
+    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
     delete e;
   }
 
@@ -140,7 +146,9 @@ void create_iter(gchar * str, GUIDocument *doc)
     }
   }
   catch (BaseException *e) {
-    e->print(cerr);
+    stringstream str;
+    e->print(str);
+    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
     delete e;
   }
 
