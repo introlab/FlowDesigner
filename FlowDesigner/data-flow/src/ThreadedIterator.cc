@@ -18,8 +18,8 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
 {  
 
   try {
-    //rate_per_second = dereference_cast<int>(parameters.get("RATE_PER_SECOND"));
-    rate_per_second = 1;
+    rate_per_second = dereference_cast<int>(parameters.get("RATE_PER_SECOND"));
+    //rate_per_second = 1;
     cout<<"ThreadedIterator constructor..."<<endl;
     
     if (rate_per_second <=0 ) {
@@ -113,6 +113,7 @@ void ThreadedIterator::start_thread() {
   thread_status = ThreadedIterator::STATUS_RUNNING;
   
   pthread_create(&work_thread, NULL, &workloop, this); 
+  
 
 }
 
@@ -127,19 +128,22 @@ void ThreadedIterator::stop_thread() {
 
     //to avoid any deadlocks
     iterator_unlock();
+    cerr<<"Threaded iterator cancelling thread..."<<endl;
+    pthread_cancel(work_thread);
+    
 
     //wait for the thread
-
-    void **return_status;
-
-    cerr<<"join thread"<<endl;
-    pthread_join (work_thread,return_status);
-
-    cerr<<"join successfull"<<endl;
+    //void **return_status;  
+    //cerr<<"join thread"<<endl;
+    //pthread_join (work_thread,return_status);
+    //cerr<<"join successfull"<<endl;
+    
   }
   else {
     thread_status = ThreadedIterator::STATUS_STOPPED;
   }
+
+  cerr<<"end stop thread."<<endl;
 }
 
 void ThreadedIterator::specificInitialize() {
@@ -209,7 +213,7 @@ void * workloop (void *param) {
       //usleep ((period - (end - begin)) * 1000); 
     }
     
-    usleep((int)((float)ptr->rate_per_second / (float) 0.000001));
+    usleep((int)(1.0 /(float)ptr->rate_per_second * 1000000.0));
 
   }
   
