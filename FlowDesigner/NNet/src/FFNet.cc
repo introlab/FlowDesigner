@@ -357,6 +357,8 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    Array<double> wk(nbWeights);
    Array<double> dEk(nbWeights);
    Array<double> dEp(nbWeights);
+   Array<double> nextdE(nbWeights);
+   double nextE;
    double deltak;
 
    getWeights(wk.begin());
@@ -366,20 +368,74 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    pk=dEk;
    rk=dEk;
 
-   if (success)
+   while (k < iter)
    {
-      sigmak = sigma / pk.norm();
-      calcGradient(tin, tout, wk+pk*sigmak, dEp, SSE);
-      sk = (dEp - dEk)*(1/sigmak);
-      deltak = pk*sk;
-
-      //vec_prod_scal(pk, sigmak, tmp2, nbWeights);
+      double norm2 = pk.norm2();
+      double norm = sqrt(norm2);
+      if (success)
+      {
+	 sigmak = sigma / norm;
+	 calcGradient(tin, tout, wk+pk*sigmak, dEp, SSE);
+	 sk = (dEp - dEk)*(1/sigmak);
+	 deltak = pk*sk;
+      }
       
-      //sk = ...;
-      //deltak = ...;
+      //3. Scale
+      sk += pk*(lambda - lambdaBar);
+      deltak += (lambda - lambdaBar) * norm2;
+      
+      //4. Hessian
+      if (deltak <= 0)
+      {
+	 sk += pk*(lambda - 2*deltak/norm2);
+	 lambdaBar = 2*(lambda - deltak/norm2);
+	 deltak = -deltak + lambda*norm2;
+	 lambda = lambdaBar;
+      }
+
+      //5. Step size
+      double uk = pk * rk;
+      double ak = uk/deltak;
+
+      //6. Comparison
+      calcGradient(tin, tout, wk+pk*ak, nextdE, nextE);
+      double DK = 2*deltak*(SSE -  nextE) / (uk*uk);
+
+      //7. Can we reduce the error
+      if (DK >= 0)
+      {
+	 wk += pk*ak;
+	 Array<double> oldR = rk;
+	 rk = -nextdE;
+	 lambdaBar = 0;
+	 success = true;
+	 if (k%nbWeights == 0)
+	 {
+	    pk = rk;
+	    continue;
+	 } else {
+	    double bk = rk.norm2() - rk*oldR;
+	    pk = rk + pk * bk;
+	 }
+	 if (DK >= .75)
+	    lambda *= .5;
+      } else {
+	 lambdaBar = lambda;
+	 success = false;
+      }
+
+      //8. increase scale
+      if (DK < .25)
+	 lambda *= 4;
+      
+      //9. Have we found the minimum
+      if (rk.norm() == 0)
+      {
+	 k++;
+	 continue;
+      } else 
+	 break;
    }
-
-
 }
 
 
