@@ -12,7 +12,7 @@ DECLARE_NODE(Exp)
 /*Node
  *
  * @name Exp
- * @category Signal:Base
+ * @category DSP:Base
  * @description Computes the exponential (base-e) of a vector
  *
  * @input_name INPUT

@@ -9,20 +9,23 @@ class Overlap;
 
 DECLARE_NODE(Overlap)
 /*Node
-
+ *
  * @name Overlap
- * @category Signal:DSP
- * @description No description available
-
+ * @category DSP:Manip
+ * @description Outputs overlapping frames from non-overlapping ones
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector<float>
+ * @input_description (Non-overlapped) input frames
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector<float>
+ * @output_description Overlapped output frames
+ *
  * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Frame length for output overlapped frames
+ *
 END*/
 
 

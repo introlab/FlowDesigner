@@ -12,7 +12,7 @@ DECLARE_NODE(IDCT)
 /*Node
  *
  * @name IDCT
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @require FFT
  * @description Fast implementation of the inverse discrete cosine transform (IDCT) using an FFT
  *

@@ -10,7 +10,7 @@ DECLARE_NODE(PS)
 /*Node
  *
  * @name PS
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @description Converts the output of the FFT (not RFFT) node to a power spectrum
  *
  * @input_name INPUT

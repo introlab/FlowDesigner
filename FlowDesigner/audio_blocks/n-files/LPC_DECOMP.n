@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Document>
-  <Network type="subnet" name="MAIN" category="Signal:DSP">
+  <Network type="subnet" name="MAIN" category="DSP:Adaptive">
     <Node name="node1" type="LPC" x="-474.000000" y="178.000000">
       <Parameter name="OUTPUTLENGTH" type="subnet_param" value="LPC_SIZE"/>
       <Parameter name="LAG_THETA" type="subnet_param" value="LAG_THETA"/>

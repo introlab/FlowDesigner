@@ -10,7 +10,7 @@ DECLARE_NODE(Poly)
 /*Node
  *
  * @name Poly
- * @category Signal:Base
+ * @category DSP:Base
  * @description No description available
  *
  * @input_name INPUT

@@ -11,7 +11,7 @@ DECLARE_NODE(Window)
 /*Node
  *
  * @name Window
- * @category Signal:DSP
+ * @category DSP:Base
  * @description Applies a window on a frame
  *
  * @input_name INPUT

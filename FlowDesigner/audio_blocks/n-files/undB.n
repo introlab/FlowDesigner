@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Document>
-  <Network type="subnet" name="MAIN" category="Signal:Base">
+  <Network type="subnet" name="MAIN" category="DSP:Base">
     <Node name="node1" type="Constant" x="-149.000000" y="100.000000">
       <Parameter name="VALUE" type="float" value="0.23026"/>
     </Node>

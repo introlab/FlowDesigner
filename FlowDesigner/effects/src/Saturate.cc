@@ -11,8 +11,8 @@ DECLARE_NODE(Saturate)
 /*Node
  *
  * @name Saturate
- * @category Effects
- * @description No description available
+ * @category DSP:Effects
+ * @description Saturation (distortion) effect
  *
  * @input_name INPUT
  * @input_description No description available

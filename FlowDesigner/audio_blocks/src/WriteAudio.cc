@@ -13,7 +13,7 @@ DECLARE_NODE(WriteAudio)
 /*Node
  *
  * @name WriteAudio
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description Writes audio frames to the sound card (or any other) stream
  *
  * @input_name OBJECT

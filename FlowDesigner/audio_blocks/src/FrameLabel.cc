@@ -10,7 +10,7 @@ DECLARE_NODE(FrameLabel)
 /*Node
  *
  * @name FrameLabel
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description Applies a gain to a vector
  *
  * @input_name INPUT

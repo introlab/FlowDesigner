@@ -9,7 +9,7 @@ DECLARE_NODE(GCMS)
 /*Node
  *
  * @name GCMS
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @description Growing-Window Cepstral Mean Subtraction
  *
  * @input_name INPUT

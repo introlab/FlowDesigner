@@ -12,7 +12,7 @@ DECLARE_NODE(ILTF)
 /*Node
  *
  * @name ILTF
- * @category Signal:DSP
+ * @category DSP:Filter
  * @description Inverse (all-pole) long-term (comb) filter
  *
  * @input_name INPUT

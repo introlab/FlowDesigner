@@ -11,13 +11,15 @@ DECLARE_NODE(RMS)
 /*Node
  *
  * @name RMS
- * @category Signal:DSP
+ * @category DSP:Misc
  * @description Root mean squared (RMS) value of a signal
  *
  * @input_name INPUT
+ * @input_type Vector<float>
  * @input_description The input signal
  *
  * @output_name OUTPUT
+ * @output_type Vector<float>
  * @output_description The RMS value
  *
 END*/

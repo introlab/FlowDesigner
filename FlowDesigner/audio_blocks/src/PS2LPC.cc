@@ -15,7 +15,7 @@ DECLARE_NODE(PS2LPC)
 /*Node
  *
  * @name PS2LPC
- * @category Signal:DSP
+ * @category DSP:Adaptive
  * @require FFT
  * @description No description available
  *

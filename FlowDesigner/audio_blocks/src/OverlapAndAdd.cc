@@ -10,7 +10,7 @@ DECLARE_NODE(OverlapAndAdd)
 /*Node
 
  * @name OverlapAndAdd
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description No description available
 
  * @input_name INPUT

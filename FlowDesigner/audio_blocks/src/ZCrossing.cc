@@ -10,7 +10,7 @@ DECLARE_NODE(ZCrossing)
 /*Node
  *
  * @name ZCrossing
- * @category Signal:DSP
+ * @category DSP:Misc
  * @description Number of zero-crossing in a vector: count(v[i]*v[i+1]<0)
  *
  * @input_name INPUT

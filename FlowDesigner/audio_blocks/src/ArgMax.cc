@@ -19,7 +19,7 @@ DECLARE_NODE(ArgMax)
 /*Node
  *
  * @name ArgMax
- * @category Signal:Base
+ * @category DSP:Base
  * @description Finds the maximum value in a vector
  *
  * @input_name INPUT

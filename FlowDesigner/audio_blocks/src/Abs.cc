@@ -10,7 +10,7 @@ DECLARE_NODE(Abs)
 /*Node
  *
  * @name Abs
- * @category Signal:Base
+ * @category DSP:Base
  * @description Computes the absolute value of each element of a vector
  *
  * @input_name INPUT

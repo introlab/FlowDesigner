@@ -9,7 +9,7 @@ DECLARE_NODE(SeparChannels)
 /*Node
  *
  * @name SeparChannels
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description No description available
  *
  * @input_name INPUT

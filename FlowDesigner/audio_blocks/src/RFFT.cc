@@ -13,7 +13,7 @@ DECLARE_NODE(RFFT)
 /*Node
  *
  * @name RFFT
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @require FFT
  * @description Computes the FFT of a real input vector and output a complex result
  *

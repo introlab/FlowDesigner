@@ -13,20 +13,24 @@ DECLARE_NODE(Noise)
 /*Node
  *
  * @name Noise
- * @category Signal:DSP
- * @description No description available
+ * @category DSP:Misc
+ * @description Noise generator
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Noise signal (uncorrelated)
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Length of the generated noise signal (frame length)
  *
  * @parameter_name TYPE
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_description Noise type (UNIFORM, GAUSS)
  *
  * @parameter_name SD
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Noise standard deviation
  *
 END*/
 

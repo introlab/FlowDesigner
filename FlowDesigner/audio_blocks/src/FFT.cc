@@ -13,7 +13,7 @@ DECLARE_NODE(FFT)
 /*Node
  *
  * @name FFT
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @require FFT
  * @description Computes the real FFT of a float vector
  *

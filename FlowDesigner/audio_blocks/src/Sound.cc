@@ -33,7 +33,7 @@ DECLARE_NODE(Sound)
 /*Node
  *
  * @name Sound
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description Opens a sound device
  *
  * @output_name OUTPUT
@@ -88,8 +88,7 @@ public:
    /**Constructor, takes the name of the node and a set of parameters*/
    Sound(string nodeName, ParameterSet params)
       : Node(nodeName, params)
-      , init(false)
-   {
+  {
       outputID = addOutput("OUTPUT");
       
    }

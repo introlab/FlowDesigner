@@ -10,7 +10,7 @@ DECLARE_NODE(MergeChannels)
 /*Node
 
  * @name MergeChannels
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description No description available
 
  * @input_name LEFT

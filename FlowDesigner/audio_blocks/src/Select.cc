@@ -10,7 +10,7 @@ DECLARE_NODE(Select)
 /*Node
  *
  * @name Select
- * @category Signal:Manip
+ * @category Vector
  * @description Selects an index range in an input vector 
  *
  * @input_name INPUT

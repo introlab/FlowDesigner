@@ -11,26 +11,32 @@ DECLARE_NODE(TimeFilter)
 /*Node
  *
  * @name TimeFilter
- * @category Signal:DSP
- * @description No description available
+ * @category DSP:Filter
+ * @description Filters across vectors (frames)
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description Input vectors (frames)
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Filtered vectors
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Vector length
  *
  * @parameter_name FIR
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_description FIR part as <Vector<float> ... >
  *
  * @parameter_name IIR
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_description IIR part as <Vector<float> ... >
  *
  * @parameter_name LOOKAHEAD
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Non-causality (in frames)
  *
 END*/
 

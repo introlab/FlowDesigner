@@ -12,7 +12,7 @@ DECLARE_NODE(DCT)
 /*Node
  *
  * @name DCT
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @require FFT
  * @description Fast implementation of the discrete cosine transform (DCT) using an FFT
  *

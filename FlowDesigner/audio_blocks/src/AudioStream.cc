@@ -16,7 +16,7 @@ DECLARE_NODE(AudioStream)
 /*Node
  *
  * @name AudioStream
- * @category Signal:Base
+ * @category DSP:Audio
  * @description Reads an audio stream and outputs frames
  *
  * @input_name INPUT

@@ -10,7 +10,7 @@ DECLARE_NODE(PackFrames)
 /*Node
  *
  * @name PackFrames
- * @category Signal:Base
+ * @category DSP:Base
  * @description No description available
  *
  * @input_name INPUT

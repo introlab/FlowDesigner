@@ -11,7 +11,7 @@ DECLARE_NODE(Reverb)
 /*Node
  *
  * @name Reverb
- * @category Effects
+ * @category DSP:Effects
  * @require Reverb
  * @description Stereo reverb effect
  *

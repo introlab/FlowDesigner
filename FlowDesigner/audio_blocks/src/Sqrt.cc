@@ -12,7 +12,7 @@ DECLARE_NODE(Sqrt)
 /*Node
  *
  * @name Sqrt
- * @category Signal:Base
+ * @category DSP:Base
  * @description Square root of a vector
  *
  * @input_name INPUT

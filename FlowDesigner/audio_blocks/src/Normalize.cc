@@ -10,7 +10,7 @@ DECLARE_NODE(Normalize)
 /*Node
  *
  * @name Normalize
- * @category Signal:Base
+ * @category DSP:Base
  * @description Normalizes a vector by dividing each element by the sum of all components
  *
  * @input_name INPUT

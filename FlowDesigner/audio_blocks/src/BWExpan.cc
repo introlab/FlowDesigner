@@ -10,7 +10,7 @@ DECLARE_NODE(BWExpan)
 /*Node
  *
  * @name BWExpan
- * @category Signal:DSP
+ * @category DSP:Adaptive
  * @description Performs bandwidth expansion on an LPC filter, that is, multiplying the radius of the poles by GAMMA
  *
  * @input_name INPUT

@@ -11,7 +11,7 @@ DECLARE_NODE(Mel)
 /*Node
  *
  * @name Mel
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @description calculates Mel-scale channel energies from power-spectrum
  *
  * @input_name INPUT

@@ -14,7 +14,7 @@ DECLARE_NODE(LPFilter)
 /*Node
 
  * @name LPFilter
- * @category Signal:DSP
+ * @category DSP:Filter
  * @description No description available
 
  * @output_name OUTPUT

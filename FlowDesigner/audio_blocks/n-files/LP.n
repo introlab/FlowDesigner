@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Document>
-  <Network type="subnet" name="MAIN" category="Signal:Filter">
+  <Network type="subnet" name="MAIN" category="DSP:Filter">
     <Node name="node1" type="FIR" x="-84.000000" y="90.000000">
       <Parameter name="CONTINUOUS" type="int" value="1"/>
       <Parameter name="NONCAUSAL" type="subnet_param" value="DELAY"/>

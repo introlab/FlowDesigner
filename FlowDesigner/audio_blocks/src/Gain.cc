@@ -11,7 +11,7 @@ DECLARE_NODE(Gain)
 /*Node
  *
  * @name Gain
- * @category Signal:Base
+ * @category DSP:Base
  * @description Applies a gain to a vector
  *
  * @input_name INPUT

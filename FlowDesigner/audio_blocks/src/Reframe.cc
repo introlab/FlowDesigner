@@ -11,7 +11,7 @@ DECLARE_NODE(Reframe)
 /*Node
  *
  * @name Reframe
- * @category Signal:DSP
+ * @category DSP:Manip
  * @description Applies a window on a frame
  *
  * @input_name INPUT

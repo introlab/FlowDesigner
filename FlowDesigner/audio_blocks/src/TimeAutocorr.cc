@@ -13,23 +13,28 @@ DECLARE_NODE(TimeAutocorr)
 /*Node
  *
  * @name TimeAutocorr
- * @category Signal:DSP
- * @description No description available
+ * @category DSP:Misc
+ * @description Autocorrelation across vectors (frames)
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description Input vectors (frames)
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Autocorrelations (summed) for each delay
  *
  * @parameter_name INPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Length ov input vectors
  *
  * @parameter_name LOOKAHEAD
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Maximum forward (non-causal) delay
  *
  * @parameter_name LOOKBACK
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Maximum backward (causal) delay
  *
 END*/
 

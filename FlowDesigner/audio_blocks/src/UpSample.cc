@@ -8,20 +8,23 @@ class UpSample;
 
 DECLARE_NODE(UpSample)
 /*Node
-
+ *
  * @name UpSample
- * @category Signal:DSP
- * @description No description available
-
+ * @category DSP:Base
+ * @description Upsamples a signal by inserting zeros at regular interval
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector<float>
+ * @input_description Input frames
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector<float>
+ * @output_description Upsampled output
+ *
  * @parameter_name FACTOR
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Upsampling factor
+ *
 END*/
 
 

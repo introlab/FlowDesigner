@@ -12,7 +12,7 @@ DECLARE_NODE(LTF)
 /*Node
  *
  * @name LTF
- * @category Signal:DSP
+ * @category DSP:Filter
  * @description Long-term (comb) filter
  *
  * @input_name INPUT

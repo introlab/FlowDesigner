@@ -10,7 +10,7 @@ DECLARE_NODE(FFTFlip)
 /*Node
  *
  * @name FFTFlip
- * @category Signal:Base
+ * @category DSP:Base
  * @description Flips a half-spectrum to produce a symetric spectrum
  *
  * @input_name INPUT

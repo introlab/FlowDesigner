@@ -12,7 +12,7 @@ DECLARE_NODE(CMS)
 /*Node
  *
  * @name CMS
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @description Window-type Cepstram Mean Subtraction (CMS)
  *
  * @input_name INPUT

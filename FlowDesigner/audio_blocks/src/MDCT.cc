@@ -13,7 +13,7 @@ DECLARE_NODE(MDCT)
 /*Node
  *
  * @name MDCT
- * @category Signal:DSP
+ * @category DSP:TimeFreq
  * @require MDCT
  * @description MDCT implementation (taken from Vorbis)
  *

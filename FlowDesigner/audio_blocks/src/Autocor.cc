@@ -17,7 +17,7 @@ DECLARE_NODE(Autocor)
 /*Node
  *
  * @name Autocor
- * @category Signal:DSP
+ * @category DSP:Misc
  * @description Computes the autocorrelation of an input vector with (START <= lag <= END)
  *
  * @input_name INPUT

@@ -11,7 +11,7 @@ DECLARE_NODE(Pow)
 /*Node
  *
  * @name Pow
- * @category Signal:Base
+ * @category DSP:Base
  * @description Raises the input vector to a certain power
  *
  * @input_name INPUT

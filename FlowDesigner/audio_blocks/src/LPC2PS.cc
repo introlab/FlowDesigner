@@ -13,7 +13,7 @@ DECLARE_NODE(LPC2PS)
 /*Node
  *
  * @name LPC2PS
- * @category Signal:DSP
+ * @category DSP:Adaptive
  * @require FFT
  * @description No description available
  *

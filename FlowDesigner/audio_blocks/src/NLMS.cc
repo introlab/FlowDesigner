@@ -12,7 +12,7 @@ DECLARE_NODE(NLMS)
 /*Node
  *
  * @name NLMS
- * @category Signal:DSP
+ * @category DSP:Adaptive
  * @description Normalized LMS algorithm
  *
  * @input_name INPUT

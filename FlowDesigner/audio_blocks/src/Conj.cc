@@ -11,7 +11,7 @@ DECLARE_NODE(Conj)
 /*Node
  *
  * @name Conj
- * @category Signal:Base
+ * @category DSP:Base
  * @description Computes the complex conjugate of a vector
  *
  * @input_name INPUT

@@ -16,7 +16,7 @@ DECLARE_NODE(Log)
 /*Node
  *
  * @name Log
- * @category Signal:Base
+ * @category DSP:Base
  * @description Computes the natural logarithm of a vector
  *
  * @input_name INPUT

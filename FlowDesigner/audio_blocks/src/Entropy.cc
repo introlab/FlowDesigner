@@ -20,7 +20,7 @@ DECLARE_NODE(Entropy)
 /*Node
  *
  * @name Entropy
- * @category Signal:DSP
+ * @category DSP:Misc
  * @description Calculates the entropy of a vector
  *
  * @input_name INPUT

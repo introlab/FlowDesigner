@@ -11,7 +11,7 @@ DECLARE_NODE(Dist)
 /*Node
  *
  * @name Dist
- * @category Signal:DSP
+ * @category DSP:Misc
  * @description Calculates the distance between two vectors
  *
  * @input_name INPUT1

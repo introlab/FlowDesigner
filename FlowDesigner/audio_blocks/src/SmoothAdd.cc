@@ -11,7 +11,7 @@ DECLARE_NODE(SmoothAdd)
 /*Node
  *
  * @name SmoothAdd
- * @category Signal:Special
+ * @category DSP:Manip
  * @description No description available
  *
  * @input_name LEFT

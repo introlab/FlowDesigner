@@ -8,20 +8,23 @@ class DownSample;
 
 DECLARE_NODE(DownSample)
 /*Node
-
+ *
  * @name DownSample
- * @category Signal:DSP
- * @description No description available
-
+ * @category DSP:Base
+ * @description Downsamples a signal by outputing one sample for every N input samples
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector<float>
+ * @input_description Downsampling input
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector<float>
+ * @output_description Downsampled (by N) output
+ *
  * @parameter_name FACTOR
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Downsampling factor N
+ *
 END*/
 
 

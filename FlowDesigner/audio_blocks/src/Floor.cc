@@ -10,7 +10,7 @@ DECLARE_NODE(Floor)
 /*Node
  *
  * @name Floor
- * @category Signal:Base
+ * @category DSP:Base
  * @description Floors vector values
  *
  * @input_name INPUT

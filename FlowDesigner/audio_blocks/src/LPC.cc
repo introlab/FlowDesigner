@@ -18,7 +18,7 @@ DECLARE_NODE(LPC)
 /*Node
  *
  * @name LPC
- * @category Signal:DSP
+ * @category DSP:Adaptive
  * @description Performs LPC (Linear predictive coefficient) analysis
  *
  * @input_name INPUT

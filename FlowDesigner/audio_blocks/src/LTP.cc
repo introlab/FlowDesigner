@@ -16,7 +16,7 @@ DECLARE_NODE(LTP)
 /*Node
  *
  * @name LTP
- * @category Signal:DSP
+ * @category DSP:Adaptive
  * @description Long-term predictor, finds best correlation (pitch) within (START <= sample delay <= END)
  *
  * @input_name INPUT

@@ -12,23 +12,28 @@ DECLARE_NODE(TimeMedian)
 /*Node
  *
  * @name TimeMedian
- * @category Signal:DSP
- * @description No description available
+ * @category DSP:Filter
+ * @description Performs median filtering across vectors (frames)
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description Input vectors (frames)
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Median-filtered vectors
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Vector size
  *
  * @parameter_name LOOKAHEAD
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Median look back (number of frames)
  *
  * @parameter_name LOOKBACK
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Median look ahead (number of frames)
  *
 END*/
 

@@ -11,7 +11,7 @@ DECLARE_NODE(FIR)
 /*Node
  *
  * @name FIR
- * @category Signal:DSP
+ * @category DSP:Filter
  * @description Finite Impulse Response (FIR) filter
  *
  * @input_name INPUT

@@ -11,7 +11,7 @@ DECLARE_NODE(DTMF)
 /*Node
  *
  * @name DTMF
- * @category Signal:Audio
+ * @category DSP:Audio
  * @description Generates a DTMF signal
  *
  * @input_name INPUT

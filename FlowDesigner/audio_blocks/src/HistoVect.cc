@@ -10,7 +10,7 @@ DECLARE_NODE(HistoVect)
 /*Node
  *
  * @name HistoVect
- * @category Signal:Manip
+ * @category DSP:Manip
  * @description No description available
  *
  * @input_name INPUT
