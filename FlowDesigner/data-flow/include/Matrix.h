@@ -16,6 +16,9 @@ protected:
    int rows, cols;
    T *data;
 public:
+
+   typedef T basicType;
+
    Matrix() 
       : rows(0)
       , cols(0)
