@@ -16,27 +16,27 @@
 
 #include "BufferedNode.h"
 #include "ObjectRef.h"
-#include "ObjectParser.h"
 
-class Load;
-DECLARE_NODE(Load)
+class ReadInt;
+DECLARE_NODE(ReadInt)
 /*Node
  *
- * @name Load
+ * @name ReadInt
  * @category IO
- * @description Load an object from file (registered type)
+ * @description ReadInt an integer from file
  *
  * @input_name STREAM
  * @input_description The stream we are loading from
  * @input_type Stream
  *
  * @output_name OUTPUT
- * @output_description The loaded object
+ * @output_type int
+ * @output_description The (next) integer in the stream
  *
 END*/
 
 
-class Load : public BufferedNode {
+class ReadInt : public BufferedNode {
 
 protected:
    
@@ -47,7 +47,7 @@ protected:
    int streamInputID;
 
 public:
-   Load(string nodeName, ParameterSet params) 
+   ReadInt(string nodeName, ParameterSet params) 
       : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
@@ -67,11 +67,10 @@ public:
       }
 
       Stream &stream = object_cast<Stream> (streamRef);
-      
+      int i;
       try {
-	 ObjectRef obj;
-	 stream >> obj;
-	 out[count] = obj;
+	 stream >> i;
+	 out[count] = new Int(i);
       } catch (BaseException *e)
       {
 	 //cerr << "base exception\n";
