@@ -1127,21 +1127,43 @@ FP_DIRTY
 template <>
 inline float vec_inner_prod<float>(const float *a, const float *b, int len)
 {
-  //float sum=0;
-  float sum[4];
+  float sum;
   __asm__ __volatile__ (
   "
   push %%eax
   push %%edi
   push %%ecx
   xorps %%xmm3, %%xmm3
+  xorps %%xmm4, %%xmm4
 
   //jmp cond1
 
-  sub $4, %%ecx
-  jb mul4_skip
+  sub $8, %%ecx
+  jb mul8_skip
 
-mul4_loop:
+mul8_loop:
+  movups (%%eax), %%xmm0
+  movups (%%edi), %%xmm1
+  movups 16(%%eax), %%xmm5
+  movups 16(%%edi), %%xmm6
+  add $32, %%eax
+  add $32, %%edi
+  mulps %%xmm0, %%xmm1
+  mulps %%xmm5, %%xmm6
+  addps %%xmm1, %%xmm3
+  addps %%xmm6, %%xmm4
+
+  sub $8,  %%ecx
+
+  jae mul8_loop
+
+mul8_skip:
+
+  addps %%xmm4, %%xmm3
+
+  add $4, %%ecx
+  jl mul4_skip
+
   movups (%%eax), %%xmm0
   movups (%%edi), %%xmm1
   add $16, %%eax
@@ -1151,11 +1173,11 @@ mul4_loop:
 
   sub $4,  %%ecx
 
-  jae mul4_loop
-
 mul4_skip:
 
+
   add $4, %%ecx
+
   jmp cond1
 
 mul1_loop:
@@ -1170,18 +1192,24 @@ cond1:
   sub $1, %%ecx
   jae mul1_loop
 
+  movhlps %%xmm3, %%xmm4
+  addps %%xmm4, %%xmm3
+  movaps %%xmm3, %%xmm4
+  shufps $33, %%xmm4, %%xmm4
+  addss %%xmm4, %%xmm3
   movups %%xmm3, (%%edx)
-
+  
   pop %%ecx
   pop %%edi
   pop %%eax
-  emms
+  //emms
   "
-  : : "a" (a), "D" (b), "c" (len), "d" (sum)
+  : : "a" (a), "D" (b), "c" (len), "d" (&sum)
 FP_DIRTY
   );
-    
-  return sum[0]+sum[1]+sum[2]+sum[3];
+  return sum;
+  //cerr << sum[0] << " " << sum[1] << endl;
+  //return sum[0];//+sum[1];//+sum[2]+sum[3];
 }
 
 #endif
