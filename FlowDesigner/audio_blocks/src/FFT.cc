@@ -49,10 +49,8 @@ public:
       this->FrameOperation::specificInitialize();
    }
 
-   //void compute(rfftw_plan *plan, const Buffer &input, Buffer &output, int count)
    void calculate(int output_id, int count, Buffer &out)
    {
-      //cerr << "In FFT::calculate count = " << count << endl;
       NodeInput input = inputs[inputID];
       ObjectRef inputValue = input.node->getOutput(input.outputID, count);
 

@@ -3,4 +3,4 @@
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 AUTOMAKE_OPTIONS = no-dependencies
 
-SUBDIRS = src blocks include config doc
+SUBDIRS = src include config doc

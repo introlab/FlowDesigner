@@ -253,6 +253,7 @@ protected:
    /**symbolic to numeric translation for output names*/
    virtual int translateOutput(string inputName);
 
+public:
    /**The node instance factory*/
    static map<string,_NodeFactory*> &factoryDictionary();
    
@@ -338,7 +339,7 @@ protected:
 }
 #else
 
-#define DECLARE_NODE(NodeTypeName) static int dummy_initializer = \
+#define DECLARE_NODE(NodeTypeName) int dummy_initializer_for ## NodeTypeName = \
                Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>);
 
 #endif

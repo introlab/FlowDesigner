@@ -1,27 +1,28 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.4 1999/09/08 04:55:42 jmvalin Exp $
+# $Id: Makefile.am,v 1.5 1999/09/09 21:25:16 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
-lib_LTLIBRARIES = libablocks.la \
-	libAudioFile.la \
-	libConcatenate.la \
-	libDLFrameUnaryOperation.la \
-	libFrameAccumulator.la
+lib_LTLIBRARIES = libablocks.la 
+#\
+#	libAudioFile.la \
+#	libConcatenate.la \
+#	libDLFrameUnaryOperation.la \
+#	libFrameAccumulator.la
 
-libAudioFile_la_SOURCES = AudioFile.cc
-libAudioFile_la_LDFLAGS = -release $(LT_RELEASE)
+#libAudioFile_la_SOURCES = AudioFile.cc
+#libAudioFile_la_LDFLAGS = -release $(LT_RELEASE)
 
-libConcatenate_la_SOURCES = Concatenate.cc
-libConcatenate_la_LDFLAGS = -release $(LT_RELEASE)
+#libConcatenate_la_SOURCES = Concatenate.cc
+#libConcatenate_la_LDFLAGS = -release $(LT_RELEASE)
 
-libDLFrameUnaryOperation_la_SOURCES = DLFrameUnaryOperation.cc
-libDLFrameUnaryOperation_la_LDFLAGS = -release $(LT_RELEASE)
+#libDLFrameUnaryOperation_la_SOURCES = DLFrameUnaryOperation.cc
+#libDLFrameUnaryOperation_la_LDFLAGS = -release $(LT_RELEASE)
 
-libFrameAccumulator_la_SOURCES = FrameAccumulator.cc
-libFrameAccumulator_la_LDFLAGS = -release $(LT_RELEASE)
+#libFrameAccumulator_la_SOURCES = FrameAccumulator.cc
+#libFrameAccumulator_la_LDFLAGS = -release $(LT_RELEASE)
 
 # Sources for compilation in the library
 libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
@@ -38,7 +39,17 @@ libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
 	PitchDecision.cc \
 	Sync.cc \
 	GenderID.cc \
-	FFT.cc
+	FFT.cc \
+	PS.cc \
+	Mel.cc \
+	Window.cc \
+	DCT.cc \
+	Select.cc \
+	TimeFilter.cc \
+	Log.cc \
+	FrameAccumulator.cc \
+	AudioFile.cc \
+	Concatenate.cc
 
 
 #libablocks_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
@@ -47,7 +58,7 @@ libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 # Flags for SGI CC:
 #libablocks_la_CXXFLAGS = -n32
 
-INCLUDES = -I$(top_srcdir)/HMM/include -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include -I$(top_srcdir)/MMI/include
+INCLUDES = -I$(top_srcdir)/HMM/include -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include -I$(top_srcdir)/MMI/include $(FFTW_INCLUDES)
 
 bin_PROGRAMS = AudioNetwork
 

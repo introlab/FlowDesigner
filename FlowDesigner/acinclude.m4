@@ -80,7 +80,8 @@ ac_cxxflags_safe="$CXXFLAGS"
 ac_ldflags_safe="$LDFLAGS"
 ac_libs_safe="$LIBS"
 
-CXXFLAGS="$CXXFLAGS -I$fftw_incdir $all_includes"
+#CXXFLAGS="$CXXFLAGS -I$fftw_incdir $all_includes"
+INCLUDE="$INCLUDE -I$fftw_incdir $all_includes"
 LDFLAGS="-L$fftw_libdir $all_libraries"
 LIBS="$LIBS $LIBFFTW"
 
