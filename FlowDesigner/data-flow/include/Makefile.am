@@ -57,5 +57,6 @@ noinst_HEADERS = \
 	operators.h \
 	FlowException.h \
 	vmethod.h  \
-	sstream.unused
+	sstream.unused \
+	IntfNode.h
 
