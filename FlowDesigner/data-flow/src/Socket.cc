@@ -2,6 +2,7 @@
 
 #include "BufferedNode.h"
 #include "operators.h"
+#include "Stream.h"
 #include "SocketStream.h"
 
 class Socket;

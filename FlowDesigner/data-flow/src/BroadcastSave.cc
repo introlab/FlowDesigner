@@ -5,6 +5,7 @@
 #include "Object.h"
 #include <sstream>
 #include <iostream>
+#include "Stream.h"
 #include "SocketStream.h"
 
 using namespace std;

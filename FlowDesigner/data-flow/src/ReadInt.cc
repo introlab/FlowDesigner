@@ -2,6 +2,7 @@
 
 #include "BufferedNode.h"
 #include "ObjectRef.h"
+#include "Stream.h"
 
 class ReadInt;
 DECLARE_NODE(ReadInt)

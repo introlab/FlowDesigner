@@ -1,6 +1,7 @@
 // Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
 
 #include "Node.h"
+#include "Stream.h"
 
 class Stdout;
 

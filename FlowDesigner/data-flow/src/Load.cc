@@ -3,6 +3,7 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "ObjectParser.h"
+#include "Stream.h"
 
 class Load;
 DECLARE_NODE(Load)

@@ -3,6 +3,7 @@
 #include "net_types.h"
 #include "Vector.h"
 #include "BufferedNode.h"
+#include "Stream.h"
 
 class List;
 DECLARE_NODE(List)

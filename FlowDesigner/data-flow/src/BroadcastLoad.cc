@@ -5,6 +5,7 @@
 #include "ObjectRef.h"
 #include "ObjectParser.h"
 #include <sstream>
+#include "Stream.h"
 #include "SocketStream.h"
 
 class BroadcastLoad;

@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include "stream_wrap.h"
+#include "Stream.h"
 
 class ExecStream;
 

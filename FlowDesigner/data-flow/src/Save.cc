@@ -3,8 +3,9 @@
 #include "BufferedNode.h"
 #include "net_types.h"
 #include "Object.h"
-
 #include <iostream>
+#include "Stream.h"
+
 using namespace std;
 
 class Save;
