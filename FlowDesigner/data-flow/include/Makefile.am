@@ -61,7 +61,8 @@ include_HEADERS = Array.h \
 	flow_version.h \
 	compile_object.h \
 	CompositeType.h \
-	rtc.h
+	rtc.h \
+	UserException.h
 	
 noinst_HEADERS = \
 	Pack.h \
