@@ -93,6 +93,9 @@ public:
       {
          output[i]=pcm[i];
       }
+
+      for (int i=0;i<inputLength;i++)
+	 buffer[i] = buffer[i+inputLength];
       
       output.status = Object::valid;
    }
