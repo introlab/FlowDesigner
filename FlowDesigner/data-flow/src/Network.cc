@@ -224,7 +224,12 @@ void Network::initialize() {
    
    //We must call initialize to all our nodes
    for (map<string,Node*>::iterator iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-     (*iter).second->initialize();
+     try {
+        (*iter).second->initialize();
+     } catch (BaseException *e)
+     {
+        throw e->add(new GeneralException(string("Exception caught while initializing ") + (*iter).second->getName(), __FILE__, __LINE__));
+     }
    }
 }
 
