@@ -4,6 +4,7 @@
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
+#include "UserException.h"
 
 DECLARE_NODE(Probe)
 /*Node
@@ -74,6 +75,7 @@ static void show_hide_click (GtkButton *button, Probe *pr)
 Probe::Probe(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
    , window1(NULL)
+   , exit_status(true)
 {
    outputID = addOutput("OUTPUT");
    inputID = addInput("INPUT");
@@ -294,6 +296,14 @@ void Probe::reset()
    this->Node::reset();
 }
 
+void Probe::cleanupNotify() 
+{
+  //cerr << "Setting exit_status" << endl;
+   exit_status = true;
+   next();
+}
+
+
 void Probe::next()
 {
    //cerr << "In Probe::next\n";
@@ -359,6 +369,8 @@ void Probe::trace()
    gdk_threads_leave(); 
    SET_CANCEL
 
+   if (exit_status)
+     throw new UserException;
    //sem_wait(&sem);
    pthread_mutex_lock(&mutex);
    if (nbClick)
@@ -370,6 +382,8 @@ void Probe::trace()
       nbClick--;
       pthread_mutex_unlock(&mutex);
    }
+   if (exit_status)
+     throw new UserException;
 
    NO_CANCEL
    gdk_threads_enter(); 

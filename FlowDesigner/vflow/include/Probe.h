@@ -54,6 +54,8 @@ class Probe : public Node {
 
    int skip;
 
+   bool exit_status;
+
    string probeName;
    
    bool traceEnable;
@@ -93,6 +95,7 @@ class Probe : public Node {
 
    virtual void show_hide();
 
+   virtual void cleanupNotify();
 protected:
    /**Default constructor, should not be used*/
    Probe() {throw new GeneralException("Probe copy constructor should not be called",__FILE__,__LINE__);}
