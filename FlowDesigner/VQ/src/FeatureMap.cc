@@ -3,6 +3,11 @@
 #include "ObjectParser.h"
 #include "misc.h"
 #include <algo.h>
+#include <values.h>
+
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
 
 DECLARE_TYPE(FeatureMap)
 
