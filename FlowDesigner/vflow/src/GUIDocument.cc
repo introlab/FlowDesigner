@@ -580,11 +580,14 @@ void GUIDocument::createParamDialog()
 
 static void disposeFunct(void *dummy)
 {
-   //delete net;
-   cerr << "deleting\n";
+
    GUIDocument::isRunning=false;
-   delete GUIDocument::runningNet; 
-   GUIDocument::runningNet=NULL;
+   if (GUIDocument::runningNet != NULL) {
+     //delete net;
+     cerr << "Deleting the running network.\n";
+     delete GUIDocument::runningNet; 
+     GUIDocument::runningNet=NULL;     
+   }
 
    gdk_threads_enter();
 
@@ -686,6 +689,7 @@ void GUIDocument::run()
    {
       e.print();
       delete net;
+      runningNet=NULL;
    }
    
    pthread_cleanup_pop(1);
