@@ -80,14 +80,6 @@ public:
 
    }
 
-      /*~DCT() 
-   {
-      delete [] inputCopy;
-      delete [] outputCopy;
-      delete [] rNormalize;
-      delete [] iNormalize;
-      }*/
-
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);

@@ -147,11 +147,11 @@ class AudioStream : public BufferedNode {
    int itemSize;
 
    /**Internal temporary variable used when converting sample to float*/
-   char *tmpBuffer;
+   vector<char> tmpBuffer;
 
 public:
    AudioStream(string nodeName, ParameterSet params)
-   : BufferedNode(nodeName, params)
+      : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");
@@ -178,8 +178,6 @@ public:
       inOrder = true;
    }
 
-   ~AudioStream() {delete [] tmpBuffer;}
-
    void setEncoding(const string &enc)
    {
       if (enc == "ULAW")
@@ -193,7 +191,7 @@ public:
       else 
 	 throw new NodeException(this, string("Invalid encoding: ") + enc,__FILE__, __LINE__);
       itemSize = encoding == lin16 ? 2 : 1;
-      tmpBuffer = new char [itemSize*advance];
+      tmpBuffer.resize(itemSize*advance);
    }
    
    virtual void specificInitialize()
@@ -239,14 +237,14 @@ public:
 	 }
 	 
 	 
-	 if (!readStream(tmpBuffer, advance, inputValue))
+	 if (!readStream(&tmpBuffer[0], advance, inputValue))
 	 {
 	    out[count] = Object::past_endObject;
 	    return;	 
 	 }
 	 int convert = min(advance, outputLength);
 	 int outSz = output.size();
-	 raw2Float (tmpBuffer, &output[outSz] - convert, convert, encoding);
+	 raw2Float (&tmpBuffer[0], &output[outSz] - convert, convert, encoding);
       }
 
       

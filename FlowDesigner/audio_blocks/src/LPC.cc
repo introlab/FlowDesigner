@@ -58,10 +58,10 @@ class LPC : public BufferedNode {
    int inputID;
    int outputID;
    int outputLength;
-   float *r;
-   float *rc;
+   vector<float> r;
+   vector<float> rc;
    float radius;
-   float *lag_window;
+   vector<float> lag_window;
 
 public:
    LPC(string nodeName, ParameterSet params)
@@ -75,9 +75,9 @@ public:
       if (parameters.exist("RADIUS"))
 	 radius = dereference_cast<float> (parameters.get("RADIUS"));
       else radius=1;
-      r=new float[outputLength];
-      rc=new float[outputLength];
-      lag_window=new float[outputLength];
+      r.resize(outputLength);
+      rc.resize(outputLength);
+      lag_window.resize(outputLength);
 
       if (parameters.exist("LAG_THETA"))
       {
@@ -88,8 +88,6 @@ public:
 	    lag_window[i]=1;
       }
    }
-
-   ~LPC() {delete [] r; delete [] rc; delete [] lag_window;}
 
    void calculate(int output_id, int count, Buffer &out)
    {
@@ -106,13 +104,13 @@ public:
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
-      autocorr(&in[0], r, outputLength-1, in.size());
+      autocorr(&in[0], &r[0], outputLength-1, in.size());
       float er=0;
       for (int i=0;i<outputLength;i++)
 	 r[i] *= lag_window[i];
       r[0] *= 1.0001;
       r[0] += 1; //just in case of a null frame
-      wld(&output[0], r, rc, outputLength-1);
+      wld(&output[0], &r[0], &rc[0], outputLength-1);
       if (radius != 1)
       {
 	 for (int i=0;i<outputLength;i++)
