@@ -9,7 +9,7 @@ static gint gui_note_event_handler (GnomeCanvasItem *item, GdkEvent *event, GUIN
 }
 
 
-static gboolean  gui_note_key_press_event (GtkWidget *widget, GdkEventKey *event, GUINote *note) {
+static gboolean  gui_note_key_release_event (GtkWidget *widget, GdkEventKey *event, GUINote *note) {
   note->update_text();
   return FALSE;
 }
@@ -21,10 +21,8 @@ void GUINote::update_text() {
     GtkTextIter start_iter;
     GtkTextIter end_iter;
 
-    //get beginning and end of the text
-    gtk_text_buffer_get_start_iter  (buffer,&start_iter);
-    gtk_text_buffer_get_end_iter    (buffer,&end_iter);
-
+    gtk_text_buffer_get_bounds(buffer, &start_iter, &end_iter);
+        
     gchar*  text_data = gtk_text_buffer_get_text(buffer,&start_iter,&end_iter,TRUE);
     
     string new_text(text_data);
@@ -131,8 +129,8 @@ GUINote::GUINote(const std::string &text, double x, double y, bool visible, UINe
 			 this);
 
       //register text view signals
-      gtk_signal_connect(GTK_OBJECT(m_textView), "key-press-event",
-			 (GtkSignalFunc) gui_note_key_press_event,
+      gtk_signal_connect(GTK_OBJECT(m_textView), "key-release-event",
+			 (GtkSignalFunc) gui_note_key_release_event,
 			 this);
 
 
