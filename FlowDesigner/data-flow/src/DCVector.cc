@@ -18,7 +18,7 @@ DECLARE_NODE(DCVector)
  * @description Creates a vector of identical values
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description The vector
  *
  * @parameter_name LENGTH

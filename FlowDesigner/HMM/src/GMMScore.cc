@@ -12,16 +12,19 @@ DECLARE_NODE(GMMScore)
  *
  * @name GMMScore
  * @category HMM
- * @description No description available
+ * @description Scores a GMM for a given frame
  *
  * @input_name FRAMES
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description Frames that will be scored
  *
  * @input_name GMM
- * @input_description No description available
+ * @input_type GMM
+ * @input_description GMM used as dpf
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Log-score (as a vector of 1)
  *
 END*/
 

@@ -18,7 +18,7 @@ DECLARE_NODE(ConstantVector)
  *
  * @output_name OUTPUT
  * @output_description The vector
- * @output_type Vector
+ * @output_type Vector<float>
  *
  * @parameter_name VALUE
  * @parameter_description The string representation of the vector

@@ -18,15 +18,15 @@ DECLARE_NODE(SolveLS)
  *
  * @input_name A
  * @input_description The A matrix  (M x N)
- * @input_type Matrix
+ * @input_type Matrix<float>
  *
  * @input_name B
  * @input_description The b vector (M)
- * @input_type Vector
+ * @input_type Vector<float>
  *
  * @output_name OUTPUT
  * @output_description Result X (N)
- * @output_type Vector
+ * @output_type Vector<float>
  *
 END*/
 

@@ -15,11 +15,11 @@ DECLARE_NODE(DiagGMMSetScore)
  * @description Scores a DiagGMM
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @input_name GMM
- * @input_type Vector
+ * @input_type DiagGMM
  * @input_description Input GMM set (pdf's)
  *
  * @output_name OUTPUT

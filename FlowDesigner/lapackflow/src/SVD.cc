@@ -18,19 +18,19 @@ DECLARE_NODE(SVD)
  *
  * @input_name INPUT
  * @input_description Input matrix A (M x N, M > N)
- * @input_type Matrix
+ * @input_type Matrix<float>
  *
  * @output_name U
  * @output_description Left singular vectors U (M x M)
- * @output_type Matrix
+ * @output_type Matrix<float>
  *
  * @output_name SIGMA
  * @output_description Singular values SIGMA (M x N)
- * @output_type Vector
+ * @output_type Vector<float>
  *
  * @output_name V
  * @output_description Right singular vectors V (N x N)
- * @output_type Matrix
+ * @output_type Matrix<float>
  *
 END*/
 

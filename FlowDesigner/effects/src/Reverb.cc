@@ -16,19 +16,19 @@ DECLARE_NODE(Reverb)
  * @description Stereo reverb effect
  *
  * @input_name LEFT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Right Input Channel
  *
  * @input_name RIGHT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Left Input Channel
  *
  * @output_name LEFT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Right Output Channel
  *
  * @output_name RIGHT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Left Output Channel
  *
  * @parameter_name ROOMSIZE

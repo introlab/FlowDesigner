@@ -16,7 +16,7 @@ DECLARE_NODE(Pack)
  *
  * @output_name OUTPUT
  * @output_description A vector of ObjectRef(s)
- * @output_type Vector
+ * @output_type Vector<ObjectRef>
  *
 END*/
 

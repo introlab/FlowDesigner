@@ -30,7 +30,7 @@ DECLARE_TYPE(GenericModel)
  * 
  * @input_name INPUT
  * @input_description The input value of the variables
- * @input_type Vector
+ * @input_type Vector<float>
  *
  * @output_name MODEL
  * @output_description The model (cloned)
@@ -38,7 +38,7 @@ DECLARE_TYPE(GenericModel)
  *
  * @output_name OUTPUT
  * @output_description The defuzzified values
- * @output_type Vector
+ * @output_type Vector<float>
  *
 END*/
 

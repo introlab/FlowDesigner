@@ -15,7 +15,7 @@ DECLARE_NODE(DiagGMMScore)
  * @description Scores a DiagGMM
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @input_name GMM

@@ -16,7 +16,7 @@ DECLARE_NODE(AdaptMAP)
  * @description Performs MAP adaptation (well, almost!)
  *
  * @input_name FRAMES
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Frame buffer
  *
  * @input_name GMM
@@ -24,7 +24,7 @@ DECLARE_NODE(AdaptMAP)
  * @input_description GMM to be adapted
  *
  * @output_name OUTPUT
- * @output_type float
+ * @output_type GMM
  * @output_description Adapted GMM
  *
 END*/

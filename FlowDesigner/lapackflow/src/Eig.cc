@@ -18,15 +18,15 @@ DECLARE_NODE(Eig)
  *
  * @input_name INPUT
  * @input_description Input matrix A (N x N)
- * @input_type Matrix
+ * @input_type Matrix<float>
  *
  * @output_name VALUES
  * @output_description Eigenvalues D (diag N)
- * @output_type Vector
+ * @output_type Vector<float>
  *
  * @output_name VECTORS
  * @output_description Eigenvectors V (N x N)
- * @output_type Vector
+ * @output_type Matrix<float>
  *
 END*/
 

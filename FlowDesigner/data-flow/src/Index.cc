@@ -14,7 +14,7 @@ DECLARE_NODE(Index)
  * @description Returns a float value from a vector
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description The input vector 
  *
  * @input_name INDEX

@@ -16,15 +16,15 @@ DECLARE_NODE(MatProduct)
  *
  * @input_name INPUT
  * @input_description Input vector
- * @input_type Vector
+ * @input_type Vector<float>
  *
  * @input_name MATRIX
  * @input_description Matrix
- * @input_type Matrix
+ * @input_type Matrix<float>
  *
  * @output_name OUTPUT
  * @output_description Result
- * @output_type Vector
+ * @output_type Vector<float>
  *
 END*/
 

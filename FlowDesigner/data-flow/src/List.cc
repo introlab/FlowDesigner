@@ -18,7 +18,7 @@ DECLARE_NODE(List)
  *
  * @output_name OUTPUT
  * @output_description The vector output
- * @output_type Vector
+ * @output_type Vector<ObjectRef>
  *
 END*/
 

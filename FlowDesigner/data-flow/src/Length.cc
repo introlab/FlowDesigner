@@ -15,7 +15,7 @@ DECLARE_NODE(Length)
  *
  * @input_name INPUT
  * @input_description The vector input
- * @input_type Vector
+ * @input_type Vector<float>
  *
  * @output_name OUTPUT
  * @output_description The length of the vector

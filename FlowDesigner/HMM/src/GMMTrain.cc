@@ -14,8 +14,8 @@ DECLARE_NODE(GMMTrain)
  * @description Trains a GMM using an accumulator of frames
  *
  * @input_name FRAMES
- * @input_type Vector
- * @input_description Frame accumulator
+ * @input_type Vector<ObjectRef>
+ * @input_description Frame Accumulator
  *
  * @output_name OUTPUT
  * @output_type GMM
