@@ -163,5 +163,13 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
    return in;  
 }
 
+template <class T>
+inline istream &operator >> (istream &in, T* &o)
+{
+   RCPtr<T> obj;
+   in >> obj;
+   o = obj->detach();
+   return in;
+}
 
 #endif

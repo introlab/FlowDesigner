@@ -13,7 +13,7 @@ class complex;
 
 class TTraits {
 public:
-   enum Kind {Object=0, Basic=1, Unknown=2, Pointer=3};
+   enum Kind {Object=0, Basic=1, Unknown=2, ObjectPointer=3};
 };
 
 template<class T>
@@ -22,6 +22,7 @@ struct TypeTraits {
 };
 
 #define _DEF_OBJECT_TYPE(type) template<>struct TypeTraits<type> {enum {kind=TTraits::Object};};
+#define _DEF_OBJECTPTR_TYPE(type) template<>struct TypeTraits<type> {enum {kind=TTraits::ObjectPointer};};
 #define _DEF_C_TYPE(type) template<>struct TypeTraits<type> {enum {kind=TTraits::Basic};};
 
 //#define _DEF_UNKNOWN_TYPE(type) template<>struct TypeTraits<type> {enum {isBasic=2};};
@@ -35,14 +36,20 @@ _DEF_C_TYPE(char)
 _DEF_C_TYPE(unsigned char)
 _DEF_C_TYPE(long)
 _DEF_C_TYPE(unsigned long)
-_DEF_C_TYPE(complex<float>)
-_DEF_C_TYPE(complex<double>)
-_DEF_C_TYPE(string)
+
+_DEF_OBJECTPTR_TYPE(ObjectRef)
+
+//_DEF_C_TYPE(complex<float>)
+//_DEF_C_TYPE(complex<double>)
+
+//_DEF_C_TYPE(string)
 //_DEF_UNKNOWN_TYPE(ObjectRef)
 
 //template<class T>struct TypeTraits<T*> {enum {isBasic=2};};
 //template<class T>struct TypeTraits<RCPtr<T> > {enum {isBasic=2};};
+
 template<class T>struct TypeTraits<complex<T> > {enum {kind=TTraits::Basic};};
+template<class T>struct TypeTraits<RCPtr<T> > {enum {kind=TTraits::ObjectPointer};};
 
 
 #endif

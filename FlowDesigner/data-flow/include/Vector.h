@@ -131,16 +131,49 @@ struct VecBinary<T,TTraits::Object> {
       BinIO::write(out, &tmp, 1);
       for (int i=0;i<v.size();i++)
       {
-	 out << "|";
 	 v[i].serialize(out);
-	 out << "|";
       }
       out << "}";
    }
    static inline void unserialize(Vector<T> &v, istream &in)
    {
+      int tmp;
+      BinIO::read(in, &tmp, 1);
+      v.resize(tmp);
+      for (int i=0;i<v.size();i++)
+      {
+	 if (!isValidType(in, v.className())) return in;
+	 v[i].unserialize(in);
+      }
    }
 };
+
+template<class T>
+struct VecBinary<T,TTraits::ObjectPointer> {
+   static inline void serialize(const Vector<T> &v, ostream &out)
+   {
+      out << "{" << v.className() << endl;
+      out << "|";
+      int tmp=v.size();
+      BinIO::write(out, &tmp, 1);
+      for (int i=0;i<v.size();i++)
+      {
+	 v[i]->serialize(out);
+      }
+      out << "}";
+   }
+   static inline void unserialize(Vector<T> &v, istream &in)
+   {
+      int tmp;
+      BinIO::read(in, &tmp, 1);
+      v.resize(tmp);
+      for (int i=0;i<v.size();i++)
+      {
+	 in >> v[i];
+      }
+   }
+};
+
 
 template<class T>
 struct VecBinary<T,TTraits::Basic> {
@@ -155,6 +188,10 @@ struct VecBinary<T,TTraits::Basic> {
    }
    static inline void unserialize(Vector<T> &v, istream &in)
    {
+      int tmp;
+      BinIO::read(in, &tmp, 1);
+      v.resize(tmp);
+      BinIO::read(in, &(const_cast<Vector<T> &>(v))[0], v.size());
    }
 };
 
