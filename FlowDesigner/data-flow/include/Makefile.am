@@ -51,7 +51,8 @@ include_HEADERS = Array.h \
 	binio.h \
 	typemap.h \
 	stream_io.h \
-	NetworkSocket.h
+	NetworkSocket.h \
+	iextensions.h
 	
 noinst_HEADERS = \
 	NOT.h \
