@@ -49,8 +49,8 @@ void FFNet::init(const vector<string> &functions)
    }
    weights = new float [nbWeights];
 
-   float weightOffset = 0;
-   float neuronOffset = 0;
+   int weightOffset = 0;
+   int neuronOffset = 0;
    for (int i=0;i<topo.size()-1;i++)
    {
       layers[i]=new FFLayer(topo[i+1], topo[i], weights, weightOffset, neuronOffset, functions[i]);
@@ -159,8 +159,8 @@ void FFNet::setupLayersAfterRead()
    }
    weights = new float [nbWeights];
    
-   float weightOffset = 0;
-   float neuronOffset = 0;
+   int weightOffset = 0;
+   int neuronOffset = 0;
    for (int i=0;i<topo.size()-1;i++)
    {
       //layers[i]=new FFLayer(topo[i+1], topo[i], weights, weightOffset, neuronOffset, functions[i]);
