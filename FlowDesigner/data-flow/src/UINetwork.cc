@@ -355,19 +355,6 @@ vector<string> UINetwork::getTerminals(UINetTerminal::NetTermType termType)
    return term;
 }
 
-/*void UINetwork::setCondition(UINode *cond)
-{
-   if (!isIterator)
-   {
-      cerr << "Subnets don't have conditions\n";
-      return;
-   }
-
-   if (conditionNode != NULL)
-      conditionNode->unsetAsCondition();
-   conditionNode=cond;
-   }*/
-
 void UINetwork::newNetNotify(const string &cat, const string &type) 
 {
    //if (type != name) 

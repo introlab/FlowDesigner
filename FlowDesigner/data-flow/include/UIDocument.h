@@ -23,7 +23,7 @@ class ItemInfo {
 	string value;
 	string description;
 	
-	ItemInfo() : type("ANY"), value(""), description("No description available") {}
+	ItemInfo() : type("any"), value(""), description("No description available") {}
 };
 
 class SubnetInfo {
