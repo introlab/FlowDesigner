@@ -162,7 +162,7 @@ public:
       
    void calculate(int output_id, int count, Buffer &out)
    {
-      throw NodeException(this, "This should never, ever happen (ParallelThread::calculate called)", __FILE__, __LINE__);
+      throw new NodeException(this, "This should never, ever happen (ParallelThread::calculate called)", __FILE__, __LINE__);
    }
 
    ObjectRef getOutput(int output_id, int count)      
@@ -174,29 +174,24 @@ public:
       ObjectRef result;
 
       
-      if (output_id == output1ID)
+      if (output_id == output1ID && out1.isValid(count))
       {
-	 if (typeid(*out1[count]) == typeid(ExceptionObject))
+	 if (typeid(*out1.get(count)) == typeid(ExceptionObject))
 	 {
-	    object_cast<ExceptionObject> (out1[count]).doThrow();
+	    object_cast<ExceptionObject> (out1.get(count)).doThrow();
 	 }
-	 result = out1[count];
-      } else if (output_id == output2ID)
+	 return out1.get(count);
+      } else if (output_id == output2ID && out2.isValid(count))
       {
-	 if (typeid(*out2[count]) == typeid(ExceptionObject))
+	 if (typeid(*out2.get(count)) == typeid(ExceptionObject))
 	 {
-	    object_cast<ExceptionObject> (out2[count]).doThrow();
+	    object_cast<ExceptionObject> (out2.get(count)).doThrow();
 	 }
-	 result = out2[count];
+	 return out2[count];
       } else
-	 throw NodeException (this, "Wrong output ID", __FILE__, __LINE__);
-      
-      if (result->status == Object::valid)
-      {
-	 //pthread_mutex_unlock(&bigLock);
-	 return result;
-      }
-      
+	 if (output_id != output1ID && output_id != output1ID)
+	    throw new NodeException (this, "Wrong output ID", __FILE__, __LINE__);
+            
       calcCount = count;
       pseudosem_post(&sendSem);	 
 
@@ -232,7 +227,7 @@ public:
 	 }
 	 result = out2[count];
       } else 
-	 throw NodeException (this, "Wrong output ID", __FILE__, __LINE__);
+	 throw new NodeException (this, "Wrong output ID", __FILE__, __LINE__);
 
       //pthread_mutex_unlock(&bigLock);
       return result;
