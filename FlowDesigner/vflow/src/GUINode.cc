@@ -12,6 +12,7 @@
 #include "flow_pref.h"
 #include <math.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include "vflow.h"
 
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
@@ -243,7 +244,15 @@ gint GUINode::event(GdkEvent *event)
    gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
    //cerr << "+";
 
-  
+   NodeInfo *my_info = getNetwork()->getDocument()->getRepository().findNode(getType());
+
+   if (my_info) {
+     vflowGUI::instance()->display_statusbar_text(getName() + getDescription() + string(" : ") + my_info->description);
+   }
+   else {
+     vflowGUI::instance()->display_statusbar_text(getName());
+   }
+
 
    switch (event->type) 
    {
