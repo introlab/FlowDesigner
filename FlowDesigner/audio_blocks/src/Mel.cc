@@ -23,7 +23,7 @@
 class Mel;
 
 //DECLARE_NODE(Mel)
-NODE_INFO(Mel, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(Mel, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:SAMPLING:LOW:HIGH")
 
 class Mel : public FrameOperation {
    

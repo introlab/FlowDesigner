@@ -28,9 +28,18 @@
  */
 /***************************************************************************/
 Iterator::Iterator (string nodeName, ParameterSet params) 
-   : Network(nodeName, params), output(new Object(Object::nil)) {
+   : Network(nodeName, params)
+   //, output(new Object(Object::nil)) 
+
+{
    translator = NULL;
    conditionNode = NULL;
+   
+   //BUG output should'n be a static array
+   for (int i=0;i<10;i++)
+   {
+      output[i] = ObjectRef(new Object(Object::nil));
+   }
 }
 /***************************************************************************/
 /*
@@ -41,7 +50,6 @@ Iterator::Iterator (string nodeName, ParameterSet params)
 ObjectRef Iterator::getOutput (int output_id, int count) {
    
    if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
-
    lock();
 
    if (processCount != count) {
@@ -51,7 +59,7 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          //Reinitialization of all the processCount in our Network
          map<string,Node*>::iterator iter;         
  
-         if (processCount != -1 ) {
+         if (processCount != -1) {
 
             for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
                if (debugMode) {
@@ -74,34 +82,39 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          {
             if (doWhile)
             {
-               output = sinkNode->getOutput(output_id,pc);
+	       int out_id=0;
+	       while (sinkNode->hasOutput(out_id))
+	       {
+		  output[out_id] = sinkNode->getOutput(out_id,pc);
+		  out_id++;
+	       }
             }
             ObjectRef condition = conditionNode->getOutput(conditionID,pc);
             
             if (dereference_cast<bool>(condition)==false) break;
             if (!doWhile)
             {
-               output = sinkNode->getOutput(output_id,pc);
-            }
+	       int out_id=0;
+	       while (sinkNode->hasOutput(out_id))
+	       {
+		  output[out_id] = sinkNode->getOutput(out_id,pc);
+		  out_id++;
+	       }
+	    }
             pc++;
          }
       }
-      catch (GenericCastException *e) {
-         //We had a problem casting, our inputs are invalid?
-         e->print();
-         output = ObjectRef(new Object(Object::nil));         
-      }      
       catch (BaseException *e) {
          //Something weird happened
          //e->print();
          throw e->add (new NodeException (this,string("Error in Iterator::getOutput"), __FILE__,__LINE__));
       }
       processCount = count;
-   }
+      }
 
    unlock();
 
-   return output;   
+   return output[output_id];   
 }
 
 /***************************************************************************/

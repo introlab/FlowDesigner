@@ -29,13 +29,7 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
     pthread_mutex_init(& mutex, NULL);
     
 
-  }
-  catch (GenericCastException *e) {
-    //We had a problem casting, our inputs are invalid?
-    e->print();
-    output = ObjectRef(new Object(Object::nil)); 
-    throw new NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__);
-  }      
+  }    
   catch (BaseException *e) {
     //Something weird happened
     //e->print();
@@ -67,15 +61,14 @@ ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
 	if (translator) {
 	  translator->setProcessCount(count);
 	}
-	        
-	output = sinkNode->getOutput(output_id,internal_pc);
+	int out_id=0;
+	while (sinkNode->hasOutput(out_id))
+	{
+	   output[out_id] = sinkNode->getOutput(output_id,internal_pc);
+	   out_id++;
+	}
        
-      }
-      catch (GenericCastException *e) {
-         //We had a problem casting, our inputs are invalid?
-         e->print();
-         output = ObjectRef(new Object(Object::nil));         
-      }      
+      }     
       catch (BaseException *e) {
          //Something weird happened
          //e->print();
@@ -86,7 +79,7 @@ ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
 
    iterator_unlock();
 
-   return output;   
+   return output[output_id];   
 }
 
 

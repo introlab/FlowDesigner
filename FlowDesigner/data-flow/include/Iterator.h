@@ -94,7 +94,7 @@ protected:
    InputTranslator *translator;
    
    /** The output of the iterator*/
-   ObjectRef output;
+   ObjectRef output[10];
    
    /** Default constructor that should not be used*/
    Iterator() {

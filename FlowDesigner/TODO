@@ -4,10 +4,6 @@ support removing network terminals
 
 set the isModified flag when adding a net terminal or moving a node, ...
 
-handle environment variables for automatic DL and external documents
-
-implement Exception Stack
-
 debug thread race with run button disable
 
 implement variable number of inputs/outputs

@@ -59,7 +59,7 @@ class FFLayer : public Object {
    string funcType;
   public:
    FFLayer() {};
-   FFLayer(int _nbNeurons, int _nbInputs, string type = "sigmoid");
+   FFLayer(int _nbNeurons, int _nbInputs, string type = "tanh");
    ~FFLayer() {delete tmp_weights; delete value; delete weights; delete error; delete deriv;}
    void update(float *previous)
       {

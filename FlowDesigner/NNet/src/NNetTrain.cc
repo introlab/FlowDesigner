@@ -58,6 +58,11 @@ public:
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize()
       {
+	 NodeInput trainInInput = inputs[trainInID];
+	 cerr << "in name = " << trainInInput.outputID << endl ;
+	 
+	 NodeInput trainOutInput = inputs[trainOutID];
+	 cerr << "out name = " << trainOutInput.outputID << endl;
 	 this->Node::specificInitialize();
       }
 
@@ -100,11 +105,11 @@ public:
 
 	       //Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
 
-	       Vector<int> topo(4);
+	       Vector<int> topo(2);
 	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
-	       topo[1]=10;
-	       topo[2]=10;
-	       topo[3]=object_cast <Vector<float> > (outBuff[0]).size();
+	       //topo[1]=20;
+	       //topo[2]=20;
+	       topo[1]=object_cast <Vector<float> > (outBuff[0]).size();
 
 	       FFNet *net = new FFNet( topo ); 
 	       
