@@ -14,6 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #include "gmm.h"
+#include <values.h>
 
 void GMM::init(vector<Frame *> frames)
 {
@@ -94,7 +95,7 @@ vector<Score> GMM::score(vector <Frame *> fr) const
 
 Score GMM::score(Frame * fr) const
 {
-   float min_dist = MAXFLOAT;
+   float min_dist = FLT_MAX ;
    int min_gauss = 0;
    Score frame_score;
    for (int j=0;j<nb_gaussians;j++)
