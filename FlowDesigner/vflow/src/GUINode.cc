@@ -6,7 +6,6 @@
 #include "GUINodeParameters.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
-#include "misc.h"
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -540,6 +539,13 @@ void GUINode::initialize_widgets() {
 
 }
 
+/*#define min(x,y) ((x)<(y) ? (x) : (y))
+#define max(x,y) ((x)>(y) ? (x) : (y))
+*/
+
+/*template <class T>
+T &max(T &a, T &b) {return a > b ? a : b;}
+*/
 
 void GUINode::redraw() {
   
@@ -549,6 +555,9 @@ void GUINode::redraw() {
   double max_outputs = 10;
   double start_y1;
   double start_y2;
+
+  int inSize = inputs.size();
+  int outSize = outputs.size();
 
   //the node Text is the reference
   gnome_canvas_item_get_bounds (nodeText,&tx1,&ty1,&tx2,&ty2);
@@ -560,32 +569,31 @@ void GUINode::redraw() {
   ry2 = ty2;
 
   //centering on label
-
-  start_y1 = (ty1 + ty2) / 2.0 - (inputs.size()  - 1.0) * 15.0 / 2.0;
-  start_y2 = (ty1 + ty2) / 2.0 - (outputs.size() - 1.0) * 15.0 / 2.0;
+  start_y1 = (ty1 + ty2) / 2.0 - max(0.0,inSize  - 1.0) * 15.0 / 2.0;
+  start_y2 = (ty1 + ty2) / 2.0 - max(0.0,outSize - 1.0) * 15.0 / 2.0;
 
 
   //finding max size for text + input terminal
 
-  if (inputs.size() > 1) {
-    for (int i = 0; i < inputs.size(); i++) {
+  if (inSize > 1) {
+    for (int i = 0; i < inSize; i++) {
       max_inputs = max(max_inputs,dynamic_cast<GUITerminal*>(inputs[i])->getWidth() + 10.0);    
     }
   }
 
   
   //finding max size for text + output terminal
-  if (outputs.size() > 1) {
-    for (int i = 0; i < outputs.size(); i++) {
+  if (outSize > 1) {
+    for (int i = 0; i < outSize; i++) {
       max_outputs = max(max_outputs,dynamic_cast<GUITerminal*>(outputs[i])->getWidth() + 10.0);
     }
   }
 
 
   //let's position the inputs
-  for (int i = 0; i < inputs.size(); i++) { 
+  for (int i = 0; i < inSize; i++) { 
 
-    if (inputs.size() > 1) {
+    if (inSize > 1) {
       dynamic_cast<GUITerminal*>(inputs[i])->showName();
     }
     else {
@@ -598,9 +606,9 @@ void GUINode::redraw() {
 
 
   //let's find the maximum width of the output
-  for (int i = 0; i < outputs.size(); i++) {
+  for (int i = 0; i < outSize; i++) {
 
-    if (outputs.size() > 1) {
+    if (outSize > 1) {
       dynamic_cast<GUITerminal*>(outputs[i])->showName();
     }
     else {
@@ -619,11 +627,8 @@ void GUINode::redraw() {
 
   //dont forget text size
   ry1 = min(start_y1,start_y2) - 10;
+  ry2 = min(start_y1,start_y2) + 15.0 * max(0,max(inSize -1,outSize -1)) + 10;
 
-  ry2 = min(start_y1,start_y2) + 15.0 * max((double)inputs.size() -1.0,(double)outputs.size() -1.0) + 10;
-
-
-  
   //updating rectangle
   gnome_canvas_item_set(nodeRect,
 			"x1",rx1,
