@@ -37,8 +37,6 @@ PACKAGE=Overflow
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 AM_MAINTAINER_MODE
 
-AC_MODULE_OPT(vflow, yes)
-AC_MODULE_OPT(visix, no)
 AC_MODULE_OPT(audio_blocks, yes)
 AC_MODULE_OPT(effects, yes)
 AC_MODULE_OPT(NNet, yes)
@@ -47,8 +45,10 @@ AC_MODULE_OPT(VQ, yes)
 AC_MODULE_OPT(video_blocks, no)
 AC_MODULE_OPT(FuzzyEngine, yes)
 AC_MODULE_OPT(lapackflow, no)
+AC_MODULE_OPT(visix, no)
+AC_MODULE_OPT(vflow, yes)
 
-modules="$vflow $audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine $effects $lapackflow"
+modules="$audio_blocks $VQ $HMM $NNet $video_blocks $FuzzyEngine $effects $lapackflow $visix $vflow"
 AC_SUBST(modules)
 AC_CONFIG_SUBDIRS($modules)
 
