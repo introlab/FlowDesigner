@@ -28,11 +28,11 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
    , xtmp(_x)
    , ytmp(_y)
 {
-
-   parameters = newNodeParameters(this,type);
    
    if (doInit)
    {
+     parameters = newNodeParameters(this,type);
+
       vector<ItemInfo *> inputname;
       vector<ItemInfo *> outputname;
       inputname = net->getDocument()->getNetInputs(type); 
@@ -168,18 +168,21 @@ void UINode::insertNetParams(vector<ItemInfo *> &params)
 
 UILink *UINode::newLink (UITerminal *_from, UITerminal *_to)
 {
-   return new UILink (_from, _to);
+
+  //cerr<<"UINode::newLink\n";
+  return new UILink (_from, _to);
 }
 
 UINetTerminal *UINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
 {
-   return new UINetTerminal (_terminal, _type, _name);
+  //cerr<<"UINode::newNetTerminal\n";
+  return new UINetTerminal (_terminal, _type, _name);
 }
 
 UINodeParameters *UINode::newNodeParameters (UINode *_node, string type)
 {
-   //cerr << "UINode::newNodeParameters\n";
-   return new UINodeParameters (_node, type);
+  //cerr << "UINode::newNodeParameters\n";
+  return new UINodeParameters (_node, type);
 }
 
 Node *UINode::build(const ParameterSet &params)
