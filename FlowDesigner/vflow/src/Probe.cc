@@ -43,6 +43,12 @@ DECLARE_NODE(Probe)
  *
 END*/
 
+static gboolean ignore_delete(GtkWidget *widget,
+	      GdkEvent *event,
+	      gpointer user_data)
+{
+   return TRUE;
+}
 
 static void rename_button(GtkWidget *button, char *str)
 {
@@ -141,6 +147,11 @@ void Probe::specificInitialize()
    window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
    gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
    gtk_window_set_title (GTK_WINDOW (window1), _("window2"));
+
+   gtk_signal_connect (GTK_OBJECT (window1), "delete-event",
+		       GTK_SIGNAL_FUNC (ignore_delete),
+		       NULL);
+
    
    vbox2 = gtk_vbox_new (FALSE, 0);
    gtk_widget_ref (vbox2);
