@@ -341,12 +341,14 @@ void GUIDocument::load()
    }
    //cerr << "aa\n";
    //BUG I guess we should delete this, but it screws up with the threads
-   if (docproperty)
-   {
-      gtk_widget_destroy(docproperty);
-   }
+
+   
+   //if (docproperty)
+   //{
+     // gtk_widget_destroy(docproperty);
+   //}
    //cerr << "bb\n";
-   createParamDialog();
+   //createParamDialog();
    //cerr << "cc\n";
 
    for (int i=0;i<params.size();i++)
@@ -444,9 +446,11 @@ static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
    ((GUIDocument *)(user_data))->changedParams();
 }
 
-void GUIDocument::showParams()
-{
-   gtk_widget_show (docproperty);
+void GUIDocument::showParams() {
+
+  createParamDialog();  
+
+  gtk_widget_show (docproperty);
 
 }
 
@@ -474,12 +478,17 @@ void GUIDocument::applyParams()
 
 void GUIDocument::insertLoadedParam(DocParameterData *param, string type, string value)
 {
+
+/*
    const vector<string> &types=ObjectParam::allTypes(false);
    for (int i=0;i<types.size();i++)
       if (types[i] == type)
          gtk_option_menu_set_history (GTK_OPTION_MENU (param->optionmenu), i);
+
+
    GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(param->entry));
    gtk_entry_set_text(GTK_ENTRY(gtkentr),(gchar *)value.c_str());
+*/
 
 }
 
@@ -487,16 +496,7 @@ void GUIDocument::createParamDialog()
 {
    int i;
 
-   /*vector<string> tmp = getNetParams("MAIN");
-   cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
-   params.resize(tmp.size());
-   for (i=0;i<tmp.size();i++)
-      params[i].name=tmp[i];
-      cerr << "--\n";*/
-   
-   //cerr << "GUINodeParameters::GUINodeParameters\n";
 
-   //GtkWidget *nodeproperty;
   GtkWidget *notebook2;
   GtkWidget *table2;
   GtkWidget *label14;
@@ -514,7 +514,7 @@ void GUIDocument::createParamDialog()
   GtkWidget *label13;
 
   docproperty = gnome_property_box_new ();
-  gnome_dialog_close_hides (GNOME_DIALOG(docproperty), TRUE);
+  //gnome_dialog_close_hides (GNOME_DIALOG(docproperty), TRUE);
 
   gtk_object_set_data (GTK_OBJECT (docproperty), "docproperty", docproperty);
 
@@ -588,6 +588,8 @@ void GUIDocument::createParamDialog()
   
   for (i=0;i<params.size();i++)
   {
+
+    //creating label
      params[i].label = gtk_label_new (textParams[i]->name.c_str());
      gtk_widget_ref (params[i].label);
      gtk_object_set_data_full (GTK_OBJECT (docproperty), "label", params[i].label,
@@ -598,7 +600,7 @@ void GUIDocument::createParamDialog()
                        (GtkAttachOptions) (0), 0, 0);
 
 
-
+     //creating option menu
      params[i].optionmenu = gtk_option_menu_new ();
      gtk_widget_ref (params[i].optionmenu);
      gtk_object_set_data_full (GTK_OBJECT (docproperty), "optionmenu", params[i].optionmenu,
@@ -619,15 +621,20 @@ void GUIDocument::createParamDialog()
      }
 
      gtk_option_menu_set_menu (GTK_OPTION_MENU (params[i].optionmenu), params[i].optionmenu_menu);
-     gtk_option_menu_set_history (GTK_OPTION_MENU (params[i].optionmenu), 0);
-          
+     
+     //setting history according to the type
+     for (int j=0;j<types.size();j++) {
+       if (types[j] == textParams[i]->type) {
+         gtk_option_menu_set_history (GTK_OPTION_MENU (params[i].optionmenu), j);
+       }
+     }        
 
      gtk_signal_connect (GTK_OBJECT ( params[i].optionmenu_menu ), "selection-done",
                         GTK_SIGNAL_FUNC( type_changed), this);
 
 
 
-
+     //entry
      params[i].entry = gnome_entry_new (NULL);
      gtk_widget_ref (params[i].entry);
      gtk_object_set_data_full (GTK_OBJECT (docproperty), "entry", params[i].entry,
