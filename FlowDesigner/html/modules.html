@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.07 [en] (X11; I; Linux 2.0.36 i686) [Netscape]">
+   <META NAME="Author" CONTENT="Jean-Marc Valin">
+   <TITLE>VoiceControl Modules</TITLE>
+</HEAD>
+<BODY BACKGROUND="BACK8.png">
+
+<CENTER>
+<H1>
+VoiceControl Modules</H1></CENTER>
+The VoiceControl project is divided into the following modules:
+<H2>
+<A HREF="sound_interface.html">Sound Interface</A></H2>
+
+<BLOCKQUOTE>The sound interface is the part responsible for picking up
+the audio from the sound card (via OSS) and make it available for the front-end,
+the data collection recrder, etc.</BLOCKQUOTE>
+
+<H2>
+<A HREF="front_end.html">Front-End</A></H2>
+
+<BLOCKQUOTE>The front-end converts the audio into a "feature set" that
+will be used by the recognizer.</BLOCKQUOTE>
+
+<H2>
+<A HREF="hmm.html">HMM (Hidden Markov Model)</A></H2>
+
+<BLOCKQUOTE>The HMM part is a set of classes that represents the speech
+(Anyone's got something better?).</BLOCKQUOTE>
+
+<H2>
+<A HREF="training.html">Training</A></H2>
+
+<BLOCKQUOTE>The training uses sound tokens for which the tanscription is
+known in order to train an HMM model.</BLOCKQUOTE>
+
+<H2>
+<A HREF="decoding.html">Decoding</A></H2>
+
+<BLOCKQUOTE>The decoding part uses a trained HMM and features from the
+front-end to decode i.e., find what has been said.</BLOCKQUOTE>
+
+<H2>
+<A HREF="server.html">Speech Server</A></H2>
+
+<BLOCKQUOTE>The speech server will run decoding in real-time and alllow
+connections from applications. Similar to the X server.</BLOCKQUOTE>
+
+<H2>
+<A HREF="library.html">Client Library</A></H2>
+
+<BLOCKQUOTE>The client library will provide the API for the interaction
+between the applications and the speech server.</BLOCKQUOTE>
+
+<HR WIDTH="100%">
+<BR><I><A HREF="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</A></I>, Universit&eacute;
+de Sherbrooke
+</BODY>
+</HTML>
