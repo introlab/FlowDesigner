@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.5 2000/03/01 21:30:59 jmvalin Exp $
+# $Id: Makefile.am,v 1.6 2000/03/18 03:43:40 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -27,4 +27,10 @@ testmmi_SOURCES = testmmi.cc
 
 LDADD = $(top_srcdir)/src/libvq.la \
         $(top_srcdir)/../data-flow/src/libnetwork.la
+
+#ifdef FREEBSD
+FREEBSD_FLAGS = -pthread
+#endif
+
+LDFLAGS = $(FREEBSD_FLAGS)
 

@@ -51,6 +51,9 @@ dnl Initialize libtool.
 
 AC_LIBTOOL_ACC_KLUDGE
 
+dnl Check header files
+AC_CHECK_HEADERS(float.h)
+
 dnl Checks for programs.
 
 dnl AM_C_PROTOTYPES

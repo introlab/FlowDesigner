@@ -58,6 +58,9 @@ AC_PROG_CXX
 AC_PROG_MAKE_SET
 dnl AC_PROG_RANLIB
 
+dnl Check header files
+AC_CHECK_HEADERS(float.h)
+
 dnl Checks for libraries.
 
 dnl Test for math library, and define LIBS

@@ -18,6 +18,10 @@
 #include <typeinfo>
 #include <vector>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 DECLARE_TYPE(GMM)
 
 void GMM::init(vector<float *> frames)

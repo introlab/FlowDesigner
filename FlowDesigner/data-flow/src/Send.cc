@@ -19,8 +19,8 @@
 #include "ObjectParser.h"
 #include <stream.h>
 #include <strstream.h>
-#include <sys/socket.h>
 #include <sys/types.h> 
+#include <sys/socket.h> 
 #include <netinet/in.h>
 
 #define LOOPBACK "127.0.0.1"
@@ -92,7 +92,7 @@ public:
 	 throw new NodeException(NULL, "can't listen socket",__FILE__,__LINE__);
        }
 	 
-       unsigned int size;
+       int size;
 
        cout<<"accept"<<endl;
        int conn = accept (m_socket,(struct sockaddr *) &m_clientname,&size);

@@ -4,6 +4,10 @@
 #include "misc.h"
 #include <algo.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 DECLARE_TYPE(Cell)
 
 void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)

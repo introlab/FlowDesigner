@@ -3,6 +3,10 @@
 #include <vector>
 #include "ObjectParser.h"
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 DECLARE_TYPE(FFNet)
 
 FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
