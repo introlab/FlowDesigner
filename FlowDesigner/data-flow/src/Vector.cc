@@ -332,7 +332,7 @@ ObjectRef concatVectorFloatFloat(ObjectRef x, ObjectRef y)
    (*v)[v1.size()] = f;
    return ObjectRef(v);
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloatFloat, Vector<float>, float);
+REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloatFloat, Vector<float>, Float);
 
 ObjectRef concatFloatVectorFloat(ObjectRef x, ObjectRef y)
 {
@@ -344,7 +344,7 @@ ObjectRef concatFloatVectorFloat(ObjectRef x, ObjectRef y)
    (*v)[0] = f;
    return ObjectRef(v);
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatVectorFloat, float, Vector<float>);
+REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatVectorFloat, Float, Vector<float>);
 
 ObjectRef concatFloatFloat(ObjectRef x, ObjectRef y)
 {
@@ -356,4 +356,4 @@ ObjectRef concatFloatFloat(ObjectRef x, ObjectRef y)
    (*v)[1] = f2;
    return ObjectRef(v);
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatFloat, float, float);
+REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatFloat, Float, Float);
