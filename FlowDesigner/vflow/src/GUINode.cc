@@ -113,10 +113,12 @@ void GUINode::help()
    string fullPath = UIDocument::findExternal(type + ".cc", "VFLOW_SOURCE", false);
    if (fullPath == "")
       fullPath = UIDocument::findExternal(type + ".cpp", "VFLOW_SOURCE", false);
-   if (fullPath == "")
+   //FIXME: gnome 2
+   /*if (fullPath == "")
       cerr << "Node help not found\n";
    else
       gnome_help_goto(NULL, const_cast<char *>(fullPath.c_str()));
+      */
 }
 
 void GUINode::createPopup()
@@ -309,7 +311,7 @@ gint GUINode::event(GdkEvent *event)
          break;
 
       case 3:
-         gnome_popup_menu_do_popup_modal (popupMenu,NULL,NULL,&(event->button),NULL);
+         gnome_popup_menu_do_popup_modal (popupMenu,NULL,NULL,&(event->button),NULL, GTK_WIDGET(dynamic_cast<GUINetwork*>(net)->getCanvas()));
          return TRUE;
          break;
       default:

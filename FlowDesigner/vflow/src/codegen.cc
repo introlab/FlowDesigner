@@ -39,11 +39,11 @@ void CodeGenState::ok()
 
       //Should create directory??
 
-      char *filename=gtk_entry_get_text(GTK_ENTRY(combo_entry2));
+      char *filename=(char*)gtk_entry_get_text(GTK_ENTRY(combo_entry2));
       if (!filename || !strlen(filename))
 	 filename = "build_doc.cc";
 
-      char *funcname = gtk_entry_get_text(GTK_ENTRY(combo_entry1));
+      char *funcname = (char*)gtk_entry_get_text(GTK_ENTRY(combo_entry1));
       if (!funcname || !strlen(funcname))
 	 funcname = "buildFunct";
  
@@ -382,7 +382,7 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
    gtk_box_pack_start (GTK_BOX (vbox1), hbuttonbox1, TRUE, TRUE, 0);
    gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox1), GTK_BUTTONBOX_END);
 
-   button1 = gnome_stock_button (GNOME_STOCK_BUTTON_OK);
+   button1 = gtk_button_new_from_stock ("gtk-ok");
    gtk_widget_ref (button1);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button1", button1,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -394,7 +394,7 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
 		       GTK_SIGNAL_FUNC( codegen_ok), this);
 
 
-   button2 = gnome_stock_button (GNOME_STOCK_BUTTON_CANCEL);
+   button2 = gtk_button_new_from_stock ("gtk-cancel");
    gtk_widget_ref (button2);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button2", button2,
 			     (GtkDestroyNotify) gtk_widget_unref);

@@ -6,8 +6,10 @@
 #include <gnome.h>
 
 
-BEGIN_GNOME_DECLS
-
+//BEGIN_GNOME_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 
@@ -34,6 +36,9 @@ struct _GnomeCanvasBackgroundClass {
 GtkType gnome_canvas_background_get_type (void);
 
 
-END_GNOME_DECLS
+#ifdef __cplusplus
+}
+#endif
+//END_GNOME_DECLS
 
 #endif

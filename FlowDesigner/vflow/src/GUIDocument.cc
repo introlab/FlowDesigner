@@ -23,213 +23,7 @@ Network * GUIDocument::runningNet=NULL;
 pthread_mutex_t GUIDocument::del_lock = PTHREAD_MUTEX_INITIALIZER;
 
 
-static void on_cut_activate (GtkMenuItem *menuitem, gpointer user_data) {
 
-  //getting mdi
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-  //getting doc
-  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-
-  //calling application cut
-  vflowGUI::instance()->cut(doc);
-}
-
-
-static void on_copy_activate (GtkMenuItem *menuitem, gpointer user_data) {
-
-  //getting mdi
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-  //getting doc
-  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-
-  //calling application copy
-  vflowGUI::instance()->copy(doc);
-}
-
-static void on_paste_activate (GtkMenuItem *menuitem, gpointer user_data) {
-
-  //getting mdi
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-  //getting doc
-  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-
-  //calling application paste
-  vflowGUI::instance()->paste(doc);
-
-}
-
-static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
-
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-  //getting the active document
-  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-
-  GUINetwork *net = dynamic_cast<GUINetwork*>(doc->getCurrentNet());
-
-  //calling application clear
-  vflowGUI::instance()->clear(doc);
-
-}
-
-
-void create_net(gchar * str, GUIDocument *doc)
-{
-
-  try {
-    if (str) {
-      doc->addNetwork(string(str), UINetwork::subnet);
-    }
-  }
-  catch (BaseException *e) {
-
-    stringstream str;
-    e->print(str);
-    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
-    delete e;
-  }
-
-}
-static void add_net_event  (GtkMenuItem     *menuitem,
-                            gpointer         user_data)
-{
-
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   GtkWidget *dialog = 
-      gnome_request_dialog (FALSE, "What's the network name?", 
-			    doc->getNewNetName(UINetwork::subnet).c_str(), 
-			    20, (GnomeStringCallback)create_net, doc, NULL);
-   gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
-}
-
-void create_threaded(gchar * str, GUIDocument *doc)
-{
-  try {
-    if (str) {
-      doc->addNetwork(string(str), UINetwork::threaded);     
-    }
-  }
-  catch (BaseException *e) {
-
-    stringstream str;
-    e->print(str);
-    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
-    delete e;
-  }
-
-}
-static void add_threaded_event  (GtkMenuItem     *menuitem,
-                            gpointer         user_data)
-{
-
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   GtkWidget *dialog = 
-      gnome_request_dialog (FALSE, "What's the threaded iterator name?", 
-			    doc->getNewNetName(UINetwork::threaded).c_str(), 
-			    20, (GnomeStringCallback)create_threaded, doc, NULL);
-   gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
-}
-
-void create_iter(gchar * str, GUIDocument *doc)
-{
-
-  try {
-    if (str) {
-      doc->addNetwork(string(str), UINetwork::iterator);     
-    }
-  }
-  catch (BaseException *e) {
-    stringstream str;
-    e->print(str);
-    GtkWidget*  dialog = gnome_warning_dialog (str.str().c_str());
-    delete e;
-  }
-
-}
-static void add_iter_event  (GtkMenuItem     *menuitem,
-                            gpointer         user_data)
-{
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   GtkWidget *dialog = 
-      gnome_request_dialog (FALSE, "What's the iterator's name?", 
-			    doc->getNewNetName(UINetwork::iterator).c_str(), 
-			    20, (GnomeStringCallback)create_iter, doc, NULL);
-   gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
-}
-
-static void rename_net_event  (GtkMenuItem     *menuitem,
-                            gpointer         user_data)
-{
-
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   doc->renameCurrentNet();
-   //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
-   //doc
- //cerr << "remove net\n";
-}
-
-static void remove_net_event  (GtkMenuItem     *menuitem,
-                            gpointer         user_data)
-{
-
-  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
-
-   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   doc->removeCurrentNet();
-   //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
-   //doc
- //cerr << "remove net\n";
-}
-
-static GnomeUIInfo edit_menu[] =
-{
-  GNOMEUIINFO_MENU_CUT_ITEM (on_cut_activate, NULL),
-  GNOMEUIINFO_MENU_COPY_ITEM (on_copy_activate, NULL),
-  GNOMEUIINFO_MENU_PASTE_ITEM (on_paste_activate, NULL),
-  GNOMEUIINFO_MENU_CLEAR_ITEM (on_clear_activate, NULL),
-  /* GNOMEUIINFO_SEPARATOR,
-  GNOMEUIINFO_MENU_PROPERTIES_ITEM (on_properties1_activate, NULL),*/
-  GNOMEUIINFO_END
-};
-
-
-static GnomeUIInfo view_menu[] = {
-   
-   GNOMEUIINFO_ITEM_NONE (N_("Add _Network"),
-                          N_("Add a new network the document"), add_net_event),
-   GNOMEUIINFO_ITEM_NONE (N_("Add _Iterator"),
-			     N_("Add a new iterator the document"), add_iter_event),
-   GNOMEUIINFO_ITEM_NONE (N_("Add _Threaded Iterator"),
-			     N_("Add a new threaded iterator the document (EXPERIMENTAL)"), add_threaded_event),
-   GNOMEUIINFO_SEPARATOR,
-   GNOMEUIINFO_ITEM_NONE (N_("_Rename Network"),
-			     N_("Remove a network from the document"), rename_net_event),
-   GNOMEUIINFO_SEPARATOR,
-   GNOMEUIINFO_ITEM_NONE (N_("Remove Network"),
-			     N_("Remove a network from the document"), remove_net_event),
-   GNOMEUIINFO_END
-      
-};
-
-static GnomeUIInfo doc_menu[] = {
-
-   { GNOME_APP_UI_SUBTREE, N_("_Edit"), NULL, edit_menu, NULL, NULL,
-     GNOME_APP_PIXMAP_NONE, NULL, 0, (GdkModifierType)0, NULL },
-   { GNOME_APP_UI_SUBTREE, N_("_Networks"), NULL, view_menu, NULL, NULL,
-     GNOME_APP_PIXMAP_NONE, NULL, 0, (GdkModifierType)0, NULL },
-   GNOMEUIINFO_END
-};
 
 
 static GtkWidget *create_view (GnomeMDIChild *child, GUIDocument *doc)
@@ -248,42 +42,9 @@ GUIDocument::GUIDocument(string _name)
 //   , untitled(true)
 //   , modified(false)
 {
-   //cerr << "GUIDocument::GUIDocument\n";
-   mdiChild = gnome_mdi_generic_child_new((gchar *)docName.c_str());
-   gtk_object_set_data (GTK_OBJECT (mdiChild), "doc", this);
-   gnome_mdi_child_set_name (GNOME_MDI_CHILD(mdiChild), (gchar *)docName.c_str());
-   gnome_mdi_generic_child_set_view_creator(mdiChild, (GnomeMDIChildViewCreator)create_view, this);
 
-   create();
+   GtkWidget *notebook = vflowGUI::instance()->get_notebook();
 
-   //createParamDialog();
-}
-
-
-
-void GUIDocument::create()
-{
-   createView();
-   gnome_mdi_child_set_menu_template (GNOME_MDI_CHILD (mdiChild), doc_menu);
-}
-
-void GUIDocument::save()
-{
-   less_print(docName + " saved");
-   UIDocument::save();
-}
-
-void GUIDocument::createView()
-{
-   
-  /*
-    window2 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_object_set_data (GTK_OBJECT (window2), "window2", window2);
-    gtk_window_set_title (GTK_WINDOW (window2), _("window2"));
-  */
-
-  
-   //vbox2 = gtk_vbox_new (FALSE, 0);
   vbox2 = gtk_vpaned_new ();
 
   //gtk_widget_set_usize(vbox2, -1, 400);
@@ -292,6 +53,7 @@ void GUIDocument::createView()
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "vbox2", vbox2,
   //                          (GtkDestroyNotify) gtk_widget_unref);
 
+  gtk_object_set_data(GTK_OBJECT(vbox2), "doc", this);
   gtk_widget_show (vbox2);
   
   
@@ -314,37 +76,44 @@ void GUIDocument::createView()
   //gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
 
   
+  GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow1);
+gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
+  //gnome_app_set_contents (GNOME_APP (), scrolledwindow1);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS)
+;
 
-  less2 = gnome_less_new ();
-  gtk_widget_set_usize(less2, -1, 110);
 
-  gtk_widget_ref (less2);
-  //gtk_object_set_data_full (GTK_OBJECT (mdi), "less2", less2,
-  //                          (GtkDestroyNotify) gtk_widget_unref);
-  
+  less2 = gtk_text_view_new ();
   gtk_widget_show (less2);
-  //gtk_box_pack_start (GTK_BOX (vbox2), less2, TRUE, TRUE, 0);
-  
-  //gtk_container_add (GTK_CONTAINER (vbox2), less2);
-  gtk_paned_pack2 (GTK_PANED(vbox2), less2, FALSE, TRUE);
-
-  
-  /*
-    
-    view = gtk_notebook_new();
-    gtk_widget_show (view);
-   
+  gtk_container_add (GTK_CONTAINER (scrolledwindow1), less2);
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (less2), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (less2), GTK_WRAP_WORD);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (less2), FALSE);
+  /*gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
+        _("VFlow by Jean-Marc Valin & Dominic Letourneau"), -1);
   */
+
    
   
   gtk_widget_show(vbox2);
+  gtk_container_add (GTK_CONTAINER (notebook), vbox2);
 
-  //view = vbox2;
+  label1 = gtk_label_new ((gchar *)docName.c_str());
+  gtk_widget_show (label1);
+  //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0), label1);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), vbox2, label1);
+  gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
+
   less_print("VFlow " VERSION " by Jean-Marc Valin & Dominic Letourneau");
-  //less_print("You can print here by using GUIDocument::less_print (const char* message).");
   less_print("--");
   
+}
 
+void GUIDocument::save()
+{
+   less_print(docName + " saved");
+   UIDocument::save();
 }
 
 void GUIDocument::load()
@@ -434,7 +203,7 @@ void GUIDocument::setFullPath(const string &fullpath)
 {
    // call the non-gui code in UIDocument
    UIDocument::setFullPath(fullpath);
-   gnome_mdi_child_set_name (GNOME_MDI_CHILD(mdiChild), (gchar *)docName.c_str());
+   gtk_label_set_text(GTK_LABEL(label1), (gchar*)fullpath.c_str());
 }
 
 
@@ -928,31 +697,38 @@ void GUIDocument::run()
 }
 
 
-void GUIDocument::less_print(const string &message) {
-
+void GUIDocument::less_print(const string &message) 
+{
   less_text += message + string("\n");
-
-  if (less2) {
-    gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
+  
+  if (less2) 
+  {
+     gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
+                               less_text.c_str(), -1);
   }
   
 }
 
-void GUIDocument::less_print(const char *message) {
-
+void GUIDocument::less_print(const char *message) 
+{
   less_text += string(message) + string("\n");
 
-  if (less2) {
-    gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
+  if (less2) 
+  {
+     gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
+                               less_text.c_str(), -1);
   }
   
 }
 
-void GUIDocument::less_clear() {
-  if (less2) {
-    less_text = string();
-    gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
-  }
+void GUIDocument::less_clear() 
+{
+   less_text = string();
+   if (less2) 
+   {
+      gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less2)),
+                                less_text.c_str(), -1);
+   }
 }
 
 string GUIDocument::getNewNetName(UINetwork::Type type)

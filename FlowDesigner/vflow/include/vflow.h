@@ -64,8 +64,9 @@ class vflowGUI {
 
   ~vflowGUI();
 
-  GnomeMDI* get_mdi() {return mdi;}
-
+  GtkWidget* get_mdi() {return mdi;}
+  GtkWidget* get_notebook() {return notebook1;}
+   GUIDocument *getCurrentDoc();
 
   static const int CLIPBOARD_COPY_MODE;
   static const int CLIPBOARD_CUT_MODE;
@@ -73,7 +74,11 @@ class vflowGUI {
 
  private:
 
-  GnomeMDI *mdi;
+  GtkWidget *mdi;
+  GtkWidget *notebook1;
+  GtkWidget *button5;
+  GtkWidget *button6;
+
 
   vflowGUI();
 

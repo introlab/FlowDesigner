@@ -34,6 +34,7 @@ protected:
    GtkWidget *docproperty;
 
    
+   GtkWidget *label1;
    GtkWidget *vbox2;
    GtkWidget *notebook1;
    GtkWidget *less2;
@@ -62,11 +63,11 @@ public:
 
    void less_clear();
 
-   void create();
+   //void create();
 
    void save();
 
-   void createView();
+   //void createView();
 
    virtual void load();
 

@@ -62,40 +62,44 @@ GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_container_add (GTK_CONTAINER (win), vbox);
    gtk_widget_show(vbox);
-	 
-   less = gnome_less_new ();
-   gtk_widget_set_usize(less, -1, -1);
-	 
-   gtk_widget_ref (less);
-   gtk_object_set_data_full (GTK_OBJECT (win), "less", less,
-			     (GtkDestroyNotify) gtk_widget_unref);
-	 
+
+
+   GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+   gtk_widget_show (scrolledwindow1);
+   gtk_container_add (GTK_CONTAINER (vbox), scrolledwindow1);
+   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS)
+   ;
+
+   
+   less = gtk_text_view_new ();
    gtk_widget_show (less);
-   gtk_box_pack_start (GTK_BOX (vbox), less, TRUE, TRUE, 0);
-   //gtk_container_add (GTK_CONTAINER (vbox), less);
-	 
-	 
+   gtk_container_add (GTK_CONTAINER (scrolledwindow1), less);
+   gtk_text_view_set_editable (GTK_TEXT_VIEW (less), FALSE);
+   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (less), GTK_WRAP_WORD);
+   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (less), FALSE);	 
+
    gtk_widget_show(win);
-   //gnome_less_show_string(GNOME_LESS(less),"Running network...\n");
-	 
 }
 
 void GRunContext::less_print(const string &message) 
 { 
    less_text += message + string("\n");
-	 
-   if (less) {
-      gnome_less_show_string(GNOME_LESS(less),less_text.c_str());
-   } 
+   if (less) 
+   {
+      gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less)),
+                                less_text.c_str(), -1);
+   }
+
 }
 
 void GRunContext::less_print(const char *message) 
 { 
    less_text += string(message) + string("\n");
-	 
-   if (less) {
-      gnome_less_show_string(GNOME_LESS(less),less_text.c_str());
-   } 
+   if (less) 
+   {
+      gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less)),
+                                less_text.c_str(), -1);
+   }
 }
 
 void GRunContext::run()

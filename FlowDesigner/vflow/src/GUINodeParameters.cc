@@ -57,7 +57,7 @@ static void node_remove_output_unselect (GtkWidget *item, GUINodeParameters *nod
 
 void GUINodeParameters::addInput()
 {
-   char *new_input = gtk_entry_get_text(GTK_ENTRY(input_entry));
+   char *new_input = (char*) gtk_entry_get_text(GTK_ENTRY(input_entry));
    if (!new_input || strlen(new_input)==0)
       return;
    gtk_entry_set_text(GTK_ENTRY(input_entry), "");
@@ -83,7 +83,7 @@ void GUINodeParameters::addInput()
 
 void GUINodeParameters::addOutput()
 {
-   char *new_output = gtk_entry_get_text(GTK_ENTRY(output_entry));
+   char *new_output = (char*)gtk_entry_get_text(GTK_ENTRY(output_entry));
    if (!new_output || strlen(new_output)==0)
       return;
    gtk_entry_set_text(GTK_ENTRY(output_entry), "");

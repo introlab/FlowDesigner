@@ -54,6 +54,7 @@ public:
    void create();
 
    GnomeCanvasGroup * getGroup() {return group;}
+   GnomeCanvas * getCanvas() {return canvas;}
 
    void updateScroll ();
 

@@ -50,6 +50,7 @@ int main(int argc, char **argv)
    }
 
    g_thread_init(NULL);
+   gdk_threads_init();
    gnome_init ("vflow", VERSION, argc, argv);
    setlocale (LC_NUMERIC, "C");
    signal(11,SIG_DFL);

@@ -55,14 +55,20 @@ void TextProbe::initialize()
    Probe::initialize();
 
    gdk_threads_enter(); 
-   less1 = gnome_less_new ();
-   gtk_widget_ref (less1);
-   gtk_object_set_data_full (GTK_OBJECT (window1), "less1", less1,
-			     (GtkDestroyNotify) gtk_widget_unref);
+   GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+   gtk_widget_show (scrolledwindow1);
+   gtk_container_add (GTK_CONTAINER (vbox2), scrolledwindow1);
+   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS)
+   ;
+
+   
+   less1 = gtk_text_view_new ();
    gtk_widget_show (less1);
-   gtk_box_pack_start (GTK_BOX (vbox2), less1, TRUE, TRUE, 0);
+   gtk_container_add (GTK_CONTAINER (scrolledwindow1), less1);
+   gtk_text_view_set_editable (GTK_TEXT_VIEW (less1), FALSE);
+   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (less1), GTK_WRAP_WORD);
+   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (less1), FALSE);	 
    gdk_threads_leave(); 
-   //gtk_box_pack_start (GTK_BOX (vbox2), scrolledwindow2, TRUE, TRUE, 0);
 }
 
 void TextProbe::reset()
@@ -79,9 +85,11 @@ void TextProbe::display()
 
    gdk_threads_enter();
 
-   gnome_less_clear (GNOME_LESS(less1));
-
-   gnome_less_show_string(GNOME_LESS(less1), out.str().c_str());
+   if (less1) 
+  {
+     gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (less1)),
+                               out.str().c_str(), -1);
+  }
 
    gdk_threads_leave();
 }

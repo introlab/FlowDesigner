@@ -179,20 +179,25 @@ void Probe::initialize()
    gtk_box_pack_start (GTK_BOX (vbox2), handlebox2, FALSE, FALSE, 0);
    gtk_handle_box_set_snap_edge (GTK_HANDLE_BOX (handlebox2), GTK_POS_LEFT);
    
-   toolbar2 = gtk_toolbar_new (GTK_ORIENTATION_HORIZONTAL, GTK_TOOLBAR_BOTH);
+   toolbar2 = gtk_toolbar_new();
    gtk_widget_ref (toolbar2);
    gtk_object_set_data_full (GTK_OBJECT (window1), "toolbar2", toolbar2,
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (toolbar2);
    gtk_container_add (GTK_CONTAINER (handlebox2), toolbar2);
    
-   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_REDO);
+   /*tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_REDO);
    button16 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
 					  _("Next"),
 					  NULL, NULL,
-					  tmp_toolbar_icon, NULL, NULL);
+					  tmp_toolbar_icon, NULL, NULL);*/
+  button16 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar2),
+                                "gtk-go-forward",
+                                "gtk-go-forward",
+                                NULL, NULL, NULL, -1);
+
    gtk_widget_ref (button16);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button16", button16,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -206,13 +211,19 @@ void Probe::initialize()
    gtk_widget_set_sensitive(button16, false);
    //cerr << "registered " << this << endl;
    
-   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_STOP);
+   /*tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_STOP);
    button17 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
 					  _("Break"),
 					  NULL, NULL,
 					  tmp_toolbar_icon, NULL, NULL);
+   */
+   button17 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar2),
+                                        "gtk-stop",
+                                        "gtk-stop",
+                                        NULL, NULL, NULL, -1);
+
    gtk_widget_ref (button17);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button17", button17,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -227,13 +238,19 @@ void Probe::initialize()
 		       this);
 
    
-   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_EXEC);
+   /*tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_EXEC);
    button18 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
 					  _("Continue"),
 					  NULL, NULL,
 					  tmp_toolbar_icon, NULL, NULL);
+   */
+   button18 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar2),
+                                        "gtk-execute",
+                                        "gtk-execute",
+                                        NULL, NULL, NULL, -1);
+   
    gtk_widget_ref (button18);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button18", button18,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -253,13 +270,19 @@ void Probe::initialize()
    else 
       hide_name=_("Show");
 
-   tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_CLOSE);
+   /*tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_CLOSE);
    button19 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
 					  hide_name,
 					  NULL, NULL,
 					  tmp_toolbar_icon, NULL, NULL);
+   */
+   button19 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar2),
+                                        "gtk-close",
+                                        "gtk-close",
+                                        NULL, NULL, NULL, -1);
+   
    gtk_widget_ref (button19);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button19", button19,
 			     (GtkDestroyNotify) gtk_widget_unref);

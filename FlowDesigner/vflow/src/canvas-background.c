@@ -83,7 +83,8 @@ gnome_canvas_background_class_init (GnomeCanvasBackgroundClass *class)
 	item_class->unrealize = gnome_canvas_background_unrealize;
 	item_class->draw = gnome_canvas_background_draw;
 	item_class->point = gnome_canvas_background_point;
-	item_class->translate = gnome_canvas_background_translate;
+	//FIXME: gnome 2
+	//item_class->translate = gnome_canvas_background_translate;
 	item_class->bounds = gnome_canvas_background_bounds;
 	item_class->render = gnome_canvas_background_render;
 

@@ -270,9 +270,7 @@ void GUINetPopup::addType(string cat, string type)
 
 void GUINetPopup::popup(GdkEvent *event)
 {
-   //theTime = event->time;
-   gnome_popup_menu_do_popup_modal (menu,NULL,NULL,&(event->button),NULL);
-   //gnome_popup_menu_do_popup_modal(menu, NULL, NULL, event, NULL);
+   gnome_popup_menu_do_popup_modal (menu,NULL,NULL,&(event->button),NULL, GTK_WIDGET(dynamic_cast<GUINetwork*>(net)->getCanvas()));
 }
 
 

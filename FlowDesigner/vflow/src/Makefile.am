@@ -5,8 +5,9 @@ install-data-local:
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h> $(datadir)/toolbox/vflow/vflow.def)
 
 INCLUDES = \
-	-I$(top_srcdir)/intl \
-	$(GNOME_INCLUDEDIR) \
+           -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+           -DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
+           @PACKAGE_CFLAGS@ \
 	$(GNOME_XML_INCLUDE) \
 	$(FFTW_INCLUDES) \
 	$(GNOME_GTHR_INCLUDE) \
@@ -32,7 +33,6 @@ vflow_SOURCES = \
 	GUINetTerminal.cc \
 	GUINetPopup.cc \
 	GRunContext.cc \
-	KeyPad.cc \
 	codegen.cc \
 	GUINodeTooltip.cc \
 	GtkPlotProbe.cc \
@@ -43,13 +43,12 @@ gflow_SOURCES = \
 	Probe.cc \
 	TextProbe.cc \
 	PlotProbe.cc \
-	KeyPad.cc \
 	GRunContext.cc \
 	GtkPlotProbe.cc \
 	vflow_pref.cc
 
 LDFLAGS = $(FFTW_LDFLAGS)
 
-LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
+LDADD = @PACKAGE_LIBS@ $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \
 	$(LIB_FFTW) $(GNOME_PIXBUF_LIB)

@@ -1,5 +1,7 @@
 AC_INIT(src/vflow.cc)
 
+
+
 dnl AM_CONFIG_HEADER(config.h)
 
 AM_INIT_AUTOMAKE(VFlow, 0.6.2)
@@ -11,12 +13,9 @@ libdir=$datadir/lib
 
 AM_MAINTAINER_MODE
 
-AM_ACLOCAL_INCLUDE(macros)
-
-GNOME_INIT
-
-AC_PROG_CC
 AC_ISC_POSIX
+AC_PROG_CC
+AM_PROG_CC_STDC
 AC_HEADER_STDC
 AC_PROG_CXX
 AC_ARG_PROGRAM
@@ -37,8 +36,20 @@ AC_DEFINE_UNQUOTED(${OS})
 AC_LIBTOOL_KLUDGE
 
 
-GNOME_COMPILE_WARNINGS
-AM_GNU_GETTEXT
+pkg_modules="libgnomeui-2.0"
+PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
+AC_SUBST(PACKAGE_CFLAGS)
+AC_SUBST(PACKAGE_LIBS)
+
+GETTEXT_PACKAGE=VFlow
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE")
+AC_DEFINE(GTK_ENABLE_BROKEN)
+
+dnl Add the languages which your application supports here.
+ALL_LINGUAS=""
+AM_GLIB_GNU_GETTEXT
+
 
 AC_LANG_CPLUSPLUS
 
@@ -80,13 +91,11 @@ AC_SUBST(LDFLAGS)
 #  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale")
 #fi
 
-AC_OUTPUT([ intl/Makefile m4/Makefile 
+AC_OUTPUT([
 Makefile
-macros/Makefile
 src/Makefile
 n-files/Makefile
 include/Makefile
-intl/Makefile
 po/Makefile.in
 pixmaps/Makefile
 ])
