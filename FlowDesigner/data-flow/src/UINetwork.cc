@@ -319,6 +319,8 @@ void UINetwork::newNetNotify(const string &cat, const string &type)
 
 void UINetwork::insertNetParams(vector<ItemInfo *> &params)
 {
+   for (int i=0;i<nodes.size();i++)
+      nodes[i]->insertNetParams(params);
    if (type == iterator) 
       {
        ItemInfo *newInfo = new ItemInfo;
@@ -333,8 +335,6 @@ void UINetwork::insertNetParams(vector<ItemInfo *> &params)
             params.insert(params.end(), newInfo);   
       }
       // params.insert(params.end(), "RATE_PER_SECOND");
-   for (int i=0;i<nodes.size();i++)
-      nodes[i]->insertNetParams(params);
 }
 
 UINode *UINetwork::newNode(UINetwork* _net, string _name, string _type, 

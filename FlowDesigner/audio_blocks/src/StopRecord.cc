@@ -22,9 +22,14 @@ DECLARE_NODE(StopRecord)
  * @output_type bool
  * @output_description false when should stop
  *
+ * @parameter_name START
+ * @parameter_type int
+ * @parameter_value 1
+ * @parameter_description Number of true frames before start
+ *
  * @parameter_name TIMEOUT
  * @parameter_type int
- * @parameter_description Number of false frames
+ * @parameter_description Number of false frames before end
  *
 END*/
 
@@ -36,22 +41,31 @@ class StopRecord : public BufferedNode {
    int timeout;
    int nbFalse;      
    bool decision;
+   int nbStart;
+   int start;
 
 public:
    StopRecord(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
       , nbFalse(0)
       , decision(true)
+      , start(0)
    {
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");
       timeout = dereference_cast<int> (parameters.get("TIMEOUT"));
+      if (parameters.exist("START"))
+	 nbStart=dereference_cast<int> (parameters.get("START"));
+      else
+	 nbStart=1;
+
       inOrder = true;
    }
 
    void reset()
    {
       decision=true;
+      start=0;
       nbFalse=0;
       BufferedNode::reset();
    }
@@ -61,10 +75,15 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
 
       bool val = dereference_cast<bool> (inputValue);
-      if (!val)
-	 nbFalse++;
-      else
+      if (val)
+      {
+	 start++;
 	 nbFalse=0;
+      } else
+      {
+	 if (start>=nbStart)
+	    nbFalse++;
+      }
 
       if (nbFalse>=timeout)
 	 decision=false;

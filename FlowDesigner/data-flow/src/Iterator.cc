@@ -71,6 +71,7 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
 	 while (sinkNode->hasOutput(out_id))
 	 {
 	    output[out_id] = nilObject;
+	    out_id++;
 	 }
 
          while(!exit_status)

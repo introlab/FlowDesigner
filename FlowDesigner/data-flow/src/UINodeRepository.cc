@@ -535,7 +535,6 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    free(str_netName);
    CHAR *category = xmlGetProp(net, (CHAR *)"category");
    
-   
    if (info.find(netName) != info.end())
    {
       cerr << "error: net " << netName << " already existed\n";
@@ -545,10 +544,13 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    NodeInfo *ninfo = new NodeInfo;
    ninfo->kind = NodeInfo::subnet;
    info[netName] = ninfo;
-   
+
+      
    if (category)
+   {
       ninfo->category = string((char *)category);
-   
+      free(category);
+   }
    //cerr << "scan all nodes\n";
    xmlNodePtr node = net->childs;
    while (node != NULL)
@@ -594,7 +596,18 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
       }
       node = node->next;
    }
-   
+ 
+   CHAR *type = xmlGetProp(net, (CHAR *)"type");
+   if (type && string((char*)type)=="iterator")
+   {
+      ItemInfo *newInfo = new ItemInfo;
+      newInfo->name = "DOWHILE";
+      newInfo->type = "bool";
+      ninfo->params.insert (ninfo->params.end(), newInfo);
+      free(type);
+   }
+
+  
    //scan all net inputs/outputs
    node = net->childs;
    while (node != NULL)
