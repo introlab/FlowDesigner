@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.122 2004/03/30 20:34:36 vico_27 Exp $
+# $Id: Makefile.am,v 1.123 2004/03/31 21:03:59 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -17,6 +17,17 @@ lib_LTLIBRARIES = libflow.la
 # Sources for compilation in the library
 libflow_la_SOURCES = Node.cc \
 	BufferedNode.cc \
+	conversion.cc \
+	operators.cc \
+	add_operators.cc \
+	sub_operators.cc \
+	mul_operators.cc \
+	div_operators.cc \
+	smaller_operators.cc \
+	equal_operators.cc \
+	max_operators.cc \
+	min_operators.cc \
+	concat_operators.cc \
 	Object.cc \
 	Load.cc \
 	ParameterSet.cc \
@@ -55,16 +66,6 @@ libflow_la_SOURCES = Node.cc \
 	MatProduct.cc \
 	Matrix.cc \
 	DoubleDispatch.cc \
-	operators.cc \
-	add_operators.cc \
-	sub_operators.cc \
-	mul_operators.cc \
-	div_operators.cc \
-	smaller_operators.cc \
-	equal_operators.cc \
-	max_operators.cc \
-	min_operators.cc \
-	concat_operators.cc \
 	Add.cc \
 	Sub.cc \
 	Mul.cc \
@@ -138,7 +139,6 @@ libflow_la_SOURCES = Node.cc \
 	rtc.cc \
 	BroadcastLoad.cc \
 	BroadcastSave.cc \
-	conversion.cc \
 	isNil.cc \
 	XPMTest.cc \
 	PushBack.cc \
