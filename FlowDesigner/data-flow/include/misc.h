@@ -5,7 +5,6 @@
 
 #include <vector>
 
-#ifdef NO_MIN_MAX
 /**Max function*/
 template <class T>
 T &max(T &a, T &b) {return a > b ? a : b;}
@@ -15,7 +14,6 @@ T &max(T &a, T &b) {return a > b ? a : b;}
 template <class T>
 T &min(T &a, T &b) {return a < b ? a : b;}
 
-#endif
 
 /**Square function*/
 template <class T>
@@ -29,15 +27,24 @@ inline T abs(T x) {return x >= 0 ? x : -x;}
 
 #define DYN_VEC(type, num, var) type var[num];
 
-#include <alloca.h>
-
 #elif defined (HAVE_ALLOCA_H)  /* Second best: alloca */
 
+#include <alloca.h>
 #define DYN_VEC(type, num, var) type *var=alloca((num)*sizeof(type));
 
 #else  /* When all else fails, use an STL vector */
 
-#define DYN_VEC(type, num, var) vector<type> var(num);
+//#define DYN_VEC(type, num, var) vector<type> var(num);
+template <class T>
+class DynVec_ {
+	T *array;
+public:
+	explicit DynVec_(int n) : array(new T[n]) {}
+	~DynVec_() {delete [] array;}
+	//T &operator[] (int i) {return array[i];}
+	operator T* () {return array;}
+};
+#define DYN_VEC(type, num, var) DynVec_<type> var(num);
 
 #endif
 

@@ -1,6 +1,7 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
 #include "DoubleDispatch.h"
+#include "misc.h"
 
 DEFINE_DOUBLE_VTABLE(addVtable);
 

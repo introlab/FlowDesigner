@@ -9,6 +9,7 @@
 #include <typeinfo>
 //#include "Buffer.h"
 #include <vector>
+#include "misc.h"
 
 /**A rotating buffer implementation.
    This buffer keeps the last N lines (frames) it has*/
