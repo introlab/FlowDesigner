@@ -110,7 +110,7 @@ public:
 
    void printOn(ostream &out) const
    {
-      out << "<Matrix " << endl;
+      out << "<"<<className() << endl;
       out << "<rows " << rows << ">" << endl;
       out << "<cols " << cols << ">" << endl;
       out << "<data " << endl;
