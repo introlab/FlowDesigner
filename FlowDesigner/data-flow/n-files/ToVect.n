@@ -1,7 +1,7 @@
 #!/usr/bin/env batchflow
 <?xml version="1.0"?>
 <Document category="Conversion">
-  <Network type="subnet" name="MAIN">
+  <Network type="subnet" name="MAIN" description="Conversion from a standard type to a Vector of the same type.">
     <Node name="node_VMethod_1" type="VMethod" x="180.000000" y="225.000000">
       <Parameter name="METHOD" type="string" value="toVect" description=""/>
     </Node>
