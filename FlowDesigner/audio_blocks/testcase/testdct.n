@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Constant" x="-241.000000" y="100.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;float&gt; 1 6 8 3 2 5&gt;"/>
+    </Node>
+    <Node name="node2" type="DCT" x="-157.000000" y="100.000000">
+      <Parameter name="LENGTH" type="int" value="6"/>
+    </Node>
+    <Node name="node3" type="IDCT" x="-155.000000" y="162.000000">
+      <Parameter name="LENGTH" type="int" value="5"/>
+    </Node>
+    <Node name="node4" type="Constant" x="-242.000000" y="162.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;float&gt; 1 6 3 2 5&gt;"/>
+    </Node>
+    <Node name="node5" type="Concat" x="-12.000000" y="132.000000"/>
+    <Node name="node6" type="Print" x="94.000000" y="131.000000"/>
+    <Link from="node1" output="VALUE" to="node2" input="INPUT"/>
+    <Link from="node4" output="VALUE" to="node3" input="INPUT"/>
+    <Link from="node5" output="OUTPUT" to="node6" input="INPUT"/>
+    <Link from="node2" output="OUTPUT" to="node5" input="INPUT1"/>
+    <Link from="node3" output="OUTPUT" to="node5" input="INPUT2"/>
+    <NetOutput name="OUTPUT" node="node6" terminal="OUTPUT"/>
+  </Network>
+</Document>
