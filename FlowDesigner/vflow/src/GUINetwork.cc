@@ -552,7 +552,13 @@ void GUINetwork::popTooltip(GUINode *node)
 
 void GUINetwork::rename(string newName) {
 
-  UINetwork::rename(newName);
+  try {
+    UINetwork::rename(newName);
+  }
+  catch (BaseException *e) {
+    e->print(cerr);
+    delete e;
+  }
 
   //updating text
   

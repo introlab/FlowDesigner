@@ -691,9 +691,17 @@ void UINetwork::interfaceChangeNotify()
 
 void UINetwork::rename(string newName)
 {
+  
+  if (doc->getNetworkNamed(newName)) {
+    throw new GeneralException(string("Network name already exist : ")+ newName, __FILE__,__LINE__);
+  }
+
+
    //FIXME: We should update the subnet list and rename the node that 
    //correspond to this subnet
   string oldName = name;
+
+
 
   name = newName;
   doc->updateAllNetworks();
