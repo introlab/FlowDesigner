@@ -31,6 +31,10 @@ public:
    {
       out << *static_cast<const vector<T> *> (this);
    }
+   virtual void rawWrite(ostream &out) const
+   {
+      out.write ((const unsigned char*) begin(), size()*sizeof(T));
+   }
 };
 
 

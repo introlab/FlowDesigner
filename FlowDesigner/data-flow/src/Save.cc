@@ -45,13 +45,21 @@ ObjectRef Save::getOutput(int output_id, int count)
       if (count != processCount)
       {
          NodeInput streamInput = inputs[streamInputID];
-         OStream &stream = object_cast<OStream> (streamInput.node->getOutput(streamInput.outputID,count));
+         ObjectRef streamValue = streamInput.node->getOutput(streamInput.outputID,count);
+         OStream &stream = object_cast<OStream> (streamValue);
+
          NodeInput objectInput = inputs[objectInputID];
-         Object &object = *(objectInput.node->getOutput(objectInput.outputID,count));
-         stream << object;
+         ObjectRef objectValue = objectInput.node->getOutput(objectInput.outputID,count);
+         Object &object = *objectValue;
+         stream << object << endl;
          stream.flush();
+         return objectValue;
+      } else {
+         NodeInput objectInput = inputs[objectInputID];
+         ObjectRef objectValue = objectInput.node->getOutput(objectInput.outputID,count);
+         return objectValue;         
       }
-      return ObjectRef(new Object(Object::nil));
+      //return ObjectRef(new Object(Object::nil));
    }
    else 
       throw NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);

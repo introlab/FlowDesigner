@@ -54,6 +54,12 @@ public:
    /**The current status*/
    ObjectStatus status;
 
+   /**raw (binary) output method*/
+   virtual void rawWrite(ostream &out) const
+   {
+      throw GeneralException("Object doesn't know how to rawWrite itself", __FILE__, __LINE__);
+   }
+
    /**Generic print function*/
    virtual void printOn(ostream &out=cout) const
    {

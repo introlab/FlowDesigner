@@ -36,7 +36,6 @@ protected:
    MeanSet means;
    GaussianSet gaussians;
    GMMSet gmms;
-   //vector<Ptr<GMM> > gmms;
 
 public:
    AcousticModel() {}
