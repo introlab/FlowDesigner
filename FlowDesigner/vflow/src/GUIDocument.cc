@@ -772,7 +772,16 @@ void GUIDocument::run()
       }
       //cerr << "building net...\n";
       //parameters.print();
-      Network *net = build("MAIN", parameters);
+      Network *net;
+      try {
+	 net = build("MAIN", parameters);
+      } catch (...)
+      {
+	 cerr << "build error\n";
+	 exit(0);
+      }
+      if (net->getInputNode())
+	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       runningNet = net;
       //Ptr<Network> net(build("MAIN", parameters));
       //cerr << "initializing...\n";
