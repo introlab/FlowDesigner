@@ -46,11 +46,52 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
    : topo(_topo)
    , layers(topo.size()-1)
 {
-   //topo = _topo;
+   vector<double> inputMeans(topo[0], 0);
+   vector<double> outputMeans(topo[topo.size()-1], 0);
+   vector<double> inputStd(topo[0], 0);
+   vector<double> outputStd(topo[topo.size()-1], 0);
+   
+   for (int i=0;i<tin.size();i++)
+   {
+      for (int j=0;j<topo[0];j++)
+      {
+	 inputMeans[j] += tin[i][j];
+	 inputStd[j] += tin[i][j]*tin[i][j];
+      }
+   }
+   for (int j=0;j<topo[0];j++)
+      inputMeans[j] /= tin.size();
+   for (int j=0;j<topo[0];j++)
+      inputStd[j] = sqrt(inputStd[j]/tin.size() - inputMeans[j]*inputMeans[j]);
+
+   for (int i=0;i<tout.size();i++)
+   {
+      for (int j=0;j<topo[topo.size()-1];j++)
+      {
+	 outputMeans[j] += tout[i][j];
+	 outputStd[j] += tout[i][j]*tout[i][j];
+      }
+   }
+
+   for (int j=0;j<topo[0];j++)
+      outputMeans[j] /= tout.size();
+   for (int j=0;j<topo[0];j++)
+      outputStd[j] = sqrt(outputStd[j]/tout.size() - outputMeans[j]*outputMeans[j]);
+   
+
    for (int i=0;i<topo.size()-1;i++)
    {
       layers[i]=new FFLayer(topo[i+1],topo[i], functions[i]);
-      layers[i]->init(1.0);
+      if (i==0)
+      {
+	 layers[i]->init(inputMeans.begin(), inputStd.begin());
+	 //layers[i]->init(10);
+      } else { 
+	 //layers[i]->init(10.0);
+	 layers[i]->init(1.0);
+      }
+      if (i==topo.size()-2)
+	 layers[i]->setBias(outputMeans.begin());
    }
 }
 

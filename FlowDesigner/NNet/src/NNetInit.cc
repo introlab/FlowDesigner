@@ -1,0 +1,105 @@
+// Copyright (C) 1999 Jean-Marc Valin
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, write to the Free Software Foundation,
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+
+#include "BufferedNode.h"
+#include "ObjectRef.h"
+#include "FFNet.h"
+#include "Buffer.h"
+
+class NNetInit;
+
+DECLARE_NODE(NNetInit)
+/*Node
+ *
+ * @name NNetInit
+ * @category NNet
+ * @description Initialized the neural network weights to fit the input/output set
+ *
+ * @input_name TRAIN_IN
+ * @input_description No description available
+ *
+ * @input_name TRAIN_OUT
+ * @input_description No description available
+ *
+ * @output_name OUTPUT
+ * @output_description No description available
+ *
+END*/
+
+
+class NNetInit : public BufferedNode {
+
+protected:
+   
+   /**The ID of the 'TRAIN_IN' input*/
+   int trainInID;
+
+   /**The ID of the 'TRAIN_OUT' input*/
+   int trainOutID;
+
+   /**The ID of the 'OUTPUT' output*/
+   int outputID;
+
+public:
+   /**Constructor, takes the name of the node and a set of parameters*/
+   NNetInit(string nodeName, ParameterSet params)
+      : BufferedNode(nodeName, params)
+   {
+      outputID = addOutput("OUTPUT");
+      trainInID = addInput("TRAIN_IN");
+      trainOutID = addInput("TRAIN_OUT");
+      
+   }
+      
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      ObjectRef trainInValue = getInput(trainInID, count);
+      ObjectRef trainOutValue = getInput(trainOutID, count);
+
+      int i,j;
+
+      Buffer &inBuff = object_cast<Buffer> (trainInValue);
+      Buffer &outBuff = object_cast<Buffer> (trainOutValue);
+      
+      //cerr << "inputs converted\n";
+      vector <float *> tin(inBuff.getCurrentPos());
+      for (i=0;i<inBuff.getCurrentPos();i++)
+	 tin[i]=object_cast <Vector<float> > (inBuff[i]).begin();
+      
+      vector <float *> tout(outBuff.getCurrentPos());
+      for (i=0;i<outBuff.getCurrentPos();i++)
+	 tout[i]=object_cast <Vector<float> > (outBuff[i]).begin();
+      
+      Vector<int> topo(4);
+      topo[0] = 16;
+      topo[1] = 12;
+      topo[2] = 12;
+      topo[3] = 8;
+      vector<string> functions(3);
+      functions[0] = "tansig";
+      functions[1] = "tansig";
+      functions[2] = "lin";
+      FFNet *net = new FFNet(topo, functions, tin, tout);
+
+      out[count] = ObjectRef(net);
+   }
+      
+protected:
+
+   NNetInit() {throw new GeneralException("NNetInit copy constructor should not be called",__FILE__,__LINE__);}
+
+};

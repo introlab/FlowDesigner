@@ -55,13 +55,20 @@ void FFLayer::init(double minmax)
    }
 }
 
-void FFLayer::init(double *minmax)
+void FFLayer::init(double *mean, double *std)
 {
+   double meanSum = 0;
+   for (int j=0;j<nbInputs;j++)
+      meanSum += mean[j];
    for (int i=0;i<nbNeurons;i++)
    {
+      double meanSum = 0;
       for (int j=0;j<nbInputs;j++)
-	 weights[i*(nbInputs+1) + j] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/minmax[j];
-      weights[i*(nbInputs+1) + nbInputs] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1);
+      {
+	 weights[i*(nbInputs+1) + j] = sqrt(1.0/nbInputs)*((rand()%1000) * .002 - .1)/std[j];
+	 meanSum += weights[i*(nbInputs+1) + j]*mean[j];
+      }
+      weights[i*(nbInputs+1) + nbInputs] = sqrt(1.0/nbInputs)*((rand()%1000) * .002 - .1) - meanSum;
    }
 }
 
