@@ -71,7 +71,7 @@ AC_SUBST(LT_AGE)
 
 # For automake.
 VERSION=$FREESPEECH_VERSION
-PACKAGE=FreeSpeech
+PACKAGE=Overflow
 
 modules="$audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine"
 AC_SUBST(modules)
