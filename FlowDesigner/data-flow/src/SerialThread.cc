@@ -15,10 +15,10 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Node.h"
-#include "pthread.h"
 #include "Buffer.h"
-#include <semaphore.h>
 #include "ExceptionObject.h"
+#include <pthread.h>
+#include "pseudosem.h"
 
 
 
@@ -70,20 +70,20 @@ class SerialThread : public Node {
    pthread_mutex_t bufferLock;
 
    //Incremented (by getOutput) when a new calculation can be done
-   sem_t sendSem;
+   pseudosem_t sendSem;
 
    //Incremented (by threadLoop) when a new result is available
-   sem_t recSem;
+   pseudosem_t recSem;
 
    //Destroy thread data
    void destroyThread()
    {
       resetState=true;
-      sem_post(&sendSem);
+      pseudosem_post(&sendSem);
       pthread_join (thread, NULL);
       pthread_mutex_destroy(&bufferLock);
-      sem_destroy(&sendSem);
-      sem_destroy(&recSem);
+      pseudosem_destroy(&sendSem);
+      pseudosem_destroy(&recSem);
       resetState=false;
    }
 
@@ -91,8 +91,8 @@ class SerialThread : public Node {
    void initThread()
    {
       pthread_mutex_init(&bufferLock, NULL);
-      sem_init(&sendSem, 0, lookAhead);
-      sem_init(&recSem, 0, 0);
+      pseudosem_init(&sendSem, 0, lookAhead);
+      pseudosem_init(&recSem, 0, 0);
    }
 
 public:
@@ -149,8 +149,7 @@ public:
       while (1)
       {
 	 //Wait for permission to compute
-	 if (sem_wait(&sendSem))
-	    perror("sem_wait(&sendSem)) ");
+	 pseudosem_wait(&sendSem);
 	 if (resetState)
 	    break;
 
@@ -184,8 +183,7 @@ public:
 	 
 
 	 //Notify that the result is ready
-	 if (sem_post(&recSem))
-	    perror("sem_post(&recSem) ");
+	 pseudosem_post(&recSem);
 	 
 	 threadCount++;
       }
@@ -211,10 +209,8 @@ public:
       //Make sure that all results up to "count" are computed
       while (processCount < count)
       {
-	 if (sem_post(&sendSem))
-	    perror("sem_post(&sendSem) ");
-	 if (sem_wait(&recSem))
-	    perror("sem_wait(&recSem) ");
+	 pseudosem_post(&sendSem);
+	 pseudosem_wait(&recSem);
 	 
 	 processCount++;
       }

@@ -37,7 +37,8 @@ include_HEADERS = Array.h \
 	UINodeParameters.h \
 	vec.h \
 	fmath.h \
-	ExceptionObject.h
+	ExceptionObject.h \
+	pseudosem.h
 	
 noinst_HEADERS = \
 	Iterator.h \

@@ -69,6 +69,9 @@ class ParallelThread : public BufferedNode {
    pthread_mutex_t lock;
    pthread_mutex_t lock2;
 
+   //Protecting the whole getOutput() method
+   pthread_mutex_t bigLock;
+
    int calcCount;
 
    //Destroy thread data
@@ -84,6 +87,7 @@ class ParallelThread : public BufferedNode {
       pthread_cond_destroy(&recSem);
       pthread_mutex_destroy(&lock);
       pthread_mutex_destroy(&lock2);
+      pthread_mutex_destroy(&bigLock);
       resetState = false;
    }
 
@@ -94,6 +98,7 @@ class ParallelThread : public BufferedNode {
       pthread_cond_init(&recSem,NULL);
       pthread_mutex_init(&lock, NULL);
       pthread_mutex_init(&lock2, NULL);
+      pthread_mutex_init(&bigLock, NULL);
    }
 
 public:
@@ -163,9 +168,44 @@ public:
       }
       
    }
-
+      
    void calculate(int output_id, int count, Buffer &out)
    {
+      throw NodeException(this, "This should never, ever happen (ParallelThread::calculate called)", __FILE__, __LINE__);
+   }
+
+   ObjectRef getOutput(int output_id, int count)      
+   {
+      pthread_mutex_lock(&bigLock);
+      Buffer &out1 = *(outputs[output1ID].buffer);
+      Buffer &out2 = *(outputs[output2ID].buffer);
+      
+      ObjectRef result;
+
+      
+      if (output_id == output1ID)
+      {
+	 if (typeid(*out1[count]) == typeid(ExceptionObject))
+	 {
+	    object_cast<ExceptionObject> (out1[count]).doThrow();
+	 }
+	 result = out1[count];
+      } else if (output_id == output2ID)
+      {
+	 if (typeid(*out2[count]) == typeid(ExceptionObject))
+	 {
+	    object_cast<ExceptionObject> (out2[count]).doThrow();
+	 }
+	 result = out2[count];
+      } else
+	 throw NodeException (this, "Wrong output ID", __FILE__, __LINE__);
+      
+      if (result->status == Object::valid)
+      {
+	 pthread_mutex_unlock(&bigLock);
+	 return result;
+      }
+      
       pthread_mutex_lock(&lock);
       calcCount = count;
       pthread_cond_signal(&sendSem);	 
@@ -173,15 +213,15 @@ public:
 
       try {
 	 ObjectRef input2Value = getInput(input2ID, count);
-	 (*outputs[output2ID].buffer)[count] = input2Value;
+	 out2[count] = input2Value;
       } catch (BaseException *e)
       {
 	 //cerr << "caught\n";
-	 (*outputs[output2ID].buffer)[count] = 
+	 out2[count] = 
 	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
       } catch (...)
       {
-	 (*outputs[output2ID].buffer)[count] = 
+	 out2[count] = 
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
@@ -190,18 +230,26 @@ public:
 	 pthread_cond_wait(&recSem, &lock2);
       pthread_mutex_unlock(&lock2);
       
-      //cerr << "calculate\n";
 
-      if (typeid(*(*outputs[output1ID].buffer)[count]) == typeid(ExceptionObject))
+      if (output_id == output1ID)
       {
-	 //cerr << "throwing1\n";
-	 object_cast<ExceptionObject> ((*outputs[output1ID].buffer)[count]).doThrow();
-      }
-      if (typeid(*(*outputs[output2ID].buffer)[count]) == typeid(ExceptionObject))
+	 if (typeid(*out1[count]) == typeid(ExceptionObject))
+	 {
+	    object_cast<ExceptionObject> (out1[count]).doThrow();
+	 }
+	 result = out1[count];
+      } else if (output_id == output2ID)
       {
-	 //cerr << "throwing2\n";
-	 object_cast<ExceptionObject> ((*outputs[output2ID].buffer)[count]).doThrow();
-      }
+	 if (typeid(*out2[count]) == typeid(ExceptionObject))
+	 {
+	    object_cast<ExceptionObject> (out2[count]).doThrow();
+	 }
+	 result = out2[count];
+      } else 
+	 throw NodeException (this, "Wrong output ID", __FILE__, __LINE__);
+
+      pthread_mutex_unlock(&bigLock);
+      return result;
    }
 
       
