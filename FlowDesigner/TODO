@@ -2,9 +2,9 @@ document parameters for batch mode
 
 support removing network terminals
 
-allow including other documents as node...
-
 set the isModified flag when adding a net terminal or moving a node, ...
+
+handle environment variables for automatic DL and external documents
 
 implement Exception Stack
 
