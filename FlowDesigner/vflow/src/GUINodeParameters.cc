@@ -292,6 +292,7 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
   {
      int a=0;
      const char *str = nodeParams->getComments().c_str();
+     cerr << "build comments: " << str << endl;
      gtk_editable_insert_text (GTK_EDITABLE(text_comments), str, nodeParams->getComments().size(), &a);
   }
   gtk_signal_connect (GTK_OBJECT ( text_comments  ), "changed",

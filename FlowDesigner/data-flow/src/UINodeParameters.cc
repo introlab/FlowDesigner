@@ -85,15 +85,21 @@ void UINodeParameters::load(xmlNodePtr node)
          string value = string ((char *) xmlGetProp(par, (CHAR *)"value"));
          
          ParameterText *param = getParamNamed(name);
-     if (param)
-     {
-        param->type = type;
-        param->value = value;
-        insertLoadedParam(param, type, value);
-        //cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
-     } else {
-        //cerr << "param " << name << " no longer used\n";
-     }
+	 if (param)
+	 {
+	    param->type = type;
+	    param->value = value;
+	    insertLoadedParam(param, type, value);
+	    //cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
+	 } else {
+	    //cerr << "param " << name << " no longer used\n";
+	 }
+      } else if (string((char*)par->name) == "Comments")
+      {
+	 string comment((char *)xmlNodeGetContent(par));
+	 setComments(comment);
+      } else {
+	 cerr << "unknown param tag\n";
       }
       par = par->next;
       
@@ -105,6 +111,7 @@ void UINodeParameters::load(xmlNodePtr node)
 void UINodeParameters::saveXML(xmlNode *root)
 {
    // First add all of the ParameterData Nodes to the xml Node
+   xmlNewChild(root, NULL, (CHAR *)"Comments", (xmlChar*)comments.c_str());
    for (int i=0;i<textParams.size();i++)
    {
       if (textParams[i]->value != "")

@@ -115,7 +115,7 @@ void UINetwork::load (xmlNodePtr net)
          string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
          string termTerm = string((char *)xmlGetProp(node, (CHAR *)"terminal"));
          string termNode = string((char *)xmlGetProp(node, (CHAR *)"node"));
-     //BUG HERE
+     //FIXME: potential segfault
      //cerr << termName << " " << termTerm << " " << termNode << endl;
      //cerr << getNodeNamed(termNode)->getName() << endl;
      //cerr << getNodeNamed(termNode)->getOutputNamed(termTerm) << endl;
@@ -127,7 +127,7 @@ void UINetwork::load (xmlNodePtr net)
          string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
          string termTerm = string((char *)xmlGetProp(node, (CHAR *)"terminal"));
          string termNode = string((char *)xmlGetProp(node, (CHAR *)"node"));
-     //BUG HERE
+     //FIXME: potential segfault
          newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
                  UINetTerminal::CONDITION, termName);
       }
