@@ -52,6 +52,56 @@ void UINodeRepository::Scan()
    }
 }
 
+set<string> &UINodeRepository::FindFileFromModule(const string &name)
+{
+   return ModuleDepend()[name];
+}
+
+set<string> &UINodeRepository::FindModuleFromFile(const string &name)
+{
+   return FileDepend()[name];
+}
+
+set<string> &UINodeRepository::FindHeaderFromFile(const string &name)
+{
+   return HeaderDepend()[name];
+}
+
+
+
+NodeInfo *UINodeRepository::Find(const string &name)
+{
+   map<string, NodeInfo *>::iterator found = GlobalRepository().info.find(name);
+   if (found != GlobalRepository().info.end())
+      return found->second;
+   return NULL;
+}
+
+vector<string> UINodeRepository::Available()
+{
+   vector<string> allNodes;
+   string nextItem;
+   map<string, NodeInfo *>::iterator iter = GlobalRepository().info.begin();
+	
+   while (iter != GlobalRepository().info.end()) {
+      nextItem = string((*iter).second->category) + "***" + 
+	 string((*iter).first);
+      allNodes.insert(allNodes.end(), nextItem);
+      iter++;
+   }
+   return allNodes;
+}
+
+NodeInfo *UINodeRepository::findNode(const string &name)
+{
+   map<string, NodeInfo *>::iterator found = info.find(name);
+   if (found != info.end())
+      return found->second;
+   found = GlobalRepository().info.find(name);
+   if (found != GlobalRepository().info.end())
+      return found->second;
+   return NULL;
+}
 
 void UINodeRepository::loadNodeDefInfo(const string &path, const string &name)
 {
@@ -370,4 +420,86 @@ void UINodeRepository::loadAllInfoRecursive(const string &path) {
   }
 
   closedir(my_directory);
+}
+
+
+
+
+
+
+void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool toplevel)
+{
+   int nbDepends = initial_files.size();
+
+   //Process module/file dependencies, loop until there's nothing else to add
+   do {
+      nbDepends = initial_files.size();
+      set<string> addMod;
+      //Core is always necessary and we'll save a bunch of @require core
+      addMod.insert(addMod.begin(), "core");
+
+      //Scan all files in required list to find all required modules
+      set<string>::iterator file=initial_files.begin();
+      while (file != initial_files.end())
+      {
+	 if (FileDepend().find(*file) != FileDepend().end())
+	 {
+	    set<string> &moduleDep = FileDepend()[*file];
+	    set<string>::iterator mod = moduleDep.begin();
+	    while (mod != moduleDep.end())
+	    {
+	       addMod.insert(addMod.end(), *mod);
+	       mod++;
+	    }
+	 }
+	 file++;
+      }
+
+      //Scan all modules in required list to find all required files
+      set<string>::iterator mod=addMod.begin();
+      while (mod != addMod.end())
+      {
+	 if (ModuleDepend().find(*mod) != ModuleDepend().end())
+	 {
+	    set<string> &fileDep = ModuleDepend()[*mod];
+	    set<string>::iterator file = fileDep.begin();
+	    while (file != fileDep.end())
+	    {
+	       initial_files.insert(initial_files.end(), *file);
+	       file++;
+	    }
+	 }
+	 mod++;
+      }
+
+   } while (nbDepends != initial_files.size());
+
+   //Repeat recursivly until there's nothing else to add
+   //if (nbDepends != initial_files.size())
+   //   processDependencies(initial_files, false);
+
+   //Process header dependencies, loop until there's nothing else to add
+   do {
+      nbDepends = initial_files.size();
+      if (toplevel)
+      {
+	 set<string>::iterator file=initial_files.begin();
+	 while (file != initial_files.end())
+	 {
+	    if (HeaderDepend().find(*file) != HeaderDepend().end())
+	    {
+	       set<string> &headerDep = HeaderDepend()[*file];
+	       set<string>::iterator header = headerDep.begin();
+	       while (header != headerDep.end())
+	       {
+		  initial_files.insert(initial_files.end(), *header);
+		  header++;
+	       }
+	    }
+	    file++;
+	 }
+      
+      }
+   } while (nbDepends != initial_files.size());
+
 }

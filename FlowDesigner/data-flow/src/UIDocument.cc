@@ -18,14 +18,14 @@
 
 //@implements UIClasses
 
-map<string, set<string> > UIDocument::moduleDepend;
+//map<string, set<string> > UIDocument::moduleDepend;
 
-map<string, set<string> > UIDocument::fileDepend;
+//map<string, set<string> > UIDocument::fileDepend;
 
-map<string, set<string> > UIDocument::headerDepend;
+//map<string, set<string> > UIDocument::headerDepend;
 
 
-map<string, SubnetInfo *> UIDocument::externalDocInfo;
+//map<string, SubnetInfo *> UIDocument::externalDocInfo;
 
 
 UIDocument::UIDocument(string _name)
@@ -87,9 +87,13 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
      
    } else if (preloadInfo.find(netName) != preloadInfo.end()) {
       inputs = preloadInfo[netName]->inputs;
-   } else if (externalDocInfo.find(netName) != externalDocInfo.end()) {
+   } else 
+      if (UINodeRepository::Find(netName))
+	 return UINodeRepository::Find(netName)->inputs;
+
+/*      if (externalDocInfo.find(netName) != externalDocInfo.end()) {
       inputs = externalDocInfo[netName]->inputs;
-   }
+      }*/
    return inputs;
 }
 
@@ -109,9 +113,13 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
        
    } else if (preloadInfo.find(netName) != preloadInfo.end()) {
       outputs = preloadInfo[netName]->outputs;
-   } else if (externalDocInfo.find(netName) != externalDocInfo.end()) {
+   } else 
+      if (UINodeRepository::Find(netName))
+	 return UINodeRepository::Find(netName)->outputs;
+
+   /*if (externalDocInfo.find(netName) != externalDocInfo.end()) {
       outputs = externalDocInfo[netName]->outputs;
-   }
+      }*/
    return outputs;
 }
 
@@ -125,23 +133,32 @@ vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
    } else if (preloadInfo.find(netName) != preloadInfo.end()) 
    {
       params = preloadInfo[netName]->params;
-   } else if (externalDocInfo.find(netName) != externalDocInfo.end()) 
+   } else 
+      if (UINodeRepository::Find(netName))
+	 return UINodeRepository::Find(netName)->params;
+
+   /*if (externalDocInfo.find(netName) != externalDocInfo.end()) 
    {
       params = externalDocInfo[netName]->params;
-   }
+      }*/
    //FIXME: potential leak of ItemInfo here?
    return params;
 }
 
 string UIDocument::getDescription(const string &type)
 {
-	string descr;
+   /*string descr;
 	if (externalDocInfo.find(type) != externalDocInfo.end()) 
 		descr = externalDocInfo[type]->description;
 	else
 		descr = "Description not available.";
 		
-	return descr;
+		return descr;*/
+   NodeInfo *info = UINodeRepository::Find(type);
+   if (info)
+      return info->description;
+   else
+      return "Description not available";
 }
 
 
@@ -363,6 +380,7 @@ void UIDocument::loadXML(xmlNodePtr root)
  *                                                                                                 *
  ***************************************************************************************************/
 
+#if 0
 
 void UIDocument::loadNodeDefInfo(const string &path, const string &name)
 {
@@ -699,7 +717,7 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
   closedir(my_directory);
 }
 
-
+#endif
 
 /*END Big mess (well, almost)*/
 
@@ -929,7 +947,7 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
       throw;
    }
 }
-
+/*
 void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
 {
    int nbDepends = initial_files.size();
@@ -1006,6 +1024,7 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
    } while (nbDepends != initial_files.size());
 
 }
+*/
 
 void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
 {
@@ -1149,17 +1168,18 @@ vector<string> UIDocument::getAvailableNodes()
 	vector<string> allNodes;
 	string nextItem;
 	// first look at the externalDocInfo 
-	map<string, SubnetInfo *>::iterator iter = externalDocInfo.begin();
+	/*map<string, NodeInfo *>::iterator iter = externalDocInfo.begin();
 	
 	while (iter != externalDocInfo.end()) {
 		nextItem = string((*iter).second->category) + "***" + 
 				   string((*iter).first);
 		allNodes.insert(allNodes.end(), nextItem);
 		iter++;
-	}
-				
+		}*/
+	allNodes = UINodeRepository::Available();
+
 	// now look at the preloadInfo
-	iter = preloadInfo.begin();
+	map<string, SubnetInfo *>::iterator iter = preloadInfo.begin();
 	
 	while (iter != preloadInfo.end()) {
 		nextItem = string((*iter).second->category) + "***" + 

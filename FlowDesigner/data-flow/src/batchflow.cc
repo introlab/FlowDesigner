@@ -20,7 +20,7 @@ int main(int argc, char **argv)
       }
       IExtensions::detect();
       scanDL();
-      UIDocument::loadAllInfo();
+      //UIDocument::loadAllInfo();
       UINodeRepository::Scan();
       ParameterSet param;
       for (int arg = 2; arg<argc; arg++)

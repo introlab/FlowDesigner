@@ -20,7 +20,9 @@ int main(int argc, char **argv)
    try 
    {
       scanDL();
-      UIDocument::loadAllInfo();
+      //UIDocument::loadAllInfo();
+      UINodeRepository::Scan();
+
       UIDocument *doc = new UIDocument(argv[1]);
       doc->load();
       ofstream out(argv[2]);
@@ -28,8 +30,13 @@ int main(int argc, char **argv)
 
       set<string> fileList;
       for (set<string>::iterator it=nodeList.begin();it!=nodeList.end();it++)
-	 fileList.insert(fileList.begin(), UIDocument::externalDocInfo[*it]->sourceFile);
-      UIDocument::processDependencies(fileList);
+      {
+	 NodeInfo *info = UINodeRepository::Find(*it);
+	 if (info)
+	    fileList.insert(fileList.begin(), info->sourceFile);
+	 //fileList.insert(fileList.begin(), UIDocument::externalDocInfo[*it]->sourceFile);
+      }
+      UINodeRepository::ProcessDependencies(fileList);
 
       cerr << "dependencies:\n";
       for (set<string>::iterator it=fileList.begin();it!=fileList.end();it++)

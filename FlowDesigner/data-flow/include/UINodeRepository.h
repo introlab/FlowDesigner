@@ -32,7 +32,10 @@ class NodeInfo {
 };
 
 class UINodeRepository {
+  public:
+   typedef map<string, NodeInfo *>::iterator iterator;
 
+  private:
    map<string, NodeInfo *> info;
 
    static UINodeRepository &GlobalRepository();
@@ -52,7 +55,27 @@ class UINodeRepository {
    //NodeInfo *&operator[] (const string &name) {return info[name];}
   public:
    
+   iterator begin() {return info.begin();}
+   iterator end() {return info.end();}
+
+   NodeInfo *findNode(const string &name);
+
+   static iterator Begin() {return GlobalRepository().info.begin();}
+   static iterator End() {return GlobalRepository().info.end();}
+
    static void Scan();
+
+   static NodeInfo *Find(const string &name);
+
+   static set<string> &FindFileFromModule(const string &name);
+   
+   static set<string> &FindModuleFromFile(const string &name);
+   
+   static set<string> &FindHeaderFromFile(const string &name);
+   
+   static vector<string> Available();
+
+   static void ProcessDependencies(set<string> &initial_files, bool toplevel=true);
 
 };
 

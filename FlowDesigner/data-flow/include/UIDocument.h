@@ -87,7 +87,7 @@ protected:
    
    /**True if document has no real name yet*/
    bool untitled;
-
+#if 0
    /**List of all files required for each module*/
    static map<string, set<string> > moduleDepend;
    
@@ -96,9 +96,13 @@ protected:
  
    /**List of all headers required for each file*/
    static map<string, set<string> > headerDepend;
+#endif
 
 public:
+
+#if 0
    static map<string, SubnetInfo *> externalDocInfo;
+#endif
 
    /**Document constructor with name, DOES NOT load the document (document created as untitled)*/
    UIDocument(string _name);
@@ -167,15 +171,18 @@ public:
 
    void loadAllSubnetInfo(xmlNodePtr net);
 
+#if 0
    static void loadNodeDefInfo(const string &path, const string &name);
 
    static void loadExtDocInfo(const string &path, const string &name);
-   
+#endif
    vector<UINetwork *> get_networks() {return networks;}
    vector<DocParameterDataText *> get_textParams() {return textParams;}
 
+#if 0
    static void loadAllInfo();
-   
+#endif
+
    virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
    
    virtual UINetwork *newNetwork(xmlNodePtr _net);
@@ -199,18 +206,20 @@ public:
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 
+#if 0
    static void processDependencies(set<string> &initial_files, bool toplevel=true);
+#endif
 
  protected:
    
    virtual void error(char *err);
 
  private:
-   
+#if 0
    static void loadAllInfoRecursive(const string &path);
+#endif
    
    static bool findExternalRecursive(const string &basePath, const string &path, const string &type, string &fullname, bool fullPathOutput);
-
 };
 
 

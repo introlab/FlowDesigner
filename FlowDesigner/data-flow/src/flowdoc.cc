@@ -5,7 +5,7 @@
 #include "ParameterSet.h"
 #include "ObjectRef.h"
 
-void node2html(string nodeName, SubnetInfo *info, ostream &out)
+void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
    int nb;
 
@@ -85,8 +85,9 @@ void node2html(string nodeName, SubnetInfo *info, ostream &out)
 
 int main(int argc, char **argv)
 {
-   UIDocument::loadAllInfo();
-
+   //UIDocument::loadAllInfo();
+   UINodeRepository::Scan();
+   
    ostream &out = cout;
 
    out << "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n"
@@ -100,13 +101,13 @@ int main(int argc, char **argv)
        << "</head>\n"
        << "<body>\n";
    
-   map<string, SubnetInfo *>::iterator i;
+   UINodeRepository::iterator i;
 
    out << "<h1>List of available Overflow Nodes</h1>\n\n";
    out << "<center><table BORDER COLS=3 WIDTH=\"100%\" NOSAVE >\n\n";
    int count=0;
-   i = UIDocument::externalDocInfo.begin();
-   while (i != UIDocument::externalDocInfo.end())
+   i = UINodeRepository::Begin();
+   while (i != UINodeRepository::End())
    {
       if (count %3==0)
 	 out << "<tr>\n";
@@ -122,8 +123,8 @@ int main(int argc, char **argv)
 
 
    out << "\n<h1>Nodes Documentation</h1>\n\n";
-   i = UIDocument::externalDocInfo.begin();
-   while (i != UIDocument::externalDocInfo.end())
+   i = UINodeRepository::Begin();
+   while (i != UINodeRepository::End())
    {
       node2html(i->first, i->second, out);
       i++;

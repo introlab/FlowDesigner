@@ -834,7 +834,8 @@ int main (int argc, char *argv[]) {
    try {
       IExtensions::detect();
       scanDL();
-      UIDocument::loadAllInfo();
+      UINodeRepository::Scan();
+      //UIDocument::loadAllInfo();
 
       g_thread_init(NULL); 
       

@@ -121,8 +121,13 @@ void CodeGenState::ok()
       {
 	 set<string> fileList;
 	 for (set<string>::iterator it=nodeList.begin();it!=nodeList.end();it++)
-	    fileList.insert(fileList.begin(), UIDocument::externalDocInfo[*it]->sourceFile);
-	 UIDocument::processDependencies(fileList);
+	 {
+	    NodeInfo *info = UINodeRepository::Find(*it);
+	    if (info)
+	       fileList.insert(fileList.begin(), info->sourceFile);
+	    //fileList.insert(fileList.begin(), UIDocument::externalDocInfo[*it]->sourceFile);
+	 }
+	 UINodeRepository::ProcessDependencies(fileList);
 
 	 set<string>::iterator file = fileList.begin();
 	 while (file != fileList.end())

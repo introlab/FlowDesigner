@@ -40,11 +40,12 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
       tooltext << endl;
       tooltext << node->getComments();
    } else {
-      map<string, SubnetInfo *>::iterator iter;
-      iter = UIDocument::externalDocInfo.find(node->getType());
-      if (iter != UIDocument::externalDocInfo.end())
+      //UINodeRepository::iterator iter;
+      //iter = UIDocument::externalDocInfo.find(node->getType());
+      NodeInfo *info = UINodeRepository::Find(node->getType());
+      if (info)
       {
-	 string &desc = iter->second->description;
+	 string &desc = info->description;
 	 DYN_VEC(char, desc.size()+1, sdesc);
 	 strcpy(sdesc, desc.c_str());
 	 char *ptr=sdesc;

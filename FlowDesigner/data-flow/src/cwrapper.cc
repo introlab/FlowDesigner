@@ -15,12 +15,14 @@
 void overflowInitialize(void)
 {
    scanDL();
-   UIDocument::loadAllInfo();
+   //UIDocument::loadAllInfo();
+   UINodeRepository::Scan();
 }
 
 void overflowInitializeNoDL(void)
 {
-   UIDocument::loadAllInfo();
+   UINodeRepository::Scan();
+   //UIDocument::loadAllInfo();
 }
 
 

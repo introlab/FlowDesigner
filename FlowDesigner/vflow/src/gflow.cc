@@ -42,7 +42,8 @@ int main(int argc, char **argv)
       delete e;
       exit(1);
    }
-   UIDocument::loadAllInfo();
+   UINodeRepository::Scan();
+   //UIDocument::loadAllInfo();
 
    g_thread_init(NULL);
    gnome_init ("vflow", VERSION, argc, argv);

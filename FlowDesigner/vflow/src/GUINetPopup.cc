@@ -95,9 +95,9 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
       addType(f->second->getCategory(),f->second->getName());
       f++;
       }*/
-   map<string, SubnetInfo *>::iterator info = GUIDocument::externalDocInfo.begin();
+   UINodeRepository::iterator info = UINodeRepository::Begin();
    set<string> strCategories;
-   while (info != GUIDocument::externalDocInfo.end()) 
+   while (info != UINodeRepository::End()) 
    {
       strCategories.insert(info->second->category);
       //addType(info->second->category,info->first);
@@ -111,8 +111,8 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
       cat++;
    }
 
-   info = GUIDocument::externalDocInfo.begin();
-   while (info != GUIDocument::externalDocInfo.end()) 
+   info = UINodeRepository::Begin();
+   while (info != UINodeRepository::End()) 
    {
 
       addType(info->second->category,info->first);
