@@ -25,6 +25,7 @@ void quit()
 void run2(GRunContext *ctx)
 {
    ctx->run();
+   //gtk_main_quit();
 }
 
 
@@ -44,7 +45,7 @@ int main(int argc, char **argv)
    gnome_init ("vflow", VERSION, argc, argv);
    setlocale (LC_NUMERIC, "C");
 
-   ParameterSet params;
+   ParameterSet &params = *new ParameterSet;
    for (int arg = 2; arg<argc; arg++)
    {
       char arg_name[100];
@@ -54,14 +55,14 @@ int main(int argc, char **argv)
    UIDocument *doc = new UIDocument(argv[1]);
    doc->load();
 
-   GRunContext ctx(doc, params);
+   GRunContext *ctx = new GRunContext(doc, params);
    
    
    pthread_t runThread;
    pthread_attr_t tattr;
    pthread_attr_init(&tattr);
    pthread_attr_setdetachstate(&tattr,PTHREAD_CREATE_DETACHED);
-   pthread_create(&runThread, &tattr, (void * (*)(void *))run2, (void *) &ctx);
+   pthread_create(&runThread, &tattr, (void * (*)(void *))run2, (void *) ctx);
    
    gdk_threads_enter(); 
    gtk_main ();

@@ -30,7 +30,8 @@ vflow_SOURCES = \
 	GUILink.cc \
 	GUINodeParameters.cc \
 	GUINetTerminal.cc \
-	GUINetPopup.cc
+	GUINetPopup.cc \
+	GRunContext.cc
 
 gflow_SOURCES = \
 	gflow.cc \
