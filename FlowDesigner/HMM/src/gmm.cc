@@ -170,7 +170,7 @@ Score GMM::score(Frame fr) const
    Score frame_score;
    for (int j=0;j<nb_gaussians;j++)
    {
-      float dist = gaussians[j]->mahalanobis(fr);
+      float dist = gaussians[j]->mahalanobis(fr)-apriori[j];
       if (dist < min_dist)
       {
          min_dist=dist;
@@ -201,15 +201,16 @@ istream &operator >> (istream &in, GMM &gmm)
 {
    if (!isValidType(in, "GMM")) return in;
    string tag;
+
    while (1)
    {
       char ch;
       in >> ch;
+      cerr << "ch: " << ch << endl;
       if (ch == '>') break;
       else if (ch != '<') 
        throw ParsingException ("Parse error: '<' expected");
       in >> tag;
-
       if (tag == "nb_gaussians")
          in >> gmm.nb_gaussians;
       else if (tag == "apriori")
@@ -230,7 +231,7 @@ istream &operator >> (istream &in, GMM &gmm)
          throw ParsingException ("Parse error: '>' expected ");
    }
    
-   string end;
+   //string end;
    //in >> end;
    //cerr << "terminator: " << end << endl;
 

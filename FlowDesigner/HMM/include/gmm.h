@@ -67,7 +67,6 @@ protected:
    int                 nb_frames_aligned;
 
 public:
-
    /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
       covariance pseudo-factory*/
    GMM(int nb_gauss, int dim, Covariance *(*cov_new)(int)) 
@@ -79,6 +78,16 @@ public:
    {
       for (int i=0;i<nb_gauss;i++)
          gaussians[i] = new Gaussian (dim, cov_new);
+   }
+
+   GMM ()
+      : gaussians(vector<Gaussian *>(1,(Gaussian *)NULL))
+      , apriori (vector<float>(1,0.0))
+      , nb_gaussians (1)
+      , mode(accum)
+      , nb_frames_aligned(0)
+   {
+      gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
    }
 
    GMM (string file);

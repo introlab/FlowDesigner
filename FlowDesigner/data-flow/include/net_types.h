@@ -44,6 +44,31 @@ public:
       value = copy.value;
    }
 
+   virtual void printOn(ostream &out=cout) const {
+      out << "<Generic Type: " << typeid(T).name() << ">" << endl;
+   }
+
+};
+
+template <class T>
+class PrintableGenericType : public GenericType<T> {
+
+public:
+   virtual void printOn(ostream &out=cout) const {
+      out<< GenericType<T>::value;
+   }
+   PrintableGenericType () {}
+
+   PrintableGenericType (T val) {
+      GenericType<T>::value = val;
+   }
+
+   ///copy constructor
+   PrintableGenericType (PrintableGenericType<T> &copy) {
+      GenericType<T>::value = copy.value;
+   }
+
+   T &val() {return value;}
 };
 
 /**
@@ -53,7 +78,7 @@ public:
    @version 1.0
  */
 template <class T>
-class NetCType : public GenericType<T> {
+class NetCType : public PrintableGenericType<T> {
    
 public:
    
@@ -125,7 +150,7 @@ typedef NetCType<unsigned long> U_long;
 typedef NetCType<bool> Bool;
 
 ///STL types
-typedef GenericType<string> String;
+typedef PrintableGenericType<string> String;
 typedef GenericType<ifstream> IFStream;
 typedef GenericType<ofstream> OFStream;
 

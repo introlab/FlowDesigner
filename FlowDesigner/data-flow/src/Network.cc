@@ -245,40 +245,8 @@ void Network::connect (const string &currentNodeName,const string &inputName,
    
 
 }
-/***************************************************************************/
-/*
-  Network::initialize()
-  Dominic Letourneau
- */
-/***************************************************************************/
-/*void Network::initialize() {
 
-   Node* node = NULL;
-   map<string,Node*>::iterator iter;
-   map<string,Node*> connectionMap;
-   
-   cerr << "Network::initialize\n";
-   if (sinkNode) {
-      cerr << "initializing: sinkNode->initialize() " << sinkNode->getName() << endl;
-      sinkNode->initialize();
-   }
-   else {
-      throw NoSinkNodeException();
-   }
 
-   //we must verify if all the nodes are initialized properly
-
-   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-      if (!((*iter).second)->isInitialized()) {
-         //adding the nodes that are not properly initialized
-         connectionMap.insert(nodeEntry((*iter).first, (*iter).second));
-      }
-   }
-
-   if (connectionMap.size() > 0) {
-      throw NotInitializedException(connectionMap);
-   }
-   }*/
 /***************************************************************************/
 /*
   Network::addFactory()
