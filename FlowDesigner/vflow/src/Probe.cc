@@ -75,7 +75,7 @@ static void show_hide_click (GtkButton *button, Probe *pr)
 Probe::Probe(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
    , window1(NULL)
-   , exit_status(true)
+   , exit_status(false)
 {
    outputID = addOutput("OUTPUT");
    inputID = addInput("INPUT");
