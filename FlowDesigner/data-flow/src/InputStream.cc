@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 class InputStream;
 
@@ -28,6 +29,10 @@ DECLARE_NODE(InputStream)
  * @parameter_type String
  * @parameter_description Type of stream: stream, fd, or FILE (default stream)
  *
+ * @parameter_name RETRY
+ * @parameter_type int
+ * @parameter_description If set to N, InputStream will retry N times on open fail
+ *
 END*/
 
 class InputStream : public BufferedNode {
@@ -43,6 +48,8 @@ protected:
    typedef enum {fd, fptr, cpp} StreamType;
 
    StreamType type;
+
+   int retry;
 
 public:
    InputStream(string nodeName, ParameterSet params) 
@@ -66,6 +73,11 @@ public:
       }
       else
 	 type = cpp;
+      
+      if (parameters.exist("RETRY"))
+	 retry = dereference_cast<int> (parameters.get("RETRY"));
+      else
+	 retry = 0;
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -80,6 +92,21 @@ public:
 	 case cpp:
 	 {
 	    ifstream *file = new ifstream(fileName.c_str());
+	    if (retry)
+	    {
+	       int retryLeft=retry;
+	       int retryTime=5;
+	       while (file->fail() && retryLeft--)
+	       {
+		  cerr << "deleting\n";
+		  delete file;
+		  sleep (retryTime);
+		  retryTime *= 2;
+		  file = new ifstream(fileName.c_str());
+		  cerr << "retrying\n";
+		  cerr << file->fail() << " " << retryLeft << endl;
+	       }
+	    }
 	    if (file->fail())
 	    {
 	       delete file;
