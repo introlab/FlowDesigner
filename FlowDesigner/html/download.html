@@ -2,12 +2,13 @@
 <html>
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" content="Mozilla/4.7 [en] (X11; U; Linux 2.2.13 i686) [Netscape]">
+   <meta name="GENERATOR" content="Mozilla/4.7 [fr] (X11; I; Linux 2.2.14-15mdk i686) [Netscape]">
 </head>
 <body>
 
+<center>
 <h1>
-Download</h1>
+Download</h1></center>
 
 <h2>
 Source</h2>
@@ -21,6 +22,51 @@ The source is also available via anonymous CVS:
 <br><tt>cvs login</tt>&nbsp; (the password is <i>return</i>)
 <br><tt>cvs checkout FreeSpeech</tt>
 <br>&nbsp;
+<h2>
+Required</h2>
+
+<ul>
+<li>
+<a href="http://www.fftw.org/">FFTW</a> (you must give use the following
+options with configure: --enable-float --enable-shared )</li>
+
+<li>
+<a href="http://www.gnome.org">GNOME</a> (for the GUI part) including libxml</li>
+
+<li>
+The following patch to glib 1.2.6 until the next version is released (fixes
+a very nasty thread bug)</li>
+
+<pre>&nbsp;&nbsp;&nbsp; --------------------------------------------------------------------&nbsp;
+&nbsp;&nbsp;&nbsp; Index: gdataset.c&nbsp;
+&nbsp;&nbsp;&nbsp; ===================================================================&nbsp;
+&nbsp;&nbsp;&nbsp; RCS file: /cvs/gnome/glib/gdataset.c,v&nbsp;
+&nbsp;&nbsp;&nbsp; retrieving revision 1.13&nbsp;
+&nbsp;&nbsp;&nbsp; diff -u -b -B -r1.13 gdataset.c&nbsp;
+&nbsp;&nbsp;&nbsp; --- gdataset.c 1999/02/24 06:13:32 1.13&nbsp;
+&nbsp;&nbsp;&nbsp; +++ gdataset.c 1999/10/15 11:54:59&nbsp;
+&nbsp;&nbsp;&nbsp; @@ -110,7 +110,11 @@&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list = prev->next;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (prev->destroy_func)&nbsp;
+&nbsp;&nbsp;&nbsp; + {&nbsp;
+&nbsp;&nbsp;&nbsp; + G_UNLOCK (g_dataset_global);&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prev->destroy_func (prev->data);&nbsp;
+&nbsp;&nbsp;&nbsp; + G_LOCK (g_dataset_global);&nbsp;
+&nbsp;&nbsp;&nbsp; + }&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (g_data_cache_length &lt; G_DATA_CACHE_MAX)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;
+&nbsp;&nbsp;&nbsp; --------------------------------------------------------------------</pre>
+A linux binary version of glib 1.2.6 with the patch applied is available
+<a href="../../libglib-1.2.so.0.0.6">here</a>
 <br>&nbsp;
+<li>
+At least <a href="http://gcc.gnu.org">gcc 2.95.x</a></li>
+
+<li>
+automake, autoconf, libtool if you plan to work from the CVS code</li>
+</ul>
+
 </body>
 </html>
