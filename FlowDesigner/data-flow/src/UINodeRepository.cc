@@ -702,6 +702,7 @@ void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool topl
 
 void UINodeRepository::updateNetInfo(UINetwork *net)
 {
+   //cerr << "UINodeRepository::updateNetInfo\n";
    iterator inet = info.find(net->getName());
    if (inet!=info.end())
    {

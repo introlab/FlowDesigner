@@ -474,21 +474,29 @@ void GUINodeParameters::hide()
 
 void GUINodeParameters::apply()
 {
-   //cerr << this << endl;
+   //Set this to true if there's any change involving a subnet_param change
+   bool changedNetInterface=false;
    for (int i=0;i<params.size();i++)
    {
       //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
       GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
-      textParams[i]->type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
-
       GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
-      textParams[i]->value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
-      
-      //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
+      string newType = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
+      string newValue = gtk_entry_get_text(GTK_ENTRY(gtkentr));
+
+      //There's a subnet_param involved
+      if (newType == "subnet_param" || textParams[i]->type == "subnet_param")
+      {
+	 //There's a change somewhere
+	 if (newType != textParams[i]->type || newValue != textParams[i]->value)
+	    changedNetInterface=true;
+      }
+      textParams[i]->type = newType;
+      textParams[i]->value = newValue;
    }
-   //cerr << "apply\n";
    nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
    node->getNetwork()->setModified();
+   node->getNetwork()->interfaceChangeNotify();
 }
 
 void GUINodeParameters::changed()

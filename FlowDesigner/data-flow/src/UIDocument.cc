@@ -59,6 +59,7 @@ UINetwork *UIDocument::getNetworkNamed(const string &n)
 
 vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 {
+   //updateAllNetworks();
    vector <ItemInfo *> inputs;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->inputs;
@@ -68,6 +69,7 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 {
+   //updateAllNetworks();
    vector <ItemInfo *> outputs;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->outputs;
@@ -77,6 +79,7 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
 {
+   //updateAllNetworks();
    vector <ItemInfo *> params;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->params;

@@ -74,7 +74,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       }
    }
 
-   //FIXME: Is this dangerous? I don't know
+   //FIXME: Is this dangerous? I don't know. But it's ugly at best
    if (name == "")
    {
       //cerr << "aborted\n";
@@ -90,6 +90,8 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       
    }
    
+   terminal->getNode()->getNetwork()->interfaceChangeNotify();
+
    item = gnome_canvas_item_new(dynamic_cast<GUINode *>(terminal->getNode())->getGroup(),
                          gnome_canvas_text_get_type(),
                          "x", x,

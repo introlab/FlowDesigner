@@ -295,7 +295,8 @@ void UINetwork::saveXML(xmlNode *root)
 void UINetwork::setModified() 
 {
    doc->setModified();
-   interfaceChangeNotify();
+   //Not a good idea at all... 
+   //interfaceChangeNotify();
 }
 
 vector<string> UINetwork::getTerminals(UINetTerminal::NetTermType termType)
@@ -663,7 +664,8 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 void UINetwork::addTerminal(UINetTerminal *term) 
 {
    terminals.insert(terminals.end(), term);
-   interfaceChangeNotify();
+   //Shouldn't do it here because at this point of the netTerminal creation, there's no name assigned yet.
+   //interfaceChangeNotify();
 }
 
 void UINetwork::removeTerminal(UINetTerminal *term) 
