@@ -26,20 +26,20 @@ class LPC2PS;
 
 DECLARE_NODE(LPC2PS)
 /*Node
-
+ *
  * @name LPC2PS
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
