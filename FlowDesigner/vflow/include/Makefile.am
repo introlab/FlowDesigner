@@ -14,4 +14,5 @@ include_HEADERS = GUIDocument.h \
 	canvas-background.h \
 	GRunContext.h \
 	KeyPad.h \
-	GUINodeTooltip.h
+	GUINodeTooltip.h \
+	vflow_pref.h

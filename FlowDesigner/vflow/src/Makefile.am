@@ -35,7 +35,8 @@ vflow_SOURCES = \
 	KeyPad.cc \
 	codegen.cc \
 	GUINodeTooltip.cc \
-	GtkPlotProbe.cc
+	GtkPlotProbe.cc \
+	vflow_pref.cc
 
 gflow_SOURCES = \
 	gflow.cc \

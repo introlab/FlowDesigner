@@ -4,6 +4,7 @@
 #include "iextensions.h"
 #include <list>
 #include <sstream>
+#include "vflow_pref.h"
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -641,7 +642,13 @@ void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow) {
 }
 
 
+void on_preferences1_activate  (GtkMenuItem *menuitem, vflowGUI *vflow) 
+{
+   create_propertybox1();
+}
+
 /**********************************************************************************************************
+
 
 **********************************************************************************************************/
 void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) {
@@ -761,7 +768,7 @@ void vflowGUI::create_mdi () {
   };
   
   static GnomeUIInfo settings1_menu_uiinfo[] = {
-    //GNOMEUIINFO_MENU_PREFERENCES_ITEM (on_preferences1_activate, NULL),
+    GNOMEUIINFO_MENU_PREFERENCES_ITEM (on_preferences1_activate, NULL),
     GNOMEUIINFO_END
   };
   
