@@ -35,7 +35,9 @@ include_HEADERS = Array.h \
 	UITerminal.h \
 	UILink.h \
 	UINetwork.h \
-	UINodeParameters.h
+	UINodeParameters.h \
+	vec.h \
+	fmath.h
 	
 noinst_HEADERS = \
 	InputStream.h \
@@ -59,6 +61,5 @@ noinst_HEADERS = \
 	DoubleDispatch.h \
 	operators.h \
 	FlowException.h \
-	vec.h \
 	iotraits.h  sstream  sstream.cc  sstream.h
 
