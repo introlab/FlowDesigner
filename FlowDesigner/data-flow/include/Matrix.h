@@ -44,6 +44,8 @@ public:
       , cols(_cols)
       , data(new T [_rows*_cols])
    {}
+   
+   virtual ~Matrix() {delete data;}
 
    void resize(int _rows, int _cols)
    {
