@@ -60,7 +60,10 @@ public:
    void calculate(int output_id, int count, Buffer &out) {
 
      try {
-       RCPtr<Int> index = getInput(m_indexID,count);       
+       ObjectRef indexValue = getInput(m_indexID,count);
+
+	   int index = dereference_cast<int>(indexValue);
+	       
        RCPtr<BaseVector> input_vect = getInput(m_vectorID,count);
 
        //should clone the vector before modifying it
@@ -68,15 +71,16 @@ public:
 
        ObjectRef value = getInput(m_valueID,count);
        
-       vect->setIndex(index->val(),value);
+       vect->setIndex(index,value);
        
        out[count] = vect;
      }
      catch(BaseException *e) {
 
        char message[256];
-       RCPtr<Int> index = getInput(m_indexID,count);
-       sprintf(message,"unable to set vector index at : %i",index->val());
+       ObjectRef indexValue = getInput(m_indexID,count);
+	   int index = dereference_cast<int>(indexValue);
+       sprintf(message,"unable to set vector index at : %i",index);
        throw e->add(new GeneralException(message,__FILE__,__LINE__));
      }
 

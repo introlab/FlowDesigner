@@ -54,14 +54,16 @@ public:
    void calculate(int output_id, int count, Buffer &out) {
      
      try {
-       RCPtr<Int> index = getInput(m_indexID,count);
+       ObjectRef indexValue = getInput(m_indexID,count);
+	   int index = dereference_cast<int>(indexValue);
        RCPtr<BaseVector> vect = getInput(m_vectorID,count);
-       out[count] = vect->getIndex(index->val());
+       out[count] = vect->getIndex(index);
      }
      catch (BaseException *e) {
        char message[256];
-       RCPtr<Int> index = getInput(m_indexID,count);
-       sprintf(message,"Unable to get vector index at : %i",index->val());
+       ObjectRef indexValue = getInput(m_indexID,count);
+	   int index = dereference_cast<int>(indexValue);
+       sprintf(message,"Unable to get vector index at : %i",index);
        throw e->add (new GeneralException(message, __FILE__, __LINE__));
      }
    }//calculate
