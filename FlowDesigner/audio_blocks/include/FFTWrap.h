@@ -72,12 +72,12 @@ class _FFTWrap {
 
    void ifft (const FFTW_COMPLEX *in, FFTW_COMPLEX *out, int size)
    {
-      FFTPlanMap::iterator plan_pair = FFTPlans[0].find(size);
+      FFTPlanMap::iterator plan_pair = FFTPlans[1].find(size);
       fftw_plan *plan;
-      if (plan_pair == FFTPlans[0].end())
+      if (plan_pair == FFTPlans[1].end())
       {
-	 FFTPlans[0][size] = fftw_create_plan (size, FFTW_BACKWARD, FFTW_ESTIMATE);
-	 plan = &FFTPlans[0][size];
+	 FFTPlans[1][size] = fftw_create_plan (size, FFTW_BACKWARD, FFTW_ESTIMATE);
+	 plan = &FFTPlans[1][size];
       } else {
 	 plan = &plan_pair->second;
       }
@@ -102,12 +102,12 @@ class _FFTWrap {
 
    void irfft (const FFTW_REAL *in, FFTW_REAL *out, int size)
    {
-      RFFTPlanMap::iterator plan_pair = RFFTPlans[0].find(size);
+      RFFTPlanMap::iterator plan_pair = RFFTPlans[1].find(size);
       rfftw_plan *plan;
-      if (plan_pair == RFFTPlans[0].end())
+      if (plan_pair == RFFTPlans[1].end())
       {
-	 RFFTPlans[0][size] = rfftw_create_plan (size, FFTW_BACKWARD, FFTW_ESTIMATE);
-	 plan = &RFFTPlans[0][size];
+	 RFFTPlans[1][size] = rfftw_create_plan (size, FFTW_BACKWARD, FFTW_ESTIMATE);
+	 plan = &RFFTPlans[1][size];
       } else {
 	 plan = &plan_pair->second;
       }
