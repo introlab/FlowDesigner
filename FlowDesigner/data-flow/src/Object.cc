@@ -42,7 +42,8 @@ ObjectRef Object::newObject(const string &objType)
 
 void Object::serialize(ostream &out) const
 {
-   throw new GeneralException("Object doesn't know how to serialize itself", __FILE__, __LINE__);
+   //throw new GeneralException("Object doesn't know how to serialize itself", __FILE__, __LINE__);
+   printOn(out);
 }
 
 void Object::unserialize(istream &in)
