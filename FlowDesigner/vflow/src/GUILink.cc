@@ -197,7 +197,28 @@ gint GUILink::event(GdkEvent *event)
 	  cerr<<"We should add a new input or output!"<<endl;
 	}
 	break;
-         
+      case 3:
+	//restoring link to only 2 points
+	while (!m_points.empty()) {
+	  delete m_points.front();
+	  m_points.pop_front();
+	}
+	
+	m_points.push_back(new GUILinkPoint(x1,y1));
+	m_points.push_back(new GUILinkPoint(x2,y2));
+
+	points = gnome_canvas_points_new(2);
+	
+	points->coords[0] = x1;
+	points->coords[1] = y1;
+	points->coords[2] = x2;
+	points->coords[3] = y2;
+
+         gnome_canvas_item_set(item, "points", points, NULL);
+	 gnome_canvas_points_unref(points);
+
+	break;
+
       default:
 	break;
       }
