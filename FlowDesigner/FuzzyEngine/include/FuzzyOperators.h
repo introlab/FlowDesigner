@@ -29,3 +29,35 @@ inline ObjectRef concatenate(ObjectRef x, ObjectRef y) {
    return concatVtable::perform(x,y);
 }
 
+
+
+inline istream& operator>> (istream &in, FuzzyRule *rule) {
+  return in;
+}
+
+inline ostream& operator<< (ostream &out, FuzzyRule *rule) {
+  return out;
+}
+
+inline istream& operator>> (istream &in, FuzzyRule &rule) {
+  return in;
+}
+
+inline ostream& operator<< (ostream &out, FuzzyRule &rule) {
+  return out;
+}
+
+inline istream& operator>> (istream &in, FuzzyFunction *fct) {
+  return in;
+}
+
+inline ostream& operator<< (ostream &out, FuzzyFunction *fct) {
+  return out;
+}
+inline istream& operator>> (istream &in, FuzzyFunction &fct) {
+  return in;
+}
+
+inline ostream& operator<< (ostream &out, FuzzyFunction &fct) {
+  return out;
+}

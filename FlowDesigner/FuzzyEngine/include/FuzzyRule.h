@@ -90,13 +90,7 @@ public:
   int m_ruleID;
 };
 
-inline istream& operator>> (istream &in, FuzzyRule &rule) {
-  return in;
-}
-inline ostream& operator<< (ostream &out, FuzzyRule &rule) {
-  rule.printOn(out);
-  return out;
-}
+
 
 
 #endif 

@@ -21,6 +21,8 @@
 #include "FuzzyRule.h"
 #include "Tokenizer.h"
 #include <string>
+#include "Vector.h"
+#include "FuzzyOperators.h"
 
 
 DECLARE_NODE(FuzzyRule)
@@ -118,7 +120,7 @@ FuzzyRule::FuzzyRule(string nodeName, ParameterSet params)
   
 
 
-  print_rule(cerr);
+  //print_rule(cerr);
 
 }
 
@@ -177,7 +179,7 @@ void FuzzyRule::print_rule(ostream &out) {
 void FuzzyRule::calculate(int output_id, int count, Buffer &out) {
 
   //cloning ourself as a Object not a node!
-  out[count] = ObjectRef(clone());
+  out[count] = ObjectRef(new Vector<FuzzyRule*>(1,clone()));
 
 }
 

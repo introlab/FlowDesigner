@@ -19,6 +19,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "TrapezoidalFunction.h"
+#include "Vector.h"
+#include "FuzzyOperators.h"
 
 DECLARE_NODE(TrapezoidalFunction)
 /*Node
@@ -166,6 +168,6 @@ float TrapezoidalFunction::get_center_of_gravity() {
 
 void TrapezoidalFunction::calculate(int output_id, int count, Buffer &out) {
 
-  out[count] = ObjectRef(clone());
+  out[count] = ObjectRef(new Vector<FuzzyFunction*>(1,clone()));
 
 }
