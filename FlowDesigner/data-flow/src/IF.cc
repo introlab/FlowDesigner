@@ -22,7 +22,7 @@ DECLARE_NODE(IF)
 /*Node
  *
  * @name IF
- * @category General
+ * @category Logic
  * @description Takes a branch or another depending on a condition (Bool value).
  *
  * @input_name COND

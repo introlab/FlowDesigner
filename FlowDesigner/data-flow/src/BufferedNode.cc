@@ -92,6 +92,8 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
       outputs[outputID].lookAhead = max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
    if (req.exist("LOOKBACK"))
       outputs[outputID].lookBack = max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
+   if (req.exist("INORDER"))
+      inOrder = true;
    this->Node::request(outputID,req);
 
    Node *ptr=this;
