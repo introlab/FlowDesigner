@@ -20,6 +20,8 @@ DECLARE_TYPE(Float)
 DECLARE_TYPE(Double)
 DECLARE_TYPE(String)
 DECLARE_TYPE(NilObject)
+DECLARE_TYPE(Complex<float>)
+DECLARE_TYPE(Complex<double>)
 
 vector<Int *> ObjectPool<Int>::stack;
 vector<Bool *> ObjectPool<Bool>::stack;
