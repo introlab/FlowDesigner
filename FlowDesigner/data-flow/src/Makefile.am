@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.1 1999/08/26 15:55:43 jmvalin Exp $
+# $Id: Makefile.am,v 1.2 1999/09/05 03:13:31 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 AUTOMAKE_OPTIONS = no-dependencies
@@ -15,7 +15,7 @@ libnetwork_la_SOURCES = Node.cc \
         FileParserException.cc \
         Network.cc \
         DLManager.cc \
-        CollectorNode.cc \
+        Collector.cc \
         Switch.cc \
         FileParser.cc \
         NetworkBuilder.cc \

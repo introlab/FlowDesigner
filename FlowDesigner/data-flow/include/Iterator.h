@@ -17,16 +17,16 @@
 #define _ITERATOR_H_
 
 #include "Network.h"
-#include "CollectorNode.h"
+#include "Collector.h"
 
 /** Input translator node used only for the Iterator class */
-class InputTranslator : public CollectorNode {
+class InputTranslator : public Collector {
    
 public:
    
    /** The constructor with a nodeName and parameters */
    InputTranslator (string nodeName, ParameterSet params) 
-      :CollectorNode(nodeName, params) {
+      :Collector(nodeName, params) {
       //nothing to do
       ;
    }
@@ -37,10 +37,10 @@ public:
    /** Returns the current processCount of this node */
    int  getProcessCount() {return processCount;}
    
-   /** The getOutput method overloaded from CollectorNode */
+   /** The getOutput method overloaded from Collector */
    virtual ObjectRef getOutput (int output_id, int count) {
       //changed count for processCount
-      return CollectorNode::getOutput(output_id,processCount);
+      return Collector::getOutput(output_id,processCount);
    }
    
 private:

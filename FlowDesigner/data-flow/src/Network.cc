@@ -31,7 +31,7 @@ void Network::initializeFactories() {
 
    try {
       //Node::addFactory ("Constant", new ConstantNodeFactory);
-      Node::addFactory ("COLLECTOR", new CollectorNodeFactory);
+      //Node::addFactory ("COLLECTOR", new CollectorNodeFactory);
       Node::addFactory ("MUX", new MuxNodeFactory);
       Node::addFactory ("EXEC", new ExecNodeFactory);
       Node::addFactory ("PATHLIST", new PathListFactory);
