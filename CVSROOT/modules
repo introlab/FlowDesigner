@@ -24,3 +24,21 @@
 # character to interpose another module into the current module.  This
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
+data-flow       -d FlowDesigner/data-flow FlowDesigner/data-flow
+audio_blocks    -d FlowDesigner/audio_blocks FlowDesigner/audio_blocks
+video_blocks    -d FlowDesigner/video_blocks FlowDesigner/video_blocks
+VQ              -d FlowDesigner/VQ FlowDesigner/VQ
+HMM             -d FlowDesigner/HMM FlowDesigner/HMM
+NNet            -d FlowDesigner/NNet FlowDesigner/NNet
+doc             -d FlowDesigner/doc FlowDesigner/doc
+html            -d FlowDesigner/html FlowDesigner/html
+macros          -d FlowDesigner/macros FlowDesigner/macros
+tools           -d FlowDesigner/tools FlowDesigner/tools
+vflow           -d FlowDesigner/vflow FlowDesigner/vflow
+examples        -d FlowDesigner/examples FlowDesigner/examples
+visix           -d FlowDesigner/visix FlowDesigner/visix
+root            -d FlowDesigner -l FlowDesigner/
+FuzzyEngine     -d FlowDesigner/FuzzyEngine FlowDesigner/FuzzyEngine
+effects         -d FlowDesigner/effects FlowDesigner/effects
+FlowCore        &root &macros &data-flow &doc &html &vflow &tools &examples
+
