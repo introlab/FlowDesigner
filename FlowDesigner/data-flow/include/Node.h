@@ -21,6 +21,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Object.h"
 #include "ObjectRef.h"
 #include "Exception.h"
 #include <typeinfo>

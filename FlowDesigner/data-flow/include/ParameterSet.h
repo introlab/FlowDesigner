@@ -19,7 +19,7 @@
 
 #include <map>
 #include <string>
-#include "ObjectRef.h"
+#include "Object.h"
 #include "Exception.h"
 
 /** A ParameterSet is a data structure that holds all the parameters 
