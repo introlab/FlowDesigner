@@ -60,9 +60,6 @@ class ParallelThread : public BufferedNode {
    //Main calculation thread
    pthread_t thread;
 
-   //mutex protecting the output buffer
-      //pthread_mutex_t bufferLock;
-
    //Incremented (by getOutput) when a new calculation can be done
    pthread_cond_t sendSem;
 
@@ -70,6 +67,7 @@ class ParallelThread : public BufferedNode {
    pthread_cond_t recSem;
 
    pthread_mutex_t lock;
+   pthread_mutex_t lock2;
 
    int calcCount;
 
@@ -85,6 +83,7 @@ class ParallelThread : public BufferedNode {
       pthread_cond_destroy(&sendSem);
       pthread_cond_destroy(&recSem);
       pthread_mutex_destroy(&lock);
+      pthread_mutex_destroy(&lock2);
       resetState = false;
    }
 
@@ -94,6 +93,7 @@ class ParallelThread : public BufferedNode {
       pthread_cond_init(&sendSem,NULL);
       pthread_cond_init(&recSem,NULL);
       pthread_mutex_init(&lock, NULL);
+      pthread_mutex_init(&lock2, NULL);
    }
 
 public:
@@ -139,10 +139,10 @@ public:
 	    break;
 	 //cerr << calcCount << endl;
 	 calc();
-	 pthread_mutex_lock(&lock);
+	 pthread_mutex_lock(&lock2);
 	 calcCount = -1;
 	 pthread_cond_signal(&recSem);
-	 pthread_mutex_unlock(&lock);
+	 pthread_mutex_unlock(&lock2);
       }
    }
 
@@ -185,10 +185,10 @@ public:
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
-      pthread_mutex_lock(&lock);
+      pthread_mutex_lock(&lock2);
       if (calcCount != -1)
-	 pthread_cond_wait(&recSem, &lock);
-      pthread_mutex_unlock(&lock);
+	 pthread_cond_wait(&recSem, &lock2);
+      pthread_mutex_unlock(&lock2);
       
       //cerr << "calculate\n";
 
