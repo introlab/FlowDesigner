@@ -23,7 +23,8 @@
 #include <vector>
 #include "Object.h"
 //#include "net_types.h"
-
+#include "NetworkException.h"
+#include <typeinfo>
 
 class Node;
 
@@ -37,38 +38,38 @@ private:
    
 };
 
+
 class ParameterSet : public map<string,ObjectRef> {
 public: 
-   void requireParam(string param) 
-   {
-      if (find(param)==end()) 
-         throw string("missing parameter: ") + param;
-   }
-   ObjectRef get(string param) 
-   {
-      if (find(param)==end()) 
-         throw string("missing parameter: ") + param;
-      else return operator[](param);
-   }
-   ObjectRef getDefault(string param, ObjectRef value) 
-   {
-      if (find(param)==end()) 
-         return value;
-      else return operator[](param);
-   }
-   void defaultParam(string param, ObjectRef value)
-   {
-      if (find(param)==end())
-         operator[](param)=value;
-   }
-   void add(string param, ObjectRef value)
-   {
-      operator[](param)=value;
-   }
-
+   void requireParam(string param);
+   ObjectRef get(string param);
+   ObjectRef getDefault(string param, ObjectRef value);
+   void defaultParam(string param, ObjectRef value);
+   void add(string param, ObjectRef value);
+   void print(ostream &out = cerr);
 };
 
-//typedef map<string,ObjectRef> ParameterSet;
+
+class MissingParameterException : public NetworkBaseException {
+
+public:
+   MissingParameterException(string _param_name, ParameterSet _params) 
+      : param_name(_param_name)
+      , params(_params)
+   {}   
+
+   virtual void print(ostream &out = cerr) 
+   {
+      out<<"Missing parameter: "<< param_name <<endl;
+      out << "Given parameters are:\n";
+      params.print(out);
+   }
+protected:
+   string param_name;
+   ParameterSet params;
+};
+
+
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
 ///Base node class
@@ -145,6 +146,8 @@ public:
    ///Resets the node internal values and buffers
    void reset();
 
+   ///Returns the node name
+   string getName() {return name;}
 private:
    ///Tell the node we will be using output 'out'
    void registerOutput (int out) {outputInitializeCount++;}
@@ -164,5 +167,51 @@ protected:
 
 
 
+
+/***************************************************************************/
+/*
+  NotInitializedException
+  Dominic Letourneau
+ */
+/***************************************************************************/
+class NotInitializedException : public NetworkBaseException {
+
+public:
+   NotInitializedException (map<string,Node*> aMap) {
+      nodeMap = aMap;
+   }
+   
+   virtual void print(ostream &out = cerr) {
+      out<<"NotInitializedException occured"<<endl;
+      
+      map<string,Node*>::iterator iter;
+      
+      for (iter = nodeMap.begin(); iter != nodeMap.end(); iter++) {
+         out<<"This node is not initialized: "<<(*iter).first<<endl;
+      }
+   }   
+
+   //variables
+   map<string,Node*> nodeMap;
+};
+
+
+class NodeException : public NetworkBaseException {
+
+public:
+   NodeException( Node *_node, string _message) 
+      : message(_message)
+      , node(_node)
+   {}   
+
+   virtual void print(ostream &out = cerr) 
+   {
+      out << "Node " << node->getName() << " (type " << 
+      typeid(*node).name() << ") : " << message << endl;
+   }
+protected:
+   string message;
+   Node *node;
+};
 
 #endif

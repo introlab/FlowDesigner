@@ -39,7 +39,7 @@ T &object_cast (const ObjectRef &ref)
 }
 
 template <class T>
-T &deref_cast (const ObjectRef &ref)
+T &dereference_cast (const ObjectRef &ref)
 {
    T *tmp = reinterpret_cast<T *> (dynamic_cast<GenericType<T> * >(&(*ref)));
    if (!tmp) throw (string("T& dynamic_cast error in ObjectRef"));

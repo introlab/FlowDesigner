@@ -132,7 +132,7 @@ Node * Network::removeNode (const string &nodeName) {
   Dominic Letourneau
  */
 /***************************************************************************/
-static _NodeFactory* Network::getFactoryNamed (const string &name) {
+_NodeFactory* Network::getFactoryNamed (const string &name) {
 
    _NodeFactory* factory = NULL;
    map<string,_NodeFactory*>::iterator iter;

@@ -15,6 +15,43 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Node.h"
+#include <string>
+#include <typeinfo>
+#include "Object.h"
+
+void ParameterSet::requireParam(string param) 
+{
+   if (find(param)==end()) 
+      throw new MissingParameterException(param,*this);
+}
+
+ObjectRef ParameterSet::get(string param) 
+{
+   if (find(param)==end())
+      throw new MissingParameterException(param,*this);
+   else return operator[](param);
+}
+ObjectRef ParameterSet::getDefault(string param, ObjectRef value) 
+{
+   if (find(param)==end()) 
+      return value;
+   else return operator[](param);
+}
+void ParameterSet::defaultParam(string param, ObjectRef value)
+{
+   if (find(param)==end())
+      operator[](param)=value;
+}
+void ParameterSet::add(string param, ObjectRef value)
+{
+   operator[](param)=value;
+}
+
+void ParameterSet::print (ostream &out)
+{
+   for (ParameterSet::iterator it=begin(); it!=end();it++)
+      out << it->first << " -> " << typeid(*(it->second)).name() << endl;
+}
 
 Node::Node(string nodeName, ParameterSet params) 
    : name (nodeName)
@@ -48,7 +85,8 @@ void Node::initialize ()
       for (in = inputs.begin(); in < inputs.end(); in++)
       {
          in->node->initialize();
-         if (!in->node->hasOutput(in->outputID)) throw "no output";
+         if (!in->node->hasOutput(in->outputID)) 
+            throw new NodeException(this, "Input node doesn't implement output");
       }
    }
 }
