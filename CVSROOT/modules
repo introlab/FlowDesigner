@@ -38,6 +38,5 @@ examples        -a FlowDesigner/examples
 root            -a FlowDesigner
 FuzzyEngine     -a FlowDesigner/FuzzyEngine
 effects         -a FlowDesigner/effects
-FlowCore		-a FlowDesigner/macros FlowDesigner/data-flow FlowDesigner/doc FlowDesigner/html FlowDesigner/vflow FlowDesigner/tools FlowDesigner/examples &FlowDesigner
-FlowDesigner	-l FlowDesigner
+FlowCore		-a &macros &data-flow &doc &html &vflow &tools &examples
 
