@@ -24,23 +24,31 @@ class Autocor;
 
 DECLARE_NODE(Autocor)
 /*Node
-
+ *
  * @name Autocor
  * @category Signal:DSP
- * @description No description available
-
+ * @description Computes the autocorrelation of an input vector with (START <= lag <= END)
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Autocorrelation vector
+ *
  * @parameter_name START
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Smallest lag offset (included)
+ *
  * @parameter_name END
- * @parameter_description No description available
-
+ * @parameter_type int
+ * @parameter_description Largest lag offset (included)
+ *
+ * @parameter_name CONTINUOUS
+ * @parameter_type bool
+ * @parameter_description Largest lag offset (included)
+ *
 END*/
 
 
@@ -50,6 +58,7 @@ class Autocor : public BufferedNode {
    int outputID;
    int start;
    int end;
+   int continuous;
 
 public:
    Autocor(string nodeName, ParameterSet params)
@@ -61,7 +70,19 @@ public:
       start = dereference_cast<int> (parameters.get("START"));
       end = dereference_cast<int> (parameters.get("END"));
       
-      inputsCache[inputID].lookBack=1;
+      if (parameters.exist("CONTINUOUS"))
+      {
+	 if (dereference_cast<bool> (parameters.get("CONTINUOUS")))
+	    continuous = true;
+	 else 
+	    continuous = false;
+      } else {
+	 continuous = false;
+      }
+
+      if (continuous)
+	 inputsCache[inputID].lookBack=1;
+      
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -82,7 +103,7 @@ public:
 
       const Vector<float> *past;
       bool can_look_back = false;
-      if (count > 0)   
+      if (continuous && count > 0)   
       {
          ObjectRef pastInputValue =  getInput(inputID, count-1);
          if (pastInputValue->status == Object::valid)
@@ -105,7 +126,7 @@ public:
       {
 	 for (int j=i;j<inputLength;j++)
 	    output[i-start]+=in[j]*in[j-i];
-	 if (can_look_back)
+	 if (can_look_back && continuous)
 	 {
 	    for (int j=0;j<i;j++)
 	       output[i-start] += in[j]*(*past)[inputLength+j-i];
