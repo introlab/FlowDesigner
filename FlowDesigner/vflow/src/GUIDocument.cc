@@ -261,9 +261,12 @@ void GUIDocument::run()
    //cerr << "GUIDocument::run\n";
    try{
       ParameterSet params;
+   cerr << "building net...\n";
       Network *net = build("MAIN", params);
+   cerr << "initializing...\n";
       net->initialize();
-      net->getOutput(0,0);
+   cerr << "running...\n";
+      cout << *net->getOutput(0,0) << endl;
       //ask for params and desired output
       
       //run in a window in a separated thread

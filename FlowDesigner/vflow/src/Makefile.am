@@ -6,7 +6,7 @@ INCLUDES = \
 	$(GNOME_XML_INCLUDE) \
 	-I$(top_srcdir)/../data-flow/include
 
-bin_PROGRAMS = vflow
+bin_PROGRAMS = vflow batchflow
 
 vflow_SOURCES = \
 	main.cc \
@@ -26,6 +26,15 @@ vflow_SOURCES = \
 	GUINodeParameters.h GUINodeParameters.cc \
 	GUINetTerminal.h GUINetTerminal.cc 
 
+batchflow_SOURCES = \
+	batchflow.cc \
+	UINode.h UINode.cc \
+	UINetwork.h UINetwork.cc \
+	UIDocument.h UIDocument.cc \
+	UITerminal.h UITerminal.cc \
+	UILink.h UILink.cc \
+	UINodeParameters.h UINodeParameters.cc \
+	UINetTerminal.h UINetTerminal.cc
 
 vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) \
 	$(top_srcdir)/../audio_blocks/src/libablocks.la \
@@ -34,3 +43,9 @@ vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) \
 	$(top_srcdir)/../data-flow/src/libnetwork.la \
 	$(LIB_FFTW)
 
+batchflow_LDADD = $(INTLLIBS) $(GNOME_XML_LIB) \
+	$(top_srcdir)/../audio_blocks/src/libablocks.la \
+	$(top_srcdir)/../HMM/src/libhmm.la \
+	$(top_srcdir)/../VQ/src/libvq.la \
+	$(top_srcdir)/../data-flow/src/libnetwork.la \
+	$(LIB_FFTW)
