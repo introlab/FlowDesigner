@@ -33,6 +33,11 @@ void overflowInitialize(void)
    UIDocument::loadAllInfo();
 }
 
+void overflowInitializeNoDL(void)
+{
+   UIDocument::loadAllInfo();
+}
+
 
 /**Loads an Overflow .n document*/
 void *overflowLoadDocument(char *filename)
@@ -107,6 +112,7 @@ void *overflowNewNetwork(void *vdoc, char **argv)
 {
    ParameterSet param;
    int arg=0;
+   if (argv)
    while (*argv!=NULL)
    {
       char arg_name[100];
@@ -116,7 +122,9 @@ void *overflowNewNetwork(void *vdoc, char **argv)
    }
    UIDocument *doc = ((UIDocument*)vdoc);
    try {
-      void *ret = (void*)(new OFWrapper(doc));
+      OFWrapper *wrap = new OFWrapper(doc);
+      wrap->init(param);
+      void *ret = (void*)(wrap);
       return ret;
    } catch (BaseException *e) {
       e->print();
@@ -142,6 +150,7 @@ int overflowProcessFrame(void *vnet, float *in, int inLength, float **out, int *
       
       Vector<float> &res = object_cast<Vector<float> > (result);
       *outLength = res.size();
+      cerr << "size = " << res.size() << endl;
       (*out)=(float *) malloc(sizeof(float)* (*outLength));
       for (int i=0;i<*outLength;i++)
 	 (*out)[i] = res[i];
@@ -156,6 +165,34 @@ int overflowProcessFrame(void *vnet, float *in, int inLength, float **out, int *
    return 1;
 }
 
+/**Processes one frame*/
+int overflowProcessFrame2(void *vnet, float *in, int inLength, float *out, int outLength)
+{
+   OFWrapper *net = (OFWrapper*)vnet;
+   try {
+      Vector<float> *v = new Vector<float> (inLength);
+      for (int i=0;i<inLength;i++)
+	 (*v)[i]=in[i];
+      ObjectRef obj(v);
+      ObjectRef result = net->process(obj);
+      
+      Vector<float> &res = object_cast<Vector<float> > (result);
+      if (outLength>res.size())
+	 outLength = res.size();
+      //cerr << "size = " << res.size() << endl;
+      //(*out)=(float *) malloc(sizeof(float)* (*outLength));
+      for (int i=0;i<outLength;i++)
+	 out[i] = res[i];
+   } catch (BaseException *e) {
+      e->print();
+      return 0;
+   } catch (...)
+   {
+      cerr << "unknown exception caught" << endl;
+      return 0;
+   }
+   return 1;
+}
 
 /**Destroys an Overflow network*/
 void destroyNetwork(void *vnet)

@@ -25,6 +25,8 @@ extern "C" {
    /**Initializes the Overflow library*/
    void overflowInitialize(void);
 
+   void overflowInitializeNoDL(void);
+   
    /**Loads an Overflow .n document*/
    void *overflowLoadDocument(char *filename);
 
@@ -36,6 +38,9 @@ extern "C" {
 
    /**Processes one frame*/
    int overflowProcessFrame(void *vnet, float *in, int inLength, float **out, int *outLength);
+
+   /**Processes one frame*/
+   int overflowProcessFrame2(void *vnet, float *in, int inLength, float *out, int outLength);
 
    /**Destroys an Overflow network*/
    void destroyNetwork(void *vnet);

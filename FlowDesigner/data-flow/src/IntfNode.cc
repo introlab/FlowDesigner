@@ -36,18 +36,23 @@ void IntfNode::request(int outputID, const ParameterSet &req)
 void IntfNode::init()
 {
    buff = new Buffer(lookAhead+lookBack+1);
-   for (int i=0;i<lookBack;i++)
+   //cerr << "buffsize: " << lookAhead+lookBack+1 << endl;
+   for (int i=0;i<lookAhead;i++)
       (*buff)[i] = Object::before_beginningObject;
 }
 
 void IntfNode::specificInitialize()
 {
    init();
+   //cerr << "lookahead: " << lookAhead << endl;
+   //cerr << "lookback: " << lookBack << endl;
+   Node::specificInitialize();
 }
 
 void IntfNode::reset()
 {
    init();
+   Node::reset();
 }
 
 ObjectRef IntfNode::getOutput(int output_id, int count)
@@ -57,5 +62,5 @@ ObjectRef IntfNode::getOutput(int output_id, int count)
 
 void IntfNode::setValue(int count, ObjectRef val)
 {
-   (*buff)[count+lookBack] = val;
+   (*buff)[count+lookAhead] = val;
 }
