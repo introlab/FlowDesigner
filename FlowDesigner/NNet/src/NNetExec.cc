@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "FFNet.h"
@@ -24,79 +24,68 @@ class NNetExec;
 
 DECLARE_NODE(NNetExec)
 /*Node
-
+ *
  * @name NNetExec
  * @category NNet
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name NNET
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class NNetExec : public FrameOperation {
+class NNetExec : public BufferedNode {
    
    int inputID;
    int netInputID;
-   int inputLength;
+   int outputID;
+   int outputLength;
 
 public:
    NNetExec(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       netInputID = addInput("NNET");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH")); 
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
+      outputID = addOutput("OUTPUT");
 
-   ~NNetExec() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH")); 
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      NodeInput netInput = inputs[netInputID];
-
-      ObjectRef netValue = netInput.node->getOutput(netInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      ObjectRef netValue = getInput(netInputID, count);
       if (netValue->status != Object::valid)
       {
-         output.status = netValue->status;
+	 out[count] = netValue;
          return;
       }
 
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
+
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
       FFNet &net = object_cast<FFNet> (netValue);
       
-      //int classID = vq.getClassID(in.begin());
-      //const vector<float> &mean = vq[classID];
       double tmp[in.size()];
       for (int i=0;i<in.size();i++)
 	 tmp[i]=in[i];
@@ -104,8 +93,6 @@ public:
       
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];
-       
-      output.status = Object::valid;
    }
 
 };

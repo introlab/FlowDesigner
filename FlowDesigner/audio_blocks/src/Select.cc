@@ -25,23 +25,23 @@ class Select;
 
 DECLARE_NODE(Select)
 /*Node
-
+ *
  * @name Select
  * @category Signal:Manip
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name START
  * @parameter_description No description available
-
+ *
  * @parameter_name END
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -82,6 +82,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
+      //cerr << "Select " << name << " " << &output << " " << count << " " << inputLength << " " << end << " " << outputLength << endl;
       if (inputLength <= end)
 	 throw new NodeException(this, "Input vector too short", __FILE__, __LINE__);
 
