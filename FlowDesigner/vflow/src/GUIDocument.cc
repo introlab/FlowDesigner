@@ -103,11 +103,14 @@ gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
    
   
   gtk_widget_show(vbox2);
-  gtk_container_add (GTK_CONTAINER (notebook), vbox2);
+  //gtk_container_add (GTK_CONTAINER (notebook), vbox2);
 
   label1 = gtk_label_new ((gchar *)docName.c_str());
   gtk_widget_show (label1);
   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0), label1);
+
+  gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, label1);
+
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), vbox2, label1);
   gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
 
@@ -118,9 +121,30 @@ gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
 
 GUIDocument::~GUIDocument()
 {
-   this->UIDocument::~UIDocument();
-   gtk_widget_destroy(vbox2);
-   
+   //Copy of the UIDocument destructor
+   if (!destroyed)
+   {
+      //cerr << "destroying UIDocument " << name << endl;
+      for (unsigned int i=0;i<networks.size();i++)
+         delete networks[i];
+      
+      for (unsigned int i=0;i<textParams.size();i++)
+         delete textParams[i];
+      
+      for (unsigned int i=0;i<docInputs.size();i++)
+         delete docInputs[i];
+      
+      for (unsigned int i=0;i<docOutputs.size();i++)
+         delete docOutputs[i];
+      
+      for (unsigned int i=0;i<docParams.size();i++)
+         delete docParams[i];
+      destroyed=true;
+   }
+
+   GtkNotebook *notebook = GTK_NOTEBOOK(vflowGUI::instance()->get_notebook());
+   gtk_notebook_remove_page (notebook, gtk_notebook_get_current_page (notebook));
+   //gtk_widget_destroy(vbox2);
 }
 
 GtkWidget *create_close_dialog (const char *close_str)
