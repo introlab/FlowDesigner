@@ -77,7 +77,7 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
             data[i]=&object_cast <Vector<float> > (mat[i])[0];
          gmm->init(data);
          gmm->to_real();
-         for (i=0;i<5;i++)
+         for (i=0;i<8;i++)
          {
             //gmm->split1();
             gmm->binary_split();

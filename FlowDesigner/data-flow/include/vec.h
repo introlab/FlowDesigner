@@ -34,11 +34,19 @@
 #define MAX_PREFETCH 8192  /* The Athlon L1 size is 64 kB */
 #endif /*MAX_PREFETCH*/
 
+#ifndef CACHE_MASK
+#define CACHE_MASK 0xffffffd0
+#endif /*CACHE_MASK */
+
 #else /*_USE_3DNOW*/
 
 #ifndef CACHE_LINES
 #define CACHE_LINES 32
 #endif /*CACHE_LINES */
+
+#ifndef CACHE_MASK
+#define CACHE_MASK 0xffffffe0
+#endif /*CACHE_MASK */
 
 #ifndef MAX_PREFETCH
 #define MAX_PREFETCH 2096  /* The PIII L1 size is only 16 kB */
@@ -85,7 +93,7 @@ void vec_prefetch(T *a, int len)
    push %%ecx
 
 prefetch_loop%=:
-   prefetch (%%eax)
+   prefetch0 (%%eax)
    add %%edi, %%eax
    sub %%edi, %%ecx
    ja prefetch_loop%=
