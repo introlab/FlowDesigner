@@ -63,7 +63,8 @@ UINetwork *UIDocument::getNetworkNamed(const string &n)
 
 vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 {
-   //updateAllNetworks();
+   //FIXME: Eventually, we should only update a network when it changes
+   updateAllNetworks();
    vector <ItemInfo *> inputs;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->inputs;
@@ -73,7 +74,8 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 {
-   //updateAllNetworks();
+   //FIXME: Eventually, we should only update a network when it changes
+   updateAllNetworks();
    vector <ItemInfo *> outputs;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->outputs;
@@ -83,17 +85,8 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
 {
-   /*UINetwork *net = getNetworkNamed(netName);
-   if (net)
-   {
-         vector <ItemInfo *> params;
-      net->insertNetParams(params);
-      cerr << netName << endl;
-      return params;
-   }
-   */
-   
-   //updateAllNetworks();
+   //FIXME: Eventually, we should only update a network when it changes
+   updateAllNetworks();
    vector <ItemInfo *> params;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->params;
