@@ -84,7 +84,7 @@ public:
    }
    void serialize(ostream &out) const
    {
-      out << "{" << className() << " " << value << " }";
+      out << "{" << className() << " |" << value << " }";
    }
    void unserialize(istream &in)
    {
@@ -220,7 +220,7 @@ public:
    }
    void serialize(ostream &out) const
    {
-      out << "{String " << *(string*) (this) << " }";
+      out << "{String |" << *(string*) (this) << " }";
    }
    void unserialize(istream &in)
    {

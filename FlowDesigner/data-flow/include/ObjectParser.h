@@ -151,9 +151,13 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
       string type;
       in >> type;
       o = Object::newObject(type);
+      int dummyCount=0;
       char dummy;
       do {
          in >> dummy;
+	 if (dummyCount > 5)
+	    throw new ParsingException("Cannot find sync \"|\" symbol for unserialize");
+	 dummyCount++;
       } while(dummy != '|');
       o->unserialize(in);
    } else {
