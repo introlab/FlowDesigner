@@ -2,6 +2,8 @@
 
 bin_SCRIPTS = info2def.pl
 
+EXTRA_DIST = $(bin_SCRIPTS)
+
 # INCLUDES = -I$(top_srcdir)/data-flow/include 
 
 # bin_PROGRAMS = dist matdist

@@ -27,7 +27,8 @@ include_HEADERS = Array.h \
 	FrameOperation.h \
 	GrowingFrameBuffer.h \
 	RotatingFrameBuffer.h \
-	variables.h
+	variables.h \
+	ExternalApp.h
 	
 noinst_HEADERS = \
 	InputStream.h \
