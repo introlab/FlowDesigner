@@ -50,5 +50,6 @@ noinst_HEADERS = \
 	VSum.h \
 	AND.h \
 	Matrix.h \
-	DoubleDispatch.h
+	DoubleDispatch.h \
+	operators.h
 
