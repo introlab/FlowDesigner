@@ -88,7 +88,6 @@ void FFNet::learn(double *input, double *output, double alpha)
 
 
 
-
 void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double learnRate, double mom, 
 		  double increase, double decrease, double errRatio)
 {
@@ -177,6 +176,172 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
    }
 }
 
+void FFNet::learnlm(double *input, double *output, double **jacob, double *err, double &sse)
+{
+   int outputLayer = topo.size()-2;
+   calc(input);
+
+   int woffset1=0;
+   int woffset2=0;
+   int prev_offset=0;
+   //start with the output layer, towards the input
+   for (int k=outputLayer;k>=0;k--)
+   {
+      FFLayer *currentLayer = layers[k];
+      double *previousValue, *currentValue;
+      if (k==0)
+	 previousValue = input;
+      else 
+	 previousValue = layers[k-1]->getValue();
+
+      currentValue = currentLayer->getValue();
+
+      int layerSize = topo[k+1];
+      int layerInputs = topo[k];
+      //double *delta = currentLayer->getError();
+
+
+      if (k==outputLayer)
+      {
+	 woffset2=woffset1;
+	 //double *w = currentLayer->getTmpWeights(i);
+	 for (int ei=0;ei<layerSize;ei++)
+	 {
+	    err[ei]+=currentValue[ei]-output[ei];
+	    sse += (currentValue[ei]-output[ei])*(currentValue[ei]-output[ei]);
+
+	    for (int wi=0;wi<layerInputs;wi++)
+	       jacob[ei][woffset2+wi] += currentLayer->deriv[ei]*previousValue[wi];
+	    jacob[ei][woffset2+layerInputs] += currentLayer->deriv[ei];
+	    woffset2+=layerInputs+1;
+	 }
+	 woffset1 += (layerInputs+1)*layerSize;
+	 
+      } else {
+	 //FFLayer *nextLayer = layers[k+1];
+	 woffset2=woffset1;
+	 //double *w = currentLayer->getTmpWeights(i);
+	 for (int ni=0;ni<layerSize;ni++)
+	 {
+	    for (int ei=0;ei<topo[outputLayer];ei++)
+	    {
+	       double contrib=0;
+	       for (int t = prev_offset + ni ; t < woffset1 ; t += layerSize+1)
+		  contrib += jacob[ei][t];
+
+	       for (int wi=0;wi<layerInputs;wi++)
+		  jacob[ei][woffset2+wi] = contrib*currentLayer->deriv[ni]*previousValue[wi];
+	       jacob[ei][woffset2+layerInputs] = contrib*currentLayer->deriv[ni];
+	    }
+	    woffset2+=layerInputs+1;
+	 }
+	 prev_offset=woffset1;
+	 woffset1 += (layerInputs+1)*layerSize;
+
+
+      }
+   }	 
+}
+
+
+void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
+{
+   int nb_outputs = topo[topo.size()-1];
+   double **jacob = new double * [nb_outputs];
+
+   int nb_weights=0;
+   for (int i=0;i<topo.size()-1;i++)
+      nb_weights += (topo[i]+1)*topo[i+1];
+
+   for (int i=0;i<nb_outputs;i++)
+      jacob[i] = new double [nb_weights];
+
+   for (int iter=0; iter<maxIter; iter++)
+   {
+      double sse=0;
+
+      //initialize jacobi
+      for (int i=0;i<nb_outputs;i++)
+	 for (int j=0;j<nb_weights;j++)
+	    jacob[i][j]=0;
+
+      //initializes error
+      double err[nb_outputs];
+      for (int i=0;i<nb_outputs;i++)
+	 err[i]=0;
+
+      //iterate on all data
+      for (int i=0;i<tin.size();i++)
+      {
+	 double in[topo[0]];
+	 double out[topo[topo.size()-1]];
+	 for (int j=0;j<topo[0];j++)
+	    in[j]=tin[i][j];
+	 for (int j=0;j<topo[topo.size()-1];j++)
+	    out[j]=tout[i][j];
+	 learnlm (in, out, jacob, err, sse);
+	 
+      }
+
+      /*for (int i=0;i<nb_outputs;i++)
+      {
+	 for (int j=0;j<nb_weights;j++)
+	    cerr << jacob[i][j] << " ";
+	 cerr << endl;
+	 }*/
+      //initialize gradient
+      double grad[nb_weights];
+      for (int i=0;i<nb_weights;i++)
+	 grad[i]=0;
+
+      //calculate gradient
+      for (int i=0;i<nb_weights;i++)
+	 for (int j=0;j<nb_outputs;j++)
+	    grad[i] += jacob[j][i]*err[j];
+      
+      double delta[nb_weights];
+      for (int i=0;i<nb_weights;i++)
+	 delta[i] = -.000000000001*grad[i];
+/*
+      for (int i=0;i<nb_outputs;i++)
+	 cerr << err[i] << " ";
+      cerr << endl;
+      for (int i=0;i<nb_weights;i++)
+	 cerr << grad[i] << " ";
+      cerr << endl;
+      for (int i=0;i<nb_weights;i++)
+	 cerr << delta[i] << " ";
+      cerr << endl;
+*/
+      int offset=0;
+      int outputLayer = topo.size()-2;
+      for (int k=outputLayer;k>=0;k--)
+      {
+	 FFLayer *currentLayer = layers[k];
+	 int layerSize = topo[k+1];
+	 int layerInputs = topo[k];
+	 for (int ni=0;ni<layerSize;ni++)
+	 {
+	    double *w = currentLayer->getWeights(ni);
+	    for (int wi=0;wi<layerInputs;wi++)
+	    {
+	       w[wi]+=delta[offset+wi];
+	    }
+	    w[layerInputs]+=delta[offset+layerInputs];
+	    offset += layerInputs+1;
+	 }	 
+      }
+
+      cout << (sse/tin.size()/topo[topo.size()-1]) << endl;
+
+   }
+
+
+   for (int i=0;i<nb_outputs;i++)
+      delete [] jacob[i];
+   delete [] jacob;
+
+}
 
 void FFNet::printOn(ostream &out) const
 {
