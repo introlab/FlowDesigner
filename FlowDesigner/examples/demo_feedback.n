@@ -1,3 +1,4 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
@@ -5,21 +6,21 @@
     <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
   </Network>
   <Network type="iterator" name="MAIN_LOOP">
-    <Node name="node1" type="Feedback" x="-196.000000" y="129.000000">
+    <Node name="node1" type="Feedback" x="-55.000000" y="124.000000">
       <Parameter name="DELAY" type="int" value="1"/>
+      <Parameter name="BEFORE_LIMIT" type="int" value="0"/>
     </Node>
-    <Node name="node2" type="Add" x="-280.000000" y="130.000000"/>
+    <Node name="node2" type="Add" x="-255.000000" y="116.000000"/>
     <Node name="node4" type="Constant" x="-470.000000" y="111.000000">
       <Parameter name="VALUE" type="int" value="1"/>
     </Node>
-    <Node name="node5" type="IF" x="-145.000000" y="279.000000"/>
-    <Node name="node6" type="TextProbe" x="-34.000000" y="128.000000"/>
-    <Node name="node7" type="IterCount" x="-526.000000" y="283.000000"/>
-    <Node name="node8" type="Greater" x="-394.000000" y="297.000000"/>
-    <Node name="node9" type="Constant" x="-526.000000" y="319.000000">
-      <Parameter name="VALUE" type="int" value="0"/>
+    <Node name="node6" type="TextProbe" x="129.000000" y="116.000000">
+      <Parameter name="BREAK_AT" type="int" value=""/>
+      <Parameter name="SHOW" type="bool" value="true"/>
+      <Parameter name="SKIP" type="int" value=""/>
+      <Parameter name="PROBE_NAME" type="string" value=""/>
     </Node>
-    <Node name="node10" type="Constant" x="-248.000000" y="304.000000">
+    <Node name="node10" type="Constant" x="-217.000000" y="158.000000">
       <Parameter name="VALUE" type="int" value="0"/>
     </Node>
     <Node name="node11" type="Constant" x="-359.000000" y="37.000000">
@@ -27,13 +28,9 @@
     </Node>
     <Link from="node2" output="OUTPUT" to="node1" input="INPUT"/>
     <Link from="node4" output="VALUE" to="node2" input="INPUT1"/>
-    <Link from="node7" output="OUTPUT" to="node8" input="INPUT1"/>
-    <Link from="node9" output="VALUE" to="node8" input="INPUT2"/>
-    <Link from="node8" output="OUTPUT" to="node5" input="COND"/>
-    <Link from="node10" output="VALUE" to="node5" input="ELSE"/>
-    <Link from="node5" output="OUTPUT" to="node2" input="INPUT2"/>
-    <Link from="node1" output="DELAY" to="node5" input="THEN"/>
     <Link from="node1" output="OUTPUT" to="node6" input="INPUT"/>
+    <Link from="node1" output="DELAY" to="node2" input="INPUT2">18 131.5 -367 139 -314 123.5 </Link>
+    <Link from="node10" output="VALUE" to="node1" input="BEFORE"/>
     <NetOutput name="OUTPUT" node="node6" terminal="OUTPUT"/>
     <NetCondition name="CONDITION" node="node11" terminal="VALUE"/>
   </Network>

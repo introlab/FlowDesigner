@@ -332,7 +332,7 @@ void UIDocument::save()
    string fullname = path+docName;
    int size;
 
-   int save_fd = open(fullname.c_str(), O_CREAT|O_WRONLY, 00755);
+   int save_fd = open(fullname.c_str(), O_CREAT|O_WRONLY|O_TRUNC, 00755);
    if (save_fd==-1)
    {
       error("Error while saving file: cannot open");
