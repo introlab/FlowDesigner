@@ -22,7 +22,7 @@
 
 class NNetTrain;
 
-NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT", "OUTPUT", "")
+NODE_INFO(NNetTrain,"NNet", "TRAIN_IN:TRAIN_OUT", "OUTPUT", "HIDDEN:EPOCH")
 
 class NNetTrain : public Node {
 
@@ -43,6 +43,9 @@ protected:
    /**Reference to the current stream*/
    ObjectRef currentNet;
 
+   int hidden;
+      
+   int epoch;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrain(string nodeName, ParameterSet params)
@@ -51,7 +54,8 @@ public:
 	    outputID = addOutput("OUTPUT");
 	    trainInID = addInput("TRAIN_IN");
 	    trainOutID = addInput("TRAIN_OUT");
-
+	    hidden = dereference_cast<int> (parameters.get("HIDDEN"));
+	    epoch = dereference_cast<int> (parameters.get("EPOCH"));
       }
 
    /**Class specific initialization routine.
@@ -105,15 +109,15 @@ public:
 
 	       //Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
 
-	       Vector<int> topo(2);
+	       Vector<int> topo(3);
 	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
-	       //topo[1]=20;
+	       topo[1]=hidden;
 	       //topo[2]=20;
-	       topo[1]=object_cast <Vector<float> > (outBuff[0]).size();
+	       topo[2]=object_cast <Vector<float> > (outBuff[0]).size();
 
 	       FFNet *net = new FFNet( topo ); 
 	       
-	       net->train(in, out, 1000);
+	       net->train(in, out, epoch);
 
 	       currentNet = ObjectRef(net);
 	       //exit(1);

@@ -57,6 +57,7 @@ class FFLayer : public Object {
    float *value;
    float *error;
    string funcType;
+   float *momentum;
   public:
    FFLayer() {};
    FFLayer(int _nbNeurons, int _nbInputs, string type = "tanh");
@@ -77,15 +78,19 @@ class FFLayer : public Object {
    void copyToTmp()
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	    tmp_weights[i]=weights[i];
+	 {
+	    //tmp_weights[i]=weights[i];
+	    tmp_weights[i]=0;
+	 }
       }
    void copyFromTmp()
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    //cout << weights[i] << " -> ";
-	    weights[i]=tmp_weights[i];
-	    //cout << weights[i] << endl;
+	    //weights[i]=tmp_weights[i];
+	    momentum[i] = .90*momentum[i] + tmp_weights[i];
+	    weights[i]+=momentum[i];
+	    //weights[i]+=tmp_weights[i];
 	 }
       }
    float *getValue() {return value;}

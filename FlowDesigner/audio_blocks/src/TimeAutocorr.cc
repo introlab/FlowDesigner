@@ -110,8 +110,8 @@ public:
       for (int i=0;i<output.size();i++)
       {
 	 output[i]=0;
-	 
-	 for (int j=0;j<inVect.size()-output.size();j++)
+	 int j=0;
+	 //for (int j=0;j<inVect.size()-output.size();j++)
 	 {
 	    for (int k=0;k<inputLength;k++)
 	       output[i] += (*inVect[j])[k]*(*inVect[j+i])[k];
