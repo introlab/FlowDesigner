@@ -775,7 +775,6 @@ static void remove_net_event  (GtkMenuItem     *menuitem,
 static void add_note_event(GtkMenuItem *menuitem, gpointer user_data) 
 {
   cerr<<"Add a note (prototype) is not fully functionnal. Should display a GUI asking for comments"<<endl;
-  cerr<<"Will display a sample note for testing purposes"<<endl;
   
   GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
 
@@ -790,6 +789,72 @@ static void add_note_event(GtkMenuItem *menuitem, gpointer user_data)
   doc->setModified();
 
 }
+/**********************************************************************************************************
+
+**********************************************************************************************************/
+static void export_network_event(GtkMenuItem *menuitem, gpointer user_data) 
+{
+  cerr<<"Export Network (prototype) is not fully functionnal. Should display a GUI asking for fileName"<<endl;
+
+  try {
+  
+    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
+    
+    if (!doc) return;
+    
+    UINetwork *net = doc->getCurrentNet();
+    
+    if (!net) return;
+    
+    
+    doc->exportNetwork(net->getName(),"EXPORT.n");
+  }
+  catch (BaseException *e) {
+    stringstream tmp_stream;
+    e->print(tmp_stream);
+    
+    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
+
+    if (doc) {
+      doc->less_print(tmp_stream.str());
+    }
+
+    delete e;
+  }
+
+}
+
+
+/**********************************************************************************************************
+
+**********************************************************************************************************/
+static void import_network_event(GtkMenuItem *menuitem, gpointer user_data) 
+{
+  cerr<<"Import Network (prototype) is not fully functionnal. Should display a GUI asking for fileName"<<endl;
+
+  try {
+    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
+    
+    if (!doc) return;
+    
+    cerr<<"Importing : "<<"EXPORT.n"<<endl;
+    doc->importNetwork("EXPORT.n");
+  }
+  catch (BaseException *e) {
+    stringstream tmp_stream;
+    e->print(tmp_stream);
+
+    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
+
+    if (doc) {
+      doc->less_print(tmp_stream.str());
+    }
+
+    delete e;
+  }
+}
+
+
 
 
 
@@ -1138,10 +1203,21 @@ void vflowGUI::create_mdi ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, (GdkModifierType) 0, NULL
       },
-
-
-
-      
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM, N_("Export Network"),
+	NULL,
+	(gpointer) export_network_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM, N_("Import Network"),
+	NULL,
+	(gpointer) import_network_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },      
       GNOMEUIINFO_END
     };
   
@@ -1367,6 +1443,9 @@ GLADE_HOOKUP_OBJECT (app1, edit1_menu_uiinfo[5].widget, "properties1");
   GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[6].widget, "remove_network1");
   GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[7].widget, "separator6");
   GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[8].widget, "add_note1");
+  GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[9].widget, "separator7");
+  GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[10].widget, "export_network1");
+  GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[11].widget, "import_network1");
   GLADE_HOOKUP_OBJECT (app1, menubar1_uiinfo[3].widget, "view1");
   GLADE_HOOKUP_OBJECT (app1, menubar1_uiinfo[4].widget, "help1");
   GLADE_HOOKUP_OBJECT (app1, help1_menu_uiinfo[0].widget, "user_guide1");
