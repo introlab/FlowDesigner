@@ -19,6 +19,7 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include "kmeans.h"
+#include <math.h>
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>
@@ -86,8 +87,9 @@ public:
       float epsilon = 100*FLT_MIN;
       for (int i=0;i<outputLength;i++)
       {
-	 float tmp = 1/((output[i]*output[i]*output[i]*output[i])+epsilon);
-         output[i]=tmp;
+	 //float tmp = 1/((output[i]*output[i]*output[i]*output[i])+epsilon);
+         float tmp = exp(-output[i]);
+	 output[i]=tmp;
 	 sum += tmp;
       }
       for (int i=0;i<outputLength;i++)

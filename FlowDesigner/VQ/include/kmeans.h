@@ -46,7 +46,7 @@ public:
    void train (int codeSize, const vector<float *> &data, int len, bool binary=false);
 
    int getClassID (const float *v, float *dist_return = NULL) const;
-   void calcDist (const float *v, float *dist_return) const;
+   virtual void calcDist (const float *v, float *dist_return) const;
 
    void weightMeans (const vector<float> &w, vector<float> &out) const;
    

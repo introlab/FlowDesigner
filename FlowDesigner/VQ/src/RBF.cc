@@ -21,7 +21,7 @@
 
 DECLARE_TYPE(RBF)
 
-void RBF::train (int codeSize, const vector<float *> &data, const vector<float *> &data_out, int len, bool binary)
+void RBF::train (int codeSize, const vector<float *> &data/*, const vector<float *> &data_out*/, int len, bool binary)
 {
    KMeans::train (codeSize, data, len, binary);
 
@@ -42,11 +42,20 @@ void RBF::train (int codeSize, const vector<float *> &data, const vector<float *
    {
       float scale = 1.0/counts[i];
       for (int j=0;j<len;j++)
-	 covar[i][j] = sqrt(covar[i][j]*scale);
+	 covar[i][j] = 1/(covar[i][j]*scale);
    }
 
-   
+   //Calculate X'X and X'Y
+   //invert matrix
 
+}
+
+void RBF::calcDist (const float *v, float *dist_return) const
+{
+   for (int i=0;i<means.size();i++)
+   {
+      dist_return[i] = mahalanobis(means[i].begin(), covar[i].begin(), v, length);
+   }
 }
 
 void RBF::printOn(ostream &out) const
