@@ -44,8 +44,6 @@ DECLARE_NODE(ILTF)
 END*/
 
 
-   //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
-
 class ILTF : public FrameOperation {
    
    int inputID;

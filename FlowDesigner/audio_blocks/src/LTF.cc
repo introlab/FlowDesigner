@@ -44,8 +44,6 @@ DECLARE_NODE(LTF)
 END*/
 
 
-   //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
-
 class LTF : public FrameOperation {
    
    int inputID;
