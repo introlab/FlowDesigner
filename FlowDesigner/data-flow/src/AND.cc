@@ -22,7 +22,8 @@
 #include "ObjectRef.h"
 #include "Exception.h"
 
-DECLARE_NODE(AND)
+//DECLARE_NODE(AND)
+NODE_INFO(AND,"Logic", "INPUT", "OUTPUT", "")
 
 AND::AND(string nodeName, ParameterSet params)
  

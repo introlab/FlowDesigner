@@ -22,7 +22,8 @@
 
 class FIR;
 
-DECLARE_NODE(FIR)
+//DECLARE_NODE(FIR)
+NODE_INFO(FIR,"Signal", "INPUT:FILTER", "OUTPUT", "LENGTH:CONTINUOUS:NONCAUSAL")
 
    //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
 

@@ -23,7 +23,8 @@
 
 class FFT;
 
-DECLARE_NODE(FFT)
+//DECLARE_NODE(FFT)
+NODE_INFO(FFT,"Signal", "INPUT", "OUTPUT", "LENGTH")
 
 class FFT : public FrameOperation {
    

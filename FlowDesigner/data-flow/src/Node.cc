@@ -31,6 +31,13 @@ map<string,_NodeFactory*> &Node::factoryDictionary()
    return var; 
 }
 
+//our static node info dictionary
+vector<string> &Node::nodeInfo()
+{ 
+   static vector<string> var;
+   return var; 
+}
+
 //map<string,_NodeFactory*> Node::factoryDictionary;
 /***************************************************************************/
 /*
@@ -283,6 +290,18 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
    else {
       throw NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
    }
+   return 0;
+};
+
+
+/***************************************************************************/
+/*
+  Node::addFactory()
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+int Node::addNodeInfo (const string &info) {
+   nodeInfo().insert(nodeInfo().end(),info);
    return 0;
 };
 

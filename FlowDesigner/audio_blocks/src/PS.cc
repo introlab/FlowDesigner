@@ -21,7 +21,8 @@
 
 class PS;
 
-DECLARE_NODE(PS)
+//DECLARE_NODE(PS)
+NODE_INFO(PS, "Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class PS : public FrameOperation {
    

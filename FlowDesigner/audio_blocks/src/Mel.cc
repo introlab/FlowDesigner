@@ -22,7 +22,8 @@
 
 class Mel;
 
-DECLARE_NODE(Mel)
+//DECLARE_NODE(Mel)
+NODE_INFO(Mel, "Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class Mel : public FrameOperation {
    

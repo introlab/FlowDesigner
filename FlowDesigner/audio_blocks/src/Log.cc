@@ -22,7 +22,8 @@
 
 class Log;
 
-DECLARE_NODE(Log)
+//DECLARE_NODE(Log)
+NODE_INFO(Log,"Signal", "INPUT", "OUTPUT", "LENGTH")
 
 class Log : public FrameOperation {
    
@@ -61,7 +62,7 @@ public:
       
       for (int i=0;i<outputLength;i++)
       {
-         output[i]=log(in[i]);
+         output[i]=log(in[i]+FLT_MIN);
       }
       
       output.status = Object::valid;

@@ -19,7 +19,8 @@
 #include <math.h>
 
 class Sync;
-DECLARE_NODE(Sync)
+//DECLARE_NODE(Sync)
+NODE_INFO(Sync,"Flow", "INPUT", "OUTPUT", "RATIO")
 
 class Sync : public Node {
 protected:

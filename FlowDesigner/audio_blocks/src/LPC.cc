@@ -18,13 +18,14 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <lpc.h>
+#include "lpc.h"
 #include <stdlib.h>
 #include <math.h>
 
 class LPC;
 
-DECLARE_NODE(LPC)
+//DECLARE_NODE(LPC)
+NODE_INFO(LPC,"Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class LPC : public FrameOperation {
    
@@ -65,11 +66,10 @@ public:
       float r[outputLength];
       //vector<float> filter(outputLength+1,0.0);
       autocorr(in.begin(), r, outputLength-1, in.size());
-
+      float rc[outputLength];
       float er=0;
       r[0] *= 1.001;
-      wld(output.begin(), r, &er, outputLength-1);
-
+      wld(output.begin(), r, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
         output[i] *= pow(.99,i);
       output.status = Object::valid;

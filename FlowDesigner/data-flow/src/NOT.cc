@@ -19,7 +19,8 @@
 #include "ObjectRef.h"
 #include "Exception.h"
 
-DECLARE_NODE(NOT)
+//DECLARE_NODE(NOT)
+NODE_INFO(NOT,"Logic", "INPUT", "OUTPUT", "")
 
 NOT::NOT(string nodeName, ParameterSet params)
  

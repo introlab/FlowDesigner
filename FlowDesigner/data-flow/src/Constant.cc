@@ -16,7 +16,8 @@
 
 #include "Constant.h"
 
-DECLARE_NODE(Constant)
+//DECLARE_NODE(Constant)
+NODE_INFO(Constant, "General", "", "OUTPUT", "VALUE")
 
 Constant::Constant(string nodeName, ParameterSet params) 
    : Node(nodeName, params) 

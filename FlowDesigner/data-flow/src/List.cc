@@ -19,7 +19,8 @@
 #include "Vector.h"
 #include "multithread.h"
 
-DECLARE_NODE(List)
+//DECLARE_NODE(List)
+NODE_INFO(List, "General", "STREAM", "OUTPUT", "")
 
 List::List(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

@@ -259,7 +259,25 @@ protected:
 public:
    /**The node instance factory*/
    static map<string,_NodeFactory*> &factoryDictionary();
+
+   /**The node information map*/
+   static vector<string> &nodeInfo();
    
+   /**Routine to add info for a node*/
+   static int addNodeInfo (const string &info);
+};
+
+/** Node Class methods/data
+    @author Jean-Marc Valin
+*/
+class NodeClass {
+protected:
+public:
+   _NodeFactory &factory();
+   const string &name();
+   const vector<string> &inputNames();
+   const vector<string> &outputNames();
+   const vector<pair<string,string> > &paramNames();
 };
 
 /***************************************************************************/
@@ -343,7 +361,10 @@ protected:
 #else
 
 #define DECLARE_NODE(NodeTypeName) int dummy_initializer_for ## NodeTypeName = \
-               Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>);
+               Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>(# NodeTypeName));
+
+#define NODE_INFO(NodeTypeName, cat, in, out, par) int dummy_initializer_for ## NodeTypeName = \
+               Node::addFactory (# NodeTypeName, new NodeInfo<NodeTypeName>(# NodeTypeName, cat, in, out, par));
 
 #endif
 

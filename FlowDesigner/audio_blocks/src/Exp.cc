@@ -22,7 +22,8 @@
 
 class Exp;
 
-DECLARE_NODE(Exp)
+//DECLARE_NODE(Exp)
+NODE_INFO(Exp,"Signal", "INPUT", "OUTPUT", "LENGTH")
 
 class Exp : public FrameOperation {
    

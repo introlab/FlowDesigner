@@ -19,7 +19,8 @@
 #include "ObjectRef.h"
 #include "Exception.h"
 
-DECLARE_NODE(OR)
+//DECLARE_NODE(OR)
+NODE_INFO(OR,"Logic", "INPUT", "OUTPUT", "")
 
 OR::OR(string nodeName, ParameterSet params)
  

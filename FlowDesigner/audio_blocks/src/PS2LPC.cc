@@ -18,7 +18,7 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <lpc.h>
+#include "lpc.h"
 #include <stdlib.h>
 #include <fftw.h>
 #include <rfftw.h>
@@ -26,7 +26,8 @@
 
 class PS2LPC;
 
-DECLARE_NODE(PS2LPC)
+//DECLARE_NODE(PS2LPC)
+NODE_INFO(PS2LPC,"Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class PS2LPC : public FrameOperation {
    
@@ -91,8 +92,9 @@ public:
 
       
       float er=0;
+      float rc[outputLength];
       response[0] *= 1.001;
-      wld(output.begin(), response, &er, outputLength-1);
+      wld(output.begin(), response, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
         output[i] *= pow(.99,i);
 

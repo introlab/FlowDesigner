@@ -21,7 +21,8 @@
 
 class DownSample;
 
-DECLARE_NODE(DownSample)
+//DECLARE_NODE(DownSample)
+NODE_INFO(DownSample,"Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:FACTOR")
 
 class DownSample : public FrameOperation {
    

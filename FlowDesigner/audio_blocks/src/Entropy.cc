@@ -19,10 +19,12 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <strstream.h>
+#include <values.h>
 
 class Entropy;
 
-DECLARE_NODE(Entropy)
+//DECLARE_NODE(Entropy)
+NODE_INFO(Entropy,"Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:LOOKAHEAD:LOOKBACK")
 
 class Entropy : public FrameOperation {
    
@@ -99,7 +101,10 @@ public:
          //frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
       }      
       
-      
+      //cerr << numberFrames << " " << (*(frames[0]))[0] << " " ; 
+
+      for (i=0;i<numberFrames;i++)
+         min[i]=FLT_MAX;
       for (i=0;i<numberFrames;i++)
             for (j=i+1;j<numberFrames;j++)
             {
@@ -110,10 +115,11 @@ public:
       float accum=0;
       for (i=0;i<numberFrames;i++)
       {
+         //cerr <<  min[i] << " ";
          accum += min[i];
       }
       output[0] = accum/numberFrames;
-      
+      //cerr << output[0] << endl;
 
 
       output.status = Object::valid;

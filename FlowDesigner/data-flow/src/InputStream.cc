@@ -17,7 +17,8 @@
 #include "InputStream.h"
 #include "net_types.h"
 
-DECLARE_NODE(InputStream)
+//DECLARE_NODE(InputStream)
+NODE_INFO(InputStream,"IO", "INPUT", "OUTPUT", "")
 
 InputStream::InputStream(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

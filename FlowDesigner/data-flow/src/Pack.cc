@@ -19,7 +19,8 @@
 #include "Vector.h"
 #include "multithread.h"
 
-DECLARE_NODE(Pack)
+//DECLARE_NODE(Pack)
+NODE_INFO(Pack,"Flow", "INPUT", "OUTPUT", "")
 
 Pack::Pack(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

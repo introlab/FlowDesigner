@@ -23,7 +23,8 @@
 
 class DCT;
 
-DECLARE_NODE(DCT)
+//DECLARE_NODE(DCT)
+NODE_INFO(DCT, "Signal", "INPUT", "OUTPUT", "LENGTH")
 
 class DCT : public FrameOperation {
    

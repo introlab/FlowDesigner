@@ -22,7 +22,8 @@
 
 class Abs;
 
-DECLARE_NODE(Abs)
+//DECLARE_NODE(Abs)
+NODE_INFO(Abs,"Signal", "INPUT", "OUTPUT", "LENGTH")
 
 class Abs : public FrameOperation {
    
@@ -61,7 +62,9 @@ public:
       
       for (int i=0;i<outputLength;i++)
       {
-         output[i]=abs(in[i]);
+         output[i]=(in[i]);
+         if (output[i] < 0)
+            output[i] = -output[i];
       }
 
       output.status = Object::valid;

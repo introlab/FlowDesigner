@@ -23,7 +23,8 @@
 
 class Select;
 
-DECLARE_NODE(Select)
+//DECLARE_NODE(Select)
+NODE_INFO(Select, "Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:START:END")
 
 class Select : public FrameOperation {
    

@@ -23,7 +23,8 @@
 
 class ConstantVector;
 
-DECLARE_NODE(ConstantVector)
+//DECLARE_NODE(ConstantVector)
+NODE_INFO(ConstantVector,"Signal", "", "OUTPUT", "VALUE")
 
 /** A constant node contains a value that will never changes. */
 class ConstantVector : public Node
@@ -50,7 +51,7 @@ public:
       istrstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
       str_vector >> val;
 
-      cerr << "vector is: " << val << endl;
+      //cerr << "vector is: " << val << endl;
    }
 
    /**Ask for the node's output which ID (number) is output_id 
