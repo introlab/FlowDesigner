@@ -9,7 +9,7 @@ DECLARE_NODE(NOP)
  *
  * @name NOP
  * @category General
- * @description Pass Through
+ * @description Pass Through (no operation)
  *
  * @input_name INPUT
  * @input_description The input
@@ -34,7 +34,6 @@ public:
 	 outputID=addOutput("OUTPUT");
       } catch (BaseException *e)
       {
-         //e->print();
          throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
       }
       

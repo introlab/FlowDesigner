@@ -44,38 +44,6 @@ inline T object_ptr_cast (const ObjectRef &ref)
    return tmp;
 }
 
-/**Different implementations for object_cast<T>, a cast from ObjectRef to any kind of derived class*/
-#if defined (FORCE_OBJECT_CAST)
-
-/**This is the fastest and most dangerous method. It WILL CRASH is the cast fails*/
-template <class T>
-inline T &object_cast(const ObjectRef &ref)
-{
-   return *(T*) (int(&(*ref))-int(static_cast<Object*>((T*)(1)))+1);
-}
-
-#elif defined (FAST_OBJECT_CAST)
-
-/*This is a faster (that dynamic_cast) implementation, but I'm not sure it's 100% portable*/
-template <class T>
-inline T &object_cast(const ObjectRef &ref)
-{
-   //Do we have an exact match? If so, proceed with fast method
-   if (typeid(T) == typeid(*ref))
-   {
-      //This is a reinterpret cast with a kludged offset adjustment.
-      return *(T*) (int(&(*ref))-int(static_cast<Object*>((T*)(1)))+1);
-   } else 
-   {
-      T *tmp = dynamic_cast<T *>(&(*ref));
-      if (!tmp) 
-	 throw new CastException<T> (typeid ((*ref)).name());
-      return *tmp;
-   }
-}
-
-#else
-
 /**This is the default (and slowest) implementation*/
 template <class T>
 inline T &object_cast (const ObjectRef &ref)
@@ -85,9 +53,6 @@ inline T &object_cast (const ObjectRef &ref)
       throw new CastException<T> (typeid ((*ref)).name());
    return *tmp;
 }
-#endif
-
-
 
 /**The type cast from ObjectRef*/
 template <class T>

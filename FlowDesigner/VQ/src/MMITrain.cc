@@ -62,7 +62,7 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
 
          Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
 
-         int dimensions = object_cast<vector<float> >((object_cast <Vector<ObjectRef> > (mat[0])[0])).size();
+         int dimensions = object_cast<Vector<float> >((object_cast <Vector<ObjectRef> > (mat[0])[0])).size();
          //cerr << "Dimensions = " << dimensions << endl;
          //cerr << "Number of Classes: " << mat.size() << endl;
          Cell *mmi = new Cell(dimensions, mat.size()); 

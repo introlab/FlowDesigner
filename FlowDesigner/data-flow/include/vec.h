@@ -1431,7 +1431,8 @@ FP_DIRTY
   //return sum[0];//+sum[1];//+sum[2]+sum[3];
 }
 
-
+//WARNING:
+//FIXME: Does not work yet with lengths that are not a multiple of 4
 template <>
 inline float vec_mahalanobis2<float>(const float *a, const float *b, const float *c, int len)
 {
@@ -1520,8 +1521,87 @@ mul4_skip%=:
 }
 
 
+//WARNING:
+//FIXME: Does not work yet with lengths that are not a multiple of 4
+template <>
+inline float vec_dist2<float>(const float *a, const float *b, int len)
+{
+   float sum=0;
+   __asm__ __volatile__ (
+   "
+   push %%eax
+   push %%edi
+   push %%ecx
+   xorps %%xmm4, %%xmm4
+   xorps %%xmm5, %%xmm5
+
+   sub $8, %%ecx
+   jb mul8_skip%=
+
+mul8_loop%=:
+   movups (%%eax), %%xmm0
+   movups (%%edi), %%xmm1
+   movups 16(%%eax), %%xmm2
+   movups 16(%%edi), %%xmm3
+   add $32, %%eax
+   add $32, %%edi
+   subps %%xmm0, %%xmm1
+   subps %%xmm2, %%xmm3
+   mulps %%xmm1, %%xmm1
+   mulps %%xmm3, %%xmm3
+   addps %%xmm1, %%xmm4
+   addps %%xmm3, %%xmm5
+
+   sub $8,  %%ecx
+   jae mul8_loop%=
+
+mul8_skip%=:
+   addps %%xmm5, %%xmm4
+
+
+   add $4, %%ecx
+   jl mul4_skip%=
+
+   movups (%%eax), %%xmm0
+   movups (%%edi), %%xmm1
+   add $16, %%eax
+   add $16, %%edi
+
+   subps %%xmm0, %%xmm1
+   mulps %%xmm1, %%xmm1
+   addps %%xmm1, %%xmm4
+
+   sub $4,  %%ecx
+
+mul4_skip%=:
+
+
+
+   movaps %%xmm4, %%xmm3
+
+
+   movhlps %%xmm3, %%xmm4
+   addps %%xmm4, %%xmm3
+   movaps %%xmm3, %%xmm4
+   shufps $33, %%xmm4, %%xmm4
+   addss %%xmm4, %%xmm3
+   movss %%xmm3, (%%edx)
+
+
+   pop %%ecx
+   pop %%edi
+   pop %%eax
+   emms
+   "
+   : : "a" (a), "D" (b), "c" (len), "d" (&sum)
+   FP_DIRTY
+   );
+    
+   return sum;
+}
+
+
 
 #endif
-
 
 #endif /* ifndef VEC_H*/

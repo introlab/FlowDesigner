@@ -101,7 +101,7 @@ public:
 
 /**
    The NetCType. We are using this class to wrap standard C types into objects
-   tha are Object compatible.
+   that are Object compatible.
    @author Dominic Letourneau & jean-Marc Valin
  */
 template <class T>

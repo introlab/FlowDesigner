@@ -3,6 +3,7 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
+#include "vec.h"
 
 #ifdef HAVE_VALUES_H
 #include <values.h>
@@ -125,7 +126,8 @@ public:
 	 */
 	 for (j=i+1;j<numberFrames;j++)
 	 {
-	    float tmp=dist(&(*frames[i])[0], &(*frames[j])[0], inputLength);
+	    float tmp = vec_dist2(&(*frames[i])[0], &(*frames[j])[0], inputLength);
+	    //float tmp=dist(&(*frames[i])[0], &(*frames[j])[0], inputLength);
 	    if (tmp < min[i]) min[i]=tmp;
 	    if (tmp < min[j]) min[j]=tmp;
 	 }
