@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Throw" x="-239.000000" y="100.000000"/>
+    <Node name="node2" type="Catch" x="-78.000000" y="108.000000"/>
+    <Node name="node3" type="Constant" x="-345.000000" y="100.000000">
+      <Parameter name="VALUE" type="int" value="3"/>
+    </Node>
+    <Node name="node4" type="Mul" x="-198.000000" y="151.000000"/>
+    <Node name="node5" type="Print" x="117.000000" y="100.000000"/>
+    <Link from="node1" output="OUTPUT" to="node2" input="INPUT"/>
+    <Link from="node3" output="VALUE" to="node1" input="INPUT"/>
+    <Link from="node3" output="VALUE" to="node4" input="INPUT1"/>
+    <Link from="node4" output="OUTPUT" to="node2" input="CATCH"/>
+    <Link from="node2" output="EXCEPTION" to="node4" input="INPUT2">4 118 51 118 52 197 -305 196 -306 159 -257 158.5 </Link>
+    <Link from="node2" output="OUTPUT" to="node5" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node5" terminal="OUTPUT"/>
+  </Network>
+</Document>
