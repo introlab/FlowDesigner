@@ -37,6 +37,10 @@ const int FuzzyModel::FUZZY_OUTPUT_SET = 1;
 FuzzyModel::FuzzyModel() {
 
 }
+FuzzyModel::FuzzyModel(string nodeName, ParameterSet params)
+  : BufferedNode(nodeName,params) {
+
+}
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////

@@ -25,10 +25,11 @@
 #include "FuzzyRule.h"
 #include <list>
 #include <string>
+#include "BufferedNode.h"
 
 using namespace std;
 
-class FuzzyModel  {
+class FuzzyModel : public BufferedNode {
 
 public:
 	
@@ -50,6 +51,7 @@ public:
 
 	//default constructor
 	FuzzyModel();
+	FuzzyModel(string nodeName, ParameterSet params);
 
 	//destructor
 	virtual ~FuzzyModel();

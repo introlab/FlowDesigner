@@ -20,13 +20,36 @@
 
 #include "TrapezoidalFunction.h"
 
+DECLARE_NODE(TrapezoidalFunction)
+/*Node
+ *
+ * @name TrapezoidalFunction
+ * @category Fuzzy
+ * @description No description available
+ *
+ * @input_name TRAIN_IN
+ * @input_description No description available
+ *
+ * @output_name OUTPUT
+ * @output_description No description available
+ *
+ * @parameter_name BATCH_SETS
+ * @parameter_description No description available
+ *
+END*/
+
 //////////////////////////////////////////////////////////////////////
 // Construction
 //////////////////////////////////////////////////////////////////////
-
 TrapezoidalFunction::TrapezoidalFunction(const string &name, float a, 
 					 float b, float c, float d)
 : FuzzyFunction(name),m_a(a),m_b(b),m_c(c),m_d(d) {
+
+}
+
+TrapezoidalFunction::TrapezoidalFunction(string nodeName, ParameterSet params)
+   : FuzzyFunction(nodeName,params) {
+   
 
 }
 //////////////////////////////////////////////////////////////////////
@@ -111,4 +134,13 @@ float TrapezoidalFunction::get_center_of_gravity() {
   
   
   return cog;
+}
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+
+void TrapezoidalFunction::calculate(int output_id, int count, Buffer &out) {
+
+
+
 }

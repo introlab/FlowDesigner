@@ -35,6 +35,7 @@ public:
 
 	//constructor of the function
 	TrapezoidalFunction(const string &name, float a, float b, float c, float d);
+	TrapezoidalFunction(string nodeName, ParameterSet params);
 
 	//destructor
 	virtual ~TrapezoidalFunction();
@@ -51,6 +52,8 @@ public:
 	//higher limit of the functions
 	virtual float get_lower_bound() {return m_a;}
 
+	virtual void calculate(int output_id, int count, Buffer &out);
+	
 private:
 
 	//function limits

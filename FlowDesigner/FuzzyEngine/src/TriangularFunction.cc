@@ -19,6 +19,25 @@
 
 #include "TriangularFunction.h"
 
+DECLARE_NODE(TriangularFunction)
+/*Node
+ *
+ * @name TriangularFunction
+ * @category Fuzzy
+ * @description No description available
+ *
+ * @input_name TRAIN_IN
+ * @input_description No description available
+ *
+ * @output_name OUTPUT
+ * @output_description No description available
+ *
+ * @parameter_name BATCH_SETS
+ * @parameter_description No description available
+ *
+END*/
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction
 //////////////////////////////////////////////////////////////////////
@@ -28,6 +47,11 @@ TriangularFunction::TriangularFunction(const string &name, float a, float b, flo
 
 
 }
+TriangularFunction::TriangularFunction(string nodeName, ParameterSet params)
+ : FuzzyFunction(nodeName,params) {
+
+}
+
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////
@@ -93,4 +117,12 @@ float TriangularFunction::get_center_of_gravity() {
   cog = (left_area * center_left + right_area * center_right) / (left_area + right_area);
   
   return cog;
+}
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+void TriangularFunction::calculate(int output_id, int count, Buffer &out) {
+
+
+
 }

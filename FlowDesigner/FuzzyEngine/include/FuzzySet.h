@@ -26,10 +26,11 @@
 #include "FuzzyFunction.h"
 #include "TrapezoidalFunction.h"
 #include "TriangularFunction.h"
+#include "BufferedNode.h"
 
 using namespace std;
 
-class FuzzySet  {
+class FuzzySet : public BufferedNode {
 
 public:
 	
@@ -47,6 +48,8 @@ public:
 
 	//constructor with a name
 	FuzzySet(const string &name);
+
+	FuzzySet(string nodeName, ParameterSet params);
 
 	//destructor
 	virtual ~FuzzySet();
@@ -76,7 +79,8 @@ public:
 		return m_string_value_map[fname];
 	}
 
-
+	virtual void calculate(int output_id, int count, Buffer &out);
+	
 private:
 
 	//the set name

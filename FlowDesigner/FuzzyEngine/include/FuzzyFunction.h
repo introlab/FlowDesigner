@@ -22,10 +22,11 @@
 
 #include <string>
 #include <vector>
+#include "BufferedNode.h"
 
 using namespace std;
 
-class FuzzyFunction {
+class FuzzyFunction : public BufferedNode{
 
 public:
 
@@ -40,6 +41,9 @@ public:
 
 	//the constructor with a function name
 	FuzzyFunction(const string &name);
+
+	FuzzyFunction(string nodeName, ParameterSet params);
+
 
 	//reset the inference vector
 	void reset_inference_values() {m_inference_values.resize(0);}
@@ -61,6 +65,8 @@ public:
 
 	//higher limit of the functions
 	virtual float get_lower_bound() = 0;
+
+
 
 protected:
 

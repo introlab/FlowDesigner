@@ -20,6 +20,28 @@
 
 #include "FuzzyRule.h"
 
+DECLARE_NODE(FuzzyRule)
+/*Node
+ *
+ * @name FuzzyRule
+ * @category Fuzzy
+ * @description No description available
+ *
+ * @input_name TRAIN_IN
+ * @input_description No description available
+ *
+ * @output_name OUTPUT
+ * @output_description No description available
+ *
+ * @parameter_name BATCH_SETS
+ * @parameter_description No description available
+ *
+END*/
+
+
+
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction
 //////////////////////////////////////////////////////////////////////
@@ -28,6 +50,13 @@ FuzzyRule::FuzzyRule(int rule_number)
 : m_rule_number(rule_number) {
 
 }
+FuzzyRule::FuzzyRule(string nodeName, ParameterSet params) 
+: BufferedNode(nodeName,params) {
+  
+
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////
@@ -75,4 +104,13 @@ void FuzzyRule::print_rule(ostream &out) {
   
   out<<endl;
   
+}
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+
+void FuzzyRule::calculate(int output_id, int count, Buffer &out) {
+
+
+
 }

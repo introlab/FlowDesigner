@@ -29,6 +29,7 @@ public:
 
 	//constructor
 	GenericModel();
+	GenericModel(string nodeName, ParameterSet params);
 
 	//destructor
 	virtual ~GenericModel();
@@ -41,6 +42,9 @@ public:
 
 	//Mamdani defuzzification 
 	virtual vector<pair<string,float> > & defuzzification();
+
+	virtual void calculate(int output_id, int count, Buffer &out);
+	
 
 private:
 

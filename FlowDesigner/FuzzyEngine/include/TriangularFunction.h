@@ -31,6 +31,7 @@ public:
 
 	//constructor
 	TriangularFunction(const string &name, float a, float b, float c);
+	TriangularFunction(string nodeName, ParameterSet params);
 
 	//destructor
 	virtual ~TriangularFunction();
@@ -50,6 +51,7 @@ public:
 	//higher limit of the functions
 	virtual float get_lower_bound() {return m_a;}
 
+	virtual void calculate(int output_id, int count, Buffer &out);
 
 private:
 

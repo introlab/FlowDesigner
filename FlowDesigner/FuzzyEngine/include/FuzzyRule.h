@@ -22,10 +22,11 @@
 
 #include <string>
 #include <vector>
+#include "BufferedNode.h"
 
 using namespace std;
 
-class FuzzyRule  {
+class FuzzyRule : public BufferedNode {
 
 public:
 	
@@ -41,6 +42,8 @@ public:
 	//the constructor needs a rule number
 	FuzzyRule(int rule_number);
 	
+	FuzzyRule(string nodeName, ParameterSet params);
+	
 	//destructor
 	virtual ~FuzzyRule();
 	
@@ -52,7 +55,8 @@ public:
 
 	//accessor for the rule number
 	int get_rule_number() {return m_rule_number;}
-
+	
+	virtual void calculate(int output_id, int count, Buffer &out);
 
 private:
 

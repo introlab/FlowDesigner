@@ -20,6 +20,27 @@
 
 #include "GenericModel.h"
 #include "Exception.h"
+
+
+DECLARE_NODE(GenericModel)
+/*Node
+ *
+ * @name GenericModel
+ * @category Fuzzy
+ * @description No description available
+ *
+ * @input_name TRAIN_IN
+ * @input_description No description available
+ *
+ * @output_name OUTPUT
+ * @output_description No description available
+ *
+ * @parameter_name BATCH_SETS
+ * @parameter_description No description available
+ *
+END*/
+
+
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////
@@ -27,6 +48,13 @@
 GenericModel::GenericModel() {
 
 }
+
+GenericModel::GenericModel(string nodeName, ParameterSet params) 
+: FuzzyModel(nodeName,params){
+
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////
@@ -117,4 +145,13 @@ vector<pair<string,float> > & GenericModel::defuzzification() {
   
   
   return m_defuzzification;
+}
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+
+void GenericModel::calculate(int output_id, int count, Buffer &out) {
+
+
+
 }

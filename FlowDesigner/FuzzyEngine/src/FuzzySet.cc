@@ -24,6 +24,27 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+
+
+DECLARE_NODE(FuzzySet)
+/*Node
+ *
+ * @name FuzzySet
+ * @category Fuzzy
+ * @description No description available
+ *
+ * @input_name TRAIN_IN
+ * @input_description No description available
+ *
+ * @output_name OUTPUT
+ * @output_description No description available
+ *
+ * @parameter_name BATCH_SETS
+ * @parameter_description No description available
+ *
+END*/
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction
 //////////////////////////////////////////////////////////////////////
@@ -32,6 +53,12 @@ FuzzySet::FuzzySet(const string &name)
 :m_name(name) {
 
 }
+FuzzySet::FuzzySet(string nodeName, ParameterSet params) 
+: BufferedNode(nodeName,params),m_name(nodeName) {
+  
+
+}
+
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////
@@ -196,3 +223,12 @@ void FuzzySet::print_functions(ostream &out) {
   }
 }
 
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+
+void FuzzySet::calculate(int output_id, int count, Buffer &out) {
+
+
+
+}
