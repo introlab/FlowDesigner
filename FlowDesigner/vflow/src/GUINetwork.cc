@@ -494,6 +494,10 @@ void GUINetwork::addSelectedNode(GUINode *node) {
 void GUINetwork::popTooltip(GUINode *node)
 {
    if (tooltip)
+   {
       delete tooltip;
-   tooltip = new GUINodeTooltip(node);
+      tooltip=NULL;
+   }
+   if (node)
+      tooltip = new GUINodeTooltip(node);
 }

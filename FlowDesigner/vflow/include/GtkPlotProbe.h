@@ -39,6 +39,8 @@ class GtkPlotProbe : public Probe {
 
    virtual void show_hide();
 
+   void print();
+
 };
 
 

@@ -11,25 +11,34 @@ DECLARE_NODE(TextProbe)
  *
  * @name TextProbe
  * @category Probe
- * @description No description available
+ * @description Prints the data as text
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type any
+ * @input_description Any data
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type any
+ * @output_description Pass through
  *
  * @parameter_name BREAK_AT
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description If set, the probe runs until (count = BREAK_AT)
  *
  * @parameter_name SHOW
- * @parameter_description No description available
+ * @parameter_type bool
+ * @parameter_value true
+ * @parameter_description Whether or not to show the the data by default
  *
  * @parameter_name SKIP
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Count increment for each "Next"
+ *
+ * @parameter_name PROBE_NAME
+ * @parameter_type string
+ * @parameter_description Name (title) of the probe
  *
 END*/
-
 
 
 TextProbe::TextProbe(string nodeName, ParameterSet params) 

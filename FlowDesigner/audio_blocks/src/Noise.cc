@@ -53,6 +53,8 @@ public:
       length = dereference_cast<int> (parameters.get("LENGTH"));
       if (parameters.exist("SD"))
 	 sd = dereference_cast<float> (parameters.get("SD"));
+      else
+	 sd = 1;
       if (parameters.exist("TYPE"))
       {
 	 if (object_cast<String> (parameters.get("TYPE")) == "UNIFORM")

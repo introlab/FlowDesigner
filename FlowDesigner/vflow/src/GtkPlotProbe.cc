@@ -1,4 +1,4 @@
-// Copyright (C) 2001 Jean-Marc Valin
+// Copyright (C) 1999 Jean-Marc Valin
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -14,8 +14,7 @@
 
 #include "Vector.h"
 
-
-#include <gtkextra/gtkextra.h>
+#include "gtkextra/gtkextra.h"
 
 DECLARE_NODE(GtkPlotProbe)
 /*Node
@@ -33,16 +32,28 @@ DECLARE_NODE(GtkPlotProbe)
  * @output_description Same as input
  *
  * @parameter_name BREAK_AT
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description If set, the probe runs until (count = BREAK_AT)
  *
  * @parameter_name SHOW
- * @parameter_description No description available
+ * @parameter_type bool
+ * @parameter_value true
+ * @parameter_description Whether or not to show the the data by default
  *
  * @parameter_name SKIP
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Count increment for each "Next"
+ *
+ * @parameter_name PROBE_NAME
+ * @parameter_type string
+ * @parameter_description Name (title) of the probe
  *
 END*/
 
+static void print_click (GtkButton *button, GtkPlotProbe *pr)
+{
+   pr->print();
+}
 
 static double tick_size(double range)
 {
@@ -73,9 +84,9 @@ static double tick_size(double range)
 GtkPlotProbe::GtkPlotProbe(string nodeName, ParameterSet params) 
    : Probe(nodeName, params)
    , xmin(0.0)
-   , xmax(500)
+   , xmax(530)
    , ymin(0.0)
-   , ymax(310)  /*Got the magic size!*/
+   , ymax(330)  /*Got the magic size!*/
 {
 }
 
@@ -161,6 +172,26 @@ void GtkPlotProbe::specificInitialize()
 
 
 
+      /*Setup the print button*/
+
+      GtkWidget *tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_PRINT);
+      GtkWidget *print_button = gtk_toolbar_insert_element (GTK_TOOLBAR (toolbar2),
+					     GTK_TOOLBAR_CHILD_BUTTON,
+					     NULL,
+					     _("Print"),
+					     NULL, NULL,
+					     tmp_toolbar_icon, NULL, NULL, 4);
+      gtk_widget_ref (print_button);
+      gtk_object_set_data_full (GTK_OBJECT (window1), "print_button", print_button,
+				(GtkDestroyNotify) gtk_widget_unref);
+      gtk_button_set_relief(GTK_BUTTON(print_button), GTK_RELIEF_NONE);
+      gtk_widget_show (print_button);
+   
+      gtk_signal_connect (GTK_OBJECT (print_button), "clicked",
+			  GTK_SIGNAL_FUNC (print_click),
+			  this);
+      
+
    } catch (BaseException *e)
    {
       gdk_threads_leave();
@@ -230,6 +261,11 @@ void GtkPlotProbe::show_hide()
       gtk_plot_data_set_points(dataset, &x[0], &y[0], &dx[0], &dy[0], 0);
       gtk_widget_queue_draw (canvas);
    }
+}
+
+void GtkPlotProbe::print()
+{
+   gtk_plot_canvas_export_ps_with_size(GTK_PLOT_CANVAS(canvas), "plot.eps", GTK_PLOT_PORTRAIT, 1, GTK_PLOT_MM, .4*xmax, .4*ymax);
 }
 
 

@@ -37,6 +37,7 @@ class Probe : public Node {
    int inputID;
 
    GtkWidget *window1;
+   GtkWidget *toolbar2;
    GtkWidget *button16;
    GtkWidget *button17;
    GtkWidget *button18;
@@ -53,6 +54,8 @@ class Probe : public Node {
 
    int skip;
 
+   string probeName;
+   
    bool traceEnable;
 
    bool displayEnable;

@@ -10,22 +10,32 @@ DECLARE_NODE(Probe)
  *
  * @name Probe
  * @category Probe
- * @description No description available
+ * @description Helps debugging by allowing to "trace" programs
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type any
+ * @input_description Any data
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type any
+ * @output_description Pass through
  *
  * @parameter_name BREAK_AT
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description If set, the probe runs until (count = BREAK_AT)
  *
  * @parameter_name SHOW
- * @parameter_description No description available
+ * @parameter_type bool
+ * @parameter_value true
+ * @parameter_description Whether or not to show the the data by default
  *
  * @parameter_name SKIP
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Count increment for each "Next"
+ *
+ * @parameter_name PROBE_NAME
+ * @parameter_type string
+ * @parameter_description Name (title) of the probe
  *
 END*/
 
@@ -95,6 +105,12 @@ Probe::Probe(string nodeName, ParameterSet params)
       skip = dereference_cast<int> (parameters.get("SKIP"));
    }
 
+      if (parameters.exist("PROBE_NAME"))
+	 probeName = object_cast<String> (parameters.get("PROBE_NAME"));
+      else
+	 probeName = name;
+      
+
    //cerr<<"End Probe constructor"<<endl;
 }
 
@@ -127,7 +143,7 @@ void Probe::specificInitialize()
    //GtkWidget *window1;
    //GtkWidget *vbox2;
    GtkWidget *handlebox2;
-   GtkWidget *toolbar2;
+   //GtkWidget *toolbar2;
    GtkWidget *tmp_toolbar_icon;
    //GtkWidget *button16;
    //GtkWidget *button17;
@@ -137,8 +153,8 @@ void Probe::specificInitialize()
    
    window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
    gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
-   string probeTitle = name + " (" + typeid(*this).name() + ")";
-   gtk_window_set_title (GTK_WINDOW (window1), probeTitle.c_str());
+   //string probeTitle = name + " (" + typeid(*this).name() + ")";
+   gtk_window_set_title (GTK_WINDOW (window1), probeName.c_str());
 
    gtk_signal_connect (GTK_OBJECT (window1), "delete-event",
 		       GTK_SIGNAL_FUNC (ignore_delete),
@@ -251,8 +267,7 @@ void Probe::specificInitialize()
 		       GTK_SIGNAL_FUNC (show_hide_click),
 		       this);
 
-
-   entry1 = gtk_entry_new_with_max_length (11);
+   entry1 = gtk_entry_new_with_max_length (10);
    gtk_entry_set_editable(GTK_ENTRY(entry1),false);
    gtk_widget_ref (entry1);
    gtk_object_set_data_full (GTK_OBJECT (window1), "entry1", entry1,
