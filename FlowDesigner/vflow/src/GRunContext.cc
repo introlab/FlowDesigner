@@ -5,11 +5,14 @@
 #include "GRunContext.h"
 #include <sstream>
 #include "vflow_pref.h"
+#include <unistd.h>
 
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
 
   if (my_context->net) {
+    alarm(3);
     delete my_context->net;
+    alarm(0);
     my_context->net = NULL;
   }
   exit(0);
