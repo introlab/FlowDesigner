@@ -7,10 +7,9 @@ test -z "$srcdir" && srcdir=.
 PKG_NAME="Gnome Balsa"
 
 (test -f $srcdir/configure.in \
-  && test -d $srcdir/libmutt \
-  && test -d $srcdir/src) || {
+  && test -d $srcdir/data-flow) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
-    echo " top-level balsa directory"
+    echo " top-level FreeSpeech directory"
 
     exit 1
 }
