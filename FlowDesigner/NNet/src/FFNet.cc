@@ -885,6 +885,8 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
       if (nextE > SSE)
       {
 	 alpha *= decrease;
+	 //So that the "bad" iteration doesn't count
+	 iter++;
 	 continue;
       }
 
