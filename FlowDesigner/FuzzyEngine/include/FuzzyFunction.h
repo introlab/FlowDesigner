@@ -79,6 +79,8 @@ protected:
 	//the vector used for inference (temporary)
 	vector<float> m_inference_values;
 
+	int m_functionID;
+
 private:
 
 	//we shouldn't use this default constructor

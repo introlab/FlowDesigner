@@ -27,7 +27,7 @@ DECLARE_NODE(TrapezoidalFunction)
  * @category Fuzzy
  * @description A Fuzzy Function to be included in a FuzzySet
  *
- * @output_name Function
+ * @output_name FUNCTION
  * @output_description The FuzzyFunction object
  * @output_type FuzzyFunction
  *

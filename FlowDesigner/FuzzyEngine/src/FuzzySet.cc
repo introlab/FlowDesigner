@@ -54,7 +54,7 @@ END*/
 //////////////////////////////////////////////////////////////////////
 
 FuzzySet::FuzzySet(const string &name)
-:m_name(name) {
+  : BufferedNode("INVALID", ParameterSet()), m_name(name) {
 
 }
 
@@ -66,6 +66,9 @@ FuzzySet::FuzzySet(string nodeName, ParameterSet params)
   
   //the inputID
   m_functionID = addInput("FUNCTIONS");
+
+  //the outputID
+  m_setID = addOutput("SET");
 }
 
 //////////////////////////////////////////////////////////////////////

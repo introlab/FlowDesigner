@@ -20,7 +20,7 @@
 #include "FuzzyOperators.h"
 
 
-///
+///FuzzyRule and Vector<FuzzyRule> concatenation
 ObjectRef concatRuleVect(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> &vect = object_cast<Vector<FuzzyRule> >(y);
@@ -37,7 +37,7 @@ ObjectRef concatRuleVect(ObjectRef x, ObjectRef y) {
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, concatRuleVect, FuzzyRule, Vector<FuzzyRule>);
 
-///
+///Vector<FuzzyRule> and FuzzyRule concatenation
 ObjectRef concatVectRule(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> &vect = object_cast<Vector<FuzzyRule> >(x);
@@ -55,7 +55,7 @@ ObjectRef concatVectRule(ObjectRef x, ObjectRef y) {
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, concatVectRule, Vector<FuzzyRule>, FuzzyRule);
 
-///
+///FuzzyRule and FuzzyRule concatenation
 ObjectRef concatRuleRule(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
@@ -68,4 +68,22 @@ ObjectRef concatRuleRule(ObjectRef x, ObjectRef y) {
 REGISTER_DOUBLE_VTABLE(concatVtable, concatRuleRule, FuzzyRule, FuzzyRule);
 
 
+///Vector<FuzzyRule> and Vector<FuzzyRule> concatenation
+ObjectRef concatVectVect(ObjectRef x, ObjectRef y) {
 
+  Vector<FuzzyRule> &vect1 = object_cast<Vector<FuzzyRule> >(x);
+  Vector<FuzzyRule> &vect2 = object_cast<Vector<FuzzyRule> >(y);
+
+  Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
+
+  for (int i = 0; i < vect1.size(); i++) {
+    (*output).push_back(vect1[i]);
+  }
+
+  for (int i = 0; i < vect2.size(); i++) {
+    (*output).push_back(vect2[i]);
+  }
+
+  return ObjectRef(output);
+
+}

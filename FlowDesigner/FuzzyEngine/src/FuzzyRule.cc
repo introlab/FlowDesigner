@@ -73,7 +73,8 @@ FuzzyRule::FuzzyRule(const FuzzyRule& cpy)
 FuzzyRule::FuzzyRule(string nodeName, ParameterSet params) 
   : BufferedNode(nodeName,params), m_rule_number(-1) {
   
-  
+
+  m_ruleID = addOutput("RULE");
   String antecedant  = object_cast<String>(parameters.get("IF"));
   String consequent  = object_cast<String>(parameters.get("THEN"));
 
@@ -173,8 +174,6 @@ void FuzzyRule::print_rule(ostream &out) {
 //////////////////////////////////////////////////////////////////////
 
 void FuzzyRule::calculate(int output_id, int count, Buffer &out) {
-
-  cerr<<"calculate"<<endl;
 
   //cloning ourself as a Object not a node!
   out[count] = ObjectRef(clone());

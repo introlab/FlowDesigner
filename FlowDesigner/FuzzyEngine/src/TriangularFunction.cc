@@ -38,7 +38,7 @@ DECLARE_NODE(TriangularFunction)
  * @parameter_type float
  * @parameter_description C value
  *
- * @output_name Function
+ * @output_name FUNCTION
  * @output_description The FuzzyFunction object
  * @output_type FuzzyFunction
  *

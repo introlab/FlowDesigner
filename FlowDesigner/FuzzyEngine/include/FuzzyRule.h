@@ -81,6 +81,8 @@ public:
   
   //the rule number	
   int m_rule_number;
+
+  int m_ruleID;
 };
 
 inline istream& operator>> (istream &in, FuzzyRule &rule) {

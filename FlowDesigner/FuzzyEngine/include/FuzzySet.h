@@ -100,6 +100,8 @@ private:
 	//the inputID
 	int m_functionID;
 
+	//the outputID
+	int m_setID;
 };
 
 #endif

@@ -25,12 +25,13 @@
 // Construction
 //////////////////////////////////////////////////////////////////////
 
-FuzzyFunction::FuzzyFunction() {
+FuzzyFunction::FuzzyFunction()
+  : BufferedNode("INVALID",ParameterSet()) {
 
 }
 
 FuzzyFunction::FuzzyFunction(const string &name) 
-: m_name(name) {
+  : BufferedNode("INVALID",ParameterSet()), m_name(name) {
 
 
 }
@@ -38,6 +39,8 @@ FuzzyFunction::FuzzyFunction(const string &name)
 FuzzyFunction::FuzzyFunction(string nodeName, ParameterSet params)
  : BufferedNode(nodeName,params) {
 
+
+  m_functionID = addOutput("FUNCTION");
 }
 //////////////////////////////////////////////////////////////////////
 // Destruction
