@@ -234,6 +234,7 @@ void UINetwork::removeNode(UINode *node)
       if (nodes[i]==node)
          nodes.erase(&nodes[i]);*/
    doc->setModified();
+   interfaceChangeNotify();
    /*if (node == conditionNode)
      conditionNode = NULL;*/
 }
