@@ -255,7 +255,7 @@ public:
    void lock() 
    { 
 #ifdef MULTITHREAD
-      cerr << "locking node " << name << endl; pthread_mutex_lock(&mutex); 
+      pthread_mutex_lock(&mutex); 
 #endif
    }
    
@@ -263,9 +263,26 @@ public:
    void unlock() 
    { 
 #ifdef MULTITHREAD
-      cerr << "unlocking node " << name << endl; pthread_mutex_unlock(&mutex);
+      pthread_mutex_unlock(&mutex);
 #endif
    }
+
+#ifdef MULTITHREAD
+   template <class T>
+   T unlock_and_return(T &var)
+   {
+      T tmp = var;
+      unlock();
+      return tmp;
+   }
+#else
+   template <class T>
+   T &unlock_and_return(T &var)
+   {
+      return var;
+   }
+#endif
+
 
 private:
    ///Tell the node we will be using output 'out'
@@ -416,38 +433,6 @@ inline void ParameterSet::checkUnused() const
    }
 }
 
-#ifdef MULTITHREAD
-class ThreadedGetOutputArgs {
-public:
-   ThreadedGetOutputArgs (ObjectRef *_ref, Node *_node, int _outputID, int _count) 
-      : ref(_ref) , node(_node) , outputID(_outputID) , count(_count)
-   {}
-   ObjectRef *ref;
-   Node *node;
-   int outputID;
-   int count;
-};
 
-inline void getOutputFromThread (ThreadedGetOutputArgs *args)
-{
-   cerr << "Launching node " << args->node->getName() << " for count " << args->count << endl;
-   *(args->ref) = args->node->getOutput(args->outputID, args->count);
-   cerr << "Ending node " << args->node->getName() << " for count " << args->count << endl;
-   delete args;
-}
-
-inline pthread_t threadedGetOutput (ObjectRef *ref, Node *node, int outputID, int count)
-{
-   ThreadedGetOutputArgs *args = new ThreadedGetOutputArgs(ref, node, outputID, count);
-   pthread_t thread;
-   cerr << "threadedGetOutput for node " << node->getName() << " for count " << count << endl;
-   int ret = pthread_create (&thread, NULL, (void * (*)(void *)) getOutputFromThread, args);
-   cerr << "thread send for node " << node->getName() << " for count " << count 
-        << " with return value: " << ret << endl;
-   //getOutputFromThread (&args);
-   //pthread_join(thread,NULL);
-   return thread;
-}
-#endif
 
 #endif
