@@ -10,6 +10,7 @@
 #include "functions.h"
 
 
+/**Represents one layer from a multi-layer percetron (FFNet)*/
 class FFLayer : public Object {
   public:
    void (*func) (float *, float *, int);

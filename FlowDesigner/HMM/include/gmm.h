@@ -29,8 +29,7 @@ public:
 
    /**Friend of GMM class*/
    friend class GMM;
-}
-;
+};
 
 /**Gaussian Mixture Model (GMM) class*/
 class GMM : public Object{

@@ -18,10 +18,22 @@ class TrainingAlgo;
  */
 class FFNet : public Object {
   protected:
+
+   /**Network topology*/
    Vector<int> topo;
+
+   /**Pointers to all MLP layers*/
    Vector<FFLayer *> layers;
+
+   /**Complete weight vector*/
    float *weights;
-   int nbNeurons, nbWeights;
+   
+   /**Total number of neurons*/
+   int nbNeurons;
+
+   /**Total number of weights*/
+   int nbWeights;
+
   public:
    FFNet(const Vector<int> &_topo, const vector<string> &functions);
    //FFNet(const Vector<int> &_topo);
@@ -86,8 +98,10 @@ class FFNet : public Object {
 
    void setDerivOffset(float d);
    
+   /**Writes an MLP to a stream*/
    void printOn(ostream &out) const;
 
+   /**Reads an MLP from a stream*/
    void readFrom (istream &in);
 
 };
