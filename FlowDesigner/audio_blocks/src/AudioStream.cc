@@ -162,6 +162,8 @@ public:
    virtual void specificInitialize()
    {
       this->FrameOperation::specificInitialize();
+
+      //cerr << "output lookback = " << outputs[outputID].lookBack << endl;
    }
 
    void calculate(int output_id, int count, Buffer &out)

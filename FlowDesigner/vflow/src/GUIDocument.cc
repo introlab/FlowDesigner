@@ -133,6 +133,7 @@ GtkWidget *GUIDocument::createView()
   
 
   notebook1 = gtk_notebook_new ();
+  gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook1), TRUE);
   gtk_widget_ref (notebook1);
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "notebook1", notebook1,
   //                          (GtkDestroyNotify) gtk_widget_unref);

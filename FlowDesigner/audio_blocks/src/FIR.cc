@@ -59,14 +59,17 @@ public:
          inputsCache[inputID].lookBack=1;
       if (noncausal && continuous)
          inputsCache[inputID].lookAhead=1;
-
+ 
    }
 
    ~FIR() {}
 
    virtual void specificInitialize()
    {
+      
       this->FrameOperation::specificInitialize();
+      
+      
    }
 
    void calculate(int output_id, int count, Buffer &out)

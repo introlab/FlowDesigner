@@ -72,10 +72,15 @@ bool Collector::hasOutput(int output_id) const
 
 ObjectRef Collector::getOutput(int output_id, int count)
 {
-  
    if (hasOutput(output_id)) {
-      int outputID = inputs[output_id].outputID;
-      return (inputs[output_id].node)->getOutput(outputID,count);
+      try{	
+	 int outputID = inputs[output_id].outputID;
+	 return (inputs[output_id].node)->getOutput(outputID,count);
+      } catch (BaseException &e)
+      {
+	 e.print();
+	 throw NodeException (this, "Exception caught in Collector::getOutput", __FILE__, __LINE__);
+      }
    }
    else {
       throw NodeException(this,"Unknown output_id",__FILE__,__LINE__);

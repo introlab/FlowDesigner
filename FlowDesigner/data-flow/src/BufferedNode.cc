@@ -65,6 +65,7 @@ void BufferedNode::performRequests ()
    for (i=0;i<inputsCache.size();i++)
    {
       ParameterSet req;
+      //cerr << inputsCache[i].lookAhead+outputLookAhead << endl;
       req.add("LOOKAHEAD", ObjectRef(new Int(inputsCache[i].lookAhead+outputLookAhead)));
       req.add("LOOKBACK", ObjectRef(new Int(inputsCache[i].lookBack+outputLookBack)));
       inputs[i].node->request(inputs[i].outputID, req);
@@ -88,6 +89,8 @@ void BufferedNode::reset()
 
 void BufferedNode::request(int outputID, const ParameterSet &req)
 {
+   //cerr << "name = " << name << " this = " << this << " outputID = " << outputID << endl;   cerr << "lookahead = " << outputs[outputID].lookAhead << " lookback = " << outputs[outputID].lookBack << endl;   
+   
    if (req.exist("LOOKAHEAD"))
       outputs[outputID].lookAhead = max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
    if (req.exist("LOOKBACK"))
@@ -95,6 +98,11 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
    if (req.exist("CACHEALL"))
       outputs[outputID].cacheAll = true;
    this->Node::request(outputID,req);
+
+   Node *ptr=this;
+   //cerr << "request caught in " << name << " " << typeid(*ptr).name() << endl;
+   //cerr << "lookahead = " << outputs[outputID].lookAhead << " lookback = " << outputs[outputID].lookBack << endl;
+   //cerr << "--\n";
 }
 
 ObjectRef BufferedNode::getOutput(int output_id, int count)

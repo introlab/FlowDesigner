@@ -44,6 +44,8 @@ public:
    ///Checks whether node really has a certain output
    virtual bool hasOutput(int output_id) const;
 
+   virtual void request(int outputID, const ParameterSet &req) {inputs[outputID].node->request(inputs[outputID].outputID,req);}
+
 protected:
    ///symbolic to numeric translation for input names
    virtual int translateInput(string inputName);
