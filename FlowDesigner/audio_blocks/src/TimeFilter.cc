@@ -73,6 +73,7 @@ public:
       if (count < inputsCache[inputID].lookBack)
       {
          output.status = Object::before_beginning;
+         return;
       }
       NodeInput input = inputs[inputID];
 

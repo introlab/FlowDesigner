@@ -53,6 +53,7 @@ public:
    {
       NodeInput input = inputs[inputID];
       ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      //Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count);
 
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
@@ -62,6 +63,7 @@ public:
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       rfftw_one (plan, const_cast <float *> (in.begin()), output.begin());
+      //rfftw_one (plan, const_cast <float *> (inputValue->begin()), output.begin());
       output.status = Object::valid;
    }
 

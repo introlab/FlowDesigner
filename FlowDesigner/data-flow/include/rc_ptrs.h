@@ -54,8 +54,7 @@ public:
    template <class Z>
    Ptr(const Ptr<Z> &r)
    {
-      cerr << "type-safe copy constructor" << endl;
-      ptr=dynamic_cast<X> (r.ptr);
+      ptr=dynamic_cast<X*> (r.ptr);
       if (!ptr) throw "Ptr<X>: Illegal pointer conversion in copy constructor";
       count=r.count;
       acquire();
@@ -134,6 +133,9 @@ protected:
    {
       ++(*count);
    }
+
+   template <class Z>
+   friend class Ptr;
 };
 
 

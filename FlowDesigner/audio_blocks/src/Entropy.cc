@@ -31,6 +31,7 @@ class Entropy : public FrameOperation {
 
    int numberFrames;
    vector<Vector<float> *> frames;
+   vector<float> min;
 
 public:
    Entropy(string nodeName, ParameterSet params)
@@ -49,6 +50,7 @@ public:
       
       numberFrames=inputsCache[inputID].lookBack+inputsCache[inputID].lookAhead+1;
       frames.resize(numberFrames);
+      min.resize(numberFrames);
    }
 
    ~Entropy() {}
@@ -57,6 +59,19 @@ public:
    {
       this->FrameOperation::specificInitialize();
       
+   }
+
+   static inline float dist (float *in1, float *in2, int length)
+   {
+      int i;
+      float sum=0;
+      for (i=0;i<length;i++)
+      {
+         float tmp;
+         tmp=in1[i]-in2[i];
+         sum += tmp*tmp;
+      }
+      return sum;
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -73,29 +88,32 @@ public:
 
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
       {
-         ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
+         Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
+         //ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
          if (inputValue->status != Object::valid)
          {
             output.status = inputValue->status;
             return;
          }
-         frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
+         frames[j] = inputValue.detach();
+         //frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
       }      
       
       
-      for (i=0;i<num;i++)
-            for (j=i+1;j<num;j++)
+      for (i=0;i<numberFrames;i++)
+            for (j=i+1;j<numberFrames;j++)
             {
-               tmp=dist(frames[i]->begin(), frames[j]->begin(), inputLength);
+               float tmp=dist(frames[i]->begin(), frames[j]->begin(), inputLength);
                if (tmp < min[i]) min[i]=tmp;
                if (tmp < min[j]) min[j]=tmp;
             }
-      for (i=0;i<num;i++)
+      float accum=0;
+      for (i=0;i<numberFrames;i++)
       {
          accum += min[i];
       }
-      object_cast<Vector<float> > (output[count])[0] = accum/num;
-
+      output[0] = accum/numberFrames;
+      
 
 
       output.status = Object::valid;

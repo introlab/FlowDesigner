@@ -12,9 +12,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, write to the Free Software Foundation,
-// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.#ifndef STATE_H
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #ifndef AUDIO_INFO_H
 #define AUDIO_INFO_H
+
+#include <string>
+#include <stream.h>
+#include <iostream.h>
 
 class Tag {
    string tagName;
@@ -35,7 +39,7 @@ protected:
    //vector<Tag> tags;
 
 public:
-   Audioinfo(string _ortho, int _length) 
+   AudioInfo(string _ortho, int _length) 
       : ortho(_ortho)
       , length(_length)
       , coarse_endpointed(false)
@@ -43,6 +47,16 @@ public:
    {
       
    }
+
+   /** print function used for operator << */
+   virtual void printOn(ostream &out=cout) const;
+
+   /**Read function used for operator >> */
+   void readFrom (istream &in=cin);
+
+   //friend ostream &operator << (ostream &out, const GMM &gmm);
+   friend istream &operator >> (istream &in, AudioInfo &info);
+
 };
 
 #endif
