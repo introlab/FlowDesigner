@@ -20,6 +20,10 @@
 #include <stdlib.h>
 #include <math.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 class Autocor;
 
 DECLARE_NODE(Autocor)
@@ -164,10 +168,11 @@ public:
 
       if (normalize)
       {
-	 float e_1 = 1/energy;
+	 float e_1 = FLT_MIN+1/energy;
 	 for (int i=0;i<outputLength;i++)
 	 {
 	    output[i] *= e_1;
+	    output[i] =  min(1.0f,max(-1.0f,output[i]));
 	 }
       }
 
