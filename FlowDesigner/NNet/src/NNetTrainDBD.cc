@@ -55,6 +55,10 @@ DECLARE_NODE(NNetTrainDBD)
  * @parameter_type bool
  * @parameter_description If true, a big vector is allocated to store all the inputs (default false)
  *
+ * @parameter_name RPROP
+ * @parameter_type bool
+ * @parameter_description If true, use the RProp variant of delta-bar-delta (default false)
+ *
 END*/
 
 
@@ -85,6 +89,8 @@ protected:
    int nbSets;
 
    bool allocChunk;
+
+   bool rprop;
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -119,6 +125,10 @@ public:
       if (parameters.exist("ALLOC_CHUNK"))
 	 allocChunk = dereference_cast<bool> (parameters.get("ALLOC_CHUNK"));
       else allocChunk = false;
+
+      if (parameters.exist("RPROP"))
+	 rprop = dereference_cast<bool> (parameters.get("RPROP"));
+      else rprop = false;
       
    }
       
@@ -190,7 +200,7 @@ public:
 
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
-      TrainingDeltaBarDelta::train(&net, tin, tout, maxEpoch, learnRate, increase, decrease, nbSets);
+      TrainingDeltaBarDelta::train(&net, tin, tout, maxEpoch, learnRate, increase, decrease, nbSets, rprop);
       
       if (allocChunk)
 	 delete [] buff;

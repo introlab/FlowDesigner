@@ -7,7 +7,8 @@
 #include "Vector.h"
 
 void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float *> tout, 
-				  int iter, float learnRate, float increase, float decrease, int nbSets)
+				  int iter, float learnRate, float increase, float decrease, 
+				  int nbSets, bool rprop)
 {
    int i,j;
    double SSE;
@@ -49,7 +50,22 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
    {
 
       //float norm = dEk.norm();
-      float norm_1 = 1.0/tin.size();// / norm;
+      float norm_1 = 1;
+      if (!rprop)
+	 norm_1 = 1.0/tin.size();// / norm;
+      
+      if (rprop)
+      {
+	 for (i=0;i<nbWeights;i++)
+	 {
+	    if (dEk[i]>0)
+	       dEk[i] = 1;
+	    else if (dEk[i]<0)
+	       dEk[i] = -1;
+	    else 
+	       dEk[i] = 0;
+	 }
+      }
       
       if (nbSets ==1)
       {
@@ -128,6 +144,7 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
    net->setWeights(&wk[0]);
    //vec_copy(&wk[0], net->weights, nbWeights);
 }
+
 
 
 

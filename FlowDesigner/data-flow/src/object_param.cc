@@ -68,6 +68,6 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
 	 return Object::nilObject;
    }
    else {
-      throw new GeneralException("UNKNOWN PARAM TYPE: \"" + type + "\"", __FILE__, __LINE__);
+      throw new GeneralException("Unknown parameter type: \"" + type + "\"", __FILE__, __LINE__);
    }
 }
