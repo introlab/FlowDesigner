@@ -24,6 +24,31 @@ FuzzyModel::FuzzyModel()
   : BufferedNode("INVALID",ParameterSet()) {
 
 }
+
+FuzzyModel::FuzzyModel(const FuzzyModel &model)
+  : BufferedNode("INVALID",ParameterSet()) {
+
+  //inserting input set
+  //cerr<<"copying input set"<<endl;
+  for (int i = 0; i < model.m_input_set.size(); i++) {
+    m_input_set.push_back(model.m_input_set[i]->clone());
+  }
+
+  //inserting output set
+  //cerr<<"copying output set"<<endl;
+  for (int i = 0; i < model.m_output_set.size(); i++) {
+    m_output_set.push_back(model.m_output_set[i]->clone());
+  }
+  
+  //readding rules
+  //cerr<<"copying rules"<<endl;
+  for (int i = 0; i < model.m_rules.size(); i++) {
+    add_fuzzy_rule(model.m_rules[i]->clone());
+  }
+
+}
+
+
 FuzzyModel::FuzzyModel(string nodeName, ParameterSet params)
   : BufferedNode(nodeName,params) {
 
@@ -32,6 +57,7 @@ FuzzyModel::FuzzyModel(string nodeName, ParameterSet params)
   m_CSetID = addInput("CONSEQUENT_SETS");
   m_InputID = addInput("INPUT");
   m_OutputID = addOutput("OUTPUT");
+  m_ModelID = addOutput("MODEL");
 
 }
 //////////////////////////////////////////////////////////////////////
@@ -381,4 +407,100 @@ void FuzzyModel::print_sets(ostream &out) {
   }
   
   
+}
+
+
+void FuzzyModel::reset() {
+
+  for (int i = 0 ; i < m_rules.size(); i++) {
+    delete m_rules[i];
+  }
+  m_rules.resize(0);
+
+
+  for (int i = 0 ; i < m_output_set.size(); i++) {
+    delete m_output_set[i];
+  }
+  m_output_set.resize(0);
+
+  
+  for (int i = 0 ; i < m_input_set.size(); i++) {
+    delete m_input_set[i];
+  }
+  m_input_set.resize(0);
+  
+  m_input_functions.resize(0);
+  m_output_functions.resize(0);
+
+}
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+
+void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
+
+  try {
+
+    reset();
+        
+    //getting Fuzzy Rules
+    ObjectRef Rules = getInput(m_RuleID, count);
+    
+    //getting Fuzzy Sets (antecedent)
+    ObjectRef ASets = getInput(m_ASetID, count);
+    
+    //getting Fuzzy Sets (consequent)
+    ObjectRef CSets = getInput(m_CSetID,count);
+    
+    //getting Inputs
+    ObjectRef Input = getInput(m_InputID, count);
+        
+    //First add antecedant sets
+    Vector<FuzzySet*> &vect_sets1 = object_cast<Vector<FuzzySet*> >(ASets);
+    for (int i = 0; i < vect_sets1.size(); i++) {
+      //vect_sets1[i]->printOn(cerr);
+      add_fuzzy_set(vect_sets1[i]->clone(),FuzzyModel::FUZZY_INPUT_SET);
+    }
+    
+    //Then add consequent sets
+    Vector<FuzzySet*> &vect_sets2 = object_cast<Vector<FuzzySet*> >(CSets);
+    for (int i = 0; i < vect_sets2.size(); i++) {
+      //vect_sets2[i]->printOn(cerr);
+      add_fuzzy_set(vect_sets2[i]->clone(),FuzzyModel::FUZZY_OUTPUT_SET);
+    }
+    
+    //Finally add rules
+    Vector<FuzzyRule*> &vect_rules = object_cast<Vector<FuzzyRule*> >(Rules);
+    for (int i = 0; i < vect_rules.size(); i++) {
+      //vect_rules[i]->printOn(cerr);
+      add_fuzzy_rule(vect_rules[i]->clone());
+    }
+    
+    //verify rule consistency
+    verify_rules();
+    
+    //calculate output
+    Vector<float> &vect_value = object_cast<Vector<float> >(Input);  
+    
+    vector<float>& calc_output = evaluate(vect_value);
+    
+    Vector<float> *my_output = new Vector<float>(calc_output.size());
+    
+    for (int i = 0; i < calc_output.size(); i++) {
+      (*my_output)[i] = calc_output[i];
+    }
+    
+    if (output_id == m_OutputID) {
+      out[count] = ObjectRef(my_output);
+    }
+    
+    if (output_id == m_ModelID) {
+      out[count] = ObjectRef(clone());
+    }
+  }//try
+  catch (BaseException *e) {
+    throw e->add (new GeneralException("Exception caught while processing GeneralModel", __FILE__, __LINE__));
+  }
+
+
 }

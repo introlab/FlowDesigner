@@ -15,7 +15,7 @@
 
 using namespace std;
 
-class FuzzyModel : public BufferedNode {
+class FuzzyModel : public BufferedNode, public Object {
 
 public:
 	
@@ -28,6 +28,7 @@ public:
 	//print the sets
 	void print_sets(ostream &out);
 
+	void reset();
 
 	//add a fuzzy set (of type input or output)
 	void add_fuzzy_set(FuzzySet *set, int type);
@@ -37,6 +38,9 @@ public:
 
 	//default constructor
 	FuzzyModel();
+
+	FuzzyModel(const FuzzyModel &model);
+
 
 	FuzzyModel(string nodeName, ParameterSet params);
 
@@ -51,6 +55,15 @@ public:
 	virtual float conjunction(vector<float> &c_values) = 0;
 	virtual float disjunction(vector<float> &d_values) = 0;
 	virtual vector<float> & defuzzification() = 0;
+
+
+	virtual void calculate(int output_id, int count, Buffer &out);
+	
+	//cloning capability
+	virtual FuzzyModel* clone() = 0;
+
+	virtual void printOn(ostream &out) = 0;
+
 
 	//constants representing input and output sets
 	static const int FUZZY_INPUT_SET;
@@ -68,6 +81,8 @@ protected:
 	int m_InputID;
 
 	int m_OutputID;
+
+	int m_ModelID;
 
 	//vector of rules
 	vector<FuzzyRule*> m_rules;

@@ -31,6 +31,10 @@ DECLARE_NODE(GenericModel)
  * @input_description The input value of the variables
  * @input_type Vector
  *
+ * @output_name MODEL
+ * @output_description The model (cloned)
+ * @output_type Model
+ *
  * @output_name OUTPUT
  * @output_description The defuzzified values
  * @output_type Vector
@@ -39,7 +43,7 @@ END*/
 
 
 //////////////////////////////////////////////////////////////////////
-// Destruction
+//Construction
 //////////////////////////////////////////////////////////////////////
 
 GenericModel::GenericModel() {
@@ -52,11 +56,18 @@ GenericModel::GenericModel(string nodeName, ParameterSet params)
 
 }
 
+GenericModel::GenericModel(const GenericModel &model)
+  : FuzzyModel(model) {
 
+
+
+}
 //////////////////////////////////////////////////////////////////////
 // Destruction
 //////////////////////////////////////////////////////////////////////
 GenericModel::~GenericModel() {
+
+  //cerr<<"generic Model Destructor"<<endl;
 
 }
 
@@ -144,76 +155,44 @@ vector<float>& GenericModel::defuzzification() {
   
   return m_defuzzification;
 }
-//////////////////////////////////////////////////////////////////////
-// calculate
-//////////////////////////////////////////////////////////////////////
-
-void GenericModel::calculate(int output_id, int count, Buffer &out) {
 
 
-  for (int i = 0 ; i < m_rules.size(); i++) {
-    delete m_rules[i];
-  }
-  m_rules.resize(0);
+
+FuzzyModel* GenericModel::clone() {
 
 
-  for (int i = 0 ; i < m_output_set.size(); i++) {
-    delete m_output_set[i];
-  }
-  m_output_set.resize(0);
+  //cerr<<"cloning Generic Model"<<endl;
 
-  
-  for (int i = 0 ; i < m_input_set.size(); i++) {
-    delete m_input_set[i];
-  }
-  m_input_set.resize(0);
-  
+  GenericModel *model = new GenericModel(*this);
 
-  //getting Fuzzy Rules
-  ObjectRef Rules = getInput(m_RuleID, count);
-
-  //getting Fuzzy Sets (antecedent)
-  ObjectRef ASets = getInput(m_ASetID, count);
-
-  //getting Fuzzy Sets (consequent)
-  ObjectRef CSets = getInput(m_CSetID,count);
-  
-  //getting Inputs
-  ObjectRef Input = getInput(m_InputID, count);
-
-
-  //First add antecedant sets
-  Vector<FuzzySet*> &vect_sets = object_cast<Vector<FuzzySet*> >(ASets);
-  for (int i = 0; i < vect_sets.size(); i++) {
-    add_fuzzy_set(vect_sets[i],FuzzyModel::FUZZY_INPUT_SET);
-  }
-
-  //Then add consequent sets
-  vect_sets = object_cast<Vector<FuzzySet*> >(CSets);
-  for (int i = 0; i < vect_sets.size(); i++) {
-    add_fuzzy_set(vect_sets[i],FuzzyModel::FUZZY_OUTPUT_SET);
-  }
-  
-  //Finally add rules
-  Vector<FuzzyRule*> &vect_rules = object_cast<Vector<FuzzyRule*> >(Rules);
-  for (int i = 0; i < vect_rules.size(); i++) {
-    add_fuzzy_rule(vect_rules[i]);
-  }
-
-  //verify rule consistency
-  verify_rules();
-
-  //calculate output
-  Vector<float> &vect_value = object_cast<Vector<float> >(Input);  
-
-  vector<float>& calc_output = evaluate(vect_value);
-
-  Vector<float> *my_output = new Vector<float>(calc_output.size());
-
-  for (int i = 0; i < calc_output.size(); i++) {
-    (*my_output)[i] = calc_output[i];
-  }
-
-  out[count] = ObjectRef(my_output);
+  return model;
 
 }
+
+void GenericModel::printOn(ostream &out) {
+
+  out << "<GenericModel "; 
+  out<<m_rules.size()<<endl;
+
+  for (int i = 0; i < m_rules.size(); i++) {
+    m_rules[i]->printOn(out);
+    out<<endl;
+  }
+  
+  out<<m_input_set.size()<<endl;
+  
+  for (int i = 0; i < m_input_set.size(); i++) {
+    m_input_set[i]->printOn(out);
+    out<<endl;
+  }
+  
+  out<<m_output_set.size()<<endl;
+  
+  for (int i = 0; i < m_output_set.size(); i++) {
+    m_output_set[i]->printOn(out);
+    out<<endl;
+  }
+
+  out <<" >\n";
+}
+	

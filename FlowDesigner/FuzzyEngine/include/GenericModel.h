@@ -16,6 +16,8 @@ public:
 	//constructor
 	GenericModel();
 
+	GenericModel(const GenericModel& model);
+
 	GenericModel(string nodeName, ParameterSet params);
 
 	//destructor
@@ -29,8 +31,11 @@ public:
 
 	//Mamdani defuzzification 
 	virtual vector<float>& defuzzification();
+	
+	//cloning capability
+	virtual FuzzyModel* clone();
 
-	virtual void calculate(int output_id, int count, Buffer &out);
+	virtual void printOn(ostream &out);
 	
 
 private:

@@ -17,6 +17,13 @@ class FuzzyFunction : public BufferedNode, public Object{
 
 public:
 
+  //friend istream& operator>> (istream &in, FuzzyFunction &function);
+
+  //friend ostream& operator<< (ostream &out, FuzzyFunction &function);
+  
+  
+
+
 	//accessor for the function name
 	const string & get_name();
 	
@@ -56,7 +63,13 @@ public:
 	//cloning capability
 	virtual FuzzyFunction* clone() = 0;
 
+	virtual void printOn(ostream &out) = 0;
 
+
+	virtual void calculate(int output_id, int count, Buffer &out);
+
+
+	
 
 protected:
 
@@ -79,9 +92,10 @@ private:
 
 inline void Vector<FuzzyFunction*>::printOn(ostream &out) const {
 
-  cerr<<"PrintOn called"<<endl;
+  cerr<<"PrintOn called Vector<FuzzyFunction*>"<<endl;
   
   for (int i = 0; i < size(); i++) {
+    cerr<<"calling printon"<<endl;
     operator[](i)->printOn(out);
   }
 }
@@ -91,5 +105,14 @@ inline void Vector<FuzzyFunction*>::readFrom(istream &in) {
 }
 
 
+inline void Vector<FuzzyFunction*>::destroy() {
+
+ for (Vector<FuzzyFunction*>::iterator iter = this->begin();
+      iter != this->end(); iter++) {
+   delete (*iter);
+ }
+
+ delete this;
+}
 
 #endif

@@ -40,6 +40,14 @@ FuzzyFunction::~FuzzyFunction() {
 const string & FuzzyFunction::get_name() {
   return m_name;
 }
+//////////////////////////////////////////////////////////////////////
+// calculate
+//////////////////////////////////////////////////////////////////////
+void FuzzyFunction::calculate(int output_id, int count, Buffer &out) {
+
+  out[count] = ObjectRef(new Vector<FuzzyFunction*>(1,clone()));
+
+}
 
 
 

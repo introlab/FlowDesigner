@@ -60,9 +60,8 @@ public:
   
   FuzzyRule* clone();
 
-  virtual void printOn(ostream &out=cout) {
-    print_rule(out);
-  }
+  virtual void printOn(ostream &out=cout);
+
 
   
  private:
@@ -85,5 +84,14 @@ inline void Vector<FuzzyRule*>::printOn(ostream &out) const {
   }
 }
 
+inline void Vector<FuzzyRule*>::destroy() {
+
+ for (Vector<FuzzyRule*>::iterator iter = this->begin();
+      iter != this->end(); iter++) {
+   delete (*iter);
+ }
+
+ delete this;
+}
 
 #endif 

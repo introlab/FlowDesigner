@@ -149,12 +149,6 @@ float TrapezoidalFunction::get_center_of_gravity() {
   
   return cog;
 }
-//////////////////////////////////////////////////////////////////////
-// calculate
-//////////////////////////////////////////////////////////////////////
-
-void TrapezoidalFunction::calculate(int output_id, int count, Buffer &out) {
-
-  out[count] = ObjectRef(new Vector<FuzzyFunction*>(1,clone()));
-
+void TrapezoidalFunction::printOn(ostream &out) {
+  out << "<TrapezoidalFunction " << m_name<<" "<<m_a<<" "<<m_b<<" "<<m_c<<" "<<m_d<<" >\n";
 }

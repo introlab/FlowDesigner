@@ -81,6 +81,7 @@ void FuzzySet::add_trapezoidal_function(const string &name, float a,
 					float b, float c, float d) {
 
   m_functions.push_back(new TrapezoidalFunction(name,a,b,c,d));	
+  m_evaluation.resize(m_functions.size());
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -89,6 +90,8 @@ void FuzzySet::add_trapezoidal_function(const string &name, float a,
 
 void FuzzySet::add_triangular_function(const string &name, float a, float b, float c) {
   m_functions.push_back(new TriangularFunction(name,a,b,c));
+  m_evaluation.resize(m_functions.size());
+
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -100,20 +103,13 @@ vector<float> & FuzzySet::get_all_membership_evaluation(float x) {
   //updating evaluation vector
   m_evaluation.resize(m_functions.size());
   
-  //updating maps
-  m_string_value_map.clear();
-  
-  
   
   for (int i = 0; i < m_functions.size(); i++) {
     m_evaluation[i] = m_functions[i]->evaluate(x);
 
-    cerr<<"Set "<<m_name<<" Evaluating function : "
-	<<m_functions[i]->get_name()<<" to value "<<m_evaluation[i]<<endl;
-    
-    m_string_value_map.insert(
-			      pair<string,float>(m_functions[i]->get_name(),m_evaluation[i]));
-    
+    //cerr<<"Set "<<m_name<<" Evaluating function : "
+	//<<m_functions[i]->get_name()<<" to value "<<m_evaluation[i]<<endl;
+        
   }
   
   return m_evaluation;
@@ -130,9 +126,6 @@ float FuzzySet::get_membership_evaluation(const string &name, float x) {
   int index = find_function_by_index(name);
   
   m_evaluation[index] = m_functions[index]->evaluate(x);
-  
-  m_string_value_map.insert(
-			    pair<string,float>(name,m_evaluation[index]));
   
   return m_evaluation[index];
 }
@@ -235,6 +228,8 @@ void FuzzySet::print_functions(ostream &out) {
 void FuzzySet::calculate(int output_id, int count, Buffer &out) {
 
 
+  //cerr<<"FuzzySet Calculate"<<endl;
+
   for (int i = 0 ; i < m_functions.size(); i++) {
     delete m_functions[i];
   }
@@ -248,7 +243,7 @@ void FuzzySet::calculate(int output_id, int count, Buffer &out) {
 
   
   for (int i = 0 ; i < funct_vect.size(); i++) {
-    m_functions.push_back(funct_vect[i]);
+    m_functions.push_back(funct_vect[i]->clone());
   }
 
   out[count] = ObjectRef(new Vector<FuzzySet*>(1,clone()));
@@ -266,3 +261,15 @@ FuzzySet* FuzzySet::clone() {
   return my_set;
 }
 
+void FuzzySet::printOn(ostream &out) {
+
+  out << "<FuzzySet "; 
+  out <<m_name<<" ";
+  out<<m_functions.size()<<endl;
+
+  for (int i = 0; i < m_functions.size(); i++) {
+    m_functions[i]->printOn(out);
+    out<<endl;
+  }
+  out <<" >\n";
+}

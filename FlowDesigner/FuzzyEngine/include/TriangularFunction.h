@@ -37,16 +37,12 @@ public:
 	//higher limit of the functions
 	virtual float get_lower_bound() {return m_a;}
 
-	virtual void calculate(int output_id, int count, Buffer &out);
-
-	
 	//cloning capability
 	virtual FuzzyFunction* clone();
 
 		
-	virtual void printOn(ostream &out=cout) {
-	  out<<"TriangularFunction ("<<m_name<<") "<<m_a<<" "<<m_b<<" "<<m_c<<endl;
-	}
+	virtual void printOn(ostream &out=cout);
+
 
 
 private:

@@ -8,14 +8,7 @@
 #include "FuzzySet.h"
 #include "FuzzyFunction.h"
 #include "Vector.h"
-
-DEFINE_DOUBLE_VTABLE(concatVtable);
-
-inline ObjectRef concatenate(ObjectRef x, ObjectRef y) {
-   return concatVtable::perform(x,y);
-}
-
-
+#include "operators.h"
 
 inline istream& operator>> (istream &in, FuzzyRule *rule) {
   return in;

@@ -5,6 +5,7 @@
 //////////////////////////////////////////////////////////////////////
 #include "FuzzyOperators.h"
 
+
 /*
 ///FuzzyRule and Vector<FuzzyRule> concatenation
 ObjectRef RuleConcatRuleVect(ObjectRef x, ObjectRef y) {

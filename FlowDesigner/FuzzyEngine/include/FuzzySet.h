@@ -63,14 +63,13 @@ public:
 	//print the membership functions
 	void print_functions(ostream &out);
 
-	float get_value_with_name(const string &fname) {
-		return m_string_value_map[fname];
-	}
-
 	virtual void calculate(int output_id, int count, Buffer &out);
 
 	FuzzySet* clone();
 	
+
+	virtual void printOn(ostream &out);
+
 private:
 
 	//the set name
@@ -82,14 +81,38 @@ private:
 	//the evaluation vector (results of the evaluation of functions)
 	vector<float> m_evaluation;
 
-	//the string/value ptr map
-	map<string,float> m_string_value_map;
-
 	//the inputID
 	int m_functionID;
 
 	//the outputID
 	int m_setID;
 };
+
+
+
+inline void Vector<FuzzySet*>::printOn(ostream &out) const {
+
+  cerr<<"PrintOn called (Vector<FuzzySet*>)"<<endl;
+  
+  for (int i = 0; i < size(); i++) {
+    cerr<<"calling printon"<<endl;
+    operator[](i)->printOn(out);
+  }
+}
+
+inline void Vector<FuzzySet*>::readFrom(istream &in) {
+
+}
+
+
+inline void Vector<FuzzySet*>::destroy() {
+
+ for (Vector<FuzzySet*>::iterator iter = this->begin();
+      iter != this->end(); iter++) {
+   delete (*iter);
+ }
+
+ delete this;
+}
 
 #endif
