@@ -59,7 +59,24 @@ GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
 
 GUINetwork::~GUINetwork() 
 {
+   /*for (int i=0;i<nodes.size();i++)
+     delete nodes[i];*/
+
+   //although this is wierd, it has to be like that since the destroyed link removes 
+   //itself from the connection list
+   while (nodes.size())
+      delete nodes[0];
+/*there shouldn't be any links left
+  for (int i=0;i<links.size();i++)
+  {
+  delete links[i];
+  }
+*/
    delete popup;
+   gtk_object_destroy(GTK_OBJECT(group));
+   gtk_widget_destroy(GTK_WIDGET(canvas));
+
+   destroyed=true;
 }
 
 void GUINetwork::create()

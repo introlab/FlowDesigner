@@ -154,7 +154,15 @@ void GUINode::draw()
 
 GUINode::~GUINode()
 {
+   for (int i=0;i<inputs.size();i++)
+      delete inputs[i];
+   for (int i=0;i<outputs.size();i++)
+      delete outputs[i];
+   
+   delete parameters;
+   net->removeNode(this);
    gtk_object_destroy(GTK_OBJECT(group));
+   destroyed=true;
 }
 
 static void node_prop (GtkMenuItem *menuitem, gpointer user_data)
