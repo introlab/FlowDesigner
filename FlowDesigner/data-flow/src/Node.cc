@@ -27,7 +27,7 @@ bool ParameterSet::exist(const string &param) const
 ObjectRef ParameterSet::get(string param) const
 {
    if (find(param)==end())
-      throw new MissingParameterException(param,*this);
+      throw ExceptionRef (new MissingParameterException(param,*this));
    //else return operator[](param);
    else return find(param)->second;
 }
@@ -90,7 +90,7 @@ void Node::initialize ()
          in->node->initialize();
 
          if (!in->node->hasOutput(in->outputID)) 
-            throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
+            throw ExceptionRef (new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__));
 
      }
       
