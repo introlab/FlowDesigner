@@ -5,79 +5,29 @@
 //////////////////////////////////////////////////////////////////////
 #include "FuzzyOperators.h"
 
+///Vector<ObjectRef> and Vector<ObjectRef> concatenation
+ObjectRef ObjectRefConcatVectVect(ObjectRef x, ObjectRef y) {
 
-/*
-///FuzzyRule and Vector<FuzzyRule> concatenation
-ObjectRef RuleConcatRuleVect(ObjectRef x, ObjectRef y) {
+  Vector<ObjectRef> &vect1 = object_cast<Vector<ObjectRef> >(x);
+  Vector<ObjectRef> &vect2 = object_cast<Vector<ObjectRef> >(y);
 
-  Vector<FuzzyRule> &vect = object_cast<Vector<FuzzyRule> >(y);
-  Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
-
-  (*output).push_back(object_cast<FuzzyRule>(x));
-
-  for (int i = 0; i < vect.size(); i++) {
-    (*output).push_back(vect[i]);
-  }
-
-  return ObjectRef(output);
-
-}
-REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatRuleVect, FuzzyRule, Vector<FuzzyRule>);
-
-///Vector<FuzzyRule> and FuzzyRule concatenation
-ObjectRef RuleConcatVectRule(ObjectRef x, ObjectRef y) {
-
-  Vector<FuzzyRule> &vect = object_cast<Vector<FuzzyRule> >(x);
-
-  Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
-
-  for (int i = 0; i < vect.size(); i++) {
-    (*output).push_back(vect[i]);
-  }
-
-  (*output).push_back(object_cast<FuzzyRule>(y));
-
-  return ObjectRef(output);
-
-}
-REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatVectRule, Vector<FuzzyRule>, FuzzyRule);
-
-///FuzzyRule and FuzzyRule concatenation
-ObjectRef RuleConcatRuleRule(ObjectRef x, ObjectRef y) {
-
-  Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
-  (*output).push_back(object_cast<FuzzyRule>(x));
-  (*output).push_back(object_cast<FuzzyRule>(y));
-  
-  return ObjectRef(output);
-
-}
-REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatRuleRule, FuzzyRule, FuzzyRule);
-
-
-///Vector<FuzzyRule> and Vector<FuzzyRule> concatenation
-ObjectRef RuleConcatVectVect(ObjectRef x, ObjectRef y) {
-
-  Vector<FuzzyRule> &vect1 = object_cast<Vector<FuzzyRule> >(x);
-  Vector<FuzzyRule> &vect2 = object_cast<Vector<FuzzyRule> >(y);
-
-  Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
+  Vector<ObjectRef> *output = new Vector<ObjectRef>;
 
   for (int i = 0; i < vect1.size(); i++) {
-    (*output).push_back(vect1[i]);
+    (*output).push_back(vect1[i]->clone());
   }
 
   for (int i = 0; i < vect2.size(); i++) {
-    (*output).push_back(vect2[i]);
+    (*output).push_back(vect2[i]->clone());
   }
 
   return ObjectRef(output);
 
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatVectVect, Vector<FuzzyRule>, Vector<FuzzyRule>);
-*/
+REGISTER_DOUBLE_VTABLE(concatVtable, ObjectRefConcatVectVect, Vector<ObjectRef>, Vector<ObjectRef>);
 
 
+/*
 
 ///Vector<FuzzyFunction*> and Vector<FuzzyFunction*> concatenation
 ObjectRef RuleConcatVectVect(ObjectRef x, ObjectRef y) {
@@ -143,6 +93,6 @@ ObjectRef SetConcatVectVect(ObjectRef x, ObjectRef y) {
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, SetConcatVectVect, Vector<FuzzySet*>, Vector<FuzzySet*>);
 
-
+*/
 
 

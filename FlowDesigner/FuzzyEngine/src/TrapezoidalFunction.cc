@@ -51,8 +51,8 @@ TrapezoidalFunction::TrapezoidalFunction(const string &name, float a,
 
 }
 
-FuzzyFunction* TrapezoidalFunction::clone() {
-  return new TrapezoidalFunction(m_name,m_a,m_b,m_c,m_d);
+ObjectRef TrapezoidalFunction::clone() {
+  return ObjectRef(new TrapezoidalFunction(m_name,m_a,m_b,m_c,m_d));
 }
 
 

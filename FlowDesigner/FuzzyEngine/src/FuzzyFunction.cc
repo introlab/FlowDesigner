@@ -45,7 +45,7 @@ const string & FuzzyFunction::get_name() {
 //////////////////////////////////////////////////////////////////////
 void FuzzyFunction::calculate(int output_id, int count, Buffer &out) {
 
-  out[count] = ObjectRef(new Vector<FuzzyFunction*>(1,clone()));
+  out[count] = ObjectRef(new Vector<ObjectRef>(1,clone()));
 
 }
 

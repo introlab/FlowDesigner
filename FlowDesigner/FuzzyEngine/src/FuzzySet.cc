@@ -74,10 +74,6 @@ FuzzySet::FuzzySet(string nodeName, ParameterSet params)
 
 FuzzySet::~FuzzySet() {
   
-  for (int i = 0; i < m_functions.size(); i++) {
-    delete m_functions[i];
-  }
-  
   m_functions.resize(0);
 }
 //////////////////////////////////////////////////////////////////////
@@ -87,7 +83,7 @@ FuzzySet::~FuzzySet() {
 void FuzzySet::add_trapezoidal_function(const string &name, float a, 
 					float b, float c, float d) {
 
-  m_functions.push_back(new TrapezoidalFunction(name,a,b,c,d));	
+  m_functions.push_back(ObjectRef(new TrapezoidalFunction(name,a,b,c,d)));	
   m_evaluation.resize(m_functions.size());
 }
 
@@ -96,7 +92,9 @@ void FuzzySet::add_trapezoidal_function(const string &name, float a,
 //////////////////////////////////////////////////////////////////////
 
 void FuzzySet::add_triangular_function(const string &name, float a, float b, float c) {
-  m_functions.push_back(new TriangularFunction(name,a,b,c));
+
+  m_functions.push_back(ObjectRef(new TriangularFunction(name,a,b,c)));
+
   m_evaluation.resize(m_functions.size());
 
 }
@@ -112,11 +110,8 @@ Vector<float> & FuzzySet::get_all_membership_evaluation(float x) {
   
   
   for (int i = 0; i < m_functions.size(); i++) {
-    m_evaluation[i] = m_functions[i]->evaluate(x);
+    m_evaluation[i] = object_cast<FuzzyFunction>(m_functions[i]).evaluate(x);
 
-    //cerr<<"Set "<<m_name<<" Evaluating function : "
-	//<<m_functions[i]->get_name()<<" to value "<<m_evaluation[i]<<endl;
-        
   }
   
   return m_evaluation;
@@ -132,7 +127,7 @@ float FuzzySet::get_membership_evaluation(const string &name, float x) {
   
   int index = find_function_by_index(name);
   
-  m_evaluation[index] = m_functions[index]->evaluate(x);
+  m_evaluation[index] = object_cast<FuzzyFunction>(m_functions[index]).evaluate(x);
   
   return m_evaluation[index];
 }
@@ -146,7 +141,7 @@ int FuzzySet::find_function_by_index(const string &name) {
   
   for (int i = 0; i < m_functions.size(); i++) {
     
-    if (m_functions[i]->get_name() == name) return i;
+    if (object_cast<FuzzyFunction>(m_functions[i]).get_name() == name) return i;
     
   }
   
@@ -163,11 +158,12 @@ int FuzzySet::find_function_by_index(const string &name) {
 // Returns the pointer of a given function name
 //////////////////////////////////////////////////////////////////////
 
-FuzzyFunction * FuzzySet::find_function_by_name (const string &name) {
+FuzzyFunction* FuzzySet::find_function_by_name (const string &name) {
   
   for (int i = 0; i < m_functions.size(); i++) {
     
-    if (m_functions[i]->get_name() == name) return m_functions[i];
+    if (object_cast<FuzzyFunction>(m_functions[i]).get_name() == name) 
+      return dynamic_cast<FuzzyFunction*>(m_functions[i].get());
     
   }
   
@@ -187,19 +183,19 @@ FuzzyFunction * FuzzySet::find_function_by_name (const string &name) {
 void FuzzySet::print_functions(ostream &out) {
   
   if (m_functions.size() > 0) {
-    float min = m_functions[0]->get_lower_bound(); 
-    float max = m_functions[0]->get_upper_bound();
+    float min = object_cast<FuzzyFunction>(m_functions[0]).get_lower_bound(); 
+    float max = object_cast<FuzzyFunction>(m_functions[0]).get_upper_bound();
     int i;
     
     //finding limits
     for (i = 0; i < m_functions.size(); i++) {
       
-      if (min > m_functions[i]->get_lower_bound()) {
-	min = m_functions[i]->get_lower_bound();
+      if (min > object_cast<FuzzyFunction>(m_functions[i]).get_lower_bound()) {
+	min = object_cast<FuzzyFunction>(m_functions[i]).get_lower_bound();
       }
       
-      if (max < m_functions[i]->get_upper_bound()) {
-	max = m_functions[i]->get_upper_bound();
+      if (max < object_cast<FuzzyFunction>(m_functions[i]).get_upper_bound()) {
+	max = object_cast<FuzzyFunction>(m_functions[i]).get_upper_bound();
       }
       
       
@@ -210,7 +206,7 @@ void FuzzySet::print_functions(ostream &out) {
       
       //printing membership function names
       for (i = 0; i < m_functions.size(); i++) {
-	out<<m_functions[i]->get_name()<<"\t";	
+	out<<object_cast<FuzzyFunction>(m_functions[i]).get_name()<<"\t";	
       }
       
       out<<index<<"\t";
@@ -218,7 +214,7 @@ void FuzzySet::print_functions(ostream &out) {
       
       //printing membership function values
       for (i = 0; i < m_functions.size(); i++) {
-	out<<m_functions[i]->evaluate(index)<<"\t";
+	out<<object_cast<FuzzyFunction>(m_functions[i]).evaluate(index)<<"\t";
       }
       
       
@@ -236,28 +232,23 @@ void FuzzySet::calculate(int output_id, int count, Buffer &out) {
 
 
   //cerr<<"FuzzySet Calculate"<<endl;
-
-  for (int i = 0 ; i < m_functions.size(); i++) {
-    delete m_functions[i];
-  }
-  
   m_functions.resize(0);
 
 
   //getting functions 
   ObjectRef Functions = getInput(m_functionID, count);
-  Vector<FuzzyFunction*> &funct_vect = object_cast<Vector<FuzzyFunction*> >(Functions);
+  Vector<ObjectRef> &funct_vect = object_cast<Vector<ObjectRef> >(Functions);
 
   
   for (int i = 0 ; i < funct_vect.size(); i++) {
     m_functions.push_back(funct_vect[i]->clone());
   }
 
-  out[count] = ObjectRef(new Vector<FuzzySet*>(1,clone()));
+  out[count] = ObjectRef(new Vector<ObjectRef>(1,clone()));
 
 }
 
-FuzzySet* FuzzySet::clone() {
+ObjectRef FuzzySet::clone() {
 
   FuzzySet* my_set = new FuzzySet(m_name);
 
@@ -265,20 +256,17 @@ FuzzySet* FuzzySet::clone() {
     my_set->m_functions.push_back(m_functions[i]->clone());
   }
 
-  return my_set;
+  return ObjectRef(my_set);
 }
 
-void FuzzySet::printOn(ostream &out) const
-{
+void FuzzySet::printOn(ostream &out) const {
 
   out << "<FuzzySet "<<endl; 
   out << "<Name "<<m_name<<" >"<<endl;
   out << "<Size "<<m_functions.size()<<" >"<<endl;
 
   for (int i = 0; i < m_functions.size(); i++) {
-    out<<"< "<<m_functions[i]->get_type()<<endl;
-    m_functions[i]->printOn(out);
-    out<<" >"<<endl;
+    out<<"<Function "<<m_functions[i]<<" >"<<endl;
   }
   out <<" >\n";
 }
@@ -306,22 +294,11 @@ void FuzzySet::readFrom(istream &in) {
          in >> size;
 	 m_evaluation.resize(size);
       }
-      else if (tag == "Triangular") {
-
-	if (!isValidType(in, "TriangularFunction")) {
-	  throw new ParsingException ("Parse error trying to build " + tag);
-	}
-
-
-	m_functions.push_back(new TriangularFunction(in));
-      }
-      else if (tag == "Trapezoidal") {
-
-	if (!isValidType(in, "TrapezoidalFunction")) {
-	  throw new ParsingException ("Parse error trying to build " + tag);
-	}
-       
-	m_functions.push_back(new TrapezoidalFunction(in));
+      else if (tag == "Function") {
+	//reading function
+	ObjectRef value;
+	in>>value;
+	m_functions.push_back(value);
       }
       else {
 	throw new ParsingException ("unknown argument: " + tag);
@@ -333,7 +310,4 @@ void FuzzySet::readFrom(istream &in) {
       if (tag != ">") 
          throw new ParsingException ("Parse error: '>' expected ");
    }
-
-   
-
 }

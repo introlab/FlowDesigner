@@ -21,9 +21,6 @@ public:
 
   //friend ostream& operator<< (ostream &out, FuzzyFunction &function);
   
-  
-
-
   //accessor for the function name
   const string & get_name();
   
@@ -63,7 +60,7 @@ public:
   virtual float get_lower_bound() = 0;
   
   //cloning capability
-  virtual FuzzyFunction* clone() = 0;
+  //virtual ObjectRef clone() = 0;
   
   virtual void calculate(int output_id, int count, Buffer &out);
   
@@ -82,7 +79,7 @@ public:
   
 };
 
-
+/*
 
 inline void Vector<FuzzyFunction*>::printOn(ostream &out) const {
 
@@ -108,5 +105,6 @@ inline void Vector<FuzzyFunction*>::destroy() {
 
  delete this;
 }
+*/
 
 #endif

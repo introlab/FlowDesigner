@@ -45,7 +45,7 @@ public:
   virtual float get_lower_bound() {return m_a;}
   
   //cloning capability
-  virtual FuzzyFunction* clone();
+  virtual ObjectRef clone();
   
   
   virtual void printOn(ostream &out=cout) const;

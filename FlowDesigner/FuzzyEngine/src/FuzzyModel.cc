@@ -66,22 +66,7 @@ FuzzyModel::FuzzyModel(string nodeName, ParameterSet params)
 FuzzyModel::~FuzzyModel() {
 
   int i;
-  
-  //deleting rules
-  for (i = 0; i < m_rules.size(); i++) {
-    delete m_rules[i];
-  }
-  
-  //deleting input sets
-  for (i = 0; i <m_input_set.size(); i++) {
-    delete m_input_set[i];
-  }
-  
-  //deleting output sets
-  for (i = 0; i <m_output_set.size(); i++) {
-    delete m_output_set[i];
-  }
-  
+ 
   //resizing vectors
   m_rules.resize(0);
   m_input_set.resize(0);
@@ -91,25 +76,25 @@ FuzzyModel::~FuzzyModel() {
 //////////////////////////////////////////////////////////////////////
 // Add a fuzzy rule to the model
 //////////////////////////////////////////////////////////////////////
-void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
+void FuzzyModel::add_fuzzy_rule(ObjectRef ruleValue) {
 
-
+  FuzzySet *set = NULL;
+  FuzzyFunction *function = NULL;
+  FuzzyRule &rule = object_cast<FuzzyRule>(ruleValue);  
   
-  FuzzySet *set;
-  FuzzyFunction *function;
   int i;
   
   //int rule_number = rule->get_rule_number();
   int rule_number = m_rules.size() + 1;
 
-  rule->set_rule_number(rule_number);
+  rule.set_rule_number(rule_number);
   
   //rule->print_rule(cerr);
 
 
   //let's verify this rule
-  vector<pair<string,string> >&consequent = rule->get_consequent_part();
-  vector<pair<string,string> >&antecedant = rule->get_antecedant_part();
+  vector<pair<string,string> >&consequent = rule.get_consequent_part();
+  vector<pair<string,string> >&antecedant = rule.get_antecedant_part();
   
   
   //rule number verification
@@ -147,6 +132,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
       throw new GeneralException(message,__FILE__,__LINE__);
     }
     else {
+
       function = set->find_function_by_name(antecedant[i].second);
       
       
@@ -197,25 +183,26 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
   
   
   //this rule is ready to be inserted
-  m_rules.push_back(rule);
+  m_rules.push_back(ruleValue);
   
 }
 //////////////////////////////////////////////////////////////////////
 // Add a fuzzy set to the model 
 //////////////////////////////////////////////////////////////////////
-void FuzzyModel::add_fuzzy_set(FuzzySet *set, int type) {
+void FuzzyModel::add_fuzzy_set(ObjectRef setValue, int type) {
   
-  
+  FuzzySet* set = dynamic_cast<FuzzySet*>(setValue.get());
+
   if (!set) {
     throw new GeneralException("NULL SET",__FILE__,__LINE__);
   }
   
   switch (type) {
   case FUZZY_INPUT_SET:
-    m_input_set.push_back(set);
+    m_input_set.push_back(setValue);
     break;
   case FUZZY_OUTPUT_SET:
-    m_output_set.push_back(set);
+    m_output_set.push_back(setValue);
     break;
   default:
     throw new GeneralException("UNKNOWN SET TYPE",__FILE__,__LINE__);
@@ -229,7 +216,7 @@ void FuzzyModel::add_fuzzy_set(FuzzySet *set, int type) {
 void FuzzyModel::print_rules(ostream &out) {
   
   for (int i = 0; i < m_rules.size(); i++) {
-    m_rules[i]->print_rule(out);
+    object_cast<FuzzyRule>(m_rules[i]).print_rule(out);
   }
   
 }
@@ -245,7 +232,7 @@ void FuzzyModel::verify_rules() {
   int count = 1;
   
   for (int i = 0; i < m_input_set.size(); i++) {
-    count *= m_input_set[i]->get_function_count();
+    count *= object_cast<FuzzySet>(m_input_set[i]).get_function_count();
   }
   
   if (count != m_rules.size()) {
@@ -267,18 +254,17 @@ FuzzySet* FuzzyModel::find_set_named(const string &name, int type) {
   switch(type) {
   case FUZZY_INPUT_SET:
     for (i =0; i < m_input_set.size(); i++) {
-      if (m_input_set[i]->get_name() == name) {
-	return m_input_set[i];
+      if (object_cast<FuzzySet>(m_input_set[i]).get_name() == name) {
+	return dynamic_cast<FuzzySet*>(m_input_set[i].get());
       }
-    }
-    
+    }    
     break;
     
   case FUZZY_OUTPUT_SET:
     
     for (i =0; i < m_output_set.size(); i++) {
-      if (m_output_set[i]->get_name() == name) {
-	return m_output_set[i];
+      if (object_cast<FuzzySet>(m_output_set[i]).get_name() == name) {
+	return dynamic_cast<FuzzySet*>(m_output_set[i].get());
       }
     }
     
@@ -307,11 +293,11 @@ Vector<float>& FuzzyModel::evaluate(Vector<float>  &input_values) {
   int i;
   
   for (i = 0; i < m_input_set.size(); i++) {
-    m_input_set[i]->reset();
+    object_cast<FuzzySet>(m_input_set[i]).reset();
   }
   
   for (i =0; i < m_output_set.size(); i++) {
-    m_output_set[i]->reset();
+    object_cast<FuzzySet>(m_output_set[i]).reset();
   }
   
   //assuming that values are ordered like the rules
@@ -369,12 +355,12 @@ Vector<float>& FuzzyModel::evaluate(Vector<float>  &input_values) {
   
   for (i = 0; i < m_output_set.size(); i++) {
     
-    Vector<FuzzyFunction*> &funct = m_output_set[i]->get_member_functions();
+    Vector<ObjectRef> &funct = object_cast<FuzzySet>(m_output_set[i]).get_member_functions();
     
     for (int j = 0; j < funct.size(); j++) {
-      disjunction_value = disjunction(funct[j]->get_inference_values());
-      funct[j]->reset_inference_values();
-      funct[j]->push_inference_value(disjunction_value);
+      disjunction_value = disjunction(object_cast<FuzzyFunction>(funct[j]).get_inference_values());
+      object_cast<FuzzyFunction>(funct[j]).reset_inference_values();
+      object_cast<FuzzyFunction>(funct[j]).push_inference_value(disjunction_value);
       /*
 	printf("Final value for (%s,%s) : %f\n",m_output_set[i]->get_name().c_str(),
 	funct[j]->get_name().c_str(),disjunction_value);
@@ -394,41 +380,26 @@ void FuzzyModel::print_sets(ostream &out) {
   out<<"INPUT SETS"<<endl;
   
   for (int i = 0; i < m_input_set.size(); i++) {
-    out<<m_input_set[i]->get_name()<<endl;
-    m_input_set[i]->print_functions(out);
+    out<<m_input_set[i]<<endl;
   }
-  
-  
+    
   out<<"OUTPUT SETS"<<endl;
   
   for (int j = 0; j < m_output_set.size(); j++) {
-    out<<m_output_set[j]->get_name()<<endl;
-    m_output_set[j]->print_functions(out);
+    out<<m_output_set[j]<<endl;
   }
-  
   
 }
 
 
 void FuzzyModel::reset() {
 
-  for (int i = 0 ; i < m_rules.size(); i++) {
-    delete m_rules[i];
-  }
+  //ObjectRefs
   m_rules.resize(0);
-
-
-  for (int i = 0 ; i < m_output_set.size(); i++) {
-    delete m_output_set[i];
-  }
   m_output_set.resize(0);
-
-  
-  for (int i = 0 ; i < m_input_set.size(); i++) {
-    delete m_input_set[i];
-  }
   m_input_set.resize(0);
   
+  //Function pointers
   m_input_functions.resize(0);
   m_output_functions.resize(0);
 

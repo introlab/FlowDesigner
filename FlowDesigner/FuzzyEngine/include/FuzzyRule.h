@@ -58,9 +58,8 @@ public:
   void set_rule_number(int rule_number) {m_rule_number = rule_number;}
   
   virtual void calculate(int output_id, int count, Buffer &out);
-  
-  
-  FuzzyRule* clone();
+    
+  virtual ObjectRef clone();
 
   virtual void printOn(ostream &out=cout) const;
 

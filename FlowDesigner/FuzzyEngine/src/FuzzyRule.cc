@@ -169,11 +169,11 @@ void FuzzyRule::print_rule(ostream &out) {
 void FuzzyRule::calculate(int output_id, int count, Buffer &out) {
 
   //cloning ourself as a Object not a node!
-  out[count] = ObjectRef(new Vector<FuzzyRule*>(1,clone()));
+  out[count] = ObjectRef(new Vector<ObjectRef>(1,clone()));
 
 }
 
-FuzzyRule* FuzzyRule::clone() {
+ObjectRef FuzzyRule::clone() {
   
 
   FuzzyRule *my_clone = new FuzzyRule(m_rule_number);
@@ -186,7 +186,7 @@ FuzzyRule* FuzzyRule::clone() {
     my_clone->m_consequent.push_back(m_consequent[i]);
   }
 
-  return my_clone;
+  return ObjectRef(my_clone);
 }
 
 void FuzzyRule::printOn(ostream &out) const {

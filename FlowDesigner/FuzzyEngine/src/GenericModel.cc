@@ -136,12 +136,12 @@ Vector<float>& GenericModel::defuzzification() {
     area_cumul = 0;
     defuzz_value = 0;
     
-    Vector<FuzzyFunction*> & functions = m_output_set[i]->get_member_functions();
+    Vector<ObjectRef> & functions = object_cast<FuzzySet>(m_output_set[i]).get_member_functions();
     
     for (int j = 0;j < functions.size(); j++) {
       
-      tmp_area = functions[j]->get_area();
-      tmp_cog = functions[j]->get_center_of_gravity();
+      tmp_area = object_cast<FuzzyFunction>(functions[j]).get_area();
+      tmp_cog = object_cast<FuzzyFunction>(functions[j]).get_center_of_gravity();
       area_cumul += tmp_area;
       defuzz_value += tmp_area * tmp_cog;
     }//for every member function
@@ -160,45 +160,35 @@ Vector<float>& GenericModel::defuzzification() {
 
 
 
-FuzzyModel* GenericModel::clone() {
+ObjectRef GenericModel::clone() {
 
 
   //cerr<<"cloning Generic Model"<<endl;
 
   GenericModel *model = new GenericModel(*this);
 
-  return model;
+  return ObjectRef(model);
 
 }
 
 void GenericModel::printOn(ostream &out) const {
 
   out << "<GenericModel "<<endl; 
-  out << "<InputSetSize "<<m_input_set.size()<<" >"<<endl;
-  out << "<OutputSetSize "<<m_output_set.size()<<" >"<<endl;
-  out << "<RuleSize "<<m_rules.size()<<" >"<<endl;
-  
+
   //inputset
   for (int i = 0; i < m_input_set.size(); i++) {
-    out<<"<InputSet ";
-    m_input_set[i]->printOn(out);
-    out<<" >"<<endl;
+    out<<"<InputSet "<<m_input_set[i]<<" >"<<endl;
   }
   
   //outputset
   for (int i = 0; i < m_output_set.size(); i++) {
-    out<<"<OutputSet ";
-    m_output_set[i]->printOn(out);
-    out<<" >"<<endl;
+    out<<"<OutputSet "<<m_output_set[i]<<" >"<<endl;
   }
 
   //rules
   for (int i = 0; i < m_rules.size(); i++) {
-    out<<"<Rule ";
-    m_rules[i]->printOn(out);
-    out<<" >"<<endl;    
+    out<<"<Rule "<<m_rules[i]<<" >"<<endl;    
   }
-
 
   out <<" >\n";
 }
@@ -221,34 +211,20 @@ void GenericModel::readFrom(istream &in) {
       }
       in >> tag;
 
-      if (tag == "RuleSize") {
-         in >> rule_size;
-      }
-      else if (tag == "InputSetSize") {
-	in >> input_set_size;
-      }
-      else if (tag == "OutputSetSize") {
-	in >> output_set_size;
-      }
-
-      else if (tag == "InputSet") {
-	if (!isValidType(in, "FuzzySet")) {
-	  throw new ParsingException ("Parse error trying to build " + tag);
-	}	
-	add_fuzzy_set(new FuzzySet(in),FuzzyModel::FUZZY_INPUT_SET);
-
+      if (tag == "InputSet") {
+	ObjectRef value;
+	in>>value;
+	add_fuzzy_set(value,FuzzyModel::FUZZY_INPUT_SET);
       }
       else if (tag == "OutputSet") {
-	if (!isValidType(in, "FuzzySet")) {
-	  throw new ParsingException ("Parse error trying to build " + tag);
-	}
-	add_fuzzy_set(new FuzzySet(in), FuzzyModel::FUZZY_OUTPUT_SET);
+	ObjectRef value;
+	in>>value;
+	add_fuzzy_set(value, FuzzyModel::FUZZY_OUTPUT_SET);
       }
       else if (tag == "Rule") {
-	if (!isValidType(in, "FuzzyRule")) {
-	  throw new ParsingException ("Parse error trying to build " + tag);
-	}
-	add_fuzzy_rule(new FuzzyRule(in));
+	ObjectRef value;
+	in>>value;
+	add_fuzzy_rule(value);
       }
       else {
 	throw new ParsingException ("unknown argument: " + tag);
@@ -261,10 +237,4 @@ void GenericModel::readFrom(istream &in) {
          throw new ParsingException ("Parse error: '>' expected ");
    }
 
-}
-
-istream &operator >> (istream &in, GenericModel &model) {
-   if (!isValidType(in, "GenericModel")) return in;
-   model.readFrom(in);
-   return in;
 }

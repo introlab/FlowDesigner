@@ -45,8 +45,8 @@ TriangularFunction::TriangularFunction(const string &name, float a, float b, flo
 
 }
 
-FuzzyFunction* TriangularFunction::clone() {
-  return new TriangularFunction(m_name,m_a,m_b,m_c);
+ObjectRef TriangularFunction::clone() {
+  return ObjectRef(new TriangularFunction(m_name,m_a,m_b,m_c));
 }
 
 

@@ -35,7 +35,7 @@ public:
 	virtual Vector<float>& defuzzification();
 	
 	//cloning capability
-	virtual FuzzyModel* clone();
+	virtual ObjectRef clone();
 
 	virtual void printOn(ostream &out=cout) const;
 	
@@ -44,8 +44,4 @@ public:
 private:
 
 };
-
-istream &operator >> (istream &in, GenericModel &model);
-
-
 #endif 
