@@ -1,0 +1,9 @@
+The two parts that compile are:
+
+audio_server and
+front-end
+
+just type make to compile. You need a C++ compiler that compiles STL correctly 
+(g++ 2.7.2 does NOT work, but egcs does)
+
+
