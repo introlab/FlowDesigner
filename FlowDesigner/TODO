@@ -7,3 +7,6 @@ set the isModified flag when adding a net terminal or moving a node, ...
 debug thread race with run button disable
 
 implement variable number of inputs/outputs
+
+prevent from running a network that has an input (ie that has to be included
+somewhere else)
