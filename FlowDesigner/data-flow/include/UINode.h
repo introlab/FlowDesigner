@@ -24,6 +24,11 @@ class UITerminal;
 class Node;
 class ParameterSet;
 
+/** UINode is the represantation used to store data for any node, 
+    either in the GUI or in batch mode. A UINode cannot perform any
+    operation but can be used to build a real Node.
+    @author Jean-Marc Valin
+*/
 class UINode {
 protected:
    bool destroyed;

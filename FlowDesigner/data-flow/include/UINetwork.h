@@ -22,30 +22,54 @@ class UIDocument;
 class Network;
 class ParameterSet;
 
+/** UINetwork is the represantation used to store data for any network, 
+    either in the GUI or in batch mode. A UINetwork cannot perform any
+    operation but can be used to build a real Network.
+    @author Jean-Marc Valin
+*/
 class UINetwork {
   public:
+   /**Available network types*/
    enum Type {subnet=0, iterator=1, threaded=2};
 protected:
+
+   /**Has the network been destroyed? Not too sure what I was thinking...*/
    bool destroyed;
+
+   /**Document (.n file) to which the network belongs*/
    UIDocument *doc;
+
+   /**Name of the network*/
    string name;
+
+   /**Network type (subnet, iterator, threaded iterator*/
    Type type;
+
+   /**All the links included in the network*/
    vector <UINode *> nodes;
+
+   /**All the links included in the network*/
    vector <UILink *> links;
 
+   /**Pointer to all the network terminals*/
    vector <UINetTerminal *> terminals;
 
    ///The condition node of the iterator (no meaning for subnets)
    //UINode *conditionNode;
 public:
+   /**Basic constructor, allows building the UINetwork gradually*/
    UINetwork(UIDocument *_doc, string _name, Type _type);
 
+   /**Construct a UINetwork from a parsed XML file*/
    UINetwork(UIDocument *_doc, xmlNodePtr net, bool init=true);
 
+   /**Loads the info from the XML parse tree*/
    void load (xmlNodePtr net);
 
+   /**Destructor*/
    virtual ~UINetwork();
 
+   /**Informs that some part of the network has been changed. To be called anytime one modifies something in the network, a node, a link, ...*/
    void setModified();
 
    UINode *loadNode (xmlNodePtr node);
