@@ -313,6 +313,12 @@ void Vector<String>::setIndex(int pos, ObjectRef val) {
 	(*this)[pos] = static_cast<basicType>(v->val());	
 }
 
+//setIndex implementation for Vector<ObjectRef>
+void Vector<ObjectRef>::setIndex(int pos, ObjectRef val) {
+        //look for range ?
+        (*this)[pos] = val;
+}
+
 //pushBack implementation for Vector<bool>
 void Vector<bool>::pushBack(ObjectRef val) {
 	RCPtr<Bool> v = val;
@@ -361,4 +367,8 @@ void Vector<String>::pushBack(ObjectRef val) {
 	this->push_back(static_cast<basicType>(v->val()));
 }
 
+//pushBack implementation for Vector<ObjectRef>
+void Vector<ObjectRef>::pushBack(ObjectRef val) {
+	this->push_back(val);
+}
 

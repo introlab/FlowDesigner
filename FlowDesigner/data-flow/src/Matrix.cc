@@ -135,3 +135,8 @@ void Matrix<String>::setIndex(int _row, int _col, ObjectRef val) {
 	(*this)(_row,_col) = static_cast<basicType>(v->val());	
 }
 
+//setIndex implementation for Matrix<ObjectRef>
+void Matrix<ObjectRef>::setIndex(int _row, int _col, ObjectRef val) {
+        //look for range ?
+       (*this)(_row,_col) = val;
+}
