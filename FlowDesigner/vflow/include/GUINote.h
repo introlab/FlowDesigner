@@ -11,16 +11,22 @@ class GUINote : public UINote {
  private:
   UINetwork *m_network;
   GnomeCanvasGroup *m_group;
-  bool m_dragging;
-   
+  GtkWidget *m_textView;
+
  public:
-  
+
   GUINote(const std::string &text, double x, double y, bool visible, UINetwork *net);
+
+  virtual ~GUINote();
 
   void move(double dx, double dy);
 
   gint event(GdkEvent *event);
+
+  void update_text();
 };
+
+
 
 
 #endif

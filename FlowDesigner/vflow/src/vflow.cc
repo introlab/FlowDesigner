@@ -785,7 +785,7 @@ static void add_note_event(GtkMenuItem *menuitem, gpointer user_data)
 
   if (!net) return;
 
-  net->addNote(net->newNote("TESTING NEW NOTE CAPABILITIES",10.0,10.0,true));
+  net->addNote(net->newNote("Enter text here!",10.0,10.0,true));
   
   doc->setModified();
 
@@ -1132,7 +1132,7 @@ void vflowGUI::create_mdi ()
       },
       GNOMEUIINFO_SEPARATOR,
       {
-	GNOME_APP_UI_ITEM, N_("Add Note (prototype)"),
+	GNOME_APP_UI_ITEM, N_("Add Note"),
 	NULL,
 	(gpointer) add_note_event, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
