@@ -27,6 +27,15 @@ ObjectRef ReturnNilObject(ObjectRef in)
   return nilObject;
 }
 
+template<class T, class U>
+ObjectRef CTypeConversion(ObjectRef in)
+{
+   typedef typename T::basicType BaseType;
+   BaseType f=dereference_cast<BaseType> (in);
+   return ObjectRef(U::alloc((typename U::basicType)f));
+}
+
+
 //Int conversion
 template<class T>
 ObjectRef IntCTypeConversion(ObjectRef in)
@@ -42,7 +51,16 @@ ObjectRef IntStringConversion(ObjectRef in)
   return ObjectRef(Int::alloc(atoi(my_string.c_str())));
 }
 
-REGISTER_CONVERSION(Int, Float, IntCTypeConversion<Float>);
+REGISTER_CONVERSION_TEMPLATE(Float, Int, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Int, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Float, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Float, CTypeConversion);
+
+REGISTER_CONVERSION(Int, String, IntStringConversion);
+REGISTER_CONVERSION(Int, NilObject, ReturnNilObject);
+
 
 REGISTER_VTABLE0(toInt, Int, IntCTypeConversion<Int>, 1);
 REGISTER_VTABLE0(toInt, Bool, IntCTypeConversion<Bool>, 2);

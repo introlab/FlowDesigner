@@ -45,4 +45,8 @@ class Conversion {
         static int dummy_conv_table_init_for ## _ ## from ## _ ## to =\
         Conversion::addConvFunction<from,to>(func);
 
+#define REGISTER_CONVERSION_TEMPLATE(from, to, func) \
+        static int dummy_conv_table_init_for ## _ ## from ## _ ## to =\
+        Conversion::addConvFunction<from,to>(func<from,to>);
+
 #endif
