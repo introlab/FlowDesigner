@@ -8,7 +8,9 @@
     <Node name="node3" type="ExecStream" x="-146.000000" y="37.000000">
       <Parameter name="COMMAND" type="string" value="mpg123 --stdout "/>
     </Node>
-    <Node name="node1" type="MAIN_LOOP" x="56.000000" y="42.000000"/>
+    <Node name="node1" type="MAIN_LOOP" x="56.000000" y="42.000000">
+      <Parameter name="DOWHILE" type="bool" value=""/>
+    </Node>
     <Node name="node4" type="Sound" x="-138.000000" y="95.000000">
       <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
       <Parameter name="RATE" type="int" value="44100"/>
@@ -47,14 +49,14 @@
       <Parameter name="SHOW" type="bool" value="true"/>
       <Parameter name="SKIP" type="int" value="10"/>
     </Node>
-    <Node name="node5" type="Window" x="-61.000000" y="110.000000">
+    <Node name="node5" type="Window" x="-143.000000" y="111.000000">
       <Parameter name="LENGTH" type="int" value="256"/>
       <Parameter name="WINDOW" type="string" value="HAMMING"/>
       <Parameter name="SYMETRIC" type="bool" value=""/>
     </Node>
-    <Node name="node9" type="FFT" x="7.000000" y="114.000000"/>
-    <Node name="node10" type="PS" x="66.000000" y="109.000000"/>
-    <Node name="node11" type="Mel" x="128.000000" y="110.000000">
+    <Node name="node9" type="FFT" x="-75.000000" y="115.000000"/>
+    <Node name="node10" type="PS" x="-16.000000" y="110.000000"/>
+    <Node name="node11" type="Mel" x="46.000000" y="111.000000">
       <Parameter name="INPUTLENGTH" type="int" value="128"/>
       <Parameter name="OUTPUTLENGTH" type="int" value="5"/>
       <Parameter name="SAMPLING" type="int" value="44100"/>
@@ -73,10 +75,12 @@
     <Node name="node_WriteAudio_1" type="WriteAudio" x="-459.000000" y="232.000000">
       <Parameter name="LEAD_IN" type="int" value=""/>
     </Node>
+    <Node name="node_Pow_1" type="Pow" x="114.000000" y="111.000000">
+      <Parameter name="EXP" type="float" value=".15"/>
+    </Node>
     <Link from="node8" output="OUTPUT" to="node6" input="INPUT"/>
     <Link from="node5" output="OUTPUT" to="node9" input="INPUT"/>
     <Link from="node9" output="OUTPUT" to="node10" input="INPUT"/>
-    <Link from="node11" output="OUTPUT" to="node8" input="INPUT"/>
     <Link from="node10" output="OUTPUT" to="node11" input="INPUT"/>
     <Link from="node12" output="OUTPUT" to="node7" input="INPUT"/>
     <Link from="node6" output="OUTPUT" to="node12" input="INPUT"/>
@@ -86,6 +90,8 @@
     <Link from="node16" output="OUTPUT" to="node5" input="INPUT"/>
     <Link from="node1" output="AUDIO" to="node15" input="INPUT"/>
     <Link from="node1" output="AUDIO" to="node_WriteAudio_1" input="OBJECT"/>
+    <Link from="node11" output="OUTPUT" to="node_Pow_1" input="INPUT"/>
+    <Link from="node_Pow_1" output="OUTPUT" to="node8" input="INPUT"/>
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
     <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
     <NetCondition name="CONDITION" node="node1" terminal="NOT_EOF"/>

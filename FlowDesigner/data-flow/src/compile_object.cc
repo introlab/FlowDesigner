@@ -30,8 +30,8 @@ void CompileObject::compile()
    //lib = _DL_OPEN(soname);
    lib = _DL_OPEN("./tata.so");
    if (!lib)
-      cerr << "dlopen failed\n";
+      throw new GeneralException("Cannot open CompileObject library: dlopen failed", __FILE__, __LINE__);
    sym = _DL_GET_SYM(lib, symname);
    if (!sym)
-      cerr << "getsym failed\n";
+      throw new GeneralException("Cannot get symbol in CompileObject library", __FILE__, __LINE__);
 }

@@ -23,7 +23,7 @@ DECLARE_NODE(VectorCode)
  *
  * @parameter_name CODE
  * @parameter_type string
- * @parameter_description C++ code [void func(const float *x, float *y, int length)]
+ * @parameter_description C++ code inside function [void func(const float *x, float *y, int length)]
  *
 END*/
 
