@@ -1,5 +1,3 @@
-support removing network terminals (implemented, but buggy)
-
 set the isModified flag when adding a net terminal or moving a node, ...
 
 implement variable number of inputs/outputs
@@ -8,19 +6,13 @@ implement Matrix class
 
 debug BREAT_AT in probes
 
-fix segfault on invalid int param (eg. mistaken for subnet param)
-
 manage to handle subnet dependencies
 
 vflow preferences...
 
 allow to change the thread stack size
 
-fix segfaults on "no condition" and "input not connected"
-
 catch exceptions on DL opening modules at startup
-
-parameter exceptions in node constructor causes an abort (why?)
 
 *write logging system (eg. error curves in NNet)
 
