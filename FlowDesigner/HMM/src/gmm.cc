@@ -108,7 +108,8 @@ void GMM::adaptMAP(vector<float *> frames, GMM *gmm)
 	    adaptMean[j] /= adaptCount;
 
       //FIXME: This is not a correct MAP implementation
-      float weight = float(adaptCount)/30.0;
+      //float weight = float(adaptCount)/30.0;
+      float weight = 1 - exp(float(-adaptCount)/20);
       if (weight > 1)
 	 weight = 1;
       //weight=0;

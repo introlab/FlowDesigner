@@ -95,7 +95,7 @@ gint GUITerminal::event(GdkEvent *event)
         {
         case 1:
 	   try {
-           if (event->button.state & GDK_CONTROL_MASK)
+           if (event->button.state & GDK_CONTROL_MASK || event->button.state & GDK_MOD1_MASK)
 	   {
 	      if (!isInput && !netTerminal)
 		 new GUINetTerminal(this,UINetTerminal::CONDITION,"");
