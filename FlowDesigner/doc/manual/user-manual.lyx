@@ -1798,7 +1798,20 @@ There can be many causes of that.
  In both cases, the best thing to do is to build Overflow yourself.
 \layout Subsection*
 
-2) Overflow tells me it cannot find libflow.so
+2) I compiled Overflow myself and it crashes on startup
+\layout Standard
+
+The main cause for this is a bug/missing feature in libtool that prevents
+ it from working correctly with C++ on some platforms.
+ This happens mostly on non-Linux platforms though not always.
+ If you suspect that's your problem, try running configure with the 
+\family typewriter 
+--libtool-ld=g++
+\family default 
+ option.
+\layout Subsection*
+
+3) Overflow tells me it cannot find libflow.so
 \layout Standard
 
 This can happen if you compile Overflow and then move the installation directory
@@ -1808,7 +1821,7 @@ This can happen if you compile Overflow and then move the installation directory
  VFLOW_HOME.
 \layout Subsection*
 
-3) The 
+4) The 
 \begin_inset Quotes eld
 \end_inset 
 
@@ -1822,7 +1835,7 @@ New Node
 You probably moved the Overflow install directory, see 2).
 \layout Subsection*
 
-4) Overflow doesn't compile on my box
+5) Overflow doesn't compile on my box
 \layout Standard
 
 First, make sure you have the latest release version.
@@ -1831,7 +1844,7 @@ First, make sure you have the latest release version.
  compile on your platforms.
 \layout Subsection*
 
-5) I downloaded a more recent version and it doesn't even compile
+6) I downloaded a more recent version and it doesn't even compile
 \layout Standard
 
 This can be due to the fact that you installed an earlier version in a path
