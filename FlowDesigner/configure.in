@@ -31,12 +31,7 @@ AC_SUBST(LT_AGE)
 VERSION=$FREESPEECH_VERSION
 PACKAGE=Overflow
 
-modules="$audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine $effects"
-AC_SUBST(modules)
-
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
-
-
 AM_MAINTAINER_MODE
 
 
@@ -82,6 +77,8 @@ if test "$FuzzyEngine" = FuzzyEngine; then
 AC_CONFIG_SUBDIRS(FuzzyEngine)
 fi
 
+modules="$audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine $effects"
+AC_SUBST(modules)
 
 dnl Put configuration information in config.h.
 #AM_CONFIG_HEADER(config.h)
