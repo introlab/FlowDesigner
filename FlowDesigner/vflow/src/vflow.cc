@@ -3,6 +3,7 @@
 #include "vflow.h"
 #include "iextensions.h"
 #include <list>
+#include <sstream>
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -61,7 +62,15 @@ void vflowGUI::load_document (const string fname) {
   gnome_mdi_add_view  (mdi, GNOME_MDI_CHILD (doc->getMDIChild()));
 
   doc->setFullPath(fname);
-  doc->load();
+  try {
+     doc->load();
+  } catch (BaseException *e) {
+     stringstream except;
+     e->print(except);
+     doc->less_print (except.str());
+  } catch (...) {
+     doc->less_print ("unknown exception caught while loading document");
+  }
   doc->resetModified();
 }
 
@@ -258,10 +267,16 @@ void file_open_ok_sel(GtkWidget *w, vflowGUI *vflow) {
       gnome_mdi_add_child (vflow->mdi, GNOME_MDI_CHILD (doc->getMDIChild()));
       gnome_mdi_add_view  (vflow->mdi, GNOME_MDI_CHILD (doc->getMDIChild()));
       doc->setFullPath(fname);
-      doc->load();
-      doc->resetModified();
+      try {
+	 doc->load();
+      } catch (BaseException *e) {
+	 stringstream except;
+	 e->print(except);
+	 doc->less_print (except.str());
+      } catch (...) {
+	 doc->less_print ("unknown exception caught while loading document");
+      }
    }
-   
    g_free (fname);
    gtk_widget_destroy (GTK_WIDGET (ssel));
    ssel = NULL;

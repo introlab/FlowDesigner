@@ -66,12 +66,22 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    , destroyed(false)
 {
    //FIXME: Need to check that all properties are there
-   name = string((char *)xmlGetProp(def, (CHAR *)"name"));
-   type = string((char *)xmlGetProp(def, (CHAR *)"type"));
-   x = atof((char *)xmlGetProp(def, (CHAR *)"x"));
-   y = atof((char *)xmlGetProp(def, (CHAR *)"y"));
+   char *str_name = (char *)xmlGetProp(def, (CHAR *)"name");
+   char *str_type = (char *)xmlGetProp(def, (CHAR *)"type");
+   char *str_x = (char *)xmlGetProp(def, (CHAR *)"x");
+   char *str_y = (char *)xmlGetProp(def, (CHAR *)"y");
+
+   if (!str_name || !str_type || !str_x || !str_y)
+   {
+      throw new GeneralException("Missing node parameter(s) in XML definition", __FILE__, __LINE__);
+   }
+
+   name = string(str_name);
+   type = string(str_type);
+   x = atof(str_x);
+   y = atof(str_y);
    xtmp = x;
-   ytmp=y;
+   ytmp = y;
    //draw();
 
    parameters = newNodeParameters(this, type);
