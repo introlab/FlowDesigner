@@ -18,24 +18,6 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
    : topo(_topo)
    , layers(topo.size()-1)
 {
-   /*nbNeurons = 0;
-   nbWeights = 0;
-   for (int i=0;i<topo.size()-1;i++)
-   {
-      nbWeights += (topo[i]+1)*topo[i+1];
-      nbNeurons += topo[i+1];
-   }
-   weights = new float [nbWeights];
-
-   float weightOffset = 0;
-   float neuronOffset = 0;
-   for (int i=0;i<topo.size()-1;i++)
-   {
-      layers[i]=new FFLayer(topo[i+1], topo[i], weights, weightOffset, neuronOffset, functions[i]);
-      layers[i]->init(1.0);
-      weightOffset += (topo[i]+1)*topo[i+1];
-      neuronOffset += topo[i+1];
-      }*/
    init(functions);
 }
 
@@ -62,24 +44,6 @@ void FFNet::init(const vector<string> &functions)
    }
 }
 
-/*
-FFNet::FFNet(const Vector<int> &_topo)
-   : topo(_topo)
-   , layers(topo.size()-1)
-{
-   for (int i=0;i<topo.size()-1;i++)
-   {
-      if (i==topo.size()-2)
-      {
-	 layers[i]=new FFLayer(topo[i+1],topo[i], "lin");
-      } else
-	 layers[i]=new FFLayer(topo[i+1],topo[i]);
-      layers[i]->init(1.0);
-   }
-   layers[0]->init(5);
-}
-
-*/
 
 FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<float *> &tin, vector<float *> &tout)
    : topo(_topo)

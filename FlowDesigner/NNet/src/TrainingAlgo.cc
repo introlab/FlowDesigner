@@ -6,8 +6,8 @@
 #include <vector>
 #include "Vector.h"
 
-void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float *> tout, int iter, float learnRate, 
-			 float increase, float decrease)
+void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float *> tout, 
+				  int iter, float learnRate, float increase, float decrease, int nbSets)
 {
    int i,j;
    double SSE;
@@ -32,23 +32,66 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
    Array<float> nextW(nbWeights);
    Array<double> dEk(nbWeights);
    Array<double> nextdE(nbWeights);
+   Array<double> tmpdE(nbWeights);
    double nextE;
+   double tmpE;
 
    vec_copy(weights, &wk[0], nbWeights);
 
    for (i=0;i<nbWeights;i++)
       alpha[i] = learnRate;
 
+   for (i=0;i<nbWeights;i++)
+      tmpdE[i]=0;
+   tmpE=0;
    net->calcGradient(tin, tout, wk, dEk, SSE);
    while (iter--)
    {
 
-      float norm = dEk.norm();
-      float norm_1 = 1;// / norm;
+      //float norm = dEk.norm();
+      float norm_1 = 1.0/tin.size();// / norm;
       
-      for (i=0;i<nbWeights;i++)
+      /*for (i=0;i<nbWeights;i++)
 	 nextW[i] = wk[i] - alpha[i] * norm_1 * dEk[i];
-      net->calcGradient(tin, tout, nextW, nextdE, nextE);
+	 net->calcGradient(tin, tout, nextW, nextdE, nextE);*/
+
+      for (i=0;i<nbWeights;i++)
+	 nextW[i] = wk[i];
+
+      nextE=0;
+      for (i=0;i<nbWeights;i++)
+	 nextdE[i] = 0;
+
+      vector<int> remaining(tin.size());
+      for (i=0;i<tin.size();i++)
+	 remaining[i]=i;
+      vector<float *> batchIn;
+      vector<float *> batchOut;
+      for (i=0;i<nbSets;i++)
+      {
+	 batchIn.resize(0);
+	 batchOut.resize(0);
+	 for (j=0;j<nbWeights;j++)
+	    nextW[j] -= alpha[j] * norm_1 * tmpdE[j];
+
+	 int putBack=0;
+	 for (j=0;j<remaining.size();j++)
+	 {
+	    int id = remaining[j];
+	    if (rand()%(nbSets-i) == 0)
+	    {
+	       batchIn.push_back(tin[id]);
+	       batchOut.push_back(tout[id]);
+	    } else {
+	       remaining[putBack++] = id;
+	    }
+	 }
+	 remaining.resize(putBack);
+	 net->calcGradient(batchIn, batchOut, nextW, tmpdE, tmpE);
+	 nextE+=tmpE;
+	 for (j=0;j<nbWeights;j++)
+	    nextdE[j] += tmpdE[j];
+      }
       
       if (nextE > SSE)
       {
@@ -56,6 +99,8 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
 	 //So that the "bad" iteration doesn't count
 	 iter++;
 	 cerr << "backing off\n";
+	 /*for (i=0;i<nbWeights;i++)
+	   tmpdE[i]=0;*/
 	 continue;
       }
 
@@ -318,4 +363,81 @@ void TrainingQProp::train(FFNet *net, vector<float *> tin, vector<float *> tout,
    //vec_copy(&wk[0], weights, nbWeights);
 
 
+}
+
+
+
+void TrainingWeightDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float *> tout, vector<float *> learnWeights, int iter, float learnRate, 
+			 float increase, float decrease)
+{
+   int i,j;
+   double SSE;
+   int k=1;
+
+   int nbWeights = 0;
+
+   const float *weights = net->getWeights();
+   const Vector<FFLayer *> &layers=net->getLayers();
+   const Vector<int> &topo = net->getTopo();
+
+
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+
+   cerr << "found " << nbWeights << " weights\n";
+
+   Array<float> alpha(nbWeights);
+   Array<float> wk(nbWeights);
+   Array<float> nextW(nbWeights);
+   Array<double> dEk(nbWeights);
+   Array<double> nextdE(nbWeights);
+   double nextE;
+
+   vec_copy(weights, &wk[0], nbWeights);
+
+   for (i=0;i<nbWeights;i++)
+      alpha[i] = learnRate;
+
+   net->weightedCalcGradient(tin, tout, learnWeights, wk, dEk, SSE);
+   while (iter--)
+   {
+
+      float norm = dEk.norm();
+      float norm_1 = 1;// / norm;
+      
+      for (i=0;i<nbWeights;i++)
+	 nextW[i] = wk[i] - alpha[i] * norm_1 * dEk[i];
+      net->weightedCalcGradient(tin, tout, learnWeights, nextW, nextdE, nextE);
+      
+      if (nextE > SSE)
+      {
+	 alpha *= decrease;
+	 //So that the "bad" iteration doesn't count
+	 iter++;
+	 cerr << "backing off\n";
+	 continue;
+      }
+
+      for (i=0;i<nbWeights;i++)
+      {
+	 if (nextdE[i]*dEk[i] >= 0)
+	    alpha[i] *= increase;
+	 else
+	    alpha[i] *= decrease;
+	 if (alpha[i] < 1e-58)
+	    alpha[i] = 1e-58;
+      }
+
+      //if (SSE/tin.size()/topo[topo.size()-1]<.08) break;
+      cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
+      SSE=nextE;
+      dEk = nextdE;
+      wk = nextW;
+
+   }
+
+   net->setWeights(&wk[0]);
+   //vec_copy(&wk[0], net->weights, nbWeights);
 }

@@ -16,7 +16,7 @@ class TrainingAlgo {
 class TrainingDeltaBarDelta : public TrainingAlgo {
   public:
    static void train(FFNet *net, vector<float *> tin, vector<float *> tout, int iter, float learnRate, 
-	      float increase, float decrease);
+	      float increase, float decrease, int nbSets=1);
 };
 
 
@@ -30,5 +30,10 @@ class TrainingQProp : public TrainingAlgo {
    static void train(FFNet *net, vector<float *> tin, vector<float *> tout, int iter, float learnRate);
 };
 
+class TrainingWeightDeltaBarDelta : public TrainingAlgo {
+  public:
+   static void train(FFNet *net, vector<float *> tin, vector<float *> tout, vector<float *> learnWeights, int iter, float learnRate, 
+	      float increase, float decrease);
+};
 
 #endif

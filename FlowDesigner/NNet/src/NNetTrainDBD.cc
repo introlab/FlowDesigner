@@ -47,6 +47,10 @@ DECLARE_NODE(NNetTrainDBD)
  * @parameter_type float
  * @parameter_description Learning rate decrement (< 1.0) factor (default 0.6)
  *
+ * @parameter_name NB_SETS
+ * @parameter_type int
+ * @parameter_description Number of batch subsets for accelerated training (default 1)
+ *
 END*/
 
 
@@ -74,6 +78,8 @@ protected:
 
    float increase;
 
+   int nbSets;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrainDBD(string nodeName, ParameterSet params)
@@ -100,6 +106,9 @@ public:
 	 decrease = dereference_cast<float> (parameters.get("DECREASE"));
       else decrease = .6;
       
+      if (parameters.exist("NB_SETS"))
+	 nbSets = dereference_cast<int> (parameters.get("NB_SETS"));
+      else nbSets = 1;
    }
       
 
@@ -131,7 +140,7 @@ public:
       
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
-      TrainingDeltaBarDelta::train(&net, tin, tout, maxEpoch, learnRate, increase, decrease);
+      TrainingDeltaBarDelta::train(&net, tin, tout, maxEpoch, learnRate, increase, decrease, nbSets);
       
       out[count] = netValue;
 

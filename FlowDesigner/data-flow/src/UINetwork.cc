@@ -459,7 +459,6 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
      break;
    }
 
-   try {
 
    try 
    {
@@ -477,6 +476,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
       throw e->add (new GeneralException(string("Exception caught while building network ") + name, __FILE__, __LINE__));
    }
    
+   try {
    //cerr << "nodes built\n";
    
    //insert links
