@@ -48,7 +48,8 @@ include_HEADERS = Array.h \
 	IntfNode.h \
 	object_param.h \
 	typetraits.h \
-	binio.h
+	binio.h \
+	typemap.h
 	
 noinst_HEADERS = \
 	NOT.h \
