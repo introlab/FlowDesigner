@@ -34,3 +34,10 @@ echo serial.n passed
 else
 echo serial.n failed
 fi
+
+if batchflow vecstring.n | grep -q '<Vector<string> tat\\ a to\\\\to\\>>';
+then
+echo vecstring.n passed
+else
+echo vecstring.n failed
+fi
