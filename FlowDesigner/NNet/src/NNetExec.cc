@@ -62,6 +62,11 @@ public:
 
       FFNet &net = object_cast<FFNet> (netValue);
       
+      const Vector<int> &topo = net.getTopo();
+      if (inputLength != topo[0])
+         throw new NodeException(this, "Input length mismatch", __FILE__, __LINE__);
+      if (outputLength != topo[topo.size()-1])
+         throw new NodeException(this, "Output length mismatch", __FILE__, __LINE__);
       //float value[net.getNbNeurons()];
       DYN_VEC(float, net.getNbNeurons(), value);
       
