@@ -40,7 +40,8 @@ template <class T>
 T object_ptr_cast (const ObjectRef &ref)
 {
    T tmp = dynamic_cast<T>(&(*ref));
-   if (!tmp) throw new CastException<T> (typeid ((*ref)).name());
+   if (!tmp) 
+      throw new CastException<T> (typeid ((*ref)).name());
    return tmp;
 }
 
@@ -49,7 +50,8 @@ template <class T>
 T &object_cast (const ObjectRef &ref)
 {
    T *tmp = dynamic_cast<T *>(&(*ref));
-   if (!tmp) throw new CastException<T> (typeid ((*ref)).name());
+   if (!tmp) 
+      throw new CastException<T> (typeid ((*ref)).name());
    return *tmp;
 }
 
@@ -58,7 +60,8 @@ template <class T>
 T &dereference_cast (const ObjectRef &ref)
 {
    GenericType<T> *tmp = (dynamic_cast<GenericType<T> * >(&(*ref)));
-   if (!tmp) throw new CastException<T> (typeid ((*ref)).name());
+   if (!tmp) 
+      throw new CastException<T> (typeid ((*ref)).name());
    return tmp->val();
 }
 

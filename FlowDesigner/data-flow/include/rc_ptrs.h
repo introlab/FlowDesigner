@@ -47,7 +47,7 @@ protected:
 public:
    explicit counted_pod_ptr(X* p=0) : ptr(p)
    {
-      cerr << "alloc " << typeid(X).name() << endl;
+      //cerr << "alloc " << typeid(X).name() << endl;
       count=new size_type(1);
    }
    
@@ -93,7 +93,7 @@ protected:
    {
       if (count && --(*count)==0)
       {
-      cerr << "delete " << typeid(X).name() << endl;
+         //cerr << "delete " << typeid(X).name() << endl;
          delete ptr;
          delete count;
       }
