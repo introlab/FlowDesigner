@@ -15,53 +15,61 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Node.h"
+#include "FlowException.h"
 
-class NOP;
+class Catch;
 
-DECLARE_NODE(NOP)
+DECLARE_NODE(Catch)
 /*Node
  *
- * @name NOP
+ * @name Catch
  * @category General
- * @description No description available
+ * @description Catches an exception
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description Normal flow
+ *
+ * @input_name CATCH
+ * @input_description Flow to follow is an exception is caught
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description Flow output
  *
 END*/
 
 
-class NOP : public Node {
+class Catch : public Node {
 protected:
    int inputID;
+   int catchID;
    int outputID;
 
 public:
-   NOP(string nodeName, ParameterSet params)
+   Catch(string nodeName, ParameterSet params)
       : Node(nodeName, params)
    {
       try {
-         inputID = addInput("INPUT");
+	 inputID=addInput("INPUT");
+	 catchID=addInput("CATCH");
 	 outputID=addOutput("OUTPUT");
       } catch (BaseException *e)
       {
-         //e->print();
-         throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
+         throw e->add(new NodeException (NULL, "Exception caught in Catch constructor", __FILE__, __LINE__));
       }
       
    }
 
-/**Standard request-passing method between nodes during initialization*/
-      virtual void request(int outputID, const ParameterSet &req) {inputs[inputID].node->request(inputs[inputID].outputID,req);}
-
    ObjectRef getOutput(int output_id, int count)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
-      return inputValue;
+      try 
+      {
+	 ObjectRef inputValue = getInput(inputID, count);
+	 return inputValue;
+      } catch (Ptr<FlowException> e)
+      {
+	 return getInput(catchID, count);
+      }
    }
+
 
 };

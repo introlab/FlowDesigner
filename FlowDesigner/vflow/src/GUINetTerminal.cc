@@ -9,7 +9,7 @@ using namespace std;
 static void create_net_terminal(gchar * str, GUINetTerminal *term)
 {
 
-  cout<<"create_net_terminal"<<endl;
+   //cout<<"create_net_terminal"<<endl;
 
    if (str)
       term->setName(string(str));
@@ -70,16 +70,16 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       }
    }
 
-   //BUG: Is this dangerous? I don't know
+   //FIXME: Is this dangerous? I don't know
    if (name == "")
    {
-      cerr << "aborted\n";
+      //cerr << "aborted\n";
       terminal->getNode()->getNetwork()->removeTerminal(this);
-      cerr << "disconnecting\n";
+      //cerr << "disconnecting\n";
       terminal->disconnectNetTerminal();
       //cerr << "throwing\n";
       //throw false;
-      cerr<< "returning"<<endl;
+      //cerr<< "returning"<<endl;
       //Now, it doesn't leak, but it's really ugly
       delete this;
       return;

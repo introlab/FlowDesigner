@@ -22,7 +22,7 @@ DECLARE_NODE(Feedback)
 /*Node
  *
  * @name Feedback
- * @category General
+ * @category Flow
  * @description No description available
  *
  * @input_name INPUT

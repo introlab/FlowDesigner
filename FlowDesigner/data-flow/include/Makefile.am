@@ -58,5 +58,6 @@ noinst_HEADERS = \
 	Matrix.h \
 	DoubleDispatch.h \
 	operators.h \
+	FlowException.h \
 	iotraits.h  sstream  sstream.cc  sstream.h
 

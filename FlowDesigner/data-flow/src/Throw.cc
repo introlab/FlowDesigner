@@ -15,13 +15,14 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Node.h"
+#include "FlowException.h"
 
-class NOP;
+class Throw;
 
-DECLARE_NODE(NOP)
+DECLARE_NODE(Throw)
 /*Node
  *
- * @name NOP
+ * @name Throw
  * @category General
  * @description No description available
  *
@@ -34,34 +35,29 @@ DECLARE_NODE(NOP)
 END*/
 
 
-class NOP : public Node {
+class Throw : public Node {
 protected:
    int inputID;
    int outputID;
 
 public:
-   NOP(string nodeName, ParameterSet params)
+   Throw(string nodeName, ParameterSet params)
       : Node(nodeName, params)
    {
       try {
-         inputID = addInput("INPUT");
+	 inputID=addInput("INPUT");
 	 outputID=addOutput("OUTPUT");
       } catch (BaseException *e)
       {
-         //e->print();
-         throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
+         throw e->add(new NodeException (NULL, "Exception caught in Throw constructor", __FILE__, __LINE__));
       }
       
    }
 
-/**Standard request-passing method between nodes during initialization*/
-      virtual void request(int outputID, const ParameterSet &req) {inputs[inputID].node->request(inputs[inputID].outputID,req);}
-
    ObjectRef getOutput(int output_id, int count)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
-      return inputValue;
+      //throw new FlowException(getInput(inputID, count));
+      throw Ptr<FlowException> (new FlowException(getInput(inputID, count)));
    }
 
 };
