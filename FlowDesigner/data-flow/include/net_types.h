@@ -254,9 +254,11 @@ class Stream : public Object
 {
   protected:
    ios *int_stream;
+   bool owner;
   public:
-   Stream(ios *_str)
+   Stream(ios *_str, bool _owner=true)
       : int_stream(_str)
+      , owner(_owner)
       {}
    virtual void printOn(ostream &out) const {out << "<Stream>";}
    int eof() {return int_stream->eof();}
@@ -271,6 +273,7 @@ class Stream : public Object
 
    operator istream &() {return *dynamic_cast<istream *> (int_stream);}
    operator ostream &() {return *dynamic_cast<ostream *> (int_stream);}
+   operator iostream &() {return *dynamic_cast<iostream *> (int_stream);}
    
    template <class T>
       Stream &operator >> (T &obj) {*dynamic_cast<istream *> (int_stream) >> obj; return *this;}
@@ -281,37 +284,35 @@ class Stream : public Object
 
 };
 
-class IFStream : public Stream {
+class IStream : virtual public Stream {
   public:
-   IFStream() 
-      : Stream(new ifstream())
+   IStream(istream *_str, bool _owner=true)
+      : Stream(_str, _owner)
       {}
-   IFStream(const char * name) 
-      : Stream(new ifstream(name))
-      {}
-   void open(const char * name) 
-   {
-      dynamic_cast<ifstream *>(int_stream)->open(name);
-   }
-   void printOn(ostream &out) const {out << "<IFStream>";}
-   ~IFStream() {delete dynamic_cast<ifstream *>(int_stream);}
+   void printOn(ostream &out) const {out << "<IStream unknown>";}
+   ~IStream() {if (owner) delete dynamic_cast<istream *>(int_stream);}
 
 };
 
-class OFStream : public Stream {
+class OStream : virtual public Stream {
   public:
-   OFStream() 
-      : Stream(new ofstream())
+   OStream(ostream *_str, bool _owner=true)
+      : Stream(_str, _owner)
       {}
-   OFStream(const char * name) 
-      : Stream(new ofstream(name))
+   void printOn(ostream &out) const {out << "<OStream unknown>";}
+   ~OStream() {if (owner) delete dynamic_cast<ostream *>(int_stream);}
+
+};
+
+class IOStream : public IStream, public OStream {
+  public:
+   IOStream(iostream *_str, bool _owner=true)
+      : Stream(_str, _owner)
+      , IStream(_str, _owner)
+      , OStream(_str, _owner)
       {}
-   void open(const char * name) 
-   {
-      dynamic_cast<ofstream *>(int_stream)->open(name);
-   }
-   void printOn(ostream &out) const {out << "<OFStream>";}
-   ~OFStream() {delete dynamic_cast<ofstream *>(int_stream);}
+   void printOn(ostream &out) const {out << "<IOStream unknown>";}
+   ~IOStream() {if (owner) delete dynamic_cast<iostream *>(int_stream);}
 
 };
 

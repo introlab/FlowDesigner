@@ -85,7 +85,7 @@ public:
 	       delete file;
 	       throw new NodeException(this, "InputStream: cannot open file: " + fileName, __FILE__, __LINE__);
 	    }
-	    openedFile = ObjectRef (new Stream(file));
+	    openedFile = ObjectRef (new IStream(file));
 	 }
 	    break;
 	 case fptr:

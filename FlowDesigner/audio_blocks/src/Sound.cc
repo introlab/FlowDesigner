@@ -181,7 +181,7 @@ public:
 #endif
 
       //value = ObjectRef(new Stream(&cout));      
-      value = ObjectRef(new Stream(new fd_iostream(audio_fd, true)));      
+      value = ObjectRef(new IOStream(new fd_iostream(audio_fd, true)));      
    }
       
    virtual ~Sound()

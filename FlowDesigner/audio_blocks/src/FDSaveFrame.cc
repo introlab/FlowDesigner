@@ -13,8 +13,8 @@ DECLARE_NODE(FDSaveFrame)
 /*Node
  *
  * @name FDSaveFrame
- * @category Signal:Audio
- * @description Writes audio frames to the sound card (or any other) file descriptor
+ * @category ZDeprecated
+ * @description Writes audio frames to the sound card (or any other) file descriptor (deplaced by WriteAudio)
  *
  * @input_name OBJECT
  * @input_type Vector
