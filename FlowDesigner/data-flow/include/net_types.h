@@ -239,6 +239,9 @@ public:
 
 };
 
+///Char which is a NetCType<char>
+typedef NetCType<char> Char;
+
 ///Int which is a NetCType<int>
 typedef NetCType<int> Int;
 

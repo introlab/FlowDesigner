@@ -22,6 +22,8 @@ vector<string> ToolboxList::load(const vector<string> &list, int debug)
    vector<string> remain(list);
    vector<string> errors;
 
+   debug = 1;
+
    int lastPass;
    do {
       lastPass = remain.size();
@@ -41,6 +43,7 @@ vector<string> ToolboxList::load(const vector<string> &list, int debug)
 	 } else {
 	    if (debug)
 	       cerr << "[Error]" << endl;
+	    perror("DL_OPEN ");
 	    errors.push_back(remain[i]);
 	 }
       }
