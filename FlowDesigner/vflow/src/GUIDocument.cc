@@ -830,6 +830,7 @@ void GUIDocument::threadStop()
       //cerr << "stopping...\n";
       isRunning=false;
       runningNet->cleanupNotify();
+      pthread_join(runThread, NULL);
 #ifdef HAVE_PTHREAD_CANCEL
       //pthread_cancel(runThread);
 #endif
@@ -906,6 +907,7 @@ void GUIDocument::run()
       //run in a window in a separated thread
    } catch (BaseException *e)
    {
+      cerr << "Exception caught" << endl;
       stringstream excOut;
 
       e->print (excOut);
