@@ -42,15 +42,17 @@ FFNet::FFNet(const Vector<int> &_topo)
    layers[0]->init(5);
 }
 
-/* Now inlined
-double *FFNet::calc(const double *input)
+FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<float *> &tin, vector<float *> &tout)
+   : topo(_topo)
+   , layers(topo.size()-1)
 {
-   layers[0]->update(input);
-   for (int i=1;i<layers.size();i++)
-      layers[i]->update(layers[i-1]->getValue());
-   return layers[layers.size()-1]->getValue();
+   //topo = _topo;
+   for (int i=0;i<topo.size()-1;i++)
+   {
+      layers[i]=new FFLayer(topo[i+1],topo[i], functions[i]);
+      layers[i]->init(1.0);
+   }
 }
-*/
 
 void FFNet::learn(double *input, double *output, double *err, double *calc_output)
 {

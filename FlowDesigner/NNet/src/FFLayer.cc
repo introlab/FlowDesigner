@@ -55,6 +55,24 @@ void FFLayer::init(double minmax)
    }
 }
 
+void FFLayer::init(double *minmax)
+{
+   for (int i=0;i<nbNeurons;i++)
+   {
+      for (int j=0;j<nbInputs;j++)
+	 weights[i*(nbInputs+1) + j] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/minmax[j];
+      weights[i*(nbInputs+1) + nbInputs] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1);
+   }
+}
+
+void FFLayer::setBias(double *minmax)
+{
+   for (int i=0;i<nbNeurons;i++)
+   {
+      weights[i*(nbInputs+1) + nbInputs] = minmax[i];
+   }   
+}
+
 void FFLayer::printOn(ostream &out) const
 {
    out << "<FFLayer " << endl;
