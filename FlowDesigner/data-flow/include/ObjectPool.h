@@ -44,7 +44,6 @@ class ObjectPool {
       {
 	 delete obj;
       } else {
-	 obj->status = Object::valid;
 	 stack.push_back(obj);
       }
    }

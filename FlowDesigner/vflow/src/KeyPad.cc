@@ -524,7 +524,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
       
     }
     else {
-      return Object::nilObject;
+      return nilObject;
     }
     
   }//keypadID
@@ -533,7 +533,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
       return ObjectRef(new Int(selected_pad));
     }
     else {
-      return Object::nilObject;
+      return nilObject;
     }
 
   }
@@ -545,7 +545,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
       return ObjectRef(new String(string(tmp)));
     }
     else {
-      return Object::nilObject;
+      return nilObject;
     }
   }
   else {

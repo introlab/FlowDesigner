@@ -84,7 +84,7 @@ public:
       and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
    {
-      if (output_id==outputID) return Object::nilObject;
+      if (output_id==outputID) return nilObject;
       else throw new NodeException (this, "Receive: Unknown output id", __FILE__, __LINE__);
    }
 

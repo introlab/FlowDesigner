@@ -268,7 +268,8 @@ FuzzySet* FuzzySet::clone() {
   return my_set;
 }
 
-void FuzzySet::printOn(ostream &out) {
+void FuzzySet::printOn(ostream &out) const
+{
 
   out << "<FuzzySet "<<endl; 
   out << "<Name "<<m_name<<" >"<<endl;

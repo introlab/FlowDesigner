@@ -64,7 +64,7 @@ ObjectRef UnPack::getOutput(int output_id, int count)
       else
       {
          if (output_id==outputID)
-	    return Object::past_endObject;
+	    return nilObject;
 	 else
 	    return FalseObject;
       }

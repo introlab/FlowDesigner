@@ -83,8 +83,8 @@ public:
       int frameDelay = delay/length;
       int sampleDelay = delay-frameDelay*length;
 
-      ObjectRef firstValue=Object::nilObject;
-      ObjectRef secondValue=Object::nilObject;
+      ObjectRef firstValue=nilObject;
+      ObjectRef secondValue=nilObject;
       if (count-frameDelay-1 >=0 )
 	 firstValue = getInput(inputID, count-frameDelay-1);
       if (count-frameDelay >=0 )
@@ -93,7 +93,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(length);
       out[count] = &output;
 
-      if (firstValue->status == Object::valid)
+      if (!firstValue->isNil())
       {
 	 const Vector<float> &in1 = object_cast<Vector<float> > (firstValue);
 	 for (int i=0;i<sampleDelay;i++)
@@ -104,7 +104,7 @@ public:
 	 
       }
 
-      if (secondValue->status == Object::valid)
+      if (!secondValue->isNil())
       {
 	 const Vector<float> &in2 = object_cast<Vector<float> > (secondValue);
 	 for (int i=sampleDelay;i<length;i++)

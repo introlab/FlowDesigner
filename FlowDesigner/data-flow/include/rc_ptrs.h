@@ -102,7 +102,7 @@ public:
       //count=new size_type(1);
    }
 
-   bool isNil() {return ptr != 0;}
+   bool isNil() {return ptr == 0;}
 
    template <class Z>
    RCPtr(const RCPtr<Z> &r)

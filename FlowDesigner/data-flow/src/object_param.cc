@@ -39,7 +39,7 @@ const vector<string> &ObjectParam::allTypes(bool allowSubnetParam)
 ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &param)
 {
    if (value == "")
-      return Object::nilObject;
+      return nilObject;
    //ObjectRef value;
    if (type == "int")
    {
@@ -88,7 +88,7 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
       if (param.exist(value))
 	 return param.get(value);
       else
-	 return Object::nilObject;
+	 return nilObject;
    }
    else {
       throw new GeneralException("Unknown parameter type: \"" + type + "\"", __FILE__, __LINE__);

@@ -30,20 +30,11 @@ class Object {
    
 public:
 
-   /**The status of an object*/
-   enum ObjectStatus {valid=0, before_beginning, erased, past_end, compute_error, wait, nil};
-
    /**default constructor*/
-   Object() :status(valid){ref_count=1;}
-
-   /**constructor with a status*/
-   Object(ObjectStatus st) :status(st){ref_count=1;}
+   Object() : ref_count(1) {}
 
    /**destructor*/
    virtual ~Object() { }
-
-   /**The current status*/
-   ObjectStatus status;
 
    /**Notify the object we're adding a reference*/
    void ref() 
@@ -79,13 +70,10 @@ public:
    virtual void doesNotUnderstand(string method);
 
    /**Generic print function*/
-   virtual void printOn(ostream &out=cout) const
-   {
-      if (typeid (*this) == typeid(Object))
-         out << "<Object <status " << status << "> >" << endl;
-      else 
-         out << "<" << typeid (*this).name() << " <status " << status << "> >" << endl;
-   }
+   virtual void printOn(ostream &out=cout) const = 0;
+
+   /**Is it a nil Object*/
+   virtual bool isNil() const {return false;}
    
    /**Prints an object in a more "user-friendly" format*/
    virtual void prettyPrint(ostream &out=cout) const
@@ -108,12 +96,7 @@ public:
 
    /**Returns the name of the class of the Object*/
    virtual string className() const;
-   
-
-   static const ObjectRef nilObject;
-   static const ObjectRef before_beginningObject;
-   static const ObjectRef past_endObject;
-   
+      
    /**Creates an instance of an object by class name*/
    static ObjectRef newObject(const string &objType);
 
@@ -216,5 +199,19 @@ string ObjectGetClassName()
 
 #endif /*BROKEN_TEMPLATES*/
 
+
+
+class NilObject : public Object {
+public:
+   virtual void printOn(ostream &out=cout) const
+   {
+      out << "<NilObject >";
+   }
+
+   /**Is it a nil Object*/
+   virtual bool isNil() const {return true;}
+};
+
+extern ObjectRef nilObject;
 
 #endif

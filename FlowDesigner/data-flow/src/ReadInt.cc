@@ -46,31 +46,17 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef streamRef = getInput(streamInputID,count);
-      if (streamRef->valid != Object::valid)
-      {
-	 out[count] = streamRef;
-	 return;
-      }
-
       IStream &stream = object_cast<IStream> (streamRef);
+
       int i;
-      try {
-	 stream >> i;
-	 out[count] = new Int(i);
-      } catch (BaseException *e)
-      {
-	 //cerr << "base exception\n";
-	 //e->print();
-	 out[count] = Object::past_endObject;
-      } catch (...)
-      {
-	 //cerr << "nil!\n";
-	 out[count] =  Object::past_endObject;
-      }
+      stream >> i;
+      out[count] = new Int(i);
+
       if (stream.eof())
       {
+	 //FIXME: Should have an EOF output too
 	 //cerr << "end!\n";
-	 out[count] =  Object::past_endObject;
+	 out[count] =  nilObject;
       }         
    }
 

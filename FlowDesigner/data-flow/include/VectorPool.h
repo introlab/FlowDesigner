@@ -84,7 +84,6 @@ class VectorPool {
 	 {
 	    delete vec;
 	 } else {
-	    vec->status = Object::valid;
 	    stack.push_back(vec);
 	 }
 	 
@@ -96,7 +95,6 @@ class VectorPool {
 	 {
 	    delete vec;
 	 } else {
-	    vec->status = Object::valid;
 	    stack.push_back(vec);
 	    //stack.insert(stack.end(), vec);
 	 }

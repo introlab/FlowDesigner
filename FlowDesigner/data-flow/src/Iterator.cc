@@ -22,7 +22,7 @@ Iterator::Iterator (string nodeName, ParameterSet params)
    conditionNode = NULL;
    
    //FIXME: this should be set dynamically.
-   output.resize(30,Object::nilObject);
+   output.resize(30);
 }
 
 void Iterator::cleanupNotify() {

@@ -52,18 +52,6 @@ public:
        ObjectRef modelRef = getInput(modelID,count);
        ObjectRef inputRef = getInput(inputID,count);
        
-       
-       if (modelRef->valid != Object::valid) {
-	 out[count] = inputRef;
-	 return;
-       }
-       
-       if (inputRef->valid != Object::valid) {
-	 out[count] = inputRef;
-	 return;
-       }
-       
-       
        FuzzyModel &model = object_cast<FuzzyModel>(modelRef);
        Vector<float> &input_value = object_cast<Vector<float> >(inputRef);  
 

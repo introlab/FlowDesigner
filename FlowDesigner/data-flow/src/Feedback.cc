@@ -61,7 +61,7 @@ public:
       Node::specificInitialize();
       ParameterSet req;
       req.add("LOOKBACK", ObjectRef(new Int(delay)));
-      req.add("INORDER", Object::nilObject);
+      req.add("INORDER", nilObject);
       inputs[inputID].node->request(inputs[inputID].outputID,req);
    }
 
@@ -91,7 +91,7 @@ public:
       else if (output_id == delayID)
       {
 	 if (count-delay < 0)
-	    return Object::before_beginningObject;
+	    return nilObject;
 	 //cerr << delayRecurs << endl;
 	 if (delayRecurs != -1 && count-delay >= delayRecurs)
 	    throw new NodeException (this, "Infinite loop detected, breaking out", __FILE__, __LINE__);

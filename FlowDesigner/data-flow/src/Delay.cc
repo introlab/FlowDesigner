@@ -106,5 +106,5 @@ ObjectRef Delay::getOutput(int output_id, int count)
    if (count-delay >= 0)
       return input.node->getOutput(input.outputID,count-delay);
    else 
-      return Object::before_beginningObject;
+      return nilObject;
 }

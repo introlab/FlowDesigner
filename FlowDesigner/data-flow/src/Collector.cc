@@ -33,9 +33,6 @@ ObjectRef Collector::getOutputNamed (const string &outputName, int count) {
    }   
  
    throw new NodeException(this,string("Unknown output name :")+outputName,__FILE__,__LINE__);
-
-   //just in case returning a nil object
-   return ObjectRef(new Object(Object::nil));
 }
 
 
@@ -83,9 +80,6 @@ ObjectRef Collector::getOutput(int output_id, int count)
    else {
       throw new NodeException(this,"Unknown output_id",__FILE__,__LINE__);
    }
-   
-   //Just in case returns an invalid object
-   return ObjectRef(new Object(Object::nil));
 }
 
 

@@ -40,39 +40,23 @@ ObjectRef NOT::getOutput (int output_id, int count) {
    if (count != processCount) {
       //We are updating our output only if needed
       
-      try {
-         
-         //getting all data from our inputs.
-         int OutputID = inputs[inputID].outputID;
-         
-         bool value = dereference_cast<bool> (inputs[inputID].node->getOutput(OutputID, count));
-         
-         //updating our output
-
-         if (value == true) {
-            output = ObjectRef(new Bool(false));
-         }
-         else {
-            output = ObjectRef(new Bool(true));
-         }
-         
-         //updating processCount
-         processCount = count;                          
-         
-      } //end of try block
+      //getting all data from our inputs.
+      int OutputID = inputs[inputID].outputID;
       
-      catch (GenericCastException *e) {
-         //We had a problem casting, our inputs are invalid?
-         e->print();
-         output = ObjectRef(new Object(Object::nil));
-      }         
-      catch (BaseException *e) {
-         //Something weird happened
-         //e->print();
-         throw e->add(new NodeException (this,string("Cannot get BOOL value from") + 
-                              inputs[inputID].node->getName()
-                              , __FILE__,__LINE__));
+      bool value = dereference_cast<bool> (inputs[inputID].node->getOutput(OutputID, count));
+      
+      //updating our output
+      
+      if (value == true) {
+	 output = ObjectRef(new Bool(false));
       }
+      else {
+	 output = ObjectRef(new Bool(true));
+      }
+      
+      //updating processCount
+      processCount = count;                          
+      
    }
    
    return output;   

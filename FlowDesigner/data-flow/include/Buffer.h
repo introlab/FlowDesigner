@@ -35,9 +35,6 @@ public:
       , flags(bLength,0)
       , bufferLength (bLength)
    {
-      //for (int i=0;i<bLength;i++) 
-      //   data[i]=Object::nilObject;
-
       bufferPos=-1;
       currentPos = -1;
    }
@@ -59,7 +56,7 @@ public:
       return flags[tmp];
    }
 
-   ///Print
+   /**Prints tje Buffer*/
    void printOn(ostream &out = cout) const;
 
    int getCurrentPos() {return currentPos;}
@@ -69,14 +66,14 @@ public:
 
 class BufferException : public BaseException {
 public:
-   ///The constructor with the parameters
+   /**The constructor with the parameters*/
    BufferException(const Buffer *_buffer, string _message, int _element) 
       : buffer (_buffer)
       , message(_message)
       , element(_element)
    {}
 
-   ///The print method
+   /**The print method*/
    virtual void print(ostream &out = cerr) 
    {
       out<< typeid(buffer).name() << " error: "<< message << ".\nElement " << element << endl;
@@ -84,13 +81,13 @@ public:
       out << *buffer;
    }
 protected:
-   ///the buffer that generated the error
+   /**the buffer that generated the error*/
    const Buffer *buffer;
 
-   ///the error message
+   /**the error message*/
    string message;
 
-   //The element for which the error occured
+   /**The element for which the error occured*/
    int element;
 };
 
@@ -109,7 +106,6 @@ inline ObjectRef & Buffer::operator[] (int ind)
 	 bufferPos++;
 	 if (bufferPos == bufferLength)
 	    bufferPos=0;
-	 //data[bufferPos] = Object::nilObject;
 	 flags[bufferPos] = 0;
       }
       currentPos = ind;

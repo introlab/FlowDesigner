@@ -773,7 +773,7 @@ void GUIDocument::run()
 	    DocParameterDataText *curr = textParams[i];
 	    ParameterSet dummy;
 	    ObjectRef value = ObjectParam::stringParam(curr->type, curr->value, dummy);
-	    if (value->status == Object::valid)
+	    if (!value->isNil())
 	       parameters.add(curr->name,value);
 	 }
 

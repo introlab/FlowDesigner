@@ -6,17 +6,18 @@ class Discard;
 
 DECLARE_NODE(Discard)
 /*Node
-
+ *
  * @name Discard
  * @category General
  * @description Discards the object pulled
-
+ *
  * @input_name INPUT
  * @input_description The input object
-
+ *
  * @output_name OUTPUT
- * @output_description Always return Object::nilObject
-
+ * @output_type NilObject
+ * @output_description Always return a NilObject
+ *
 END*/
 
 
@@ -48,7 +49,7 @@ public:
    {
       NodeInput input = inputs[inputID];
       input.node->getOutput(input.outputID,count);
-      return Object::nilObject;
+      return nilObject;
    }
 
 };

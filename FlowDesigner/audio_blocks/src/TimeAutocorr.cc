@@ -71,15 +71,17 @@ public:
    {
       NodeInput input = inputs[inputID];
 
-      if (count < inputsCache[inputID].lookBack)
-      {
-         out[count] = Object::before_beginningObject;
-         return;
-      }
       Vector<float> &output = *Vector<float>::alloc(numberFrames);
       out[count] = &output;
 
       int i,j;
+      if (count < inputsCache[inputID].lookBack)
+      {
+	 for (i=0;i<output.size();i++)
+	    output[i]=0;
+	 return;
+      }
+
 
       vector <RCPtr<Vector<float> > > inVect;
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)

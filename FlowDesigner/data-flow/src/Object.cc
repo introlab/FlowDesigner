@@ -6,10 +6,6 @@
 
 //@implements core
 
-const ObjectRef Object::nilObject = ObjectRef (new Object(Object::nil));
-const ObjectRef Object::before_beginningObject = ObjectRef (new Object(Object::before_beginning));
-const ObjectRef Object::past_endObject = ObjectRef (new Object(Object::past_end));
-
 map<string, _ObjectFactory*>& Object::ObjectFactoryDictionary()
 {
    static map<string, _ObjectFactory*> dict;
@@ -58,3 +54,6 @@ void Object::doesNotUnderstand(string method)
 {
    throw new GeneralException(string(typeid (*this).name()) + ": Does Not Understand method " + method, __FILE__, __LINE__);
 }
+
+
+ObjectRef nilObject = ObjectRef(new NilObject);

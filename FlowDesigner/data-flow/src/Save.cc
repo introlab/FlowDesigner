@@ -59,11 +59,6 @@ public:
       Object &object = *objectValue;
       
       ObjectRef streamValue = getInput(streamInputID,count);
-      if (streamValue->valid != Object::valid)
-      {
-	 out[count] = streamValue;
-	 return;
-      }
 
       OStream &stream = object_cast<OStream> (streamValue);
       
