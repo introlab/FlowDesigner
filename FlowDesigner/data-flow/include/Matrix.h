@@ -42,6 +42,11 @@ public:
    	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 
+   /**
+      Clone the matrix and return an identical copy (deep copy)
+   */
+   virtual ObjectRef clone() = 0;
+
 };
 
 /**
@@ -307,7 +312,44 @@ public:
    */
    virtual void setIndex(int _row, int _col, ObjectRef val);
 
+
+   /**
+      Clone the matrix and return an identical copy (deep copy) 
+   */
+   virtual ObjectRef clone();
+
 };
+
+///clone default implementation
+template <class T>
+inline ObjectRef Matrix<T>::clone() {
+  
+  Matrix<T> *cpy = new Matrix<T>(this->nrows(), this->ncols());
+  
+  for (int i = 0; i < this->nrows(); i++) {
+    for (int j = 0; j < this->ncols(); j++) {
+      (*cpy)(i,j) = (*this)(i,j);
+    }
+  }
+  return ObjectRef(cpy);
+}
+
+
+///clone implementation with Matrix<ObjectRef>
+template <>
+inline ObjectRef Matrix<ObjectRef>::clone() {
+  
+  Matrix<ObjectRef> *cpy = new Matrix<ObjectRef>(this->nrows(), this->ncols());
+  
+  for (int i = 0; i < this->nrows(); i++) {
+    for (int j = 0; j < this->ncols(); j++) {
+      //cloning every Object in the matrix
+      (*cpy)(i,j) = (*this)(i,j)->clone();
+    }
+  }
+
+  return ObjectRef(cpy);
+}
 
 template <class T>
 inline void Matrix<T>::readFrom(istream &in)
