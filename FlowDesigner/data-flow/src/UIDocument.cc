@@ -116,6 +116,7 @@ vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
    {
       params = externalDocInfo[netName]->params;
    }
+   //FIXME: potential leak of ItemInfo here.
    return params;
 }
 
@@ -585,6 +586,7 @@ void UIDocument::loadExtDocInfo(const string &path, const string &name)
       {
 	 char *param_name = (char *)xmlGetProp(net, (CHAR *)"name");
 	 char *param_type = (char *)xmlGetProp(net, (CHAR *)"type");
+	 char *param_value = (char *)xmlGetProp(net, (CHAR *)"value");
 	 if (param_name && param_type)
 	 {
 	    ItemInfo *newInfo = new ItemInfo;
@@ -593,6 +595,8 @@ void UIDocument::loadExtDocInfo(const string &path, const string &name)
 	       newInfo->type = "int";
 	    else
 	       newInfo->type = param_type;
+	    if (string(param_value)!="")
+	       newInfo->value = param_value;
 	    info->params.insert (info->params.end(), newInfo);
 	 }
 	 //cerr << "param\n";

@@ -100,7 +100,7 @@ void UINodeParameters::saveXML(xmlNode *root)
       xmlNewChild(root, NULL, (CHAR *)"Comments", (xmlChar*)comments.c_str());
    for (int i=0;i<textParams.size();i++)
    {
-      if (textParams[i]->value != "")
+      //if (textParams[i]->value != "")
       {
          xmlNodePtr tree = xmlNewChild(root, NULL, (CHAR *)"Parameter", NULL);
          xmlSetProp(tree, (CHAR *)"name", (CHAR *)textParams[i]->name.c_str());

@@ -34,30 +34,37 @@ DECLARE_NODE(NNetTrainDBD)
  *
  * @parameter_name MAX_EPOCH
  * @parameter_type int
+ * @parameter_value 2000
  * @parameter_description Number of training epoch (default 2000)
  *
  * @parameter_name LEARN_RATE
  * @parameter_type float
+ * @parameter_value 0.000001
  * @parameter_description Initial learning rate (default 0.000001)
  *
  * @parameter_name INCREASE
  * @parameter_type float
+ * @parameter_value 1.04
  * @parameter_description Learning rate increment (> 1.0) factor (default 1.04)
  *
  * @parameter_name DECREASE
  * @parameter_type float
+ * @parameter_value 0.6
  * @parameter_description Learning rate decrement (< 1.0) factor (default 0.6)
  *
  * @parameter_name NB_SETS
  * @parameter_type int
+ * @parameter_value 1
  * @parameter_description Number of batch subsets for accelerated training (default 1)
  *
  * @parameter_name ALLOC_CHUNK
  * @parameter_type bool
+ * @parameter_value false
  * @parameter_description If true, a big vector is allocated to store all the inputs (default false)
  *
  * @parameter_name RPROP
  * @parameter_type bool
+ * @parameter_value false
  * @parameter_description If true, use the RProp variant of delta-bar-delta (default false)
  *
 END*/

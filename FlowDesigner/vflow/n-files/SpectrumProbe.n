@@ -37,8 +37,8 @@
     <NetInput name="INPUT" node="node2" terminal="INPUT"/>
   </Network>
   <Parameter name="BREAK_AT" type="int" value=""/>
-  <Parameter name="SHOW" type="bool" value=""/>
+  <Parameter name="SHOW" type="bool" value="true"/>
   <Parameter name="SKIP" type="int" value=""/>
-  <Parameter name="SQRT" type="bool" value=""/>
-  <Parameter name="LOG" type="bool" value=""/>
+  <Parameter name="SQRT" type="bool" value="false"/>
+  <Parameter name="LOG" type="bool" value="true"/>
 </Document>
