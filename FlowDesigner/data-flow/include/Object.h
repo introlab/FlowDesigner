@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include "BaseException.h"
+#include <typeinfo>
 
 class Object;
 /** Smart pointer to Object called ObjectRef
@@ -98,33 +99,49 @@ public:
       return out;
    }
 
+   /**Returns the name of the class of the Object*/
+   const string &className();
+
    static const ObjectRef nilObject;
    static const ObjectRef before_beginningObject;
    static const ObjectRef past_endObject;
    
+   /**Creates an instance of an object by class name*/
    static ObjectRef newObject(const string &objType);
-   static int addObjectType(const string &objType, _ObjectFactory *factory);
+
+   /**Registers the object name*/
+   template<class T>
+   static int addObjectType(const string &objType, _ObjectFactory *factory)
+   {
+      ObjectFactoryDictionary()[objType] = factory;
+      TypeidDictionary()[&typeid(T)] = factory;
+      return 0;
+   }
 private:
    static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
+   static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
 };
 
-class _ObjectFactory
-{
+class _ObjectFactory {
+   string typeName;
 public:
+   _ObjectFactory(const string &_name) : typeName(_name) {}
    virtual ObjectRef create() = 0;
+   const string &getName() {return typeName;}
 };
 
 template <class T>
 class ObjectFactory : public _ObjectFactory {
 public:
+   ObjectFactory(const string &_name) : _ObjectFactory(_name) {}
    virtual ObjectRef create() {return ObjectRef(new T);}
 };
 
 
 #define DECLARE_TYPE(type) static int dummy_init_for ## type = \
-               Object::addObjectType (# type, new ObjectFactory<type>);
+               Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
 
 #define DECLARE_TYPE2(type, dummyID) static int dummy_init_for ## dummyID = \
-               Object::addObjectType (# type, new ObjectFactory<type>);
+               Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
 
 #endif

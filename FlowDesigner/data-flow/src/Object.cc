@@ -14,6 +14,17 @@ map<string, _ObjectFactory*>& Object::ObjectFactoryDictionary()
    return dict;
 }
 
+map<const type_info *, _ObjectFactory*>& Object::TypeidDictionary()
+{
+   static map<const type_info *, _ObjectFactory*> dict;
+   return dict;
+}
+
+const string &Object::className()
+{
+   return TypeidDictionary()[&typeid(*this)]->getName();
+}
+
 ObjectRef Object::newObject(const string &objType)
 {
    if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
@@ -24,13 +35,6 @@ ObjectRef Object::newObject(const string &objType)
       throw new GeneralException ("ObjectRef error: unknown type " + objType, __FILE__, __LINE__);
    }
 }
-
-int Object::addObjectType(const string &objType, _ObjectFactory *factory)
-{
-   ObjectFactoryDictionary()[objType] = factory;
-   return 0;
-}
-
 
 void Object::serialize(ostream &out) const
 {

@@ -11,7 +11,7 @@
 #include "vec.h"
 #include <complex>
 
-static int dummy = Object::addObjectType ("Vector", new ObjectFactory<Vector<float> >);
+static int dummy = Object::addObjectType<Vector<float> > ("Vector", new ObjectFactory<Vector<float> > ("Vector"));
 DECLARE_TYPE2(Vector<float>, 0)
 DECLARE_TYPE2(Vector<double>, 1)
 DECLARE_TYPE2(Vector<int>, 2)

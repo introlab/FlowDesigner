@@ -50,7 +50,8 @@ include_HEADERS = Array.h \
 	Matrix.h \
 	IntfNode.h \
 	object_param.h \
-	typetraits.h
+	typetraits.h \
+	binio.h
 	
 noinst_HEADERS = \
 	NOT.h \
