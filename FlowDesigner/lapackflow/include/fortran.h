@@ -13,14 +13,16 @@ typedef float   REAL;             // REAL                 4 bytes
 typedef double  DOUBLE_PRECISION; // DOUBLE PRECISION     8 bytes
 typedef int     LOGICAL;          // LOGICAL              4 bytes
 
-//#include  <f77char.h>             // character            n bytes
+#include  <f77char.h>             // character            n bytes
 //#include  <f77cmplx.h>            // complex
-#include  <f77matrx.h>            // fmatrix class
+#include  <f77matrix.h>            // fmatrix class
 
 
 // values for LOGICAL
 #define FALSE 0
 #define TRUE  1
+
+#define F77_STUB_REQUIRED
 
 // Macros for portable handling of linkage & calling conventions
 #ifdef F77_STUB_REQUIRED
@@ -42,15 +44,15 @@ typedef int     LOGICAL;          // LOGICAL              4 bytes
 #else
 // MS Windows using Microsoft compilers
 
-/*
-      // FORTRAN functions
+
+// FORTRAN functions
 #define SUBROUTINE            extern "C" void           __stdcall
 #define INTEGER_FUNCTION      extern "C" INTEGER        __stdcall
 #define REAL_FUNCTION         extern "C" REAL           __stdcall
 #define LOGICAL_FUNCTION      extern "C" LOGICAL        __stdcall
 #define DOUBLE_PRECISION_FUNCTION extern "C" DOUBLE_PRECISION \
                                                               __stdcall
-*/
+
 #endif
 
 

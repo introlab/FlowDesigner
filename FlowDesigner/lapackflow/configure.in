@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
-AC_INIT(src/Saturate.cc)
+AC_INIT(include/fortran.h)
 
 dnl Stolen from gtk+:
 
@@ -32,7 +32,7 @@ AC_SUBST(LT_AGE)
 
 # For automake.
 VERSION=$FREESPEECH_VERSION
-PACKAGE=effects
+PACKAGE=lapackflow
 
 
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)

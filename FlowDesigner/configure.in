@@ -43,8 +43,9 @@ AC_MODULE_OPT(HMM, yes)
 AC_MODULE_OPT(VQ, yes)
 AC_MODULE_OPT(video_blocks, no)
 AC_MODULE_OPT(FuzzyEngine, no)
+AC_MODULE_OPT(lapackflow, no)
 
-modules="$vflow $audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine $effects"
+modules="$vflow $audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine $effects $lapackflow"
 AC_SUBST(modules)
 AC_CONFIG_SUBDIRS($modules)
 
