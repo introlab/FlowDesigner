@@ -48,31 +48,31 @@ class Node;
 */
 class NodeInput {
 public:
-   ///The outputID of the connected node
+   /**The outputID of the connected node*/
    int outputID;
-   ///The reference of the node
+   /**The reference of the node*/
    Node *node;
-   ///The name of the input
+   /**The name of the input*/
    string name;
-   ///Constructor with a node and an outputID
+   /**Constructor with a node and an outputID*/
    NodeInput(Node *n, int t, const string &inputName) :outputID(t),node(n),name(inputName) {}
-   ///Copy constructor
+   /**Copy constructor*/
    NodeInput (const NodeInput &in) {
       node = in.node; 
       outputID = in.outputID;
       name = in.name;
    }
-   ///equality operator
+   /**equality operator*/
    NodeInput& operator= (const NodeInput &in) {
       node = in.node; 
       outputID = in.outputID; 
       name = in.name;
       return *this;
    }
-   ///default constructor
+   /**default constructor*/
    NodeInput() : outputID(-1), node(NULL) {} //-1 means unused
 
-   ///constructor with a nodeName
+   /**constructor with a nodeName*/
    NodeInput(const string &inputName) : outputID(-1), node(NULL), name(inputName) {}
 
 private:   
@@ -85,25 +85,25 @@ private:
 */
 class ParameterSet : public map<string,pair<ObjectRef,bool> > {
 public:
-   ///Does a certain parameter exist?
+   /**Does a certain parameter exist?*/
    bool exist(const string &param) const;
 
-   ///get a parameter's value
+   /**get a parameter's value*/
    ObjectRef get(string param) const;
 
-   ///get the default parameter
+   /**get the default parameter*/
    ObjectRef getDefault(string param, ObjectRef value);
 
-   ///set the default parameter
+   /**set the default parameter*/
    void defaultParam(string param, ObjectRef value);
 
-   ///adding the parameters
+   /**adding the parameters*/
    void add(string param, ObjectRef value);
 
-   ///printing the parameters
+   /**printing the parameters*/
    void print(ostream &out = cerr) const;
 
-   ///check whether there are any unused (never read) parameters (unrecognized)
+   /**check whether there are any unused (never read) parameters (unrecognized)*/
    void checkUnused() const;
 };
 
@@ -116,13 +116,13 @@ public:
 class ParameterException : public BaseException {
 
 public:
-   ///The constructor with the parameters
+   /**The constructor with the parameters*/
    ParameterException(string _message, string _param_name, ParameterSet _params)
       : message(_message)
       , param_name(_param_name)
       , params(_params)
    {}   
-   ///The print method
+   /**The print method*/
    virtual void print(ostream &out = cerr) 
    {
       out << message << ": "<< param_name <<endl;
@@ -130,15 +130,15 @@ public:
       params.print(out);
    }
 protected:
-   ///the parameter name
+   /**the parameter name*/
    string param_name;
-   ///the parameter set
+   /**the parameter set*/
    ParameterSet params;
-   ///The error message
+   /**The error message*/
    string message;
 };
 
-///A parameter entry in the parameterSet
+/**A parameter entry in the parameterSet*/
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
 /**The Base Node class. All nodes to be inserted in a network must
@@ -154,19 +154,19 @@ class Node {
    friend class Iterator;
 
 protected:
-   ///Node's name
+   /**Node's name*/
    string name;
 
-   ///Node's inputs
+   /**Node's inputs*/
    vector<NodeInput> inputs;
 
-   ///Node's outputs
+   /**Node's outputs*/
    vector<string> outputNames;
 
-   ///Whether the node has been initialized
+   /**Whether the node has been initialized*/
    bool initialized;
    
-   ///Is the node in debug Mode
+   /**Is the node in debug Mode*/
    bool debugMode;
 
    /**Internal processing counter for synchronization.
@@ -178,34 +178,33 @@ protected:
       Becomes zero when all the node's outputs have been initialized*/
    int outputInitializeCount;
    
-   ///Node's status
+   /**Node's status*/
    long status;
    
-   ///Parameters given to the node at construction time
+   /**Parameters given to the node at construction time*/
    ParameterSet parameters;
 
-   ///Connect an input node using numeric (integer) input/output names
+   /**Connect an input node using numeric (integer) input/output names*/
    virtual void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
 
-   /// Adding an output to a node
+   /**Adding an output to a node*/
    int addOutput (const string &outputName);
  
-   /// Adding an input to a node
+   /**Adding an input to a node*/
    int addInput (const string &inputName);
    
 #ifdef MULTITHREAD
-   ///pthread mutex
+   /**pthread mutex*/
    pthread_mutex_t mutex;
 #endif
 
 public:
 
-   ///Constructor, takes the name of the node and a set of parameters
+   /**Constructor, takes the name of the node and a set of parameters*/
    Node(string nodeName, const ParameterSet &params);
    
-   //Node(const Node& node); //copy constructor
 
-   ///Destructor
+   /**Destructor*/
    virtual ~Node() {}
 
    /**Ask for the node's output which ID (number) is output_id 
@@ -217,41 +216,44 @@ public:
       return this->getOutput (this->translateOutput(outputName),count);
    }
 
-   ///Connect an input node using symbolic (strings) input/output names
+   /**Connect an input node using symbolic (strings) input/output names*/
    virtual void connectToNode(string in, Node *inputNode, string out);
 
-   ///Initialize a node
+   /**Initialize a node*/
    virtual void initialize ();
 
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize();
 
-   ///Checks whether node really has a certain output
+   /**Checks whether node really has a certain output*/
    virtual bool hasOutput(int output_id) const;
 
-   ///Has the node been initialized?
+   /**Returns the inputs vector */
+   virtual vector<NodeInput>& getInputs () {return inputs;}
+
+   /**Has the node been initialized?*/
    bool isInitialized() {return initialized;}
 
-   ///Is the node in debug mode?
+   /**Is the node in debug mode?*/
    bool isDebugMode() {return debugMode;}
 
-   ///Sets the node to debug mode
+   /**Sets the node to debug mode*/
    virtual void setDebugMode(){debugMode = true;}
 
-   ///Resets debug mode
+   /**Resets debug mode*/
    virtual void resetDebugMode(){debugMode = false;}
 
-   ///Resets the node internal values and buffers
+   /**Resets the node internal values and buffers*/
    void reset();
 
-   ///Returns the node name
-   string getName() {return name;}   
+   /**Returns the node name*/
+   string getName() {return name;}
  
-   ///Standard request-passing method between nodes during initialization
+   /**Standard request-passing method between nodes during initialization*/
    virtual void request(const ParameterSet &req) {}
 
-   ///
+   /**locks the node's mutex*/
    void lock() 
    { 
 #ifdef MULTITHREAD
@@ -259,7 +261,7 @@ public:
 #endif
    }
    
-   ///
+   /**unlocks the node's mutex*/
    void unlock() 
    { 
 #ifdef MULTITHREAD
@@ -285,22 +287,22 @@ public:
 
 
 private:
-   ///Tell the node we will be using output 'out'
+   /**Tell the node we will be using output 'out'*/
    void registerOutput (int out) {outputInitializeCount++;}
 
-   ///Increment outputInitializeCount when performing a reset()
+   /**Increment outputInitializeCount when performing a reset()*/
    void incrementOutputInitialize() {outputInitializeCount++;}
 
 
 protected:
 
-   ///Default constructor, should not be used
+   /**Default constructor, should not be used*/
    Node() {throw GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 
-   ///symbolic to numeric translation for input names
+   /**symbolic to numeric translation for input names*/
    virtual int translateInput(string inputName);
 
-   ///symbolic to numeric translation for output names
+   /**symbolic to numeric translation for output names*/
    virtual int translateOutput(string inputName);
 };
 
@@ -319,11 +321,11 @@ protected:
 class NotInitializedException : public BaseException {
 
 public:
-   ///The constructor that takes a map of nodes not properly initialized
-   NotInitializedException (map<string,Node*> aMap) {
+   /**The constructor that takes a map of nodes not properly initialized*/
+   NotInitializedException (map<string,Node * > aMap) {
       nodeMap = aMap;
    }
-   ///The print method
+   /**The print method*/
    virtual void print(ostream &out = cerr) {
       out<<"NotInitializedException occured"<<endl;
       
@@ -334,7 +336,7 @@ public:
       }
    }   
 
-   ///The node map
+   /**The node map*/
    map<string,Node*> nodeMap;
 };
 
@@ -364,13 +366,13 @@ public:
       else out << file << ", line " << line << ": " << message << endl;
    }
 protected:
-   ///the message
+   /**the message*/
    string message;
-   ///the node pointer
+   /**the node pointer*/
    Node *node;
-   ///the file name
+   /**the file name*/
    string file;
-   ///the line number
+   /**the line number*/
    int line;
 };
 

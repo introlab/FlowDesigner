@@ -286,9 +286,8 @@ void Network::specificInitialize() {
    map<string,Node*>::iterator iter;
    map<string,Node*> connectionMap;
    
-   cerr << "Network::initialize\n";
-      cerr << "initializing: sinkNode->initialize() " << sinkNode->getName() << endl;
-      sinkNode->initialize();
+  
+   sinkNode->initialize();
    
    //we must verify if all the nodes are initialized properly
 
@@ -369,8 +368,7 @@ int Network::translateOutput (string outputName) {
  */
 /***************************************************************************/
 void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
-   if (!inputNode) 
-   {
+   if (!inputNode) {
       throw NoInputNodeException();
    }
    inputNode->connectToNode(in,inNode,out);

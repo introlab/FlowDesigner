@@ -97,6 +97,12 @@ public:
    ///Setting the input node (unique)
    virtual void setInputNode (Node* node) {inputNode = node;}
 
+   /**Returns the inputs vector */
+   virtual vector<NodeInput>& getInputs () {
+      if (!inputNode) throw NodeException(this,"No inputNode",__FILE__,__LINE__);
+      return inputNode->getInputs();
+   }
+
    ///Setting the debug mode
    virtual void setDebugMode();
 

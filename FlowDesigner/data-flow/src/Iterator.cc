@@ -27,7 +27,7 @@ Iterator::Iterator (string nodeName, ParameterSet params)
 /***************************************************************************/
 ObjectRef Iterator::getOutput (int output_id, int count) {
    
-   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
+   if (!hasOutput(output_id)) throw NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
    lock();
 
@@ -52,14 +52,14 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
             output = sinkNode->getOutput(output_id,pc);
          }
       }
-      catch (GenericCastException *e) {
+      catch (GenericCastException &e) {
          //We had a problem casting, our inputs are invalid?
-         e->print();
+         e.print();
          output = ObjectRef(new Object(Object::nil));         
       }      
-      catch (BaseException *e) {
+      catch (BaseException &e) {
          //Something weird happened
-         e->print();
+         e.print();
          throw NodeException (this,string("Error!!! "), __FILE__,__LINE__);
       }      
    }
@@ -76,14 +76,18 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
  */
 /***************************************************************************/
 void Iterator::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
-  
-   int translator_out = ((Node*) translator)->translateOutput(inNode->outputNames[out]);
+   cerr << "Iterator::connectToNode 1\n";
+   if (!inputNode) 
+      throw NodeException(this,"Trying to connect without input node",__FILE__,__LINE__);
+
+   int translator_out = translator->addInput(this->getInputs()[in].name);
 
    // Connecting the inputNode
    inputNode->connectToNode(in,translator,translator_out);
 
    // We are connecting the translator
    translator->connectToNode(translator_out,inNode,out);
+
 }
 /***************************************************************************/
 /*
@@ -101,6 +105,7 @@ void Iterator::specificInitialize() {
    conditionNode->initialize();
 
    this->Network::specificInitialize();
+   
    
 }
 

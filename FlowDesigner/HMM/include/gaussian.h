@@ -21,24 +21,24 @@
 #include <string>
 #include "covariance.h"
 
-///Gaussian class
+/**Gaussian class*/
 class Gaussian : public Object
 {
 protected:
-   ///The mean of the gaussian stored as an STL vector of float
+   /**The mean of the gaussian stored as an STL vector of float*/
    vector<float> *mean;
 
-   ///The covariance of the gaussian is a pointer to abstract class Covariance
+   /**The covariance of the gaussian is a pointer to abstract class Covariance*/
    Covariance    *covariance;
 
-   ///number of frames aligned (accumulated) to the covariance
+   /**number of frames aligned (accumulated) to the covariance*/
    int            accum_count;
 
-   ///Dimension (same as the mean and covariance dimension)
+   /**Dimension (same as the mean and covariance dimension)*/
    int            dimension;
 
 public:
-   ///Empty gaussian constructor
+   /**Empty gaussian constructor*/
    Gaussian() : dimension(0) {}
 
    Gaussian(istream &in) {in >> *this;}
@@ -52,7 +52,7 @@ public:
       , dimension(dim)
    {}
 
-   ///Copy constructor
+   /**Copy constructor*/
    Gaussian(const Gaussian &g) 
       : mean(new vector<float> (*g.mean))
       , covariance(g.covariance->copy())
@@ -60,25 +60,25 @@ public:
       , dimension (g.dimension)
    {}
 
-   ///Destructor
+   /**Destructor*/
    ~Gaussian();
       
-   ///Returns the dimension of the gaussian
+   /**Returns the dimension of the gaussian*/
    int getDimension() const  { return dimension; }
 
-   ///Returns the mean of the gaussian
+   /**Returns the mean of the gaussian*/
    vector<float> &getMean() const  { return *mean; }
 
-   ///Returns the covariance of the gaussian
+   /**Returns the covariance of the gaussian*/
    Covariance &getCovariance() const { return *covariance; }
 
-   ///Convert from accumulate to real mode
+   /**Convert from accumulate to real mode*/
    void to_real();
 
-   ///Returns the number of frames aligned to the gaussian
+   /**Returns the number of frames aligned to the gaussian*/
    int get_accum_count() const {return accum_count;} 
 
-   ///Returns the mahalanobis distance between the gaussian and a frame
+   /**Returns the mahalanobis distance between the gaussian and a frame*/
    float mahalanobis(const Frame fr) const
    {
       float dist=0;
@@ -90,7 +90,7 @@ public:
       return dist;// + covariance->getDeterminant();
    }
 
-   ///Returns the euclidian distance between the gaussian and a frame
+   /**Returns the euclidian distance between the gaussian and a frame*/
    float euclidian(const Frame fr) const
    {
       float dist=0;
@@ -102,7 +102,7 @@ public:
       return dist;
    }
 
-   ///Adds (accumulates) a frame to the gaussian
+   /**Adds (accumulates) a frame to the gaussian*/
    void accum_frame(const Frame fr)
    {
       accum_count++;
@@ -113,7 +113,7 @@ public:
       }
    }
 
-   ///Set everything to zero and come back to accumulate mode
+   /**Set everything to zero and come back to accumulate mode*/
    void reset_to_accum_mode()
    {
       accum_count=0;
@@ -123,13 +123,13 @@ public:
          (*mean)[i]=0.0;
    }
 
-   ///Prints the gaussian mean
+   /**Prints the gaussian mean*/
    void print_mean(ostream &out = cout, string separ = " ") const;
 
-   ///Prints the gaussian covariance
+   /**Prints the gaussian covariance*/
    void print_covar(ostream &out = cout, string separ = " ") const;
 
-   ///
+   /**print function for operator <<*/
    void printOn(ostream &out = cout) const;
 
    friend istream &operator >> (istream &in, Gaussian &gauss);

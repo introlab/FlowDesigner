@@ -40,18 +40,15 @@ public:
    
    /** The getOutput method overloaded from CollectorNode */
    virtual ObjectRef getOutput (int output_id, int count) {
-      ObjectRef inputResults;
-      NodeInput input = inputs[output_id];
-      // Watch out, we are using processCount instead of count
-      inputResults = input.node->getOutput(input.outputID,processCount);
-      return inputResults;      
+      //changed count for processCount
+      return CollectorNode::getOutput(output_id,processCount);
    }
    
 private:
    
    /** The default constructor that should never be used */
    InputTranslator () {
-      throw new NodeException (NULL,"The default constructor should not be called from InputTranslator",__FILE__,__LINE__);
+      throw NodeException (NULL,"The default constructor should not be called from InputTranslator",__FILE__,__LINE__);
    }
 };
 

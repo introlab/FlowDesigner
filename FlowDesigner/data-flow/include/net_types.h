@@ -68,7 +68,7 @@ public:
       GenericType<T>::value = copy.value;
    }
 
-   T &val() {return value;}
+   T &val() {return GenericType<T>::value;}
 };
 
 /**
