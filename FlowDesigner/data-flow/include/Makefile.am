@@ -48,5 +48,6 @@ noinst_HEADERS = \
 	UnPack.h \
 	VNSum.h \
 	VSum.h \
-	AND.h
+	AND.h \
+	Matrix.h
 

@@ -19,12 +19,12 @@
 #include "Buffer.h"
 #include "Vector.h"
 
-class Gain;
+class Normalize;
 
-DECLARE_NODE(Gain)
+DECLARE_NODE(Normalize)
 /*Node
  *
- * @name Gain
+ * @name Normalize
  * @category Signal:Base
  * @description No description available
  *
@@ -33,26 +33,20 @@ DECLARE_NODE(Gain)
  *
  * @output_name OUTPUT
  * @output_description No description available
- *
- * @parameter_name GAIN
- * @parameter_description No description available
- *
 END*/
 
 
-class Gain : public BufferedNode {
+class Normalize : public BufferedNode {
    
    int inputID;
    int outputID;
-   float gain;
 
 public:
-   Gain(string nodeName, ParameterSet params)
+   Normalize(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");
-      gain = dereference_cast<float> (parameters.get("GAIN"));
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -70,9 +64,14 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
+      float sum=0;
+      for (int i=0;i<inputLength;i++)
+	 sum += in[i];
+      sum = 1.0/sum;
+
       for (int i=0;i<inputLength;i++)
       {
-         output[i]=gain*in[i];
+         output[i]=sum*in[i];
       }
       
    }

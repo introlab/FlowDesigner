@@ -24,29 +24,29 @@ class TimeFilter;
 
 DECLARE_NODE(TimeFilter)
 /*Node
-
+ *
  * @name TimeFilter
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name LENGTH
  * @parameter_description No description available
-
+ *
  * @parameter_name FIR
  * @parameter_description No description available
-
+ *
  * @parameter_name IIR
  * @parameter_description No description available
-
+ *
  * @parameter_name LOOKAHEAD
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -97,11 +97,11 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (count < inputsCache[inputID].lookBack)
+      /*if (count < inputsCache[inputID].lookBack)
       {
          output.status = Object::before_beginning;
          return;
-      }
+	 }*/
       NodeInput input = inputs[inputID];
 
       int i,j;
@@ -112,13 +112,13 @@ public:
       int fir_limit = fir.size() - 1;
       for (i = 0; i <= fir_limit ; i++)
       {
+	 if (count - i + inputsCache[inputID].lookAhead < 0)
+	    break;
          ObjectRef inputValue = input.node->getOutput(input.outputID, count - i + inputsCache[inputID].lookAhead);
          //cerr << "inputsCache[inputID].lookAhead = " << inputsCache[inputID].lookAhead << endl;
          if (inputValue->status != Object::valid)
-         {
-            output.status = inputValue->status;
-            return;
-         }
+            continue;
+
          const Vector<float> &firRow = object_cast<Vector<float> > (inputValue);
          for (j = 0; j < outputLength ; j++)
             output[j] += fir[i]*firRow[j];

@@ -21,10 +21,41 @@ static double *calc_tansig_table()
 
 static double *tansig_table = calc_tansig_table();
 
+static double *calc_sigmoid_table()
+{
+   double *table = new double [2001];
+   for (int i=0;i<2001;i++)
+   {
+      double xx = .01*i - 10;
+      table[i] = 1/(1+exp(-xx));
+   }
+   
+   return table;
+}
+
+static double *sigmoid_table = calc_sigmoid_table();
 
 inline void sigmoid(double *x, double *y, int len)
 {
    for (int i=0;i<len;i++)
+   {
+      double xx=*x++;
+
+      if (xx>9.9)
+	 xx=9.9;
+      else if (xx<-9.9)
+	 xx=-9.9;
+      
+      double n = xx*100.0+1000.0;
+      int n1 = int(n);
+      double f = n - n1;
+      *y++ = (1-f)*sigmoid_table[n1] + f*sigmoid_table[n1+1];
+      
+      //*y++ = 2/(1+exp(-2*xx)) - 1;
+   }
+
+
+   /*for (int i=0;i<len;i++)
    {
       double xx=*x++;
 
@@ -33,16 +64,37 @@ inline void sigmoid(double *x, double *y, int len)
       else if (xx<-10)
 	 xx=-10;
       *y++ = 1/(1+exp(-xx));
-   }
+      }*/
 }
 
 inline void deriv_sigmoid(double *x, double *y, int len)
 {
-   for (int i=0;i<len;i++)
+   /*for (int i=0;i<len;i++)
+     {
+     *y++ = *x * (1-*x);
+     x++;
+     }
+   */ 
+   //This is just an unrolled version of the previous section
+   double *end = x+len;
+   while (x<end-3)
+   {
+      *y++ = *x * (1-*x);
+      x++;
+      *y++ = *x * (1-*x);
+      x++;
+      *y++ = *x * (1-*x);
+      x++;
+      *y++ = *x * (1-*x);
+      x++;
+   }
+   while (x<end)
    {
       *y++ = *x * (1-*x);
       x++;
    }
+
+
 }
 
 inline void tansig(double *x, double *y, int len)

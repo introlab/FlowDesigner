@@ -18,61 +18,75 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
+#include "Matrix.h"
 
-class Gain;
+class MatProduct;
 
-DECLARE_NODE(Gain)
+DECLARE_NODE(MatProduct)
 /*Node
  *
- * @name Gain
+ * @name MatProduct
  * @category Signal:Base
- * @description No description available
+ * @description Matrix x vector product
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description Input vector
+ *
+ * @input_name MATRIX
+ * @input_description Matrix
  *
  * @output_name OUTPUT
- * @output_description No description available
- *
- * @parameter_name GAIN
- * @parameter_description No description available
+ * @output_description Result
  *
 END*/
 
 
-class Gain : public BufferedNode {
+class MatProduct : public BufferedNode {
    
    int inputID;
+   int matrixID;
    int outputID;
-   float gain;
 
 public:
-   Gain(string nodeName, ParameterSet params)
+   MatProduct(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
+      matrixID = addInput("MATRIX");
       outputID = addOutput("OUTPUT");
-      gain = dereference_cast<float> (parameters.get("GAIN"));
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
+      ObjectRef matrixValue = getInput(matrixID, count);
 
       if (inputValue->status != Object::valid)
       {
 	 out[count] = inputValue;
          return;
       }
+      if (matrixValue->status != Object::valid)
+      {
+	 out[count] = matrixValue;
+         return;
+      }
+
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      const Matrix<float> &mat = object_cast<Matrix<float> > (matrixValue);
       int inputLength = in.size();
+      int outputLength = mat.nrows();
+      if (mat.ncols() != inputLength)
+	 throw new NodeException(this, "matrix columns doesn't match vector length", __FILE__, __LINE__);
 
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      for (int i=0;i<inputLength;i++)
+      for (int i=0;i<outputLength;i++)
       {
-         output[i]=gain*in[i];
+	 output[i] = 0;
+	 for (int j=0;j<inputLength;j++)
+	    output[i] += mat[i][j] + in[j];
       }
       
    }
