@@ -73,7 +73,7 @@ public:
       r[0] += 1; //just in case of a null frame
       wld(output.begin(), r, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
-        output[i] *= pow(.99,i);
+        output[i] *= pow(.97,i);
       output.status = Object::valid;
    }
 
