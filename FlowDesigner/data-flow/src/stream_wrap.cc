@@ -216,17 +216,31 @@ pipe_streambuf::~pipe_streambuf()
 
 int pipe_streambuf::ll_read(void *buf, size_t count)
 {
-   int res = 0;
-   res = read(ifd, buf, count);
-   if (res==0)
+   int ori=count;
+   int total=0;
+   while (total<ori)
    {
-      if (waitpid(pid, NULL, WNOHANG)==pid)
+      int res = 0;
+      res = read(ifd, buf, count);
+      if (res==0)
       {
-	 pid=0;
-	 return 0;
+	 //cerr << "got zero" << endl;
+	 if (waitpid(pid, NULL, WNOHANG)==pid)
+	 {
+	    //cerr << "proc got killed?\n";
+	    pid=0;
+	 }
+	 break;
+      } else if (res==-1)
+      {
+	 //cerr << "ERROR" << endl;
+	 perror("read");
+	 break;
       }
+      total+=res;
+      count-=res;
    }
-   return res;
+   return total;
 }
 
 int pipe_streambuf::ll_write(const void *buf, size_t count)

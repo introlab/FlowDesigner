@@ -59,6 +59,14 @@ public:
       const String &args = object_cast<String> (inputValue);
 
       string cmd = command + " " + args ;
+
+      //Old version left here for debugging
+      /*FILE *tmp = popen(cmd.c_str(), "r");
+      out[count] = ObjectRef (new IOStream(new pipe_iostream(cmd, false)));
+      if (!tmp)
+	 NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
+      out[count] = ObjectRef (new IStream(new fileptr_istream(tmp, true, true)));
+      */
       out[count] = ObjectRef (new IOStream(new pipe_iostream(cmd, false)));
    }
 
