@@ -190,31 +190,13 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
 
   size_t packet_len = 0;
   unsigned int flags = 0;
-  size_t addr_len = sizeof(m_read_addr); 
+  size_t addr_len = sizeof(m_read_addr);
 
   switch (m_type) {
   case BROADCAST_TYPE:
-         
-    packet_len = recvfrom(m_read_socket, (char*)packet, size, 0, (sockaddr*) &m_read_addr, &addr_len);
-    
-    if ((int) packet_len < 0) {
-      if (errno == EAGAIN) {
-	return 0;
-      }
-      else {
-	perror(__PRETTY_FUNCTION__);
-	throw new GeneralException("Unable to recv packet",__FILE__,__LINE__);
-	return 0;
-      }
-    }
-    break;
-    
-  case TCP_STREAM_TYPE:
-    
 
-    
-    packet_len = recv(m_read_socket,packet,size,flags);
-    
+    packet_len = recvfrom(m_read_socket, (char*)packet, size, 0, (sockaddr*) &m_read_addr, &addr_len);
+
     if ((int) packet_len < 0) {
       if (errno == EAGAIN) {
 	return 0;
@@ -226,7 +208,19 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
       }
     }
     break;
-      
+
+  case TCP_STREAM_TYPE:
+
+	  //Will wait for all data (if not error occurs)
+		flags = MSG_WAITALL;
+
+		packet_len = recv(m_read_socket, packet, size,flags);
+		if (packet_len != size) {
+      perror(__PRETTY_FUNCTION__);
+			throw new GeneralException("Unable to recv packet",__FILE__,__LINE__);
+			return 0;
+		}
+    break;
   default:
     throw new GeneralException("Unknown packet type",__FILE__,__LINE__);
     break;
