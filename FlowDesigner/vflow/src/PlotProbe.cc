@@ -22,7 +22,7 @@
 #include "Vector.h"
 
 //DECLARE_NODE(Probe)
-NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "")
+NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW")
 
 
 PlotProbe::PlotProbe(string nodeName, ParameterSet params) 
@@ -42,8 +42,6 @@ PlotProbe::~PlotProbe()
 void PlotProbe::specificInitialize()
 {
    Probe::specificInitialize();
-
-   length = 2;
 
    gdk_threads_enter(); 
 
@@ -92,13 +90,13 @@ void PlotProbe::specificInitialize()
 			     NULL));
    
 
-   points = gnome_canvas_points_new(length);
-   for (int i=0;i<length;i++)
-   {
-      //points->coords[2*i]=(100.0*i)/length;
-      points->coords[2*i]=xmin+((xmax-xmin)*i)/(length-1);
-      points->coords[2*i+1]=(ymax+ymin)/2;
-   }
+   GnomeCanvasPoints *points;
+   points = gnome_canvas_points_new(2);
+   points->coords[0]=xmin;
+   points->coords[1]=.5*(ymin+ymax);
+   points->coords[2]=xmax;
+   points->coords[3]=.5*(ymin+ymax);
+   
    
    item = gnome_canvas_item_new(group,
                                 gnome_canvas_line_get_type(),
@@ -123,6 +121,7 @@ void PlotProbe::reset()
 
 void PlotProbe::display()
 {
+   GnomeCanvasPoints *points;
 
    gdk_threads_enter();
    
@@ -158,3 +157,22 @@ void PlotProbe::display()
 
 }
 
+void PlotProbe::show_hide()
+{
+   Probe::show_hide();
+   if (!displayEnable)
+   {
+      GnomeCanvasPoints *points;
+      points = gnome_canvas_points_new(2);
+      points->coords[0]=xmin;
+      points->coords[1]=.5*(ymin+ymax);
+      points->coords[2]=xmax;
+      points->coords[3]=.5*(ymin+ymax);
+      gnome_canvas_item_set(item, "points", points, NULL);
+   
+      
+      
+      gnome_canvas_points_unref(points);
+      
+   }
+}

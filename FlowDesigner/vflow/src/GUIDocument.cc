@@ -57,21 +57,25 @@ static void add_iter_event  (GtkMenuItem     *menuitem,
 static void remove_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   //cerr << "remove net\n";
+   GUIDOCUMENT (mdi->active_child)->removeCurrentNet();
+   //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+   //doc
+ //cerr << "remove net\n";
 }
 
 static GnomeUIInfo view_menu[] = {
-
+   
    GNOMEUIINFO_ITEM_NONE (N_("_Add Network"),
                           N_("Add a new network the document"), add_net_event),
    GNOMEUIINFO_ITEM_NONE (N_("_Add Iterator"),
-                          N_("Add a new iterator the document"), add_iter_event),
+			     N_("Add a new iterator the document"), add_iter_event),
    GNOMEUIINFO_ITEM_NONE (N_("_Add Threaded Iterator"),
-                          N_("Add a new threaded iterator the document"), add_threaded_event),
+			     N_("Add a new threaded iterator the document"), add_threaded_event),
+   GNOMEUIINFO_SEPARATOR,
    GNOMEUIINFO_ITEM_NONE (N_("Remove Network"),
-                          N_("Remove a network from the document"), remove_net_event),
+			     N_("Remove a network from the document"), remove_net_event),
    GNOMEUIINFO_END
-	
+      
 };
 
 static GnomeUIInfo doc_menu[] = {
@@ -121,6 +125,9 @@ GtkWidget *GUIDocument::createView()
   
    //vbox2 = gtk_vbox_new (FALSE, 0);
   vbox2 = gtk_vpaned_new ();
+
+  //gtk_widget_set_usize(vbox2, -1, 400);
+
   gtk_widget_ref (vbox2);
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "vbox2", vbox2,
   //                          (GtkDestroyNotify) gtk_widget_unref);
@@ -133,24 +140,33 @@ GtkWidget *GUIDocument::createView()
   
 
   notebook1 = gtk_notebook_new ();
+  gtk_widget_set_usize(notebook1, -1, 300);
   gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook1), TRUE);
+  gtk_notebook_popup_enable (GTK_NOTEBOOK(notebook1));
+
   gtk_widget_ref (notebook1);
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "notebook1", notebook1,
   //                          (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (notebook1);
-  gtk_container_add (GTK_CONTAINER (vbox2), notebook1);
+
+  gtk_paned_pack1 (GTK_PANED(vbox2), notebook1, TRUE, TRUE);
+  //gtk_container_add (GTK_CONTAINER (vbox2), notebook1);
   //gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
 
   
 
   less2 = gnome_less_new ();
+  gtk_widget_set_usize(less2, -1, 100);
+
   gtk_widget_ref (less2);
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "less2", less2,
   //                          (GtkDestroyNotify) gtk_widget_unref);
   
   gtk_widget_show (less2);
   //gtk_box_pack_start (GTK_BOX (vbox2), less2, TRUE, TRUE, 0);
-  gtk_container_add (GTK_CONTAINER (vbox2), less2);
+  
+  //gtk_container_add (GTK_CONTAINER (vbox2), less2);
+  gtk_paned_pack2 (GTK_PANED(vbox2), less2, FALSE, TRUE);
 
   
   /*
@@ -202,7 +218,18 @@ void GUIDocument::load()
 
 
 
-
+void GUIDocument::removeCurrentNet()
+{
+   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+   cerr << "netID = " << netID << endl;
+   gtk_notebook_remove_page (GTK_NOTEBOOK(notebook1), netID);
+   delete networks[netID];
+   for (int i=netID;i<networks.size()-1;i++)
+   {
+      networks[i]=networks[i+1];
+   }
+   networks.resize(networks.size()-1);
+}
 
 
 static void GUIDocument_class_init(GUIDocument_class *);

@@ -21,7 +21,7 @@
 #include <strstream>
 
 //DECLARE_NODE(Probe)
-NODE_INFO(TextProbe, "Probe", "INPUT", "OUTPUT", "")
+NODE_INFO(TextProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW")
 
 
 TextProbe::TextProbe(string nodeName, ParameterSet params) 
@@ -62,7 +62,7 @@ void TextProbe::display()
    ostrstream out(probeOut, 999);
    
    out << *inputValue;
-   cerr << "Probe value = " << *inputValue << endl;
+   //cerr << "Probe value = " << *inputValue << endl;
    gdk_threads_enter();
    gnome_less_clear (GNOME_LESS(less1));
    gnome_less_show_string(GNOME_LESS(less1), probeOut);

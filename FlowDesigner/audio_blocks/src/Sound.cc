@@ -100,7 +100,7 @@ public:
 	 }
 	 if (arg < 4)
 	    arg=4;
-	 arg |= 0x00020000;
+	 arg |= 0x00040000;
 	 cerr << "arg = " << arg << endl;
       }      
       ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);

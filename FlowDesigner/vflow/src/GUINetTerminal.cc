@@ -1,11 +1,14 @@
 #include "GUINetTerminal.h"
 #include "GUITerminal.h"
 #include "GUINode.h"
+#include "GUINetwork.h"
 
 static void create_net_terminal(gchar * str, GUINetTerminal *term)
 {
    if (str)
       term->setName(string(str));
+   else 
+      term->setName("");
 }
 
 
@@ -56,6 +59,15 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       }
    }
 
+   //BUG: Is this dangerous? I don't know
+   if (name == "")
+   {
+      terminal->getNode()->getNetwork()->removeTerminal(this);
+      terminal->disconnectNetTerminal();
+      throw false;
+      //BUG, there's a leak here
+   }
+   
    item = gnome_canvas_item_new(dynamic_cast<GUINode *>(terminal->getNode())->getGroup(),
                          gnome_canvas_text_get_type(),
                          "x", x,

@@ -47,6 +47,7 @@ gint GUITerminal::event(GdkEvent *event)
       switch(event->button.button) 
         {
         case 1:
+	   try {
            if (event->button.state & GDK_CONTROL_MASK)
 	   {
 	      if (!isInput && !netTerminal)
@@ -85,8 +86,13 @@ gint GUITerminal::event(GdkEvent *event)
               tmp->grab(event->button.time);
               connections.insert(connections.end(),tmp);
               return TRUE;
-              break;
            }
+	   } catch (bool b)
+	   {
+	      cerr << "net terminal cancelled\n";
+	      return TRUE;
+	   }
+	   break;
         default:
            break;
         }
