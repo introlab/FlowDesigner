@@ -4,7 +4,7 @@
 #include <math.h>
 
 template <class T>
-inline void vec_copy(T *x, T *y, int len)
+inline void vec_copy(const T *x, T *y, int len)
 {
    while (len > 3)
    {
@@ -23,10 +23,10 @@ inline void vec_copy(T *x, T *y, int len)
 
 
 template <class T>
-inline T vec_inner_prod(T *a, T *b, int len)
+inline T vec_inner_prod(const T *a, const T *b, int len)
 {
   T sum1=0, sum2=0, sum3=0, sum4=0;
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       sum1+=a[0]*b[0];
@@ -45,9 +45,9 @@ inline T vec_inner_prod(T *a, T *b, int len)
 }
 
 template <class T>
-inline void vec_add_vec(T *a, T *b, T *c, int len)
+inline void vec_add_vec(const T *a, const T *b, T *c, int len)
 {
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       c[0]=a[0]+b[0];
@@ -66,9 +66,9 @@ inline void vec_add_vec(T *a, T *b, T *c, int len)
 }
 
 template <class T>
-inline void vec_sub_vec(T *a, T *b, T *c, int len)
+inline void vec_sub_vec(const T *a, const T *b, T *c, int len)
 {
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       c[0]=a[0]-b[0];
@@ -87,9 +87,9 @@ inline void vec_sub_vec(T *a, T *b, T *c, int len)
 }
 
 template <class T>
-inline void vec_mul_vec(T *a, T *b, T *c, int len)
+inline void vec_mul_vec(const T *a, const T *b, T *c, int len)
 {
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       c[0]=a[0]*b[0];
@@ -108,9 +108,9 @@ inline void vec_mul_vec(T *a, T *b, T *c, int len)
 }
 
 template <class T>
-inline void vec_div_vec(T *a, T *b, T *c, int len)
+inline void vec_div_vec(const T *a, const T *b, T *c, int len)
 {
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       c[0]=a[0]/b[0];
@@ -130,9 +130,9 @@ inline void vec_div_vec(T *a, T *b, T *c, int len)
 
 
 template <class T>
-inline void vec_add_scal(T a, T *b, T *c, int len)
+inline void vec_add_scal(const T a, const T *b, T *c, int len)
 {
-  T *end = b+len;
+  const T *end = b+len;
   while (b<end-3)
     {
       c[0]=a+b[0];
@@ -150,9 +150,9 @@ inline void vec_add_scal(T a, T *b, T *c, int len)
 }
 
 template <class T>
-inline void vec_mul_scal(T a, T *b, T *c, int len)
+inline void vec_mul_scal(const T a, const T *b, T *c, int len)
 {
-  T *end = b+len;
+  const T *end = b+len;
   while (b<end-3)
     {
       c[0]=a*b[0];
@@ -170,10 +170,10 @@ inline void vec_mul_scal(T a, T *b, T *c, int len)
 }
 
 template <class T>
-inline T vec_dist2(T *a, T *b, int len)
+inline T vec_dist2(const T *a, const T *b, int len)
 {
   T sum1=0, sum2=0, sum3=0, sum4=0;
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       sum1+=(a[0]-b[0])*(a[0]-b[0]);
@@ -192,10 +192,10 @@ inline T vec_dist2(T *a, T *b, int len)
 }
 
 template <class T>
-inline T vec_mahalanobis2(T *a, T *b, T *c, int len)
+inline T vec_mahalanobis2(const T *a, const T *b, const T *c, int len)
 {
   T sum1=0, sum2=0, sum3=0, sum4=0;
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       sum1+=c[0]*(a[0]-b[0])*(a[0]-b[0]);
@@ -214,10 +214,10 @@ inline T vec_mahalanobis2(T *a, T *b, T *c, int len)
 }
 
 template <class T>
-inline T vec_sum(T *a, int len)
+inline T vec_sum(const T *a, int len)
 {
   T sum1=0, sum2=0, sum3=0, sum4=0;
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       sum1+=a[0];
@@ -235,10 +235,10 @@ inline T vec_sum(T *a, int len)
 }
 
 template <class T>
-inline T vec_norm2(T *a, int len)
+inline T vec_norm2(const T *a, int len)
 {
   T sum1=0, sum2=0, sum3=0, sum4=0;
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       sum1+=a[0]*a[0];
@@ -256,9 +256,9 @@ inline T vec_norm2(T *a, int len)
 }
 
 template <class T>
-inline void vec_inv(T *a, T *b, int len)
+inline void vec_inv(const T *a, T *b, int len)
 {
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       b[0]=1/a[0];
@@ -275,9 +275,9 @@ inline void vec_inv(T *a, T *b, int len)
 }
 
 template <class T>
-inline void vec_sqrt(T *a, T *b, int len)
+inline void vec_sqrt(const T *a, T *b, int len)
 {
-  T *end = a+len;
+  const T *end = a+len;
   while (a<end-3)
     {
       b[0]=sqrt(a[0]);
@@ -299,14 +299,14 @@ inline void vec_sqrt(T *a, T *b, int len)
 
 
 template <>
-inline float vec_inner_prod<float>(float *a, float *b, int len)
+inline float vec_inner_prod<float>(const float *a, const float *b, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
   __asm__ __volatile__ (
   "
   push %%eax
-  push %%ebx
+  push %%edi
   push %%ecx
   pxor %%mm4, %%mm4
   pxor %%mm5, %%mm5
@@ -317,11 +317,11 @@ inline float vec_inner_prod<float>(float *a, float *b, int len)
 
 //mul4_loop:
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   movq 8(%%eax), %%mm2
-  movq 8(%%ebx), %%mm3
+  movq 8(%%edi), %%mm3
   add $16, %%eax
-  add $16, %%ebx
+  add $16, %%edi
   pfmul %%mm0, %%mm1
   pfmul %%mm2, %%mm3
   pfadd %%mm1, %%mm4
@@ -341,9 +341,9 @@ inline float vec_inner_prod<float>(float *a, float *b, int len)
   jae .+22
 
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   add $8, %%eax
-  add $8, %%ebx
+  add $8, %%edi
   pfmul %%mm0, %%mm1
   pfadd %%mm1, %%mm4
 //mul2_skip:
@@ -355,7 +355,7 @@ inline float vec_inner_prod<float>(float *a, float *b, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   pfadd %%mm1, %%mm4
 //even:
@@ -365,11 +365,11 @@ inline float vec_inner_prod<float>(float *a, float *b, int len)
   movq %%mm4, (%%edx)
 
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   pop %%eax
   emms
   "
-  : : "a" (a), "b" (b), "c" (len), "d" (sum)
+  : : "a" (a), "D" (b), "c" (len), "d" (sum)
 FP_DIRTY
   );
     
@@ -378,12 +378,12 @@ FP_DIRTY
 
 
 template <>
-inline void vec_add_vec<float>(float *a, float *b, float *c, int len)
+inline void vec_add_vec<float>(const float *a, const float *b, float *c, int len)
 {
   __asm__ __volatile__ (
   "
   push %%eax
-  push %%ebx
+  push %%edi
   push %%ecx
   push %%edx
 
@@ -393,16 +393,16 @@ inline void vec_add_vec<float>(float *a, float *b, float *c, int len)
 
 //mul4_loop:
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movq 8(%%eax), %%mm2
-  movq 8(%%ebx), %%mm3
+  movq 8(%%edi), %%mm3
   pfadd %%mm2, %%mm3
 
   movq %%mm1, (%%edx)
   movq %%mm3, 8(%%edx)
   add $16, %%eax
-  add $16, %%ebx
+  add $16, %%edi
   add $16, %%edx
   sub $4,  %%ecx
 
@@ -416,11 +416,11 @@ inline void vec_add_vec<float>(float *a, float *b, float *c, int len)
   jae .+24
   
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movq %%mm1, (%%edx)
   add $8, %%eax
-  add $8, %%ebx
+  add $8, %%edi
   add $8, %%edx
 
 //mul2_skip:
@@ -432,30 +432,30 @@ inline void vec_add_vec<float>(float *a, float *b, float *c, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movd %%mm1, (%%edx)
 //even:
 
   pop %%edx
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   pop %%eax
   emms
   "
-  : : "a" (a), "b" (b), "c" (len), "d" (c)
+  : : "a" (a), "D" (b), "c" (len), "d" (c)
 FP_DIRTY
   );
 }
 
 
 template <>
-inline void vec_sub_vec<float>(float *a, float *b, float *c, int len)
+inline void vec_sub_vec<float>(const float *a, const float *b, float *c, int len)
 {
   __asm__ __volatile__ (
   "
   push %%eax
-  push %%ebx
+  push %%edi
   push %%ecx
   push %%edx
 
@@ -465,16 +465,16 @@ inline void vec_sub_vec<float>(float *a, float *b, float *c, int len)
 
 //mul4_loop:
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfsubr %%mm0, %%mm1
   movq 8(%%eax), %%mm2
-  movq 8(%%ebx), %%mm3
+  movq 8(%%edi), %%mm3
   pfsubr %%mm2, %%mm3
 
   movq %%mm1, (%%edx)
   movq %%mm3, 8(%%edx)
   add $16, %%eax
-  add $16, %%ebx
+  add $16, %%edi
   add $16, %%edx
   sub $4,  %%ecx
 
@@ -488,11 +488,11 @@ inline void vec_sub_vec<float>(float *a, float *b, float *c, int len)
   jae .+24
 
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfsubr %%mm0, %%mm1
   movq %%mm1, (%%edx)
   add $8, %%eax
-  add $8, %%ebx
+  add $8, %%edi
   add $8, %%edx
 
 //mul2_skip:
@@ -504,30 +504,30 @@ inline void vec_sub_vec<float>(float *a, float *b, float *c, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfsubr %%mm0, %%mm1
   movd %%mm1, (%%edx)
 //even:
 
   pop %%edx
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   pop %%eax
   emms
   "
-  : : "a" (a), "b" (b), "c" (len), "d" (c)
+  : : "a" (a), "D" (b), "c" (len), "d" (c)
 FP_DIRTY
   );
 }
 
 
 template <>
-inline void vec_mul_vec<float>(float *a, float *b, float *c, int len)
+inline void vec_mul_vec<float>(const float *a, const float *b, float *c, int len)
 {
   __asm__ __volatile__ (
   "
   push %%eax
-  push %%ebx
+  push %%edi
   push %%ecx
   push %%edx
 
@@ -537,16 +537,16 @@ inline void vec_mul_vec<float>(float *a, float *b, float *c, int len)
 
 //mul4_loop:
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movq 8(%%eax), %%mm2
-  movq 8(%%ebx), %%mm3
+  movq 8(%%edi), %%mm3
   pfmul %%mm2, %%mm3
 
   movq %%mm1, (%%edx)
   movq %%mm3, 8(%%edx)
   add $16, %%eax
-  add $16, %%ebx
+  add $16, %%edi
   add $16, %%edx
   sub $4,  %%ecx
 
@@ -560,11 +560,11 @@ inline void vec_mul_vec<float>(float *a, float *b, float *c, int len)
   jae .+24
 
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movq %%mm1, (%%edx)
   add $8, %%eax
-  add $8, %%ebx
+  add $8, %%edi
   add $8, %%edx
 
 //mul2_skip:
@@ -576,31 +576,31 @@ inline void vec_mul_vec<float>(float *a, float *b, float *c, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movd %%mm1, (%%edx)
 //even:
 
   pop %%edx
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   pop %%eax
   emms
   "
-  : : "a" (a), "b" (b), "c" (len), "d" (c)
+  : : "a" (a), "D" (b), "c" (len), "d" (c)
 FP_DIRTY
   );
 }
 
 
 template <>
-inline void vec_add_scal<float>(float a, float *b, float *c, int len)
+inline void vec_add_scal<float>(const float a, const float *b, float *c, int len)
 {
   float tmp[2];
   tmp[0]=tmp[1]=a;
   __asm__ __volatile__ (
   "
-  push %%ebx
+  push %%edi
   push %%ecx
   push %%edx
   movq (%%eax), %%mm0
@@ -610,14 +610,14 @@ inline void vec_add_scal<float>(float a, float *b, float *c, int len)
   jb .+35
 
 //mul4_loop:
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfadd %%mm0, %%mm1
-  movq 8(%%ebx), %%mm2
+  movq 8(%%edi), %%mm2
   pfadd %%mm0, %%mm2
 
   movq %%mm1, (%%edx)
   movq %%mm2, 8(%%edx)
-  add $16, %%ebx
+  add $16, %%edi
   add $16, %%edx
   sub $4,  %%ecx
 
@@ -630,10 +630,10 @@ inline void vec_add_scal<float>(float a, float *b, float *c, int len)
   //jae mul2_skip
   jae .+18
   
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movq %%mm1, (%%edx)
-  add $8, %%ebx
+  add $8, %%edi
   add $8, %%edx
 
 //mul2_skip:
@@ -645,30 +645,30 @@ inline void vec_add_scal<float>(float a, float *b, float *c, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movd %%mm1, (%%edx)
 //even:
 
   pop %%edx
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   emms
   "
-  : : "a" (tmp), "b" (b), "c" (len), "d" (c)
+  : : "a" (tmp), "D" (b), "c" (len), "d" (c)
 FP_DIRTY
   );
 }
 
 
 template <>
-inline void vec_mul_scal<float>(float a, float *b, float *c, int len)
+inline void vec_mul_scal<float>(const float a, const float *b, float *c, int len)
 {
   float tmp[2];
   tmp[0]=tmp[1]=a;
   __asm__ __volatile__ (
   "
-  push %%ebx
+  push %%edi
   push %%ecx
   push %%edx
   movq (%%eax), %%mm0
@@ -678,14 +678,14 @@ inline void vec_mul_scal<float>(float a, float *b, float *c, int len)
   jb .+35
 
 //mul4_loop:
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
-  movq 8(%%ebx), %%mm2
+  movq 8(%%edi), %%mm2
   pfmul %%mm0, %%mm2
 
   movq %%mm1, (%%edx)
   movq %%mm2, 8(%%edx)
-  add $16, %%ebx
+  add $16, %%edi
   add $16, %%edx
   sub $4,  %%ecx
 
@@ -698,10 +698,10 @@ inline void vec_mul_scal<float>(float a, float *b, float *c, int len)
   //jae mul2_skip
   jae .+18
   
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movq %%mm1, (%%edx)
-  add $8, %%ebx
+  add $8, %%edi
   add $8, %%edx
 
 //mul2_skip:
@@ -713,31 +713,31 @@ inline void vec_mul_scal<float>(float a, float *b, float *c, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movd %%mm1, (%%edx)
 //even:
 
   pop %%edx
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   emms
   "
-  : : "a" (tmp), "b" (b), "c" (len), "d" (c)
+  : : "a" (tmp), "D" (b), "c" (len), "d" (c)
 FP_DIRTY
   );
 }
 
 
 template <>
-inline float vec_dist2<float>(float *a, float *b, int len)
+inline float vec_dist2<float>(const float *a, const float *b, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
   __asm__ __volatile__ (
   "
   push %%eax
-  push %%ebx
+  push %%edi
   push %%ecx
   pxor %%mm4, %%mm4
   pxor %%mm5, %%mm5
@@ -748,11 +748,11 @@ inline float vec_dist2<float>(float *a, float *b, int len)
 
 //mul4_loop:
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   movq 8(%%eax), %%mm2
-  movq 8(%%ebx), %%mm3
+  movq 8(%%edi), %%mm3
   add $16, %%eax
-  add $16, %%ebx
+  add $16, %%edi
   pfsub %%mm0, %%mm1
   pfsub %%mm2, %%mm3
   pfmul %%mm1, %%mm1
@@ -774,9 +774,9 @@ inline float vec_dist2<float>(float *a, float *b, int len)
   jae .+26
 
   movq (%%eax), %%mm0
-  movq (%%ebx), %%mm1
+  movq (%%edi), %%mm1
   add $8, %%eax
-  add $8, %%ebx
+  add $8, %%edi
   pfsub %%mm0, %%mm1
   pfmul %%mm1, %%mm1
   pfadd %%mm1, %%mm4
@@ -789,7 +789,7 @@ inline float vec_dist2<float>(float *a, float *b, int len)
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
   movd (%%eax), %%mm0
-  movd (%%ebx), %%mm1
+  movd (%%edi), %%mm1
   pfsub %%mm0, %%mm1
   pfmul %%mm1, %%mm1
   pfadd %%mm1, %%mm4
@@ -800,11 +800,11 @@ inline float vec_dist2<float>(float *a, float *b, int len)
   movq %%mm4, (%%edx)
 
   pop %%ecx
-  pop %%ebx
+  pop %%edi
   pop %%eax
   emms
   "
-  : : "a" (a), "b" (b), "c" (len), "d" (sum)
+  : : "a" (a), "D" (b), "c" (len), "d" (sum)
 FP_DIRTY
   );
     
@@ -813,7 +813,7 @@ FP_DIRTY
 
 
 template <>
-inline float vec_sum<float>(float *a, int len)
+inline float vec_sum<float>(const float *a, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -878,7 +878,7 @@ FP_DIRTY
 }
 
 template <>
-inline float vec_norm2<float>(float *a, int len)
+inline float vec_norm2<float>(const float *a, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -948,7 +948,7 @@ FP_DIRTY
 
 
 template <>
-inline void vec_inv<float>(float *a, float *b, int len)
+inline void vec_inv<float>(const float *a, float *b, int len)
 {
   __asm__ __volatile__ (
   "
@@ -1007,7 +1007,7 @@ FP_DIRTY
 
 
 template <>
-inline void vec_sqrt<float>(float *a, float *b, int len)
+inline void vec_sqrt<float>(const float *a, float *b, int len)
 {
   __asm__ __volatile__ (
   "

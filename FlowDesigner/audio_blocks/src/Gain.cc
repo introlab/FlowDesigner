@@ -17,6 +17,7 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
+#include "vec.h"
 
 class Gain;
 
@@ -69,10 +70,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      for (int i=0;i<inputLength;i++)
-      {
-         output[i]=gain*in[i];
-      }
+      vec_mul_scal(gain, &in[0], &output[0], inputLength);
       
    }
 

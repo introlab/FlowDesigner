@@ -6,6 +6,7 @@
 #include "ObjectRef.h"
 #include "DoubleDispatch.h"
 #include "operators.h"
+#include "vec.h"
 
 static int dummy = Object::addObjectType ("Vector", new ObjectFactory<Vector<float> >);
 
@@ -25,8 +26,7 @@ ObjectRef addVectorFloat(ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = v1[i]+v2[i];
+   vec_add_vec(&v1[0], &v2[0], &(*v)[0], length);
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(addVtable, addVectorFloat, Vector<float>, Vector<float>);
@@ -41,8 +41,7 @@ ObjectRef mulVectorFloat(ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = v1[i]*v2[i];
+   vec_mul_vec(&v1[0], &v2[0], &(*v)[0], length);
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorFloat, Vector<float>, Vector<float>);
@@ -57,8 +56,7 @@ ObjectRef subVectorFloat(ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = v1[i]-v2[i];
+   vec_sub_vec(&v1[0], &v2[0], &(*v)[0], length);
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(subVtable, subVectorFloat, Vector<float>, Vector<float>);
@@ -73,8 +71,7 @@ ObjectRef divVectorFloat(ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = v1[i]/v2[i];
+   vec_div_vec(&v1[0], &v2[0], &(*v)[0], length);
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divVectorFloat, Vector<float>, Vector<float>);
@@ -88,8 +85,7 @@ ObjectRef addVectorFloatFloat (ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   for (int i=0;i<length;i++)
-      (*v)[i] = v1[i]+v2;
+   vec_add_scal(v2, &v1[0], &(*v)[0], length);
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(addVtable, addVectorFloatFloat, Vector<float>, Float);

@@ -18,6 +18,7 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
+#include "vec.h"
 
 class Sqrt;
 
@@ -65,10 +66,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      for (int i=0;i<inputLength;i++)
-      {
-         output[i]=sqrt(in[i]);
-      }
+      vec_sqrt(&in[0], &output[0], inputLength);
    }
 
 };
