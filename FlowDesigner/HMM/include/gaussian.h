@@ -144,22 +144,17 @@ public:
    /**Adds (accumulates) a frame to the gaussian*/
    void accum_frame(const float * fr)
    {
+      mean->accumFrame(fr);
+      covariance->accumFrame(fr);
       accum_count++;
-      for (unsigned int i=0;i<dimension;i++)
-      {
-         (*mean)[i]+=fr[i];
-         (*covariance)[i]+=sqr(fr[i]);
-      }
    }
 
    /**Set everything to zero and come back to accumulate mode*/
    void reset_to_accum_mode()
    {
       accum_count=0;
-      //mean->reset();
       covariance->reset();
-      for (unsigned int i=0;i<mean->size();i++)
-         (*mean)[i]=0.0;
+      mean->resetToAccum();
    }
 
    void toIDsUsing (MeanSet &means, CovarianceSet & covariances);

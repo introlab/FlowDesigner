@@ -22,6 +22,7 @@
 #include "ObjectParser.h"
 #include "misc.h"
 #include "Vector.h"
+#include "mean.h"
 
 class GMM; 
 class ifstream;
@@ -31,10 +32,10 @@ class ofstream;
 class Covariance : public Object
 {
 protected:
-   enum Mode {accum, real, inverted, rotated};
+   enum Mode {accum, real, rotated, inverted};
    
    /**Size of the covariance matrix*/
-   unsigned int   dimension;
+   int   dimension;
    
    /**Log of the determinant*/
    mutable float determinant;
@@ -45,62 +46,76 @@ protected:
    /**Mode*/
    int mode;
 
+   /**Number of frames accumulated*/
+   int accum_count;
 public:
-   ///Create a Covariance with dim dimensions
+   /**Create a Covariance with dim dimensions*/
    Covariance(int dim) : dimension(dim) , determinant(-10000) , determinant_is_valid(false), mode(accum)
    {
       
    }
-   ///Copy constructor
+   /**Copy constructor*/
    Covariance(const Covariance &cov) 
       : dimension(cov.dimension) 
       , determinant(0)
       , determinant_is_valid(false)
       , mode (cov.mode)
+      , accum_count(0)
    {}
-   ///Virtual Destructor
+   /**Virtual Destructor*/
    virtual ~Covariance() {}
    
-   
-   ///Returns the covariance size (dimension)
+   /**accumulates a frame to the covariance*/
+   virtual void accumFrame(const float *v)=0;
+
+   /**accumulates a frame to the covariance*/
+   virtual void accumFrame(const vector<float> &v)=0;
+  
+   /**Returns the covariance size (dimension)*/
    unsigned int   size() const { return dimension; }
-   ///Returns (and compute if necessary) the covariance log determinant
+
+   /**Returns (and compute if necessary) the covariance log determinant*/
    float getDeterminant() const 
    { 
       if (!determinant_is_valid) compute_determinant(); 
       return determinant; 
    }
-   ///Computes the determinant
+
+   /**Computes the determinant*/
    virtual void compute_determinant() const =0;
-   ///Prints the covariance
+
+   /**Prints the covariance*/
    virtual void printOn(ostream &out=cout) const = 0;
    
    /**Computed the mahalanobis distance between the vectors using the 
       covariance*/
    virtual float mahalanobisDistance(const float *x1, const float *x2) const =0;
 
-   ///Virtual indexing operator 1D (for diagonal covariance)
+   /**Virtual indexing operator 1D (for diagonal covariance)*/
    virtual float&      operator[](int )=0;
 
-   ///Virtual indexing operator 2D
+   /**Virtual indexing operator 2D*/
    virtual float&      operator()(int,int)=0;
 
-   ///Resets accumulation to zero
+   /**Resets accumulation to zero*/
    virtual void reset()=0;
    
-   ///Returns a copy of the covariance
+   /**Returns a copy of the covariance*/
    virtual Covariance * copy()=0;
 
-   ///Converts from accumulate mode to real
-   virtual void to_invert(const float accum_1, Ptr<const Vector<float> > mean)=0;
+   /**Converts from accumulate mode to real*/
+   virtual void invert()=0;
+
+   /**Substract mean^2, before the covariance can be inverted*/
+   virtual void processMean(Ptr<Mean> mean)=0;
 
    friend class GMM;
 };
 
 
-///Diagonal Covariance class
+/**Diagonal Covariance class*/
 class DiagonalCovariance : public Covariance  {
-   ///The covariance data as the diagonal vector
+   /**The covariance data as the diagonal vector*/
    vector<float> data;
 public:
    DiagonalCovariance(istream &in)
@@ -112,46 +127,61 @@ public:
       , data(vector<float>(0,0.0))
    {}
 
-   ///Constructs a Diagonal Covariance with dimension dim
+   /**Constructs a Diagonal Covariance with dimension dim*/
    DiagonalCovariance(int dim) 
       : Covariance(dim) 
       , data(vector<float>(dim,0.0)) 
    {}
 
-   ///Copy Constructor
+   /**Copy Constructor*/
    DiagonalCovariance (const DiagonalCovariance &cov) 
       : Covariance(cov)
       , data(cov.data)
    {}
 
-   ///
+   /**returns the mahalanobis distance between x1 and x2 using the covariance*/
    float mahalanobisDistance(const float *x1, const float *x2) const;
 
-   /**@name Indexing 
-   *Warning: These virtual indexing function are dangerous for performance
-    *and should not be used in loops*/
-   //@{
-   ///1D indexing
+   /**virtual, should not be used*/
    float&      operator[](int i) {return data[i];}
 
-   ///1D indexing
+   /**virtual, should not be used*/
    float&      operator()(int i) {return data[i];}
 
-   ///2D indexing (second operator is ignored)
+   /**virtual, should not be used*/
    float&      operator()(int i,int) {return data[i];}
-   //@}
 
-   ///Computes the determinant
+   /**Computes the determinant*/
    void compute_determinant() const;
 
-   ///Reset accumulation to zero
+   
+   /**accumulates a frame to the covariance*/
+   void accumFrame(const float *v)
+   {
+      for (int i=0;i<dimension;i++)
+         data[i] += v[i]*v[i];
+      accum_count++;
+   }
+
+   /**accumulates a frame to the covariance*/
+   void accumFrame(const vector<float> &v)
+   {
+      for (int i=0;i<dimension;i++)
+         data[i] += v[i]*v[i];
+      accum_count++;
+   }
+
+   /**Reset accumulation to zero*/
    void reset();
 
-   ///Returns a copy of the covariance
+   /**Returns a copy of the covariance*/
    DiagonalCovariance *copy () {  return new DiagonalCovariance (*this); }
 
-   ///Converts from accumulate mode to real
-   void to_invert(const float accum_1, Ptr<const Vector<float> > mean);
+   /**Converts from accumulate mode to real*/
+   void invert();
+
+   /**Substract mean^2, before the covariance can be inverted*/
+   void processMean(Ptr<Mean> mean);
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
@@ -164,7 +194,7 @@ public:
 }
 ;
 
-///Function that acts as a factory for diagonal covariance
+/**Function that acts as a factory for diagonal covariance*/
 inline Covariance *NewDiagonalCovariance(int dim) {return new DiagonalCovariance (dim);}
 
 istream &operator >> (istream &in, DiagonalCovariance &cov);

@@ -26,17 +26,9 @@ DECLARE_TYPE(Gaussian)
 
 void Gaussian::to_real()
 {
-   unsigned int i;
-   float accum_1 = 1/(float(accum_count));
-   for( i = 0; i < mean->size(); i++ )
-   {
-      //cerr << (*mean)[i] << " ";
-      (*mean)[i] *= accum_1;
-   }
-#ifdef DEBUG
-   cerr << "accum_1: " << accum_1 <<endl;
-#endif
-   covariance->to_invert(accum_1 , mean);
+   covariance->processMean(mean);
+   covariance->invert();
+   mean->toReal();
 }
 
 

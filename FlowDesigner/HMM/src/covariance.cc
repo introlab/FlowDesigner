@@ -21,17 +21,25 @@
 
 DECLARE_TYPE(DiagonalCovariance)
 
-void DiagonalCovariance::to_invert(const float accum_1, Ptr<const Vector<float> > mean)
+void DiagonalCovariance::processMean(Ptr<Mean> mean)
 {
    if (mode == inverted) return;
-   if (mode != accum) throw string("DiagonalCovariance::to_invert");
-#ifdef DEBUG
-   cerr << "accum_1 #2: " << accum_1 << endl;
-   cerr << "*tata* "<<endl;
-#endif
-   for(unsigned int i = 0; i < data.size(); i++ )
+   if (mode != accum) throw string("DiagonalCovariance::processMean");
+
+   Mean &v=*mean;
+   float accum_1 = 1.0/v.getAccum();
+   for(int i = 0; i < dimension; i++ )
+      data[i] -= sqr(v[i])*accum_1;
+}
+
+void DiagonalCovariance::invert()
+{
+   if (mode == inverted) return;
+   if (mode != accum) throw string("DiagonalCovariance::invert");
+   float accum_1 = 1.0/accum_count;
+for(int i = 0; i < data.size(); i++ )
    {
-      data[i] = 1.0 / (.001 + data[i] * accum_1 - sqr( (*mean)[i] ) );
+      data[i] = 1.0 / (.001 + data[i] * accum_1);
    }
    mode = inverted;
 }
@@ -50,11 +58,6 @@ void DiagonalCovariance::compute_determinant() const
    if (mode != inverted) throw string ("DiagonalCovariance::compute_determinant");
    determinant=0;
 
-   /*for (unsigned int i=0;i<dimension;i++)
-      determinant *= data[i];
-   determinant = .5*log(determinant);
-   */
-
    for (unsigned int i=0;i<dimension;i++)
       determinant += .5*log(data[i]);
 
@@ -67,20 +70,27 @@ void DiagonalCovariance::reset()
    for (unsigned int i=0;i<dimension;i++)
       data[i]=0.0;
    mode = accum;
+   accum_count=0;
 }
 
 void DiagonalCovariance::printOn(ostream &out) const
 {
    out << "<DiagonalCovariance" << endl;
    out << "<dimension " << dimension << ">" << endl;
-   out << "<data " << data << ">" << endl;
    out << "<mode " << mode << ">" << endl;
+   if (mode == accum)
+      out << "<accum_count " << accum_count << "> " << endl;
+   out << "<data";
+   for (int i=0;i<dimension;i++)
+      out << " " << data[i];
+
    out << ">\n";
    return;
 }
 
 void DiagonalCovariance::readFrom (istream &in)
 {
+   dimension=-1;
    string tag;
    while (1)
    {
@@ -88,13 +98,21 @@ void DiagonalCovariance::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       in >> tag;
-      if (tag == "dimension") 
+      if (tag == "dimension")
+      {
          in >> dimension;
-      else if (tag == "data")
-         in >> data;
-      else if (tag == "mode")
+         data.resize(dimension);
+      } else if (tag == "mode")
          in >> mode;
-      else 
+            else if (tag == "accum_count")
+         in >> accum_count;
+      else if (tag == "data")
+      {
+         if (dimension==-1)
+            throw ParsingException("dimension must be specified before data");
+         for (int i=0;i<dimension;i++)
+            in >> data[i];
+      } else 
          throw ParsingException ("unknown argument: " + tag);
       if (!in) throw ParsingException ("Parse error trying to build " + tag);
       in >> tag;
