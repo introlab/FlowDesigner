@@ -56,7 +56,7 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, gpointer user_
   node->addTerminal(string(input_name), UINetTerminal::OUTPUT);
 
 
-  cout<<"output adjustment callback"<<endl;
+  //cout<<"output adjustment callback"<<endl;
   ((GUINodeParameters *)(user_data))->changed();
 
 }
@@ -296,7 +296,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   gtk_widget_show(input_size_label);
 
 
-  cout<<"input size : "<< _node->getInputs().size()<<endl;
+  //cout<<"input size : "<< _node->getInputs().size()<<endl;
 
   input_adjustment = gtk_adjustment_new ((float) _node->getInputs().size(), //value
                                          (float) _node->getInputs().size(), //lower
@@ -326,7 +326,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
 			  (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show(output_size_label);
 
-  cout<<"output size : "<< _node->getOutputs().size()<<endl;
+  //cout<<"output size : "<< _node->getOutputs().size()<<endl;
 
 
   output_adjustment = gtk_adjustment_new ((float) _node->getOutputs().size(), //value

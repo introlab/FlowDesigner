@@ -504,13 +504,13 @@ void GUINode::initialize_widgets() {
 
   //creating input items
   for (int i=0;i<inputname.size();i++) {
-    cout<<"insert input"<<endl;
+    //cout<<"insert input"<<endl;
     inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1,y1));
   }
 
   //creating output items
   for (int i=0;i<outputname.size();i++) {
-    cout<<"insert output"<<endl;
+    //cout<<"insert output"<<endl;
     outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2, y2));
   }
 
