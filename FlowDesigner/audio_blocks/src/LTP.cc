@@ -107,7 +107,7 @@ public:
 	 if (score > best)
 	 {
 	    //prevents period doubling
-	    if (score/best > 1.2 || abs(lag-2*best_T) > 3)
+	    if (score/best > 1.4 || abs(lag-2*best_T) > 4)
 	    {
 	       best = score;
 	       best_T = lag;

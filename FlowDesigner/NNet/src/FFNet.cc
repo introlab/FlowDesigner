@@ -35,7 +35,7 @@ FFNet::FFNet(const Vector<int> &_topo)
    layers[0]->init(5);
 }
 
-
+/* Now inlined
 double *FFNet::calc(const double *input)
 {
    layers[0]->update(input);
@@ -43,6 +43,7 @@ double *FFNet::calc(const double *input)
       layers[i]->update(layers[i-1]->getValue());
    return layers[layers.size()-1]->getValue();
 }
+*/
 
 void FFNet::learn(double *input, double *output)
 {
@@ -80,18 +81,41 @@ void FFNet::learn(double *input, double *output)
 	 {
 	    delta[i] = 0;
 	    double *outErr = layers[k+1]->getError();
+	    
 	    for (int j=0;j<topo[k+2];j++)
 	    {
 	       double *outW = layers[k+1]->getWeights(j);
 	       delta[i]+= outErr[j]*outW[i];
 	    }
 	    delta[i] = currentLayer->deriv[i]*delta[i];
+            
+	    //This section is an optimized version of the commented one
+	    /*double *outW = layers[k+1]->getWeights(0);
+            int incr = layerSize+1;
+            for (int j=0;j<topo[k+2];j++)
+            {
+               delta[i]+= *outErr++ * *outW;
+               outW += incr;
+            }
+            delta[i] = currentLayer->deriv[i]*delta[i];
+	    */
 	 }
+
+         /*
 	 for (int j=0;j<layerInputs;j++)
 	 {
 	    w[j] += previousValue[j] * delta[i];
 	 }
 	 w[layerInputs] += delta[i];
+         */
+	 //This section is an optimized version of the commented one
+         double *p=previousValue;
+         double d=delta[i];
+         double *end=w+layerInputs;
+         while (w<end)
+            *w++ += *p++ * d;
+         *w += d;
+
       }
    }	 
 }
@@ -108,6 +132,9 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
    double alpha = learnRate;
    double momentum=mom;
    double errRatio2=errRatio;
+
+   double in[topo[0]];
+   double out[topo[topo.size()-1]];
 
    int i,j;
 
@@ -144,8 +171,8 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
 	 }
 	 for (i=batchSet;i<tin.size();i+=nbSets)
 	 {
-	    double in[topo[0]];
-	    double out[topo[topo.size()-1]];
+	    //double in[topo[0]];
+	    //double out[topo[topo.size()-1]];
 	    for (j=0;j<topo[0];j++)
 	       in[j]=tin[i][j];
 	    for (j=0;j<topo[topo.size()-1];j++)
@@ -164,8 +191,8 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
       double SSE = 0;
       for (i=0;i<tin.size();i++)
       {
-	 double in[topo[0]];
-	 double out[topo[topo.size()-1]];
+	 //double in[topo[0]];
+	 //double out[topo[topo.size()-1]];
 	 for (j=0;j<topo[0];j++)
 	    in[j]=tin[i][j];
 	 for (j=0;j<topo[topo.size()-1];j++)
@@ -533,7 +560,7 @@ void FFNet::printOn(ostream &out) const
 void FFNet::readFrom (istream &in)
 {
    string tag;
-
+   //cerr << "FFNet::readFrom\n";
    while (1)
    {
       char ch;
@@ -545,12 +572,12 @@ void FFNet::readFrom (istream &in)
       if (tag == "topo")
          in >> topo;
       else if (tag == "layers")
+      {
          in >> layers;
+      }
       else
          throw new ParsingException ("unknown argument: " + tag);
-
       if (!in) throw new ParsingException ("Parse error trying to build " + tag);
-
       in >> tag;
       if (tag != ">") 
          throw new ParsingException ("Parse error: '>' expected ");

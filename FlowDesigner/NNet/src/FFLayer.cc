@@ -8,6 +8,7 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    : nbNeurons(_nbNeurons)
    , nbInputs (_nbInputs)
    , funcType(type)
+   , alloc(true)
 {
    if (funcType == "lin")
    {
@@ -73,7 +74,6 @@ void FFLayer::printOn(ostream &out) const
 void FFLayer::readFrom (istream &in)
 {
    string tag;
-
    while (1)
    {
       char ch;
@@ -82,6 +82,7 @@ void FFLayer::readFrom (istream &in)
       else if (ch != '<') 
        throw new ParsingException ("Parse error: '<' expected");
       in >> tag;
+      //cerr << "layer tag = " << tag << endl;
       if (tag == "nbNeurons")
          in >> nbNeurons;
       else if (tag == "nbInputs")
@@ -108,13 +109,14 @@ void FFLayer::readFrom (istream &in)
 	 }
       } else if (tag == "weights")
       {
+	 //cerr << "weights\n";
 	 weights = new double [nbNeurons*(nbInputs+1)];
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
 	    //weights[i]=1.0;
 	    in >> weights[i];
 	 }
-	 
+	 //cerr << "allocation...\n";
 	 gradient = new double [nbNeurons*(nbInputs+1)];
 	 saved_weights = new double [nbNeurons*(nbInputs+1)];
 	 
@@ -122,7 +124,7 @@ void FFLayer::readFrom (istream &in)
 	 value = new double [nbNeurons];
 	 error = new double [nbNeurons];
 	 momentum = new double [nbNeurons*(nbInputs+1)];
-	 
+	 //cerr << "done with weights\n";
       }
       else
          throw new ParsingException ("unknown argument: " + tag);
@@ -130,9 +132,11 @@ void FFLayer::readFrom (istream &in)
       if (!in) throw new ParsingException ("Parse error trying to build " + tag);
 
       in >> tag;
+      //cerr << "end tag = " << tag << endl;
       if (tag != ">") 
          throw new ParsingException ("Parse error: '>' expected ");
    }
+   //cerr << "done with layer\n";
 }
 
 

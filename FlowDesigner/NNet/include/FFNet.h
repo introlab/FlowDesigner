@@ -18,7 +18,14 @@ class FFNet : public Object {
    FFNet(const Vector<int> &_topo, const vector<string> &functions);
    FFNet(const Vector<int> &_topo);
    FFNet() {}
-   double *calc(const double *input);
+   double *calc(const double *input)
+   {
+      layers[0]->update(input);
+      for (int i=1;i<layers.size();i++)
+	 layers[i]->update(layers[i-1]->getValue());
+      return layers[layers.size()-1]->getValue();
+   }
+
    double calcError(const vector<float *> &tin, const vector<float *> &tout);
 
    void learn(double *input, double *output);

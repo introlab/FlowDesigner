@@ -79,27 +79,40 @@ class FFLayer : public Object {
    double *error;
    string funcType;
    double *momentum;
+
+   bool alloc;
   public:
-   FFLayer() {};
+   FFLayer() : alloc(false) {};
    FFLayer(int _nbNeurons, int _nbInputs, string type = "tansig");
    ~FFLayer() 
       {
-	 delete [] gradient; 
-	 delete [] saved_weights; 
-	 delete [] value; 
-	 delete [] weights; 
-	 delete [] error; 
-	 delete [] deriv;
+	 if (alloc)
+	 {
+	    delete [] gradient; 
+	    delete [] saved_weights; 
+	    delete [] value; 
+	    delete [] weights; 
+	    delete [] error; 
+	    delete [] deriv;
+	 }
       }
    void update(const double *previous)
       {
 	 for (int i=0;i<nbNeurons;i++)
 	 {
 	    double *w=weights + i*(nbInputs+1);
+	    
+	    const double *p=previous;
+	    const double *end=p+nbInputs;
+	    value[i]=0;
+	    while (p<end)
+	       value[i] += *w++ * *p++;
+	    value[i] += *w;
+	    /*
 	    value[i]=w[nbInputs];
 	    for (int j=0;j<nbInputs;j++)
-	       value[i] += w[j]*previous[j];
-	    //value[i]=tanh(value[i]);
+	    value[i] += w[j]*previous[j];
+	    */
 	    value[i]=func(value[i]);
 	    deriv[i]=deriv_func(value[i]);
 	 }
