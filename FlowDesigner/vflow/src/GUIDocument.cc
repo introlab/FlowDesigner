@@ -369,17 +369,9 @@ UINetwork *GUIDocument::newNetwork(UIDocument *_doc, xmlNodePtr _net)
 
 void GUIDocument::setFullPath(const string &fullpath)
 {
-   //cerr << "fullpath is: \"" << fullpath << "\"" << endl;
-   int slashpos = fullpath.rfind("/");
-   //cerr << "slashpos = " << slashpos << endl;
-   path="";
-   path.append(fullpath,0,slashpos+1);
-   docName=fullpath;
-   docName.erase(0,slashpos+1);
-   //cerr << "path is: \"" << path << "\"" << endl;
-   //cerr << "name is: \"" << name << "\"" << endl;
+   // call the non-gui code in UIDocument
+   UIDocument::setFullPath(fullpath);
    gnome_mdi_child_set_name (GNOME_MDI_CHILD(this), (gchar *)docName.c_str());
-   untitled=false; 
 }
 
 
