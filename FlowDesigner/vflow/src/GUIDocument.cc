@@ -253,3 +253,10 @@ void GUIDocument::setFullPath(const string &fullpath)
 }
 
 
+//Run with a GUI
+void GUIDocument::run()
+{
+   //ask for params and desired output
+
+   //run in a window in a separated thread
+}
