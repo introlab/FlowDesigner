@@ -132,8 +132,50 @@ GUIDocument::GUIDocument(string _name)
 
 }
 
+
+/**********************************************************************************************************
+This function is called when a GUINetwork is created and needs to add the document notebook page
+Dominic Letourneau (13/09/2003)
+**********************************************************************************************************/
+void GUIDocument::add_notebook_network(GUINetwork *net, GtkWidget *child) {
+
+  //creating label for the notebook page
+  GtkWidget *label1 = gtk_label_new ((gchar *)net->getName().c_str());
+  gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
+  gtk_widget_show (label1);
+  
+  //append page to the notebook
+  gtk_notebook_append_page(GTK_NOTEBOOK(getNotebook()), child, label1);
+
+  //if negative, last page will be used.
+  gtk_notebook_set_current_page (GTK_NOTEBOOK(getNotebook()), -1);
+
+}
+
+/**********************************************************************************************************
+This function is called when a GUINetwork is deleted and needs to remove the document notebook page
+Dominic Letourneau (13/09/2003)
+**********************************************************************************************************/
+void GUIDocument::remove_notebook_network(GUINetwork *net, GtkWidget *child) {
+
+  int page_num = gtk_notebook_page_num(GTK_NOTEBOOK(getNotebook()),child);
+
+  if (page_num != -1) {
+    gtk_notebook_remove_page(GTK_NOTEBOOK(getNotebook()),page_num);
+  }
+  else {
+    cerr<<"**ERROR** GUIDocument Widget not in notebook : "<<child<<" doc "<<net->getName()<<endl;
+  }
+}
+
+
+
+
 GUIDocument::~GUIDocument()
 {
+
+  //cerr<<"GUI Document destroyed : "<<destroyed<<endl;
+  //cerr<<"number of networks : "<<networks.size()<<endl;
    //Copy of the UIDocument destructor
    if (!destroyed)
    {
@@ -278,38 +320,70 @@ void GUIDocument::load()
 
 
 
-void GUIDocument::removeCurrentNet()
-{
-   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(document_notebook));
-   //cerr << "netID = " << netID << endl;
-   if (netID == -1) 
-      return;
-   delete networks[netID];
-   gtk_notebook_remove_page (GTK_NOTEBOOK(document_notebook), netID);
-   for (int i=netID;i<networks.size()-1;i++)
-   {
-      networks[i]=networks[i+1];
-   }
-   networks.resize(networks.size()-1);
+void GUIDocument::removeCurrentNet() {
+
+
+  GUINetwork *current_net = dynamic_cast<GUINetwork*>(getCurrentNet());
+  
+  if (current_net) {
+  
+    vector<UINetwork*> new_vect;
+   
+    for (int i = 0; i < networks.size(); i++) {
+      if (networks[i]->getName() == current_net->getName()) {
+	
+	//cerr<<"remove current net is : "<<current_net->getName()<<endl;
+	
+	int page_num = gtk_notebook_get_current_page(GTK_NOTEBOOK(document_notebook));
+
+	//cerr<<"page num is : "<<page_num<<endl;
+
+	//remove notebook page
+	if (page_num != -1) {
+	  //cerr<<"removing notebook page"<<endl;
+	  gtk_notebook_remove_page(GTK_NOTEBOOK(document_notebook),page_num);
+	  
+	  //delete network
+	  //cerr<<"deleting network"<<endl;
+	  delete networks[i];
+	}
+      }
+      else {
+	//rebuilding networks
+	new_vect.push_back(networks[i]);
+      }     
+    }//for
+
+    //update network list
+    networks = new_vect;
+  
+  }
 }
 
 
-void GUIDocument::renameCurrentNet()
-{
-   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(document_notebook));
-   //cerr << "netID = " << netID << endl;
-   if (netID == -1) 
-      return;
-   UINetwork *net = networks[netID];
-   string message;
-   message = string("Rename network ") + net->getName();
-   
-   string newName = ask_string_dialog(message.c_str(), "");
-   if (newName != "")
-      net->rename(newName);
-   
-//GtkWidget *dialog = gnome_request_dialog (FALSE, message.c_str(), "", 20, (GnomeStringCallback)rename_net, net, NULL);
+void GUIDocument::renameCurrentNet() {
+
+  int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(document_notebook));
+  GUINetwork *net = dynamic_cast<GUINetwork*>(getCurrentNet());
+ 
+  if (net && netID != -1) {
   
+    string message;
+    message = string("Rename network ") + net->getName();
+   
+    string newName = ask_string_dialog(message.c_str(), "");
+    if (newName != "") {
+     
+      //update network name
+      net->rename(newName);
+
+      //update notebook label
+      gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(document_notebook), net->getView(), newName.c_str());
+
+      //SHOULD RENAME ALL SUBNET NODES ?
+      
+    }
+  }   
 }
 
 UINetwork* GUIDocument::getCurrentNet() {
@@ -320,7 +394,8 @@ UINetwork* GUIDocument::getCurrentNet() {
     return NULL;
   }
   else {
-    return networks[netID];
+    GtkWidget *page = gtk_notebook_get_nth_page (GTK_NOTEBOOK(document_notebook), netID);
+    return (GUINetwork*)gtk_object_get_data(GTK_OBJECT(page), "net");
   }
 
 }
@@ -341,9 +416,6 @@ void GUIDocument::setFullPath(const string &fullpath)
 {
    // call the non-gui code in UIDocument
    UIDocument::setFullPath(fullpath);
-
-
-
 }
 
 static void param_apply (GnomePropertyBox *propertybox, gint arg1, gpointer user_data)

@@ -352,6 +352,7 @@ void vflowGUI::clear(GUIDocument *doc) {
 static gboolean delete_app(GtkWidget *widget, GdkEvent *event, vflowGUI *appPtr)
 {
 
+  cerr<<"exit..."<<endl;
   exit_event(NULL, appPtr);
   return TRUE;
 }
@@ -432,8 +433,10 @@ gint close_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
    
    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
    
-   if (!doc)
+   if (!doc) {
       return -1;
+   }
+
    if (!doc->isModified())
    {
       delete doc;
@@ -687,6 +690,7 @@ static void add_net_event  (GtkMenuItem     *menuitem,
    if (str != "")
    {
       try {
+	cerr<<"vflow adding network"<<endl;
          doc->addNetwork(str, net_type);
       }
       catch (BaseException *e) {
@@ -838,11 +842,13 @@ void exit_event  (GtkMenuItem  *menuitem, vflowGUI *vflow)
    while (1)
    {
       int close = close_doc_event(NULL, vflow);
-      if (close==0)
-         return;
-      else if (close==-1)
+
+      if (close==-1) {
          break;
+      }
    }
+
+
 
    gtk_main_quit();
 }

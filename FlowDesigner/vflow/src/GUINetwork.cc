@@ -73,25 +73,34 @@ GUINetwork::~GUINetwork()
 {
    //It's important that destroyed be set here because is has an effect 
    //on methods that are called indirectly from the destructor.
-   destroyed=true;
-   //Links are deleted through the nodes destructor
-   for (int i=0;i<nodes.size();i++) {
-     string my_name = nodes[i]->getName();
-     //cerr<<"GUINetwork::~GUINetwork deleting node "<<nodes[i]->getName()<<endl;
-     delete nodes[i];
+
+  //cerr<<"GUINetwork destroyed :"<<destroyed<<" name : "<<getName()<<endl;
+
+  if (!destroyed) {
+
+   
+    //Links are deleted through the nodes destructor
+    for (int i=0;i<nodes.size();i++) {
+      string my_name = nodes[i]->getName();
+      //cerr<<"GUINetwork::~GUINetwork deleting node "<<nodes[i]->getName()<<endl;
+      delete nodes[i];
       
    }
+    
+    delete popup;
+    gtk_object_destroy(GTK_OBJECT(group));
+    gtk_widget_destroy(GTK_WIDGET(scrolledwindow1));
 
-   delete popup;
-   gtk_object_destroy(GTK_OBJECT(group));
-   gtk_widget_destroy(GTK_WIDGET(scrolledwindow1));
 
+    destroyed=true;
+  }
+    
 }
 
 void GUINetwork::create()
 {
    //cerr << "GUINetwork::create()\n";
-   GtkWidget *document_notebook = dynamic_cast<GUIDocument *>(doc)->getNotebook();
+  
 
    //last page will be used.
    //cerr << "GUINetwork::create() name : "<<name<<endl;
@@ -100,7 +109,11 @@ void GUINetwork::create()
    //gtk_widget_show (notebook1);
 
    scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+
+   gtk_object_set_data(GTK_OBJECT(scrolledwindow1), "net", this);
+
    gtk_widget_ref (scrolledwindow1);
+
    //gtk_object_set_data_full (GTK_OBJECT (notebook1), "scrolledwindow1", scrolledwindow1,
    //                          (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (scrolledwindow1);
@@ -142,19 +155,23 @@ void GUINetwork::create()
 	 
    }
 
-   GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
-   gtk_widget_ref (label1);
-   gtk_object_set_data_full (GTK_OBJECT (scrolledwindow1), "label1", label1,
-                             (GtkDestroyNotify) gtk_widget_unref);
-   gtk_widget_show (label1);
+
+   //add network to document notebook
+
+   //GtkWidget *document_notebook = dynamic_cast<GUIDocument *>(doc)->getNotebook();
+   //GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
+   //gtk_widget_ref (label1);
+   //gtk_object_set_data_full (GTK_OBJECT (scrolledwindow1), "label1", label1,
+   //                          (GtkDestroyNotify) gtk_widget_unref);
+   //gtk_widget_show (label1);
    //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label1);
+   //gtk_notebook_append_page(GTK_NOTEBOOK(document_notebook), scrolledwindow1, label1);
+   //gtk_notebook_set_current_page (GTK_NOTEBOOK(document_notebook), -1);
+   
+   dynamic_cast<GUIDocument*>(doc)->add_notebook_network(this,scrolledwindow1);
+
+
    canvas=GNOME_CANVAS(canvas1);
-
-   gtk_notebook_append_page(GTK_NOTEBOOK(document_notebook), scrolledwindow1, label1);
-
-
-
-
 
 
    GnomeCanvasItem *background = gnome_canvas_item_new(gnome_canvas_root(canvas),
@@ -181,7 +198,7 @@ void GUINetwork::create()
    
    */
 
-     gtk_notebook_set_current_page (GTK_NOTEBOOK(document_notebook), -1);
+   
 }
 
 
@@ -576,9 +593,7 @@ void GUINetwork::rename(string newName) {
   try {
     UINetwork::rename(newName);
 
-
-    //updating text
-    
+    //updating text    
     string tabName=newName;
     
     switch (type) {
@@ -594,18 +609,6 @@ void GUINetwork::rename(string newName) {
     default:
     tabName = tabName + " (unknown)";  
     }
-    
-    GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
-    gtk_widget_ref (label1);
-    
-    GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getNotebook();
-    
-    int page = gtk_notebook_get_current_page   (GTK_NOTEBOOK(notebook1));
-    
-    gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), 
-				gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), page), label1);
-    
-    gtk_widget_unref(label1);
   }
   catch (BaseException *e) {
     stringstream str;

@@ -5,6 +5,7 @@
 
 #include "UIDocument.h"
 #include "GUINetPopup.h"
+#include "GUINetwork.h"
 #include <gnome.h>
 #include <pthread.h>
 
@@ -63,7 +64,9 @@ public:
 
    GtkWidget *getView() {return vbox2;}
 
-   GtkWidget *getNotebook() {return document_notebook;}
+   void add_notebook_network(GUINetwork *net, GtkWidget *child);
+  
+   void remove_notebook_network(GUINetwork *net, GtkWidget *child);
 
    void less_print(const string &message);
 
@@ -84,7 +87,6 @@ public:
    void renameCurrentNet ();
 
    UINetwork* getCurrentNet();
-
 
    virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
 
@@ -118,6 +120,9 @@ public:
   protected:
 
    virtual void error(char *err);
+
+   GtkWidget *getNotebook() {return document_notebook;}
+
 
 };
 

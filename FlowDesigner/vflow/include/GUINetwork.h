@@ -57,6 +57,8 @@ public:
    GnomeCanvasGroup * getGroup() {return group;}
    GnomeCanvas * getCanvas() {return canvas;}
 
+   GtkWidget* getView(){return scrolledwindow1;}
+
    void updateScroll ();
 
    gboolean buttonEvent(GdkEvent *event);
