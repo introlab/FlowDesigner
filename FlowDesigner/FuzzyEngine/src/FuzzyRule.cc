@@ -48,17 +48,17 @@ END*/
 //////////////////////////////////////////////////////////////////////
   
 FuzzyRule::FuzzyRule() 
-  :m_rule_number(-1) {
+  :BufferedNode("INVALID",ParameterSet()), m_rule_number(-1) {
   
 }
 
 FuzzyRule::FuzzyRule(int rule_number)
-  : m_rule_number(rule_number) {
+  : BufferedNode("INVALID",ParameterSet()), m_rule_number(rule_number) {
 
 }
 
 FuzzyRule::FuzzyRule(const FuzzyRule& cpy) 
-  :m_rule_number(cpy.m_rule_number) {
+  :BufferedNode(cpy.name, ParameterSet()), m_rule_number(cpy.m_rule_number) {
 
   for (int i = 0; i < cpy.m_antecedant.size(); i++) {
     m_antecedant.push_back(cpy.m_antecedant[i]);
@@ -116,7 +116,7 @@ FuzzyRule::FuzzyRule(string nodeName, ParameterSet params)
   }
 
 
-  //print_rule(cerr);
+  print_rule(cerr);
 
 }
 
@@ -173,6 +173,8 @@ void FuzzyRule::print_rule(ostream &out) {
 //////////////////////////////////////////////////////////////////////
 
 void FuzzyRule::calculate(int output_id, int count, Buffer &out) {
+
+  cerr<<"calculate"<<endl;
 
   //cloning ourself as a Object not a node!
   out[count] = ObjectRef(clone());
