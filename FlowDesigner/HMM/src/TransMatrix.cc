@@ -39,6 +39,9 @@ DECLARE_NODE(TransMatrix)
  * @parameter_name NB_STATES
  * @parameter_description Number of HMM states
  *
+ * @parameter_name THRESHOLD
+ * @parameter_description The minimum transition probability allowed
+ *
 END*/
 
 
@@ -51,6 +54,8 @@ protected:
    int outputID;
 
    int nbStates;
+
+   float threshold;
 public:
    
    TransMatrix(string nodeName, ParameterSet params)
@@ -60,7 +65,8 @@ public:
       inputID = addInput("INPUT");
       
       nbStates = dereference_cast<int> (parameters.get("NB_STATES"));
-            
+
+      threshold = parameters.exist("THRESHOLD") ? dereference_cast<float> (parameters.get("THRESHOLD")) : 0;
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -85,7 +91,11 @@ public:
       
       for (int i=0;i<nbStates;i++)
 	 for (int j=0;j<nbStates;j++)
+	 {
 	    trans(i,j) /= sums[j];
+	    if (trans(i,j) < threshold) 
+	       trans(i,j) = threshold;
+	 }
    }
       
 
