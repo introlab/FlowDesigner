@@ -1,6 +1,9 @@
 #LyX 1.1 created this file. For more info see http://www.lyx.org/
 \lyxformat 2.16
 \textclass book
+\begin_preamble
+\usepackage{graphicx}
+\end_preamble
 \language default
 \inputencoding latin1
 \fontscheme default
@@ -42,7 +45,13 @@ If called with no argument, the
 \emph on 
 vflow
 \emph default 
- program will start with a new empty Overflow document.
+ program will start with a new empty Overflow document (fig.
+ 
+\begin_inset LatexCommand \ref{fig:vflow_main}
+
+\end_inset 
+
+).
  It will already have a network named "MAIN".
  It is important that every "program" contain a network called "MAIN", which
  is equivalent to the 
@@ -57,6 +66,29 @@ Networks->Add Network
 \emph default 
 .
  
+\layout Standard
+
+\begin_float fig 
+\layout Standard
+\align center 
+
+\begin_inset Figure size 100 100
+file vflow
+width 4 90.00
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+vflow main window
+\begin_inset LatexCommand \label{fig:vflow_main}
+
+\end_inset 
+
+
+\end_float 
 \layout Standard
 
 You can then add nodes to your network by clicking on the right button in
@@ -142,7 +174,36 @@ Automatic Code Generation
 
 Is is now possible to generate C++ code from an Overflow .n file.
  You can do that by clicking the "Build" button on the toolbar.
- Doing so brings up the code generation dialog.
+ Doing so brings up the code generation dialog (fig.
+ 
+\begin_inset LatexCommand \ref{fig:codegen}
+
+\end_inset 
+
+).
+\layout Standard
+
+\begin_float fig 
+\layout Standard
+\align center 
+
+\begin_inset Figure size 100 100
+file codegen
+width 4 60.00
+flags 9
+
+\end_inset 
+
+
+\layout Caption
+
+Code generation dialog
+\begin_inset LatexCommand \label{fig:codegen}
+
+\end_inset 
+
+
+\end_float 
 \layout Standard
 
 The "Build function name" is the name given to the function that will return
