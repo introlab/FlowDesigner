@@ -15,6 +15,7 @@
 #include "ThreadedIterator.h"
 //UINetwork *currentNetwork;
 
+//@implements UIClasses
 
 
 UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
@@ -42,7 +43,10 @@ UINetwork::UINetwork(UIDocument *_doc, xmlNodePtr net, bool init)
 
 void UINetwork::load (xmlNodePtr net)
 {
-   name = string((char *)xmlGetProp(net, (CHAR *)"name"));
+   char *netName = (char *)xmlGetProp(net, (CHAR *)"name");
+   if (!netName)
+      throw new GeneralException("No network name", __FILE__, __LINE__);
+   name = string(netName);
 
    char *netType = (char *)xmlGetProp(net, (CHAR *)"type");
    
@@ -65,14 +69,8 @@ void UINetwork::load (xmlNodePtr net)
    {
       if (string((char*)node->name) == "Node")
       {
+	 //This looks strange (like a leak), but the network stores the pointer
          UINode *theNewNode = loadNode (node);
-
-         /*if (condNode && theNewNode->getName() == condNode)
-         {
-            //cerr << "found the cond node\n";
-            conditionNode == theNewNode;
-            theNewNode->setAsCondition();
-        }*/
       }
       node = node->next;
    }
@@ -157,26 +155,13 @@ void UINetwork::load (xmlNodePtr net)
 
 UINetwork::~UINetwork() 
 {
-   //cerr << "destroying UINetwork " << name << endl;
    if (!destroyed)
    {
-      /*for (int i=0;i<nodes.size();i++)
-    delete nodes[i];*/
-      //although this is wierd, it has to be like that since the destroyed link removes 
-      //itself from the connection list
-      while (nodes.size())
-     delete nodes[0];
-
-/*
-  there shouldn't be any links left...
-  for (int i=0;i<links.size();i++)
-  delete links[i];
-*/
-
+      //Links are deleted through the nodes destructor
+      for (int i=0;i<nodes.size();i++)
+	 delete nodes[i];
+      
    }
-   //delete popup;
-   //gtk_object_destroy(GTK_OBJECT(group));
-   //gtk_widget_destroy(GTK_WIDGET(canvas));
 }
 
 UINode *UINetwork::loadNode (xmlNodePtr node)

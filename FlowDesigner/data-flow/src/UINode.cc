@@ -14,7 +14,7 @@ extern "C" {
 #include "ParameterSet.h"
 #include "Network.h"
 
-
+//@implements UIClasses
 
 
 UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit)
@@ -229,7 +229,7 @@ Node *UINode::build(const ParameterSet &params)
       }*/
 //cerr << "node created\n";
 
-   //FIXME: The "par" object is leaked
+   delete par;
    return node;
    
 }

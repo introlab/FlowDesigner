@@ -10,6 +10,7 @@
 #include "UINetwork.h"
 #include "UINodeParameters.h"
 #include <set>
+#include "Object.h"
 
 class UINodeMenu;
 class Network;
@@ -48,7 +49,7 @@ class DocParameterDataText {
 /**GUI-independent memory representation for an XML Overflow document
    @author: Jean-Marc Valin
 */
-class UIDocument {
+class UIDocument : public Object {
    
 protected:
    /**Pointers to all networks included (defined) in the document*/
@@ -153,6 +154,9 @@ public:
    
    string getDescription(const string &type);
    
+   /**A UIDocument can print itself*/
+   void printOn(ostream &out=cout) const;
+
    static void loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap, string netName = "");
 
    void loadAllSubnetInfo(xmlNodePtr net);

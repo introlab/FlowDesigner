@@ -6,6 +6,6 @@
 
 //@implements core
 
-//static int dummy = Object::addObjectType<Matrix<float> > ("Matrix", new ObjectFactory<Matrix<float> > ("Matrix"));
-DECLARE_TYPE3("Matrix", Matrix<float>, 0)
-DECLARE_TYPE2(Matrix<float>, 1)
+DECLARE_TYPE2("Matrix", Matrix<float>)
+DECLARE_TYPE(Matrix<float>)
+DECLARE_TYPE(Matrix<double>)

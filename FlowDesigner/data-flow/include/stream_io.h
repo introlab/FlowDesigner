@@ -10,7 +10,7 @@ DECLARE_TYPE(EOFObject)
 
 class EOFObject : public Object {
   public:
-   void printOn(ostream &out = cout) {out << "<EOFObject >\n";}
+   void printOn(ostream &out = cout) const {out << "<EOFObject >\n";}
 };
 
 

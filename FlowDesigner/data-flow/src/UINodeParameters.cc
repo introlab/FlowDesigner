@@ -9,6 +9,8 @@
 #include "object_param.h"
 #include "ParameterSet.h"
 
+//@implements UIClasses
+
 class ParamTypeChange {
 public:
    char *newParam;

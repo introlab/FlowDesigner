@@ -13,7 +13,7 @@
 
 using namespace std;
 
-class FuzzyFunction : public BufferedNode, public Object{
+class FuzzyFunction : public BufferedNode {
 
 public:
 

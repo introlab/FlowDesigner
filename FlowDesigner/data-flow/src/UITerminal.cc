@@ -10,6 +10,8 @@
 
 using namespace std;
 
+//@implements UIClasses
+
 UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, 
 						double _x, double _y)
    : node(_node)

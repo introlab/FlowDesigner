@@ -338,7 +338,12 @@ void Node::throw_error(bool send_ptr, string message, char *_file, int _line)
    throw new NodeException (send_ptr ? this : NULL,message,_file,_line);
 }
 
-
+void Node::printOn(ostream &out) const
+{
+   out << "<Node" << endl;
+   out << "<name " << name << " >" << endl;
+   out << ">" << endl;
+}
 
 
 

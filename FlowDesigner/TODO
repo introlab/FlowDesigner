@@ -9,5 +9,3 @@ allow to change the thread stack size
 *write logging system (eg. error curves in NNet)
 
 implement tooltips
-
-Generate API doc using DOC++ of KDOC (update)

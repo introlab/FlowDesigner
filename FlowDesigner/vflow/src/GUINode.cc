@@ -8,6 +8,8 @@
 #include "GUINodeParameters.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
+#include "GUINodeTooltip.h"
+
 #include <math.h>
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
@@ -329,6 +331,7 @@ gint GUINode::event(GdkEvent *event)
          return TRUE;
          break;
       case 2:
+	 //new GUINodeTooltip(this);
          //return TRUE;
          break;
 
@@ -353,7 +356,7 @@ gint GUINode::event(GdkEvent *event)
 
          xtmp = new_x;
          ytmp = new_y;
-     net->setModified();
+	 net->setModified();
       }
       break;
           

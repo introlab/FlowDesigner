@@ -13,6 +13,10 @@
 #include "Array.h"
 
 DECLARE_TYPE(FFNet)
+//DECLARE_TYPE(Vector<FFNet>)
+DECLARE_TYPE(Vector<FFNet*>)
+DECLARE_TYPE2("Vector<RCPtr<FFNet>>", Vector<RCPtr<FFNet> >)
+
 //@implements FFNet
 
 FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions)

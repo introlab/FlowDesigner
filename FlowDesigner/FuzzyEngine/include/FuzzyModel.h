@@ -15,7 +15,7 @@
 
 using namespace std;
 
-class FuzzyModel : public BufferedNode, public Object {
+class FuzzyModel : public BufferedNode {
 
 public:
 	

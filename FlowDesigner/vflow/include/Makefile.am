@@ -13,4 +13,5 @@ include_HEADERS = GUIDocument.h \
 	TextProbe.h \
 	canvas-background.h \
 	GRunContext.h \
-	KeyPad.h
+	KeyPad.h \
+	GUINodeTooltip.h

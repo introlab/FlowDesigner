@@ -16,6 +16,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+//@implements UIClasses
+
 map<string, set<string> > UIDocument::moduleDepend;
 
 map<string, set<string> > UIDocument::fileDepend;
@@ -226,6 +228,13 @@ void UIDocument::loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap,
       node = node->next;
    }
  
+}
+
+void UIDocument::printOn(ostream &out) const
+{
+   out << "<UIDocument" << endl;
+   out << "<name " << docName << " >" << endl;
+   out << ">" << endl;
 }
 
 void UIDocument::loadAllSubnetInfo(xmlNodePtr net)

@@ -70,7 +70,7 @@ class UINode;
    for the connectivity of the nodes.
    @author Jean-Marc Valin & Dominic Letourneau
 */
-class Node { 
+class Node : public Object {
 
    /**A network can have access to private members of Node*/
    friend class Network;
@@ -167,6 +167,9 @@ public:
    
    /**Verify input connections for the node*/
    virtual void verifyConnect();
+
+   /**A node can print itself*/
+   void printOn(ostream &out=cout) const;
 
    void setUINode(UINode *_uinode) {uinode = _uinode;}
    

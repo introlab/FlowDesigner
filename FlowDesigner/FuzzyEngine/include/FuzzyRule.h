@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class FuzzyRule : public BufferedNode, public Object {
+class FuzzyRule : public BufferedNode {
 
 public:
 	

@@ -9,6 +9,8 @@
 #include "Network.h"
 #include <sstream>
 
+//@implements UIClasses
+
 UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
    : from(_from)
    , to(_to)

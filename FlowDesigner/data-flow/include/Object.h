@@ -172,25 +172,25 @@ string ObjectGetClassName()
 }
 
 
+#define UNIQUE_STRING(line) dummy_init_for ## line
 
 #ifndef BROKEN_TEMPLATES /*Workaround for a compiler crash */
 
-#define DECLARE_TYPE(type) static int dummy_init_for ## type = \
+#define DECLARE_TYPE2A(type, dummyID) static int UNIQUE_STRING(dummyID) = \
                Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
 
-#define DECLARE_TYPE2(type, dummyID) static int dummy_init_for ## dummyID = \
-               Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
-
-#define DECLARE_TYPE3(str, type, dummyID) static int dummy_init_for ## dummyID = \
+#define DECLARE_TYPE3A(str, type, dummyID) static int UNIQUE_STRING(dummyID) = \
                Object::addObjectType<type > (str, new ObjectFactory<type> (str));
 
+#define DECLARE_TYPE(type) DECLARE_TYPE2A(type, __LINE__)
+#define DECLARE_TYPE2(str, type) DECLARE_TYPE3A(str, type, __LINE__)
 #else
 
 
 #define DECLARE_TYPE(type) static int dummy_init_for ## type = \
                ObjectaddObjectType<type > (# type, new ObjectFactory<type > (#type));
 
-#define DECLARE_TYPE2(type, dummyID) static int dummy_init_for ## dummyID = \
+#define DECLARE_TYPE2(type, dummyID) static int UNIQUE_STRING(dummy_init_for, dummyID) = \
                ObjectaddObjectType<type > (# type, new ObjectFactory<type > (#type));
 
 #define DECLARE_TYPE3(str, type, dummyID) static int dummy_init_for ## dummyID = \
