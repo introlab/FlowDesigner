@@ -312,6 +312,9 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
   
 
    //properties tab (DL)
+   //removed until it works
+
+   /*
 
    label_properties = gtk_label_new(_("Properties"));
    gtk_widget_ref (label_properties);
@@ -434,6 +437,7 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    //		      GTK_SIGNAL_FUNC(output_adjustment_changed), this);
 
 
+   */
    //end properties tab (DL)
 
 
