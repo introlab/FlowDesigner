@@ -976,6 +976,101 @@ FP_DIRTY
   return sum[0];
 }
 
+template <>
+inline float vec_mahalanobis2<float>(const float *a, const float *b, const float *c, int len)
+{
+   float sum[2]={0,0};
+   __asm__ __volatile__ (
+   "
+   push %%eax
+   push %%esi
+   push %%edi
+   push %%ecx
+   pxor %%mm4, %%mm4
+   pxor %%mm5, %%mm5
+
+   sub $4, %%ecx
+   jb mul4_skip%=
+
+mul4_loop%=:
+   movq (%%eax), %%mm0
+   movq (%%edi), %%mm1
+   movq 8(%%eax), %%mm2
+   movq 8(%%edi), %%mm3
+   movq (%%esi), %%mm6
+   movq 8(%%esi), %%mm7
+   add $16, %%eax
+   add $16, %%edi
+   add $16, %%esi
+   pfsub %%mm0, %%mm1
+   pfsub %%mm2, %%mm3
+   pfmul %%mm1, %%mm1
+   pfmul %%mm3, %%mm3
+   pfmul %%mm6, %%mm1
+   pfmul %%mm7, %%mm3
+   pfadd %%mm1, %%mm4
+   pfadd %%mm3, %%mm5
+
+   sub $4,  %%ecx
+   jae mul4_loop%=
+
+mul4_skip%=:
+
+   pfadd %%mm5, %%mm4
+
+
+
+
+  add $2, %%ecx
+  jae mul2_skip%=
+
+  movq (%%eax), %%mm0
+  movq (%%edi), %%mm1
+  movq (%%esi), %%mm6
+  add $8, %%eax
+  add $8, %%edi
+  add $8, %%esi
+  pfsub %%mm0, %%mm1
+  pfmul %%mm1, %%mm1
+  pfmul %%mm6, %%mm1
+  pfadd %%mm1, %%mm4
+mul2_skip%=:
+
+  and $1, %%ecx
+  jz even%=
+
+  pxor %%mm0, %%mm0
+  pxor %%mm1, %%mm1
+  pxor %%mm6, %%mm6
+  movd (%%eax), %%mm0
+  movd (%%edi), %%mm1
+  movd (%%esi), %%mm6
+  pfsub %%mm0, %%mm1
+  pfmul %%mm1, %%mm1
+  pfmul %%mm6, %%mm1
+  pfadd %%mm1, %%mm4
+
+even%=:
+
+
+
+
+   pxor %%mm5, %%mm5
+   pfacc %%mm5, %%mm4
+   movq %%mm4, (%%edx)
+
+   pop %%ecx
+   pop %%edi
+   pop %%esi
+   pop %%eax
+   emms
+   "
+   : : "a" (a), "S" (c), "D" (b), "c" (len), "d" (sum)
+   FP_DIRTY
+   );
+    
+   return sum[0];
+}
 
 template <>
 inline float vec_sum<float>(const float *a, int len)
