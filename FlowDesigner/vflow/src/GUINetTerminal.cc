@@ -13,7 +13,7 @@ static void create_net_terminal(gchar * str, GUINetTerminal *term)
 
 static gint net_terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
-   cerr << "caught button\n";
+   //cerr << "caught button\n";
    return ((GUINetTerminal *)(data))->event(event);
 }
 

@@ -102,12 +102,12 @@ inline istream &operator >> (istream &in, vector<T*> &v)
    return in;
 }
 
-class ParsingException {
+class ParsingException : public BaseException{
 public:
    ParsingException (string _message) 
       : message(_message) 
    {}
-   void print(ostream &out=cerr) const {out << message << endl;}
+   void print(ostream &out=cerr)  {out << message << endl;}
 protected:
    string message;
 };
