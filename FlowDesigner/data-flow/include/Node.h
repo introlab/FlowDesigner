@@ -32,7 +32,7 @@ public:
    int outputID;
    Node *node;
    NodeInput(Node *n, int t) :outputID(t),node(n) {}
-   NodeInput() {outputID=-1; } //-1 means unused
+   NodeInput() : outputID(-1) {} //-1 means unused
 private:
    
 };
@@ -40,38 +40,94 @@ private:
 typedef map<string,ObjectRef> ParameterSet;
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
+///Base node class
 class Node { 
 protected:
+   ///Node's name
    string name;
+
+   ///Node's inputs
    vector<NodeInput> inputs;
+
+   ///Whether the node has been initialized
    bool initialized;
+   
+   ///Is the node in debug Mode
    bool debugMode;
+
+   /**Internal processing counter for synchronization.
+      This counter is used to find out whether the output of the node
+      needs to be updated */
    int processCount;
+   
+   /**Used during initialization.
+      Becomes zero when all the node's outputs have been initialized*/
    int outputInitializeCount;
+   
+   ///Node's status
    long status;
+   
+   ///Parameters given to the node at construction time
    map <string, ObjectRef> parameters;
+
 public:
-   Node(string nodeName, ParameterSet params);   //default constructor
+   ///Constructor, takes the name of the node and a set of parameters
+   Node(string nodeName, ParameterSet params);
+   
    //Node(const Node& node); //copy constructor
-   virtual ~Node() {}         //default destructor
+
+   ///Destructor
+   virtual ~Node() {}
+
+   /**Ask for the node's output which ID (number) is output_id 
+      and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)  = 0; 
-   virtual void setParameter(string paramName, Object *value) {};
+
+   ///Connect an input node using symbolic (strings) input/output names
    void connectToNode(string in, Node *inputNode, string out);
+
+   ///Connect an input node using numeric (integer) input/output names
    void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
+
+   ///Initialize a node
    void initialize ();
+
+   /**Class specific initialization routine.
+      Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize();
+
+   ///Checks whether node really has a certain output
    virtual bool hasOutput(int output_id) const = 0;
+
+   ///Has the node been initialized?
    bool isInitialized() {return initialized;}
+
+   ///Is the node in debug mode?
    bool isDebugMode() {return debugMode;}
+
+   ///Sets the node to debug mode
    void setDebugMode(){debugMode = 1;}
+
+   ///Resets debug mode
    void resetDebugMode(){debugMode = 0;}
+
+   ///Resets the node internal values and buffers
    void reset();
+
 private:
+   ///Tell the node we will be using output 'out'
    void registerOutput (int out) {outputInitializeCount++;}
+
+   ///Increment outputInitializeCount when performing a reset()
    void incrementOutputInitialize() {outputInitializeCount++;}
+
+   ///symbolic to numeric translation for input names
    virtual int translateInput(string inputName) = 0;
+
+   ///symbolic to numeric translation for output names
    virtual int translateOutput(string inputName) = 0;
 protected:
+   ///Default constructor, should not be used
    Node() {throw "Node error";};
 };
 

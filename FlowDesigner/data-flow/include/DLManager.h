@@ -20,46 +20,97 @@
 #include <map>
 #include <string>
 
-#ifdef HPUX
 
-#include <dl.h>
 #include <errno.h>
-#include "rc_ptrs.h"
+//#include "rc_ptrs.h"
 
+#define LINUX
+
+#ifdef HPUX
+#include <dl.h>
+
+typedef shl_t DL_HANDLE_TYPE
+inline DL_HANDLE_TYPE _DL_OPEN(string path) 
+{
+   return shl_load (path, BIND_IMMEDIATE, 0);
+}
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string path) 
+{
+   void *tmp;
+   shl_find_sym (lib, symbol, TYPE_PROCEDURE, &tmp);
+   return tmp;
+}
+inline void _DL_CLOSE(DL_HANDLE_TYPE lib) 
+{
+   shl_unload (lib);
+}
+
+
+#endif
+
+
+#ifdef LINUX
+#include <dlfcn.h>
+
+///The pointer to library type (OS dependent)
+typedef void *DL_HANDLE_TYPE;
+inline DL_HANDLE_TYPE _DL_OPEN(string path) 
+{
+   cerr << "opening lib " << path.c_str() << endl;
+   return dlopen (path.c_str(), RTLD_LAZY);
+}
+inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
+{
+   return dlsym (lib, symbol.c_str());
+}
+inline void _DL_CLOSE(DL_HANDLE_TYPE lib) 
+{
+   dlclose(lib);
+}
+
+#endif
+
+///Class for a dynamically loaded library
 class LoadedLibrary {
-   shl_t lib;
+
+   ///The library pointer as defined by the OS
+   DL_HANDLE_TYPE lib;
+
+   ///How many times is the library used ("opened" by DLManager)
    int count;
+
+public:
+   ///Default constructor (takes the path to the shared library)
    LoadedLibrary(const string &path) 
-      : lib(shl_load (path, BIND_IMMEDIATE, 0))
+      : lib(_DL_OPEN(path))
       , count(1)
    {if (!lib) throw string("couldn't load library");}
+   
+   ///returns a pointer to the function named 'symbol'
    void *get_proc (string symbol) 
-   {
-      void *tmp;
-      shl_find_sym (lib, symbol, TYPE_PROCEDURE, &tmp);
-      return tmp;
-   }
+   {return _DL_GET_SYM(lib,symbol);}
+   
+   ///Destructor
    ~LoadedLibrary()
    {
-      shl_unload (lib);
+      //perform some ref counting here
+      //_DL_CLOSE (lib);
    }
 };
 
 
 
-#endif
-
+/**Class that manages the loading of shared libraries so that they don't get loaded twice*/
 class DLManager {
-   map<string,LoadedLibrary* > loaded;
+
+   ///a list (STL map) of loaded libraries indexed by name (path)
+   static map<string,LoadedLibrary* > loaded;
+
 public:
-   LoadedLibrary *get_lib(string name)
-   {
-      if (loaded.find(name)==loaded.end())
-      {
-         loaded[name] = new LoadedLibrary (name);
-      }
-      return loaded[name];
-   }
+
+   /**Returns a pointer to a Library specified by 'name' 
+      (loads it if it hasn't been done before)*/
+   static LoadedLibrary *get_lib(string name);
 };
 
 
