@@ -55,7 +55,7 @@ protected:
 
 protected:
    ///Default constructor, should not be used
-   Collector() {throw(GeneralException("Collector default constructor should not be called",__FILE__,__LINE__));}
+   Collector() {throw new GeneralException("Collector default constructor should not be called",__FILE__,__LINE__);}
 
 };
 

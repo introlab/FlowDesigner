@@ -105,7 +105,7 @@ public:
 	    return Object::before_beginningObject;
 	 return getInput(inputID, count-delay);
       } else {
-	 throw NodeException (this, "Output not found", __FILE__, __LINE__);
+	 throw new NodeException (this, "Output not found", __FILE__, __LINE__);
       }
    }
       

@@ -70,7 +70,7 @@ inline void Vector<T>::readFrom(istream &in)
       T tmp;
       in >> tmp;
       if (in.fail()) 
-	 throw GeneralException("Error reading vector", __FILE__, __LINE__);
+	 throw new GeneralException("Error reading vector", __FILE__, __LINE__);
       push_back(tmp);
    }
 }

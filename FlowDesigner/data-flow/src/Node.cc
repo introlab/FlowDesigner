@@ -71,7 +71,7 @@ void Node::connectToNode(unsigned int in, Node *inputNode, unsigned int out)
 
    if (inputs.size() <= in) {
       //the old method was used for adding inputs
-      throw NodeException(this, "We shouldn't be initializing this way anymore", __FILE__, __LINE__);
+      throw new NodeException(this, "We shouldn't be initializing this way anymore", __FILE__, __LINE__);
       inputs.resize(in + 1);
       inputs[in] = NodeInput(inputNode,out,string());
    }

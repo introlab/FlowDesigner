@@ -78,7 +78,7 @@ inline istream &operator >> (istream &in, vector<T> &v)
       T tmp;
       in >> tmp;
       if (in.fail()) 
-	 throw GeneralException("Error reading vector", __FILE__, __LINE__);
+	 throw new GeneralException("Error reading vector", __FILE__, __LINE__);
       v.push_back(tmp);
    }
 }
@@ -107,7 +107,7 @@ inline istream &operator >> (istream &in, vector<T*> &v)
       T *tmp = new T;
       in >> *tmp;
       if (in.fail()) 
-	 throw GeneralException("Error reading vector", __FILE__, __LINE__);
+	 throw new GeneralException("Error reading vector", __FILE__, __LINE__);
       v.push_back(tmp);
    }
 }

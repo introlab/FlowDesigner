@@ -73,7 +73,7 @@ public:
 	 else if (strType == "fd")
 	    type = fd;
 	 else 
-	    throw NodeException(NULL, "Bad stream type: " + strType, __FILE__, __LINE__);
+	    throw new NodeException(NULL, "Bad stream type: " + strType, __FILE__, __LINE__);
       }
       else
 	 type = cpp;

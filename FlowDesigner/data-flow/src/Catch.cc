@@ -84,7 +84,7 @@ public:
 	 if (isInside)
 	 {
 	    cerr << "What the heck is going on??? " << endl;
-	    throw NodeException (this, "I don't know what I'm doing", __FILE__, __LINE__);
+	    throw new NodeException (this, "I don't know what I'm doing", __FILE__, __LINE__);
 	 }
 	 try 
 	 {
@@ -111,11 +111,11 @@ public:
       {
 	 if (!isInside)
 	 {
-	    throw NodeException (this, "The EXCEPTION output is only for the catch flow", __FILE__, __LINE__);
+	    throw new NodeException (this, "The EXCEPTION output is only for the catch flow", __FILE__, __LINE__);
 	 }
 	 return currentException;
       } else {
-	 throw NodeException (this, "Output not found", __FILE__, __LINE__);
+	 throw new NodeException (this, "Output not found", __FILE__, __LINE__);
       }
    }
 

@@ -363,5 +363,5 @@ ObjectRef Probe::getOutput(int output_id, int count)
       
    }
    else 
-      throw NodeException (this, "Probe: Unknown output id", __FILE__, __LINE__);
+      throw new NodeException (this, "Probe: Unknown output id", __FILE__, __LINE__);
 }

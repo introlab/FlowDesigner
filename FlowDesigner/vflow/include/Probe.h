@@ -70,7 +70,7 @@ class Probe : public Node {
 
 protected:
    /**Default constructor, should not be used*/
-   Probe() {throw GeneralException("Probe copy constructor should not be called",__FILE__,__LINE__);}
+   Probe() {throw new GeneralException("Probe copy constructor should not be called",__FILE__,__LINE__);}
 
 };
 

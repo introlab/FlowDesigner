@@ -64,7 +64,7 @@ public:
 
       if (length & 1) 
       {
-	 throw NodeException(NULL, "DCT only implemented for even sizes", __FILE__, __LINE__);
+	 throw new NodeException(NULL, "DCT only implemented for even sizes", __FILE__, __LINE__);
       }
 
       inputCopy = new float [length];

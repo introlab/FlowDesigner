@@ -63,7 +63,7 @@ public:
 
       if (length & 1) 
       {
-	 throw NodeException(NULL, "IDCT only implemented for even sizes", __FILE__, __LINE__);
+	 throw new NodeException(NULL, "IDCT only implemented for even sizes", __FILE__, __LINE__);
       }
 
       inputCopy = new fft_complex [length];
