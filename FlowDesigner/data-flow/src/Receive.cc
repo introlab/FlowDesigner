@@ -70,12 +70,14 @@ public:
       if (bind(sock, (struct sockaddr *) &addr, sizeof(addr)))
       {
 	 perror ("error opening socket");
+	 throw new NodeException(NULL, "can't connect socket",__FILE__,__LINE__);
       }
 
       cerr << "calling connect\n";
       if (connect(sock, (struct sockaddr *) &addr, sizeof(addr)))
       {
 	 perror ("error opening socket");
+	 throw new NodeException(NULL, "can't connect socket",__FILE__,__LINE__);
       }
       cerr << "socket opened\n";
    }
