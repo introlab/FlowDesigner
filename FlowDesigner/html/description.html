@@ -1,0 +1,521 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.07 [en] (X11; I; Linux 2.0.36 i686) [Netscape]">
+   <META NAME="Author" CONTENT="Jean-Marc Valin">
+   <TITLE>VoiceControl Description</TITLE>
+</HEAD>
+<BODY BACKGROUND="BACK8.png">
+
+<CENTER><B><U><FONT SIZE=+4>Voice Control Description</FONT></U></B></CENTER>
+
+<OL>
+<LI>
+<A HREF="#General">General</A></LI>
+
+<LI>
+<A HREF="#TechIssues">Technical Issues</A></LI>
+
+<LI>
+<A HREF="#Sound Recording">Sound Recording</A></LI>
+
+<LI>
+<A HREF="#Front-end">Front-end</A></LI>
+
+<LI>
+<A HREF="#Recognition">Speech Recognition Unit</A></LI>
+
+<LI>
+<A HREF="#Collection">Data Collection</A></LI>
+
+<LI>
+<A HREF="#Integration">System Integration</A></LI>
+
+<LI>
+<A HREF="#TODO">TODO</A></LI>
+</OL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="General"></A>1. General</H1>
+
+<H2>
+1.1 Target</H2>
+
+<UL>
+<LI>
+Speaker independent HMM-based LVCSR (realtime) recognition system that
+accepts different kinds of language models, i.e.</LI>
+</UL>
+
+<UL>
+<UL>
+<LI>
+&nbsp;Grammars for command utterances (desktop control)</LI>
+
+<LI>
+&nbsp;N-gram models for dictation</LI>
+</UL>
+</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="TechIssues"></A>2. Technical Issues</H1>
+
+<H2>
+2.1 Version Management</H2>
+
+<UL>
+<LI>
+CVS repository</LI>
+</UL>
+
+<H2>
+2.2 Languages, Libraries etc.</H2>
+
+<UL>
+<LI>
+C++ (new draft standard)&nbsp; (WWW:&nbsp;&nbsp; <A HREF="http://www.cygnus.com/misc/wp/">http://www.cygnus.com/misc/wp/</A>
+)</LI>
+
+<LI>
+Standard Template Library (STL) (WWW: <A HREF="http://dir.yahoo.com/Computers_and_Internet/Programming_Languages/C_and_C__/C__/Class_Libraries/Standard_Template_Library__STL_/">http://dir.yahoo.com/Computers_and_Internet/Programming_Languages/C_and_C++/C++/Class_Libraries/Standard_Template_Library__STL_/</A>)</LI>
+</UL>
+
+<H2>
+2.3 Programming Style/Documentation</H2>
+
+<UL>
+<LI>
+<A HREF="http://www.kde.org/">KDOC</A> like documentation</LI>
+</UL>
+
+<H2>
+2.4 Configuration Files</H2>
+
+<UL>
+<LI>
+"Object-Oriented" configuration files.</LI>
+</UL>
+
+<H2>
+2.5 Licence/Copyright</H2>
+
+<UL>
+<LI>
+Program code: GPL</LI>
+
+<LI>
+Produced data files, acoustic models, dictionaries, language models etc....
+are GPL?</LI>
+
+<LI>
+Collected speechware must also be GPL?</LI>
+
+<LI>
+Only dictionnaries and grammars can be supplied by applications as non-GPL?</LI>
+</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="Sound Recording"></A>3. Sound Recording</H1>
+
+<H2>
+3.1 Audio Sources</H2>
+
+<UL>
+<LI>
+Audio data files (HMM model training)</LI>
+
+<LI>
+Audio server - microphone (application: command and dictate)</LI>
+</UL>
+
+<H2>
+3.2 Audio Server</H2>
+
+<UL>
+<LI>
+Separated process using System V IPC (shared memory, semaphores)</LI>
+
+<LI>
+Get audio data directly from /dev/audio (8-bit u-law, 8 kHz)</LI>
+
+<LI>
+Do speech/non-speech filtering on coarse spectrum data</LI>
+
+<LI>
+perform end-pointing based on energy, then do an fft and endpointing based
+on pitch detection.</LI>
+
+<BR>(Assure that low-energy phonemes are not cut away at utterance boundaries!)
+<LI>
+Option: only listen to microphone if user holds down specified key (e.g.
+Ctrl) ?!</LI>
+
+<LI>
+Option: keep average power spectrum and average log-power spectrum. Gives
+the noise estimation and the channel estimation (but makes necessary "adjustment
+recordings", e.g. before data collection!)</LI>
+</UL>
+
+<H2>
+3.2 Audio Data</H2>
+
+<UL>
+<LI>
+Sun u-law audio format (8-bit u-law, 8 kHz)</LI>
+</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="Front-end"></A>4. Front-end</H1>
+
+<UL>
+<LI>
+FFT</LI>
+
+<LI>
+MEL scale</LI>
+
+<LI>
+Cepstrum (DCT on log MEL)</LI>
+
+<LI>
+Delta ceps</LI>
+
+<LI>
+(cepstral mean subtraction)</LI>
+
+<LI>
+(Neural network based on power spectrum?)</LI>
+</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="Recognition"></A>5. Speech Recognition Unit</H1>
+
+<H2>
+5.1 Data Files</H2>
+
+<UL>
+<LI>
+Speaker database</LI>
+
+<LI>
+Vocabulary</LI>
+
+<LI>
+Dictionary</LI>
+
+<LI>
+Language model</LI>
+
+<UL>
+<LI>
+N-gram</LI>
+
+<LI>
+Grammar (grammar editor)</LI>
+</UL>
+</UL>
+
+<H2>
+5.2 Acoustic Model / HMM</H2>
+
+<H4>
+5.2.1 Components</H4>
+
+<UL>
+<LI>
+<B>HMMGraph</B> with <B>HMMStates</B> as knots.</LI>
+
+<LI>
+One phoneme consists of three <B>HMMStates</B>: "->(begin)->(middle)->(end)->".</LI>
+
+<LI>
+<B>HMMStateSet</B> (knows all <B>HMMStates</B>)</LI>
+
+<UL>
+<LI>
+allows for an update of its components</LI>
+</UL>
+
+<LI>
+<B>State</B></LI>
+
+<BR>Subclasses:
+<UL>
+<LI>
+<B>HMMState</B></LI>
+
+<LI>
+<B>VocabTreeState</B></LI>
+</UL>
+
+<LI>
+<B>HMMStates</B> have a generic interface including:</LI>
+
+<UL>
+<LI>
+unique identifier</LI>
+
+<LI>
+link to an acoustic model (e.g. mixture distribution) which allows for
+frame scoring</LI>
+
+<LI>
+scoring method</LI>
+
+<LI>
+accumulation of suff. statistics</LI>
+</UL>
+
+<LI>
+Examples for <B>HMMState</B>-implementations: <B>HMMStateMixture</B>, <B>HMMStateNN</B></LI>
+
+<LI>
+<B>HMMStateMixture</B>:</LI>
+
+<UL>
+<LI>
+mixture coefficients</LI>
+
+<LI>
+vector of pointers to its density models</LI>
+
+<LI>
+extension: store pointers to tied resources (like common covariances or
+transfromations of the feature space)</LI>
+</UL>
+
+<LI>
+<B>AcousticModelSet</B> knows all used acoustic models and manages their
+names as well as loading/saving!</LI>
+</UL>
+
+<H4>
+5.2.2 Data Structures needed</H4>
+
+<UL>
+<LI>
+binary decision <B>tree</B>: used for clustering - one tree per subpolyphon</LI>
+
+<LI>
+<B>Label</B>: a label for an utterance is the alignment of its frames to
+the according HMM states</LI>
+
+<LI>
+<B>Database</B>: efficient indexing of audio data files and/or labels</LI>
+</UL>
+
+<H4>
+5.2.3 Training</H4>
+(given utterance, HMM-graph)
+<P>1. produce targets for the states (Baum-Welch, Viterbi)
+<BR>2. accumulate statistics, weighted by targets
+<P><U>in other words</U>:
+<BR>1. calculate viterbi alignment ("label") once,&nbsp; and store it
+<BR>2. k-means initialisation of mixture models
+<BR>3. some EM iterations to fit mixture models (separated into accumulation
+phase and an update step)
+<BR>4. goto 1.
+<H4>
+5.2.4 Extensions</H4>
+
+<UL>
+<LI>
+Context dependent models (per subphone):</LI>
+
+<UL>
+<LI>
+build distribution tree using set of linguistic questions and an information
+criterion</LI>
+
+<LI>
+leaves contain the states</LI>
+
+<BR>-> given phone+context the correct state is determined by running down
+the tree ...
+<UL>
+<LI>
+during HMM building (for training)</LI>
+
+<LI>
+during vocabulary tree building (for decoding) .... (WORD END STATES!!!)</LI>
+</UL>
+</UL>
+
+<LI>
+MLLR (maximum likelikood linear regression, Leggetter/Woodland 1995)</LI>
+
+<LI>
+VTLN (vocal tract length normalization)</LI>
+
+<LI>
+Matthias' shared transformations</LI>
+</UL>
+
+<H4>
+5.2.5 Misc</H4>
+
+<UL>
+<LI>
+Phoneme representation:ASCII (conversion tool for UNICODE ?)</LI>
+
+<LI>
+Important: ensure numeric stability:</LI>
+
+<UL>
+<LI>
+use floor values</LI>
+
+<LI>
+SVD instead of matrix inversion</LI>
+
+<LI>
+log values</LI>
+
+<LI>
+covariance matrix with all positive eigenvalues (d&eacute;finie positive)</LI>
+</UL>
+</UL>
+
+<H2>
+5.3 Decoding</H2>
+
+<UL>
+<LI>
+<B>VocabTree</B></LI>
+
+<LI>
+<B>VocabTreeStates</B></LI>
+
+<BR>facilities to support decoder:
+<UL>
+<LI>
+link back to the phone and word of the state</LI>
+</UL>
+
+<LI>
+Viterbi beam search</LI>
+
+<LI>
+Performance enhancements:</LI>
+
+<UL>
+<LI>
+never evaluate all mixture components but use <I>Gaussian Selection</I>
+or <I>BBI</I> (<I>Bucket Box Intersection</I>)</LI>
+
+<LI>
+precomputation where possible!</LI>
+</UL>
+</UL>
+
+<H2>
+5.4 Connection To Audio Server</H2>
+
+<UL>
+<LI>
+first call front_end->new_token()</LI>
+
+<LI>
+then enter a loop:</LI>
+
+<BR>1) front_end->get_new_frames()
+<BR>2) score returned frames
+<BR>(audio module sleeps if buffer empty!)</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="Collection"></A>6. Data Collection</H1>
+
+<UL>
+<LI>
+Sound recording program needed that allows for dictated speech.</LI>
+
+<LI>
+One sentence after another.</LI>
+
+<LI>
+Language independent</LI>
+
+<LI>
+Autotranscription of recorded utterances</LI>
+
+<LI>
+Random choice sentences from a text database</LI>
+
+<LI>
+Internet-able (send tarred speaker data to "an" archive)</LI>
+
+<LI>
+Store user name, user email, description of used microphone, gender, language,
+dialect (region)</LI>
+
+<LI>
+Discuss license policy for data files!</LI>
+</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="Integration"></A>7. System Integration</H1>
+
+<UL>
+<LI>
+A daemon that act as a "speech server" (like X?) and a library that defines
+an API to communicate with the server (Xlib?)</LI>
+
+<LI>
+Two modules in the server connected with Sys V IPC:</LI>
+
+<UL>
+<LI>
+sound recording</LI>
+
+<LI>
+front-end + decoding</LI>
+</UL>
+
+<LI>
+Defining a tcl interface of the c++-classes (via "swig") allows for developing
+scripts for file management/training/clustering/distributed computing and
+so on on a very high abstraction level !!!</LI>
+
+<LI>
+<A HREF="http://www.kde.org/">KDE</A>/<A HREF="http://www.gnome.org/">gnome</A>
+interface (via additions to dialog/menu classes ?)</LI>
+
+<LI>
+Connection to existing apps (e.g. emacs)</LI>
+
+<LI>
+Send result to focussed application or specify app in utterance ?! (multiple
+language models that change with the focus!)</LI>
+
+<LI>
+xdm (speaker verification)</LI>
+</UL>
+
+<H1>
+
+<HR WIDTH="100%"><A NAME="TODO"></A>8. TODO</H1>
+
+<UL>
+<LI>
+System definition (interfaces)</LI>
+
+<LI>
+Divide work to be done</LI>
+
+<LI>
+Create CVS-repository</LI>
+
+<LI>
+(find people willing to contribute)</LI>
+</UL>
+
+</BODY>
+</HTML>
