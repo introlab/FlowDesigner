@@ -219,8 +219,8 @@ void GUINodeParameters::apply()
    GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments));
    GtkTextIter start;
    GtkTextIter end;
-   gtk_text_buffer_get_start_iter (buffer, &start);
-   gtk_text_buffer_get_start_iter (buffer, &end);
+
+   gtk_text_buffer_get_bounds(buffer, &start, &end); 
    
    setComments(string(gtk_text_buffer_get_text(buffer, &start, &end, true)));
    
