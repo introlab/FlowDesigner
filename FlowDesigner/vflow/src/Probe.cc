@@ -24,8 +24,6 @@ NODE_INFO(Probe, "IO", "INPUT", "OUTPUT", "")
 
    static void next_click (GtkButton *button, Probe *pr)
 {
-  cerr << "got " << pr << endl;
-   cerr << "In next_click\n";
    pr->next();
 }
 
@@ -40,7 +38,7 @@ Probe::Probe(string nodeName, ParameterSet params)
 
 Probe::~Probe()
 {
-   cerr << "Probe destructor\n";
+   //cerr << "Probe destructor\n";
 
    gdk_threads_enter(); 
    gtk_widget_destroy (window1);
@@ -194,13 +192,13 @@ void Probe::reset()
 
 void Probe::next()
 {
-   cerr << "In Probe::next\n";
+   //cerr << "In Probe::next\n";
    sem_post(&sem);
 }
 
 void Probe::trace()
 {
-   cerr << "In Probe::trace\n";
+   //cerr << "In Probe::trace\n";
    gdk_threads_enter(); 
    gtk_widget_set_sensitive(button16, true);
    gtk_widget_set_sensitive(button17, false);
@@ -215,18 +213,14 @@ void Probe::trace()
 
 ObjectRef Probe::getOutput(int output_id, int count)
 {
-   trace();
-   return Object::nilObject;
    if (output_id==outputID)
    {
-      if (count != processCount)
-      {
-         //return objectValue;
-      } else {
-         
-         //return objectValue;         
-      }
-      //return ObjectRef(new Object(Object::nil));
+      trace();
+
+      NodeInput input = inputs[inputID];
+      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
+      return inputValue;
+      
    }
    else 
       throw NodeException (this, "Probe: Unknown output id", __FILE__, __LINE__);
