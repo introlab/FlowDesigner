@@ -14,6 +14,8 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <sstream>
+#include <fstream>
 
 //@implements UIClasses
 
@@ -110,7 +112,6 @@ void UIDocument::printOn(ostream &out) const
 
 void UIDocument::load()
 {
-   subnetInfo.clean();
    string fullpath=path+docName;
    xmlDocPtr doc = xmlParseFile(fullpath.c_str());
    if (!doc || !doc->root || !doc->root->name)
@@ -125,6 +126,48 @@ void UIDocument::load()
    loadXML(root);
    xmlFreeDoc(doc);
 
+/*  This allows making scripts by ignoring the #! line at the beginning
+    Unfortunately, it is incompatible with the compression feature of libXML*/
+
+/*   ostringstream docText;
+   ifstream docFile(fullpath.c_str());
+   if (docFile.fail())
+   {
+      cerr << "load: error loading " << fullpath << "\n";
+      addNetwork("MAIN", UINetwork::subnet);
+      resetModified();
+      return;
+   }
+   char ch;
+   docFile >> ch;
+   if (ch=='#')
+   {
+      cerr << "detected script\n";
+      while (ch != '<')
+      {
+	 docFile >> ch;
+	 if (docFile.fail())
+	 {
+	    cerr << "ERROR\n";
+	 }
+      }
+   }
+   docFile.putback(ch);
+   while(1)
+   {
+      char buff[1025];
+      docFile.read(buff, 1024);
+      buff[1024]=0;
+      if (docFile.fail())
+      {
+	 docText.write(buff,docFile.gcount());
+	 break;
+      }
+      docText.write(buff,1024);
+   }
+   string docStr = docText.str();
+   loadFromMemory(const_cast<char *> (docStr.c_str()), docStr.size());
+*/
 }
 
 void UIDocument::loadFromMemory(char *mem, int size)
@@ -145,6 +188,7 @@ void UIDocument::loadFromMemory(char *mem, int size)
 void UIDocument::loadXML(xmlNodePtr root)
 {
    //loadAllSubnetInfo(root->childs);
+   subnetInfo.clean();
    subnetInfo.loadAllSubnetInfo(root->childs);
 
    xmlNodePtr net = root->childs;

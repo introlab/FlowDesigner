@@ -831,6 +831,7 @@ void vflowGUI::create_mdi () {
 **********************************************************************************************************/
 int main (int argc, char *argv[]) {
 
+   xmlSetCompressMode(9);
    try {
       IExtensions::detect();
       scanDL();
