@@ -12,6 +12,8 @@ DECLARE_TYPE(DiagGMM)
 
 
 #ifdef _ALLOW_SSE
+
+#ifdef __GNUC__
 inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, int len)
 {
    float sum=0;
@@ -84,7 +86,7 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
    movhlps %%xmm3, %%xmm4
    addps %%xmm4, %%xmm3
    movaps %%xmm3, %%xmm4
-   shufps $33, %%xmm4, %%xmm4
+   shufps $0x33, %%xmm4, %%xmm4
    addss %%xmm4, %%xmm3
    movss %%xmm3, (%%edx)
 
@@ -100,13 +102,113 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
     
    return sum;
 }
+#elif defined(WIN32)
+
+
+inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, int len)
+{
+   float sum=0;
+_asm {
+   push eax
+   push esi
+   push edi
+   push ecx
+   push edx
+   
+
+   mov eax, a
+   mov esi, c
+   mov edi, b
+   mov ecx, len
+   lea edx, sum
+   xorps xmm4, xmm4
+   xorps xmm5, xmm5
+
+   sub ecx, 8
+   jb mul8_skip
+
+   prefetcht0 [esi]
+   prefetcht0 [edi]
+mul8_loop:
+   movaps xmm0, [eax]
+   movaps xmm1, [edi]
+   movaps xmm2, 16[eax]
+   movaps xmm3, 16[edi]
+   movaps xmm6, [esi]
+   movaps xmm7, 16[esi]
+   add eax, 32
+   add edi, 32
+   add esi, 32
+   prefetcht0 [esi]
+   prefetcht0 [edi]
+   subps xmm1, xmm0
+   subps xmm3, xmm2
+   mulps xmm1, xmm1
+   mulps xmm3, xmm3
+   mulps xmm1, xmm6
+   mulps xmm3, xmm7
+   addps xmm4, xmm1
+   addps xmm5, xmm3
+
+   sub  ecx, 8
+   jae mul8_loop
+
+mul8_skip:
+   addps xmm4, xmm5
+
+
+   add ecx, 4
+   jl mul4_skip
+
+   movaps xmm0, [eax]
+   movaps xmm1, [edi]
+   movaps xmm6, [esi]
+   add eax, 16
+   add edi, 16
+   add esi, 16
+
+   subps xmm1, xmm0
+   mulps xmm1, xmm1
+   mulps xmm1, xmm6
+   addps xmm4, xmm1
+
+   sub  ecx, 4
+
+mul4_skip:
+
+
+
+   movaps xmm3, xmm4
+
+
+   movhlps xmm4, xmm3
+   addps xmm3, xmm4
+   movaps xmm4, xmm3
+   ;shufps xmm4, xmm4, 33
+   shufps xmm4, xmm4, 0x33
+   addss xmm3, xmm4
+   movss [edx], xmm3
+
+
+   pop edx
+   pop ecx
+   pop edi
+   pop esi
+   pop eax
+   }    
+   return sum;
+}
+
+
+#endif /*WIN32*/
+
 #else
 inline float mahalanobis4_SSE<float>(const float *a, const float *b, const float *c, int len)
 {
    throw new generalException("Trying to use SSE routine, but code not compiled for SSE support", __FILE__,
 			      __LINE__);
 }
-#endif
+#endif /*ALLOW_SSE*/
 
 
 float DiagGMM::score(const float *vec)
