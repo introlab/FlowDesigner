@@ -14,7 +14,7 @@
 using namespace std;
 
 /**Base class for all vector types, it holds the size and handles some 
-   common operations for all vector types
+   common operations for all vector types.
    @author Jean-Marc Valin
 */
 class BaseVector  : public Object {
@@ -43,42 +43,86 @@ class BaseVector  : public Object {
 template<class T>
 class Vector : public BaseVector , public vector<T> {
 public:
+
+   ///You can always get the type of the Vector elements by using typename Vector<T>::basicType.
    typedef T basicType;
+
+   ///Default constructor, size of the vector is 0.
    Vector()
       : BaseVector(0,0)
       , vector<T> ()
    {}
 
+   ///Copy constructor
    Vector(const Vector<T> &v)
       : BaseVector(v.obj_size,v.obj_size)
       , vector<T> (v)
    {
    }
 
-
+   /**
+      Constructor with a size and an initialization value.
+      \param n the size of the vector
+      \param x the initialization value
+   */
    explicit Vector(size_t n, const T &x = T())
       : BaseVector(0,0)
       , vector<T> (n, x)
    {}
 
+   ///Destructor
    ~Vector()
    {
    }
 
+   /**
+      Formatted output (only values) for Vectors <br>
+      <b>Format : </b> <i> element0 element1 ... element(size-1)</i>
+   */
    void prettyPrint(ostream &out=cout) const;
 
+   /**
+      Formatted output in the FlowDesigner format<br>
+      <b>Format : </b> \<Vector\<T\> <i> element0 element1 ... element(size - 1)</i> \>
+      \param out the output stream
+   */
    void printOn(ostream &out) const;
    
+   /**
+      Formatted input in the FlowDesigner format<br>
+      <b>Format : </b> \<Vector\<T\> <i> element0 element1 ... element(size - 1)</i> \>
+      \param in the input stream
+   */
    void readFrom(istream &in=cin);
 
+   /**
+      Binary output in the FlowDesigner format<br>
+      <b>Format : </b> {Vector\<T\> |<i>element0;element1;...; element(size - 1)</i> }
+      \param out the output stream
+   */
    virtual void serialize(ostream &out) const;
 
+   /**
+      Binary input in the FlowDesigner format<br>
+      <b>Format : </b> {Vector\<T\> |<i>element0;element1;...; element(size - 1)</i> }
+      \param in the input stream
+   */
    virtual void unserialize(istream &in);
 
+   ///destroy() will be called by the vector pool to permanently delete a Vector<T> object
    virtual void destroy();
 
+   /**
+      alloc() is called to allocate a vector on the vector pool. The vector, if not used will be
+      placed in the vector pool to be reused later.
+      \param size size of the vector.
+   */
    static Vector<T> *alloc(size_t size);
 
+   /**
+      Returns the class name : Vector<T>
+      \return string the class name
+   */
    static string GetClassName()
    {
       string name = ObjectGetClassName<Vector<T> >();
@@ -89,8 +133,19 @@ public:
 	 return name;
    }
 
+   /**
+      Returns the class name : Vector<T>
+      \return string the class name
+   */
    string getClassName() {return GetClassName();}
-      
+
+   
+   /**
+      Returns a new vector containing data from start to end indexes.
+      \param startInd start index
+      \param endInd end index
+      \return ObjectRef the newly allocated vector 
+   */
    ObjectRef range(size_t startInd, size_t endInd)
    {
       Vector<T> *v = Vector<T>::alloc(endInd-startInd+1);
