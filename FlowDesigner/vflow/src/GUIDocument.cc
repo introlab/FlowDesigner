@@ -373,21 +373,6 @@ void GUIDocument::applyParams()
    setModified();
 }
 
-static const vector<string> &allDocTypes()
-{
-   static vector<string> types;
-   static int init=false;
-   if (!init)
-   {
-      types.insert(types.end(), "int");
-      types.insert(types.end(), "float");
-      types.insert(types.end(), "string");
-      types.insert(types.end(), "bool");
-      init=true;
-   }
-   return types;
-}
-
 void GUIDocument::insertLoadedParam(DocParameterData *param, string type, string value)
 {
    const vector<string> &types=ObjectParam::allTypes(false);
@@ -687,36 +672,10 @@ void GUIDocument::run()
 	 for (int i=0;i<params.size();i++)
 	 {
 	    DocParameterDataText *curr = textParams[i];
-	    if (curr->value == "")
-	       continue;
-	    ObjectRef value;
-	    if (curr->type == "int")
-	    {
-	       int val = atoi (curr->value.c_str());
-	       value = ObjectRef(new Int(val));
-	    } 
-	    else if (curr->type == "bool")
-	    {
-	       if (curr->value == "true")
-		  value = ObjectRef(new Bool(true));
-	       else 
-		  value = ObjectRef(new Bool(false));
-	    } 
-	    else if (curr->type == "float")
-	    {
-	       float val = atof (curr->value.c_str());
-	       value = ObjectRef(new Float(val)); 
-	    } 
-	    else if (curr->type == "string")
-	    {
-	       //cerr << "string\n";
-	       value = ObjectRef(new String(curr->value));	 	 
-	    }
-	    else {
-	       cerr << "UNKNOWN PARAM TYPE: \"" << curr->type << "\"" << endl;
-	    }
-	    
-	    parameters.add(curr->name,value);
+	    ParameterSet dummy;
+	    ObjectRef value = ObjectParam::stringParam(curr->type, curr->value, dummy);
+	    if (value->status == Object::valid)
+	       parameters.add(curr->name,value);
 	 }
 
       }

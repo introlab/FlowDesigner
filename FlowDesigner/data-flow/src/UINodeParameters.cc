@@ -16,24 +16,6 @@ public:
    
 };
 
-const vector<string> &UINodeParameters::allTypes()
-{
-   static vector<string> types;
-   static int init=false;
-   if (!init)
-   {
-      types.insert(types.end(), "int");
-      types.insert(types.end(), "float");
-      types.insert(types.end(), "string");
-      types.insert(types.end(), "bool");
-      types.insert(types.end(), "subnet_param");
-      init=true;
-   }
-   return types;
-}
-
-
-
 UINodeParameters::UINodeParameters(UINode *_node, string type)
    : node(_node)
 {

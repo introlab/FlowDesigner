@@ -34,7 +34,6 @@ public:
    void export2net(ostream &out);
    void load(xmlNodePtr node);
    ParameterText *getParamNamed(string n);
-   static const vector<string> &allTypes();
    void insertNetParams(vector<ItemInfo *> &par);
    virtual void insertLoadedParam(ParameterText *param, string type, string value);
    ParameterText *addParameterText(string name, string type, string value,
