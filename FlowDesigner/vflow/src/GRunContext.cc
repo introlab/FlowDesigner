@@ -109,9 +109,11 @@ void GRunContext::run()
       net = doc->build("MAIN", params);
       if (net->getInputNode())
 	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
-      cerr << "initializing...\n";
+      //cerr << "initializing...\n";
+      //verifyConnect done by UIDocument
+      //net->verifyConnect();
       net->initialize();
-      cerr << "running (UIDocument)...\n";
+      //cerr << "running (UIDocument)...\n";
 	    
       for (int i = 0; ;i++) {
 	 if (!net->hasOutput(i)) break;

@@ -810,7 +810,7 @@ void GUIDocument::threadRun()
       //Let's create the thread already in a detached state
       pthread_attr_t tattr;
       pthread_attr_init(&tattr);
-      pthread_attr_setdetachstate(&tattr,PTHREAD_CREATE_DETACHED);
+      //pthread_attr_setdetachstate(&tattr,PTHREAD_CREATE_DETACHED);
       pthread_create(&runThread, &tattr, (void * (*)(void *))threadFunct, this);
       //pthread_detach(runThread); //Dominic
 
@@ -875,7 +875,8 @@ void GUIDocument::run()
       if (net->getInputNode())
 	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       runningNet = net;
-      net->verifyConnect();
+      //verifyConnect done by UIDocument
+      //net->verifyConnect();
       net->initialize();
       //cerr << "running...\n";
       
@@ -934,6 +935,7 @@ void GUIDocument::run()
    pthread_mutex_lock(&del_lock);
    delete runningNet;
    runningNet=NULL;
+   isRunning=false;
    pthread_mutex_unlock(&del_lock);
 
    //pthread_cleanup_pop(1);
