@@ -14,6 +14,9 @@ DECLARE_NODE(Feedback)
  * @input_name INPUT
  * @input_description The input object
  *
+ * @input_name BEFORE
+ * @input_description When count-delay < 0, pull (delay-count) from here
+ *
  * @output_name OUTPUT
  * @output_description The output object = input object
  *
@@ -30,6 +33,7 @@ END*/
 class Feedback : public Node {
 protected:
    int inputID;
+   int beforeID;
    int delayID;
    int outputID;
    bool insideRequest;
@@ -43,6 +47,7 @@ public:
    {
       try {
          inputID = addInput("INPUT");
+         beforeID = addInput("BEFORE");
 	 outputID=addOutput("OUTPUT");
 	 delayID = addOutput("DELAY");
 	 delay = dereference_cast<int> (parameters.get ("DELAY"));
@@ -82,6 +87,10 @@ public:
    {
       if (output_id == outputID)
 	 inputs[inputID].node->request(inputs[inputID].outputID,req);
+
+      ParameterSet p;
+      p.add("LOOKBACK", ObjectRef(Int::alloc(delay)));
+      inputs[beforeID].node->request(inputs[beforeID].outputID,p);
    }
       
    ObjectRef getOutput(int output_id, int count)
@@ -90,8 +99,9 @@ public:
 	 return getInput(inputID, count);
       else if (output_id == delayID)
       {
+	 //FIXME: Should check for infinite loop if BEFORE is connected to DELAY?
 	 if (count-delay < 0)
-	    return nilObject;
+	    return getInput(beforeID, delay-count);
 	 //cerr << delayRecurs << endl;
 	 if (delayRecurs != -1 && count-delay >= delayRecurs)
 	    throw new NodeException (this, "Infinite loop detected, breaking out", __FILE__, __LINE__);
