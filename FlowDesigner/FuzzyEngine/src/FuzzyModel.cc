@@ -72,7 +72,12 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
   FuzzySet *set;
   FuzzyFunction *function;
   int i;
-  int rule_number = rule->get_rule_number();
+  
+  //int rule_number = rule->get_rule_number();
+  int rule_number = m_rules.size() + 1;
+
+  rule->set_rule_number(rule_number);
+  
   
   //let's verify this rule
   vector<pair<string,string> >&consequent = rule->get_consequent_part();
