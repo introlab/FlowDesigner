@@ -65,6 +65,14 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          int conditionID = conditionNode->translateOutput("OUTPUT");
 
          int pc = 0;
+	 
+	 /*So we never return garbage*/
+	 int out_id=0;
+	 while (sinkNode->hasOutput(out_id))
+	 {
+	    output[out_id] = nilObject;
+	 }
+
          while(!exit_status)
          {
             if (doWhile)
