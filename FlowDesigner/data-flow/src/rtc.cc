@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-RTCUser *RTCTimer::create(int delay)
+RTCUser *RTCTimer::create(float delay)
 {
    RTCUser *u = new RTCUser(delay);
    pthread_mutex_lock(&instance().lock);
@@ -115,13 +115,22 @@ void RTCTimer::runThread()
       //exit(errno);
       }
    */
+   int retval;
 #ifdef HAVE_RTC
-   int retval = ioctl(fd, RTC_IRQP_SET, 64);
-   if (retval == -1) {
-      perror("ioctl");
-      //exit(errno);
-   }
+   freq=16;
+   do{
+      freq*=2;
+      retval = ioctl(fd, RTC_IRQP_SET, freq*2);
+      /*if (retval == -1) {
+        perror("ioctl");
+        //exit(errno);
+        }*/
+      
+   } while (retval!=-1);
+   //cerr << "freq = " << freq << endl;
+   dt=1.0/freq;
 #endif
+   //cerr << "dt = " << dt << endl;
    pthread_mutex_unlock(&lock);
 
    while(1)
@@ -137,7 +146,7 @@ void RTCTimer::runThread()
       list<RTCUser*>::iterator it=users.begin();
       while (it != users.end())
       {
-         (*it)->interrupt();
+         (*it)->interrupt(dt);
          it++;
       }
 

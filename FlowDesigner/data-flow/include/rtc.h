@@ -13,16 +13,17 @@ class RTCTimer;
 
 class RTCUser {
    pseudosem_t sem;
-   int period;
-   int next;
+   float period;
+   float next;
 public:
-   RTCUser(int p) : period(p) , next(p) {pseudosem_init(&sem,0,0);}
+   RTCUser(float p) : period(p) , next(p) {pseudosem_init(&sem,0,0);}
    ~RTCUser() {pseudosem_destroy(&sem);}
-   void wait(int d=0) {if (d) set(d); pseudosem_wait(&sem);}
+   void wait() {pseudosem_wait(&sem);}
+   void wait(float d) {set(d); pseudosem_wait(&sem);}
 protected:
-   bool dec() {next--;if (next) return false; else {next=period;return true;}}
-   void set(int n) {next=n;}
-   void interrupt() {if (dec()) pseudosem_post(&sem);}
+   bool dec(float t) {next-=t;if (next>0) return false; else {next+=period;return true;}}
+   void set(float d) {next=d;}
+   void interrupt(float time) {while (dec(time)) {pseudosem_post(&sem);}}
    friend class RTCTimer;
 };
 
@@ -32,10 +33,12 @@ class RTCTimer {
    pthread_mutex_t lock;
    list<RTCUser *> users;
    bool exit_status;
+   int freq;
+   float dt;
 public:
-   static RTCUser *create(int delay);
+   static RTCUser *create(float delay);
    static void destroy(RTCUser *u);
-   static int wait(int delay=0);
+   //static int wait(int delay=0);
    //protected:
    RTCTimer();
    ~RTCTimer();

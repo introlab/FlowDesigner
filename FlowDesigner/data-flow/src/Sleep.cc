@@ -20,9 +20,9 @@ DECLARE_NODE(Sleep)
  * @output_name VALUE
  * @output_description Always return TRUE.
  *
- * @parameter_name MICROSECONDS
- * @parameter_description Sleep x microseconds.
- * @parameter_type int
+ * @parameter_name SECONDS
+ * @parameter_description Sleep x seconds.
+ * @parameter_type float
  *
 END*/
 
@@ -31,21 +31,17 @@ class Sleep : public Node {
 private:
 
   int outputID;
-  int m_time;
+  float m_time;
    RTCUser *rtc;
 public:
 
   Sleep(string nodeName, ParameterSet params) 
       : Node(nodeName, params) {
 
-    m_time = dereference_cast<int>(parameters.get("MICROSECONDS"));
+    m_time = dereference_cast<float>(parameters.get("SECONDS"));
 
     outputID = addOutput("VALUE");
-    int tmp = (64*m_time/1000000);
-    if (!tmp)
-       tmp=1;
-    //cerr << "time = " << tmp << endl;
-    rtc=RTCTimer::create(tmp);
+    rtc=RTCTimer::create(m_time);
   }
     
    ~Sleep() {RTCTimer::destroy(rtc);}
