@@ -16,6 +16,11 @@
 #include <float.h>
 #endif
 
+using namespace std;
+#if (__GNUC__ == 3 && __GNUC_MINOR__ >= 1 && HAVE_EXT_HASH_MAP)
+using namespace __gnu_cxx;
+#endif
+
 #ifdef HAVE_FFTW
 
 #include <fftw.h>
@@ -32,12 +37,7 @@
 #include <ext/hash_map>
 #endif
 
-#endif /*ifdef HAVE_FFTW*/
-
-using namespace std;
-#if (__GNUC__ == 3 && __GNUC_MINOR__ >= 1 && HAVE_EXT_HASH_MAP)
-using namespace __gnu_cxx;
-#endif
+#endif /*ifdef NO_HASH_MAP*/
 
 class _FFTWrap {
 #ifdef NO_HASH_MAP
