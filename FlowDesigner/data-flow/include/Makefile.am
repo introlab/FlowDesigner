@@ -51,11 +51,8 @@ noinst_HEADERS = \
 	OutputStream.h \
 	Pack.h \
 	Save.h \
-	Sum.h \
 	Switch.h \
 	UnPack.h \
-	VNSum.h \
-	VSum.h \
 	AND.h \
 	Matrix.h \
 	DoubleDispatch.h \
