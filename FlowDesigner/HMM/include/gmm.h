@@ -87,6 +87,7 @@ public:
       , mode(accum)
       , nb_frames_aligned(0)
       , dimensions (dim)
+      , using_gaussianIDs(false)
    {
       for (int i=0;i<nb_gauss;i++)
          gaussians[i] = Ptr<Gaussian> (new Gaussian (dim, cov_new));
@@ -100,6 +101,7 @@ public:
       , mode(accum)
       , nb_frames_aligned(0)
       , dimensions(1)
+      , using_gaussianIDs(false)
    {
       //gaussians[0] = new Gaussian (1, NewDiagonalCovariance);
    }

@@ -26,7 +26,9 @@ protected:
    Vector<Ptr<Vector<float> > > means;
 public:
    /**Default Constructor*/
-   MeanSet() {};
+   MeanSet() 
+   : nb_means(0)
+   {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
    int getIDFor(Ptr<Vector<float> >);

@@ -22,12 +22,23 @@
 #include "Object.h"
 
 class Tag {
-public:
+protected:
    int begin;
    int end;
-   int phone;
-   int state;
-   int gaussian;
+   int phoneID;
+   int stateID;
+   int gaussianID;
+
+   using_Ids;
+   //Ptr<Gaussian> gaussian;
+   //Ptr<State> state;
+   //Ptr<Phone> phone;
+public:
+   Tag() 
+      : begin(0)
+      , end(0)
+      , using_IDs(true)
+   {}
 };
 
 /**Describes the content of an audio file*/
@@ -41,7 +52,7 @@ protected:
    bool fine_endpointed;
    int fine_start;
    int fine_end;
-   //vector<Tag> tags;
+   Vector<Tag> tags;
 
 public:
    /**Full constructor*/

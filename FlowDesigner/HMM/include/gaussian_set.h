@@ -28,7 +28,9 @@ protected:
    Vector<Ptr<Gaussian> > gaussians;
 public:
    /**Default Constructor*/
-   GaussianSet() {};
+   GaussianSet() 
+      : nb_gaussians(0)
+   {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
    int getIDFor(Ptr<Gaussian>);

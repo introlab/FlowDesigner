@@ -28,7 +28,9 @@ protected:
    Vector<Ptr<GMM> > gmms;
 public:
    /**Default Constructor*/
-   GMMSet() {};
+   GMMSet() 
+   : nb_gmms(0)
+   {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
    int getIDFor(Ptr<GMM>);

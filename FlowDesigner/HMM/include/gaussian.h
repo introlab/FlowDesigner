@@ -58,7 +58,11 @@ protected:
 
 public:
    /**Empty gaussian constructor*/
-   Gaussian() : dimension(0) {}
+   Gaussian() 
+      : dimension(0) 
+      , using_meanID(false)
+      , using_covarianceID(false)
+   {}
 
    Gaussian(istream &in) {in >> *this;}
 
@@ -88,6 +92,8 @@ public:
       , covariance(g.covariance->copy())
       , accum_count (g.accum_count)
       , dimension (g.dimension)
+      , using_meanID(false)
+      , using_covarianceID(false)
    {}
 
    /**Destructor*/

@@ -26,7 +26,9 @@ protected:
    Vector<Ptr<Covariance> > covariances;
 public:
    /**Default Constructor*/
-   CovarianceSet() {};
+   CovarianceSet() 
+   : nb_covariances (0)
+   {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
    int getIDFor(Ptr<Covariance>);

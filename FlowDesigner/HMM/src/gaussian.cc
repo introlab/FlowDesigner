@@ -46,18 +46,30 @@ Gaussian::~Gaussian()
 
 void Gaussian::toIDsUsing (MeanSet &means, CovarianceSet & covariances)
 {
+   if (!using_covarianceID)
+   {
    using_covarianceID=true;
-   using_meanID=true;
    covarianceID=covariances.getIDFor(covariance);
+   }
+   if (!using_meanID)
+   {
+   using_meanID=true;
    meanID=means.getIDFor(mean);
+   }
 }
 
 void Gaussian::toPtrsUsing (const MeanSet &means, const CovarianceSet & covariances)
 {
-   using_covarianceID=false;
-   using_meanID=false;
-   covariance=covariances.getPtrFor(covarianceID);
-   mean=means.getPtrFor(meanID);
+   if (using_covarianceID)
+   {
+      using_covarianceID=false;
+      covariance=covariances.getPtrFor(covarianceID);
+   }
+   if (using_meanID)
+   {
+      using_meanID=false;
+      mean=means.getPtrFor(meanID);
+   }
 }
 
 

@@ -23,6 +23,8 @@
 #include <Object.h>
 #include <map>
 
+inline bool isValidType (istream &in, string expectedType);
+
 inline ostream &operator << (ostream &out, const ObjectRef &ref)
 {
    out << *ref;
@@ -32,20 +34,24 @@ inline ostream &operator << (ostream &out, const ObjectRef &ref)
 template <class T>
 inline ostream &operator << (ostream &out, const vector<T> &v)
 {
+   out << "<Vector ";
    for (int i=0; i < v.size(); i++)
    {
       out << " " << v[i];
    }
+   out << " > ";
    return out;
 }
 
 template <class T>
 inline ostream &operator << (ostream &out, const vector<T*> &v)
 {
+   out << "<Vector ";
    for (int i=0; i < v.size(); i++)
    {
       out << " " << *(v[i]);
    }
+   out << " > ";
    return out;
 }
 
@@ -54,6 +60,8 @@ inline istream &operator >> (istream &in, vector<T> &v)
 {
    int items_found=0;
 
+   if (!isValidType(in,"Vector"))
+      return in;
    while (!in.eof())
    {
       T tmp;
@@ -64,7 +72,8 @@ inline istream &operator >> (istream &in, vector<T> &v)
       v[items_found-1]=tmp;
    }
    in.clear();
-
+   char ch;
+   in >> ch;
    return in;
 }
 
@@ -73,6 +82,9 @@ inline istream &operator >> (istream &in, vector<T*> &v)
 {
    int items_found=0;
    string nimportequoi;
+
+   if (!isValidType(in,"Vector"))
+      return in;
 
    while (!in.eof())
    {
@@ -84,6 +96,8 @@ inline istream &operator >> (istream &in, vector<T*> &v)
       v[items_found-1]=tmp;
    }
    in.clear();
+   char ch;
+   in >> ch;
 
    return in;
 }
