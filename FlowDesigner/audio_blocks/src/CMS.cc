@@ -27,10 +27,11 @@ DECLARE_NODE(CMS)
  *
  * @name CMS
  * @category Signal:DSP
- * @description No description available
+ * @description Window-type Cepstram Mean Subtraction (CMS)
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input frames
  *
  * @output_name OUTPUT
  * @output_description No description available
