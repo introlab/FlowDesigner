@@ -166,14 +166,14 @@ static void node_delete (GtkMenuItem *menuitem, gpointer user_data)
 {
    delete ((GUINode *)(user_data));
 }
-
+/*
 static void node_set_cond (GtkMenuItem *menuitem, gpointer user_data)
 {
    //gnome_canvas_item_set((GnomeCanvasItem *)(user_data), "fill_color_rgba", 0xff000040, NULL);
    ((GUINode *)(user_data))->setAsCondition();
 }
-
-void GUINode::setAsCondition()
+*/
+/*void GUINode::setAsCondition()
 {
    net->setCondition(this);
    gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0xff000040, NULL);
@@ -183,7 +183,7 @@ void GUINode::unsetAsCondition()
 {
    gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0x3cb37120, NULL);
 }
-
+*/
 void GUINode::propertiesShow()
 {
    dynamic_cast<GUINodeParameters *> (parameters)->show();
@@ -203,7 +203,7 @@ void GUINode::createPopup()
                       (GtkSignalFunc) node_delete,
                       this);
 
-   if (net->isIter())
+   /* if (net->isIter())
    {
       label = gtk_menu_item_new_with_label("Set as condition");
       gtk_menu_append(GTK_MENU(popupMenu),label);
@@ -216,7 +216,7 @@ void GUINode::createPopup()
                          (GtkSignalFunc) node_set_cond,
                          this);
    }
-
+   */
    label = gtk_menu_item_new_with_label("Properties");
    gtk_menu_append(GTK_MENU(popupMenu),label);
    gtk_widget_show(label);

@@ -19,13 +19,14 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    gint anchor;
    
    terminal->getItemPos(x,y);
-
+   char *color;
    if (type == INPUT)
    {
       defaultName = "INPUT";
       prompt = "Input name?";
       anchor = GTK_ANCHOR_EAST;
       x -= 10;
+      color="red";
    }   
    else if (type == OUTPUT)
    {
@@ -33,12 +34,14 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       prompt = "Output name";
       anchor = GTK_ANCHOR_WEST;
       x += 10;
+      color="blue";
    }   
    else
    {
       defaultName = "CONDITION";
       anchor = GTK_ANCHOR_WEST;
       x += 10;
+      color="purple";
    }
    
    if (name == "")
@@ -59,7 +62,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
                          "y", y,
                          "text", name.c_str(),
                          "anchor", anchor ,
-                         "fill_color", "red",
+                         "fill_color", color,
                          "font", "fixed",
                          NULL);
 

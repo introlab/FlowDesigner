@@ -47,6 +47,11 @@ gint GUITerminal::event(GdkEvent *event)
       switch(event->button.button) 
         {
         case 1:
+           if (event->button.state & GDK_CONTROL_MASK)
+	   {
+	      if (!isInput && !netTerminal)
+		 new GUINetTerminal(this,UINetTerminal::CONDITION,"");
+	   }	      
            if (event->button.state & GDK_SHIFT_MASK)
            {
               if (isInput)
