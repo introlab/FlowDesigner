@@ -8,6 +8,9 @@
 #include "typemap.h"
 #include "conversion.h"
 #include "Complex.h"
+#include <sstream>
+#include <iostream>
+#include <complex>
 
 using namespace std;
 
@@ -31,11 +34,104 @@ ObjectRef ReturnNilObject(ObjectRef in)
 template<class T, class U>
 ObjectRef CTypeConversion(ObjectRef in)
 {
-   typedef typename T::basicType BaseType;
-   BaseType f=dereference_cast<BaseType> (in);
-   return ObjectRef(U::alloc((typename U::basicType)f));
+  RCPtr<T> ObjectValue = in;
+  return ObjectRef(U::alloc(static_cast<typename U::basicType>(ObjectValue->val())));
 }
 
+template <class T, class U>
+ObjectRef CTypeStringConversion(ObjectRef in) 
+{
+  ostringstream out;
+  in->prettyPrint(out);
+  return ObjectRef(new U(out.str()));
+}
+
+template <class T, class U>
+ObjectRef StringCTypeConversion(ObjectRef in) 
+{
+  RCPtr<T> ObjectValue = in;
+  istringstream my_stream;
+  my_stream.str(*ObjectValue);
+  typename U::basicType value;
+  my_stream >> value;
+  return ObjectRef(new U(value));
+}
+
+//(DL) 17/02/2004
+//Commented conversions make no sense to be implemented (?)
+
+//to Bool conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, Bool, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Bool, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Bool, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Bool, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(String, Bool, StringCTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<float>, Bool, CTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<double>, Bool, CTypeConversion);
+REGISTER_CONVERSION(NilObject, Bool, ReturnNilObject);
+
+//to Int conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, Int, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Int, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Int, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Int, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(String, Int, StringCTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<float>, Int, CTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<double>, Int, CTypeConversion);
+REGISTER_CONVERSION(NilObject, Int, ReturnNilObject);
+
+//to Float conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, Float, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Float, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Float, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Float, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(String, Float, StringCTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<float>, Float, CTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<double>, Float, CTypeConversion);
+REGISTER_CONVERSION(NilObject, Float, ReturnNilObject);
+
+//to Double conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(String, Double, StringCTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<float>, Double, CTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<double>, Double, CTypeConversion);
+REGISTER_CONVERSION(NilObject, Double, ReturnNilObject);
+
+//to Complex<float> conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, Complex<float>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Complex<float>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Complex<float>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Complex<float>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(String, Complex<float>, StringCTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<float>, Complex<float>, CTypeConversion);
+//REGISTER_CONVERSION_TEMPLATE(Complex<double>, Complex<float>, CTypeConversion);
+REGISTER_CONVERSION(NilObject, Complex<float>, ReturnNilObject);
+
+//to Complex<double> conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(String, Complex<double>, StringCTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<float>, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<double>, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION(NilObject, Complex<double>, ReturnNilObject);
+
+//to String conversion
+REGISTER_CONVERSION_TEMPLATE(Bool, String, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, String, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, String, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, String, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<float>, String, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<double>, String, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(String, String, CTypeStringConversion);
+REGISTER_CONVERSION(NilObject, String, ReturnNilObject);
+
+//(DL) 17/02/2004
+//OLD conversion (to be removed someday)
 
 //Int conversion
 template<class T>
@@ -51,18 +147,6 @@ ObjectRef IntStringConversion(ObjectRef in)
   String my_string = object_cast<String>(in);
   return ObjectRef(Int::alloc(atoi(my_string.c_str())));
 }
-
-REGISTER_CONVERSION_TEMPLATE(Float, Int, CTypeConversion);
-REGISTER_CONVERSION_TEMPLATE(Float, Double, CTypeConversion);
-REGISTER_CONVERSION_TEMPLATE(Float, Complex<float>, CTypeConversion);
-REGISTER_CONVERSION_TEMPLATE(Double, Int, CTypeConversion);
-REGISTER_CONVERSION_TEMPLATE(Double, Float, CTypeConversion);
-REGISTER_CONVERSION_TEMPLATE(Int, Double, CTypeConversion);
-REGISTER_CONVERSION_TEMPLATE(Int, Float, CTypeConversion);
-
-REGISTER_CONVERSION(Int, String, IntStringConversion);
-REGISTER_CONVERSION(Int, NilObject, ReturnNilObject);
-
 
 REGISTER_VTABLE0(toInt, Int, IntCTypeConversion<Int>, 1);
 REGISTER_VTABLE0(toInt, Bool, IntCTypeConversion<Bool>, 2);
@@ -200,4 +284,4 @@ REGISTER_VTABLE0(toVect, Double, VectorCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toVect, String, VectorStringConversion, 5);
 REGISTER_VTABLE0(toVect, NilObject, ReturnNilObject, 6);
 
-#endif
+#endif //BROKEN_TEMPLATES

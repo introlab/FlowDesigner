@@ -78,4 +78,47 @@ class Complex : public complex<T>, public Object {
 
 };
 
+template <class T> 
+istream &operator >> (istream &in, Complex<T> &value) { 
+  
+  char ch;
+  in >> ch;
+  
+  string expected = ObjectGetClassName<Complex<T> >();
+  
+  if (ch == '<') {
+    string type;
+    in >> type;
+    
+    if (expected != type) {
+      throw new ParsingException ("Parser expected type " + expected + " and got " + type);
+    }
+
+    //reading object
+    value.readFrom(in);
+  }
+  else if (ch == '{') {
+    string type;
+    in >> type;
+
+    if (expected != type) {
+      throw new ParsingException ("Parser expected type " + expected + " and got " + type);
+    }
+    
+    //reading dummy spaces
+    char dummy;      
+    do {
+      in >> dummy;
+    } while(dummy != '|');
+
+    value.unserialize(in);
+
+  } else {
+    throw new ParsingException ("Parser expected < or { while parsing type " + expected);
+  }
+
+  return in;
+}
+
+
 #endif
