@@ -28,27 +28,17 @@ DECLARE_NODE(KeyPad)
  * @category Probe
  * @description No description available
  *
- * @output_name OUTPUT
- * @output_description No description available
- *
  * @output_name KEYPAD
- * @output_description No description available
+ * @output_type Vector
+ * @output_description A vector of size 2 representing the tuple Line/column of the pressed key.
  *
- * @input_name INPUT
- * @output_description No description available
+ * @output_name KEYPAD_ID
+ * @output_type int
+ * @output_description The Id of the key that is pressed
  *
- * @parameter_name BREAK_AT
- * @parameter_description No description available
- *
- * @parameter_name SHOW
- * @parameter_description No description available
- *
- * @parameter_name SKIP
- * @parameter_description No description available
- *
- * @parameter_name HOLD
- * @parameter_description Hold for X iteration (0 = forever)
- * @parameter_type int
+ * @output_name KEYPAD_NAME
+ * @output_type Char
+ * @output_description The Char description of the key that is pressed
  *
  *
 END*/
@@ -73,32 +63,57 @@ const int KeyPad::pad_C_number = 14;
 const int KeyPad::pad_D_number =15;
 
 KeyPad::KeyPad(string nodeName, ParameterSet params) 
-   : Probe(nodeName, params), changed(false), hold_value(0), 
-  selected_line(-1), selected_column(-1), selected_pad(-1) {
+  : Node(nodeName,params), changed(false), selected_line(-1), selected_column(-1), selected_pad(-1) {
 
-  cerr<<"KeyPad Constructor"<<endl;
+  //adding outputs
   keypadID = addOutput("KEYPAD");
+  keypadIdID = addOutput("KEYPAD_ID");
+  keypadNameID = addOutput("KEYPAD_NAME");
 
-  if (parameters.exist("HOLD")) {
-    hold_value = dereference_cast<int> (parameters.get("HOLD"));
-  }
-
-  cerr<<"End Keypad Constructor"<<endl;
 }
 
 KeyPad::~KeyPad() {
-  cerr<<"KeyPad Destructor"<<endl;
+  
+  NO_CANCEL;
+  gdk_threads_enter(); 
+  
+  if (window1) {
+    gtk_widget_destroy (window1);
+  }
+  
+  gdk_threads_leave(); 
+  SET_CANCEL;
 }
 
 void KeyPad::specificInitialize() {
+ 
+  //calling Node specificInitialize()
+   this->Node::specificInitialize();
 
-  cerr<<"Probe specific initialize"<<endl;
-  Probe::specificInitialize();
 
-
-  cerr<<"Keypad specific initialize"<<endl;
    NO_CANCEL;
    gdk_threads_enter(); 
+
+   //creating window
+   window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+   gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
+
+   gtk_window_set_title (GTK_WINDOW (window1), "KeyPad");
+
+   gtk_signal_connect (GTK_OBJECT (window1), "delete-event",
+		       GTK_SIGNAL_FUNC (ignore_delete),this);
+
+   
+   //creating vbox
+   vbox1 = gtk_vbox_new (FALSE, 0);
+   gtk_widget_ref (vbox1);
+   gtk_object_set_data_full (GTK_OBJECT (window1), "vbox1", vbox1,
+			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (vbox1);
+   gtk_container_add (GTK_CONTAINER (window1), vbox1);
+
+
+
 
    //creating table_1
    table_1 = gtk_table_new (4,4,TRUE);
@@ -262,7 +277,7 @@ void KeyPad::specificInitialize() {
    gtk_table_attach_defaults (GTK_TABLE(table_1),button_D,3,4,3,4);
 
    //packing table
-   gtk_box_pack_start (GTK_BOX (vbox2), table_1, TRUE, TRUE, 0);
+   gtk_box_pack_start (GTK_BOX (vbox1), table_1, TRUE, TRUE, 0);
 
 
    //connecting signals
@@ -441,81 +456,61 @@ void KeyPad::specificInitialize() {
 		       GTK_SIGNAL_FUNC (keypad_button_released),
 		       this);
 
+
+
+   //let's show window
+   gtk_widget_show(window1);
+
    gdk_threads_leave(); 
    SET_CANCEL;
 
 }
 
 void KeyPad::reset() {
-   Probe::reset();
-}
 
-
-void KeyPad::display() {
-
-
-   NO_CANCEL
-   gdk_threads_enter();
-
-   //nothing to do (I think)
- 
-
-   gdk_threads_leave();
-   SET_CANCEL
+  changed = false;
 
 }
 
 ObjectRef KeyPad::getOutput(int output_id, int count) {
 
- 
-
-  current_count = count;
-
-  if (count % skip == 0) {
-    char tmp[16];
-    sprintf (tmp,"%d",count);
-    NO_CANCEL;
-    gdk_threads_enter();
-    gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
-    gdk_threads_leave(); 
-    SET_CANCEL; 
-  }
-
-  if (output_id==outputID) {
-    NodeInput input = inputs[inputID];
-    inputValue = input.node->getOutput(input.outputID,count);
-    return inputValue;
-  }
-  else {
- 
-    if (output_id == keypadID) {
+  if (output_id == keypadID) {
+    
+    
+    if (changed) {
+      Vector<int> *my_output = new Vector<int>(2);
       
-      if (displayEnable && (count % skip == 0))
-	display();
-      if (traceEnable && (count % skip == 0) && count >= breakAt)
-	trace();
-      
-      if (changed) {
-	Vector<int> *my_output = new Vector<int>(2);
+      (*my_output)[0] = selected_line;
+      (*my_output)[1] = selected_column;
 	
-	(*my_output)[0] = selected_line;
-	(*my_output)[1] = selected_column;
-	
-	return ObjectRef(my_output);
-	
-      }
-      else {
-	return Object::nilObject;
-    }
+      return ObjectRef(my_output);
       
     }
     else {
-      throw new NodeException (this, "KeyPad: Unknown output id", __FILE__, __LINE__);
+      return Object::nilObject;
+    }
+    
+  }//keypadID
+  else if (output_id == keypadIdID) {
+    if (changed) {
+      return ObjectRef(new Int(selected_pad));
+    }
+    else {
+      return Object::nilObject;
     }
 
-  }//else
-  
- 
+  }
+  else if (output_id == keypadNameID) {
+    if (changed) {
+      return ObjectRef(new Char(pad_description));
+    }
+    else {
+      return Object::nilObject;
+    }
+  }
+  else {
+    throw new NodeException (this, "KeyPad: Unknown output id", __FILE__, __LINE__);
+  }
 }
 
 void KeyPad::update_values(int pad_number) {
@@ -626,5 +621,7 @@ void keypad_button_released(GtkButton  *button, KeyPad *keypad) {
 }
 
 
-
+gboolean ignore_delete(GtkWidget *widget, GdkEvent *event, KeyPad *keypad) {
+   return TRUE;
+}
 

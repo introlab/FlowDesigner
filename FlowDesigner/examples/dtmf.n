@@ -4,14 +4,7 @@
     <Node name="node2" type="Constant" x="183.000000" y="41.000000">
       <Parameter name="VALUE" type="bool" value="true"/>
     </Node>
-    <Node name="node1" type="KeyPad" x="97.000000" y="100.000000">
-      <Parameter name="BREAK_AT" type="int" value="-1"/>
-      <Parameter name="SHOW" type="bool" value="true"/>
-      <Parameter name="HOLD" type="int" value="10"/>
-    </Node>
-    <Node name="node4" type="Constant" x="-42.000000" y="100.000000">
-      <Parameter name="VALUE" type="int" value="1"/>
-    </Node>
+    <Node name="node1" type="KeyPad" x="76.000000" y="117.000000"/>
     <Node name="node3" type="FDSaveFrame" x="577.000000" y="113.000000"/>
     <Node name="node5" type="DTMF" x="254.000000" y="101.000000">
       <Parameter name="LENGTH" type="int" value="256"/>
@@ -19,7 +12,6 @@
       <Parameter name="GAIN" type="float" value="2000"/>
     </Node>
     <Node name="node6" type="PlotProbe" x="393.000000" y="105.000000"/>
-    <Link from="node4" output="VALUE" to="node1" input="INPUT"/>
     <Link from="node1" output="KEYPAD" to="node5" input="INPUT"/>
     <Link from="node6" output="OUTPUT" to="node3" input="OBJECT"/>
     <Link from="node5" output="OUTPUT" to="node6" input="INPUT"/>
