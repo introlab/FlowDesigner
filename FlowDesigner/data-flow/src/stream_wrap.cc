@@ -155,25 +155,12 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 
 
 
-
-
-/*pipe_streambuf::pipe_streambuf(int _ifd, int _ofd, pid_t _pid, bool _waitOnClose)
-   : ifd(_ifd)
-   , ofd (_ofd)
-   , pid(_pid)
-   , waitOnClose(_waitOnClose)
-   , takeFromBuf(false)
-{
-}
-*/
-
-
-
 pipe_streambuf::pipe_streambuf(const string &command, bool _waitOnClose)
    : ifd(-1)
    , ofd(-1)
    , pid(0)
    , waitOnClose(_waitOnClose)
+   , takeFromBuf(false)
 {
    int ifiledes[2];
    int ofiledes[2];
@@ -185,13 +172,9 @@ pipe_streambuf::pipe_streambuf(const string &command, bool _waitOnClose)
       //parent
       ifd=ifiledes[0];
       ofd=ofiledes[1];
-      while(0)
-      {
-	 char tata[1000];
-	 int N = read(ifd, tata, 1);
-	 cerr.write(tata,N);
-	 cerr.flush();
-      }
+      //It's important to close the pipes we don't use, otherwise everything blocks at EOF
+      close(ifiledes[1]);
+      close(ofiledes[0]);
    } else if (pid==0)
    {
       //child
@@ -199,17 +182,19 @@ pipe_streambuf::pipe_streambuf(const string &command, bool _waitOnClose)
       close(0);
       close(1);
       //FIXME: Must do error checking
-      cerr << "dup1: " << dup(ofiledes[0]) << endl;
-      cerr << "dup2: " << dup(ifiledes[1]) << endl;
+      dup(ofiledes[0]);
+      dup(ifiledes[1]);
+      //Not sure here
+      //close(ofiledes[0]);
+      //close(ifiledes[1]);
       char *argv[4];
       argv[0] = "sh";
       argv[1] = "-c";
-      //argv[2] = "ls /";
       argv[2] = const_cast<char *> (command.c_str());
       argv[3] = 0;
-      cerr << "exec\n";
+      //cerr << "exec\n";
       execv("/bin/sh", argv);
-      cerr << "You should never, ever see this!" << endl;
+      throw new GeneralException("execv failed. Something really bad happened", __FILE__, __LINE__);
    } else 
       throw new GeneralException("pipe_streambuf: cannot fork process, out of some resource?", __FILE__, __LINE__);
 }
@@ -259,7 +244,16 @@ int pipe_streambuf::uflow()
 	 takeFromBuf = false;
 	 return charBuf;
       } else {
-	 read(ifd, &charBuf, 1);
+	 int res = 0;
+	 res = read(ifd, &charBuf, 1);
+	 if (res==0)
+	 {
+	    if (waitpid(pid, NULL, WNOHANG)==pid)
+	    {
+	       pid=0;
+	       return EOF;
+	    }
+	 }
 	 return charBuf;
       }
    } else

@@ -710,6 +710,11 @@ void on_segfault(int sig) {
    in_segfault=false;
 }
 
+void on_gchld(int sig)
+{
+   //cerr << "Child died\n";
+}
+
 /**********************************************************************************************************
 
 **********************************************************************************************************/
@@ -834,7 +839,8 @@ int main (int argc, char *argv[])
       setlocale (LC_NUMERIC, "C");
 
       //setting segfault callback
-      signal(11,on_segfault);
+      signal(SIGSEGV,on_segfault);
+      //signal(SIGCHLD,on_gchld);
       
       //cerr<<"creating vflow instance"<<endl;
       vflowGUI *vflow = vflowGUI::instance();

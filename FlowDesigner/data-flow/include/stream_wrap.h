@@ -168,6 +168,15 @@ class pipe_istream : public istream {
       {clear();}
 };
 
+class pipe_iostream : public iostream {
+   pipe_streambuf _streambuffer;
+  public:
+   pipe_iostream(const string &command, bool waitOnClose=false)
+      : _streambuffer (command, waitOnClose)
+      , iostream(&_streambuffer)
+      {clear();}
+};
+
 #endif
 
 
