@@ -43,10 +43,10 @@ macros_dir	-d macros FlowDesigner/macros
 tools           -a FlowDesigner/tools
 tools_dir	-d tools FlowDesigner/tools
 vflow           -a FlowDesigner/vflow
-vflow_dir	-d examples FlowDesigner/vflow
+vflow_dir	-d vflow FlowDesigner/vflow
 examples        -a FlowDesigner/examples
 examples_dir	-d examples FlowDesigner/examples
-root          	-d FlowDesigner -l FlowDesigner
+root          	-d . -l FlowDesigner
 FuzzyEngine     -a FlowDesigner/FuzzyEngine
 FuzzyEngine_dir	-d FuzzyEngine FlowDesigner/FuzzyEngine
 effects         -a FlowDesigner/effects
