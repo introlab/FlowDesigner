@@ -15,67 +15,53 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
 
-#ifdef HAVE_FLOAT_H
-#include <float.h>
-#endif
-
-
 class Pow;
 
-//DECLARE_NODE(Pow)
-NODE_INFO(Pow,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:EXP")
+NODE_INFO(Pow,"Signal:Base", "INPUT", "OUTPUT", "EXP")
 
-class Pow : public FrameOperation {
+class Pow : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    float exponent;
 
 public:
    Pow(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
       exponent = dereference_cast<float> (parameters.get("EXP"));
-   }
-
-   ~Pow() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      for (int i=0;i<outputLength;i++)
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      for (int i=0;i<inputLength;i++)
       {
          if (in[i] > 0)
-	    output[i]=pow(in[i],exponent);
-	 else
-	    output[i]=0;
+            output[i]=pow(in[i],exponent);
+         else
+            output[i]=0;
       }
-      
-      output.status = Object::valid;
+
    }
 
 };

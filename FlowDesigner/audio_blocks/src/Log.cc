@@ -32,7 +32,6 @@ class Log : public BufferedNode {
    
    int inputID;
    int outputID;
-      //int inputLength;
 
 public:
    Log(string nodeName, ParameterSet params)
@@ -42,20 +41,13 @@ public:
       outputID = addOutput("OUTPUT");
    }
 
-      /*~Log() {}
-
-   virtual void specificInitialize()
-   {
-      this->BufferedNode::specificInitialize();
-      }*/
-
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
 
       if (inputValue->status != Object::valid)
       {
-	 out[count] = new Object(inputValue->status);
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);

@@ -23,15 +23,19 @@
 #include <math.h>
 #include "misc.h"
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
 class LPC;
 
-//DECLARE_NODE(LPC)
-NODE_INFO(LPC,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:RADIUS:LAG_THETA")
+NODE_INFO(LPC,"Signal:DSP", "INPUT", "OUTPUT", "OUTPUTLENGTH:RADIUS:LAG_THETA")
 
-class LPC : public FrameOperation {
+class LPC : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
+   int outputLength;
    float *r;
    float *rc;
    float radius;
@@ -39,13 +43,13 @@ class LPC : public FrameOperation {
 
 public:
    LPC(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
- 
+      outputID = addOutput("OUTPUT");
+
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
+
       if (parameters.exist("RADIUS"))
 	 radius = dereference_cast<float> (parameters.get("RADIUS"));
       else radius=.99;
@@ -65,26 +69,21 @@ public:
 
    ~LPC() {delete [] r; delete [] rc; delete [] lag_window;}
 
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-   }
-
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-            
-      //vector<float> r(outputLength+1,0.0);
-      //vector<float> filter(outputLength+1,0.0);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
       autocorr(in.begin(), r, outputLength-1, in.size());
       float er=0;
       for (int i=0;i<outputLength;i++)
@@ -94,7 +93,7 @@ public:
       wld(output.begin(), r, rc, outputLength-1);
       for (int i=0;i<outputLength;i++)
         output[i] *= pow(radius,i);
-      output.status = Object::valid;
+
    }
 
 };

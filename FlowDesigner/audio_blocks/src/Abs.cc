@@ -15,59 +15,48 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <math.h>
 
 class Abs;
 
-//DECLARE_NODE(Abs)
-NODE_INFO(Abs,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(Abs,"Signal:Base", "INPUT", "OUTPUT", "")
 
-class Abs : public FrameOperation {
+class Abs : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
 
 public:
    Abs(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
-
-   ~Abs() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      for (int i=0;i<outputLength;i++)
-      {
-         output[i]=(in[i]);
-         if (output[i] < 0)
-            output[i] = -output[i];
-      }
+      int inputLength = in.size();
 
-      output.status = Object::valid;
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      for (int i=0;i<inputLength;i++)
+      {
+         output[i]=in[i];
+	 if (output[i] < 0)
+	    output[i] = -output[i];
+      }
    }
 
 };

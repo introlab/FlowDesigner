@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
@@ -99,12 +99,14 @@ static short alaw2linear[256] =
 
 
 
-class AudioStream : public FrameOperation {
+class AudioStream : public BufferedNode {
    
    typedef enum {ulaw, alaw, lin8, lin16} EncodeType;
    typedef enum {fd, fptr, cpp} StreamType;
    
    int inputID;
+   int outputID;
+   int outputLength;
    int advance;
 
    StreamType strType;
@@ -120,9 +122,14 @@ class AudioStream : public FrameOperation {
 
 public:
    AudioStream(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
+      outputID = addOutput("OUTPUT");
+
+      if (parameters.exist("OUTPUTLENGTH"))
+         outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
+      else outputLength = dereference_cast<int> (parameters.get("LENGTH"));
       if (parameters.exist("ADVANCE"))
          advance = dereference_cast<int> (parameters.get("ADVANCE"));
       else advance = outputLength;
@@ -139,7 +146,7 @@ public:
 	 else if (object_cast<String> (parameters.get("STREAM_TYPE")) == "stream")
 	    strType = cpp;
       }
-
+      inOrder = true;
    }
 
    ~AudioStream() {delete [] tmpBuffer;}
@@ -163,96 +170,91 @@ public:
    virtual void specificInitialize()
    {
       outputs[outputID].lookBack += 1;
-      this->FrameOperation::specificInitialize();
-
-      //cerr << "output lookback = " << outputs[outputID].lookBack << endl;
+      this->BufferedNode::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, 0);
+      ObjectRef inputValue = getInput(inputID, count);
 
-      for (int i=processCount+1;i<=count;i++)
-      {	 
-	 Vector<float> &output = object_cast<Vector<float> > (out[i]);
-	 if (inputValue->status != Object::valid)
-	 {
-	    output.status = inputValue->status;
-	    continue;
-	 }
-	 
-
-	 if (i>0 && out[i-1]->status == Object::valid 
-	     && advance < outputLength)
-	 {
-	    Vector<float> &previous = object_cast<Vector<float> > (out[i-1]);
-	    for (int i=0;i<outputLength-advance;i++)
-	       output[i]=previous[i+advance];
-	 } else {
-	    for (int i=0;i<outputLength-advance;i++)  
-	       output[i]=0;
-	 }
-
-	 if (strType == cpp)
-	 {
-	    IStream &file = object_cast<IStream> (inputValue);
-	    file.read(tmpBuffer,itemSize*advance);
-	    if (file.eof())
-	    {
-	       output.status = Object::past_end;
-	       continue;
-	    }
-	 }
-	 else if (strType == fptr)
-	 {
-	    FILE *file = dereference_cast<FILE *> (inputValue);
-	    fread (tmpBuffer, 1, itemSize*advance, file);
-	    if (feof(file))
-	    {
-	       output.status = Object::past_end;
-	       continue;
-	    }
-	 } else if (strType == fd)
-	 {
-	    int file = dereference_cast<int> (inputValue);
-	    if (read (file, tmpBuffer, itemSize*advance) != itemSize*advance)
-	    {
-	       output.status = Object::past_end;
-	       continue;
-	    }
-	 }
-	 int convert = min(advance, outputLength);
-	 raw2Float (tmpBuffer, output.end() - convert, convert, encoding);
-
-	 output.status = Object::valid;
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+      
+      if (inputValue->status != Object::valid)
+      {
+	 out[count] = inputValue;
+	 return;
       }
+      
+      
+      if (count>0 && out[count-1]->status == Object::valid 
+	  && advance < outputLength)
+      {
+	 Vector<float> &previous = object_cast<Vector<float> > (out[count-1]);
+	 for (int i=0;i<outputLength-advance;i++)
+	    output[i]=previous[i+advance];
+      } else {
+	 for (int i=0;i<outputLength-advance;i++)  
+	    output[i]=0;
+      }
+      
+      if (strType == cpp)
+      {
+	 IStream &file = object_cast<IStream> (inputValue);
+	 file.read(tmpBuffer,itemSize*advance);
+	 if (file.eof())
+	 {
+	    out[count] = Object::past_endObject;
+	    return;
+	 }
+      } else if (strType == fptr)
+      {
+	 FILE *file = dereference_cast<FILE *> (inputValue);
+	 fread (tmpBuffer, 1, itemSize*advance, file);
+	 if (feof(file))
+	 {
+	    out[count] = Object::past_endObject;
+	    return;
+	 }
+      } else if (strType == fd)
+      {
+	 int file = dereference_cast<int> (inputValue);
+	 if (read (file, tmpBuffer, itemSize*advance) != itemSize*advance)
+	 {
+	    out[count] = Object::past_endObject;
+	    return;
+	 }
+      }
+      int convert = min(advance, outputLength);
+      raw2Float (tmpBuffer, output.end() - convert, convert, encoding);
+      
    }
 
    protected:
- void raw2Float (void *in, float *out, int length, EncodeType encoding)
-{
-   int i;
-   switch (encoding)
+   void raw2Float (void *in, float *out, int length, EncodeType encoding)
    {
-   case lin16:
-      for (i=0;i<length;i++)
-         out[i]=(float) (((short *)in)[i]);
-      break;
-   case ulaw:
-      for (i=0;i<length;i++)
-         out[i]=(float) ulaw2linear[((unsigned char *)in)[i]];
-      break;
-   case alaw:
-      for (i=0;i<length;i++)
-         out[i]=(float) alaw2linear[((unsigned char *)in)[i]];
-      break;
-   case lin8:
-      for (i=0;i<length;i++)
-         out[i]=(float) (((unsigned char *)in)[i]);
-      break;
-   default:
-      throw new NodeException(this, "Unimplemented encoding type",__FILE__, __LINE__);
+      int i;
+      switch (encoding)
+      {
+	 case lin16:
+	    for (i=0;i<length;i++)
+	       out[i]=(float) (((short *)in)[i]);
+	    break;
+	 case ulaw:
+	    for (i=0;i<length;i++)
+	       out[i]=(float) ulaw2linear[((unsigned char *)in)[i]];
+	    break;
+	 case alaw:
+	    for (i=0;i<length;i++)
+	       out[i]=(float) alaw2linear[((unsigned char *)in)[i]];
+	    break;
+	 case lin8:
+	    for (i=0;i<length;i++)
+	       out[i]=(float) (((unsigned char *)in)[i]);
+	    break;
+	 default:
+	    throw new NodeException(this, "Unimplemented encoding type",__FILE__, __LINE__);
+      }
    }
-}
+
 };
