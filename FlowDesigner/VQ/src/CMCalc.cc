@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "CodebookMap.h"
@@ -23,70 +23,68 @@ class CMCalc;
 
 DECLARE_NODE(CMCalc)
 /*Node
-
+ *
  * @name CMCalc
  * @category VQ
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name CM
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class CMCalc : public FrameOperation {
+class CMCalc : public BufferedNode {
    
    int inputID;
-   int netInputID;
-   int inputLength;
+   int CMinputID;
+   int outputID;
+   int outputLength;
 
 public:
    CMCalc(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      netInputID = addInput("CM");
-   }
-
-   ~CMCalc() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      CMinputID = addInput("CM");
+      outputID = addOutput("OUTPUT");
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      NodeInput netInput = inputs[netInputID];
-
-      ObjectRef netValue = netInput.node->getOutput(netInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (netValue->status != Object::valid)
+      ObjectRef CMValue = getInput(CMinputID, count);
+      if (CMValue->status != Object::valid)
       {
-         output.status = netValue->status;
+	 out[count] = CMValue;
          return;
       }
 
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
+
+      const CodebookMap &cmap = object_cast<CodebookMap> (CMValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      CodebookMap &cmap = object_cast<CodebookMap> (netValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
+
+
       
       //int classID = vq.getClassID(in.begin());
       //const vector<float> &mean = vq[classID];
@@ -94,8 +92,6 @@ public:
       
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];
-       
-      output.status = Object::valid;
    }
 
 };

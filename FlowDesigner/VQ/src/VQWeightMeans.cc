@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "kmeans.h"
@@ -27,86 +27,67 @@ class VQWeightMeans;
 
 DECLARE_NODE(VQWeightMeans)
 /*Node
-
+ *
  * @name VQWeightMeans
  * @category VQ
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name VQ
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class VQWeightMeans : public FrameOperation {
+class VQWeightMeans : public BufferedNode {
    
    int inputID;
    int VQinputID;
-   int inputLength;
+   int outputID;
+   int outputLength;
 
 public:
    VQWeightMeans(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       VQinputID = addInput("VQ");
-      /*if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-         else inputLength = dereference_cast<int> (parameters.get("LENGTH"));*/
-   }
-
-   ~VQWeightMeans() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
+      outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      NodeInput VQInput = inputs[VQinputID];
-
-      ObjectRef VQValue = VQInput.node->getOutput(VQInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      ObjectRef VQValue = getInput(VQinputID, count);
       if (VQValue->status != Object::valid)
       {
-         output.status = VQValue->status;
+	 out[count] = VQValue;
          return;
       }
 
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      const KMeans &vq = object_cast<KMeans> (VQValue);
-      
-      //int classID = vq.getClassID(in.begin());
-      //const vector<float> &mean = vq[classID];
-      /*vector<float> scal(inputLength);
-      for (int i=0;i<inputLength;i++)
-      {
-	 float tmp = .5*(in[i]+1);
-	 scal[i] = tmp*tmp;
-	 }*/
 
+      const KMeans &vq = object_cast<KMeans> (VQValue);
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(outputLength);
+      out[count] = &output;
+
+      
       vq.weightMeans(in, output);
 
       output.status = Object::valid;
