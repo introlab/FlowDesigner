@@ -9,6 +9,7 @@
 #include "FlowException.h"
 #include "iextensions.h"
 #include "UINodeRepository.h"
+#include "object_param.h"
 
 int main(int argc, char **argv)
 {
@@ -27,10 +28,21 @@ int main(int argc, char **argv)
 	 char arg_name[100];
 	 sprintf (arg_name, "ARG%d", arg-1);
 	 param.add(arg_name, ObjectRef (new String (argv[arg])));
+	 sprintf (arg_name, "string:ARG%d", arg-1);
+	 param.add(arg_name, ObjectRef (new String (argv[arg])));
 	 sprintf (arg_name, "int:ARG%d", arg-1);
 	 param.add(arg_name, ObjectRef (Int::alloc (atoi(argv[arg]))));
 	 sprintf (arg_name, "float:ARG%d", arg-1);
 	 param.add(arg_name, ObjectRef (Float::alloc (atof(argv[arg]))));
+	 if (strlen(argv[arg]) > 2 && argv[arg][0]=='<' && argv[arg][strlen(argv[arg])-1]=='>')
+	 {
+	    sprintf (arg_name, "object:ARG%d", arg-1);
+	    try {
+	       string val(argv[arg]);
+	       ParameterSet p;
+	       param.add(arg_name, ObjectParam::stringParam("object", val, p));
+	    } catch (...) {}
+	 }
       }
       UIDocument *doc = new UIDocument(argv[1]);
       doc->load();
