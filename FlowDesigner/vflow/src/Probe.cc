@@ -285,11 +285,11 @@ void Probe::initialize()
                                         NULL, NULL, NULL, -1);
    if(displayEnable)
    {
-      rename_button(button19, "Show");
+      rename_button(button19, "Hide");
    }
    else
    {
-      rename_button(button19, "Hide");
+      rename_button(button19, "Show");
    }
    
    gtk_widget_ref (button19);
@@ -375,11 +375,11 @@ void Probe::show_hide()
    displayEnable = !displayEnable;
    if(displayEnable)
    {
-      rename_button(button19, "Show");
+      rename_button(button19, "Hide");
    }   
    else
    {
-      rename_button(button19, "Hide");
+      rename_button(button19, "Show");
    }  
 }
 
