@@ -19,8 +19,24 @@
 #include <math.h>
 
 class Delay;
-//DECLARE_NODE(Delay)
-NODE_INFO(Delay,"Flow", "INPUT", "OUTPUT", "DELAY")
+DECLARE_NODE(Delay)
+/*Node
+
+ * @name Delay
+ * @category Flow
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name DELAY
+ * @parameter_description No description available
+
+END*/
+
 
 class Delay : public Node {
 protected:

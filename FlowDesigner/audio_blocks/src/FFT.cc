@@ -24,7 +24,21 @@
 
 class FFT;
 
-NODE_INFO(FFT,"Signal:DSP", "INPUT", "OUTPUT", "")
+DECLARE_NODE(FFT)
+/*Node
+
+ * @name FFT
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class FFT : public BufferedNode {
    

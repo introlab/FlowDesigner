@@ -23,8 +23,27 @@
 //#include "multithread.h"
 
 class MSVQTrain;
-//DECLARE_NODE(MSVQTrain)
-NODE_INFO(MSVQTrain,"VQ", "FRAMES", "OUTPUT", "STAGES:BINARY");
+DECLARE_NODE(MSVQTrain)
+/*Node
+
+ * @name MSVQTrain
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name STAGES
+ * @parameter_description No description available
+
+ * @parameter_name BINARY
+ * @parameter_description No description available
+
+END*/
+
 
 class MSVQTrain : public Node {
       

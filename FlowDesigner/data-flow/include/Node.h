@@ -365,23 +365,9 @@ protected:
    int line;
 };
 
-#ifdef _PLUGIN_NODE
-
-#define DECLARE_NODE(NodeTypeName) extern "C" {                     \
-   Node *createNewNode(string nodeName, ParameterSet params)        \
-   {                                                                \
-      return new NodeTypeName(nodeName, params);                    \
-   }                                                                \
-}
-#else
-
 #define DECLARE_NODE(NodeTypeName) int dummy_initializer_for ## NodeTypeName = \
                Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>(# NodeTypeName));
 
-#define NODE_INFO(NodeTypeName, cat, in, out, par) int dummy_initializer_for ## NodeTypeName = \
-               Node::addFactory (# NodeTypeName, new NodeInfo<NodeTypeName>(# NodeTypeName, cat, in, out, par));
-
-#endif
 
 //} //namespace DataFlow 
 

@@ -18,7 +18,21 @@
 
 class Iterate;
 
-NODE_INFO(Iterate,"Flow", "", "OUTPUT", "MAX_ITER")
+DECLARE_NODE(Iterate)
+/*Node
+
+ * @name Iterate
+ * @category Flow
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name MAX_ITER
+ * @parameter_description No description available
+
+END*/
+
 
 class Iterate : public Node {
 protected:

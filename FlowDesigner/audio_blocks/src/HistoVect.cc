@@ -21,8 +21,24 @@
 
 class HistoVect;
 
-//DECLARE_NODE(HistoVect)
-NODE_INFO(HistoVect, "Signal:Misc", "INPUT", "OUTPUT", "LENGTH")
+DECLARE_NODE(HistoVect)
+/*Node
+
+ * @name HistoVect
+ * @category Signal:Misc
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class HistoVect : public FrameOperation {
    

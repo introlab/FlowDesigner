@@ -22,8 +22,27 @@
 
 class VQuantize;
 
-//DECLARE_NODE(VQuantize)
-NODE_INFO(VQuantize,"VQ", "INPUT:VQ", "OUTPUT", "LENGTH")
+DECLARE_NODE(VQuantize)
+/*Node
+
+ * @name VQuantize
+ * @category VQ
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name VQ
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class VQuantize : public FrameOperation {
    

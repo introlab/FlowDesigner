@@ -22,8 +22,30 @@
 
 class SmoothAdd;
 
-//DECLARE_NODE(SmoothAdd)
-NODE_INFO(SmoothAdd, "Signal:Special", "LEFT:CENTER:RIGHT", "OUTPUT", "LENGTH")
+DECLARE_NODE(SmoothAdd)
+/*Node
+
+ * @name SmoothAdd
+ * @category Signal:Special
+ * @description No description available
+
+ * @input_name LEFT
+ * @input_description No description available
+
+ * @input_name CENTER
+ * @input_description No description available
+
+ * @input_name RIGHT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class SmoothAdd : public FrameOperation {
    

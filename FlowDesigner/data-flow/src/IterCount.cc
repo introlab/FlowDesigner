@@ -17,8 +17,18 @@
 #include "Node.h"
 
 class IterCount;
-//DECLARE_NODE(IterCount)
-NODE_INFO(IterCount,"Logic", "", "OUTPUT", "")
+DECLARE_NODE(IterCount)
+/*Node
+
+ * @name IterCount
+ * @category Logic
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class IterCount : public Node {
 protected:

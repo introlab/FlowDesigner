@@ -23,7 +23,24 @@
 
 class SeparChannels;
 
-NODE_INFO(SeparChannels, "Signal:Audio", "INPUT", "LEFT:RIGHT", "")
+DECLARE_NODE(SeparChannels)
+/*Node
+
+ * @name SeparChannels
+ * @category Signal:Audio
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name LEFT
+ * @output_description No description available
+
+ * @output_name RIGHT
+ * @output_description No description available
+
+END*/
+
 
 class SeparChannels : public BufferedNode {
    

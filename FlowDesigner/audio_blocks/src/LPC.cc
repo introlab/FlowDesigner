@@ -29,7 +29,30 @@
 
 class LPC;
 
-NODE_INFO(LPC,"Signal:DSP", "INPUT", "OUTPUT", "OUTPUTLENGTH:RADIUS:LAG_THETA")
+DECLARE_NODE(LPC)
+/*Node
+
+ * @name LPC
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name RADIUS
+ * @parameter_description No description available
+
+ * @parameter_name LAG_THETA
+ * @parameter_description No description available
+
+END*/
+
 
 class LPC : public BufferedNode {
    

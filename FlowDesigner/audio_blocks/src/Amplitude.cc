@@ -22,7 +22,21 @@
 
 class Amplitude;
 
-NODE_INFO(Amplitude, "Signal:DSP", "INPUT", "OUTPUT", "")
+DECLARE_NODE(Amplitude)
+/*Node
+
+ * @name Amplitude
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class Amplitude : public BufferedNode {
    

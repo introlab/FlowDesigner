@@ -22,8 +22,30 @@
 
 class NNetExec;
 
-//DECLARE_NODE(NNetExec)
-NODE_INFO(NNetExec,"NNet", "INPUT:NNET", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+DECLARE_NODE(NNetExec)
+/*Node
+
+ * @name NNetExec
+ * @category NNet
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name NNET
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class NNetExec : public FrameOperation {
    

@@ -22,8 +22,33 @@
 
 class TimeFilter;
 
-//DECLARE_NODE(TimeFilter)
-NODE_INFO(TimeFilter, "Signal:DSP", "INPUT", "OUTPUT", "LENGTH:FIR:IIR:LOOKAHEAD")
+DECLARE_NODE(TimeFilter)
+/*Node
+
+ * @name TimeFilter
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+ * @parameter_name FIR
+ * @parameter_description No description available
+
+ * @parameter_name IIR
+ * @parameter_description No description available
+
+ * @parameter_name LOOKAHEAD
+ * @parameter_description No description available
+
+END*/
+
 
 class TimeFilter : public FrameOperation {
    

@@ -24,7 +24,27 @@
 
 class CMTrain;
 
-NODE_INFO(CMTrain,"VQ", "TRAIN_IN:TRAIN_OUT:VQ", "OUTPUT", "")
+DECLARE_NODE(CMTrain)
+/*Node
+
+ * @name CMTrain
+ * @category VQ
+ * @description No description available
+
+ * @input_name TRAIN_IN
+ * @input_description No description available
+
+ * @input_name TRAIN_OUT
+ * @input_description No description available
+
+ * @input_name VQ
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class CMTrain : public Node {
 

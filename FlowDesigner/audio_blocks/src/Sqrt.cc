@@ -22,7 +22,21 @@
 
 class Sqrt;
 
-NODE_INFO(Sqrt,"Signal:Base", "INPUT", "OUTPUT", "")
+DECLARE_NODE(Sqrt)
+/*Node
+
+ * @name Sqrt
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class Sqrt : public BufferedNode {
    

@@ -22,8 +22,27 @@
 
 class CMCalc;
 
-//DECLARE_NODE(CMCalc)
-NODE_INFO(CMCalc,"VQ", "INPUT:CM", "OUTPUT", "OUTPUTLENGTH")
+DECLARE_NODE(CMCalc)
+/*Node
+
+ * @name CMCalc
+ * @category VQ
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name CM
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class CMCalc : public FrameOperation {
    

@@ -18,8 +18,24 @@
 #include "net_types.h"
 #include "Object.h"
 
-//DECLARE_NODE(Save)
-NODE_INFO(Save, "IO", "OBJECT:STREAM", "OUTPUT", "")
+DECLARE_NODE(Save)
+/*Node
+
+ * @name Save
+ * @category IO
+ * @description No description available
+
+ * @input_name OBJECT
+ * @input_description No description available
+
+ * @input_name STREAM
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 Save::Save(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

@@ -21,8 +21,27 @@
 
 class Poly;
 
-//DECLARE_NODE(Poly)
-NODE_INFO(Poly, "Signal:Base", "INPUT:COEF", "OUTPUT", "LENGTH")
+DECLARE_NODE(Poly)
+/*Node
+
+ * @name Poly
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name COEF
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class Poly : public FrameOperation {
    

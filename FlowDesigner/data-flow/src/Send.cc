@@ -27,8 +27,21 @@
 
 class Send;
 
-//DECLARE_NODE(Send)
-NODE_INFO(Send,"General", "", "OUTPUT", "VALUE")
+DECLARE_NODE(Send)
+/*Node
+
+ * @name Send
+ * @category General
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name VALUE
+ * @parameter_description No description available
+
+END*/
+
 
 /** A constant node contains a value that will never changes. */
 class Send : public Node

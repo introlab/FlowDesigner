@@ -22,8 +22,21 @@
 #include "ObjectParser.h"
 
 class Load;
-//DECLARE_NODE(Load)
-NODE_INFO(Load, "IO", "STREAM", "OUTPUT", "")
+DECLARE_NODE(Load)
+/*Node
+
+ * @name Load
+ * @category IO
+ * @description No description available
+
+ * @input_name STREAM
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class Load : public Node {
 

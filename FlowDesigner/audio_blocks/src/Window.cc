@@ -22,7 +22,27 @@
 
 class Window;
 
-NODE_INFO(Window, "Signal:DSP", "INPUT", "OUTPUT", "LENGTH:WINDOW")
+DECLARE_NODE(Window)
+/*Node
+
+ * @name Window
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+ * @parameter_name WINDOW
+ * @parameter_description No description available
+
+END*/
+
 
 class Window : public BufferedNode {
    

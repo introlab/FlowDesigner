@@ -22,7 +22,36 @@
 
 class Mel;
 
-NODE_INFO(Mel, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:SAMPLING:LOW:HIGH")
+DECLARE_NODE(Mel)
+/*Node
+
+ * @name Mel
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name SAMPLING
+ * @parameter_description No description available
+
+ * @parameter_name LOW
+ * @parameter_description No description available
+
+ * @parameter_name HIGH
+ * @parameter_description No description available
+
+END*/
+
 
 class Mel : public BufferedNode {
    

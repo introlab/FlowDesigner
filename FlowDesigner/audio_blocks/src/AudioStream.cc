@@ -23,8 +23,33 @@
 
 class AudioStream;
 
-//DECLARE_NODE(AudioStream)
-NODE_INFO(AudioStream,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:ADVANCE:ENCODING:STREAM_TYPE")
+DECLARE_NODE(AudioStream)
+/*Node
+
+ * @name AudioStream
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+ * @parameter_name ADVANCE
+ * @parameter_description No description available
+
+ * @parameter_name ENCODING
+ * @parameter_description No description available
+
+ * @parameter_name STREAM_TYPE
+ * @parameter_description No description available
+
+END*/
+
 
 
 static short ulaw2linear[256] = 

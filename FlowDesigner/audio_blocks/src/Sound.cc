@@ -38,8 +38,36 @@
 
 class Sound;
 
-//DECLARE_NODE(Sound)
-NODE_INFO(Sound,"Signal:Audio", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE:BUFFER:DUMMY")
+DECLARE_NODE(Sound)
+/*Node
+
+ * @name Sound
+ * @category Signal:Audio
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name DEVICE
+ * @parameter_description No description available
+
+ * @parameter_name RATE
+ * @parameter_description No description available
+
+ * @parameter_name STEREO
+ * @parameter_description No description available
+
+ * @parameter_name MODE
+ * @parameter_description No description available
+
+ * @parameter_name BUFFER
+ * @parameter_description No description available
+
+ * @parameter_name DUMMY
+ * @parameter_description No description available
+
+END*/
+
 
 /** A constant node contains a value that will never changes. */
 class Sound : public Node

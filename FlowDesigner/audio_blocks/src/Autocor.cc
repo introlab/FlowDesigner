@@ -23,7 +23,27 @@
 
 class Autocor;
 
-NODE_INFO(Autocor,"Signal:DSP", "INPUT", "OUTPUT", "START:END")
+DECLARE_NODE(Autocor)
+/*Node
+
+ * @name Autocor
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name START
+ * @parameter_description No description available
+
+ * @parameter_name END
+ * @parameter_description No description available
+
+END*/
+
 
 class Autocor : public BufferedNode {
    

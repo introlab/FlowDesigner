@@ -26,7 +26,21 @@
 
 class Log;
 
-NODE_INFO(Log,"Signal:Base", "INPUT", "OUTPUT", "")
+DECLARE_NODE(Log)
+/*Node
+
+ * @name Log
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class Log : public BufferedNode {
    

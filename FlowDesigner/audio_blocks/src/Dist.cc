@@ -21,8 +21,30 @@
 
 class Dist;
 
-//DECLARE_NODE(Dist)
-NODE_INFO(Dist, "Signal:DSP", "INPUT:REF", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+DECLARE_NODE(Dist)
+/*Node
+
+ * @name Dist
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name REF
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class Dist : public FrameOperation {
    

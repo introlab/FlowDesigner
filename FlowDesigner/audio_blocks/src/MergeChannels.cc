@@ -21,7 +21,24 @@
 
 class MergeChannels;
 
-NODE_INFO(MergeChannels, "Signal:Audio", "LEFT:RIGHT", "OUTPUT", "")
+DECLARE_NODE(MergeChannels)
+/*Node
+
+ * @name MergeChannels
+ * @category Signal:Audio
+ * @description No description available
+
+ * @input_name LEFT
+ * @input_description No description available
+
+ * @input_name RIGHT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class MergeChannels : public BufferedNode {
    

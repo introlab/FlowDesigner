@@ -23,7 +23,27 @@
 
 class Select;
 
-NODE_INFO(Select, "Signal:Manip", "INPUT", "OUTPUT", "START:END")
+DECLARE_NODE(Select)
+/*Node
+
+ * @name Select
+ * @category Signal:Manip
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name START
+ * @parameter_description No description available
+
+ * @parameter_name END
+ * @parameter_description No description available
+
+END*/
+
 
 class Select : public BufferedNode {
    

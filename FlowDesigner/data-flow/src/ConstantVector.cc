@@ -23,8 +23,21 @@
 
 class ConstantVector;
 
-//DECLARE_NODE(ConstantVector)
-NODE_INFO(ConstantVector,"General", "", "OUTPUT", "VALUE")
+DECLARE_NODE(ConstantVector)
+/*Node
+
+ * @name ConstantVector
+ * @category General
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name VALUE
+ * @parameter_description No description available
+
+END*/
+
 
 /** A constant node contains a value that will never changes. */
 class ConstantVector : public Node

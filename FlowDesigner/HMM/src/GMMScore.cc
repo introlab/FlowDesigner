@@ -22,8 +22,24 @@
 #include "Vector.h"
 #include "multithread.h"
 
-//DECLARE_NODE(GMMScore)
-NODE_INFO(GMMScore,"VQ", "FRAMES:GMM", "OUTPUT", "")
+DECLARE_NODE(GMMScore)
+/*Node
+
+ * @name GMMScore
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @input_name GMM
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 GMMScore::GMMScore(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

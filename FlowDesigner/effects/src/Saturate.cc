@@ -22,8 +22,30 @@
 
 class Saturate;
 
-//DECLARE_NODE(Saturate)
-NODE_INFO(Saturate,"Effects", "INPUT", "OUTPUT", "LENGTH:SATURATION:THRESHOLD")
+DECLARE_NODE(Saturate)
+/*Node
+
+ * @name Saturate
+ * @category Effects
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+ * @parameter_name SATURATION
+ * @parameter_description No description available
+
+ * @parameter_name THRESHOLD
+ * @parameter_description No description available
+
+END*/
+
 
 class Saturate : public FrameOperation {
    

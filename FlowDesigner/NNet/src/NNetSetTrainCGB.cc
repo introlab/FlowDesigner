@@ -22,7 +22,39 @@
 
 class NNetSetTrainCGB;
 
-NODE_INFO(NNetSetTrainCGB,"NNet", "TRAIN_IN:TRAIN_OUT:TRAIN_ID:NNET", "OUTPUT", "MAX_EPOCH:SIGMA:LAMBDA")
+DECLARE_NODE(NNetSetTrainCGB)
+/*Node
+
+ * @name NNetSetTrainCGB
+ * @category NNet
+ * @description No description available
+
+ * @input_name TRAIN_IN
+ * @input_description No description available
+
+ * @input_name TRAIN_OUT
+ * @input_description No description available
+
+ * @input_name TRAIN_ID
+ * @input_description No description available
+
+ * @input_name NNET
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name MAX_EPOCH
+ * @parameter_description No description available
+
+ * @parameter_name SIGMA
+ * @parameter_description No description available
+
+ * @parameter_name LAMBDA
+ * @parameter_description No description available
+
+END*/
+
 
 class NNetSetTrainCGB : public Node {
 

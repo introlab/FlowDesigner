@@ -27,8 +27,33 @@
 
 class TimeEntropy;
 
-//DECLARE_NODE(TimeEntropy)
-NODE_INFO(TimeEntropy,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:LOOKAHEAD:LOOKBACK")
+DECLARE_NODE(TimeEntropy)
+/*Node
+
+ * @name TimeEntropy
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name LOOKAHEAD
+ * @parameter_description No description available
+
+ * @parameter_name LOOKBACK
+ * @parameter_description No description available
+
+END*/
+
 
 class TimeEntropy : public FrameOperation {
    

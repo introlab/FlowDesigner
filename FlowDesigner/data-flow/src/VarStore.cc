@@ -25,8 +25,24 @@
 
 class VarStore;
 
-//DECLARE_NODE(ExecStream)
-NODE_INFO(VarStore,"General", "INPUT", "OUTPUT", "VARIABLE")
+DECLARE_NODE(VarStore)
+/*Node
+
+ * @name VarStore
+ * @category General
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name VARIABLE
+ * @parameter_description No description available
+
+END*/
+
 
 /** A constant node contains a value that will never changes. */
 class VarStore : public Node

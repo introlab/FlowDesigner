@@ -22,7 +22,30 @@
 
 class FIR;
 
-NODE_INFO(FIR,"Signal:DSP", "INPUT:FILTER", "OUTPUT", "CONTINUOUS:NONCAUSAL")
+DECLARE_NODE(FIR)
+/*Node
+
+ * @name FIR
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name FILTER
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name CONTINUOUS
+ * @parameter_description No description available
+
+ * @parameter_name NONCAUSAL
+ * @parameter_description No description available
+
+END*/
+
 
 class FIR : public BufferedNode {
    

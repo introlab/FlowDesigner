@@ -23,7 +23,24 @@
 
 class IDCT;
 
-NODE_INFO(IDCT, "Signal:DSP", "INPUT", "OUTPUT", "LENGTH")
+DECLARE_NODE(IDCT)
+/*Node
+
+ * @name IDCT
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class IDCT : public BufferedNode {
    

@@ -22,8 +22,27 @@
 
 class FDSaveFrame;
 
-//DECLARE_NODE(FDSaveFrame);
-NODE_INFO(FDSaveFrame,"Signal:Audio", "OBJECT:FD", "OUTPUT", "LEAD_IN")
+DECLARE_NODE(FDSaveFrame)
+/*Node
+
+ * @name FDSaveFrame
+ * @category Signal:Audio
+ * @description No description available
+
+ * @input_name OBJECT
+ * @input_description No description available
+
+ * @input_name FD
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LEAD_IN
+ * @parameter_description No description available
+
+END*/
+
 
 class FDSaveFrame : public Node {
 

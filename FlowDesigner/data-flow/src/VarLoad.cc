@@ -25,8 +25,21 @@
 
 class VarLoad;
 
-//DECLARE_NODE(ExecStream)
-NODE_INFO(VarLoad,"General", "", "OUTPUT", "VARIABLE")
+DECLARE_NODE(VarLoad)
+/*Node
+
+ * @name VarLoad
+ * @category General
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name VARIABLE
+ * @parameter_description No description available
+
+END*/
+
 
 /** A constant node contains a value that will never changes. */
 class VarLoad : public Node

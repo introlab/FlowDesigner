@@ -21,7 +21,24 @@
 
 class Gain;
 
-NODE_INFO(Gain,"Signal:Base", "INPUT", "OUTPUT", "GAIN")
+DECLARE_NODE(Gain)
+/*Node
+
+ * @name Gain
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name GAIN
+ * @parameter_description No description available
+
+END*/
+
 
 class Gain : public BufferedNode {
    

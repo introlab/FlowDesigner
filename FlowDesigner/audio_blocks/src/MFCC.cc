@@ -27,7 +27,39 @@
 
 class MFCC;
 
-NODE_INFO(MFCC, "Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:WINDOW:SAMPLING:LOW:HIGH")
+DECLARE_NODE(MFCC)
+/*Node
+
+ * @name MFCC
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name WINDOW
+ * @parameter_description No description available
+
+ * @parameter_name SAMPLING
+ * @parameter_description No description available
+
+ * @parameter_name LOW
+ * @parameter_description No description available
+
+ * @parameter_name HIGH
+ * @parameter_description No description available
+
+END*/
+
 
 class MFCC : public BufferedNode {
    

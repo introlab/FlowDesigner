@@ -21,8 +21,27 @@
 #include "Vector.h"
 //#include "multithread.h"
 
-//DECLARE_NODE(VQTrain)
-NODE_INFO(VQTrain,"VQ", "FRAMES", "OUTPUT", "MEANS:BINARY")
+DECLARE_NODE(VQTrain)
+/*Node
+
+ * @name VQTrain
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name MEANS
+ * @parameter_description No description available
+
+ * @parameter_name BINARY
+ * @parameter_description No description available
+
+END*/
+
 
 VQTrain::VQTrain(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

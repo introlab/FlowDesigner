@@ -28,8 +28,24 @@ class MDCT;
 
 
 
-//DECLARE_NODE(MDCT)
-NODE_INFO(MDCT,"Signal:DSP", "INPUT", "OUTPUT", "LENGTH")
+DECLARE_NODE(MDCT)
+/*Node
+
+ * @name MDCT
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class MDCT : public FrameOperation {
    

@@ -23,8 +23,27 @@
 
 class LTF;
 
-//DECLARE_NODE(LTF)
-NODE_INFO(LTF,"Signal:DSP", "INPUT:FILTER", "OUTPUT", "LENGTH")
+DECLARE_NODE(LTF)
+/*Node
+
+ * @name LTF
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name FILTER
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+END*/
+
 
    //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
 

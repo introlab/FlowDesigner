@@ -22,8 +22,21 @@
 #include "Vector.h"
 #include "multithread.h"
 
-//DECLARE_NODE(GMMTrain)
-NODE_INFO(GMMTrain,"VQ", "FRAMES", "OUTPUT", "")
+DECLARE_NODE(GMMTrain)
+/*Node
+
+ * @name GMMTrain
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 GMMTrain::GMMTrain(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

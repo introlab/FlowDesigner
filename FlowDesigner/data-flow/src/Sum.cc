@@ -18,8 +18,21 @@
 #include "net_types.h"
 #include "Object.h"
 
-//DECLARE_NODE(Sum)
-NODE_INFO(Sum,"Math", "INPUT", "OUTPUT", "")
+DECLARE_NODE(Sum)
+/*Node
+
+ * @name Sum
+ * @category Math
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 Sum::Sum(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

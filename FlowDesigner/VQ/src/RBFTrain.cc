@@ -23,8 +23,24 @@
 //#include "multithread.h"
 
 class RBFTrain;
-//DECLARE_NODE(RBFTrain)
-NODE_INFO(RBFTrain,"VQ", "FRAMES", "OUTPUT", "NB_GAUSSIANS");
+DECLARE_NODE(RBFTrain)
+/*Node
+
+ * @name RBFTrain
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name NB_GAUSSIANS
+ * @parameter_description No description available
+
+END*/
+
 
 class RBFTrain : public Node {
       

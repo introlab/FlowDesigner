@@ -21,7 +21,24 @@
 
 class CGain;
 
-NODE_INFO(CGain,"Signal:Base", "INPUT:GAIN", "OUTPUT", "")
+DECLARE_NODE(CGain)
+/*Node
+
+ * @name CGain
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name GAIN
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class CGain : public BufferedNode {
    

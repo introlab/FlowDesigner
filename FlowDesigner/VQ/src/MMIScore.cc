@@ -21,8 +21,24 @@
 #include "Vector.h"
 #include "multithread.h"
 
-//DECLARE_NODE(MMIScore)
-NODE_INFO(MMIScore,"VQ", "FRAMES:MMI", "OUTPUT", "")
+DECLARE_NODE(MMIScore)
+/*Node
+
+ * @name MMIScore
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @input_name MMI
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 MMIScore::MMIScore(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

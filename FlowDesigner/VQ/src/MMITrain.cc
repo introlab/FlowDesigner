@@ -20,8 +20,24 @@
 #include "Cell.h"
 #include "Vector.h"
 
-//DECLARE_NODE(MMITrain)
-NODE_INFO(MMITrain,"VQ", "FRAMES", "OUTPUT", "LEVELS")
+DECLARE_NODE(MMITrain)
+/*Node
+
+ * @name MMITrain
+ * @category VQ
+ * @description No description available
+
+ * @input_name FRAMES
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LEVELS
+ * @parameter_description No description available
+
+END*/
+
 
 MMITrain::MMITrain(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

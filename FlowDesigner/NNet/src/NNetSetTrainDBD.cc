@@ -22,7 +22,48 @@
 
 class NNetSetTrainDBD;
 
-NODE_INFO(NNetSetTrainDBD,"NNet", "TRAIN_IN:TRAIN_OUT:TRAIN_ID:NNET", "OUTPUT", "MAX_EPOCH:LEARN_RATE:MOMENTUM:INCREASE:DECREASE:BATCH_SETS")
+DECLARE_NODE(NNetSetTrainDBD)
+/*Node
+
+ * @name NNetSetTrainDBD
+ * @category NNet
+ * @description No description available
+
+ * @input_name TRAIN_IN
+ * @input_description No description available
+
+ * @input_name TRAIN_OUT
+ * @input_description No description available
+
+ * @input_name TRAIN_ID
+ * @input_description No description available
+
+ * @input_name NNET
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name MAX_EPOCH
+ * @parameter_description No description available
+
+ * @parameter_name LEARN_RATE
+ * @parameter_description No description available
+
+ * @parameter_name MOMENTUM
+ * @parameter_description No description available
+
+ * @parameter_name INCREASE
+ * @parameter_description No description available
+
+ * @parameter_name DECREASE
+ * @parameter_description No description available
+
+ * @parameter_name BATCH_SETS
+ * @parameter_description No description available
+
+END*/
+
 
 class NNetSetTrainDBD : public Node {
 

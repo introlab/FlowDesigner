@@ -24,7 +24,21 @@
 
 class NNetNew;
 
-NODE_INFO(NNetNew,"NNet", "", "OUTPUT", "TOPO")
+DECLARE_NODE(NNetNew)
+/*Node
+
+ * @name NNetNew
+ * @category NNet
+ * @description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name TOPO
+ * @parameter_description No description available
+
+END*/
+
 
 class NNetNew : public Node {
 

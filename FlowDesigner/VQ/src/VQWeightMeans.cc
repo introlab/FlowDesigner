@@ -26,8 +26,30 @@
 
 class VQWeightMeans;
 
-//DECLARE_NODE(VQWeightMeans)
-NODE_INFO(VQWeightMeans,"VQ", "INPUT:VQ", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+DECLARE_NODE(VQWeightMeans)
+/*Node
+
+ * @name VQWeightMeans
+ * @category VQ
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @input_name VQ
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class VQWeightMeans : public FrameOperation {
    

@@ -22,7 +22,24 @@
 
 class Pow;
 
-NODE_INFO(Pow,"Signal:Base", "INPUT", "OUTPUT", "EXP")
+DECLARE_NODE(Pow)
+/*Node
+
+ * @name Pow
+ * @category Signal:Base
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name EXP
+ * @parameter_description No description available
+
+END*/
+
 
 class Pow : public BufferedNode {
    

@@ -17,8 +17,21 @@
 #include "OutputStream.h"
 #include "net_types.h"
 
-//DECLARE_NODE(OutputStream)
-NODE_INFO(OutputStream,"IO", "INPUT", "OUTPUT", "")
+DECLARE_NODE(OutputStream)
+/*Node
+
+ * @name OutputStream
+ * @category IO
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 OutputStream::OutputStream(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

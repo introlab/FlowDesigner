@@ -25,8 +25,24 @@
 
 class ExecStream;
 
-//DECLARE_NODE(ExecStream)
-NODE_INFO(ExecStream,"IO", "INPUT", "OUTPUT", "COMMAND")
+DECLARE_NODE(ExecStream)
+/*Node
+
+ * @name ExecStream
+ * @category IO
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name COMMAND
+ * @parameter_description No description available
+
+END*/
+
 
 /** A constant node contains a value that will never changes. */
 class ExecStream : public Node

@@ -23,8 +23,30 @@
 
 class CMS;
 
-//DECLARE_NODE(CMS)
-NODE_INFO(CMS,"Signal:DSP", "INPUT", "OUTPUT", "LENGTH:LOOKBACK:LOOKAHEAD")
+DECLARE_NODE(CMS)
+/*Node
+
+ * @name CMS
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+
+ * @parameter_name LOOKBACK
+ * @parameter_description No description available
+
+ * @parameter_name LOOKAHEAD
+ * @parameter_description No description available
+
+END*/
+
 
    //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
 

@@ -21,7 +21,21 @@
 
 class OverlapAndAdd;
 
-NODE_INFO(OverlapAndAdd, "Signal:Audio", "INPUT", "OUTPUT", "")
+DECLARE_NODE(OverlapAndAdd)
+/*Node
+
+ * @name OverlapAndAdd
+ * @category Signal:Audio
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class OverlapAndAdd : public BufferedNode {
    

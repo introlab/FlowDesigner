@@ -19,8 +19,21 @@
 
 class Discard;
 
-//DECLARE_NODE(Discard)
-NODE_INFO(Discard, "General", "INPUT", "OUTPUT", "")
+DECLARE_NODE(Discard)
+/*Node
+
+ * @name Discard
+ * @category General
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class Discard : public Node {
 protected:

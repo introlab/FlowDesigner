@@ -25,8 +25,30 @@
 #  include <config.h>
 #endif
 
-//DECLARE_NODE(Probe)
-NODE_INFO(PlotProbe, "Probe", "INPUT", "OUTPUT", "BREAK_AT:SHOW:SKIP")
+DECLARE_NODE(PlotProbe)
+/*Node
+
+ * @name PlotProbe
+ * @category Probe
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name BREAK_AT
+ * @parameter_description No description available
+
+ * @parameter_name SHOW
+ * @parameter_description No description available
+
+ * @parameter_name SKIP
+ * @parameter_description No description available
+
+END*/
+
 
 
 PlotProbe::PlotProbe(string nodeName, ParameterSet params) 

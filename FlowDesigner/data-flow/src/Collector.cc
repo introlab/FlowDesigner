@@ -18,8 +18,21 @@
 ** Includes
 */
 #include "Collector.h"
-//DECLARE_NODE(Collector)
-NODE_INFO(Collector,"Flow", "INPUT", "OUTPUT", "")
+DECLARE_NODE(Collector)
+/*Node
+
+ * @name Collector
+ * @category Flow
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 Collector::Collector(string nodeName, ParameterSet params) 
    : Node(nodeName, params) 

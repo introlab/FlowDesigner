@@ -19,8 +19,21 @@
 
 class NOP;
 
-//DECLARE_NODE(NOP)
-NODE_INFO(NOP, "General", "INPUT", "OUTPUT", "")
+DECLARE_NODE(NOP)
+/*Node
+
+ * @name NOP
+ * @category General
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class NOP : public Node {
 protected:

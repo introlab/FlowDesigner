@@ -22,7 +22,24 @@
 
 class Overlap;
 
-NODE_INFO(Overlap,"Signal:DSP", "INPUT", "OUTPUT", "OUTPUTLENGTH")
+DECLARE_NODE(Overlap)
+/*Node
+
+ * @name Overlap
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+END*/
+
 
 class Overlap : public BufferedNode {
    

@@ -17,8 +17,24 @@
 #include "Node.h"
 
 class Greater;
-//DECLARE_NODE(Greater)
-NODE_INFO(Greater,"Logic", "INPUT1:INPUT2", "OUTPUT", "")
+DECLARE_NODE(Greater)
+/*Node
+
+ * @name Greater
+ * @category Logic
+ * @description No description available
+
+ * @input_name INPUT1
+ * @input_description No description available
+
+ * @input_name INPUT2
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+END*/
+
 
 class Greater : public Node {
 protected:

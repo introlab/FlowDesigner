@@ -23,8 +23,33 @@
 
 class TimeAutocorr;
 
-//DECLARE_NODE(TimeAutocorr)
-NODE_INFO(TimeAutocorr,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:LOOKAHEAD:LOOKBACK")
+DECLARE_NODE(TimeAutocorr)
+/*Node
+
+ * @name TimeAutocorr
+ * @category Signal:DSP
+ * @description No description available
+
+ * @input_name INPUT
+ * @input_description No description available
+
+ * @output_name OUTPUT
+ * @output_description No description available
+
+ * @parameter_name INPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name OUTPUTLENGTH
+ * @parameter_description No description available
+
+ * @parameter_name LOOKAHEAD
+ * @parameter_description No description available
+
+ * @parameter_name LOOKBACK
+ * @parameter_description No description available
+
+END*/
+
 
 class TimeAutocorr : public FrameOperation {
    
