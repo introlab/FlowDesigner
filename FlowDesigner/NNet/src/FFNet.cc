@@ -21,9 +21,9 @@ FFNet::FFNet(const Vector<int> &_topo)
    }
    layers[0]->init(5);
 
-   alpha = .000001;
+   alpha = .00001;
    last_error=-1;
-   momentum=.9;
+   momentum=.85;
    /*double *f=layers[0]->getWeights(0);
    f[0]=2;f[1]=-1;
    f[2]=1;*/
@@ -89,6 +89,9 @@ void FFNet::learn(double *input, double *output)
    }	 
 }
 
+
+
+
 void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
 {
    int worse=0;
@@ -134,8 +137,8 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
 	 for (j=0;j<topo[topo.size()-1];j++)
 	    SSE += (netOut[j]-out[j])*(netOut[j]-out[j]);
       }
-      momentum=.9;
-      if (last_error > 0 && (SSE/last_error > 1.001 /*|| worse > 4*/))
+      momentum=.85;
+      if (last_error > 0 && (SSE/last_error > 1.04 /*|| worse > 4*/))
       {
 	 momentum=0;
 	 alpha *= .7;
@@ -145,17 +148,20 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter)
       }
       else if (last_error > 0 && SSE < last_error)
       {
-	 alpha *= 1.05;
+	 alpha *= 1.1;
 	 error = SSE;
 	 worse=0;
+	 last_error = error;
       } else {
 	 worse++;
 	 //cerr << "ce quoi l'probleme??? " << error << " " << last_error << endl;
 	 error=SSE;
+	 if (last_error < 0)
+	    last_error = error;
       }
       cout << (error/tin.size()/topo[topo.size()-1]) << "\t" << alpha << endl;
 
-      last_error = error;
+      //last_error = error;
    }
 }
 
