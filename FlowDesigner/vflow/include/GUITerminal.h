@@ -92,12 +92,12 @@ public:
      
      if (isInput) {
        gnome_canvas_item_set(item_text,
-			     "x",x + 2,
+			     "x",x + 5,
 			     "y",y - 0.5,NULL);
      }
      else {
        gnome_canvas_item_set(item_text,
-			     "x",x - 2,
+			     "x",x - 5,
 			     "y",y - 0.5,NULL);
      }
 			 
@@ -115,12 +115,12 @@ public:
      if (!hidden) {
        gnome_canvas_item_get_bounds(item_text,&x1,&y1,&x2,&y2);
        
-       cout<<"width"<<x2 - x1 + 2;
+       //cout<<"width"<<x2 - x1 + 2;
 
-       return x2 - x1 + 2;
+       return x2 - x1 + 5;
      }
      else {
-       return 2.0;
+       return 5.0;
      }
    }
    
