@@ -9,6 +9,15 @@
 
 #include <math.h>
 
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
+
+
+#ifdef WIN32 /*Work around bug in MSVC++ (for) variable scope*/
+#define for if(0);else for
+#endif
+
 union FloatManip {
       float f;
       unsigned int i;
@@ -66,7 +75,21 @@ inline float flog(float f)
    return (id1-127)*M_LN2 + logtable2[id2] + (f2-m.f)/f2;
 }
 
-
+//Log (base e) rough approximation
+inline void fflogv(float *fin, float *fout, int len)
+{
+   build_flog_table();
+   FloatManip m;
+   for (int i=0;i<len;i++)
+   {
+      m.f = fin[i] + FLT_MIN;
+      //The exponent in id1
+      unsigned int id1 = m.i>>23;
+      //The first bits of the mantissa in id2
+      unsigned int id2 = (m.i & 0x007fffff)>>FLOGLOOKUP2SHIFT;
+      fout[i] = (id1-127)*M_LN2 + logtable2[id2];
+   }
+}
 
 /*#define FEXPSHIFT 19
 #define FEXPSIZE 8192

@@ -390,9 +390,9 @@ inline T vec_norm2(const T *a, int len)
   while (a<end-3)
     {
       sum1+=a[0]*a[0];
-      sum2+=a[1]*a[0];
-      sum3+=a[2]*a[0];
-      sum4+=a[3]*a[0];
+      sum2+=a[1]*a[1];
+      sum3+=a[2]*a[2];
+      sum4+=a[3]*a[4];
       a+=4;
     }
   while (a<end)

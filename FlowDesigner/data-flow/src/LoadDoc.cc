@@ -10,7 +10,7 @@ DECLARE_NODE(LoadDoc)
  *
  * @name LoadDoc
  * @require UIClasses
- * @category DSP:Base
+ * @category General
  * @description Loads an Overflow XML document
  *
  * @input_name INPUT

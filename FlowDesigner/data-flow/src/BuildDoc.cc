@@ -11,7 +11,7 @@ DECLARE_NODE(BuildDoc)
  *
  * @name BuildDoc
  * @require UIClasses
- * @category DSP:Base
+ * @category General
  * @description Builds a network from a document
  *
  * @input_name INPUT
