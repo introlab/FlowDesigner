@@ -31,7 +31,7 @@ vector<string> ToolboxList::load(const vector<string> &list, int debug)
       {
 	 if (debug)
 	    cerr << "Loading " << remain[i] << "... ";
-	 DL_HANDLE_TYPE handle = _DL_OPEN(remain[i]);
+	 DL_HANDLE_TYPE handle = _DL_OPEN(remain[i], debug);
 	 if (handle)
 	 {
 	    if (debug)

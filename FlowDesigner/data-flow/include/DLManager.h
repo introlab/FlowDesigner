@@ -30,11 +30,11 @@ using namespace std;
 typedef void *DL_HANDLE_TYPE;
 
 /**How to open a library*/
-inline DL_HANDLE_TYPE _DL_OPEN(string path) 
+inline DL_HANDLE_TYPE _DL_OPEN(string path, int debug = 0) 
 {
    //cerr << "opening lib " << path.c_str() << endl;
    DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY|RTLD_GLOBAL);
-   if (!library) 
+   if (!library && debug) 
       cerr << "Toolbox load error: " << dlerror() << endl;
 
    return library;
@@ -57,12 +57,12 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 #include <dl.h>
 
 typedef shl_t DL_HANDLE_TYPE;
-inline DL_HANDLE_TYPE _DL_OPEN(string path)
+inline DL_HANDLE_TYPE _DL_OPEN(string path, int debug = 0)
 {
    //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
    DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
    //cerr << "library = " << library << endl;
-   if (!library) 
+   if (!library && debug) 
       perror ("Load error");
    return library;
 }
