@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream.h>
 #include "UITerminal.h"
+#include "GUILink.h"
 
 class UINode;
 class UILink;
@@ -64,6 +65,9 @@ public:
 
    void setAbsPos(double x1, double y1) {
 
+     double dx = x1 - x;
+     double dy = y1 - y;
+     
      x = x1;
      y = y1;
 
@@ -86,6 +90,11 @@ public:
 			     "y",y - 0.5,NULL);
      }
 			 
+
+     for (int i=0;i<connections.size();i++)
+       dynamic_cast<GUILink *>(connections[i])->move(isInput, dx, dy);
+
+
    }
 
 

@@ -559,8 +559,8 @@ void GUINode::redraw() {
 
   //centering on label
 
-  start_y1 = (ty1 + ty2) / 2.0 - (inputs.size() -1)* 15.0 / 2.0;
-  start_y2 = (ty1 + ty2) / 2.0 - (outputs.size() -1)* 15.0 / 2.0;
+  start_y1 = (ty1 + ty2) / 2.0 - (inputs.size() - 1)* 15.0 / 2.0;
+  start_y2 = (ty1 + ty2) / 2.0 - (outputs.size() - 1)* 15.0 / 2.0;
 
 
   //finding max size for text + input terminal
