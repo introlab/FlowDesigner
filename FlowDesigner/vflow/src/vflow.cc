@@ -371,14 +371,12 @@ void open_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
 **********************************************************************************************************/
 void close_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
    
-  //FIXME: gnome 2
-
-      GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
+   GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
    
    if (!doc)
       return;
-   cerr << "FIXME: cannot close documents yet\n";
-   //delete doc;
+   
+   doc->closeRequest();
 }
 
 
@@ -796,13 +794,17 @@ void build_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
 /**********************************************************************************************************
 
 **********************************************************************************************************/
-void exit_event  (GtkMenuItem  *menuitem, vflowGUI *vflow) {
-
-  //until user_data (2nd arg works)
-  vflow = vflowGUI::instance();
-//FIXME: gnome 2
-
-  cerr << "FIXME: Should close all docs cleanly before exiting\n";
+void exit_event  (GtkMenuItem  *menuitem, vflowGUI *vflow) 
+{
+   vflow = vflowGUI::instance();
+   
+   GUIDocument *doc;
+   while (doc = vflow->getCurrentDoc())
+   {
+      if (!doc->closeRequest())
+         return;
+   }
+   
    gtk_main_quit();
 }
 /**********************************************************************************************************
@@ -861,27 +863,14 @@ gint remove_doc_cb (GnomeMDI *mdi, GnomeMDIChild *child) {
    return TRUE;
 }
 
-/**********************************************************************************************************
-
-**********************************************************************************************************/
-void overflow_doc_event(GtkMenuItem *menuitem, vflowGUI *vflow) {
-  //until user_data (2nd arg works)
-  vflow = vflowGUI::instance();
-
-  //FIXME: re-enable (gnome 2)
-   //gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/user-guide.html");
+void overflow_doc_event(GtkMenuItem *menuitem, vflowGUI *vflow) 
+{
+   gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/user-guide.html", NULL);
 }
 
-/**********************************************************************************************************
-
-**********************************************************************************************************/
-void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow) {
-
-  //until user_data (2nd arg works)
-  vflow = vflowGUI::instance();
-
-  //FIXME: re-enable that (Gnome2)
-   //gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/nodes.html");
+void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow) 
+{
+   gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/nodes.html",NULL);
 }
 
 
@@ -891,10 +880,6 @@ void on_preferences1_activate  (GtkMenuItem *menuitem, vflowGUI *vflow)
    //create_propertybox1();
 }
 
-/**********************************************************************************************************
-
-
-**********************************************************************************************************/
 void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
    const gchar *authors[] = {
@@ -1053,14 +1038,14 @@ static GnomeUIInfo help1_menu_uiinfo[] =
   {
     GNOME_APP_UI_ITEM, N_("User Guide"),
     NULL,
-    (gpointer) NULL, NULL, NULL,
+    (gpointer) overflow_doc_event, NULL, NULL,
     GNOME_APP_PIXMAP_NONE, NULL,
     0, (GdkModifierType) 0, NULL
   },
   {
     GNOME_APP_UI_ITEM, N_("Node Reference"),
     NULL,
-    (gpointer) NULL, NULL, NULL,
+    (gpointer) overflow_noderef_event, NULL, NULL,
     GNOME_APP_PIXMAP_NONE, NULL,
     0, (GdkModifierType) 0, NULL
   },

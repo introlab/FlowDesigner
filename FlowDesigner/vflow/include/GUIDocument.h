@@ -49,8 +49,10 @@ public:
 public:
    GUIDocument(string _name);
 
-   ~GUIDocument() {};
+   ~GUIDocument();
    
+   int closeRequest(bool force=false);
+
    GnomeMDIGenericChild *getMDIChild() {return mdiChild;}
 
    GtkWidget *getView() {return vbox2;}
