@@ -22,7 +22,7 @@
 
 class NNetTrainCGB;
 
-NODE_INFO(NNetTrainCGB,"NNet", "TRAIN_IN:TRAIN_OUT:NNET", "OUTPUT", "MAX_EPOCH")
+NODE_INFO(NNetTrainCGB,"NNet", "TRAIN_IN:TRAIN_OUT:NNET", "OUTPUT", "MAX_EPOCH:SIGMA:LAMBDA")
 
 class NNetTrainCGB : public Node {
 
@@ -44,7 +44,11 @@ protected:
    ObjectRef currentNet;
 
    int maxEpoch;
-      
+   
+   double sigma;
+
+   double lambda;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrainCGB(string nodeName, ParameterSet params)
@@ -58,6 +62,14 @@ public:
       if (parameters.exist("MAX_EPOCH"))
 	 maxEpoch = dereference_cast<int> (parameters.get("MAX_EPOCH"));
       else maxEpoch = 200;
+
+      if (parameters.exist("SIGMA"))
+	 sigma = dereference_cast<float> (parameters.get("SIGMA"));
+      else sigma = .03;
+
+      if (parameters.exist("LAMBDA"))
+	 lambda = dereference_cast<float> (parameters.get("LAMBDA"));
+      else lambda = .2;
             
    }
       
@@ -115,7 +127,7 @@ public:
 
 	       //FFNet *net = new FFNet( topo ); 
 	       FFNet &net = object_cast<FFNet> (netValue);
-	       net.trainCGB(in, out, maxEpoch);
+	       net.trainCGB(in, out, maxEpoch, sigma, lambda);
 	       //net->trainlm(in, out, maxEpoch);
 
 	       currentNet = netValue;

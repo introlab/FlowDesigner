@@ -424,6 +424,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
 	 rk = -nextdE;
 	 lambdaBar = 0;
 	 success = true;
+	 cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << norm << "\t" << ak << "\t" << endl;
 	 if (k%nbWeights == 0)
 	 {
 	    pk = rk;
@@ -436,7 +437,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
 	    double bk = (rk.norm2() - rk*oldR)/uk;
 	    pk = rk + pk * bk;
 	 }
-	 if (DK >= .75)
+	 if (DK >= .75 && lambda > 1e-100)
 	    lambda *= .5;
 	 k++;
       } else {
@@ -445,11 +446,9 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
       }
 
       //8. increase scale
-      if (DK < .25)
+      if (DK < .25 && lambda < 1e200)
 	 lambda *= 4;
       
-      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << norm << "\t" << ak << "\t" << endl;
-
       //9. Have we found the minimum
       if (rk.norm() == 0)
 	 break;
