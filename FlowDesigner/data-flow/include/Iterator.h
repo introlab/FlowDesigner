@@ -11,7 +11,7 @@ class InputTranslator : public BufferedNode {
 
 protected:
 
-   int processCount;
+   int internal_processCount;
 
 public:
    
@@ -23,10 +23,10 @@ public:
    }
    
    /** The special case where we known which processCount to use */
-   void setProcessCount(int pc) {processCount = pc;}
+   void setProcessCount(int pc) {internal_processCount = pc;}
    
    /** Returns the current processCount of this node */
-   int  getProcessCount() {return processCount;}
+   int  getProcessCount() {return internal_processCount;}
    
    
    virtual void request(int outputID, const ParameterSet &req) 
@@ -41,13 +41,18 @@ public:
      //handled by BufferedNode
    }
    
+   
+   virtual ObjectRef getOutput(int output_id, int count) {
+     return BufferedNode::getOutput(output_id,internal_processCount);
+   }//getOutput
+   
 
    virtual void calculate(int output_id, int count, Buffer &out) {
 
      int outputID = inputs[output_id].outputID;
      
      //same as the collector's job!
-     out[count] = (inputs[output_id].node)->getOutput(outputID,processCount);
+     out[count] = (inputs[output_id].node)->getOutput(outputID,internal_processCount);
    }
 
    int addInput (const string &inputName)
