@@ -10,11 +10,11 @@
     <Node name="node2" type="Constant" x="-372.000000" y="39.000000">
       <Parameter name="VALUE" type="subnet_param" value="ARG1"/>
     </Node>
-    <Node name="node4" type="MAIN_LOOP" x="108.000000" y="26.000000">
+    <Node name="node4" type="MAIN_LOOP" x="107.000000" y="26.000000">
       <Parameter name="FRAME_SIZE" type="int" value="256"/>
     </Node>
     <Node name="node3" type="ExecStream" x="-146.000000" y="37.000000">
-      <Parameter name="COMMAND" type="string" value="mpg123 --stdout --mono "/>
+      <Parameter name="COMMAND" type="string" value="mpg123 --stdout "/>
     </Node>
     <Link from="node1" output="OUTPUT" to="node4" input="OUT_FILE"/>
     <Link from="node2" output="VALUE" to="node3" input="INPUT"/>
@@ -29,19 +29,21 @@
       <Parameter name="ENCODING" type="string" value="LIN16"/>
       <Parameter name="STREAM_TYPE" type="string" value="FILE"/>
     </Node>
-    <Node name="node4" type="FIR" x="-4.000000" y="155.000000">
+    <Node name="node4" type="FIR" x="-5.000000" y="155.000000">
       <Parameter name="CONTINUOUS" type="int" value="1"/>
       <Parameter name="NONCAUSAL" type="int" value="1"/>
     </Node>
-    <Node name="node5" type="ConstantVector" x="-211.000000" y="184.000000">
+    <Node name="node5" type="ConstantVector" x="-210.000000" y="184.000000">
       <Parameter name="VALUE" type="string" value="&lt;Vector .25 .5 .25&gt;"/>
     </Node>
-    <Node name="node6" type="SpectrumProbe" x="-146.000000" y="112.000000">
+    <Node name="node6" type="SpectrumProbe" x="-145.000000" y="112.000000">
+      <Parameter name="SKIP" type="int" value="10"/>
       <Parameter name="SQRT" type="bool" value="true"/>
       <Parameter name="LOG" type="bool" value="false"/>
     </Node>
     <Node name="node7" type="SpectrumProbe" x="82.000000" y="178.000000">
       <Parameter name="BREAK_AT" type="int" value="-1"/>
+      <Parameter name="SKIP" type="int" value="10"/>
       <Parameter name="SQRT" type="bool" value="true"/>
       <Parameter name="LOG" type="bool" value="false"/>
     </Node>
@@ -56,5 +58,5 @@
     <NetCondition name="CONDITION" node="node3" terminal="OUTPUT"/>
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
   </Network>
-  <Parameter name="ARG1" type="string" value="/path/to/your.mp3"/>
+  <Parameter name="ARG1" type="string" value="song.mp3"/>
 </Document>

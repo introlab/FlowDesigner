@@ -38,6 +38,12 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
 		     (GtkSignalFunc) terminal_handler,
 		     this);
 
+  //creating the tooltip
+    
+
+
+
+
   //creating the text
   if (isInput) {
     item_text = gnome_canvas_item_new(group,
@@ -50,6 +56,8 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
 				      "font", "fixed",
 				      NULL);
   
+
+
   }
 
   else {
@@ -62,6 +70,7 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
 				      "fill_color", "blue",
 				      "font", "fixed",
 				      NULL);
+
 
   }
 

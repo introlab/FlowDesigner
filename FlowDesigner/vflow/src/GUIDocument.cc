@@ -855,7 +855,8 @@ void GUIDocument::run()
       /* The net will be deleted in the dispose function. */
       //delete net;
       //runningNet=NULL;
-   } catch (...)
+   } 
+   catch (...)
    {
       gdk_threads_enter();
       less_print("Unknown exception caught");

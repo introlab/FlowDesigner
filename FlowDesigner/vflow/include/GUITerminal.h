@@ -22,6 +22,8 @@ protected:
 
    GnomeCanvasItem *item_text;
 
+   GtkTooltips *tooltip;
+
    bool hidden;
 
 

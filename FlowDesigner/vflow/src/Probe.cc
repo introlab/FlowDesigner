@@ -76,7 +76,7 @@ static void show_hide_click (GtkButton *button, Probe *pr)
 }
 
 Probe::Probe(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
+  : Node(nodeName, params), window1(NULL)
 {
    outputID = addOutput("OUTPUT");
    inputID = addInput("INPUT");
@@ -108,15 +108,19 @@ Probe::Probe(string nodeName, ParameterSet params)
       skip = dereference_cast<int> (parameters.get("SKIP"));
    }
 
+   cerr<<"End Probe constructor"<<endl;
 }
 
 Probe::~Probe()
 {
-   //cerr << "Probe destructor\n";
+   cerr << "Probe destructor\n";
 
    NO_CANCEL
    gdk_threads_enter(); 
-   gtk_widget_destroy (window1);
+
+   if (window1)
+     gtk_widget_destroy (window1);
+
    gdk_threads_leave(); 
    SET_CANCEL
 

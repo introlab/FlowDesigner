@@ -30,13 +30,15 @@ vflow_SOURCES = \
 	GUINodeParameters.cc \
 	GUINetTerminal.cc \
 	GUINetPopup.cc \
-	GRunContext.cc
+	GRunContext.cc \
+	KeyPad.cc
 
 gflow_SOURCES = \
 	gflow.cc \
 	Probe.cc \
 	TextProbe.cc \
 	PlotProbe.cc \
+	KeyPad.cc \
 	GRunContext.cc
 
 LDFLAGS = $(FFTW_LDFLAGS)

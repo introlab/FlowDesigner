@@ -68,7 +68,9 @@ class Probe : public Node {
    virtual ObjectRef getOutput(int output_id, int count); 
 
    /**Standard request-passing method between nodes during initialization*/
-   virtual void request(int outputID, const ParameterSet &req) {inputs[inputID].node->request(inputs[inputID].outputID,req);}
+   virtual void request(int outputID, const ParameterSet &req) {
+     inputs[inputID].node->request(inputs[inputID].outputID,req);
+   }
 
    virtual void trace();
    
