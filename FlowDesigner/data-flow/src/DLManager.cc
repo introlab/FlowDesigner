@@ -3,6 +3,8 @@
 #include "DLManager.h"
 
 map<string,LoadedLibrary* > DLManager::loaded;
+map<string, ToolboxData> ToolboxList::loadedToolboxes;
+
 
 LoadedLibrary *DLManager::getLib(const string &name)
 {
@@ -12,4 +14,39 @@ LoadedLibrary *DLManager::getLib(const string &name)
       loaded[name] = new LoadedLibrary (name);
    }
    return loaded[name];
+}
+
+
+vector<string> ToolboxList::load(const vector<string> &list, int debug)
+{
+   vector<string> remain(list);
+   vector<string> errors;
+
+   int lastPass;
+   do {
+      lastPass = remain.size();
+      errors.resize(0);
+
+      for (int i=0;i<remain.size();i++)
+      {
+	 if (debug)
+	    cerr << "Loading " << remain[i] << "... ";
+	 DL_HANDLE_TYPE handle = _DL_OPEN(remain[i]);
+	 if (handle)
+	 {
+	    if (debug)
+	       cerr << "[OK]" << endl;
+	    loadedToolboxes[remain[i]] = ToolboxData(remain[i], handle);
+	    //FIXME: append toolbox to list.
+	 } else {
+	    if (debug)
+	       cerr << "[Error]" << endl;
+	    errors.push_back(remain[i]);
+	 }
+      }
+      remain = errors;
+      if (debug)
+	 cerr << remain.size() << " errors in pass" << endl;
+   } while (remain.size() != 0 && remain.size() != lastPass);
+   return errors;
 }

@@ -41,8 +41,12 @@ vector<string> envList(char *envName, bool include_home)
    return list;
 }
 
+
+
 void scanDL(bool debug)
 {
+   vector<string> libList;
+
    if (debug)
       cerr << "Overflow loading all toolbox code (DL)" << endl;
    vector<string> dirs=envList("VFLOW_PATH");
@@ -69,13 +73,22 @@ void scanDL(bool debug)
 	 }
 	 string fullname = dirs[i] + "/" + current_entry->d_name;
 	 if (debug)
-	    cerr << "Trying " << fullname << endl;
-	 DLManager::getLib(fullname);
+	    cerr << "Found " << fullname << endl;
+	 libList.push_back(fullname);
+	 //DLManager::getLib(fullname);
 	 //_DL_OPEN(fullname.c_str());
       }
       
       closedir(my_directory);
    }
+   vector<string> errors = ToolboxList::load(libList, debug);
+   if (errors.size())
+   {
+      cerr << "There were errors loading the toolboxes:\n";
+      for (int i=0;i<errors.size();i++)
+	 cerr << errors[i] << endl;
+   }
    if (debug)
       cerr << "DL Loading done." << endl;
+   
 }
