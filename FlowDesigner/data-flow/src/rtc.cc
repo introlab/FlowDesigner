@@ -81,7 +81,7 @@ RTCTimer::RTCTimer()
    : exit_status(false)
 {
 #ifndef HAVE_RTC
-   throw new GeneralException("Overflow not compiled with /dev/rtc support");
+   throw new GeneralException("Overflow not compiled with /dev/rtc support", __FILE__, __LINE__);
 #endif
    pthread_mutex_init(&lock, NULL);
       pthread_mutex_lock(&lock);
