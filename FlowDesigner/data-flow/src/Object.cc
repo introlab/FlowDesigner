@@ -44,3 +44,19 @@ int Object::addObjectType(const string &objType, _ObjectFactory *factory)
    ObjectFactoryDictionary()[objType] = factory;
    return 0;
 }
+
+
+void Object::serialize(ostream &out) const
+{
+   throw new GeneralException("Object doesn't know how to serialize itself", __FILE__, __LINE__);
+}
+
+void Object::unserialize(ostream &out)
+{
+   throw new GeneralException("Object doesn't know how to unserialize itself", __FILE__, __LINE__);
+}
+
+void Object::doesNotUnderstand(string method)
+{
+   throw new GeneralException(string(typeid (*this).name()) + ": Does Not Understand method " + method, __FILE__, __LINE__);
+}

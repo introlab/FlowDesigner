@@ -117,14 +117,7 @@ class VirtualMethods {
       {
 	 return v1->second(x);
       } else {
-	 cerr << "doesnotunderstand...\n";
-	 cerr << "reverse = " << symbols->reverseLookup(id) << endl;
-	 try {
 	 x->doesNotUnderstand(symbols->reverseLookup(id));
-	 } catch (...)
-	    {
-	       cerr << "caught\n"; throw;
-	    }
 	 //throw new GeneralException("Virtual function error", __FILE__, __LINE__);
       }
    }
