@@ -281,40 +281,45 @@ void UINode::genCode(ostream &out, int &id)
 {
    int bakID=id;
    id++;
+
+   int bakID2=id;
+
+   bool builtin=false;
+   Node *node=NULL;
+   _NodeFactory *factory = NULL;
+   factory = Node::getFactoryNamed(type);
+   if (factory)
+   {
+      builtin=true;
+   }
+   else
+   {
+      builtin=false;
+      UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
+      if (buildNet)
+	 buildNet->genCode(out, id);
+      else {
+	 cerr << "external nodes not supported yet\n";
+	 exit(1);
+      }
+   }
    out << "static Node *genNode" << bakID << "(const ParameterSet &params)\n";
    out << "{\n";
 
    parameters->genCode(out);
 
-   Node *node=NULL;
-   _NodeFactory *factory = NULL;
-   factory = Node::getFactoryNamed(type);
 
    
-   if (factory) 
+   if (builtin) 
    {
       out << "   _NodeFactory *factory = Node::getFactoryNamed(\"" << type << "\");\n";
       //FIXME: Should still for (factory == NULL) in generated code and report errors
       out << "   Node *node = factory->Create(\""<<name << "\", parameters);\n";
-      out << "   return node;\n";
    } else {
-      cerr << "non-builtin nodes not supported yet\n";
-      /*UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
-      if (buildNet)
-	 node = buildNet->build(name, *par);
-      else
-      { 
-	 //cerr << "building external\n";
-	 node = UIDocument::buildExternal(type, name, *par);
-	 if (!node)
-	 {
-	    throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
-	 }
-	 //cerr << "done\n";
-	 }*/
+      out << "   Node *node = genNet" << bakID2 << "(\""<<name << "\", parameters);\n";
    }
 
-
+   out << "   return node;\n";
 
    out << "}\n\n";
 }
