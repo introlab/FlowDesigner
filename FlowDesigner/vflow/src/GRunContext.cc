@@ -8,9 +8,9 @@
 #include <unistd.h>
 
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
-
+  
   if (my_context->net) {
-
+    
     alarm(5);
 
     //stopping processing thread
@@ -28,8 +28,11 @@ gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_cont
 
     cerr<<"Terminating program"<<endl;
     exit(0);
+  } 
+  else  {
+    exit(0);
   }
-
+  
   return TRUE;
 }
 
