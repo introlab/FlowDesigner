@@ -129,9 +129,22 @@ public:
 
    const_iterator end() const {return data+obj_size;}
 
-   T &operator[] (size_t i) {return data[i];}
-
-   const T &operator[] (size_t i) const {return data[i];}
+   T &operator[] (size_t i) 
+   {
+#ifdef RT_DEBUG
+      if (i>size() || i<0)
+         throw GeneralException ("Vector::operator[] index out of bounds", __FILE__, __LINE__);
+#endif
+      return data[i];
+   }
+   const T &operator[] (size_t i) const 
+   {
+#ifdef RT_DEBUG
+      if (i>size() || i<0)
+         throw GeneralException ("Vector::operator[] index out of bounds", __FILE__, __LINE__);
+#endif
+      return data[i];
+   }
 
    void push_back(const T &x) {insert(end(),x);}
 
