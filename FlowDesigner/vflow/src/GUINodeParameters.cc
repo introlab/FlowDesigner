@@ -116,7 +116,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   
   for (i=0;i<params.size();i++)
   {
-     params[i].label = gtk_label_new (textParams[i].name.c_str());
+     params[i].label = gtk_label_new (textParams[i]->name.c_str());
      gtk_widget_ref (params[i].label);
      gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "label", params[i].label,
                                (GtkDestroyNotify) gtk_widget_unref);
@@ -241,10 +241,10 @@ void GUINodeParameters::apply()
    {
       //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
       GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
-      textParams[i].type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
+      textParams[i]->type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
 
       GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
-      textParams[i].value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
+      textParams[i]->value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
       
       //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
    }
@@ -260,7 +260,7 @@ void GUINodeParameters::changed()
 ParameterData *GUINodeParameters::getParamDataNamed(string n)
 {
    for (int i=0;i<textParams.size();i++)
-      if (textParams[i].name == n)
+      if (textParams[i]->name == n)
          return &(params[i]);
    return NULL;
 }
