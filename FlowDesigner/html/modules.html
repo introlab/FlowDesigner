@@ -1,68 +1,68 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-   <META NAME="GENERATOR" CONTENT="Mozilla/4.07 [en] (X11; I; Linux 2.2.0-pre8 i686) [Netscape]">
-   <META NAME="Author" CONTENT="Jean-Marc Valin">
-   <TITLE>SpeechInput Modules</TITLE>
-</HEAD>
-<BODY BACKGROUND="BACK8.png">
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.6 [en] (X11; I; Linux 2.2.9 i686) [Netscape]">
+   <meta name="Author" content="Jean-Marc Valin">
+   <title>SpeechInput Modules</title>
+</head>
+<body background="BACK8.png">
 
-<CENTER>
-<H1>
-SpeechInput Modules</H1></CENTER>
-The SpeechInput project is divided into the following modules:
-<H2>
-<A HREF="sound_interface.html">Sound Interface</A></H2>
+<center>
+<h1>
+SpeechInput Modules</h1></center>
+The FreeSpeech project is divided into the following modules:
+<h2>
+<a href="sound_interface.html">Sound Interface</a></h2>
 
-<BLOCKQUOTE>The sound interface is the part responsible for picking up
+<blockquote>The sound interface is the part responsible for picking up
 the audio from the sound card (via OSS) and make it available for the front-end,
-the data collection recrder, etc.</BLOCKQUOTE>
+the data collection recrder, etc.</blockquote>
 
-<H2>
-<A HREF="front_end.html">Front-End</A></H2>
+<h2>
+<a href="front_end.html">Front-End</a></h2>
 
-<BLOCKQUOTE>The front-end converts the audio into a "feature set" that
-will be used by the recognizer.</BLOCKQUOTE>
+<blockquote>The front-end converts the audio into a "feature set" that
+will be used by the recognizer.</blockquote>
 
-<H2>
-<A HREF="hmm.html">HMM (Hidden Markov Model)</A></H2>
+<h2>
+<a href="hmm.html">HMM (Hidden Markov Model)</a></h2>
 
-<BLOCKQUOTE>The HMM part is a set of classes that represents the speech
-(Anyone's got something better?).</BLOCKQUOTE>
+<blockquote>The HMM part is a set of classes that represents the speech
+(Anyone's got something better?).</blockquote>
 
-<H2>
-<A HREF="training.html">Training</A></H2>
+<h2>
+<a href="training.html">Training</a></h2>
 
-<BLOCKQUOTE>The training uses sound tokens for which the tanscription is
-known in order to train an HMM model.</BLOCKQUOTE>
+<blockquote>The training uses sound tokens for which the tanscription is
+known in order to train an HMM model.</blockquote>
 
-<H2>
-<A HREF="decoding.html">Decoding</A></H2>
+<h2>
+<a href="decoding.html">Decoding</a></h2>
 
-<BLOCKQUOTE>The decoding part uses a trained HMM and features from the
-front-end to decode i.e., find what has been said.</BLOCKQUOTE>
+<blockquote>The decoding part uses a trained HMM and features from the
+front-end to decode i.e., find what has been said.</blockquote>
 
-<H2>
-<A HREF="collection.html">Data Collection</A></H2>
+<h2>
+<a href="collection.html">Data Collection</a></h2>
 
-<BLOCKQUOTE>Speech recognition is all about one thing: data. We need data.</BLOCKQUOTE>
+<blockquote>Speech recognition is all about one thing: data. We need data.</blockquote>
 
-<H2>
-<A HREF="server.html">Speech Server</A></H2>
+<h2>
+<a href="server.html">Speech Server</a></h2>
 
-<BLOCKQUOTE>The speech server will run decoding in real-time and alllow
-connections from applications. Similar to the X server.</BLOCKQUOTE>
+<blockquote>The speech server will run decoding in real-time and alllow
+connections from applications. Similar to the X server.</blockquote>
 
-<H2>
-<A HREF="library.html">Client Library</A></H2>
+<h2>
+<a href="library.html">Client Library</a></h2>
 
-<BLOCKQUOTE>The client library will provide the API for the interaction
-between the applications and the speech server.</BLOCKQUOTE>
+<blockquote>The client library will provide the API for the interaction
+between the applications and the speech server.</blockquote>
 
-<HR WIDTH="100%">
-<BR><I><A HREF="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</A></I>, Universit&eacute;
+<hr WIDTH="100%">
+<br><i><a href="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</a></i>, Universit&eacute;
 de Sherbrooke
-<BR>$Date: 1998/12/12 04:09:48 $
-</BODY>
-</HTML>
+<br>$Date: 1999/01/21 00:15:37 $
+</body>
+</html>
