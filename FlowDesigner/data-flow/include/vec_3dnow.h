@@ -15,67 +15,58 @@ inline float vec_inner_prod_3dnow(const float *a, const float *b, int len)
 {
   float sum[2]={0,0};
   __asm__ __volatile__ (
-  "
-  push %%eax
-  push %%edi
-  push %%ecx
-  pxor %%mm4, %%mm4
-  pxor %%mm5, %%mm5
 
-  sub $4, %%ecx
-  jb mul4_skip%=
+  "\tpush %%eax \n"
+  "\tpush %%edi \n"
+  "\tpush %%ecx \n"
+  "\tpxor %%mm4, %%mm4 \n"
+  "\tpxor %%mm5, %%mm5 \n"
+  "\tsub $4, %%ecx \n"
+  "\tjb mul4_skip%= \n"
 
-mul4_loop%=:
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  movq 8(%%eax), %%mm2
-  movq 8(%%edi), %%mm3
-  add $16, %%eax
-  add $16, %%edi
-  pfmul %%mm0, %%mm1
-  pfmul %%mm2, %%mm3
-  pfadd %%mm1, %%mm4
-  pfadd %%mm3, %%mm5
+"mul4_loop%=: \n"
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tmovq 8(%%eax), %%mm2 \n"
+  "\tmovq 8(%%edi), %%mm3 \n"
+  "\tadd $16, %%eax \n"
+  "\tadd $16, %%edi \n"
+  "\tpfmul %%mm0, %%mm1 \n"
+  "\tpfmul %%mm2, %%mm3 \n"
+  "\tpfadd %%mm1, %%mm4 \n"
+  "\tpfadd %%mm3, %%mm5 \n"
+  "\tsub $4,  %%ecx \n"
+  "\tjae mul4_loop%= \n"
+  "\tpfadd %%mm5,%%mm4 \n"
 
-  sub $4,  %%ecx
+"mul4_skip%=: \n"
+  "\tadd $2, %%ecx \n"
+  "\tjae mul2_skip%= \n"
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tadd $8, %%eax \n"
+  "\tadd $8, %%edi \n"
+  "\tpfmul %%mm0, %%mm1 \n"
+  "\tpfadd %%mm1, %%mm4 \n"
 
-  jae mul4_loop%=
+"mul2_skip%=: \n"
+  "\tand $1, %%ecx \n"
+  "\tjz even%= \n"
+  "\tpxor %%mm0, %%mm0 \n"
+  "\tpxor %%mm1, %%mm1 \n"
+  "\tmovd (%%eax), %%mm0 \n"
+  "\tmovd (%%edi), %%mm1 \n"
+  "\tpfmul %%mm0, %%mm1 \n"
+  "\tpfadd %%mm1, %%mm4 \n"
 
-  pfadd %%mm5,%%mm4
-
-mul4_skip%=:
-
-  add $2, %%ecx
-  jae mul2_skip%=
-
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  add $8, %%eax
-  add $8, %%edi
-  pfmul %%mm0, %%mm1
-  pfadd %%mm1, %%mm4
-mul2_skip%=:
-
-  and $1, %%ecx
-  jz even%=
-
-  pxor %%mm0, %%mm0
-  pxor %%mm1, %%mm1
-  movd (%%eax), %%mm0
-  movd (%%edi), %%mm1
-  pfmul %%mm0, %%mm1
-  pfadd %%mm1, %%mm4
-even%=:
-
-  pxor %%mm5, %%mm5
-  pfacc %%mm5, %%mm4
-  movq %%mm4, (%%edx)
-
-  pop %%ecx
-  pop %%edi
-  pop %%eax
-  femms
-  "
+"even%=: \n"
+  "\tpxor %%mm5, %%mm5 \n"
+  "\tpfacc %%mm5, %%mm4 \n"
+  "\tmovq %%mm4, (%%edx) \n"
+  "\tpop %%ecx \n"
+  "\tpop %%edi \n"
+  "\tpop %%eax \n"
+  "\tfemms \n"
   : : "a" (a), "D" (b), "c" (len), "d" (sum)
 CLOBBER_3DNOW
   );
@@ -88,64 +79,63 @@ CLOBBER_3DNOW
 inline void vec_add_vec_3dnow(const float *a, const float *b, float *c, int len)
 {
   __asm__ __volatile__ (
-  "
-  push %%eax
-  push %%edi
-  push %%ecx
-  push %%edx
 
-  sub $4, %%ecx
-  jb mul4_skip%=
+  "\tpush %%eax \n"
+  "\tpush %%edi \n"
+  "\tpush %%ecx \n"
+  "\tpush %%edx \n"
 
-mul4_loop%=:
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  pfadd %%mm0, %%mm1
-  movq 8(%%eax), %%mm2
-  movq 8(%%edi), %%mm3
-  pfadd %%mm2, %%mm3
+  "\tsub $4, %%ecx \n"
+  "\tjb mul4_skip%= \n"
 
-  movq %%mm1, (%%edx)
-  movq %%mm3, 8(%%edx)
-  add $16, %%eax
-  add $16, %%edi
-  add $16, %%edx
-  sub $4,  %%ecx
+"mul4_loop%=: \n"
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tpfadd %%mm0, %%mm1 \n"
+  "\tmovq 8(%%eax), %%mm2 \n"
+  "\tmovq 8(%%edi), %%mm3 \n"
+  "\tpfadd %%mm2, %%mm3 \n"
 
-  jae mul4_loop%=
+  "\tmovq %%mm1, (%%edx) \n"
+  "\tmovq %%mm3, 8(%%edx) \n"
+  "\tadd $16, %%eax \n"
+  "\tadd $16, %%edi \n"
+  "\tadd $16, %%edx \n"
+  "\tsub $4,  %%ecx \n"
 
-mul4_skip%=:
+  "\tjae mul4_loop%= \n"
 
-  add $2, %%ecx
-  jae mul2_skip%=
+"mul4_skip%=: \n"
+
+  "\tadd $2, %%ecx \n"
+  "\tjae mul2_skip%= \n"
   
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  pfadd %%mm0, %%mm1
-  movq %%mm1, (%%edx)
-  add $8, %%eax
-  add $8, %%edi
-  add $8, %%edx
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tpfadd %%mm0, %%mm1 \n"
+  "\tmovq %%mm1, (%%edx) \n"
+  "\tadd $8, %%eax \n"
+  "\tadd $8, %%edi \n"
+  "\tadd $8, %%edx \n"
 
-mul2_skip%=:
+"mul2_skip%=: \n"
 
-  and $1, %%ecx
-  jz even%=
+  "\tand $1, %%ecx \n"
+  "\tjz even%= \n"
+ 
+  "\tpxor %%mm0, %%mm0 \n"
+  "\tpxor %%mm1, %%mm1 \n"
+  "\tmovd (%%eax), %%mm0 \n"
+  "\tmovd (%%edi), %%mm1 \n"
+  "\tpfadd %%mm0, %%mm1 \n"
+  "\tmovd %%mm1, (%%edx) \n" 
+"even%=: \n"
 
-  pxor %%mm0, %%mm0
-  pxor %%mm1, %%mm1
-  movd (%%eax), %%mm0
-  movd (%%edi), %%mm1
-  pfadd %%mm0, %%mm1
-  movd %%mm1, (%%edx)
-even%=:
-
-  pop %%edx
-  pop %%ecx
-  pop %%edi
-  pop %%eax
-  femms
-  "
+  "\tpop %%edx \n"
+  "\tpop %%ecx \n"
+  "\tpop %%edi \n"
+  "\tpop %%eax \n"
+  "\tfemms \n"
   : : "a" (a), "D" (b), "c" (len), "d" (c)
 CLOBBER_3DNOW
   );
@@ -156,64 +146,63 @@ CLOBBER_3DNOW
 inline void vec_sub_vec_3dnow(const float *a, const float *b, float *c, int len)
 {
   __asm__ __volatile__ (
-  "
-  push %%eax
-  push %%edi
-  push %%ecx
-  push %%edx
+  
+  "\tpush %%eax \n"
+  "\tpush %%edi \n"
+  "\tpush %%ecx \n"
+  "\tpush %%edx \n"
 
-  sub $4, %%ecx
-  jb mul4_skip%=
+  "\tsub $4, %%ecx \n"
+  "\tjb mul4_skip%= \n"
 
-mul4_loop%=:
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  pfsubr %%mm0, %%mm1
-  movq 8(%%eax), %%mm2
-  movq 8(%%edi), %%mm3
-  pfsubr %%mm2, %%mm3
+"mul4_loop%=: \n"
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tpfsubr %%mm0, %%mm1 \n" 
+  "\tmovq 8(%%eax), %%mm2 \n"
+  "\tmovq 8(%%edi), %%mm3 \n"
+  "\tpfsubr %%mm2, %%mm3 \n"
 
-  movq %%mm1, (%%edx)
-  movq %%mm3, 8(%%edx)
-  add $16, %%eax
-  add $16, %%edi
-  add $16, %%edx
-  sub $4,  %%ecx
+  "\tmovq %%mm1, (%%edx) \n"
+  "\tmovq %%mm3, 8(%%edx) \n"
+  "\tadd $16, %%eax \n"
+  "\tadd $16, %%edi \n"
+  "\tadd $16, %%edx \n"
+  "\tsub $4,  %%ecx \n"
 
-  jae mul4_loop%=
+  "\tjae mul4_loop%= \n"
 
-mul4_skip%=:
+"mul4_skip%=: \n"
 
-  add $2, %%ecx
-  jae mul2_skip%=
+  "\tadd $2, %%ecx \n"
+  "\tjae mul2_skip%= \n"
 
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  pfsubr %%mm0, %%mm1
-  movq %%mm1, (%%edx)
-  add $8, %%eax
-  add $8, %%edi
-  add $8, %%edx
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tpfsubr %%mm0, %%mm1 \n"
+  "\tmovq %%mm1, (%%edx) \n"
+  "\tadd $8, %%eax \n"
+  "\tadd $8, %%edi \n"
+  "\tadd $8, %%edx \n"
 
-mul2_skip%=:
+"\tmul2_skip%=: \n"
 
-  and $1, %%ecx
-  jz even%=
+  "\tand $1, %%ecx \n"
+  "\tjz even%= \n"
 
-  pxor %%mm0, %%mm0
-  pxor %%mm1, %%mm1
-  movd (%%eax), %%mm0
-  movd (%%edi), %%mm1
-  pfsubr %%mm0, %%mm1
-  movd %%mm1, (%%edx)
-even%=:
+  "\tpxor %%mm0, %%mm0 \n"
+  "\tpxor %%mm1, %%mm1 \n"
+  "\tmovd (%%eax), %%mm0 \n"
+  "\tmovd (%%edi), %%mm1 \n"
+  "\tpfsubr %%mm0, %%mm1 \n"
+  "\tmovd %%mm1, (%%edx) \n"
+"even%=: \n"
 
-  pop %%edx
-  pop %%ecx
-  pop %%edi
-  pop %%eax
-  femms
-  "
+  "\tpop %%edx \n"
+  "\tpop %%ecx \n"
+  "\tpop %%edi \n"
+  "\tpop %%eax \n"
+  "\tfemms \n"
   : : "a" (a), "D" (b), "c" (len), "d" (c)
 CLOBBER_3DNOW
   );
@@ -224,64 +213,63 @@ CLOBBER_3DNOW
 inline void vec_mul_vec_3dnow(const float *a, const float *b, float *c, int len)
 {
   __asm__ __volatile__ (
-  "
-  push %%eax
-  push %%edi
-  push %%ecx
-  push %%edx
 
-  sub $4, %%ecx
-  jb mul4_skip%=
+  "\tpush %%eax \n"
+  "\tpush %%edi \n"
+  "\tpush %%ecx \n"
+  "\tpush %%edx \n"
 
-mul4_loop%=:
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  pfmul %%mm0, %%mm1
-  movq 8(%%eax), %%mm2
-  movq 8(%%edi), %%mm3
-  pfmul %%mm2, %%mm3
+  "\tsub $4, %%ecx \n"
+  "\tjb mul4_skip%= \n"
 
-  movq %%mm1, (%%edx)
-  movq %%mm3, 8(%%edx)
-  add $16, %%eax
-  add $16, %%edi
-  add $16, %%edx
-  sub $4,  %%ecx
+"mul4_loop%=: \n"
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tpfmul %%mm0, %%mm1 \n"
+  "\tmovq 8(%%eax), %%mm2 \n"
+  "\tmovq 8(%%edi), %%mm3 \n"
+  "\tpfmul %%mm2, %%mm3 \n"
 
-  jae mul4_loop%=
+  "\tmovq %%mm1, (%%edx) \n"
+  "\tmovq %%mm3, 8(%%edx) \n"
+  "\tadd $16, %%eax \n"
+  "\tadd $16, %%edi \n"
+  "\tadd $16, %%edx \n"
+  "\tsub $4,  %%ecx \n"
 
-mul4_skip%=:
+  "\tjae mul4_loop%= \n"
 
-  add $2, %%ecx
-  jae mul2_skip%=
+"mul4_skip%=: \n"
 
-  movq (%%eax), %%mm0
-  movq (%%edi), %%mm1
-  pfmul %%mm0, %%mm1
-  movq %%mm1, (%%edx)
-  add $8, %%eax
-  add $8, %%edi
-  add $8, %%edx
+  "\tadd $2, %%ecx \n"
+  "\tjae mul2_skip%= \n"
 
-mul2_skip%=:
+  "\tmovq (%%eax), %%mm0 \n"
+  "\tmovq (%%edi), %%mm1 \n"
+  "\tpfmul %%mm0, %%mm1 \n"
+  "\tmovq %%mm1, (%%edx) \n"
+  "\tadd $8, %%eax \n"
+  "\tadd $8, %%edi \n"
+  "\tadd $8, %%edx \n"
 
-  and $1, %%ecx
-  jz even%=
+"\tmul2_skip%=: \n"
 
-  pxor %%mm0, %%mm0
-  pxor %%mm1, %%mm1
-  movd (%%eax), %%mm0
-  movd (%%edi), %%mm1
-  pfmul %%mm0, %%mm1
-  movd %%mm1, (%%edx)
-even%=:
+  "\tand $1, %%ecx \n"
+  "\tjz even%= \n"
 
-  pop %%edx
-  pop %%ecx
-  pop %%edi
-  pop %%eax
-  femms
-  "
+  "\tpxor %%mm0, %%mm0 \n"
+  "\tpxor %%mm1, %%mm1 \n"
+  "\tmovd (%%eax), %%mm0 \n"
+  "\tmovd (%%edi), %%mm1 \n"
+  "\tpfmul %%mm0, %%mm1 \n"
+  "\tmovd %%mm1, (%%edx) \n"
+"even%=: \n"
+
+  "\tpop %%edx \n"
+  "\tpop %%ecx \n"
+  "\tpop %%edi \n"
+  "\tpop %%eax \n"
+  "\tfemms \n"
   : : "a" (a), "D" (b), "c" (len), "d" (c)
 CLOBBER_3DNOW
   );
