@@ -149,6 +149,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       if (string((char*)node->name) == "NodeClass")
       {
 	 NodeInfo *info = new NodeInfo;
+	 info->kind=NodeInfo::builtin;
 	 char *str_category = (char *)xmlGetProp(node, (CHAR *)"category");
 	 if (str_category)
 	    info->category = string(str_category);
@@ -384,6 +385,7 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
    }
    //cerr << "new subnet info with name: " << netName << "\n";
    NodeInfo *info = new NodeInfo;
+   info->kind = NodeInfo::external;
    externalDocInfo[basename] = info;
    
 
@@ -541,6 +543,7 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    }
    //cerr << "new subnet info with name: " << netName << "\n";
    NodeInfo *ninfo = new NodeInfo;
+   ninfo->kind = NodeInfo::subnet;
    info[netName] = ninfo;
    
    if (category)

@@ -114,8 +114,8 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
    info = UINodeRepository::Begin();
    while (info != UINodeRepository::End()) 
    {
-
-      addType(info->second->category,info->first);
+      if ((info->second->kind != NodeInfo::builtin) || (Node::getFactoryNamed(info->first)))
+	 addType(info->second->category,info->first);
       info++;
    }
 

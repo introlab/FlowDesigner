@@ -25,6 +25,7 @@ class ItemInfo {
 
 class NodeInfo {
   public:
+   enum NodeKind {builtin, subnet, external};
    vector<ItemInfo *> inputs;
    vector<ItemInfo *> outputs;
    vector<ItemInfo *> params;
@@ -32,6 +33,7 @@ class NodeInfo {
    string description;
    string sourceFile;
    string requireList;
+   NodeKind kind;
   public:
    NodeInfo() : category("Unknown"), description("No description available") {}
    ~NodeInfo() {for (int i=0;i<inputs.size();i++) delete inputs[i];

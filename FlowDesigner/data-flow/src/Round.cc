@@ -12,7 +12,7 @@ DECLARE_NODE(Round)
 /*Node
  *
  * @name Round
- * @category Vector
+ * @category Found
  * @description Rounds a float values to the nearest integer
  *
  * @input_name INPUT
@@ -20,7 +20,7 @@ DECLARE_NODE(Round)
  * @input_description The input float 
  *
  * @output_name OUTPUT
- * @output_type Int
+ * @output_type int
  * @output_description Nearest integer
  *
 END*/
