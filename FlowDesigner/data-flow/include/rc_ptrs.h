@@ -257,11 +257,25 @@ RCPtr<X>& RCPtr<X>::operator= (const RCPtr<Z> &r)
    {
       X *tmp=dynamic_cast<X*> (r.ptr);
       //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
-      if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
-      release();
-      ptr=tmp;
-      //count = r.count;
-      acquire();
+      if (!tmp) {
+
+	//calling conversion code
+	RCPtr<Object> conv = Conversion::convertTo<X>(r);
+
+	tmp = dynamic_cast<X*>(conv.ptr);
+
+	if (!tmp) {
+	  throw new GeneralException("Something is wrong in RCPtr::operator=, this should not happen.",__FILE__,__LINE__);
+	}
+	//must do that, since conv is local and we don't want the object to be deleted!
+      	release();
+	ptr=tmp;
+	acquire();
+      } else {
+	release();
+	ptr=tmp;
+	acquire();
+      }
    }
    return *this;
 }
