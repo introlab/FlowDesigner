@@ -145,9 +145,23 @@ class FFLayer : public Object {
 	    const double *p=previous;
 	    const double *end=p+nbInputs;
 	    value[i]=0;
+
+	    double sum1=0,sum2=0,sum3=0;
+	    while (p < end-2)
+	    {
+	       sum1 += *w++ * *p++;
+	       sum2 += *w++ * *p++;
+	       sum3 += *w++ * *p++;
+	    }
+	    value[i] = sum1+sum2+sum3;
 	    while (p<end)
 	       value[i] += *w++ * *p++;
 	    value[i] += *w;
+
+	    /*while (p<end)
+	       value[i] += *w++ * *p++;
+	       value[i] += *w;*/
+
 	    /*
 	    value[i]=w[nbInputs];
 	    for (int j=0;j<nbInputs;j++)

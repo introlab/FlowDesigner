@@ -95,24 +95,26 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
 	 {
 	    delta[i] = 0;
 	    double *outErr = layers[k+1]->getError();
-	    
+	    /*
 	    for (int j=0;j<topo[k+2];j++)
 	    {
 	       double *outW = layers[k+1]->getWeights(j);
 	       delta[i]+= outErr[j]*outW[i];
 	    }
 	    delta[i] = currentLayer->deriv[i]*delta[i];
-            
+                 */
+
 	    //This section is an optimized version of the commented one
-	    /*double *outW = layers[k+1]->getWeights(0);
-            int incr = layerSize+1;
-            for (int j=0;j<topo[k+2];j++)
-            {
-               delta[i]+= *outErr++ * *outW;
-               outW += incr;
+	    double *outW = layers[k+1]->getWeights(0)+i;
+	    int incr = layerSize+1;
+
+	    for (int j=0;j<topo[k+2];j++)
+	    {
+	       delta[i]+= *outErr++ * *outW;
+	       outW += incr;
             }
-            delta[i] = currentLayer->deriv[i]*delta[i];
-	    */
+	    delta[i] = currentLayer->deriv[i]*delta[i];
+	    
 	 }
 
          /*
@@ -126,9 +128,17 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
          double *p=previousValue;
          double d=delta[i];
          double *end=w+layerInputs;
-         while (w<end)
-            *w++ += *p++ * d;
-         *w += d;
+
+	 while (w<end-2)
+	 {
+	    *w++ += *p++ * d;
+	    *w++ += *p++ * d;
+	    *w++ += *p++ * d;
+	 }
+
+	 while (w<end)
+	    *w++ += *p++ * d;
+	 *w += d;
 
       }
    }	 
