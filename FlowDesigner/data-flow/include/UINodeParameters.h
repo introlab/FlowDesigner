@@ -23,6 +23,7 @@ public:
 class UINodeParameters {
 protected:
    vector<ParameterText *> textParams;
+   string comments;
    UINode *node;
 public:
    UINodeParameters(UINode *_node, string type);
@@ -40,6 +41,9 @@ public:
    
    ParameterSet *build(const ParameterSet &par);
    
+   const string &getComments() {return comments;}
+   void setComments(const string &_comments) {comments = _comments;}
+
    vector<ParameterText *> &get_textParams() {return textParams;}   
    UINode *getUINode() {return node;}
 

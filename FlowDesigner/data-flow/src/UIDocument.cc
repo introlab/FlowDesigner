@@ -560,17 +560,20 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
     else {
        
       //loading network
-      if (strstr(current_entry->d_name, ".n") && !strstr(current_entry->d_name, ".nn")){
-	 //cout<<"Loading network : "<<fullpath<<endl;
-        loadExtDocInfo(path, name);
-      }
-      
-      //loading toolbox
-      if (strstr(current_entry->d_name, ".def")) {
-	 //cout<<"Loading toolbox : "<<fullpath<<endl;
-        loadNodeDefInfo(path, name);
-      }
-
+       int len = strlen(current_entry->d_name);
+       if (len > 2 && strcmp(".n", current_entry->d_name + len-2)==0)
+       {
+	  //cout<<"Loading network : "<<fullpath<<endl;
+	  loadExtDocInfo(path, name);
+       }
+       
+       //loading toolbox
+       if (len > 4 && strcmp(".def", current_entry->d_name + len-4)==0)
+       {
+	  //cout<<"Loading toolbox : "<<fullpath<<endl;
+	  loadNodeDefInfo(path, name);
+       }
+       
     }
   }
 

@@ -27,6 +27,11 @@ static void type_changed (GnomePropertyBox *propertybox, GUINodeParameters* user
    user_data->changed();
 }
 
+static void comments_changed (GtkText *entry, GUINodeParameters* user_data)
+{
+   user_data->changed();
+}
+
 static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
 
   
@@ -94,7 +99,6 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, vector<Paramet
 
   GtkWidget *label12;
   GtkWidget *scrolledwindow2;
-  GtkWidget *text1;
   GtkWidget *label13;
   GtkWidget *label_properties;
   GtkWidget *table_properties;
@@ -268,13 +272,13 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, vector<Paramet
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow2);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
-  text1 = gtk_text_new (NULL, NULL);
-  gtk_widget_ref (text1);
-  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "text1", text1,
+  text_comments = gtk_text_new (NULL, NULL);
+  gtk_widget_ref (text_comments);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "text_comments", text_comments,
                             (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (text1);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow2), text1);
-  gtk_text_set_editable(GTK_TEXT(text1),TRUE);
+  gtk_widget_show (text_comments);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow2), text_comments);
+  gtk_text_set_editable(GTK_TEXT(text_comments),TRUE);
 
 
 
@@ -284,6 +288,11 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, vector<Paramet
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (label13);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label13);
+
+  gtk_signal_connect (GTK_OBJECT ( text_comments  ), "changed",
+		      GTK_SIGNAL_FUNC(comments_changed), this);
+  
+  
 
   //properties tab (DL)
 
@@ -457,6 +466,7 @@ void GUINodeParameters::apply()
       //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
    }
    //cerr << "apply\n";
+   cerr << gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1);
    node->getNetwork()->setModified();
 }
 

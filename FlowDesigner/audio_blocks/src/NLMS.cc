@@ -169,8 +169,8 @@ public:
 	 
 	 E = (1-beta)*E + beta*x[i]*x[i];
 	 norm = alpha*err/pow(E, power);
-	    for (int j=0;j<size;j++)
-	       a[j] += norm*x[i-j];
+	 for (int j=0;j<size;j++)
+	    a[j] += norm*x[i-j];
       }
    }
 

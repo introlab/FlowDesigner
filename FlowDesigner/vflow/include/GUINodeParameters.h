@@ -28,6 +28,7 @@ protected:
    vector<ParameterData> params;
    vector<ParameterText *> textParams;
    GUINode *node;
+   GtkWidget *text_comments;
 
 public:
    GUINodeParameters(GUINode *_node, string type, vector<ParameterText *> &_textParams);
