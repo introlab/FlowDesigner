@@ -18,6 +18,7 @@
 #include "Node.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
+#include "Buffer.h"
 
 class NNetTrain;
 
@@ -45,6 +46,7 @@ protected:
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetTrain(string nodeName, ParameterSet params)
+      : Node(nodeName, params)
       {
 	    outputID = addOutput("OUTPUT");
 	    trainInID = addInput("TRAIN_IN");
@@ -74,6 +76,7 @@ public:
 	 {
 	    if (count != processCount)
 	    {
+	       cerr << "getOutput in NNetTrain\n";
 	       int i,j;
 	       NodeInput trainInInput = inputs[trainInID];
 	       ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
@@ -81,17 +84,31 @@ public:
 	       NodeInput trainOutInput = inputs[trainOutID];
 	       ObjectRef trainOutValue = trainOutInput.node->getOutput(trainOutInput.outputID,count);
 
+	       cerr << "inputs calculated\n";
+	       Buffer &inBuff = object_cast<Buffer> (trainInValue);
+	       Buffer &outBuff = object_cast<Buffer> (trainOutValue);
+
+	       cerr << "inputs converted\n";
+	       vector <float *> in(inBuff.getCurrentPos());
+	       for (i=0;i<inBuff.getCurrentPos();i++)
+		  in[i]=object_cast <Vector<float> > (inBuff[i]).begin();
+
+	       vector <float *> out(outBuff.getCurrentPos());
+	       for (i=0;i<outBuff.getCurrentPos();i++)
+		  out[i]=object_cast <Vector<float> > (outBuff[i]).begin();
+
+
 	       //Vector<ObjectRef> &mat = object_cast<Vector<ObjectRef> > (matRef);
 
 	       Vector<int> topo(4);
-	       topo[0]=2;
+	       topo[0]=object_cast <Vector<float> > (inBuff[0]).size();
 	       topo[1]=10;
 	       topo[2]=10;
-	       topo[3]=1;
+	       topo[3]=object_cast <Vector<float> > (outBuff[0]).size();
 
 	       FFNet *net = new FFNet( topo ); 
 	       
-	       //net.train();
+	       net->train(in, out, 1000);
 
 	       currentNet = ObjectRef(net);
 	       //exit(1);

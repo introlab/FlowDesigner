@@ -8,7 +8,7 @@
 #include "Object.h"
 #include "Vector.h"
 
-#define alpha 1
+#define alpha .001
 
 class FFNet : public Object {
   protected:

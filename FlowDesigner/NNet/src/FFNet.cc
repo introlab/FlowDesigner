@@ -12,7 +12,7 @@ FFNet::FFNet(const Vector<int> &_topo)
    //topo = _topo;
    for (int i=0;i<topo.size()-1;i++)
    {
-      if (i==topo.size()-2 && 0)
+      if (i==topo.size()-2)
       {
 	 //cout << "layer with " << topo[i+1] << endl;
 	 layers[i]=new FFLayer(topo[i+1],topo[i], "lin");
