@@ -1,6 +1,10 @@
 // Copyright (C) 1999 Jean-Marc Valin
+//
+// Modified 2003 Dominic Letourneau
+// Changed to a BufferedNode.
+//
 
-#include "Node.h"
+#include "BufferedNode.h"
 
 class NOP;
 
@@ -20,29 +24,31 @@ DECLARE_NODE(NOP)
 END*/
 
 
-class NOP : public Node {
+class NOP : public BufferedNode {
+
 protected:
    int inputID;
    int outputID;
 
 public:
-   NOP(string nodeName, ParameterSet params)
-      : Node(nodeName, params)
-   {
-      try {
-         inputID = addInput("INPUT");
-	 outputID=addOutput("OUTPUT");
-      } catch (BaseException *e)
-      {
-         throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
-      }
-      
-   }
 
-   ObjectRef getOutput(int output_id, int count)
-   {
-      ObjectRef inputValue = getInput(inputID,count);
-      return inputValue;
-   }
 
+  NOP(string nodeName, ParameterSet params)
+    : BufferedNode(nodeName, params) {
+    try {
+      inputID = addInput("INPUT");
+      outputID= addOutput("OUTPUT");
+    } 
+    catch (BaseException *e) {
+      throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
+    } 
+  }
+
+  void calculate(int output_id, int count, Buffer &out) {
+
+    ObjectRef input1Value = getInput(inputID, count);
+
+    out[count] = input1Value;
+
+  }
 };
