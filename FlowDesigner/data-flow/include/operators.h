@@ -102,24 +102,12 @@ REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Complex<double>,Complex<double>,C
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Int,Int,0)	  \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Float,Float,1)	\
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Double,Double,2) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Int,Int,3) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Int,Float,3) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Float,Float,4) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Double,Double,5) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Int,Int,6) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Float,Float,7) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Int,Double,6) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Float,Double,7) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Double,Double,8) 
-
-#define REGISTER_ALL_SCALAR_NO_COMPLEX_LOGIC_VTABLE(table, function)  \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Int,Bool,0)	  \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Float,Bool,1)	\
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Double,Bool,2) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Int,Bool,3) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Float,Bool,4) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Double,Bool,5) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Int,Bool,6) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Float,Bool,7) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Double,Bool,8) 
-
 
 #define REGISTER_ALL_SCALAR_TO_VECTOR_VTABLE(table, function)  \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Int,Vector<int>,0) \
