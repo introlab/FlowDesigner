@@ -9,6 +9,9 @@ using namespace std;
 #include <complex>
 #endif
 
+
+#undef HAVE_FFTW
+
 #ifdef HAVE_FFTW
 #include <fftw.h>
 #include <rfftw.h>
@@ -153,38 +156,95 @@ class _FFTWrap {
 
 #else /* ifdef HAVE_FFTW */
 
-#warning FFTW is not present. If you try to use an FFT or DCT, overflow will abort. Otherwise, everything will work fine
+#warning FFTW is not present. Overflow will use a (very, very) slow DFT implementation.
 #include <iostream>
+#include <math.h>
 
-static void FFTW_ERROR()
-{
-   cerr << "error: FFTW is not present or overflow has been compiled without it. " 
-	<< "Therfore, you cannot use the FFT." << endl;
-   exit(1);   
-}
 
 class _FFTWrap {
   public:
 #ifndef STUPID_COMPLEX_KLUDGE
    void fft (const complex<float> *fin, complex<float> *fout, int size)
    {
-      FFTW_ERROR();
+      float fact = 2*M_PI/size;
+      for (int i=0;i<size;i++)
+      {
+	 fout[i] = complex<float> (0,0);
+	 for (int j=0;j<size;j++)
+	 {
+	    complex<float> c(cos(fact*j*i),-sin(fact*j*i));
+	    fout[i] += c*fin[j];
+	 }
+      }
    }
 
    void ifft (const complex<float> *fin, complex<float> *fout, int size)
    {
-      FFTW_ERROR();
+      float fact = 2*M_PI/size;
+      for (int i=0;i<size;i++)
+      {
+	 fout[i] = complex<float> (0,0);
+	 for (int j=0;j<size;j++)
+	 {
+	    complex<float> c(cos(fact*j*i),sin(fact*j*i));
+	    fout[i] += c*fin[j];
+	 }
+      }
    }
 #endif
 
    void rfft (const float *fin, float *fout, int size)
    {
-      FFTW_ERROR();
+      float fact = 2*M_PI/size;
+      for (int i=0;i<size;i++)
+	 fout[i] = 0;
+      for (int i=1;i<(size+1)>>1;i++)
+      {
+	 for (int j=0;j<size;j++)
+	 {
+	    fout[i] += fin[j]*cos(fact*j*i);
+	    fout[size-i] -= fin[j]*sin(fact*j*i);
+	 }
+      }
+      for (int j=0;j<size;j++)
+      {
+	 fout[0] += fin[j];
+      }
+      if (size&1)
+	 for (int j=0;j<size;j++)
+	 {
+	    if (j&1)
+	       fout[size>>1] -= fin[j];
+	    else
+	       fout[size>>1] += fin[j];
+	 }
    }
 
    void irfft (const float *fin, float *fout, int size)
    {
-      FFTW_ERROR();
+      float fact = 2*M_PI/size;
+      for (int i=0;i<size;i++)
+	 fout[i] = 0;
+      for (int i=1;i<(size+1)>>1;i++)
+      {
+	 for (int j=0;j<size;j++)
+	 {
+	    fout[i] += fin[j]*cos(fact*j*i);
+	    fout[size-i] += fin[j]*sin(fact*j*i);
+	 }
+      }
+      for (int j=0;j<size;j++)
+      {
+	 fout[0] += fin[j];
+      }
+      if (size&1)
+	 for (int j=0;j<size;j++)
+	 {
+	    if (j&1)
+	       fout[size>>1] -= fin[j];
+	    else
+	       fout[size>>1] += fin[j];
+	 }
    }
 
 

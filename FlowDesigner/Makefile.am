@@ -10,4 +10,4 @@ bin_SCRIPTS = overflow-config
 
 EXTRA_DIST = Overflow.spec
 
-SUBDIRS = data-flow @modules@ vflow tools examples
+SUBDIRS = data-flow @modules@ tools examples
