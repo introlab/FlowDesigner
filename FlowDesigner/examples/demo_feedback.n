@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="MAIN_LOOP" x="-578.000000" y="100.000000"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+  <Network type="iterator" name="MAIN_LOOP">
+    <Node name="node1" type="Feedback" x="-196.000000" y="129.000000">
+      <Parameter name="DELAY" type="int" value="1"/>
+    </Node>
+    <Node name="node2" type="Add" x="-280.000000" y="130.000000"/>
+    <Node name="node4" type="Constant" x="-470.000000" y="111.000000">
+      <Parameter name="VALUE" type="int" value="1"/>
+    </Node>
+    <Node name="node5" type="IF" x="-145.000000" y="279.000000"/>
+    <Node name="node6" type="TextProbe" x="-34.000000" y="128.000000"/>
+    <Node name="node7" type="IterCount" x="-526.000000" y="283.000000"/>
+    <Node name="node8" type="Greater" x="-394.000000" y="297.000000"/>
+    <Node name="node9" type="Constant" x="-526.000000" y="319.000000">
+      <Parameter name="VALUE" type="int" value="0"/>
+    </Node>
+    <Node name="node10" type="Constant" x="-248.000000" y="304.000000">
+      <Parameter name="VALUE" type="int" value="0"/>
+    </Node>
+    <Node name="node11" type="Constant" x="-359.000000" y="37.000000">
+      <Parameter name="VALUE" type="bool" value="true"/>
+    </Node>
+    <Link from="node2" output="OUTPUT" to="node1" input="INPUT"/>
+    <Link from="node4" output="VALUE" to="node2" input="INPUT1"/>
+    <Link from="node7" output="OUTPUT" to="node8" input="INPUT1"/>
+    <Link from="node9" output="VALUE" to="node8" input="INPUT2"/>
+    <Link from="node8" output="OUTPUT" to="node5" input="COND"/>
+    <Link from="node10" output="VALUE" to="node5" input="ELSE"/>
+    <Link from="node5" output="OUTPUT" to="node2" input="INPUT2"/>
+    <Link from="node1" output="DELAY" to="node5" input="THEN"/>
+    <Link from="node1" output="OUTPUT" to="node6" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node6" terminal="OUTPUT"/>
+    <NetCondition name="CONDITION" node="node11" terminal="VALUE"/>
+  </Network>
+</Document>
