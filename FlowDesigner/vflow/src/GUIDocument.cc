@@ -570,6 +570,8 @@ void GUIDocument::createParamDialog()
 static void disposeFunct(void *dummy)
 {
    //delete net;
+   cerr << "deleting\n";
+   GUIDocument::isRunning=false;
    delete GUIDocument::runningNet; 
    //pthread_cleanup_push(routine,arg) 
 }
@@ -604,6 +606,7 @@ void GUIDocument::threadStop()
 void GUIDocument::run()
 {
    //cerr << "GUIDocument::run\n";
+   pthread_cleanup_push(disposeFunct, NULL);
    try{
       ParameterSet parameters;
       {
@@ -654,4 +657,6 @@ void GUIDocument::run()
       e.print();
       
    }
+   pthread_cleanup_pop(1);
+
 }
