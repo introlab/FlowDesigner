@@ -339,6 +339,8 @@ void UIDocument::loadXML(xmlNodePtr root)
 static vector<string> envList(char *envName)
 {
    vector<string> list;
+   list.insert(list.end(), INSTALL_PREFIX "/toolbox");
+   list.insert(list.end(), INSTALL_PREFIX "/lib");
    char *strPath = getenv(envName);
    if (!strPath)
       return list;
@@ -357,8 +359,6 @@ static vector<string> envList(char *envName)
    if (pos)
       list.insert(list.end(), string(&(path[start]), &(path[pos])));
 
-   list.insert(list.end(), INSTALL_PREFIX "/toolbox");
-   list.insert(list.end(), INSTALL_PREFIX "/lib");
    //cerr << pathList << endl;
    return list;
 }
