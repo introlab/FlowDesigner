@@ -40,16 +40,34 @@ ObjectRef file_url_handler(const string& url, int flags) {
   switch(flags) {
 
   case URLHandler::URL_READ:
-    return ObjectRef(new IStream(new ifstream(stripped_url.c_str())));
-    break;
+  {
+     ifstream *stream = new ifstream(stripped_url.c_str());
+     if (stream->fail())
+        throw new GeneralException("Cannot open file: " + stripped_url, __FILE__, __LINE__);
+     else
+        return ObjectRef(new IStream(stream));
+  }
+  break;
 
   case URLHandler::URL_WRITE:
-    return ObjectRef(new OStream(new ofstream(stripped_url.c_str())));
-    break;
+  {
+     ofstream *stream = new ofstream(stripped_url.c_str());
+     if (stream->fail())
+        throw new GeneralException("Cannot open file: " + stripped_url, __FILE__, __LINE__);
+     else
+        return ObjectRef(new OStream(stream));
+  }
+  break;
 
   case URLHandler::URL_READWRITE:
-    return ObjectRef(new IOStream(new fstream(stripped_url.c_str())));
-    break;
+    {
+     fstream *stream = new fstream(stripped_url.c_str());
+     if (stream->fail())
+        throw new GeneralException("Cannot open file: " + stripped_url, __FILE__, __LINE__);
+     else
+        return ObjectRef(new IOStream(stream));
+  }
+  break;
 
   default:
     ostringstream my_stream;
