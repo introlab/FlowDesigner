@@ -89,3 +89,27 @@ ObjectRef addVectorFloatFloat (ObjectRef x, ObjectRef y)
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(addVtable, addVectorFloatFloat, Vector<float>, Float);
+
+ObjectRef subVectorFloatFloat (ObjectRef x, ObjectRef y)
+{
+   Vector<float> &v1 = object_cast<Vector<float> > (x);
+   float v2 = dereference_cast<float> (y);
+   int length = v1.size();
+
+   Vector<float> *v = Vector<float>::alloc(length);
+   vec_add_scal(-v2, &v1[0], &(*v)[0], length);
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(subVtable, subVectorFloatFloat, Vector<float>, Float);
+
+ObjectRef mulVectorFloatFloat (ObjectRef x, ObjectRef y)
+{
+   Vector<float> &v1 = object_cast<Vector<float> > (x);
+   float v2 = dereference_cast<float> (y);
+   int length = v1.size();
+
+   Vector<float> *v = Vector<float>::alloc(length);
+   vec_mul_scal(v2, &v1[0], &(*v)[0], length);
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorFloatFloat, Vector<float>, Float);
