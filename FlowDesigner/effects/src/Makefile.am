@@ -1,10 +1,10 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/effects
+override datadir=${prefix}/lib/flowdesigner/toolbox/effects
+override libdir=${prefix}/lib/flowdesigner/toolbox/effects
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.15 2003/11/13 02:54:27 jmvalin Exp $
+# $Id: Makefile.am,v 1.16 2004/01/13 22:12:42 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -12,9 +12,9 @@ override libdir=${prefix}/share/flowdesigner/lib
 lib_LTLIBRARIES = libeffects.la 
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/effects
+	mkdir -p $(libdir)
 	(cd $(libdir); rm -f effects.tlb; ln -s libeffects.so effects.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/effects/effects.def)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/effects.def)
 
 libeffects_la_SOURCES =	Saturate.cc rev.cc Reverb.cc
 

@@ -1,13 +1,13 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/lapackflow
+override datadir=${prefix}/lib/flowdesigner/toolbox/lapackflow
+override libdir=${prefix}/lib/flowdesigner/toolbox/lapackflow
 
 lib_LTLIBRARIES = liblapackflow.la 
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/lapackflow
+	mkdir -p $(datadir)
 	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.so lapackflow.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.f src/*.cc include/*.h > $(datadir)/toolbox/lapackflow/lapackflow.def)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.f src/*.cc include/*.h > $(datadir)/lapackflow.def)
 
 liblapackflow_la_SOURCES = lapackflow.cc \
 	flapack.f \

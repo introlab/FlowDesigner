@@ -1,6 +1,6 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/VQ
+override datadir=${prefix}/lib/flowdesigner/toolbox/VQ
+override libdir=${prefix}/lib/flowdesigner/toolbox/VQ
 
 
 include_HEADERS = kmeans.h Cell.h \

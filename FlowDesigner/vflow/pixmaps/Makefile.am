@@ -1,9 +1,9 @@
 override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override datadir=${prefix}/lib/flowdesigner/toolbox/vflow
+override libdir=${prefix}/lib/flowdesigner/
 
 EXTRA_DIST = 
 
-pixmapdir = $(datadir)/pixmaps
+pixmapdir = $(libdir)/pixmaps
 
 pixmap_DATA = 

@@ -1,4 +1,4 @@
-override includedir=${prefix}/include/flowdesigner
+override includedir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 override datadir=${prefix}/share/flowdesigner
 override libdir=${prefix}/share/flowdesigner/lib
 

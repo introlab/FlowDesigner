@@ -1,10 +1,10 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/HMM
+override datadir=${prefix}/lib/flowdesigner/toolbox/HMM
+override libdir=${prefix}/lib/flowdesigner/toolbox/HMM
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.31 2003/11/13 02:54:27 jmvalin Exp $
+# $Id: Makefile.am,v 1.32 2004/01/13 22:12:41 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -12,9 +12,9 @@ override libdir=${prefix}/share/flowdesigner/lib
 lib_LTLIBRARIES = libhmm.la
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/hmm
+	mkdir -p $(datadir)
 	(cd $(libdir); rm -f hmm.tlb; ln -s libhmm.so hmm.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/hmm/hmm.def)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/hmm.def)
 
 # Sources for compilation in the library
 libhmm_la_SOURCES =	gmm.cc covariance.cc gaussian.cc \

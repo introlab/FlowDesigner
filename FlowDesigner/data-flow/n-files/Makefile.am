@@ -1,10 +1,10 @@
 #AUTOMAKE_OPTIONS = no-dependencies
 
 override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
+override datadir=${prefix}/lib/flowdesigner/toolbox/data-flow
 override libdir=${prefix}/lib
 
-toolboxdir = $(libdir)/toolbox/data-flow/n-files
+toolboxdir = $(datadir)
 
 toolbox_DATA = LoadFile.n \
 	       SaveAs.n \

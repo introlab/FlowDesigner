@@ -8,7 +8,7 @@ map<string, ToolboxData> ToolboxList::loadedToolboxes;
 
 LoadedLibrary *DLManager::getLib(const string &name)
 {
-   //cerr << "DLManager::get_lib(" << name << ")\n";
+   cerr << "DLManager::get_lib(" << name << ")\n";
    if (loaded.find(name)==loaded.end())
    {
       loaded[name] = new LoadedLibrary (name);

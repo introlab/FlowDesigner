@@ -30,7 +30,7 @@ using namespace std;
 typedef void *DL_HANDLE_TYPE;
 
 /**How to open a library*/
-inline DL_HANDLE_TYPE _DL_OPEN(string path, int debug = 0) 
+inline DL_HANDLE_TYPE _DL_OPEN(string path, int debug = 1) 
 {
    //cerr << "opening lib " << path.c_str() << endl;
    DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY|RTLD_GLOBAL);

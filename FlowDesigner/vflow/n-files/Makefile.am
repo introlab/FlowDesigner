@@ -1,10 +1,10 @@
 #AUTOMAKE_OPTIONS = no-dependencies
 
 override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override datadir=${prefix}/lib/flowdesigner/toolbox/vflow
+override libdir=${prefix}/lib/flowdesigner/toolbox/vflow
 
-toolboxdir = $(datadir)/toolbox/vflow
+toolboxdir = $(datadir)
 
 toolbox_DATA = SpectrumProbe.n
 

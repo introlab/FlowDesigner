@@ -6,6 +6,7 @@
 #include "DLManager.h"
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 vector<string> envList(char *envName, bool include_home)
 {
@@ -16,8 +17,13 @@ vector<string> envList(char *envName, bool include_home)
       char *home = getenv("FLOWDESIGNER_HOME");
       if (home && strcmp(home, "")!=0)
 	 prefix=home;
-      list.insert(list.end(), prefix+ "/share/flowdesigner/toolbox");
-      list.insert(list.end(), prefix+ "/share/flowdesigner/lib");
+
+      list.insert(list.end(), prefix+ "/lib/flowdesigner/toolbox");
+
+      //libraries are now installed in the proper toolbox directory
+      //(DL) 06/02/2004
+
+      //list.insert(list.end(), prefix+ "/lib/flowdesigner/lib");
    }
    char *strPath = getenv(envName);
    if (!strPath)
@@ -41,58 +47,103 @@ vector<string> envList(char *envName, bool include_home)
    return list;
 }
 
+//Added recursive scan to look for toolbox subdirectories
+//(DL) 06/02/2004
+void recursiveScanDL(const string &path, vector<string> &libList, bool debug) {
+  
+  if (debug)
+    cerr<<"recursive DL scan with path : "<<path<<endl;
+  
+  DIR *my_directory = opendir (path.c_str());
+  
+  if (!my_directory) {
+    perror("error opening directory");
+    return;
+  }
+  
+  struct dirent *current_entry;
+  
+  for (current_entry = readdir(my_directory); 
+       current_entry != NULL; current_entry = readdir(my_directory)) {
+      
+    struct stat my_stat;
+    string name = current_entry->d_name;
+    string fullpath = path + "/" + name;
+    
+    //is it a directory, if so let's scan it...
+    if (stat(fullpath.c_str(), &my_stat) < 0) {	    
+      perror(fullpath.c_str());
+      continue;
+    }
+    
+    if (S_ISDIR(my_stat.st_mode)) {
+      //it is a directory, let's doing it recursively
+      if (name != string("..") && name != string(".")) {
+	recursiveScanDL(fullpath, libList,debug);
+      }
+    }
+    else {
+      //this is a standard file, look for the .tlb extension
+      if (name.find(".tlb") != string::npos) {	    
+	if (debug) {
+	  cerr << "Found " << fullpath << endl;
+	}   
+	libList.push_back(fullpath);
+      }
+    }       
+  }//for all entries
+  
+  closedir(my_directory);
+  
+}
 
 
 void scanDL(bool debug)
 {
    vector<string> libList;
    
-   if (debug)
-      cerr << "Overflow loading all toolbox code (DL)" << endl;
+   if (debug) {
+      cerr << "FlowDesigner loading all toolbox code (DL)" << endl;
+   }
+
 #ifdef PIC
    vector<string> dirs=envList("FLOWDESIGNER_PATH");
 #else
    vector<string> dirs=envList("FLOWDESIGNER_PATH", false);
 #endif
+
    if (dirs.size() == 0)
    {
       cerr << "Cannot find any toolbox. Exiting\n";
       exit(1);
    }
+
    for (unsigned int i = 0; i<dirs.size();i++)
    {
-      if (debug)
-	 cerr << "scanDL: Looking in directory " << dirs[i] << endl;
-      DIR *my_directory = opendir (dirs[i].c_str());
-      if (!my_directory)
-	 continue;
-      struct dirent *current_entry;
-      for (current_entry = readdir(my_directory); 
-	   current_entry != NULL; current_entry = readdir(my_directory)) 
-      {
-	 if (!strstr(current_entry->d_name, ".tlb"))
-	 {
-	    //cerr << current_entry->d_name << " is not a shared library\n";
-	    continue;
-	 }
-	 string fullname = dirs[i] + "/" + current_entry->d_name;
-	 if (debug)
-	    cerr << "Found " << fullname << endl;
-	 libList.push_back(fullname);
-	 //DLManager::getLib(fullname);
-	 //_DL_OPEN(fullname.c_str());
-      }
-      
-      closedir(my_directory);
+     if (debug) {
+       cerr << "scanDL: Looking in directory " << dirs[i] << endl;
+     }
+     
+     //(DL) 06/02/2004
+     //calling new recursive function to scan for toolboxes
+     recursiveScanDL(dirs[i], libList, debug);
    }
+
+   
    vector<string> errors = ToolboxList::load(libList, debug);
+
    if (errors.size())
    {
       cerr << "There were errors loading the toolboxes:\n";
-      for (unsigned int i=0;i<errors.size();i++)
-	 cerr << errors[i] << endl;
+
+      for (unsigned int i=0;i<errors.size();i++) 
+	{
+	  cerr << errors[i] << endl;
+	}
+
    }
-   if (debug)
+   if (debug) {
       cerr << "DL Loading done." << endl;
+   }
    
 }

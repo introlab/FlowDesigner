@@ -1,20 +1,19 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.41 2003/11/13 02:54:27 jmvalin Exp $
+# $Id: Makefile.am,v 1.42 2004/01/13 22:12:41 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/NNet
+override datadir=${prefix}/lib/flowdesigner/toolbox/NNet
+override libdir=${prefix}/lib/flowdesigner/toolbox/NNet
 
 lib_LTLIBRARIES = libnnet.la
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/nnet
-	(cd $(libdir); rm -f nnet.tlb; ln -s libnnet.so nnet.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/nnet/nnet.def)
+	(cd $(libdir); rm -f NNet.tlb; ln -s libnnet.so NNet.tlb)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/NNet.def)
 
 # Sources for compilation in the library
 libnnet_la_SOURCES = FFLayer.cc FFNet.cc \

@@ -1,12 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
 override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override datadir=${prefix}/lib/flowdesigner/toolbox/vflow
+override libdir=${prefix}/lib/flowdesigner/toolbox/vflow
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/vflow
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h> $(datadir)/toolbox/vflow/vflow.def)
+	mkdir -p $(datadir)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h> $(datadir)/vflow.def)
 
 INCLUDES = \
            -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -19,6 +19,7 @@ INCLUDES = \
 	-I$(top_srcdir)/../data-flow/include \
 	-I$(top_srcdir)/../audio_blocks/include \
 	-I$(top_srcdir)/include
+
 
 bin_PROGRAMS = flowdesigner gflow
 

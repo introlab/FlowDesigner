@@ -1,17 +1,16 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.114 2004/01/13 22:12:42 jmvalin Exp $
+# $Id: Makefile.am,v 1.115 2004/02/05 21:07:32 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
+override datadir=${prefix}/lib/flowdesigner/toolbox/data-flow
 
 install-data-local:
-	mkdir -p $(libdir)/toolbox/data-flow/n-files
-	mkdir -p $(libdir)/toolbox/data-flow/def
-	(cd $(top_srcdir); perl tools/src/info2def.pl data-flow/src/*.cc data-flow/include/*.h > $(libdir)/toolbox/data-flow/def/data-flow.def)
+	mkdir -p $(datadir)
+	(cd $(top_srcdir); perl tools/src/info2def.pl data-flow/src/*.cc data-flow/include/*.h > $(datadir)/data-flow.def)
 
 lib_LTLIBRARIES = libflow.la
 

@@ -296,10 +296,10 @@ AC_PATH_FFTW
 
 if test "x$prefix" != "xDONE"; then
 AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${prefix}")
-AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${prefix}/toolbox")
+AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${prefix}/lib/flowdesigner/toolbox")
 else
 AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${ac_default_prefix}")
-AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${ac_default_prefix}/toolbox")
+AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${ac_default_prefix}/lib/flowdesigner/toolbox")
 fi
 
 

@@ -53,8 +53,9 @@ map<string, set<string> > &UINodeRepository::HeaderDepend()
 
 void UINodeRepository::Scan()
 {
-   vector<string> dirs = envList("VFLOW_PATH");
-   
+  //(DL) 06/02/2004
+  vector<string> dirs = envList("FLOWDESIGNER_PATH");
+     
    for (unsigned int i=0;i<dirs.size();i++) 
    {
       LoadAllInfoRecursive(dirs[i]);
@@ -505,14 +506,14 @@ void UINodeRepository::LoadAllInfoRecursive(const string &path) {
        int len = strlen(current_entry->d_name);
        if (len > 2 && strcmp(".n", current_entry->d_name + len-2)==0)
        {
-	  //cout<<"Loading network : "<<fullpath<<endl;
+	  //cerr<<"Loading network : "<<fullpath<<endl;
 	  LoadExtDocInfo(path, name);
        }
        
        //loading toolbox
        if (len > 4 && strcmp(".def", current_entry->d_name + len-4)==0)
        {
-	  //cout<<"Loading toolbox : "<<fullpath<<endl;
+	  //cerr<<"Loading toolbox : "<<fullpath<<endl;
 	  LoadNodeDefInfo(path, name);
        }
        

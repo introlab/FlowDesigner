@@ -1,9 +1,9 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/VQ
+override datadir=${prefix}/lib/flowdesigner/toolbox/VQ
+override libdir=${prefix}/lib/flowdesigner/toolbox/VQ
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.31 2003/11/13 02:54:27 jmvalin Exp $
+# $Id: Makefile.am,v 1.32 2004/01/13 22:12:41 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -11,9 +11,9 @@ override libdir=${prefix}/share/flowdesigner/lib
 lib_LTLIBRARIES = libvq.la
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/vq
+	mkdir -p $(datadir)
 	(cd $(libdir); rm -f vq.tlb; ln -s libvq.so vq.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/vq/vq.def)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/vq.def)
 
 # Sources for compilation in the library
 libvq_la_SOURCES = kmeans.cc \

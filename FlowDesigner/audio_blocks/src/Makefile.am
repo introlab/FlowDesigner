@@ -1,10 +1,10 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
+override datadir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
+override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.99 2003/11/13 02:54:27 jmvalin Exp $
+# $Id: Makefile.am,v 1.100 2004/01/13 22:12:41 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -12,9 +12,9 @@ override libdir=${prefix}/share/flowdesigner/lib
 lib_LTLIBRARIES = libablocks.la 
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/audio_blocks
+	mkdir -p $(libdir)
 	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/toolbox/audio_blocks/audio_blocks.def)
+	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/audio_blocks.def)
 
 libablocks_la_SOURCES =	\
 	GCMS.cc \
@@ -102,7 +102,6 @@ libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
 INCLUDES = -I$(top_srcdir)/../data-flow/include -I$(top_srcdir)/include $(FFTW_INCLUDES)
 
-LDADD = $(top_srcdir)/../data-flow/src/libflow.la \
-	$(LIB_FFTW)
+LDADD = $(top_srcdir)/../data-flow/src/libflow.la $(LIB_FFTW)
 
 

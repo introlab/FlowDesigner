@@ -1,6 +1,6 @@
-override includedir=${prefix}/include/flowdesigner
-override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override includedir=${prefix}/lib/flowdesigner/toolbox/HMM
+override datadir=${prefix}/lib/flowdesigner/toolbox/HMM
+override libdir=${prefix}/lib/flowdesigner/toolbox/HMM
 
 
 include_HEADERS = covariance.h \
