@@ -59,5 +59,6 @@ noinst_HEADERS = \
 	DoubleDispatch.h \
 	operators.h \
 	FlowException.h \
+	vec.h \
 	iotraits.h  sstream  sstream.cc  sstream.h
 
