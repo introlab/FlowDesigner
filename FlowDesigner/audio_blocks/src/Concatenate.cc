@@ -8,20 +8,23 @@ class Concatenate;
 
 DECLARE_NODE(Concatenate)
 /*Node
-
+ *
  * @name Concatenate
  * @category Signal:Manip
  * @description Concatenates two vectors together
-
+ *
  * @input_name INPUT1
+ * @input_type Vector
  * @input_description First input vector
-
+ *
  * @input_name INPUT2
+ * @input_type Vector
  * @input_description Second input vector
-
+ *
  * @output_name OUTPUT
+ * @output_type Vector
  * @output_description Concatenated vector
-
+ *
 END*/
 
 

@@ -3,12 +3,12 @@
 #include "BufferedNode.h"
 #include "operators.h"
 
-class MaxValue;
-DECLARE_NODE(MaxValue)
+class Max;
+DECLARE_NODE(Max)
 /*Node
  *
- * @name MaxValue
- * @category Math
+ * @name Max
+ * @category Operator
  * @description The maximum value
  *
  * @input_name INPUT1
@@ -23,7 +23,7 @@ DECLARE_NODE(MaxValue)
 END*/
 
 
-class MaxValue : public BufferedNode {
+class Max : public BufferedNode {
 protected:
    ///The ID of the 'output' output
    int outputID;
@@ -36,7 +36,7 @@ protected:
 
 public:
    ///Constructor, takes the name of the node and a set of parameters
-   MaxValue(string nodeName, ParameterSet params) 
+   Max(string nodeName, ParameterSet params) 
      : BufferedNode(nodeName, params)
    {
       input1ID = addInput ("INPUT1");
@@ -62,13 +62,7 @@ public:
        return;
      }
 
-     
-     if (dereference_cast<bool>(InputValue1 > InputValue2)) {
-       out[count] = InputValue1;
-     }
-     else {
-       out[count] = InputValue2;
-     }
+     out[count] = max(InputValue1, InputValue2);
 
    }
    

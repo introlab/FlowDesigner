@@ -10,7 +10,7 @@ DECLARE_NODE(Sum)
 /*Node
  *
  * @name Sum
- * @category Math
+ * @category Vector
  * @description Sum of all the elements of a vector
  *
  * @input_name INPUT

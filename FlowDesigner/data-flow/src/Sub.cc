@@ -10,7 +10,7 @@ DECLARE_NODE(Sub)
 /*Node
  *
  * @name Sub
- * @category Math
+ * @category Operator
  * @description Subtracts two values, Vectors, Objects
  *
  * @input_name INPUT1

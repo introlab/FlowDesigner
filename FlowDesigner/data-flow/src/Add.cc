@@ -10,7 +10,7 @@ DECLARE_NODE(Add)
 /*Node
  *
  * @name Add
- * @category Math
+ * @category Operator
  * @description Adds two input values and returns the result
  *
  * @input_name INPUT1

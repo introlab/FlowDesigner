@@ -10,7 +10,7 @@ DECLARE_NODE(Mul)
 /*Node
  *
  * @name Mul
- * @category Math
+ * @category Operator
  * @description Multiplication between two values, vectors, objects (operator* must be defined)
  *
  * @input_name INPUT1

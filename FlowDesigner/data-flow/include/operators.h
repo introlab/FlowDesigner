@@ -49,3 +49,17 @@ inline ObjectRef operator==(ObjectRef x, ObjectRef y)
 {
    return equalVtable::perform(x,y);
 }
+
+
+DEFINE_DOUBLE_VTABLE(maxVtable);
+inline ObjectRef max(ObjectRef x, ObjectRef y)
+{
+   return maxVtable::perform(x,y);
+}
+
+
+DEFINE_DOUBLE_VTABLE(minVtable);
+inline ObjectRef min(ObjectRef x, ObjectRef y)
+{
+   return minVtable::perform(x,y);
+}

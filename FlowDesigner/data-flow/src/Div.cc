@@ -10,7 +10,7 @@ DECLARE_NODE(Div)
 /*Node
  *
  * @name Div
- * @category Math
+ * @category Operator
  * @description Divides a numerator by a denominator
  *
  * @input_name NUM

@@ -11,7 +11,7 @@ DECLARE_NODE(MatProduct)
 /*Node
  *
  * @name MatProduct
- * @category Math
+ * @category Vector
  * @description Matrix x vector product
  *
  * @input_name INPUT

@@ -3,12 +3,12 @@
 #include "BufferedNode.h"
 #include "operators.h"
 
-class MinValue;
-DECLARE_NODE(MinValue)
+class Min;
+DECLARE_NODE(Min)
 /*Node
  *
- * @name MinValue
- * @category Math
+ * @name Min
+ * @category Operator
  * @description Selects the minimum between two values
  *
  * @input_name INPUT1
@@ -23,7 +23,7 @@ DECLARE_NODE(MinValue)
 END*/
 
 
-class MinValue : public BufferedNode {
+class Min : public BufferedNode {
 protected:
    ///The ID of the 'output' output
    int outputID;
@@ -36,7 +36,7 @@ protected:
 
 public:
    ///Constructor, takes the name of the node and a set of parameters
-   MinValue(string nodeName, ParameterSet params) 
+   Min(string nodeName, ParameterSet params) 
      : BufferedNode(nodeName, params)
    {
       input1ID = addInput ("INPUT1");
@@ -62,14 +62,7 @@ public:
        return;
      }
 
-     
-     if ( dereference_cast<bool>(InputValue1 > InputValue2)) {
-       out[count] = InputValue2;
-     }
-     else {
-       out[count] = InputValue1;
-     }
-
+     out[count] = min(InputValue1, InputValue2);
    }
    
 };

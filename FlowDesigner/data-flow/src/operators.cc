@@ -41,6 +41,30 @@ ObjectRef smallerFloatFloat(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerFloatFloat, Float, Float);
 
+//FIXME: Should we really return the object of should we copy it?
+ObjectRef maxFloatFloat(ObjectRef x, ObjectRef y)
+{
+
+  if (dereference_cast<float> (x) < (dereference_cast<float> (y))) {
+    return y;
+  }
+  else {
+    return x;
+  }
+}
+REGISTER_DOUBLE_VTABLE(maxVtable, maxFloatFloat, Float, Float);
+
+ObjectRef minFloatFloat(ObjectRef x, ObjectRef y)
+{
+
+  if (dereference_cast<float> (x) > (dereference_cast<float> (y))) {
+    return y;
+  }
+  else {
+    return x;
+  }
+}
+REGISTER_DOUBLE_VTABLE(minVtable, minFloatFloat, Float, Float);
 
 
 //Operators for Int and Int
@@ -78,6 +102,30 @@ ObjectRef smallerIntInt(ObjectRef x, ObjectRef y)
   }
 }
 REGISTER_DOUBLE_VTABLE(smallerVtable, smallerIntInt, Int, Int);
+
+ObjectRef maxIntInt(ObjectRef x, ObjectRef y)
+{
+  if (dereference_cast<int> (x) < (dereference_cast<int> (y))) {
+    return y;
+  }
+  else {
+    return x;
+  }
+}
+REGISTER_DOUBLE_VTABLE(maxVtable, maxIntInt, Int, Int);
+
+ObjectRef minIntInt(ObjectRef x, ObjectRef y)
+{
+  if (dereference_cast<int> (x) > (dereference_cast<int> (y))) {
+    return y;
+  }
+  else {
+    return x;
+  }
+}
+REGISTER_DOUBLE_VTABLE(minVtable, minIntInt, Int, Int);
+
+
 
 
 //Operators for Int and Float

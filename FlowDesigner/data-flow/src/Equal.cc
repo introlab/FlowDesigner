@@ -10,7 +10,7 @@ DECLARE_NODE(Equal)
 /*Node
  *
  * @name Equal
- * @category Math
+ * @category Operator
  * @description Returns true if two input values are equal, false otherwise
  *
  * @input_name INPUT1
