@@ -28,10 +28,7 @@ int build_fexp_table()
    for (int i=0;i<FEXPSIZE;i++)
    {
       m.i = i<<FEXPSHIFT;
-      if (m.f<70)
-	 exptable[i]=exp(m.f);
-      else
-	 exptable[i]=1e34;
+      exptable[i]=exp(m.f);
    }
    return 0;
 }
