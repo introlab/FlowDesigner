@@ -770,11 +770,13 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
     if (S_ISDIR(my_stat.st_mode)) {
       //it is a directory, let's doing it recursively
       if (name != string("..") && name != string(".")) {
-	return buildExternalRecursive(fullpath,type, _name, params);
+	 Network *ret = buildExternalRecursive(fullpath,type, _name, params);
+	 if (net) 
+	    return ret;
       }
     }
     else {
-       
+       cerr << "is it " << name << " in " << path << endl;
       if (name == (type + string(".n"))) {
 	//found the network
 	UIDocument doc(fullpath);
@@ -793,6 +795,7 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
 
   closedir(my_directory);
 
+  cerr << "returning " << net << " for " << type << endl;
   return net;
 
 }
