@@ -59,19 +59,25 @@ ObjectRef Save::getOutput(int output_id, int count)
 {
    if (output_id==outputID)
    {
-      if (count != processCount)
+      if (count > processCount)
       {
-         NodeInput objectInput = inputs[objectInputID];
-         ObjectRef objectValue = objectInput.node->getOutput(objectInput.outputID,count);
-         Object &object = *objectValue;
-
-         NodeInput streamInput = inputs[streamInputID];
-         ObjectRef streamValue = streamInput.node->getOutput(streamInput.outputID,count);
-         OStream &stream = object_cast<OStream> (streamValue);
-
-         stream << object << endl;
-         stream.flush();
-         return objectValue;
+	 ObjectRef objectValue;
+	 for (int i = processCount+1 ; i<=count; i++)
+	 {
+	    NodeInput objectInput = inputs[objectInputID];
+	    objectValue = objectInput.node->getOutput(objectInput.outputID,i);
+	    Object &object = *objectValue;
+	    
+	    NodeInput streamInput = inputs[streamInputID];
+	    ObjectRef streamValue = streamInput.node->getOutput(streamInput.outputID,i);
+	    OStream &stream = object_cast<OStream> (streamValue);
+	    
+	    stream << object << endl;
+	    stream.flush();
+	    
+	 }
+	 processCount = count;
+	 return objectValue;
       } else {
          NodeInput objectInput = inputs[objectInputID];
          ObjectRef objectValue = objectInput.node->getOutput(objectInput.outputID,count);

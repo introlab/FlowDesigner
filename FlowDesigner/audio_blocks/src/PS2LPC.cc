@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "FFTWrap.h"
+#include "misc.h"
 
 class PS2LPC;
 
@@ -40,10 +41,13 @@ DECLARE_NODE(PS2LPC)
 
  * @parameter_name INPUTLENGTH
  * @parameter_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
+ * @parameter_name LAG_THETA
+ * @parameter_description No description available
+ *
 END*/
 
 
@@ -61,6 +65,7 @@ class PS2LPC : public BufferedNode {
    float *response;
    float *ps;
    float *rc;
+   float *lag_window;
 public:
    PS2LPC(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
@@ -76,6 +81,15 @@ public:
       rc=new float[outputLength];
       response=new float[SAMP_SIZE];
       ps=new float[SAMP_SIZE];
+      lag_window=new float[SAMP_SIZE];
+      if (parameters.exist("LAG_THETA"))
+      {
+	 for (int i=0;i<SAMP_SIZE;i++)
+	    lag_window[i]=exp(-.5*sqr(2*M_PI*i*dereference_cast<float> (parameters.get("LAG_THETA"))));
+      } else {
+	 for (int i=0;i<SAMP_SIZE;i++)
+	    lag_window[i]=1;
+      }
 
    }
 
@@ -85,6 +99,7 @@ public:
       delete [] rc;
       delete [] response;
       delete [] ps;
+      delete [] lag_window;
    }
 
    virtual void specificInitialize()
@@ -117,14 +132,16 @@ public:
       for (int i=SAMP_SIZE_2;i<SAMP_SIZE;i++)
          ps[i]=0.0;
 
-      FFTWrap.rfft(ps, response, SAMP_SIZE);
+      FFTWrap.irfft(ps, response, SAMP_SIZE);
+      for (int i=0;i<SAMP_SIZE;i++)
+	 response[i] *= lag_window[i];
       
       float er=0;
 
       response[0] *= 1.0001;
       wld(output.begin(), response, rc, outputLength-1);
-      for (int i=0;i<outputLength;i++)
-        output[i] *= pow(.99,i);
+      /*for (int i=0;i<outputLength;i++)
+        output[i] *= pow(.99,i);*/
    }
 
 };

@@ -75,7 +75,7 @@ public:
 
       if (parameters.exist("RADIUS"))
 	 radius = dereference_cast<float> (parameters.get("RADIUS"));
-      else radius=.99;
+      else radius=1;
       r=new float[outputLength];
       rc=new float[outputLength];
       lag_window=new float[outputLength];
@@ -114,9 +114,11 @@ public:
       r[0] *= 1.0001;
       r[0] += 1; //just in case of a null frame
       wld(output.begin(), r, rc, outputLength-1);
-      for (int i=0;i<outputLength;i++)
-        output[i] *= pow(radius,i);
-
+      if (radius != 1)
+      {
+	 for (int i=0;i<outputLength;i++)
+	    output[i] *= pow(radius,i);
+      }
    }
 
 };
