@@ -91,8 +91,10 @@ public:
    virtual void request(int outputID, const ParameterSet &req)
    {
       inputs[inputID].node->request(inputs[inputID].outputID,req);
-      inputs[beforeID].node->request(inputs[beforeID].outputID,req);
-      inputs[afterID].node->request(inputs[afterID].outputID,req);
+      if (beforeID != -1)
+	 inputs[beforeID].node->request(inputs[beforeID].outputID,req);
+      if (afterID != -1)
+	 inputs[afterID].node->request(inputs[afterID].outputID,req);
    }
 
    ObjectRef getOutput(int output_id, int count)
