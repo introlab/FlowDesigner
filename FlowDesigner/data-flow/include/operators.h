@@ -98,6 +98,16 @@ REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Complex<float>,Complex<double>,Co
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Complex<double>,Complex<float>,Complex<double>,22) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Complex<double>,Complex<double>,Complex<double>,23)
 
+#define REGISTER_ALL_SCALAR_NO_COMPLEX_VTABLE(table, function)  \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Int,Int,0)	  \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Float,Float,1)	\
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Double,Double,2) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Int,Int,3) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Float,Float,4) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Double,Double,5) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Int,Int,6) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Float,Float,7) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Double,Double,8) 
 
 #define REGISTER_ALL_SCALAR_TO_VECTOR_VTABLE(table, function)  \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Int,Vector<int>,0) \
@@ -146,6 +156,19 @@ REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<complex<float> >,Vector<co
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<complex<float> >,Vector<complex<double> >,Vector<complex<double> >,16) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<complex<double> >,Vector<complex<float> >,Vector<complex<double> >,17) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<complex<double> >,Vector<complex<double> >,Vector<complex<double> >,18)
+
+
+#define REGISTER_ALL_VECTOR_NO_COMPLEX_VTABLE(table,function) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<int>,Vector<int>,Vector<int>,0) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<int>,Vector<float>,Vector<float>,1) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<int>,Vector<double>,Vector<double>,2) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<float>,Vector<int>,Vector<float>,3) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<float>,Vector<float>,Vector<float>,4) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<float>,Vector<double>,Vector<double>,5) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<double>,Vector<int>,Vector<double>,6) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<double>,Vector<float>,Vector<double>,7) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Vector<double>,Vector<double>,Vector<double>,8)
+
 
 #define REGISTER_ALL_SCALAR_VECTOR_VTABLE(table,function) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Vector<int>,Vector<int>,0) \
@@ -223,5 +246,17 @@ REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<co
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<float> >,Matrix<complex<double> >,Matrix<complex<double> >,16) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<complex<float> >,Matrix<complex<double> >,17) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<complex<double> >,Matrix<complex<double> >,Matrix<complex<double> >,18)
+
+#define REGISTER_ALL_MATRIX_NO_COMPLEX_VTABLE(table,function) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<int>,Matrix<int>,0) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<float>,Matrix<float>,1) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<int>,Matrix<double>,Matrix<double>,2) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Matrix<int>,Matrix<float>,3) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Matrix<float>,Matrix<float>,4) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<float>,Matrix<double>,Matrix<double>,5) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Matrix<int>,Matrix<double>,6) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Matrix<float>,Matrix<double>,7) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Matrix<double>,Matrix<double>,Matrix<double>,8)
+
 
 
