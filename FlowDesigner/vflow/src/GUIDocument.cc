@@ -395,8 +395,25 @@ void GUIDocument::renameCurrentNet() {
       //update network name
       net->rename(newName);
 
+      //updating text    
+      string tabName=newName;
+      
+      switch (net->getType()) {
+      case UINetwork::subnet:
+	tabName = tabName + " (subnet)";
+	break;
+      case UINetwork::iterator:
+	tabName = tabName + " (iterator)";
+	break;
+      case UINetwork::threaded:
+	tabName = tabName + " (threaded iterator)";
+	break;
+      default:
+	tabName = tabName + " (unknown)";  
+      }
+
       //update notebook label
-      gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(document_notebook), net->getView(), newName.c_str());
+      gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(document_notebook), net->getView(), tabName.c_str());
 
       //SHOULD RENAME ALL SUBNET NODES ?
       

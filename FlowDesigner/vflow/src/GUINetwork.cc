@@ -573,22 +573,7 @@ void GUINetwork::rename(string newName) {
   try {
     UINetwork::rename(newName);
 
-    //updating text    
-    string tabName=newName;
-    
-    switch (type) {
-    case subnet:
-      tabName = tabName + " (subnet)";
-      break;
-    case iterator:
-      tabName = tabName + " (iterator)";
-      break;
-    case threaded:
-      tabName = tabName + " (threaded iterator)";
-      break;
-    default:
-    tabName = tabName + " (unknown)";  
-    }
+    setModified();
   }
   catch (BaseException *e) {
     stringstream str;
