@@ -136,11 +136,15 @@ REGISTER_VTABLE0(toString, NilObject, ReturnNilObject, 6);
 template<class T>
 ObjectRef VectorCTypeConversion(ObjectRef in)
 {
+ 
+
    typedef typename T::basicType BaseType;
    BaseType value=dereference_cast<BaseType> (in);
 
+   T &object = object_cast<T>(in);
+
    //create vector
-   Vector<BaseType> *vect = new Vector<BaseType>(1,value);
+   Vector<BaseType> *vect = new Vector<BaseType>(1,(bool) value);
 
    //return vector
    return ObjectRef(vect);
