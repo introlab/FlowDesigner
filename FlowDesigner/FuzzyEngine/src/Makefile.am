@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.1 2000/10/05 01:56:10 maestro Exp $
+# $Id: Makefile.am,v 1.2 2000/10/05 01:59:05 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -26,8 +26,8 @@ libfuzzy_la_LDFLAGS = -release $(LT_RELEASE)
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include
 
-noinst_PROGRAMS = FuzzyTest.cc 
-test_SOURCES = FuzzyTest.cc
+noinst_PROGRAMS = FuzzyTest 
+FuzzyTest_SOURCES = FuzzyTest.cc
 
 LDADD = $(top_srcdir)/src/libfuzzy.la \
         $(top_srcdir)/../data-flow/src/libnetwork.la
