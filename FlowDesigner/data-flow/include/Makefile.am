@@ -68,5 +68,6 @@ include_HEADERS = Array.h \
 noinst_HEADERS = \
 	Pack.h \
 	UnPack.h \
-	sstream.unused
+	sstream.unused \
+	test.xpm
 
