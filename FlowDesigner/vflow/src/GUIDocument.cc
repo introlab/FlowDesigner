@@ -723,12 +723,59 @@ void GUIDocument::createParamDialog()
   gtk_widget_show (label12);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 0), label12);
 
+
+  GtkWidget *vbox_comments = gtk_vbox_new(false,1); //not homogenous, 0 spacing
+  gtk_widget_ref(vbox_comments);
+  gtk_object_set_data_full(GTK_OBJECT(docproperty), "vbox_comments", vbox_comments,
+			   (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show(vbox_comments);
+  gtk_container_add(GTK_CONTAINER(notebook2),vbox_comments);
+
+  //category hbox
+  GtkWidget *hbox_category = gtk_hbox_new(false,1);
+  gtk_widget_ref(hbox_category);
+  gtk_object_set_data_full(GTK_OBJECT(docproperty), "hbox_category", hbox_category,
+			   (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show(hbox_category);
+  gtk_box_pack_start_defaults(GTK_BOX(vbox_comments), GTK_WIDGET(hbox_category));
+  gtk_widget_show(hbox_category);
+
+  //category label
+  GtkWidget *category_label = gtk_label_new("Category");
+  gtk_widget_ref(category_label);
+  gtk_object_set_data_full(GTK_OBJECT(docproperty), "category_label", category_label,
+			   (GtkDestroyNotify) gtk_widget_unref);
+  gtk_box_pack_start_defaults(GTK_BOX(hbox_category), GTK_WIDGET(category_label));
+  gtk_widget_show(category_label);
+
+
+  //category combo box
+  GtkWidget *category_combo = gtk_combo_new();
+  gtk_widget_ref(category_combo);
+  gtk_object_set_data_full(GTK_OBJECT(docproperty),"category_combo",category_combo,
+			   (GtkDestroyNotify) gtk_widget_unref);
+  gtk_box_pack_end_defaults(GTK_BOX(hbox_category),  GTK_WIDGET(category_combo));
+
+  //write category in the combo box
+  GList *combo_list = NULL;
+  combo_list = g_list_append(combo_list, (char*) getCategory().c_str() );
+  gtk_combo_set_popdown_strings   (GTK_COMBO(category_combo),combo_list);
+
+  //destroy list
+  g_list_free(combo_list);
+
+  gtk_widget_show(category_combo);
+
+  //comments text area
   scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_ref (scrolledwindow2);
   gtk_object_set_data_full (GTK_OBJECT (docproperty), "scrolledwindow2", scrolledwindow2,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (scrolledwindow2);
-  gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow2);
+  gtk_box_pack_end_defaults(GTK_BOX(vbox_comments),  GTK_WIDGET(scrolledwindow2));
+
+  //gtk_container_add (GTK_CONTAINER (notebook2),  scrolledwindow2);
+
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
   text1 = gtk_text_view_new ();
@@ -738,6 +785,8 @@ void GUIDocument::createParamDialog()
   gtk_widget_show (text1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), text1);
   gtk_text_view_set_editable(GTK_TEXT_VIEW(text1),TRUE);
+
+
 
   label13 = gtk_label_new (_("Comments"));
   gtk_widget_ref (label13);
