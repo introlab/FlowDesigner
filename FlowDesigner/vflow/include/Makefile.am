@@ -17,4 +17,5 @@ include_HEADERS = GUIDocument.h \
 	GUINodeTooltip.h \
 	vflow_pref.h \
 	vflow.h \
-	GtkPlotProbe.h
+	GtkPlotProbe.h \
+	misc_gui.h

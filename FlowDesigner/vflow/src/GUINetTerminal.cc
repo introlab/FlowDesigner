@@ -6,6 +6,7 @@
 #include "GUINetwork.h"
 #include <iostream>
 #include "UIDocument.h"
+#include "misc_gui.h"
 
 using namespace std;
 
@@ -67,14 +68,15 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    
    if (name == "")
    {
-      name = defaultName;
+      /*name = defaultName;
       
       if (type == INPUT || type == OUTPUT)
       {
          GtkWidget *dialog = gnome_request_dialog (FALSE, prompt.c_str(), defaultName.c_str(), 
                                                    20, (GnomeStringCallback)create_net_terminal, this, NULL);
          gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
-      }
+         }*/
+      name = ask_string_dialog(prompt.c_str(), defaultName.c_str());
    }
 
    //find network duplicate terminal names 
