@@ -828,7 +828,6 @@ void GUIDocument::run()
       gdk_threads_enter();
       less_print("Unknown exception caught");
       gdk_threads_leave();
-      delete e;
    }
      
    
