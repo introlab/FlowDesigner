@@ -83,8 +83,13 @@ es to be easiliy added.
  Overflow currently includes the following toolboxes: 
 \layout Itemize
 
-Signal processing Speech processing (part of the Open Mind Speech project)
- 
+Signal processing Speech processing (part of the 
+\latex latex 
+
+\backslash 
+href{http://freespeech.sourceforge.net/}{Open Mind Speech}
+\latex default 
+ project) 
 \layout Itemize
 
 Vector quantization 
