@@ -148,25 +148,25 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       string nodeName;
       if (string((char*)node->name) == "NodeClass")
       {
-	 NodeInfo *info = new NodeInfo;
-	 info->kind=NodeInfo::builtin;
+	 NodeInfo *my_info = new NodeInfo;
+	 my_info->kind=NodeInfo::builtin;
 	 char *str_category = (char *)xmlGetProp(node, (xmlChar *)"category");
 	 if (str_category)
-	    info->category = string(str_category);
+	    my_info->category = string(str_category);
 	 else
-	    info->category = "Unknown";
+	    my_info->category = "Unknown";
 	 free(str_category);
 	 char *sfile = (char *)xmlGetProp(node, (xmlChar *)"source");
 	 if (sfile)
-	    info->sourceFile= string(sfile);
+	    my_info->sourceFile= string(sfile);
 	 free(sfile);
 	 char *req = (char *)xmlGetProp(node, (xmlChar *)"require");
 	 if (req)
-	    info->requireList = string(req);
+	    my_info->requireList = string(req);
 	 free(req);
-	 //cerr << info->sourceFile << ":" << info->requireList << endl;
+	 //cerr << my_info->sourceFile << ":" << my_info->requireList << endl;
 	 nodeName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
-	 GlobalRepository().info[nodeName] = info;
+	 GlobalRepository().info[nodeName] = my_info;
 	 xmlNodePtr data = node->children;
 	 while (data != NULL)
 	 {
@@ -193,7 +193,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	       else
 		  newInfo->description = string((char *)tmp);
 	       
-	       info->inputs.insert(info->inputs.end(), newInfo);
+	       my_info->inputs.insert(my_info->inputs.end(), newInfo);
 	    } else if (kind == "Output")
 	    {
 	       xmlChar *tmp;
@@ -217,7 +217,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	       else
 		  newInfo->description = string((char *)tmp);
 	       
-	       info->outputs.insert(info->outputs.end(), newInfo);
+	       my_info->outputs.insert(my_info->outputs.end(), newInfo);
 	    } else if (kind == "Parameter")
 	    {
 	       xmlChar *tmp;
@@ -240,15 +240,15 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	       else
 		  newInfo->description = string((char *)tmp);
 	       free(tmp);
-	       info->params.insert(info->params.end(), newInfo);
+	       my_info->params.insert(my_info->params.end(), newInfo);
 	    } else if (kind == "Description")
 	    {
 	       xmlChar *tmp;
 	       tmp = xmlNodeListGetString(doc, data->children, 1);
 	       if (tmp == NULL)
-		  info->description = "No description available";
+		  my_info->description = "No description available";
 	       else
-		  info->description = string((char *)tmp);
+		  my_info->description = string((char *)tmp);
 	       free(tmp);
 	    } else if (!xmlIsBlankNode(data))
 	    {
@@ -381,6 +381,7 @@ void UINodeRepository::LoadExtDocInfo(const string &path, const string &name)
 
 void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
 {
+
    map<string, NodeInfo *> &externalDocInfo = GlobalRepository().info;
 
    if (externalDocInfo.find(basename) != externalDocInfo.end())
@@ -389,9 +390,9 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
       return;
    }
    //cerr << "new subnet info with name: " << netName << "\n";
-   NodeInfo *info = new NodeInfo;
-   info->kind = NodeInfo::external;
-   externalDocInfo[basename] = info;
+   NodeInfo *my_info = new NodeInfo;
+   my_info->kind = NodeInfo::external;
+   externalDocInfo[basename] = my_info;
    
 
    xmlNodePtr root=doc->children;
@@ -399,7 +400,7 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
    xmlChar *category = xmlGetProp(root, (xmlChar *)"category");
    if (category)
    {
-      info->category = string((char *)category);
+      my_info->category = string((char *)category);
       free (category);
    }
 
@@ -427,14 +428,14 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
 		  string termName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
 		  ItemInfo *newInfo = new ItemInfo;
 		  newInfo->name = termName;
-		  info->inputs.insert (info->inputs.end(), newInfo);
+		  my_info->inputs.insert (my_info->inputs.end(), newInfo);
 	 
 	       } else if (string((char*)node->name) == "NetOutput")
 	       {
 		  string termName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
 		  ItemInfo *newInfo = new ItemInfo;
 		  newInfo->name = termName;
-		  info->outputs.insert (info->outputs.end(), newInfo);
+		  my_info->outputs.insert (my_info->outputs.end(), newInfo);
 	 
 	       }
 	       node = node->next;
@@ -457,7 +458,7 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
 	       newInfo->type = param_type;
 	    if (string(param_value)!="")
 	       newInfo->value = param_value;
-	    info->params.insert (info->params.end(), newInfo);
+	    my_info->params.insert (my_info->params.end(), newInfo);
 	 }
 	 //cerr << "param\n";
       }
@@ -542,6 +543,7 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 {
    char *str_netName = (char *)xmlGetProp(net, (xmlChar *)"name");
    string netName = string(str_netName);
+
    free(str_netName);
    xmlChar *category = xmlGetProp(net, (xmlChar *)"category");
    
@@ -553,6 +555,8 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    //cerr << "new subnet info with name: " << netName << "\n";
    NodeInfo *ninfo = new NodeInfo;
    ninfo->kind = NodeInfo::subnet;
+
+   //we are dealing with a local repository, in a document
    info[netName] = ninfo;
 
       
@@ -566,9 +570,7 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    while (node != NULL)
    {
       if (string((char*)node->name) == "Node")
-      {
-	 
-	 
+      {	 	 
 	 xmlNodePtr par = node->children;
 	 //cerr << "par = " << par << endl;
 	 while (par)
@@ -607,6 +609,9 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
       node = node->next;
    }
  
+
+   //checking for the network type, we are interested in
+   //iterators and threaded iterators here, nothing to do with subnets
    xmlChar *type = xmlGetProp(net, (xmlChar *)"type");
    if (type)
    { 
@@ -627,6 +632,19 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
       }
    }
 
+
+   //check for network description
+   char *desc = (char *) xmlGetProp(net, (xmlChar *)"description");
+   if (desc) {
+     
+     //set description
+     ninfo->description = string(desc);
+
+     //free XML string
+     free(desc);
+   }
+
+
   
    //scan all net inputs/outputs
    node = net->children;
@@ -635,19 +653,56 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
       if (string((char*)node->name) == "NetInput")
       {
 	 char *str_name = (char *)xmlGetProp(node, (xmlChar *)"name");
+	 char *str_type = (char *)xmlGetProp(node, (xmlChar *)"object_type");
+	 char *str_desc = (char *)xmlGetProp(node, (xmlChar *)"description");
+
 	 string termName = string(str_name);
+	 string termType = "any";
+	 string termDescription = "No description available";
+
+	 //Free XML strings
 	 free(str_name);
+	 if (str_type) {
+	   termType = str_type;
+	   free(str_type);
+	 }	 
+	 if (str_desc) {
+	   termDescription = str_desc;
+	   free(str_desc);
+	 }
+
 	 ItemInfo *newInfo = new ItemInfo;
 	 newInfo->name = termName;
+	 newInfo->type = termType;
+	 newInfo->description = termDescription;
+
 	 ninfo->inputs.insert (ninfo->inputs.end(), newInfo);
 	 
       } else if (string((char*)node->name) == "NetOutput")
       {
 	 char *str_name = (char *)xmlGetProp(node, (xmlChar *)"name");
+	 char *str_type = (char *)xmlGetProp(node, (xmlChar *)"object_type");
+	 char *str_desc = (char *)xmlGetProp(node, (xmlChar *)"description");
+
 	 string termName = string(str_name);
+	 string termType = "any";
+	 string termDescription = "No description available";
+
 	 free(str_name);
+	 if (str_type) {
+	   termType = str_type;
+	   free(str_type);
+	 }	 
+	 if (str_desc) {
+	   termDescription = str_desc;
+	   free(str_desc);
+	 }
+
 	 ItemInfo *newInfo = new ItemInfo;
 	 newInfo->name = termName;
+	 newInfo->type = termType;
+	 newInfo->description = termDescription;
+
 	 ninfo->outputs.insert (ninfo->outputs.end(), newInfo);
 	 
       }
@@ -738,10 +793,8 @@ void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool topl
 
 void UINodeRepository::updateNetInfo(UINetwork *net)
 {
-   //cerr << "UINodeRepository::updateNetInfo for network "<<net->getName()<<endl;
-
-   iterator inet = info.find(net->getName());
-   if (inet!=info.end())
+  iterator inet = info.find(net->getName());
+  if (inet!=info.end())
    {
      //cerr<<"UINodeRepository deleting network info:"<<net->getName()<<endl;
      delete inet->second;
@@ -789,5 +842,6 @@ void UINodeRepository::updateNetInfo(UINetwork *net)
    ninfo->description = net->getDescription();
    
    //cerr<<"updated network info for "<<net->getName()<<endl;
+   //we are dealing with a local repository, in a document
    info[net->getName()] = ninfo;
 }

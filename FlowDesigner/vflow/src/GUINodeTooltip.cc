@@ -38,38 +38,44 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    if (node->getComments() != "")
    {
       tooltext << endl;
-      tooltext << node->getComments();
-   } else {
-      //UINodeRepository::iterator iter;
-      //iter = UIDocument::externalDocInfo.find(node->getType());
-      NodeInfo *info = UINodeRepository::Find(node->getType());
-      if (info)
-      {
-	 string &desc = info->description;
-	 DYN_VEC(char, desc.size()+1, sdesc);
-	 strcpy(sdesc, desc.c_str());
-	 char *ptr=sdesc;
-	 char *end=sdesc;
-	 bool st=false;
-	 for (int i=0;i<desc.size();i++)
+      tooltext << node->getComments();      
+   } 
+
+   //look in the document repository (will also look in the global repository)
+   NodeInfo *info = node->getNetwork()->getDocument()->getRepository().findNode(node->getType());
+
+
+   //Old way of doing things 
+   //NodeInfo *info = UINodeRepository::Find(node->getType());   
+   
+   if (info)
+     {
+       string &desc = info->description;
+       DYN_VEC(char, desc.size()+1, sdesc);
+       strcpy(sdesc, desc.c_str());
+       char *ptr=sdesc;
+       char *end=sdesc;
+       bool st=false;
+       for (int i=0;i<desc.size();i++)
 	 {
-	    if (isgraph(sdesc[i]))
-	    {
+	   if (isgraph(sdesc[i]))
+	     {
 	       if (!st)
-	       {
-		  ptr=sdesc+i;
-		  end=sdesc+i+1;
-		  st=true;
-	       } else {
-		  end=sdesc+i+1;
+		 {
+		   ptr=sdesc+i;
+		   end=sdesc+i+1;
+		   st=true;
+		 } else {
+		 end=sdesc+i+1;
 	       }
-	    }
+	     }
 	 }
-	 end[0]=0;
-	 tooltext << endl << ptr;
-	 //tooltext << endl << "\"" << iter->second->description << "\"";
-      }
-   }
+       end[0]=0;
+       tooltext << endl << ptr;
+       //tooltext << endl << "\"" << iter->second->description << "\"";
+     }
+   
+
    tooltipText = gnome_canvas_item_new(group,
 				gnome_canvas_text_get_type(),
 				"x", 0.0,

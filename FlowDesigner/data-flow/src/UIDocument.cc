@@ -280,6 +280,9 @@ void UIDocument::loadXML(xmlNodePtr root)
 
    modified = false;
 
+   //updating all networks
+   updateAllNetworks();
+
 }
 
 
