@@ -5,16 +5,11 @@ noinst_HEADERS = AudioFile.h \
 	DLFrameUnaryOperation.h \
 	FrameAccumulator.h \
 	FrameBinaryOperation.h \
-	FrameOperation.h \
 	FrameUnaryOperation.h \
 	GCMS.h \
-	GrowingFrameBuffer.h \
-	GrowingMatrix.h \
 	Label.h \
 	LabelSet.h \
 	Matrix.h \
-	RotatingFrameBuffer.h \
-	RotatingMatrix.h \
 	MMIAccumulator.h \
 	Histogram.h \
 	lpc.h
