@@ -201,7 +201,7 @@ if test "x$G_THREAD_LIBS" = xerror; then
 fi
 
 SEM_LIBS=error
-AC_CHECK_FUNC(pthread_attr_init, SEM_LIBS="")
+AC_CHECK_FUNC(sem_init, SEM_LIBS="")
 if test "x$SEM_LIBS" = xerror; then
      AC_CHECK_LIB(rt, sem_init,
      	SEM_LIBS="-lpthreads")
