@@ -144,6 +144,7 @@ public:
 
 	       //FFNet *net = new FFNet( topo ); 
 	       FFNet &net = object_cast<FFNet> (netValue);
+	       //net.trainRecurrent(in, out, maxEpoch, learnRate, momentum, increase, decrease);
 	       net.trainDeltaBar(in, out, maxEpoch, learnRate, momentum, increase, decrease, nbSets);
 	       //net->trainlm(in, out, maxEpoch);
 
