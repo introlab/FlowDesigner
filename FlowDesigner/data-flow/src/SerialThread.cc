@@ -182,14 +182,14 @@ public:
 	    if (!inside_lock)
 	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = new ExceptionObject(e->add(new GeneralException ("Exception caught in SerialThread", __FILE__, __LINE__)));
-            //FIXME: should there be an if (!inside_lock)??
+
 	    pthread_mutex_unlock(&bufferLock);
 	 } catch (RCPtr<FlowException> e)
          {
             if (!inside_lock)
 	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = e;
-            //FIXME: should there be an if (!inside_lock)??
+
 	    pthread_mutex_unlock(&bufferLock);
          } 
 	 catch (...)
@@ -197,7 +197,7 @@ public:
 	    if (!inside_lock)
 	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = new ExceptionObject(new GeneralException ("Unknown exception caught in SerialThread", __FILE__, __LINE__));
-            //FIXME: should there be an if (!inside_lock)??
+
 	    pthread_mutex_unlock(&bufferLock);
 	 }
 	 
