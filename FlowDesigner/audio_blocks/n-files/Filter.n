@@ -1,0 +1,16 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN" category="DSP:Filter">
+    <Node name="node_FIR_1" type="FIR" x="-157.000000" y="13.000000">
+      <Parameter name="CONTINUOUS" type="bool" value="true"/>
+      <Parameter name="NONCAUSAL" type="subnet_param" value="NONCAUSAL"/>
+    </Node>
+    <Node name="node_IIR_1" type="IIR" x="-32.000000" y="47.000000"/>
+    <Link from="node_FIR_1" output="OUTPUT" to="node_IIR_1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node_IIR_1" terminal="OUTPUT"/>
+    <NetInput name="INPUT" node="node_FIR_1" terminal="INPUT"/>
+    <NetInput name="FIR" node="node_FIR_1" terminal="FILTER"/>
+    <NetInput name="IIR" node="node_IIR_1" terminal="FILTER"/>
+  </Network>
+</Document>
