@@ -26,16 +26,16 @@ DECLARE_NODE(Div)
  *
  * @name Div
  * @category Math
- * @description No description available
+ * @description Divides a numerator by a denominator
  *
- * @input_name INPUT1
- * @input_description No description available
+ * @input_name NUM
+ * @input_description The numerator
  *
- * @input_name INPUT2
- * @input_description No description available
+ * @input_name DEN
+ * @input_description The denominator
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The result of the division
  *
 END*/
 
@@ -50,8 +50,8 @@ public:
    Div(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
-      input1ID = addInput("INPUT1");
-      input2ID = addInput("INPUT2");
+      input1ID = addInput("NUM");
+      input2ID = addInput("DEN");
       outputID = addOutput("OUTPUT");
    }
 

@@ -100,6 +100,14 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
    }
 }
 
+FFNet::FFNet(FFNet &net)
+   : topo(net.topo)
+   , layers(net.layers.size())
+{
+   for (int i=0;i<layers.size();i++)
+      layers[i] = new FFLayer(*(net.layers[i]));
+}
+
 void FFNet::learn(double *input, double *output, double *err, double *calc_output)
 {
    int outputLayer = topo.size()-2;
@@ -902,6 +910,21 @@ void FFNet::traincg(vector<float *> tin, vector<float *> tout, int iter)
    }
 }
 
+double FFNet::totalError(vector<float *> tin, vector<float *> tout)
+{
+   int nbWeights = 0;
+   for (int i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+   double SSE=0;
+
+   Array<double> wk(nbWeights);
+   getWeights(wk.begin());
+   Array<double> dEk(nbWeights);
+   calcGradient(tin, tout, wk, dEk, SSE);
+   return SSE;
+}
 
 void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 			  double mom, double increase, double decrease, int nbSets)

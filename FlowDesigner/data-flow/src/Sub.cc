@@ -26,16 +26,16 @@ DECLARE_NODE(Sub)
  *
  * @name Sub
  * @category Math
- * @description No description available
+ * @description Subtracts two values
  *
  * @input_name INPUT1
- * @input_description No description available
+ * @input_description The value to subtract from
  *
  * @input_name INPUT2
- * @input_description No description available
+ * @input_description The subtracted value
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The result of the subtraction
  *
 END*/
 

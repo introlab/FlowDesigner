@@ -203,144 +203,148 @@ class FFLayer : public Object {
    bool alloc;
   public:
    FFLayer() : alloc(false) {};
+
    FFLayer(int _nbNeurons, int _nbInputs, string type = "tansig");
+
+   FFLayer(const FFLayer &layer);
+   
    ~FFLayer() 
+   {
+      if (alloc)
       {
-	 if (alloc)
-	 {
-	    delete [] gradient; 
-	    delete [] saved_weights; 
-	    delete [] value; 
-	    delete [] weights; 
-	    delete [] error; 
-	    delete [] deriv;
-	 }
+	 delete [] gradient; 
+	 delete [] saved_weights; 
+	 delete [] value; 
+	 delete [] weights; 
+	 delete [] error; 
+	 delete [] deriv;
       }
+   }
    void update(const double *previous)
+   {
+      for (int i=0;i<nbNeurons;i++)
       {
-	 for (int i=0;i<nbNeurons;i++)
-	 {
 #ifdef __GNUC__
-	    double *__restrict__ w=weights + i*(nbInputs+1);	    
-	    const double *__restrict__ p=previous;
+	 double *__restrict__ w=weights + i*(nbInputs+1);	    
+	 const double *__restrict__ p=previous;
 #else
-	    double *w=weights + i*(nbInputs+1);	    
-	    const double *p=previous;
+	 double *w=weights + i*(nbInputs+1);	    
+	 const double *p=previous;
 #endif
-	    const double *end=p+nbInputs;
-	    value[i]=0;
-
-	    double sum1=0,sum2=0,sum3=0,sum4=0;
-	    while (p < end-3)
-	    {
-	       sum1 += *w++ * *p++;
-	       sum2 += *w++ * *p++;
-	       sum3 += *w++ * *p++;
-	       sum4 += *w++ * *p++;
-	    }
-	    value[i] = sum1+sum2+sum3+sum4;
-	    while (p<end)
-	       value[i] += *w++ * *p++;
-	    value[i] += *w;
-
-	    /*while (p<end)
-	       value[i] += *w++ * *p++;
-	       value[i] += *w;*/
-
-	    /*
-	    value[i]=w[nbInputs];
-	    for (int j=0;j<nbInputs;j++)
-	    value[i] += w[j]*previous[j];
-	    */
-	    //value[i]=func(value[i]);
-	    //deriv[i]=deriv_func(value[i]);
+	 const double *end=p+nbInputs;
+	 value[i]=0;
+	 
+	 double sum1=0,sum2=0,sum3=0,sum4=0;
+	 while (p < end-3)
+	 {
+	    sum1 += *w++ * *p++;
+	    sum2 += *w++ * *p++;
+	    sum3 += *w++ * *p++;
+	    sum4 += *w++ * *p++;
 	 }
-	 if (func == tansig)
-	 {
-	    tansig(value, value, nbNeurons);
-	    deriv_tansig(value, deriv, nbNeurons);
-	 } else if (func == lin)
-	 {
-	    lin(value, value, nbNeurons);
-	    deriv_lin(value, deriv, nbNeurons);
-	 } else if (func == sigmoid)
-	 {
-	    sigmoid(value, value, nbNeurons);
-	    deriv_sigmoid(value, deriv, nbNeurons);
-	 } else {
-	    cerr << "unknown\n";
-	    func(value, value, nbNeurons);
-	    deriv_func(value, deriv, nbNeurons);
-	 }
+	 value[i] = sum1+sum2+sum3+sum4;
+	 while (p<end)
+	    value[i] += *w++ * *p++;
+	 value[i] += *w;
+	 
+	 /*while (p<end)
+	   value[i] += *w++ * *p++;
+	   value[i] += *w;*/
+	 
+	 /*
+	   value[i]=w[nbInputs];
+	   for (int j=0;j<nbInputs;j++)
+	   value[i] += w[j]*previous[j];
+	 */
+	 //value[i]=func(value[i]);
+	 //deriv[i]=deriv_func(value[i]);
       }
+      if (func == tansig)
+      {
+	 tansig(value, value, nbNeurons);
+	 deriv_tansig(value, deriv, nbNeurons);
+      } else if (func == lin)
+      {
+	 lin(value, value, nbNeurons);
+	 deriv_lin(value, deriv, nbNeurons);
+      } else if (func == sigmoid)
+      {
+	 sigmoid(value, value, nbNeurons);
+	 deriv_sigmoid(value, deriv, nbNeurons);
+      } else {
+	 cerr << "unknown\n";
+	 func(value, value, nbNeurons);
+	 deriv_func(value, deriv, nbNeurons);
+      }
+   }
    void saveWeights()
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    saved_weights[i]=weights[i];
-	 }
+	 saved_weights[i]=weights[i];
       }
+   }
    void loadWeights()
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    weights[i]=saved_weights[i];
-	 }
+	 weights[i]=saved_weights[i];
       }
+   }
    void resetGradient()
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    gradient[i]=0;
-	 }
+	 gradient[i]=0;
       }
+   }
    void updateGradient(double alpha, double mom)
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    //momentum[i] = mom*momentum[i] + (1-mom)*gradient[i];
-	    momentum[i] = mom*momentum[i] + alpha*gradient[i];
-	    //momentum[i] += weights[i]*.00001*(rand()%100-50);
-	    weights[i]+=momentum[i];
-	 }
+	 //momentum[i] = mom*momentum[i] + (1-mom)*gradient[i];
+	 momentum[i] = mom*momentum[i] + alpha*gradient[i];
+	 //momentum[i] += weights[i]*.00001*(rand()%100-50);
+	 weights[i]+=momentum[i];
       }
-
+   }
+   
    void setDeltaRate(double rate)
-      {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	    saved_weights[i] = rate;
-      }
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	 saved_weights[i] = rate;
+   }
    void deltaBar(double mom, double inc, double dec)
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    double x = gradient[i]/momentum[i];
-	    if (fabs(momentum[i]) < 1e-15)
-	       x=1;
-	    if (x<-10)
-	       x=-10;
-	    if (x>10)
-	       x=10;
-	    saved_weights[i] *= .045+.98/(1+exp((-6*x+2)));
-	    if (saved_weights[i] < 1e-7)
-	       saved_weights[i] = 1e-7;
-	    /*if (saved_weights[i] > 10) 
-	       saved_weights[i] = 10;*/
-	       /*if (momentum[i]*gradient[i] > 0)
-	       saved_weights[i] *= inc;
-	    else
-	    saved_weights[i] *= dec;*/
-	    momentum[i] = mom*momentum[i] + gradient[i];
-	    weights[i] += saved_weights[i]*gradient[i];
-	 }
+	 double x = gradient[i]/momentum[i];
+	 if (fabs(momentum[i]) < 1e-15)
+	    x=1;
+	 if (x<-10)
+	    x=-10;
+	 if (x>10)
+	    x=10;
+	 saved_weights[i] *= .045+.98/(1+exp((-6*x+2)));
+	 if (saved_weights[i] < 1e-7)
+	    saved_weights[i] = 1e-7;
+	 /*if (saved_weights[i] > 10) 
+	   saved_weights[i] = 10;*/
+	 /*if (momentum[i]*gradient[i] > 0)
+	   saved_weights[i] *= inc;
+	   else
+	   saved_weights[i] *= dec;*/
+	 momentum[i] = mom*momentum[i] + gradient[i];
+	 weights[i] += saved_weights[i]*gradient[i];
       }
+   }
    void undo()
+   {
+      for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       {
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    weights[i]-=momentum[i];
-	 }
+	 weights[i]-=momentum[i];
       }
+   }
    int getNbWeights() {return nbNeurons*(nbInputs+1);}
    void init(double minmax);
    void init(double *mean, double *std);

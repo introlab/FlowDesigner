@@ -23,6 +23,8 @@ public:
 
    NNetSet(int nbNets, const Vector<int> &topo, const vector<string> &functions, vector<int> id, vector<float *> &tin, vector<float *> &tout);
    
+   NNetSet(vector<int> id, vector<float *> &tin, vector<float *> &tout, NNetSet *net1, NNetSet *net2);
+
    ~NNetSet() 
    {
    }

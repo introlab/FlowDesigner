@@ -46,6 +46,45 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    error = new double [nbNeurons];
 }
 
+FFLayer::FFLayer(const FFLayer &layer)
+   : nbNeurons(layer.nbNeurons)
+   , nbInputs(layer.nbInputs)
+   , funcType(layer.funcType)
+   , func(layer.func)
+   , deriv_func(layer.deriv_func)
+   , alloc(true)
+{
+
+   weights = new double [nbNeurons*(nbInputs+1)];
+
+   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+      weights[i] = layer.weights[i];
+
+   momentum = new double [nbNeurons*(nbInputs+1)];
+
+   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+      momentum[i]=0;
+   
+   gradient = new double [nbNeurons*(nbInputs+1)];
+
+   saved_weights = new double [nbNeurons*(nbInputs+1)];
+   
+   deriv = new double [nbNeurons];
+   value = new double [nbNeurons];
+   error = new double [nbNeurons];
+}
+
+/*FFLayer &FFLayer::operator=(const FFLayer &layer)
+{
+   if (this == &layer)
+   {
+      return this;
+   } else {
+      re
+   }
+   
+   }*/
+
 void FFLayer::init(double minmax)
 {
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)

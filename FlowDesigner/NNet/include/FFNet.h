@@ -26,8 +26,10 @@ class FFNet : public Object {
       return layers[layers.size()-1]->getValue();
    }
 
-   FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<float *> &tin, vector<float *> &tout);
+   FFNet(FFNet &net);
 
+   FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<float *> &tin, vector<float *> &tout);
+   double totalError(vector<float *> tin, vector<float *> tout);
    double calcError(const vector<float *> &tin, const vector<float *> &tout);
    void getGradient(double *ptr);
    void getWeights(double *ptr);

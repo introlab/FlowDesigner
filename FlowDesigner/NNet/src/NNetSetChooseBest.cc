@@ -23,12 +23,12 @@
 #include "ObjectParser.h"
 #include "Vector.h"
 
-class NNetSetInit;
+class NNetSetChooseBest;
 
-DECLARE_NODE(NNetSetInit)
+DECLARE_NODE(NNetSetChooseBest)
 /*Node
  *
- * @name NNetSetInit
+ * @name NNetSetChooseBest
  * @category NNet
  * @description Initialized the neural network weights to fit the input/output set
  *
@@ -41,25 +41,19 @@ DECLARE_NODE(NNetSetInit)
  * @input_name TRAIN_ID
  * @input_description No description available
  *
+ * @input_name NET1
+ * @input_description No description available
+ *
+ * @input_name NET2
+ * @input_description No description available
+ *
  * @output_name OUTPUT
  * @output_description No description available
- *
- * @parameter_name NB_NETS
- * @parameter_description No description available
- *
- * @parameter_name TOPO
- * @parameter_description No description available
- *
- * @parameter_name FUNCTIONS
- * @parameter_description No description available
- *
- * @parameter_name RAND_SEED
- * @parameter_description No description available
  *
 END*/
 
 
-class NNetSetInit : public BufferedNode {
+class NNetSetChooseBest : public BufferedNode {
 
 protected:
    
@@ -75,42 +69,22 @@ protected:
    /**The ID of the 'OUTPUT' output*/
    int outputID;
 
-   Vector<int> topo;
-      
-   vector<string> functions;
+   int net1ID;
 
-   int nbNets;
+   int net2ID;
+
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   NNetSetInit(string nodeName, ParameterSet params)
+   NNetSetChooseBest(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
       trainInID = addInput("TRAIN_IN");
       trainOutID = addInput("TRAIN_OUT");
       trainIDID = addInput("TRAIN_ID");
+      net1ID = addInput("NET1");
+      net2ID = addInput("NET2");
 
-      //String topoStr = object_cast<String> (parameters.get("TOPO"));
-      //String funcStr = object_cast<String> (parameters.get("FUNCTIONS"));
-      
-      istringstream str_vector(object_cast <String> (parameters.get("TOPO")));
-      str_vector >> topo;
-
-      istringstream str_func(object_cast <String> (parameters.get("FUNCTIONS")));
-      str_func >> functions;
-
-      nbNets = dereference_cast<int> (parameters.get("NB_NETS"));
-      //ObjectRef Otopo;
-      //istringstream toposs(string(topoStr));
-      //toposs >> topo;
-      //topo = *Otopo;
-
-      //ostringstream funcss(string(funcStr));
-      //funcss >> functions;
-      
-      if (parameters.exist("RAND_SEED"))
-	 srand(dereference_cast<int> (parameters.get("RAND_SEED")));
-      
    }
       
    void calculate(int output_id, int count, Buffer &out)
@@ -118,6 +92,9 @@ public:
       ObjectRef trainInValue = getInput(trainInID, count);
       ObjectRef trainOutValue = getInput(trainOutID, count);
       ObjectRef trainIDValue = getInput(trainIDID, count);
+
+      ObjectRef net1Value = getInput(net1ID, count);
+      ObjectRef net2Value = getInput(net2ID, count);
 
       int i,j;
 
@@ -139,13 +116,14 @@ public:
 	 id[i]=int(floor((object_cast <Vector<float> > (idBuff[i]).begin())[0]+.5));
       
       //srand(6827375);
-      NNetSet *net = new NNetSet(nbNets, topo, functions, id, tin, tout);
+      cerr << "creating net\n";
+      NNetSet *net = new NNetSet(id, tin, tout, &object_cast<NNetSet> (net1Value), &object_cast<NNetSet> (net2Value));
 
       out[count] = ObjectRef(net);
    }
       
 protected:
 
-   NNetSetInit() {throw new GeneralException("NNetSetInit copy constructor should not be called",__FILE__,__LINE__);}
+   NNetSetChooseBest() {throw new GeneralException("NNetSetChooseBest copy constructor should not be called",__FILE__,__LINE__);}
 
 };
