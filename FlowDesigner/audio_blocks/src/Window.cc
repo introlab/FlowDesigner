@@ -44,6 +44,10 @@ DECLARE_NODE(Window)
  * @parameter_type string
  * @parameter_description Window type (HANNING, HAMMING, HALF_HANNING)
  *
+ * @parameter_name SYMETRIC
+ * @parameter_type bool
+ * @parameter_description Symetric window, uses (length-1) for normalization
+ *
 END*/
 
 
@@ -71,6 +75,15 @@ public:
       window.resize(length);
       String type = object_cast<String> (parameters.get("WINDOW"));
       
+      int len = length;
+      if (parameters.exist("SYMETRIC"))
+      {
+	 if (dereference_cast<bool> (parameters.get("SYMETRIC")))
+	    len--;
+      } else {
+	 len--;
+      }
+
       if (type == "HANNING")
       {
          for (i=0;i<length;i++)

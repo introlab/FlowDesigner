@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN" category="Signal:Base">
+    <Node name="node1" type="Constant" x="-149.000000" y="100.000000">
+      <Parameter name="VALUE" type="float" value="0.23026"/>
+    </Node>
+    <Node name="node2" type="Mul" x="-37.000000" y="68.000000"/>
+    <Node name="node3" type="Exp" x="29.000000" y="67.000000"/>
+    <Link from="node1" output="VALUE" to="node2" input="INPUT2"/>
+    <Link from="node2" output="OUTPUT" to="node3" input="INPUT"/>
+    <NetInput name="INPUT" node="node2" terminal="INPUT1"/>
+    <NetOutput name="OUTPUT" node="node3" terminal="OUTPUT"/>
+  </Network>
+</Document>
