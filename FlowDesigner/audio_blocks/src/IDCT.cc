@@ -19,7 +19,7 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <fftw.h>
-#include <rfftw.h>
+#include <fftw.h>
 #include <math.h>
 
 class IDCT;
@@ -32,9 +32,9 @@ class IDCT : public FrameOperation {
    int inputID;
    int inputLength;
 
-   rfftw_plan plan;
-   float *inputCopy;
-   float *outputCopy;
+   fftw_plan plan;
+   fftw_complex *inputCopy;
+   fftw_complex *outputCopy;
    float *rNormalize;
    float *iNormalize;
 
@@ -53,11 +53,11 @@ public:
 	 throw NodeException(NULL, "IDCT only implemented for even sizes", __FILE__, __LINE__);
       }
 
-      inputCopy = new float [inputLength];
-      outputCopy =new float [inputLength];
+      inputCopy = new fftw_complex [inputLength];
+      outputCopy =new fftw_complex [inputLength];
       rNormalize =new float [inputLength];
       iNormalize =new float [inputLength];
-      float sqrt2n=sqrt(inputLength/2.0);
+      float sqrt2n=.25*sqrt(inputLength/2.0);
       for (int i=0;i<inputLength;i++)
       {
 	 rNormalize[i]=cos(M_PI*i/(2*inputLength))*sqrt2n;
@@ -66,12 +66,12 @@ public:
       rNormalize[0] /= sqrt(2);
 
       //normalize = .5/inputLength;
-      plan = rfftw_create_plan (inputLength, FFTW_BACKWARD, FFTW_ESTIMATE);
+      plan = fftw_create_plan (inputLength, FFTW_BACKWARD, FFTW_ESTIMATE);
 }
 
    ~IDCT() 
    {
-      rfftw_destroy_plan(plan);
+      fftw_destroy_plan(plan);
       delete [] inputCopy;
       delete [] outputCopy;
       delete [] rNormalize;
@@ -99,23 +99,22 @@ public:
       
       int i,j;
 
-      for (i=1;i<inputLength/2;i++)
+
+      for (i=0;i<inputLength;i++)
       {
-	 inputCopy[i] = rNormalize[i]*in[i];
-	 inputCopy[inputLength-i] = iNormalize[i]*in[i];
+	 inputCopy[i].re = rNormalize[i]*in[i];
+	 inputCopy[i].im = iNormalize[i]*in[i];
+	 //inputCopy[inputLength-i] = iNormalize[i]*in[i];
       }
 
-      inputCopy[0]=in[0]*rNormalize[0];
-      inputCopy[inputLength/2] = in[inputLength/2]*rNormalize[inputLength/2];
-
-      rfftw_one(plan, inputCopy, outputCopy);
+      fftw_one(plan, inputCopy, outputCopy);
 
 
       for (i=0, j=0 ;i<inputLength ; i+=2, j++)
-         output[i]=outputCopy[j];
+         output[i]=outputCopy[j].re;
 
       for (i = inputLength-1; i>=0 ; i-=2, j++)
-         output[i]=outputCopy[j];
+         output[i]=outputCopy[j].re;
 
 
       output.status = Object::valid;

@@ -107,7 +107,6 @@ public:
 
       rfftw_one(plan, inputCopy, outputCopy);
       
-      
       for (i=1;i<inputLength/2;i++)
       {
 	 output[i]=rNormalize[i]*outputCopy[i] - iNormalize[i]*outputCopy[inputLength-i];
@@ -116,7 +115,7 @@ public:
 
       output[0]=outputCopy[0]*rNormalize[0];
       output[inputLength/2] = outputCopy[inputLength/2]*rNormalize[inputLength/2];
-      
+
       output.status = Object::valid;
    }
 
