@@ -4,6 +4,8 @@
 #include "object_param.h"
 #include "ParameterSet.h"
 #include <string>
+#include <sstream>
+#include "ObjectParser.h"
 
 vector<string> ObjectParam::allTypes(bool allowSubnetParam)
 {
@@ -12,6 +14,7 @@ vector<string> ObjectParam::allTypes(bool allowSubnetParam)
    types.insert(types.end(), "float");
    types.insert(types.end(), "string");
    types.insert(types.end(), "bool");
+   types.insert(types.end(), "object");
       //types.insert(types.end(), "object");
    if (allowSubnetParam)
       types.insert(types.end(), "subnet_param");
@@ -49,6 +52,13 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
    else if (type == "string")
    {
       return ObjectRef(new String(value));
+   } 
+   else if (type == "object")
+   {
+      istringstream obj(value);
+      ObjectRef val;
+      obj >> val;
+      return val;
    } 
    else if (type == "subnet_param")
    {
