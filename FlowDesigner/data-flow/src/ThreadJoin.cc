@@ -23,7 +23,7 @@ DECLARE_NODE(ThreadJoin)
 /*Node
  *
  * @name ThreadJoin
- * @category General
+ * @category Flow
  * @description Joining thread so there's no race at the input nodes
  *
  * @input_name INPUT
