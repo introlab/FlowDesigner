@@ -215,10 +215,11 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
 		flags = MSG_WAITALL;
 
 		packet_len = recv(m_read_socket, packet, size,flags);
-		if (packet_len != size) {
-      perror(__PRETTY_FUNCTION__);
-			throw new GeneralException("Unable to recv packet",__FILE__,__LINE__);
-			return 0;
+
+		if (packet_len < 0) {
+		  perror(__PRETTY_FUNCTION__);
+		  throw new GeneralException("Unable to recv packet",__FILE__,__LINE__);
+		  return 0;
 		}
     break;
   default:
