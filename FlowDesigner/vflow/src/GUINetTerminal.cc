@@ -202,9 +202,14 @@ string GUINetTerminal::find_unique_name(const string &_name, NetTermType _type) 
     } 
   }
 
-  char name_id[10];
-  sprintf(&name_id[0],"_%i",duplicate_count);
-  return string(_name + string(name_id));
+  if (duplicate_count > 0) {
+    char name_id[10];
+    sprintf(&name_id[0],"_%i",duplicate_count);
+    return string(_name + string(name_id));
+  }
+  else {
+    return _name;
+  }
 }
 
 void GUINetTerminal::setAbsPos(double x, double y) {
