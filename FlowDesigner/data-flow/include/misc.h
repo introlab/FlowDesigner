@@ -72,19 +72,19 @@ public:
 
 
 
-template<int M, int M2>
+template<int M2>
 inline int _log2(int i)
 {
    if (i>>M2)
    {
-      return M2+_log2<M2,M2/2>(i>>M2);
+      return M2+_log2<M2/2>(i>>M2);
    } else {
-      return _log2<M2,M2/2>(i);
+      return _log2<M2/2>(i);
    }
 }
 
 template<>
-inline int _log2<2,1>(int i)
+inline int _log2<1>(int i)
 {
    if (i&2)
       return 1;
@@ -94,7 +94,7 @@ inline int _log2<2,1>(int i)
 
 inline int log2(int i)
 {
-   return _log2<32,16>(i);
+   return _log2<16>(i);
 }
 
 
