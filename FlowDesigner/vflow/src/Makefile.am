@@ -7,6 +7,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/vflow
 install-data-local:
 	mkdir -p $(datadir)
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h> $(datadir)/vflow.def)
+	(cd $(libdir); rm -f baseProbe.tlb; ln -s libbaseProbe.so baseProbe.tlb)
 
 INCLUDES = \
            -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -23,11 +24,9 @@ INCLUDES = \
 
 bin_PROGRAMS = flowdesigner gflow
 
-flowdesigner_SOURCES = \
-	vflow.cc \
-	Probe.cc \
-	TextProbe.cc \
-	PlotProbe.cc \
+lib_LTLIBRARIES = libbaseProbe.la 
+
+flowdesigner_SOURCES = vflow.cc \
 	canvas-background.c \
 	GUINode.cc \
 	GUINetwork.cc \
@@ -40,20 +39,21 @@ flowdesigner_SOURCES = \
 	GRunContext.cc \
 	codegen.cc \
 	GUINodeTooltip.cc \
-	GtkPlotProbe.cc \
 	vflow_pref.cc \
-	misc_gui.cc \
-	KeyPad.cc
+	misc_gui.cc
 
-gflow_SOURCES = \
-	gflow.cc \
-	Probe.cc \
+gflow_SOURCES = gflow.cc \
+	GRunContext.cc \
+	vflow_pref.cc 
+
+libbaseProbe_la_SOURCES = Probe.cc \
 	TextProbe.cc \
 	PlotProbe.cc \
-	GRunContext.cc \
 	GtkPlotProbe.cc \
-	vflow_pref.cc \
 	KeyPad.cc
+
+libbaseProbe_la_LDFLAGS = -release $(LT_RELEASE)
+
 
 LDFLAGS = $(FFTW_LDFLAGS)
 
