@@ -1,9 +1,9 @@
 // Copyright (C) 2000 Dominic Letourneau (doumdi@yahoo.com)
-
-// FuzzySet.cc: implementation of the FuzzySet class.
 //
 //////////////////////////////////////////////////////////////////////
 #include "FuzzyOperators.h"
+
+/*
 
 ///Vector<ObjectRef> and Vector<ObjectRef> concatenation
 ObjectRef ObjectRefConcatVectVect(ObjectRef x, ObjectRef y) {
@@ -27,7 +27,7 @@ ObjectRef ObjectRefConcatVectVect(ObjectRef x, ObjectRef y) {
 REGISTER_DOUBLE_VTABLE(concatVtable, ObjectRefConcatVectVect, Vector<ObjectRef>, Vector<ObjectRef>);
 
 
-/*
+
 
 ///Vector<FuzzyFunction*> and Vector<FuzzyFunction*> concatenation
 ObjectRef RuleConcatVectVect(ObjectRef x, ObjectRef y) {
