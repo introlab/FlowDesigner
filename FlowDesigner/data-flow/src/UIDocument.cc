@@ -645,7 +645,8 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
     string fullpath = path + string("/") + name;
 
     if (stat(fullpath.c_str(), &my_stat) < 0) {
-      cerr<<"stat error"<<endl;
+       //cerr<<"stat error"<<endl;
+       perror(fullpath.c_str());
       continue;
     }
     
@@ -825,7 +826,8 @@ bool UIDocument::findExternalRecursive(const string &basePath, const string &pat
       string fullpath = basePath + "/" + path + string("/") + name;
 
       if (stat(fullpath.c_str(), &my_stat) < 0) {
-	 cerr<<"stat error"<<endl;
+	 //cerr<<"stat error"<<endl;
+	 perror(fullpath.c_str());
 	 continue;
       }
     

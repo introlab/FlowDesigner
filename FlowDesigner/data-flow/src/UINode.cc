@@ -271,6 +271,8 @@ void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
    if (builtin) 
    {
       out << "   _NodeFactory *factory = Node::getFactoryNamed(\"" << type << "\");\n";
+      out << "   if (!factory)\n";
+      out << "      throw new GeneralException(\"Node could not be found: " << type << "\", __FILE__, __LINE__);\n";
       //FIXME: Should still for (factory == NULL) in generated code and report errors
       out << "   Node *node = factory->Create(\""<<name << "\", parameters);\n";
    } else {

@@ -2,6 +2,8 @@
 
 #include "IntfNode.h"
 
+//@implements core
+
 IntfNode::IntfNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)
    , lookAhead(0)
