@@ -357,6 +357,13 @@ void UIDocument::loadNodeDefInfo(const string &path, const string &name)
       {
 	 SubnetInfo *info = new SubnetInfo;
 	 info->category = string((char *)xmlGetProp(node, (CHAR *)"category"));
+	 char *sfile = (char *)xmlGetProp(node, (CHAR *)"source");
+	 if (sfile)
+	    info->sourceFile= string(sfile);
+	 char *req = (char *)xmlGetProp(node, (CHAR *)"require");
+	 if (req)
+	    info->requireList = string(req);
+	 //cerr << info->sourceFile << ":" << info->requireList << endl;
 	 nodeName = string((char *)xmlGetProp(node, (CHAR *)"name"));
 	 externalDocInfo[nodeName] = info;
 	 xmlNodePtr data = node->childs;
@@ -765,18 +772,19 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
    }
 }
 
-void UIDocument::genCodeExternal(const string &type, ostream &out, int &id)
+void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
 {
    string fullname = findExternal(type);
    if (fullname == "")
       throw new GeneralException(string("External node not found: ") + type, __FILE__, __LINE__);
    UIDocument doc(fullname);
    doc.load();
-   doc.getNetworkNamed("MAIN")->genCode(out, id);
+   doc.getNetworkNamed("MAIN")->genCode(out, id, nodeList);
 }
 
-void UIDocument::genCode(ostream &out, const string &functName)
+set<string> UIDocument::genCode(ostream &out, const string &functName)
 {
+   set<string> nodeList;
    out << "//This code has been generated automatically using codeflow\n";
    out << "//Note that automatic code generation is in a very experimental\n";
    out << "//  stage right now, use at your own risk\n";
@@ -784,7 +792,7 @@ void UIDocument::genCode(ostream &out, const string &functName)
    out << "#include <object_param.h>\n\n\n";
    int id=0;
    UINetwork *uinet = getNetworkNamed("MAIN");
-   uinet->genCode(out, id);
+   uinet->genCode(out, id, nodeList);
    out << "Network *" << functName << "(const string &_name, ParameterSet &params)" << endl;
    out << "{\n";
    out << "\tNetwork *net = genNet0(_name, params);\n";
@@ -794,6 +802,10 @@ void UIDocument::genCode(ostream &out, const string &functName)
    
    out << "\treturn net;\n";
    out << "}\n";
+   //cerr << "nodes used:\n";
+   //for (set<string>::iterator it=nodeList.begin();it!=nodeList.end();it++)
+   //   cerr << *it << endl;
+   return nodeList;
 }
 
 //Run without a GUI

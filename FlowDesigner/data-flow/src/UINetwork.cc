@@ -581,7 +581,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    return net;
 }
 
-void UINetwork::genCode(ostream &out, int &id)
+void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 {
    int bakID=id;
    id++;
@@ -591,7 +591,7 @@ void UINetwork::genCode(ostream &out, int &id)
    for (int i=0;i<nodes.size();i++)
    {
       ids.push_back(id);
-      nodes[i]->genCode(out, id);
+      nodes[i]->genCode(out, id, nodeList);
    }
    } catch (BaseException *e)
    {

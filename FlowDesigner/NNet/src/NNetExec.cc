@@ -13,6 +13,7 @@ DECLARE_NODE(NNetExec)
  * @name NNetExec
  * @category NNet
  * @description No description available
+ * @require FFNet
  *
  * @input_name INPUT
  * @input_description No description available

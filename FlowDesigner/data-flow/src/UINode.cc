@@ -234,7 +234,7 @@ Node *UINode::build(const ParameterSet &params)
    
 }
 
-void UINode::genCode(ostream &out, int &id)
+void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
 {
    int bakID=id;
    id++;
@@ -248,15 +248,16 @@ void UINode::genCode(ostream &out, int &id)
    if (factory)
    {
       builtin=true;
+      nodeList.insert(nodeList.end(), type);
    }
    else
    {
       builtin=false;
       UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
       if (buildNet)
-	 buildNet->genCode(out, id);
+	 buildNet->genCode(out, id, nodeList);
       else {
-	 UIDocument::genCodeExternal(type, out, id);
+	 UIDocument::genCodeExternal(type, out, id, nodeList);
 	 //throw new GeneralException("external nodes not supported yet\n", __FILE__, __LINE__);
       }
    }

@@ -11,6 +11,7 @@
 #include <fstream>
 
 #include "UINetTerminal.h"
+#include <set>
 
 using namespace std;
 
@@ -131,7 +132,7 @@ public:
    Node *build(const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   void genCode(ostream &out, int &id);
+   void genCode(ostream &out, int &id, set<string> &nodeList);
 
    vector<UITerminal *> getInputs() {return inputs;}
    vector <UITerminal *> getOutputs() {return outputs;}

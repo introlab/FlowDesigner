@@ -11,6 +11,7 @@
 #include <fstream>
 #include <pthread.h>
 #include "UINetTerminal.h"
+#include <set>
 
 //struct xmlNode;
 class ItemInfo;
@@ -143,7 +144,7 @@ public:
    Network *build(const string &netName, const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   void genCode(ostream &out, int &id);
+   void genCode(ostream &out, int &id, set<string> &nodeList);
  
    vector<UINode *> getNodes() {return nodes;}
    vector<UILink *> getLinks() {return links;}

@@ -14,6 +14,7 @@ DECLARE_NODE(NNetTrainDBD)
  * @name NNetTrainDBD
  * @category NNet
  * @description Neural network (MLP) training unsing the Delta-bar-delta algorithm
+ * @require FFNet
  *
  * @input_name TRAIN_IN
  * @input_type Vector

@@ -3,15 +3,14 @@
 #ifndef UIDOCUMENT_H
 #define UIDOCUMENT_H
 
-//#include "UINetwork.h"
 #include <vector>
 #include <string>
 #include <tree.h>
 #include <map>
 #include "UINetwork.h"
 #include "UINodeParameters.h"
+#include <set>
 
-//class UINetwork;
 class UINodeMenu;
 class Network;
 class ParameterSet;
@@ -33,6 +32,8 @@ class SubnetInfo {
    vector<ItemInfo *> params;
    string category;
    string description;
+   string sourceFile;
+   string requireList;
   public:
    SubnetInfo() : category("Unknown"), description("No description available") {}
 };
@@ -163,7 +164,7 @@ public:
    Network *build(const string &_name, const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   void genCode(ostream &out, const string &functName);
+   set<string> genCode(ostream &out, const string &functName);
 
    static Network *buildExternal(const string &type, const string &_name, const ParameterSet &params);
 
@@ -177,7 +178,7 @@ public:
 
    static string findExternal(const string &type);
 
-   static void genCodeExternal(const string &type, ostream &out, int &id);
+   static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 
  protected:
    
