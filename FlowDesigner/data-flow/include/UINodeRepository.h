@@ -11,6 +11,8 @@
 
 class UINetwork;
 
+using namespace std;
+
 class ItemInfo {
   public:
 	string name;

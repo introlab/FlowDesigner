@@ -19,6 +19,8 @@
 
 //@implements UIClasses
 
+using namespace std;
+
 UINodeRepository::UINodeRepository(const UINodeRepository &)
 {
    throw new GeneralException("I wouldn't try copying a UINodeRepository if I were you", __FILE__, __LINE__);

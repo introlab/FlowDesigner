@@ -67,7 +67,7 @@ public:
 	    new NodeException(NULL, "Unknown function type", __FILE__, __LINE__);
       } else type = gauss;
 
-      scale = sd*2.0*sqrt(3);
+      scale = sd*2.0*sqrt(3.0);
    }
 
    void calculate(int output_id, int count, Buffer &out)

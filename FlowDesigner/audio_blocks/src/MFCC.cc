@@ -163,7 +163,7 @@ public:
 	 rNormalize[i]=cos(M_PI*i/(2*melLength))*sqrt2n;
 	 iNormalize[i]=-sin(M_PI*i/(2*melLength))*sqrt2n;
       }
-      rNormalize[0] /= sqrt(2);
+      rNormalize[0] /= sqrt(2.0);
 
    }
 
