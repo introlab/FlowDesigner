@@ -5,3 +5,9 @@ support removing network terminals
 allow including other documents as node...
 
 set the isModified flag when adding a net terminal or moving a node, ...
+
+implement Exception Stack
+
+debug thread race with run button disable
+
+implement variable number of inputs/outputs

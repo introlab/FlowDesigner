@@ -58,10 +58,11 @@ void TextProbe::reset()
 
 void TextProbe::display()
 {
-   char probeOut[1000];
-   ostrstream out(probeOut, 999);
+   char probeOut[3000];
+   ostrstream out(probeOut, 2999);
    
    out << *inputValue;
+   out << "\000";
    //cerr << "Probe value = " << *inputValue << endl;
    gdk_threads_enter();
    gnome_less_clear (GNOME_LESS(less1));
