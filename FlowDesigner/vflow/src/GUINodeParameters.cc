@@ -20,6 +20,7 @@ static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
 GUINodeParameters::GUINodeParameters(UINode *_node, string type)
    : UINodeParameters (_node, type)
 {
+   params.resize(textParams.size());
    //cerr << "GUINodeParameters::GUINodeParameters\n";
    int i;
 
@@ -115,7 +116,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   
   for (i=0;i<params.size();i++)
   {
-     params[i].label = gtk_label_new (params[i].name.c_str());
+     params[i].label = gtk_label_new (textParams[i].name.c_str());
      gtk_widget_ref (params[i].label);
      gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "label", params[i].label,
                                (GtkDestroyNotify) gtk_widget_unref);
@@ -240,10 +241,10 @@ void GUINodeParameters::apply()
    {
       //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
       GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
-      params[i].type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
+      textParams[i].type = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
 
       GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
-      params[i].value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
+      textParams[i].value = gtk_entry_get_text(GTK_ENTRY(gtkentr));
       
       //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
    }
@@ -256,14 +257,22 @@ void GUINodeParameters::changed()
    gnome_property_box_changed(GNOME_PROPERTY_BOX(nodeproperty));
 }
 
-
-void GUINodeParameters::insertLoadedParam(ParameterData *param, string type, string value)
+ParameterData *GUINodeParameters::getParamDataNamed(string n)
 {
+   for (int i=0;i<textParams.size();i++)
+      if (textParams[i].name == n)
+         return &(params[i]);
+   return NULL;
+}
+
+void GUINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
+{
+   ParameterData *data = getParamDataNamed(param->name);
    const vector<string> &types=allTypes();
    for (int i=0;i<types.size();i++)
       if (types[i] == type)
-	 gtk_option_menu_set_history (GTK_OPTION_MENU (param->optionmenu), i);
-   GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(param->entry));
+	 gtk_option_menu_set_history (GTK_OPTION_MENU (data->optionmenu), i);
+   GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(data->entry));
    gtk_entry_set_text(GTK_ENTRY(gtkentr),(gchar *)value.c_str());
    
 }
