@@ -344,7 +344,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
    double SSE;
    int k=1;
    //double sigma = .03;
-   //double lambda = .2;
+   double lambda_init = lambda;
    double lambdaBar = 0;
    double sigmak;
    bool success = true;
@@ -428,6 +428,9 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
 	 {
 	    pk = rk;
 	    k++;
+	    lambda = lambda_init;
+	    lambdaBar = 0;
+	    cerr << "restarting\n";
 	    continue;
 	 } else {
 	    double bk = (rk.norm2() - rk*oldR)/uk;
@@ -435,6 +438,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
 	 }
 	 if (DK >= .75)
 	    lambda *= .5;
+	 k++;
       } else {
 	 lambdaBar = lambda;
 	 success = false;
@@ -449,7 +453,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter, double
       //9. Have we found the minimum
       if (rk.norm() == 0)
 	 break;
-      k++;
+      //k++;
    }
    setWeights(wk.begin());
 }
