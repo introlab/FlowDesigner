@@ -2,8 +2,6 @@
 
 #include "binio.h"
 
-#define LITTLE_ENDIAN
-
 void BinIO::_read(istream &in, void* data, size_t typeSize, size_t length)
 {
 #ifdef WORDS_BIGENDIAN
