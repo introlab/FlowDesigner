@@ -701,6 +701,9 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
 
 
 
+/*END Big mess (well, almost)*/
+
+
 
 
 UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)

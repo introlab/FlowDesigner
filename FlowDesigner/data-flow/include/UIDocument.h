@@ -11,11 +11,12 @@
 #include "UINodeParameters.h"
 #include <set>
 #include "Object.h"
+#include "UINodeRepository.h"
 
 class UINodeMenu;
 class Network;
 class ParameterSet;
-
+/*
 class ItemInfo {
   public:
 	string name;
@@ -25,7 +26,7 @@ class ItemInfo {
 	
 	ItemInfo() : type("any"), value(""), description("No description available") {}
 };
-
+*/
 class SubnetInfo {
   public:
    vector<ItemInfo *> inputs;
