@@ -714,6 +714,9 @@ gboolean keypad_event_function  (GtkWidget *window, GdkEvent *event, KeyPad *key
   case GDK_KEY_PRESS:
     keypad->keyboard_action(event->key.keyval);
     break;
+  case GDK_KEY_RELEASE:
+    keypad->key_stroke = 0;
+    break;
   }
 
 }
