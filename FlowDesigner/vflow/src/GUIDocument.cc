@@ -5,7 +5,8 @@
 #include "Network.h"
 #include <pthread.h>
 #include "rc_ptrs.h"
-#include <strstream>
+//#include <strstream>
+#include <sstream.h>
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -803,15 +804,20 @@ void GUIDocument::run()
       // Getting all the network outputs.
       for (int k=0; ;k++) {
 	if (net->hasOutput(k)) {
-	   char str[3000];
+	   /*char str[3000];
 	   strstream execOut(str, 2999);
 	   
 	   //cerr<<"before main getOutput"<<endl;
 	   execOut << *net->getOutput(k,0);
 	   //cerr<<"after main getOutput"<<endl;
+	   */
+	   stringstream execOut;
+	   execOut << *net->getOutput(k,0);
+	   
 
 	   gdk_threads_enter();
-	   less_print(str);
+	   less_print(execOut.str());
+	   //less_print(str);
 	   gdk_threads_leave();
 
 	}
@@ -829,12 +835,14 @@ void GUIDocument::run()
       //run in a window in a separated thread
    } catch (BaseException *e)
    {
-      char str[3000];
-      strstream excOut(str, 2999);
+      /*char str[3000];
+	strstream excOut(str, 2999);*/
+      stringstream excOut;
 
       e->print (excOut);
       gdk_threads_enter();
-      less_print(str);
+      less_print(excOut.str());
+      //less_print(str);
       gdk_threads_leave();
       //cerr << "exception caught\n";
       //e->print();

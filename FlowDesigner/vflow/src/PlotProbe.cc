@@ -18,7 +18,7 @@
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
-#include <strstream>
+//#include <strstream>
 #include "Vector.h"
 
 #ifdef HAVE_CONFIG_H
@@ -85,7 +85,7 @@ void PlotProbe::specificInitialize()
    gtk_widget_pop_colormap ();
    gtk_widget_pop_visual ();
 
-   gtk_window_set_default_size(GTK_WINDOW(window1), xmax-xmin+20, ymax-ymin+70);
+   gtk_window_set_default_size(GTK_WINDOW(window1), int(xmax-xmin+20), int(ymax-ymin+70));
    //gtk_window_set_policy (GTK_WINDOW(window1), FALSE, FALSE, TRUE);
    //canvas1 = gtk_scrolled_window_new (NULL, NULL);
    //canvas1 = gtk_layout_new();

@@ -19,7 +19,6 @@
 #include "Vector.h"
 #include "ObjectParser.h"
 #include <stream.h>
-#include <strstream.h>
 
 #include "variables.h"
 

@@ -19,7 +19,7 @@
 #include "Vector.h"
 #include "ObjectParser.h"
 #include <stream.h>
-#include <strstream.h>
+#include <sstream.h>
 
 class ConstantVector;
 
@@ -61,7 +61,9 @@ public:
       
       value = ObjectRef(new Vector<float>);
       Vector<float> &val = object_cast<Vector<float> > (value);
-      istrstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
+      //istrstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
+      //str_vector >> val;
+      istringstream str_vector(object_cast <String> (parameters.get("VALUE")).c_str());
       str_vector >> val;
 
       //cerr << "vector is: " << val << endl;

@@ -18,7 +18,6 @@
 #include "Node.h"
 #include "ObjectParser.h"
 #include <stream.h>
-#include <strstream.h>
 #include <sys/types.h> 
 #include <sys/socket.h> 
 #include <netinet/in.h>

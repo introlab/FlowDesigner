@@ -18,7 +18,7 @@
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
-#include <strstream>
+#include <sstream.h>
 
 DECLARE_NODE(TextProbe)
 /*Node
@@ -79,13 +79,13 @@ void TextProbe::reset()
 
 void TextProbe::display()
 {
-   char probeOut[3000];
+   /*char probeOut[3000];
    for (int i=0;i<3000;i++)
       probeOut[i]=0;
-   ostrstream out(probeOut, 2999);
+      ostrstream out(probeOut, 2999);*/
+   ostringstream out;
    
    out << *inputValue;
-   out << "\000";
    //cerr << "Probe value = " << *inputValue << endl;
 
    #ifdef HAVE_PTHREAD_CANCEL
@@ -95,7 +95,8 @@ void TextProbe::display()
    gdk_threads_enter();
 
    gnome_less_clear (GNOME_LESS(less1));
-   gnome_less_show_string(GNOME_LESS(less1), probeOut);
+   //gnome_less_show_string(GNOME_LESS(less1), probeOut);
+   gnome_less_show_string(GNOME_LESS(less1), out.str().c_str());
 
    gdk_threads_leave();
 
