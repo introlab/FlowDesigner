@@ -19,6 +19,22 @@
 #include "Buffer.h"
 #include <semaphore.h>
 
+class ExceptionObject : public Object {
+
+   BaseException *e;
+public:
+
+   ExceptionObject(BaseException *_e)
+      : e(_e)
+   {
+      
+   }
+   void doThrow()
+   {
+      throw e;
+   }
+};
+
 class SerialThread;
 
 DECLARE_NODE(SerialThread)
@@ -151,14 +167,34 @@ public:
 	 if (resetState)
 	    break;
 
+	 //ObjectRef inputValue;
 	 //Compute
-	 ObjectRef inputValue = getInput(inputID, threadCount);
+	 bool inside_lock=false;
+	 try {
+	    ObjectRef inputValue = getInput(inputID, threadCount);
 
-	 //Put result in buffer
-	 pthread_mutex_lock(&bufferLock);
-	 (*buff)[threadCount] = inputValue;
-	 //cerr << "calculated " << threadCount << endl;
-	 pthread_mutex_unlock(&bufferLock);
+	    //Put result in buffer
+	    pthread_mutex_lock(&bufferLock);
+	    inside_lock=true;
+	    (*buff)[threadCount] = inputValue;
+
+	    //cerr << "calculated " << threadCount << endl;
+	    pthread_mutex_unlock(&bufferLock);
+	    inside_lock=false;
+
+	 } catch (BaseException *e)
+	 {
+	    if (!inside_lock)
+	       pthread_mutex_lock(&bufferLock);
+	    (*buff)[threadCount] = new ExceptionObject(e->add(new GeneralException ("Exception caught in SerialThread", __FILE__, __LINE__)));
+	    pthread_mutex_unlock(&bufferLock);
+	 } catch (...)
+	 {
+	    pthread_mutex_lock(&bufferLock);
+	    (*buff)[threadCount] = new ExceptionObject(new GeneralException ("Unknown exception caught in SerialThread", __FILE__, __LINE__));
+	    pthread_mutex_unlock(&bufferLock);
+	 }
+	 
 
 	 //Notify that the result is ready
 	 if (sem_post(&recSem))
@@ -201,6 +237,10 @@ public:
       //cerr << "returning " << count << endl;
       ObjectRef returnValue = (*buff)[count];
       pthread_mutex_unlock(&bufferLock);
+      if (typeid(*returnValue) == typeid(ExceptionObject))
+      {
+	 object_cast<ExceptionObject> (returnValue).doThrow();
+      }
       return returnValue;
    }      
 };
