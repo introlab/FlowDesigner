@@ -73,7 +73,11 @@ protected:
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
 ///Base node class
+
 class Node { 
+
+friend class Network;
+
 protected:
    ///Node's name
    string name;
@@ -147,7 +151,8 @@ public:
    void reset();
 
    ///Returns the node name
-   string getName() {return name;}
+   string getName() {return name;}   
+
 private:
    ///Tell the node we will be using output 'out'
    void registerOutput (int out) {outputInitializeCount++;}
@@ -155,14 +160,17 @@ private:
    ///Increment outputInitializeCount when performing a reset()
    void incrementOutputInitialize() {outputInitializeCount++;}
 
+
+protected:
+
+   ///Default constructor, should not be used
+   Node() {throw new GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
+
    ///symbolic to numeric translation for input names
    virtual int translateInput(string inputName) = 0;
 
    ///symbolic to numeric translation for output names
    virtual int translateOutput(string inputName) = 0;
-protected:
-   ///Default constructor, should not be used
-   Node() {throw "Node error";};
 };
 
 

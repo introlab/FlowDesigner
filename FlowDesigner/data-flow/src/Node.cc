@@ -82,14 +82,11 @@ void Node::initialize ()
    if (--outputInitializeCount <=0)
    {
       specificInitialize();
-      cout<<name<<" is in initialize..."<<endl;
-
 
       vector<NodeInput>::iterator in;
 
       for (in = inputs.begin(); in < inputs.end(); in++)
       {
-         cout<<in->node->name<<"called for initialized..."<<endl;
          in->node->initialize();
 
          if (!in->node->hasOutput(in->outputID)) 

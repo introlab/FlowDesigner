@@ -23,6 +23,8 @@
 #include "NodeFactory.h"
 #include "NodeHeaders.h"
 #include "NetworkException.h"
+#include "Node.h"
+
 
 ///Definition of the type we need for the dictionaries
 typedef map<string, Node*>::value_type nodeEntry;
@@ -35,18 +37,21 @@ typedef map<string, _NodeFactory*>::value_type factoryEntry;
    lookup dictionary that contains a name for that factory and a pointer to a
    Factory Base class that uses a virtual function callde Create(). The initialization must
    begin at the sink node and is propagated through the network until it reaches
-   the input node.
+   the input node.A network can be included as a node as well.
  */
-class Network {
+class Network : public Node {
 
 public:
 
-   ///default constructor
-   Network (); 
+   ///Subnet: NetworkNode constructor
+   Network (string nodeName, ParameterSet params);
 
    ///default destructor
    ~Network ();
    
+   ///initialize factories known by the default network
+   static void initializeFactories();
+
    /**
       Returns the associated Node pointer from a lookup dictionary with the node name.
       We return NULL if the node doesn't exist.
@@ -69,6 +74,8 @@ public:
 
    ///Naming the current network
    void setName(const string &name) {netName = name;}
+
+   ///Returns the sinkNode
    Node* getSinkNode () {return sinkNode;}
 
    ///Setting the sink node (unique)
@@ -84,10 +91,10 @@ public:
    bool isDebugMode () {return debugMode;}
 
    ///Setting the debug mode
-   void setDebugMode() {debugMode = 1;}
+   void setDebugMode() {debugMode = true;}
 
    ///Exiting debug mode
-   void resetDebugMode() {debugMode = 0;}
+   void resetDebugMode() {debugMode = false;}
 
    /** 
        Network initialization. Must be done after all connections.
@@ -98,6 +105,22 @@ public:
    ///Adding a factory into the static dictionary
    static void addFactory (const string &factoryName, _NodeFactory* const factory);
 
+   ///Subnet : NetworkNode specific initialize
+   virtual void specificInitialize();
+
+   ///Subnet : NetworkNode returns the output of the SubNet (from the sinkNode)
+   virtual ObjectRef getOutput (int output_id, int count);
+
+   ///Subnet : checks if the sinkNode has the desired output
+   virtual bool hasOutput (int output_id) const;
+
+protected: 
+
+   ///Subnet : getting the related number of the input description
+   virtual int translateInput (string   inputName);
+
+   ///Subnet : getting the related number of the output description
+   virtual int translateOutput (string outputName);
 
 private:
 
@@ -117,6 +140,12 @@ private:
    bool debugMode;
    ///The factory lookup function
    static _NodeFactory* getFactoryNamed (const string &name);
+   ///default constructor should never be used
+   Network (); 
 
 };
+
+/// Our Network factory.
+typedef NodeFactory<Network> NetworkFactory;
+
 #endif

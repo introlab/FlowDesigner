@@ -8,17 +8,32 @@ map<string,_NodeFactory*> Network::factoryDictionary;
 
 /***************************************************************************/
 /*
-  Network()
+  initializeFactories()
   Dominic Letourneau
  */
 /***************************************************************************/
-Network::Network (){
+void Network::initializeFactories() {
+
+   try {
+      Network::addFactory ("CONST", new ConstantNodeFactory);
+   }
+   catch (...) {
+      cerr<<"Factories already initialized..."<<endl;
+   }
+}
+/***************************************************************************/
+/*
+  Network(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+Network::Network (string nodeName, ParameterSet params) 
+   : netName(nodeName), Node(nodeName,params) {
+
    numNodes = 0;
    sinkNode = NULL;
    inputNode = NULL;
-   debugMode = 0;
-   //we should construct the factoryDictionary right here. 
-   factoryDictionary.insert ( factoryEntry("CONST", new ConstantNodeFactory));
+   debugMode = false;
 }
 /***************************************************************************/
 /*
@@ -53,8 +68,6 @@ Network::~Network() {
       nodeDictionary.erase((*nodeIter).first);
       delete node;
    }
-   
-
 }
 /***************************************************************************/
 /*
@@ -89,7 +102,7 @@ void Network::addNode (const string &factoryName,const string &nodeName, const P
 
    factory = getFactoryNamed(factoryName);
    if (!factory) {
-      throw FactoryNotFoundException(factoryName);
+      throw new FactoryNotFoundException(factoryName);
    }
 
    //creating an instance of the specified node.
@@ -121,7 +134,7 @@ Node * Network::removeNode (const string &nodeName) {
       numNodes--;
    }
    else {
-      throw NodeNotFoundException(nodeName);
+      throw new NodeNotFoundException(nodeName);
    }
 
    return node;
@@ -163,8 +176,8 @@ void Network::connect (const string &currentNodeName,const string &inputName,
       currentNode->connectToNode(inputName,inputNode,outputName);
    }
    else {
-      if (!currentNode) {throw NodeNotFoundException(currentNodeName);}
-      if (!inputNode) {throw NodeNotFoundException(inputNodeName);}
+      if (!currentNode) {throw new NodeNotFoundException(currentNodeName);}
+      if (!inputNode) {throw new NodeNotFoundException(inputNodeName);}
    }
    
 
@@ -186,7 +199,7 @@ void Network::initialize() {
       sinkNode->initialize();
    }
    else {
-      throw NoSinkNodeException();
+      throw new NoSinkNodeException();
    }
 
    //we must verify if all the nodes are initialized properly
@@ -199,12 +212,15 @@ void Network::initialize() {
    }
 
    if (connectionMap.size() > 0) {
-      throw NotInitializedException(connectionMap);
+      throw new NotInitializedException(connectionMap);
    }
-   
-
 }
-
+/***************************************************************************/
+/*
+  Network::addFactory()
+  Dominic Letourneau
+ */
+/***************************************************************************/
 void Network::addFactory (const string &factoryName, _NodeFactory* const factory) {
    if (!getFactoryNamed(factoryName)) {
       //the factory doesn't exist inserting it...
@@ -217,8 +233,70 @@ void Network::addFactory (const string &factoryName, _NodeFactory* const factory
       }
    }
    else {
-      throw (string("The factory already exists"));
+      throw new NodeException (NULL,"The factory already exists",__FILE__,__LINE__);
    }
 };
+/***************************************************************************/
+/*
+  Network::specificInitialize(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+void Network::specificInitialize() {
+   this->Node::specificInitialize();
+}
 
+/***************************************************************************/
+/*
+  Network::getOutput(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+ObjectRef Network::getOutput (int output_id, int count) {
+
+   if (!sinkNode) {
+      throw new NoSinkNodeException();
+   }
+   return sinkNode->getOutput(output_id, count);
+}
+
+/***************************************************************************/
+/*
+  Network::hasOutput(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+bool Network::hasOutput (int output_id) const {
+
+   if (!sinkNode) {
+      throw new NoSinkNodeException();
+   }
+   return sinkNode->hasOutput(output_id);
+}
+
+/***************************************************************************/
+/*
+  Network::translateInput(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+int Network::translateInput (string   inputName) {
+   if (!inputNode) {
+      throw new NoInputNodeException();
+   }
+   return inputNode->translateInput (inputName);
+}
+/***************************************************************************/
+/*
+  Network::translateOutput(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+int Network::translateOutput (string outputName) {
+
+   if (!sinkNode) {
+      throw new NoSinkNodeException();
+   }
+   return sinkNode->translateOutput(outputName);
+}
 #endif
