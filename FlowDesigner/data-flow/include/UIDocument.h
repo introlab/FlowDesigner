@@ -107,7 +107,7 @@ public:
    const string &getPath() {return path;}
    
    /**Save the document to file specified in internal variables 'path' and 'docName'*/
-   void save();
+   virtual void save();
    
    /**Convert document to an XML string in memory*/
    char *saveToMemory(int &size);

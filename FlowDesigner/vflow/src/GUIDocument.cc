@@ -234,6 +234,11 @@ void GUIDocument::create()
    gnome_mdi_child_set_menu_template (GNOME_MDI_CHILD (mdiChild), doc_menu);
 }
 
+void GUIDocument::save()
+{
+   less_print(docName + " saved");
+   UIDocument::save();
+}
 
 void GUIDocument::createView()
 {

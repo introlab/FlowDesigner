@@ -59,6 +59,8 @@ public:
 
    void create();
 
+   void save();
+
    void createView();
 
    virtual void load();

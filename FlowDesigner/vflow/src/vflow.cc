@@ -797,8 +797,11 @@ void vflowGUI::create_mdi () {
   mdi = GNOME_MDI(gnome_mdi_new ("vflow", _("vflow")));
   mdi->tab_pos = GTK_POS_TOP;
 
+  gtk_signal_connect(GTK_OBJECT(mdi), "destroy", GTK_SIGNAL_FUNC(exit_event), this);
+
   gtk_object_set_data (GTK_OBJECT (mdi), "mdi", mdi);
   gtk_signal_connect(GTK_OBJECT(mdi), "remove_child", GTK_SIGNAL_FUNC(remove_doc_cb), NULL);
+
 
   
   //creating toolbar & menus
