@@ -207,8 +207,8 @@ void Network::connect (const string &currentNodeName,const string &inputName,
    Node* currentNode = getNodeNamed(currentNodeName);
    Node* inputNode = getNodeNamed(inputNodeName);
    
-   if (currentNode && inputNode) {
-
+   if (currentNode && inputNode) 
+   {
      currentNode->connectToNode(inputName,inputNode,outputName);
    }
    else {
@@ -338,11 +338,12 @@ int Network::translateOutput (string outputName) {
  */
 /***************************************************************************/
 void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
-   if (!inputNode) {
+   if (!inputNode)
       throw new NoInputNodeException();
-   }
+   
    inputNode->connectToNode(in,inNode,out);
 }
+
 /***************************************************************************/
 /*
   Network::reset(...)

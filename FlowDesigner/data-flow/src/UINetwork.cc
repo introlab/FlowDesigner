@@ -472,7 +472,15 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    for (int i=0;i<links.size();i++)
    {
       //cerr << "linking...\n";
+      //This try/catch is a workaround (don't ask me to explain) for bug #212990
+      try {
       links[i]->build(net);
+      } catch (BaseException *e) 
+      {
+         /*cerr << "caught in UINetwork::build\n";*/
+	 throw e->add(new GeneralException ("Exception caught while building link in network " + name, 
+					    __FILE__, __LINE__));
+      }
    }
 
    //cerr << "links built\n";

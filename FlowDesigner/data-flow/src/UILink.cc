@@ -99,10 +99,9 @@ void UILink::build(Network *net)
    //cerr << from->getName() << endl;
    //cerr << from->getNode()->getName() << endl << endl;
 
+   //cerr << "";
    net->connect(to->getNode()->getName(), to->getName(), 
 		from->getNode()->getName(), from->getName());
+   //cerr << "";
 
-   //cerr << "connected\n";
-   //net->connect(const string &currentNodeName,const string &inputName, 
-   //                    const string &inputNodeName, const string &outputName)
 }
