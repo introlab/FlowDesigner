@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 
-#define FLOWDESIGNER_ABI_VERSION "dev-2002-04-30"
+#define FLOWDESIGNER_ABI_VERSION "dev-2004-05-25"
 
 extern "C" {
 int version_check(const char *vers, const char *abi_vers, const char *unused_vers=NULL);

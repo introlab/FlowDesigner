@@ -16,7 +16,7 @@ int version_check(const char *vers, const char *abi_vers, const char *unused_ver
       exit(3);
    } else if (abi_version != abi_vers) 
    {
-      cerr << "Overflow ABI version mismatch: trying to link libflow with ABI version " << abi_version << " with code compiled for ABI version " << abi_vers << ". ";
+      cerr << "FlowDesigner ABI version mismatch: trying to link libflow with ABI version " << abi_version << " with code compiled for ABI version " << abi_vers << ". ";
       cerr << "This means that you're likely using a development version, so you should know what this means." << endl;
       exit(3);
    } else if (unused_vers)
