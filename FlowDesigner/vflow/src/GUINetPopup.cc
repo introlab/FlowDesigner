@@ -221,24 +221,21 @@ void GUINetPopup::addCategory(string name)
       categories[name] = newCat;
    }
 }
-
+static int a=0;
 void GUINetPopup::addType(string cat, string type)
 {
-   if (type[0] != '_')
-   {
-      addCategory(cat);
-      GtkWidget *label = gtk_menu_item_new_with_label((gchar*)type.c_str());
-      gtk_object_ref(GTK_OBJECT(label));
-      gtk_object_set_data_full (GTK_OBJECT (menu), "new",
-				label,
-				(GtkDestroyNotify) gtk_widget_unref);
-      gtk_widget_show(label);
-      gtk_signal_connect (GTK_OBJECT (label), "activate",
-			  GTK_SIGNAL_FUNC (new_node_event),
-			  net);
-      gtk_object_set_user_data(GTK_OBJECT(label), (gchar*)type.c_str());
-      gtk_menu_append(GTK_MENU(categories[cat]),label);
-   }
+   addCategory(cat);
+   GtkWidget *label = gtk_menu_item_new_with_label((gchar*)type.c_str());
+   gtk_object_ref(GTK_OBJECT(label));
+   gtk_object_set_data_full (GTK_OBJECT (menu), "new",
+			     label,
+			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show(label);
+   gtk_signal_connect (GTK_OBJECT (label), "activate",
+		       GTK_SIGNAL_FUNC (new_node_event),
+		       net);
+   gtk_object_set_user_data(GTK_OBJECT(label), (gchar*)type.c_str());
+   gtk_menu_append(GTK_MENU(categories[cat]),label);
 }
 
 void GUINetPopup::popup(GdkEvent *event)
