@@ -170,8 +170,8 @@ typedef NetCType<bool> Bool;
 typedef NetCType<FILE *> FILEPTR;
 
 
-ObjectRef TrueObject(new Bool(true));
-ObjectRef FalseObject(new Bool(false));
+extern ObjectRef TrueObject;
+extern ObjectRef FalseObject;
 
 ///STL types
 //typedef PrintableGenericType<string> String;
