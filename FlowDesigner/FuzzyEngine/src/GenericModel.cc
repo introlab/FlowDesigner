@@ -19,9 +19,13 @@ DECLARE_NODE(GenericModel)
  * @input_description The Rules to use
  * @input_type Vector
  *
- * @input_name SETS
+ * @input_name ANTECEDENT_SETS
  * @input_description The Sets to use
  * @input_type Vector
+ *
+ * @input_name CONSEQUENT_SETS
+ * @input_description The Sets to use
+ * @input_type Vecto
  * 
  * @input_name INPUT
  * @input_description The input value of the variables
@@ -44,6 +48,7 @@ GenericModel::GenericModel() {
 
 GenericModel::GenericModel(string nodeName, ParameterSet params) 
 : FuzzyModel(nodeName,params){
+
 
 }
 
@@ -100,7 +105,7 @@ float GenericModel::disjunction(vector<float> &d_values) {
 }
 
 
-vector<pair<string,float> > & GenericModel::defuzzification() {
+vector<float>& GenericModel::defuzzification() {
   
   m_defuzzification.resize(0);
   
@@ -132,7 +137,7 @@ vector<pair<string,float> > & GenericModel::defuzzification() {
       defuzz_value /= area_cumul;
     }
     //adding this output
-    m_defuzzification.push_back(pair<string,float>(m_output_set[i]->get_name(),defuzz_value));
+    m_defuzzification.push_back(defuzz_value);
     
   }//for every set
   
@@ -146,5 +151,70 @@ vector<pair<string,float> > & GenericModel::defuzzification() {
 void GenericModel::calculate(int output_id, int count, Buffer &out) {
 
 
+  for (int i = 0 ; i < m_rules.size(); i++) {
+    delete m_rules[i];
+  }
+  m_rules.resize(0);
+
+
+  for (int i = 0 ; i < m_output_set.size(); i++) {
+    delete m_output_set[i];
+  }
+  m_output_set.resize(0);
+
+  
+  for (int i = 0 ; i < m_input_set.size(); i++) {
+    delete m_input_set[i];
+  }
+  m_input_set.resize(0);
+  
+
+  //getting Fuzzy Rules
+  ObjectRef Rules = getInput(m_RuleID, count);
+
+  //getting Fuzzy Sets (antecedent)
+  ObjectRef ASets = getInput(m_ASetID, count);
+
+  //getting Fuzzy Sets (consequent)
+  ObjectRef CSets = getInput(m_CSetID,count);
+  
+  //getting Inputs
+  ObjectRef Input = getInput(m_InputID, count);
+
+
+  //First add antecedant sets
+  Vector<FuzzySet*> &vect_sets = object_cast<Vector<FuzzySet*> >(ASets);
+  for (int i = 0; i < vect_sets.size(); i++) {
+    add_fuzzy_set(vect_sets[i],FuzzyModel::FUZZY_INPUT_SET);
+  }
+
+  //Then add consequent sets
+  vect_sets = object_cast<Vector<FuzzySet*> >(CSets);
+  for (int i = 0; i < vect_sets.size(); i++) {
+    add_fuzzy_set(vect_sets[i],FuzzyModel::FUZZY_OUTPUT_SET);
+  }
+
+  
+  //Finally add rules
+  Vector<FuzzyRule*> &vect_rules = object_cast<Vector<FuzzyRule*> >(Rules);
+  for (int i = 0; i < vect_rules.size(); i++) {
+    add_fuzzy_rule(vect_rules[i]);
+  }
+
+
+  //verify rule consistency
+  verify_rules();
+
+
+  //calculate output
+  Vector<float> &vect_value = object_cast<Vector<float> >(Input);  
+  vector<float>& calc_output = evaluate(vect_value);
+  Vector<float> *my_output = new Vector<float>(calc_output.size());
+
+  for (int i = 0; i < calc_output.size(); i++) {
+    (*my_output)[i] = calc_output[i];
+  }
+
+  out[count] = ObjectRef(my_output);
 
 }

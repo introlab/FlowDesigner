@@ -27,6 +27,12 @@ FuzzyModel::FuzzyModel()
 FuzzyModel::FuzzyModel(string nodeName, ParameterSet params)
   : BufferedNode(nodeName,params) {
 
+  m_RuleID = addInput("RULES");;
+  m_ASetID = addInput("ANTECEDENT_SETS");
+  m_CSetID = addInput("CONSEQUENT_SETS");
+  m_InputID = addInput("INPUT");
+  m_OutputID = addOutput("OUTPUT");
+
 }
 //////////////////////////////////////////////////////////////////////
 // Destruction
@@ -255,16 +261,14 @@ FuzzySet* FuzzyModel::find_set_named(const string &name, int type) {
 //////////////////////////////////////////////////////////////////////
 // Evaluation/inference 
 //////////////////////////////////////////////////////////////////////
-vector<pair<string,float> >& FuzzyModel::evaluate(list<pair<string, float> > &input_values) {
+vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
   
   vector<float> inputs;
   
   if (input_values.size() != m_input_set.size()) {		
     throw new GeneralException("NOT ENOUGH INPUT VARIABLES",__FILE__,__LINE__);	
   }
-  
-  
-  
+    
   //we must reset every output and input set
   int i;
   
@@ -276,7 +280,14 @@ vector<pair<string,float> >& FuzzyModel::evaluate(list<pair<string, float> > &in
     m_output_set[i]->reset();
   }
   
-  
+  //assuming that values are ordered like the rules
+  for (int i = 0; i < m_input_set.size(); i++) {
+    inputs.push_back(input_values[i]);
+    m_input_set[i]->get_all_membership_evaluation(input_values[i]);
+  }
+
+
+  /*
   for (list<pair<string,float> >::iterator iter = input_values.begin();
        iter != input_values.end(); iter++) {
     
@@ -294,6 +305,8 @@ vector<pair<string,float> >& FuzzyModel::evaluate(list<pair<string, float> > &in
       set->get_all_membership_evaluation((*iter).second);
     }	
   }
+  */
+
   
   //we are assuming that the input variables are in the same order than the rules
   vector<float> conjunction_values(m_input_set.size());

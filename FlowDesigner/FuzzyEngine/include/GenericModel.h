@@ -27,7 +27,7 @@ public:
 	virtual float disjunction(vector<float> &d_values);
 
 	//Mamdani defuzzification 
-	virtual vector<pair<string,float> > & defuzzification();
+	virtual vector<float>& defuzzification();
 
 	virtual void calculate(int output_id, int count, Buffer &out);
 	
