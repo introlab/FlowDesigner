@@ -1,42 +1,18 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.17 1999/11/27 17:09:59 jmvalin Exp $
+# $Id: Makefile.am,v 1.18 1999/11/27 17:11:37 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libablocks.la 
-#\
-#	libAudioFile.la \
-#	libConcatenate.la \
-#	libDLFrameUnaryOperation.la \
-#	libFrameAccumulator.la
 
-#libAudioFile_la_SOURCES = AudioFile.cc
-#libAudioFile_la_LDFLAGS = -release $(LT_RELEASE)
-
-#libConcatenate_la_SOURCES = Concatenate.cc
-#libConcatenate_la_LDFLAGS = -release $(LT_RELEASE)
-
-#libDLFrameUnaryOperation_la_SOURCES = DLFrameUnaryOperation.cc
-#libDLFrameUnaryOperation_la_LDFLAGS = -release $(LT_RELEASE)
-
-#libFrameAccumulator_la_SOURCES = FrameAccumulator.cc
-#libFrameAccumulator_la_LDFLAGS = -release $(LT_RELEASE)
-
-# Sources for compilation in the library
 libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
         FrameUnaryOperation.cc \
         FrameBinaryOperation.cc \
         FrameOperation.cc \
-        GMMTrain.cc \
-        VQTrain.cc \
-        GMMScore.cc \
-	VQuantize.cc \
         GCMS.cc \
 	MMIAccumulator.cc \
-	MMITrain.cc \
-	MMIScore.cc \
 	Histogram.cc \
 	PitchDecision.cc \
 	Sync.cc \
@@ -76,23 +52,22 @@ libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
 	Pitch.cc \
 	LPFilter.cc
 
-#libablocks_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
-# Flags for SGI CC:
-#libablocks_la_CXXFLAGS = -n32
+INCLUDES = -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include $(FFTW_INCLUDES)
 
-INCLUDES = -I$(top_srcdir)/HMM/include -I$(top_srcdir)/VQ/include -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include $(FFTW_INCLUDES)
-
-bin_PROGRAMS = AudioNetwork
-
-AudioNetwork_SOURCES = AudioNetwork.cc 
-
-LDFLAGS=$(FFTW_LDFLAGS)
-
-LDADD = $(top_srcdir)/audio_blocks/src/libablocks.la \
-	$(top_srcdir)/HMM/src/libhmm.la \
-	$(top_srcdir)/VQ/src/libvq.la \
-	$(top_srcdir)/data-flow/src/libnetwork.la \
+LDADD = $(top_srcdir)/data-flow/src/libnetwork.la \
 	$(LIB_FFTW)
+
+#bin_PROGRAMS = AudioNetwork
+
+#AudioNetwork_SOURCES = AudioNetwork.cc 
+
+#LDFLAGS=$(FFTW_LDFLAGS)
+
+#LDADD = $(top_srcdir)/audio_blocks/src/libablocks.la \
+#	$(top_srcdir)/HMM/src/libhmm.la \
+#	$(top_srcdir)/VQ/src/libvq.la \
+#	$(top_srcdir)/data-flow/src/libnetwork.la \
+#	$(LIB_FFTW)
 

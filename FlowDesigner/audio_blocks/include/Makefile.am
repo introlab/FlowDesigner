@@ -8,8 +8,6 @@ noinst_HEADERS = AudioFile.h \
 	FrameOperation.h \
 	FrameUnaryOperation.h \
 	GCMS.h \
-	GMMScore.h \
-	GMMTrain.h \
 	GrowingFrameBuffer.h \
 	GrowingMatrix.h \
 	Label.h \
@@ -18,7 +16,4 @@ noinst_HEADERS = AudioFile.h \
 	RotatingFrameBuffer.h \
 	RotatingMatrix.h \
 	MMIAccumulator.h \
-	MMITrain.h \
-	Histogram.h \
-	MMIScore.h \
-	VQTrain.h
+	Histogram.h

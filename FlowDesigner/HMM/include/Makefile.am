@@ -7,3 +7,5 @@ noinst_HEADERS = C_GMM.h \
 	hmm.h \
 	model.h \
 	state.h
+	GMMScore.h \
+	GMMTrain.h 
