@@ -13,6 +13,7 @@
 #include "Array.h"
 
 DECLARE_TYPE(FFNet)
+//@implements FFNet
 
 FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
    : topo(_topo)

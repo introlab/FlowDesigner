@@ -5,6 +5,7 @@
 #include "ParameterSet.h"
 #include "ObjectRef.h"
 #include "path.h"
+#include <set>
 
 int main(int argc, char **argv)
 {
@@ -23,7 +24,11 @@ int main(int argc, char **argv)
       UIDocument *doc = new UIDocument(argv[1]);
       doc->load();
       ofstream out(argv[2]);
-      doc->genCode(out, argv[3]);
+      set<string> nodeList = doc->genCode(out, argv[3]);
+
+      cerr << "dependencies:\n";
+      for (set<string>::iterator it=nodeList.begin();it!=nodeList.end();it++)
+	 cerr << UIDocument::externalDocInfo[*it]->sourceFile << endl;
    }
    catch (BaseException *e) 
    {

@@ -1,6 +1,9 @@
 #!/usr/bin/perl
-
-# info2def2.pl
+#
+# Copyright (C) 2000 Brad Chapman
+#
+# modified by Jean-Marc Valin
+# 
 # 
 # Parses javadoc-like comments from C++ files and writes them into well-formed
 # (hopefully) XML NodeClass definitions, that can then be used by Overflow to

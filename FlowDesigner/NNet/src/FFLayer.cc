@@ -9,7 +9,7 @@
 DECLARE_TYPE2(FFLayer, 0)
 DECLARE_TYPE2(Vector<FFLayer>, 1)
 DECLARE_TYPE2(Vector<FFLayer*>, 2)
-
+//@implements FFNet
 
 FFLayer::FFLayer (int _nbNeurons, int _nbInputs, float *_weights, int _weightOffset, int _neuronOffset, string type)
    : nbNeurons(_nbNeurons)
