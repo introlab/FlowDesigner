@@ -34,8 +34,8 @@ class IDCT : public BufferedNode {
    int outputID;
    int length;
 
-   vector<complex<float> > inputCopy;
-   vector<complex<float> > outputCopy;
+   vector<float> inputCopy;
+   vector<float> outputCopy;
    vector<float> rNormalize;
    vector<float> iNormalize;
 
@@ -47,11 +47,6 @@ public:
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");
       length = dereference_cast<int> (parameters.get("LENGTH"));
-
-      if (length & 1) 
-      {
-	 throw new NodeException(NULL, "IDCT only implemented for even sizes", __FILE__, __LINE__);
-      }
 
       inputCopy.resize(length);
       outputCopy.resize(length);
@@ -84,19 +79,31 @@ public:
             
       int i,j;
 
+      inputCopy[0]=rNormalize[0]*in[0];
+      
+      for (i=1;i<(length+1)>>1;i++)
+      {
+	 inputCopy[i] = .5*(rNormalize[i]*in[i]+rNormalize[length-i]*in[length-i]);
+	 inputCopy[length-i] = .5*(iNormalize[i]*in[i] - iNormalize[length-i]*in[length-i]);
+      }
+      if (!(length&1))
+	 inputCopy[length>>1] = rNormalize[length>>1]*in[length>>1];
 
       for (i=0;i<length;i++)
-      {
-	 inputCopy[i] = complex<float> (rNormalize[i]*in[i], iNormalize[i]*in[i]);
-      }
+	 cout << inputCopy[i] << " ";
+      cout << endl;
 
-      FFTWrap.ifft(&inputCopy[0], &outputCopy[0], length);
+      FFTWrap.irfft(&inputCopy[0], &outputCopy[0], length);
+
+      for (i=0;i<length;i++)
+	 cout << outputCopy[i] << " ";
+      cout << endl;
 
       for (i=0, j=0 ;i<length ; i+=2, j++)
-         output[i]=outputCopy[j].real();
+         output[i]=outputCopy[j];
 
       for (i = length-1; i>=0 ; i-=2, j++)
-         output[i]=outputCopy[j].real();
+         output[i]=outputCopy[j];
    }
 
 };
