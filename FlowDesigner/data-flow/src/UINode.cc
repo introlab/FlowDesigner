@@ -80,11 +80,11 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
 
    xtmp = x;
    ytmp = y;
-   parameters = newNodeParameters(this, type);
-   parameters->load(def);
+  
    if (doInit)
    {
-      
+       parameters = newNodeParameters(this, type);
+       parameters->load(def);
       
       vector<ItemInfo *> inputname;
       vector<ItemInfo *> outputname;
