@@ -76,7 +76,7 @@ void Cell::split(const vector<pair<int, float *> > &data, int &bestDim, float &b
          bestThreshold=threshold;
       }
    }
-   cerr << "bestDim: " << bestDim << " bestThreshold: " << bestThreshold << endl;
+   //cerr << "bestDim: " << bestDim << " bestThreshold: " << bestThreshold << endl;
    //if (some condition on bestMutual) don't perform the split
    //splitWithThreshold(data, bestDim, bestThreshold);
 }
@@ -238,8 +238,6 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    int sumAi = 0, sumBi = 0;
    vector<int> Ai (numberClasses, 0);
    vector<int> Bi (numberClasses, 0);
-   int c0, c1;
-   c0=c1=0;
    for (k=0;k<data.size();k++)
    {
       if (data[k].second[dim] >= thresh) 
@@ -250,14 +248,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
          sumBi++;
          Bi[data[k].first]++;
       }
-      if (data[k].first==0)
-	 c0++;
-      else if (data[k].first==1)
-	 c1++;
-      else 
-	 cerr << "BIG ERROR\n";
    }
-   cerr << "distr: " << c0 << " " << c1 << endl;
    double weight = double(sumAi)/data.size();
    score = 0.0;
    for (i = 0;i<numberClasses;i++)
@@ -265,7 +256,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
       score += - weight     *  entropy_funct (double( Ai[i] ) / sumAi )
                - (1-weight) *  entropy_funct (double( Bi[i] ) / sumBi );
    }
-   cerr << score << " " << sumAi << " " << sumBi << " " << weight << " " << Ai[0] << " " << Ai[1] << " " << Bi[0] << " " << Bi[1] << endl;
+   //cerr << score << " " << sumAi << " " << sumBi << " " << weight << " " << Ai[0] << " " << Ai[1] << " " << Bi[0] << " " << Bi[1] << endl;
 }
 
 
