@@ -1,6 +1,6 @@
 <!DOCTYPE webproject>
 <webproject>
-<project usePreviewPrefix="0" previewPrefix="file:file%3A//" type="Local" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
+<project usePreviewPrefix="0" previewPrefix="file:file%3A" type="Local" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
 <upload remote_host="shell.sf.net" remote_port="22" remote_path="/home/groups/f/fl/flowdesigner/htdocs" remote_protocol="sftp" user="maestro" />
 <defaultDTD>-//w3c//dtd html 4.01 frameset//en</defaultDTD>
 <templates>templates/</templates>
@@ -47,7 +47,6 @@
 <item upload_time="1074455331" modified_time="1074455331" url="compiling.html" />
 <item upload_time="1074455331" modified_time="1074455331" url="decoding.html" />
 <item upload_time="1074455331" modified_time="1074455331" url="description.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="doc.css" />
 <item upload_time="1074650471" modified_time="1074650471" url="doc.html" />
 <item upload_time="1074460922" modified_time="1074460922" url="download.html" />
 <item upload_time="1074455187" modified_time="1074455187" url="extend.html" />
@@ -70,18 +69,6 @@
 <item upload_time="1074455331" modified_time="1074455331" url="training.html" />
 <item upload_time="1074455331" modified_time="1074455331" url="user-guide.html" />
 <item upload_time="1074460922" modified_time="1074460922" url="CVS.html" />
-<item upload_time="" url="images/.xvpics/" />
-<item upload_time="1074647906" modified_time="1074647906" url="images/.xvpics/FlowDesigner1.jpg" />
-<item upload_time="1074648027" modified_time="1074648027" url="images/.xvpics/FlowDesigner2.jpg" />
-<item upload_time="1074648097" modified_time="1074648097" url="images/.xvpics/FlowDesigner3.jpg" />
-<item upload_time="1074654018" modified_time="1074654018" url="images/.xvpics/FlowDesigner5.jpg" />
-<item upload_time="1074460505" modified_time="1074460505" url="images/.xvpics/FlowDesigner.jpg" />
-<item upload_time="1074647906" modified_time="1074647906" url="images/FlowDesigner1.jpg" />
-<item upload_time="1074648027" modified_time="1074648027" url="images/FlowDesigner2.jpg" />
-<item upload_time="1074648097" modified_time="1074648097" url="images/FlowDesigner3.jpg" />
-<item upload_time="1074648334" modified_time="1074648334" url="images/FlowDesigner4.jpg" />
-<item upload_time="1074460505" modified_time="1074460505" url="images/FlowDesigner.jpg" />
-<item upload_time="1074654017" modified_time="1074654017" url="images/FlowDesigner5.jpg" />
 <item upload_time="1074647114" modified_time="1074647114" url="flowdesigner.webprj" />
 <item upload_time="1074455187" modified_time="1074455187" url="indexa.html" />
 <item upload_time="1074455187" modified_time="1074455187" url="indexb.html" />
