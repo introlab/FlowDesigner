@@ -35,7 +35,7 @@ HMM_dir		FlowDesigner/HMM
 NNet            -a FlowDesigner/NNet
 NNet_dir	FlowDesigner/NNet
 doc             -a FlowDesigner/doc
-doc_dir		FlowDesigner/doc_dir
+doc_dir		FlowDesigner/doc
 html            -a FlowDesigner/html
 html_dir	FlowDesigner/html
 macros          -a FlowDesigner/macros
@@ -51,5 +51,5 @@ FuzzyEngine     -a FlowDesigner/FuzzyEngine
 FuzzyEngine_dir	FlowDesigner/FuzzyEngine
 effects         -a FlowDesigner/effects
 effects_dir	FlowDesigner/effects
-FlowCore	&root &macros_dir &data-flow_dir &doc_dir &html_dir &vflow_dir &tools_dir &examples_dir
+FlowCore	-d FlowDesigner &root &macros_dir &data-flow_dir &doc_dir &html_dir &vflow_dir &tools_dir &examples_dir
 
