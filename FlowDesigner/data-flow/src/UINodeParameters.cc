@@ -97,7 +97,7 @@ void UINodeParameters::load(xmlNodePtr node)
       } else if (string((char*)par->name) == "Comments")
       {
 	 char *str = (char *)xmlNodeGetContent(par);
-	 if (str)
+	 if (str && strcmp(str,"")!=0)
 	    setComments(string(str));
       } else {
 	 cerr << "unknown param tag\n";
