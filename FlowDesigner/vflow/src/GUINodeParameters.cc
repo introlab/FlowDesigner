@@ -163,7 +163,7 @@ static void node_remove_output (GtkButton *button, GUINodeParameters *node_param
 GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   : UINodeParameters(_node,type), inputSelect(NULL), outputSelect(NULL), nodeproperty(NULL)
 {
-
+  
 }
 
 GUINodeParameters::~GUINodeParameters()
@@ -176,7 +176,13 @@ GUINodeParameters::~GUINodeParameters()
 void GUINodeParameters::show()
 {
   //create all widgets
-  createWindow();
+  if (!nodeproperty) {
+    createWindow();
+  }
+  else {
+     gtk_widget_show (nodeproperty);
+    
+  }
 }
 
 void GUINodeParameters::hide()
@@ -231,7 +237,7 @@ void GUINodeParameters::apply()
 
    node->getNetwork()->interfaceChangeNotify();   
 
-
+   hide();
 }
 
 void GUINodeParameters::changed()
