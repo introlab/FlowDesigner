@@ -27,6 +27,10 @@ DECLARE_NODE(Feedback)
  * @parameter_description Number of iteration for the delay
  * @parameter_type int
  *
+ * @parameter_name BEFORE_LIMIT
+ * @parameter_description When (count-DELAY) is smaller or equal to BEFORE_LIMIT, input will be pulled from BEFORE with count (DELAY-count+BEFORE_LIMIT)
+ * @parameter_type int
+ *
 END*/
 
 
@@ -36,8 +40,12 @@ protected:
    int beforeID;
    int delayID;
    int outputID;
+
    bool insideRequest;
+
    int delay;
+   int beforeLimit;
+
    int delayRecurs;
 
 public:
@@ -50,9 +58,16 @@ public:
          beforeID = addInput("BEFORE");
 	 outputID=addOutput("OUTPUT");
 	 delayID = addOutput("DELAY");
+	 
 	 delay = dereference_cast<int> (parameters.get ("DELAY"));
 	 if (delay < 1)
 	    throw new NodeException(NULL, "DELAY <= 0 would cause an infinite recursion", __FILE__, __LINE__);
+
+	 if (parameters.exist("BEFORE_LIMIT"))
+	    beforeLimit = dereference_cast<int> (parameters.get ("BEFORE_LIMIT"));
+	 else
+	    beforeLimit = -1;
+
       } catch (BaseException *e)
       {
          //e->print();
@@ -100,8 +115,8 @@ public:
       else if (output_id == delayID)
       {
 	 //FIXME: Should check for infinite loop if BEFORE is connected to DELAY?
-	 if (count-delay < 0)
-	    return getInput(beforeID, delay-count);
+	 if (count-delay-beforeLimit < 0)
+	    return getInput(beforeID, beforeLimit+delay-count);
 	 //cerr << delayRecurs << endl;
 	 if (delayRecurs != -1 && count-delay >= delayRecurs)
 	    throw new NodeException (this, "Infinite loop detected, breaking out", __FILE__, __LINE__);

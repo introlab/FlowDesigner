@@ -65,7 +65,7 @@ void IExtensions::detectSSE()
 {
    if (setjmp(env))
    {
-      cerr << "SSE not detected\n";
+      //cerr << "SSE not detected\n";
       isse=false;
       return;
    }
@@ -78,7 +78,7 @@ void IExtensions::detectSSE()
       );
    signal (SIGILL, SIG_DFL);
    isse=true;
-   cerr << "SSE detected\n";
+   //cerr << "SSE detected\n";
 }
 #endif /*_ALLOW_SSE*/
 
@@ -88,7 +88,7 @@ void IExtensions::detect3DNow()
 {
    if (setjmp(env))
    {
-      cerr << "3DNow! not detected\n";
+      //cerr << "3DNow! not detected\n";
       i3dnow=false;
       return;
    }
@@ -101,7 +101,7 @@ void IExtensions::detect3DNow()
         );
    signal (SIGILL, SIG_DFL);
    i3dnow=true;
-   cerr << "3DNow! detected\n";
+   //cerr << "3DNow! detected\n";
 }
 
 #endif
@@ -130,12 +130,12 @@ void IExtensions::detectSSE()
 	 //fprintf(stdout, "In catch\n");
 	 if (_exception_code()==STATUS_ILLEGAL_INSTRUCTION)
 	 {
-	    cerr << "SSE not detected\n";
+	    //cerr << "SSE not detected\n";
 	    isse=false;
 	    return;
 	 }
       }
-   cerr << "SSE detected\n";
+   //cerr << "SSE detected\n";
    isse=true;
 }
 #endif
@@ -158,12 +158,12 @@ void IExtensions::detect3DNow()
 	 //fprintf(stdout, "In catch\n");
 	 if (_exception_code()==STATUS_ILLEGAL_INSTRUCTION)
 	 {
-	    cerr << "3DNow! not detected\n";
+	    //cerr << "3DNow! not detected\n";
 	    i3dnow=false;
 	    return;
 	 }
       }
-   cerr << "3DNow! detected\n";
+   //cerr << "3DNow! detected\n";
    i3dnow=true;
 
 }

@@ -20,7 +20,7 @@ DECLARE_NODE(Equal)
  * @input_description Second value
  *
  * @output_name OUTPUT
- * @output_type Bool
+ * @output_type bool
  * @output_description True or false
  *
 END*/
