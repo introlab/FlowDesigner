@@ -1,41 +1,25 @@
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
-    <Node name="node1" type="Mul" x="-363.000000" y="85.000000"/>
+    <Node name="node1" type="Mul" x="-395.000000" y="77.000000"/>
     <Node name="node2" type="Feedback" x="-251.000000" y="85.000000">
       <Parameter name="DELAY" type="int" value="1"/>
+      <Parameter name="BEFORE_LIMIT" type="int" value="1"/>
     </Node>
-    <Node name="node3" type="IterCount" x="-730.000000" y="40.000000"/>
-    <Node name="node4" type="IF" x="-503.000000" y="134.000000">
-      <Parameter name="PULL_ANYWAY" type="bool" value=""/>
-    </Node>
-    <Node name="node5" type="Equal" x="-619.000000" y="96.000000"/>
-    <Node name="node6" type="Constant" x="-764.000000" y="144.000000">
-      <Parameter name="VALUE" type="int" value="0"/>
-    </Node>
-    <Node name="node7" type="Constant" x="-650.000000" y="135.000000">
-      <Parameter name="VALUE" type="int" value="1"/>
-    </Node>
-    <Node name="node8" type="Delay" x="-56.000000" y="78.000000">
+    <Node name="node3" type="IterCount" x="-565.000000" y="69.000000"/>
+    <Node name="node8" type="Delay" x="-85.000000" y="79.000000">
       <Parameter name="DELAY" type="int" value="-5"/>
     </Node>
-    <Node name="node11" type="IF" x="-500.000000" y="61.000000">
-      <Parameter name="PULL_ANYWAY" type="bool" value=""/>
+    <Node name="node9" type="Print" x="8.000000" y="78.000000"/>
+    <Node name="node_Constant_1" type="Constant" x="-416.000000" y="139.000000">
+      <Parameter name="VALUE" type="int" value="1"/>
     </Node>
-    <Node name="node9" type="Print" x="26.000000" y="78.000000"/>
     <Link from="node1" output="OUTPUT" to="node2" input="INPUT"/>
-    <Link from="node4" output="OUTPUT" to="node1" input="INPUT2"/>
-    <Link from="node3" output="OUTPUT" to="node5" input="INPUT1"/>
-    <Link from="node6" output="VALUE" to="node5" input="INPUT2"/>
-    <Link from="node5" output="OUTPUT" to="node4" input="COND"/>
-    <Link from="node7" output="VALUE" to="node4" input="THEN"/>
-    <Link from="node5" output="OUTPUT" to="node11" input="COND"/>
-    <Link from="node3" output="OUTPUT" to="node11" input="ELSE"/>
-    <Link from="node7" output="VALUE" to="node11" input="THEN"/>
-    <Link from="node11" output="OUTPUT" to="node1" input="INPUT1"/>
-    <Link from="node2" output="DELAY" to="node4" input="ELSE">-178 92.5 -141 92 -142 200 -581 199 -580 152 -549 151 </Link>
     <Link from="node2" output="OUTPUT" to="node8" input="INPUT"/>
     <Link from="node8" output="OUTPUT" to="node9" input="INPUT"/>
+    <Link from="node_Constant_1" output="VALUE" to="node2" input="BEFORE">-388 139 -361 138 -360 93 -325 92.5 </Link>
+    <Link from="node2" output="DELAY" to="node1" input="INPUT2">-178 92.5 -128 94 -128 109 -506 109 -506 83 -454 84.5 </Link>
+    <Link from="node3" output="OUTPUT" to="node1" input="INPUT1"/>
     <NetOutput name="OUTPUT" node="node9" terminal="OUTPUT"/>
   </Network>
 </Document>
