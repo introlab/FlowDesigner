@@ -32,6 +32,16 @@ static void cont_click (GtkButton *button, Probe *pr)
    pr->cont();
 }
 
+static void break_click (GtkButton *button, Probe *pr)
+{
+   pr->setBreak();
+}
+
+static void show_hide_click (GtkButton *button, Probe *pr)
+{
+   pr->show_hide();
+}
+
 Probe::Probe(string nodeName, ParameterSet params) 
    : Node(nodeName, params)
 {
@@ -57,6 +67,7 @@ void Probe::specificInitialize()
    this->Node::specificInitialize();
 
    traceEnable=true;
+   displayEnable=true;
    
    gdk_threads_enter(); 
    
@@ -131,6 +142,10 @@ void Probe::specificInitialize()
    
    gtk_widget_set_sensitive(button17, false);
    
+   gtk_signal_connect (GTK_OBJECT (button17), "clicked",
+		       GTK_SIGNAL_FUNC (break_click),
+		       this);
+
    
    tmp_toolbar_icon = gnome_stock_pixmap_widget (window1, GNOME_STOCK_PIXMAP_EXEC);
    button18 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
@@ -155,7 +170,7 @@ void Probe::specificInitialize()
    button19 = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar2),
 					  GTK_TOOLBAR_CHILD_BUTTON,
 					  NULL,
-					  _("Close"),
+					  _("Show/Hide"),
 					  NULL, NULL,
 					  tmp_toolbar_icon, NULL, NULL);
    gtk_widget_ref (button19);
@@ -163,6 +178,9 @@ void Probe::specificInitialize()
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (button19);
 
+   gtk_signal_connect (GTK_OBJECT (button19), "clicked",
+		       GTK_SIGNAL_FUNC (show_hide_click),
+		       this);
 
 
 
@@ -223,11 +241,17 @@ void Probe::cont()
 
 void Probe::setBreak()
 {
-   traceEnable = false;
+   traceEnable = true;
 
-   gdk_threads_enter(); 
+   //gdk_threads_enter(); 
    gtk_widget_set_sensitive(button17, false);
-   gdk_threads_leave(); 
+   gtk_widget_set_sensitive(button18, true);
+   //gdk_threads_leave(); 
+}
+
+void Probe::show_hide()
+{
+   displayEnable = !displayEnable;
 }
 
 void Probe::display()
@@ -258,7 +282,8 @@ ObjectRef Probe::getOutput(int output_id, int count)
 
       NodeInput input = inputs[inputID];
       inputValue = input.node->getOutput(input.outputID,count);
-      display();
+      if (displayEnable)
+	 display();
       if (traceEnable)
 	 trace();
       return inputValue;
