@@ -49,7 +49,7 @@ public:
 
      NetworkSocket &my_socket = object_cast<NetworkSocket>(socketValue);
 
-     if (my_socket.get_type() == NetworkSocket::TCP_CLIENT_STREAM_TYPE) {
+     if (my_socket.get_type() == NetworkSocket::TCP_STREAM_TYPE) {
 
 
        const String &hostname = object_cast<String>(hostValue);
@@ -59,7 +59,7 @@ public:
 
      }
      else {
-       throw new GeneralException("NetworkSocket is not of type TCP_CLIENT_STREAM_TYPE",__FILE__,__LINE__);
+       throw new GeneralException("NetworkSocket is not of type TCP_STREAM_TYPE",__FILE__,__LINE__);
      }
 
      out[count] = socketValue;

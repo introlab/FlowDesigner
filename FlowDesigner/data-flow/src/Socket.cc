@@ -15,7 +15,7 @@ DECLARE_NODE(Socket)
  *
  * @parameter_name TYPE
  * @parameter_type String
- * @parameter_description Type of socket : BROADCAST, etc.
+ * @parameter_description Type of socket : BROADCAST, TCP_STREAM, etc.
  *
  * @parameter_name PORT
  * @parameter_type int
@@ -43,21 +43,16 @@ public:
      
      m_socketRef = nilObject;
 
-     cerr<<"got socketTYpe : "<<socketType<<endl;
+     cerr<<"got socketType : "<<socketType<<endl;
 
      if (socketType == "BROADCAST") {
        m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::BROADCAST_TYPE, port));
      }
 
-     if (socketType == "TCP_SERVER") {
-       cerr<<"creating TCP_SERVER socket"<<endl;
-       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::TCP_SERVER_STREAM_TYPE, port));
+     if (socketType == "TCP_STREAM") {
+       cerr<<"creating TCP_STREAM socket"<<endl;
+       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::TCP_STREAM_TYPE, port));
      }
-
-     if (socketType == "TCP_CLIENT") {
-       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::TCP_CLIENT_STREAM_TYPE, port));
-     }
-
 
      outputID = addOutput("OUTPUT");
    }

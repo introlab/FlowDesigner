@@ -43,16 +43,13 @@ public:
 
      NetworkSocket &my_socket = object_cast<NetworkSocket>(socketValue);
 
-     if (my_socket.get_type() == NetworkSocket::TCP_SERVER_STREAM_TYPE) {
-
-       //backlog = 1
-       my_socket.server_listen(1);
+     if (my_socket.get_type() == NetworkSocket::TCP_STREAM_TYPE) {
 
        my_socket.server_accept();
 
      }
      else {
-       throw new GeneralException("NetworkSocket is not of type TCP_SERVER_STREAM_TYPE",__FILE__,__LINE__);
+       throw new GeneralException("NetworkSocket is not of type TCP_STREAM_TYPE",__FILE__,__LINE__);
      }
 
      out[count] = socketValue;
