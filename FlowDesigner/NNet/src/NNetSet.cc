@@ -4,6 +4,8 @@
 #include "TrainingAlgo.h"
 
 DECLARE_TYPE(NNetSet)
+//@implements NNetSet
+//@require FFNet
 
 NNetSet::NNetSet(int nbNets, const Vector<int> &topo, const vector<string> &functions, vector<int> id, vector<float *> &tin, vector<float *> &tout)
 {

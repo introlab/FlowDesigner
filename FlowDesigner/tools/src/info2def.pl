@@ -87,8 +87,6 @@ $current_input = hash_copy($default_input);
 $current_output =  hash_copy($default_output);
 $current_param = hash_copy($default_param);
 
-$curr_file=0;
-$curr_line=0;
 $curr_filename=$ARGV[0];
 $next_filename=$ARGV[1];
 # read through the file
@@ -283,16 +281,37 @@ while (<>)
     elsif (/\/\*Node/) { # look for the initial '/*Node'
       # print "comment\n";
       $in_comment = 1;
+    } 
+    #Added by JMV 2001/07/31
+    elsif (/\/\/\@implements ([a-zA-Z0-9_]*)/) {
+	push @{$dep{$1}}, $curr_filename;
+    } 
+    elsif (/\/\/\@require ([a-zA-Z0-9_]*)/) {
+	push @{$filedep{$curr_filename}}, $1;
     }
+    
 
   }
 
-# if we have inputs, outputs and parameters that haven't been added, add 'em
+#Added by JMV 2001/07/31
 
+#print "<Dependencies>\n";
+foreach $module (keys %dep) {
+  print "  <ModuleDepend module=\"$module\">\n";
+  foreach $depend (@{$dep{$module}}) {
+    print "    <Require file=\"$depend\"/>\n";
+  }
+  print "  </ModuleDepend>\n";
+}
 
+foreach $file (keys %filedep) {
+  print "  <FileDepend file=\"$file\">\n";
+  foreach $module (@{$filedep{$file}}) {
+    print "    <Require module=\"$module\"/>\n";
+  }
+  print "  </FileDepend>\n";
+}
 
-# once we've got to the end, print out the XML
-
+#print "</Dependencies>\n";
 
 print "</Definitions>\n";
-
