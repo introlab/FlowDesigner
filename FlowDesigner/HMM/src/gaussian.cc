@@ -70,6 +70,32 @@ Gaussian::~Gaussian()
   }
 }
 
+ostream &operator << (ostream &out, const Gaussian &gauss)
+{
+   out << "<GAUSSIAN " << endl;
+   out << gauss.dimension << " " << gauss.accum_count << endl;
+   out << *gauss.mean; 
+   out << *gauss.covariance;
+   out << ">\n";
+   return out;
+}
+
+istream &operator >> (istream &in, Gaussian &gauss)
+{
+   string type;
+   in >> type;
+   cerr << "(type: " << type << ")" << endl;
+   in >> gauss.dimension;
+   in >> gauss.accum_count;
+   vector<float> *tmp = new vector<float>;
+   in >> *tmp;
+   gauss.mean = tmp;
+   string end;
+   in >> end;
+   cerr << "terminator: " << end << endl;
+   return in;
+}
+
 /*
 void Gaussian::print() const
 {

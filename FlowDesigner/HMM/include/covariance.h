@@ -61,7 +61,7 @@ public:
    ///Computes the determinant
    virtual void compute_determinant() const =0;
    ///Prints the covariance
-   void print() const;
+   virtual void print(ostream &out) const = 0;
    
    ///Virtual indexing operator 1D (for diagonal covariance)
    virtual float&      operator[](int )=0;
@@ -73,9 +73,11 @@ public:
    virtual Covariance * copy()=0;
    ///Converts from accumulate mode to real
    virtual void to_real(const float accum_1, const vector<float> *mean)=0;
+
+   friend ostream &operator << (ostream &out, const Covariance &covar);
 };
 
-
+ostream &operator << (ostream &out, const Covariance &covar);
 
 ///Diagonal Covariance class
 class DiagonalCovariance : public Covariance  {
@@ -119,6 +121,8 @@ public:
 
    ///Converts from accumulate mode to real
    void to_real(const float accum_1, const vector<float> *mean);
+
+   virtual void print(ostream &out) const;
 }
 ;
 

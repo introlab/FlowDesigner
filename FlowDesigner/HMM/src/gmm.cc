@@ -15,6 +15,8 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #include "gmm.h"
 #include <values.h>
+#include <typeinfo>
+#include <vector>
 
 void GMM::init(vector<Frame *> frames)
 {
@@ -147,4 +149,27 @@ Score GMM::score(Frame * fr) const
    frame_score.gmm = this;
    frame_score.frame = fr;
    return frame_score;
+}
+
+
+ostream &operator << (ostream &out, const GMM &gmm)
+{
+   out << "<GMM " << endl;
+   out << gmm.nb_gaussians << endl;
+   out << gmm.apriori;
+   out << gmm.gaussians;
+   out << ">\n";
+   return out;
+}
+
+istream &operator >> (istream &in, GMM &gmm)
+{
+   int items_found=0;
+   string type;
+   in >> type;
+   cerr << "(type: " << type << ")" <<endl;
+   in >> gmm.nb_gaussians;
+   in >> gmm.apriori;
+   in >> gmm.gaussians;
+   return in;
 }

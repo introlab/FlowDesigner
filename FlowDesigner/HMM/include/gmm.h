@@ -81,6 +81,9 @@ public:
          gaussians[i] = new Gaussian (dim, cov_new);
    }
 
+   GMM (string file);
+   void save(string file);
+
    ///Returns the number of gaussians in the GMM
    int get_nb_gaussians() const {return nb_gaussians;}
 
@@ -100,7 +103,8 @@ public:
 
    ///Performs k-means training
    void kmeans1(vector<Frame *> frames, int nb_iterations = 1);
-
+   
+   ///splits the largest gaussian in two
    void split1();
 
    ///Performs k-means training (using another GMM to score)
@@ -121,9 +125,12 @@ public:
    ///Score a list (STL vector) of frames against the GMM
    vector<Score> score(vector <Frame *> fr) const;
 
+   friend ostream &operator << (ostream &out, const GMM &gmm);
+   friend istream &operator >> (istream &in, GMM &gmm);
 }
 ;
 
-
+ostream &operator << (ostream &out, const GMM &gmm);
+istream &operator >> (istream &in, GMM &gmm);
 
 #endif

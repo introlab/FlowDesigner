@@ -17,6 +17,9 @@
 #define HMM_H
 
 #include <vector>
+#include <typeinfo>
+#include <stream.h>
+#include <string>
 
 ///Frame definition
 typedef vector<float> Frame;
@@ -24,5 +27,70 @@ typedef vector<float> Frame;
 ///Square function
 template <class T>
 inline T sqr(T x) {return x*x;}
+
+template <class T>
+inline ostream &operator << (ostream &out, const vector<T> &v)
+{
+   out << "<VECTOR_" << typeid(T).name();
+   for (int i=0; i < v.size(); i++)
+      //for (vector<T>::const_iterator i=v.start(); i != v.end(); i++)
+   {
+      out << " " << v[i];
+   }
+   out << ">\n";
+   return out;
+}
+
+template <class T>
+inline ostream &operator << (ostream &out, const vector<T*> &v)
+{
+   out << "<VECTOR_" << typeid(T).name() << "Ptr";
+   for (int i=0; i < v.size(); i++)
+      //for (vector<T>::const_iterator i=v.start(); i != v.end(); i++)
+   {
+      out << " " << *(v[i]);
+   }
+   out << ">\n";
+   return out;
+}
+
+template <class T>
+inline istream &operator >> (istream &in, vector<T> &v)
+{
+   cerr << "parsing vector of " << typeid(T).name() << "s" << endl;
+   int items_found=0;
+   string nimportequoi;
+   in >> nimportequoi;
+   while (!in.eof())
+   {
+      T tmp;
+      in >> tmp;
+      if (in.fail()) break;
+      items_found++;
+      v.resize(items_found);
+      v[items_found-1]=tmp;
+   }
+   return in;
+}
+
+template <class T>
+inline istream &operator >> (istream &in, vector<T*> &v)
+{
+   cerr << "parsing vector of " << typeid(T).name() << " pointers" << endl;
+   int items_found=0;
+   string nimportequoi;
+   in >> nimportequoi;
+   cerr << "vector type: " << nimportequoi << endl;
+   while (!in.eof())
+   {
+      T *tmp = new T;
+      in >> *tmp;
+      if (in.fail()) break;
+      items_found++;
+      v.resize(items_found);
+      v[items_found-1]=tmp;
+   }
+   return in;
+}
 
 #endif

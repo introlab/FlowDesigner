@@ -101,10 +101,10 @@ public:
    bool isDebugMode () {return debugMode;}
 
    ///Setting the debug mode
-   void setDebugMode() {debugMode = true;}
+   void setDebugMode();
 
    ///Exiting debug mode
-   void resetDebugMode() {debugMode = false;}
+   void resetDebugMode();
 
    /** 
        Network initialization. Must be done after all connections.

@@ -16,6 +16,8 @@ void Network::initializeFactories() {
 
    try {
       Network::addFactory ("CONST", new ConstantNodeFactory);
+      Network::addFactory ("COLLECTOR", new CollectorNodeFactory);
+      Network::addFactory ("MUX", new MuxNodeFactory);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;
@@ -34,6 +36,43 @@ Network::Network (string nodeName, ParameterSet params)
    sinkNode = NULL;
    inputNode = NULL;
    debugMode = false;
+}
+/***************************************************************************/
+/*
+  setDebugMode(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+void Network::setDebugMode() {
+
+   map<string,Node*>::iterator nodeIter;
+   Node *node = NULL;
+   
+   debugMode = true;
+   
+   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
+      node = (*nodeIter).second;
+      node->debugMode = true;
+   }
+
+}
+/***************************************************************************/
+/*
+  resetDebugMode(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/ 
+void Network::resetDebugMode() {
+  
+   map<string,Node*>::iterator nodeIter;
+   Node *node = NULL;
+   
+   debugMode = false;
+   
+   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++) {
+      node = (*nodeIter).second;
+      node->debugMode = false;
+   }
 }
 /***************************************************************************/
 /*

@@ -38,6 +38,8 @@ protected:
    int            dimension;
 
 public:
+   ///Empty gaussian constructor
+   Gaussian() : dimension(0) {}
 
    /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
     *(allows to create gaussians with either diagonal or full covariance*/
@@ -85,6 +87,18 @@ public:
       return dist + covariance->getDeterminant();
    }
 
+   ///Returns the mahalanobis distance between the gaussian and a frame
+   float euclidian(const Frame *fr) const
+   {
+      float dist=0;
+      for (unsigned int i=0;i<fr->size();i++)
+      {
+         dist+=sqr((*fr)[i]-(*mean)[i]);
+      }
+      //cerr << "det: " << covariance->getDeterminant() << endl;
+      return dist;
+   }
+
    ///Adds (accumulates) a frame to the gaussian
    void accum_frame(const Frame &fr)
    {
@@ -112,5 +126,10 @@ public:
    ///Prints the gaussian covariance
    void print_covar(ostream &out = cout, string separ = " ") const;
 
+   friend ostream &operator << (ostream &out, const Gaussian &gauss);
+   friend istream &operator >> (istream &in, Gaussian &gauss);
 };
+
+ostream &operator << (ostream &out, const Gaussian &gauss);
+istream &operator >> (istream &in, Gaussian &gauss);
 #endif

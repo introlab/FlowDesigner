@@ -48,18 +48,29 @@ public:
    int outputID;
    ///The reference of the node
    Node *node;
+   ///The name of the input
+   string name;
    ///Constructor with a node and an outputID
-   NodeInput(Node *n, int t) :outputID(t),node(n) {}
+   NodeInput(Node *n, int t, const string &inputName) :outputID(t),node(n),name(inputName) {}
    ///Copy constructor
    NodeInput (const NodeInput &in) {
-      node = in.node; outputID = in.outputID;
+      node = in.node; 
+      outputID = in.outputID;
+      name = in.name;
    }
    ///equality operator
    NodeInput& operator= (const NodeInput &in) {
-      node = in.node; outputID = in.outputID; return *this;
+      node = in.node; 
+      outputID = in.outputID; 
+      name = in.name;
+      return *this;
    }
    ///default constructor
-   NodeInput() : outputID(-1) {} //-1 means unused
+   NodeInput() : outputID(-1), node(NULL) {} //-1 means unused
+
+   ///constructor with a nodeName
+   NodeInput(const string &inputName) : outputID(-1), node(NULL), name(inputName) {}
+
 private:   
 };
 
@@ -144,6 +155,9 @@ protected:
    ///Node's inputs
    vector<NodeInput> inputs;
 
+   ///Node's outputs
+   vector<string> outputNames;
+
    ///Whether the node has been initialized
    bool initialized;
    
@@ -165,7 +179,17 @@ protected:
    ///Parameters given to the node at construction time
    ParameterSet parameters;
 
+   ///Connect an input node using numeric (integer) input/output names
+   void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
+
+   /// Adding an output to a node
+   int addOutput (const string &outputName);
+ 
+   /// Adding an input to a node
+   int addInput (const string &inputName);
+
 public:
+
    ///Constructor, takes the name of the node and a set of parameters
    Node(string nodeName, const ParameterSet &params);
    
@@ -176,13 +200,15 @@ public:
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count)  = 0; 
+   virtual ObjectRef getOutput(int output_id, int count) = 0; 
+
+   /**Ask for the node's output (named) and for the count iteration */
+   virtual ObjectRef getOutputNamed (const string &outputName, int count) {
+      return this->getOutput (this->translateOutput(outputName),count);
+   }
 
    ///Connect an input node using symbolic (strings) input/output names
    void connectToNode(string in, Node *inputNode, string out);
-
-   ///Connect an input node using numeric (integer) input/output names
-   void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
 
    ///Initialize a node
    void initialize ();
@@ -192,7 +218,7 @@ public:
    virtual void specificInitialize();
 
    ///Checks whether node really has a certain output
-   virtual bool hasOutput(int output_id) const = 0;
+   virtual bool hasOutput(int output_id) const;
 
    ///Has the node been initialized?
    bool isInitialized() {return initialized;}
@@ -228,10 +254,10 @@ protected:
    Node() {throw GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 
    ///symbolic to numeric translation for input names
-   virtual int translateInput(string inputName) = 0;
+   virtual int translateInput(string inputName);
 
    ///symbolic to numeric translation for output names
-   virtual int translateOutput(string inputName) = 0;
+   virtual int translateOutput(string inputName);
 };
 
 /***************************************************************************/
@@ -342,6 +368,7 @@ inline void ParameterSet::defaultParam(string param, ObjectRef value)
 }
 inline void ParameterSet::add(string param, ObjectRef value)
 {
+   cerr<<"adding parameter : "<<param<<endl;
    (operator[](param))=pair<ObjectRef,bool> (value,false);
 }
 
@@ -353,11 +380,13 @@ inline void ParameterSet::print (ostream &out) const
 
 inline void ParameterSet::checkUnused() const
 {
-   for (ParameterSet::const_iterator it=begin(); it!=end();it++)
+   for (ParameterSet::const_iterator it=begin(); it != end();it++) {
+
       if (!it->second.second)
-      {
+      {   
          throw ParameterException("Unused (unknown) parameter", it->first,*this);
       }
+   }
 }
 
 #endif
