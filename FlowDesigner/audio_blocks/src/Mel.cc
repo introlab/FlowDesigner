@@ -91,6 +91,9 @@ public:
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
 
+      if (in.size() != length)
+	 throw new NodeException(this, "Input size mismatch", __FILE__, __LINE__);
+
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
