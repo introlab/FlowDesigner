@@ -225,7 +225,7 @@ void GUIDocument::createView()
   //view = vbox2;
   less_print("VFlow by Jean-Marc Valin & Dominic Letourneau");
   //less_print("You can print here by using GUIDocument::less_print (const char* message).");
-  less_print("--\n");
+  less_print("--");
   
 
 }

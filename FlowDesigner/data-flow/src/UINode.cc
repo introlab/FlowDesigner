@@ -1,8 +1,6 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
-//#include <gnome.h>
 extern "C" {
-//#include "controls.h"
 }
 #include "UINode.h"
 #include "UINetwork.h"
@@ -16,11 +14,6 @@ extern "C" {
 #include "ParameterSet.h"
 #include "Network.h"
 
-/*template <class T> const T & max(const T &x, const T &y) {return x > y ? x : y;}
-template <class T> T & max(T &x, T &y) {return x > y ? x : y;}
-template <class T> const T & min(const T &x, const T &y) {return x < y ? x : y;}
-template <class T> T & min(T &x, T &y) {return x < y ? x : y;}
-*/
 
 
 
@@ -33,10 +26,7 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
    , y(_y)
    , ytmp(_y)
    , destroyed(false)
-   //, dragging(false)
-   //, grab(false)
 {
-   //draw();
 
    parameters = newNodeParameters(this,type);
    
@@ -47,12 +37,6 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
 
        vector<ItemInfo *> inputname;
        vector<ItemInfo *> outputname;
-       //_NodeFactory *factory = Node::getFactoryNamed(type);
-       //if (factory)
-       //{
-       //inputname = factory->getInputs();
-       //outputname = factory->getOutputs();
-       //} else {
        inputname = net->getDocument()->getNetInputs(type); 
        outputname = net->getDocument()->getNetOutputs(type); 
        //cerr << "UINode::draw factory not found in simple nodes\n";
@@ -72,15 +56,11 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
 
      }
       
-   //parameters->show();
-   //createPopup();
 }
 
 UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    : net(_net)
    , destroyed(false)
-   //, dragging(false)
-   //, grab(false)
 {
    name = string((char *)xmlGetProp(def, (CHAR *)"name"));
    type = string((char *)xmlGetProp(def, (CHAR *)"type"));
@@ -100,12 +80,7 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
 
       vector<ItemInfo *> inputname;
       vector<ItemInfo *> outputname;
-      /*_NodeFactory *factory = Node::getFactoryNamed(type);
-      if (factory)
       {
-     inputname = factory->getInputs();
-     outputname = factory->getOutputs();
-     } else*/ {
      inputname = net->getDocument()->getNetInputs(type); 
      outputname = net->getDocument()->getNetOutputs(type); 
      //cerr << "UINode::draw factory not found in simple nodes\n";
@@ -125,8 +100,6 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
       
 
    }
-   //parameters->show();
-   //createPopup();
 }
 
 UINode::~UINode()
@@ -141,18 +114,6 @@ UINode::~UINode()
       net->removeNode(this);
    }
 }
-
-/*void UINode::setAsCondition()
-{
-   net->setCondition(this);
-   //gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0xff000040, NULL);
-}
-
-void UINode::unsetAsCondition()
-{
-   //gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0x3cb37120, NULL);
-}
-*/
 
 void UINode::saveXML(xmlNode *root)
 {
@@ -202,10 +163,6 @@ void UINode::insertNetParams(vector<ItemInfo *> &params)
    parameters->insertNetParams(params);
 }
 
-/*UITerminal *UINode::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
-{
-   return new UITerminal (_name, _node, _isInput, _x, _y);
-}*/
 
 UILink *UINode::newLink (UITerminal *_from, UITerminal *_to)
 {
@@ -299,8 +256,7 @@ void UINode::genCode(ostream &out, int &id)
       if (buildNet)
 	 buildNet->genCode(out, id);
       else {
-	 cerr << "external nodes not supported yet\n";
-	 exit(1);
+	 throw new GeneralException("external nodes not supported yet\n", __FILE__, __LINE__);
       }
    }
    out << "static Node *genNode" << bakID << "(const ParameterSet &params)\n";

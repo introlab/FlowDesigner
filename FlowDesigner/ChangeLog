@@ -1,5 +1,8 @@
+2001/07/11
+Jean-Marc Valin
+Added automatic code generation that can replace building from XML
+
 2001/07/10
 Jean-Marc Valin
 Fixed a major bug in DiagGMM that could produce incorrect results or even NaNs
 Added 3D Now! support for DiagGMM
-

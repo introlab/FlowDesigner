@@ -586,12 +586,18 @@ void UINetwork::genCode(ostream &out, int &id)
    int bakID=id;
    id++;
    vector<int> ids;
+
+   try {
    for (int i=0;i<nodes.size();i++)
    {
       ids.push_back(id);
       nodes[i]->genCode(out, id);
    }
-
+   } catch (BaseException *e)
+   {
+      throw e->add(new GeneralException(string("Exception caught while building network ") + name, 
+					__FILE__, __LINE__));
+   }
 
    out << "static Network *genNet" << bakID << "(const string &netName, const ParameterSet &params)\n";
    out << "{\n";
@@ -700,20 +706,14 @@ void UINetwork::genCode(ostream &out, int &id)
       
    }
 
-   //FIXME: Should be done with exceptions
-
    if (!found_output)
    {
-      //throw new GeneralException("No output defined for network", __FILE__,__LINE__);
-      cerr << "Error: network has no output\n";
-      exit(1);
+      throw new GeneralException("UINetwork::genCode: Network has no output", __FILE__, __LINE__);
    }
 
    if (type!=subnet && !found_condition)
    {
-      //throw new GeneralException("No condition defined for iterator", __FILE__,__LINE__);
-      cerr << "Error: iterator has no output\n";
-      exit(1);
+      throw new GeneralException("UINetwork::genCode: No condition defined for iterator", __FILE__, __LINE__);
    }
 
 
