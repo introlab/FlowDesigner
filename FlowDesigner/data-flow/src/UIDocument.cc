@@ -540,14 +540,16 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
       //copy params
       ParameterSet myParams = params;
 
-      //adding document params           
+      //adding document params            
       for (int i = 0; i < textParams.size(); i++) 
-      {
-	//create object
-	ObjectRef param_value = ObjectParam::stringParam(textParams[i]->type,textParams[i]->value,myParams);
-	
-	//adding param
-	myParams.add(textParams[i]->name,param_value);	
+      {		
+	if (!myParams.exist(textParams[i]->name)) {
+	  //create object
+	  ObjectRef param_value = ObjectParam::stringParam(textParams[i]->type,textParams[i]->value,myParams);
+
+	  //adding default param value if not specified into arguments
+	  myParams.add(textParams[i]->name,param_value);	
+	}
       }
 
       net = uinet->build(_name, myParams);
