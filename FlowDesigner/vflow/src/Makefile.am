@@ -2,7 +2,7 @@
 
 install:
 	mkdir -p $(prefix)/toolbox/vflow
-	perl $(top_srcdir)/../tools/src/info2def.pl $(top_srcdir)/src/* > $(prefix)/toolbox/vflow/vflow.def
+	perl $(top_srcdir)/../tools/src/info2def.pl $(top_srcdir)/src/*.cc > $(prefix)/toolbox/vflow/vflow.def
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \
