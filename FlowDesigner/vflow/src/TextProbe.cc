@@ -36,6 +36,17 @@ TextProbe::~TextProbe()
 void TextProbe::specificInitialize()
 {
    Probe::specificInitialize();
+
+   gdk_threads_enter(); 
+   less1 = gnome_less_new ();
+   gtk_widget_ref (less1);
+   gtk_object_set_data_full (GTK_OBJECT (window1), "less1", less1,
+			     (GtkDestroyNotify) gtk_widget_unref);
+   gtk_widget_show (less1);
+   gtk_box_pack_start (GTK_BOX (vbox2), less1, TRUE, TRUE, 0);
+   gdk_threads_leave(); 
+   
+   //gtk_box_pack_start (GTK_BOX (vbox2), scrolledwindow2, TRUE, TRUE, 0);
 }
 
 void TextProbe::reset()
@@ -47,6 +58,8 @@ void TextProbe::reset()
 void TextProbe::trace()
 {
    cerr << "Probe value = " << *inputValue << endl;
+   gnome_less_show_string(GNOME_LESS(less1), "ceci est un test\n");
+
    Probe::trace();
 }
 
