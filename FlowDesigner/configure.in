@@ -34,14 +34,14 @@ PACKAGE=FlowDesigner
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 AM_MAINTAINER_MODE
 
-AC_MODULE_OPT(audio_blocks, yes)
-AC_MODULE_OPT(effects, yes)
-AC_MODULE_OPT(NNet, yes)
-AC_MODULE_OPT(HMM, yes)
-AC_MODULE_OPT(VQ, yes)
-AC_MODULE_OPT(FuzzyEngine, yes)
+AC_MODULE_OPT(audio_blocks, no)
+AC_MODULE_OPT(effects, no)
+AC_MODULE_OPT(NNet, no)
+AC_MODULE_OPT(HMM, no)
+AC_MODULE_OPT(VQ, no)
+AC_MODULE_OPT(FuzzyEngine, no)
 AC_MODULE_OPT(lapackflow, no)
-AC_MODULE_OPT(vflow, yes)
+AC_MODULE_OPT(vflow, no)
 
 modules="$audio_blocks $VQ $HMM $NNet $FuzzyEngine $effects $lapackflow $vflow"
 AC_SUBST(modules)
@@ -65,7 +65,7 @@ AC_OUTPUT([Makefile \
 	data-flow/Makefile \
 	data-flow/src/Makefile data-flow/include/Makefile \
 	data-flow/n-files/Makefile \
-	tools/Makefile tools/src/Makefile tools/m/Makefile examples/Makefile \
+	tools/Makefile tools/src/Makefile examples/Makefile \
 	flowdesigner-config FlowDesigner.spec \
 	])
 
