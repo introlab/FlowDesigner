@@ -63,6 +63,8 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
 
 UINodeParameters::~UINodeParameters()
 {
+   for (int i=0;i<textParams.size();i++)
+      delete textParams[i];
 }
 
 void UINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
