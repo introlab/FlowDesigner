@@ -28,6 +28,25 @@ DECLARE_NODE(Gain)
  *
 END*/
 
+#define NO_ORDER_NODE_SPEEDUP(nodeClass)                    \
+ObjectRef getOutput(int output_id, int count)               \
+{                                                           \
+   try {                                                    \
+      Buffer &outBuffer = *(outputs[output_id].buffer);     \
+      if (!outBuffer.isValid(count))                        \
+	 nodeClass::calculate (output_id, count, outBuffer);           \
+      return outBuffer.get(count);                          \
+   } catch (BaseException *e)                               \
+   {throw e->add(new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__));}}
+
+
+#define NO_ORDER_NODE_SPEEDUP2(nodeClass)                   \
+ObjectRef getOutput(int output_id, int count)               \
+{                                                           \
+      Buffer &outBuffer = *(outputs[output_id].buffer);     \
+      if (!outBuffer.isValid(count))                        \
+	 nodeClass::calculate (output_id, count, outBuffer);\
+      return outBuffer.get(count);}
 
 class Gain : public BufferedNode {
    
@@ -57,6 +76,18 @@ public:
       vec_mul_scal(gain, &in[0], &output[0], inputLength);
       
    }
-
+NO_ORDER_NODE_SPEEDUP(Gain)
+/*ObjectRef getOutput(int output_id, int count)
+{
+   Buffer &outBuffer = *(outputs[output_id].buffer);
+   
+   if (count > outBuffer.getCurrentPos() || !outBuffer.isValid(count))
+   {
+	 Gain::calculate (output_id, count, outBuffer);
+   }
+   return outBuffer.get(count);
+   
+}
+*/
       
 };

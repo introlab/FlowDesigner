@@ -62,7 +62,7 @@ protected:
 
    Vector<int> topo;
       
-   vector<string> functions;
+   Vector<string> functions;
 
    int nbNets;
 public:

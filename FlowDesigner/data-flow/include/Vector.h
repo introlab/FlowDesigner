@@ -18,11 +18,62 @@ using namespace std;
    @author Jean-Marc Valin
 */
 template<class T>
-class Vector : public vector<T>, public Object
+class Vector : public Object
 {
 public:
-   Vector() : vector<T>() {}
-   explicit Vector(int n, const T &x = T()) : vector<T>(n, x) {}
+   typedef T* iterator;
+   typedef const T* const_iterator;
+protected:
+   T *data;
+   size_t obj_size;
+   int capacity;
+public:
+   Vector()
+      : data(NULL)
+      , obj_size(0)
+      , capacity(0)
+   {}
+
+   explicit Vector(size_t n, const T &x = T())
+      : data(NULL)
+      , obj_size(0)
+      , capacity(0)
+   {resize(n,x);}
+
+   ~Vector()
+   {
+      if (data)
+      {
+	 for (iterator i=begin();i!=end();i++)
+	    destr(i);
+	 delete[] (data);
+      }      
+   }
+
+   inline void resize(int new_size, const T &x = T());
+
+   iterator begin() {return data;}
+
+   const_iterator begin() const {return data;}
+
+   iterator end() {return data+obj_size;}
+
+   const_iterator end() const {return data+obj_size;}
+
+   size_t size() const {return obj_size;}
+
+   T &operator[] (size_t i) {return data[i];}
+
+   const T &operator[] (size_t i) const {return data[i];}
+
+   void push_back(const T &x) {insert(end(),x);}
+
+   void push_front(const T &x) {insert(begin(),x);}
+
+   inline void insert(iterator after, const T &x);
+
+   inline void erase(iterator item);
+
    void printOn(ostream &out) const;
    
    void readFrom(istream &in=cin);
@@ -45,7 +96,98 @@ public:
 	 return name;
    }
    string getClassName() {return GetClassName();}
+
+  protected:
+   void constr(T* ptr, const T& val) { new(ptr) T(val);}
+   void destr(T* ptr) { ptr->~T(); }
+
 };
+
+
+template<class T>
+void Vector<T>::resize(int new_size, const T &x)
+{
+   if (new_size > obj_size)
+   {
+      if (new_size > capacity)
+      {
+	 //FIXME: This could be optimized a bit...
+	 int new_capacity = new_size;
+
+	 T* tmp = (T*)new char [new_capacity*sizeof(T)];
+	 for (int i=0;i<obj_size;i++)
+	    constr(tmp+i,data[i]);
+	 if (data)
+	 {
+	    for (iterator i=begin();i!=end();i++)
+	       destr(i);
+	    delete[] (data);
+	 }
+	 data = tmp;
+	 capacity = new_capacity;
+      }
+
+      for (int i=obj_size;i<new_size;i++)
+	 constr(data+i,x);
+
+   } else {
+
+      for (int i=new_size;i<obj_size;i++)
+	 destr(data+i);
+
+   }
+   obj_size = new_size;
+}
+
+template<class T>
+void Vector<T>::insert(iterator after, const T &x)
+{
+   int pos = after-begin();
+   if (obj_size+1 > capacity)
+   {
+      //FIXME: This could be optimized a bit...
+      int new_capacity = obj_size+1;
+      //Allocate new memory
+      T* tmp = (T*)new char [new_capacity*sizeof(T)];
+      //copy the elements before the inserted object
+      for (int i=0;i<pos;i++)
+	 constr(tmp+i,data[i]);
+      //copy inserted object
+      constr(tmp+pos,x);
+      //copy elements after insertion
+      for (int i=pos+1;i<obj_size+1;i++)
+	 constr(tmp+i,data[i-1]);
+      //Free old memory
+      if (data)
+      {
+	 for (iterator i=begin();i!=end();i++)
+	    destr(i);
+	 delete[] (data);
+      }
+      data = tmp;
+      capacity = new_capacity;
+   } else {
+      for (iterator i=after+1;i<end()+1;i++)
+      {
+	 constr(i,*(i-1));
+	 destr(i-1);
+      }
+      constr(after,x);
+   }
+   obj_size++;
+}
+
+template<class T>
+void Vector<T>::erase(iterator it)
+{
+   for (iterator i=it;i<end()-1;i++)
+   {
+      destr(i);
+      constr(i,*(i+1));
+   }
+   destr(end()-1);
+   obj_size--;
+}
 
 /*template <class T>
 inline ostream &operator << (ostream &out, const Vector<T> &v)

@@ -50,13 +50,15 @@ public:
    
    int isValid(int ind) const
    {
+      if (ind > currentPos || ind <= currentPos-bufferLength)
+	 return false;
       int tmp = bufferPos+ind-currentPos;
       if (tmp < 0)
 	 tmp += bufferLength;
       return flags[tmp];
    }
 
-   /**Prints tje Buffer*/
+   /**Prints the Buffer*/
    void printOn(ostream &out = cout) const;
 
    int getCurrentPos() {return currentPos;}

@@ -15,7 +15,7 @@
 DECLARE_TYPE(FFNet)
 //@implements FFNet
 
-FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
+FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions)
    : topo(_topo)
    , layers(topo.size()-1)
 {
@@ -23,7 +23,7 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions)
 }
 
 
-void FFNet::init(const vector<string> &functions)
+void FFNet::init(const Vector<string> &functions)
 {
    nbNeurons = 0;
    nbWeights = 0;
@@ -46,7 +46,7 @@ void FFNet::init(const vector<string> &functions)
 }
 
 
-FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<float *> &tin, vector<float *> &tout)
+FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<float *> &tin, vector<float *> &tout)
    : topo(_topo)
    , layers(topo.size()-1)
 {

@@ -17,7 +17,7 @@ public:
    explicit Array(int n, const T &x = T()) : Vector<T>(n, x) {}
    void printOn(ostream &out) const
    {
-      out << *static_cast<const vector<T> *> (this);
+      out << *static_cast<const Vector<T> *> (this);
    }
 
    /*virtual void rawWrite(ostream &out) const

@@ -35,15 +35,15 @@ class FFNet : public Object {
    int nbWeights;
 
   public:
-   FFNet(const Vector<int> &_topo, const vector<string> &functions);
+   FFNet(const Vector<int> &_topo, const Vector<string> &functions);
    //FFNet(const Vector<int> &_topo);
    FFNet() {}
 
    FFNet(FFNet &net);
 
-   FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<float *> &tin, vector<float *> &tout);
+   FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<float *> &tin, vector<float *> &tout);
 
-   void init(const vector<string> &functions);
+   void init(const Vector<string> &functions);
 
    void setupLayersAfterRead();
 

@@ -3,7 +3,7 @@
 #ifndef KMEANS_H
 #define KMEANS_H
 
-#include <vector>
+#include "Vector.h"
 #include <iostream>
 #include "Object.h"
 #include "vq.h"
@@ -34,7 +34,7 @@ public:
    int getClassID (const float *v, float *dist_return = NULL) const;
    virtual void calcDist (const float *v, float *dist_return) const;
 
-   void weightMeans (const vector<float> &w, vector<float> &out) const;
+   void weightMeans (const Vector<float> &w, Vector<float> &out) const;
    
    void printOn(ostream &out=cout) const;
    void readFrom (istream &in=cin);

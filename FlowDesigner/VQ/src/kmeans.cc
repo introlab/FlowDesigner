@@ -254,7 +254,7 @@ void KMeans::calcDist (const float *v, float *dist_return) const
    }
 }
 
-void KMeans::weightMeans (const vector<float> &w, vector<float> &out) const
+void KMeans::weightMeans (const Vector<float> &w, Vector<float> &out) const
 {
    if ( !(w.size() == means.size() && out.size() == means[0].size()) )
    {

@@ -102,19 +102,11 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
             processCount = count;
 	 return outBuffer.get(count);
       } else {
-	 if (count > outBuffer.getCurrentPos())
+	 if (!outBuffer.isValid(count))
 	 {
 	    calculate (output_id, count, outBuffer);
-	    //return outBuffer[count];
-	    return outBuffer.get(count);
-	 } else {
-	    if (!outBuffer.isValid(count))
-	    {
-	       calculate (output_id, count, outBuffer);
-	    }
-	    return outBuffer.get(count);
-	    
 	 }
+	 return outBuffer.get(count);
       }
       
    } catch (BaseException *e)

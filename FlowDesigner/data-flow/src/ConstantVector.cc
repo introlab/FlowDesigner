@@ -23,6 +23,7 @@ DECLARE_NODE(ConstantVector)
  * @parameter_name VALUE
  * @parameter_description The string representation of the vector
  * @parameter_type string
+ * @parameter_value <Vector<float> >
  *
 END*/
 
