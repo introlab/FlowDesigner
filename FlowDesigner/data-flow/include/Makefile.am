@@ -40,7 +40,6 @@ include_HEADERS = Array.h \
 	fmath.h
 	
 noinst_HEADERS = \
-	InputStream.h \
 	Iterator.h \
 	List.h \
 	Mux.h \
@@ -48,7 +47,6 @@ noinst_HEADERS = \
 	NetExec.h \
 	PathList.h \
 	OR.h \
-	OutputStream.h \
 	Pack.h \
 	Save.h \
 	Switch.h \

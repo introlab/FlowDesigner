@@ -14,59 +14,96 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "OutputStream.h"
+#include "BufferedNode.h"
 #include "net_types.h"
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+class OutputStream;
 
 DECLARE_NODE(OutputStream)
 /*Node
-
+ *
  * @name OutputStream
  * @category IO
- * @description Create an OuputStream from a filename
-
+ * @description Creates a write-only stream from a filename
+ *
  * @input_name INPUT
  * @input_description The file name
  * @input_type string
-
+ *
  * @output_name OUTPUT
- * @output_description The newly created stream
+ * @output_description The Stream
  * @output_type Stream
-
+ *
+ * @parameter_name TYPE
+ * @parameter_type String
+ * @parameter_description Type of stream: stream, fd, or FILE (default stream)
+ *
 END*/
 
+class OutputStream : public BufferedNode {
 
-OutputStream::OutputStream(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
-{
-   outputID = addOutput("OUTPUT");
-   inputID = addInput("INPUT");
-}
+protected:
+   
+   /**The ID of the 'output' output*/
+   int outputID;
 
-void OutputStream::specificInitialize()
-{
-   this->Node::specificInitialize();
-}
+   /**The ID of the 'input' input*/
+   int inputID;
 
-void OutputStream::reset()
-{
-   this->Node::reset();
-}
+   typedef enum {fd, fptr, cpp} StreamType;
 
-ObjectRef OutputStream::getOutput(int output_id, int count)
-{
-   if (output_id==outputID)
+   StreamType type;
+
+public:
+   OutputStream(string nodeName, ParameterSet params) 
+      : BufferedNode(nodeName, params)
    {
-      if (count != processCount)
+      outputID = addOutput("OUTPUT");
+      inputID = addInput("INPUT");
+      if (parameters.exist("TYPE"))
       {
-         processCount = count;
-         NodeInput input = inputs[inputID];
-         String fileName = object_cast<String> (input.node->getOutput(input.outputID,count));
-         openedFile = ObjectRef (new OFStream());
-         OFStream &tmp = object_cast<OFStream> (openedFile);
-         tmp.open(fileName.c_str());
+	 const String &strType = object_cast<String> (parameters.get("TYPE"));
+	 if (strType == "stream")
+	    type = cpp;
+	 else if (strType == "FILE")
+	    type = fptr;
+	 else if (strType == "fd")
+	    type = fd;
+	 else 
+	    throw NodeException(NULL, "Bad stream type: " + strType, __FILE__, __LINE__);
       }
-      return openedFile;
    }
-   else 
-      throw new NodeException (this, "OutputStream: Unknown output id", __FILE__, __LINE__);
-}
+
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      //cerr << "opening for count = " << count << endl;
+      ObjectRef inputValue = getInput(inputID, count);
+      const String &fileName = object_cast<String> (inputValue);
+
+      ObjectRef openedFile;
+      switch (type)
+      {
+	 case cpp:
+	    openedFile = ObjectRef (new OFStream(fileName.c_str()));
+	    break;
+	 case fptr:
+	    openedFile = ObjectRef (new FILEPTR(fopen (fileName.c_str(), "w")));
+	    break;
+	 case fd:
+	    openedFile = ObjectRef (new FILEDES(open (fileName.c_str(), O_WRONLY)));
+	    break;
+      }
+      out[count] = openedFile;
+   }
+
+protected:
+   /**Default constructor, should not be used*/
+   OutputStream() {throw new GeneralException("OutputStream copy constructor should not be called",__FILE__,__LINE__);}
+
+};
+
+
+

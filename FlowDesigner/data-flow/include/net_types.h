@@ -167,8 +167,23 @@ typedef NetCType<unsigned char> U_char;
 typedef NetCType<unsigned int> U_int;
 typedef NetCType<unsigned long> U_long;
 typedef NetCType<bool> Bool;
-typedef NetCType<FILE *> FILEPTR;
 
+
+//typedef NetCType<FILE *> FILEPTR;
+class FILEPTR : public NetCType<FILE *> {
+  public: 
+   FILEPTR(FILE *file);
+   FILEPTR(const string &filename, const string &mode);
+   ~FILEPTR();
+};
+
+//typedef NetCType<FILE *> FILEPTR;
+class FILEDES : public NetCType<int> {
+  public: 
+   FILEDES(int fd);
+   FILEDES(const string &filename, int mode);
+   ~FILEDES();
+};
 
 extern ObjectRef TrueObject;
 extern ObjectRef FalseObject;
@@ -259,52 +274,6 @@ class OFStream : public Stream {
 };
 
 
-/*class IStream : virtual public istream, virtual public Object
-{
-public:
-   IStream() : istream() {}
-   void printOn(ostream &out) const
-   {
-      out << "<IStream>";
-   }
-};
-
-class IFStream : virtual public ifstream, virtual public IStream
-{
-public:
-   IFStream() : ifstream()
-   {}
-   IFStream(const char * name) : ifstream(name)
-   {}
-   void printOn(ostream &out=cout) const
-   { 
-      out << "<IFStream>";
-   }
-};
-
-class OStream : virtual public ostream, virtual public Object
-{
-public:
-   OStream() : ostream() {}
-   void printOn(ostream &out) const
-   {
-      out << "<OStream>";
-   }
-};
-
-class OFStream : virtual public ofstream, virtual public OStream
-{
-public:
-   OFStream() : ofstream()
-   {}
-   OFStream(const char * name) : ofstream(name)
-   {}
-   void printOn(ostream &out=cout) const
-   { 
-      out << "<OFStream>";
-   }
-};
-*/
 
 
 //@}

@@ -47,7 +47,15 @@ DECLARE_NODE(Autocor)
  *
  * @parameter_name CONTINUOUS
  * @parameter_type bool
- * @parameter_description Largest lag offset (included)
+ * @parameter_description Use the previous frame also (cross-correlation) (default false)
+ *
+ * @parameter_name NORMALIZE
+ * @parameter_type bool
+ * @parameter_description Energy normalization (default false)
+ *
+ * @parameter_name NORMALIZE2
+ * @parameter_type bool
+ * @parameter_description Normalize by subtracting the value at lag/2 (default false)
  *
 END*/
 
@@ -58,7 +66,9 @@ class Autocor : public BufferedNode {
    int outputID;
    int start;
    int end;
-   int continuous;
+   bool continuous;
+   bool normalize;
+   bool normalize2;
 
 public:
    Autocor(string nodeName, ParameterSet params)
@@ -79,6 +89,25 @@ public:
       } else {
 	 continuous = false;
       }
+
+      if (parameters.exist("NORMALIZE"))
+      {
+	 if (dereference_cast<bool> (parameters.get("NORMALIZE")))
+	    normalize = true;
+	 else 
+	    normalize = false;
+      } else 
+	 normalize = false;
+
+      if (parameters.exist("NORMALIZE2"))
+      {
+	 if (dereference_cast<bool> (parameters.get("NORMALIZE2")))
+	    normalize2 = true;
+	 else 
+	    normalize2 = false;
+      } else 
+	 normalize2 = false;
+      
 
       if (continuous)
 	 inputsCache[inputID].lookBack=1;
@@ -133,9 +162,24 @@ public:
 	 }
       }
 
+      if (normalize)
+      {
+	 float e_1 = 1/energy;
+	 for (int i=0;i<outputLength;i++)
+	 {
+	    output[i] *= e_1;
+	 }
+      }
 
-      for (int i=0;i<outputLength;i++)
-	 output[i] /= energy;
+      if (normalize2)
+      {
+	 float tmp[outputLength];
+	 for (int i=0;i<outputLength;i++)
+	 {
+	    tmp[i] = output[i];
+	    output[i] -= max(0.0f,tmp[i>>1]);
+	 }
+      }
    }
-
+      
 };
