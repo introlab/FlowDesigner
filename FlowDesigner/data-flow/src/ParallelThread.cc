@@ -132,14 +132,9 @@ public:
       {
 	 pthread_mutex_lock(&lock);
 	 if (calcCount == -1)
-	 {
 	    pthread_cond_wait(&sendSem, &lock);
-	    //cerr << "wait: " << calcCount << endl;
-	    pthread_mutex_unlock(&lock);
-	 } else {
-	    //cerr << "nowait: " << calcCount << endl;
-	    pthread_mutex_unlock(&lock);
-	 }
+	 pthread_mutex_unlock(&lock);
+
 	 if (resetState)
 	    break;
 	 //cerr << calcCount << endl;
@@ -173,7 +168,6 @@ public:
    {
       pthread_mutex_lock(&lock);
       calcCount = count;
-      //cerr << calcCount << endl;
       pthread_cond_signal(&sendSem);	 
       pthread_mutex_unlock(&lock);
 
@@ -193,12 +187,9 @@ public:
 
       pthread_mutex_lock(&lock);
       if (calcCount != -1)
-      {
 	 pthread_cond_wait(&recSem, &lock);
-	 pthread_mutex_unlock(&lock);
-      } else {
-	 pthread_mutex_unlock(&lock);
-      }
+      pthread_mutex_unlock(&lock);
+      
       //cerr << "calculate\n";
 
       if (typeid(*(*outputs[output1ID].buffer)[count]) == typeid(ExceptionObject))
