@@ -11,7 +11,7 @@ ObjectRef logObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
    BaseType f=dereference_cast<BaseType> (in);
-   return ObjectRef(new T(BaseType(log(f))));
+   return ObjectRef(new T(BaseType(log(double(f)))));
 }
 
 template<class T>
@@ -19,7 +19,7 @@ ObjectRef expObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
    BaseType f=dereference_cast<BaseType> (in);
-   return ObjectRef(new T(BaseType(exp(f))));
+   return ObjectRef(new T(BaseType(exp(double(f)))));
 }
 
 template<class T>
@@ -27,7 +27,7 @@ ObjectRef sinObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
    BaseType f=dereference_cast<BaseType> (in);
-   return ObjectRef(new T(BaseType(sin(f))));
+   return ObjectRef(new T(BaseType(sin(double(f)))));
 }
 
 template<class T>
@@ -35,7 +35,7 @@ ObjectRef cosObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
    BaseType f=dereference_cast<BaseType> (in);
-   return ObjectRef(new T(BaseType(cos(f))));
+   return ObjectRef(new T(BaseType(cos(double(f)))));
 }
 
 REGISTER_VTABLE0(log, Float, logObj<Float>, 1)
