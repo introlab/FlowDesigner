@@ -158,10 +158,18 @@ class FFLayer : public Object {
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    if (momentum[i]*gradient[i] > 0)
+	    double x = gradient[i]/momentum[i];
+	    if (fabs(momentum[i]) < 1e-12)
+	       x=0;
+	    if (x<-10)
+	       x=-10;
+	    if (x>10)
+	       x=10;
+	    saved_weights[i] *= .02+1.06/(1+exp((-2*x-2)));
+	       /*if (momentum[i]*gradient[i] > 0)
 	       saved_weights[i] *= inc;
 	    else
-	       saved_weights[i] *= dec;
+	    saved_weights[i] *= dec;*/
 	    momentum[i] = mom*momentum[i] + gradient[i];
 	    weights[i] += saved_weights[i]*gradient[i];
 	 }
