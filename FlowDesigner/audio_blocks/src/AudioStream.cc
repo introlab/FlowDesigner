@@ -181,7 +181,7 @@ public:
 	 }
 	 
 
-	 if (0 && i>0 && out[i-1]->status == Object::valid 
+	 if (i>0 && out[i-1]->status == Object::valid 
 	     && advance < outputLength)
 	 {
 	    Vector<float> &previous = object_cast<Vector<float> > (out[i-1]);
@@ -220,7 +220,8 @@ public:
 	       continue;
 	    }
 	 }
-	 raw2Float (tmpBuffer, output.end() - advance, advance, encoding);
+	 int convert = min(advance, outputLength);
+	 raw2Float (tmpBuffer, output.end() - convert, convert, encoding);
 
 	 output.status = Object::valid;
       }

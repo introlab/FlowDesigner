@@ -318,12 +318,15 @@ ObjectRef Probe::getOutput(int output_id, int count)
       NodeInput input = inputs[inputID];
       inputValue = input.node->getOutput(input.outputID,count);
 
-      gdk_threads_enter(); 
-      char tmp[16];
-      sprintf (tmp,"%d",count);
-      gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
-      gdk_threads_leave(); 
-
+      if (count % skip == 0)
+      {
+	 gdk_threads_enter(); 
+	 char tmp[16];
+	 sprintf (tmp,"%d",count);
+	 gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
+	 gdk_threads_leave(); 
+      }
+      
       if (displayEnable && (count % skip == 0))
 	 display();
       if (count==breakAt)

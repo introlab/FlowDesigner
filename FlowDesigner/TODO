@@ -19,3 +19,7 @@ fix segfault on invalid int param (eg. mistaken for subnet param)
 do something more useful on user program segfault
 
 manage to handle subnet dependencies
+
+vflow preferences...
+
+allow to change the thread stack size

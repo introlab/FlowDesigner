@@ -51,4 +51,5 @@ vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNO
 
 
 batchflow_LDADD = $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
-	$(top_srcdir)/../data-flow/src/libnetwork.la
+	$(top_srcdir)/../data-flow/src/libnetwork.la \
+	$(LIB_FFTW)

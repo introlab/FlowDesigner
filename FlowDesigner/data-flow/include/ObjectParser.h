@@ -151,7 +151,7 @@ inline istream &operator >> (istream &in, Ptr<T> &o)
    in >> ch;
    if (ch != '<'){
       in.putback(ch);
-      in.clear(ios::failbit);
+      //in.clear(ios::failbit);
       return in;
    }
 

@@ -61,18 +61,22 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
          cerr << "Dimensions = " << dimensions << endl;
          cerr << "Number of Classes: " << mat.size() << endl;
          Cell *mmi = new Cell(dimensions, mat.size()); 
-
+	 //cerr << "first cell created with dim " << dimensions << " size " 
+	 //     << mat.size() << endl;
          vector <pair<int, float *> > data;
+	 //cerr << "inserving\n";
          for (i=0;i< mat.size();i++)
          {
+	    cerr << i << endl;
             Buffer &speaker = object_cast <Buffer> (mat[i]);
+	    cerr << "class " << i << " has " << speaker.getCurrentPos() << " members\n";
             for (j=0;j<speaker.getCurrentPos(); j++)
             {
                data.insert (data.end(), 
                             make_pair<int, float *> (i, object_cast <Vector<float> > (speaker[j]).begin()));
             }
          }
-         
+         cerr << "splitting...\n";
          mmi->recursiveSplit(data, nb_levels);
          mmi->setNumbering();
          currentMMI = ObjectRef(mmi);
