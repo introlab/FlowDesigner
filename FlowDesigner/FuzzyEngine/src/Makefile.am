@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.12 2001/07/12 18:46:02 maestro Exp $
+# $Id: Makefile.am,v 1.13 2001/07/16 03:39:52 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -21,7 +21,7 @@ libfuzzy_la_SOURCES = FuzzyFunction.cc \
 	TrapezoidalFunction.cc \
 	TriangularFunction.cc \
 	FuzzyOperators.cc \
-	FuzzyConcatenate.cc \
+	FuzzyLoadModel.cc \
 	Tokenizer.cc
 
 #libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@

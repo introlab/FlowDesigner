@@ -41,6 +41,11 @@ FuzzyRule::FuzzyRule()
   :BufferedNode("INVALID",ParameterSet()), m_rule_number(-1) {
   
 }
+FuzzyRule::FuzzyRule(istream &in) 
+  :BufferedNode("INVALID",ParameterSet()), m_rule_number(-1) {
+  readFrom(in);
+}
+
 
 FuzzyRule::FuzzyRule(int rule_number)
   : BufferedNode("INVALID",ParameterSet()), m_rule_number(rule_number) {

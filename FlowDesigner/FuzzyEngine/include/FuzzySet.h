@@ -39,7 +39,8 @@ public:
 
 	FuzzySet();
 
-	FuzzySet(istream &in) {readFrom(in);}
+	FuzzySet(istream &in);
+
 
 	//destructor
 	virtual ~FuzzySet();

@@ -41,7 +41,7 @@ public:
   
   FuzzyRule(string nodeName, ParameterSet params);
 
-  FuzzyRule(istream &in) {readFrom(in);}
+  FuzzyRule(istream &in);
   
   //destructor
   virtual ~FuzzyRule();

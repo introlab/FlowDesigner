@@ -20,6 +20,8 @@ public:
 
 	GenericModel(string nodeName, ParameterSet params);
 
+	GenericModel(istream &in){readFrom(in);}
+
 	//destructor
 	virtual ~GenericModel();
 

@@ -45,6 +45,12 @@ FuzzySet::FuzzySet(const string &name)
 
 }
 
+FuzzySet::FuzzySet(istream &in) 
+  : BufferedNode("INVALID", ParameterSet()), m_name("INVALID") {
+  readFrom(in);
+}
+
+
 FuzzySet::FuzzySet() 
   : BufferedNode("INVALID", ParameterSet()), m_name("INVALID") {
 }
