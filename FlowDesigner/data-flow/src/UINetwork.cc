@@ -699,12 +699,15 @@ void UINetwork::removeTerminal(UINetTerminal *term)
       }
       ++i;
    }
+
+   //cerr<<"UINetwork::interfaceChangeNotify"<<endl;
    interfaceChangeNotify();
 }
 
 void UINetwork::interfaceChangeNotify()
 {
   if (!destroyed) {
+    //cerr<<"UINetwork updating Net info"<<endl;
     doc->updateNetInfo(this);
   }
 }
@@ -785,7 +788,7 @@ void UINetwork::updateAllSubnetTerminals(const string _nettype, const string _te
 void UINetwork::updateAllSubnetParameters(const string _nettype, NodeInfo * _info) {
 
   if (!destroyed) {
-
+    //cerr<<"UINetwork::updateAllSubnetParameters"<<endl;
     for (unsigned int i = 0; i < nodes.size(); i++) {
 
        if (nodes[i]->getType() == _nettype) {
@@ -794,6 +797,9 @@ void UINetwork::updateAllSubnetParameters(const string _nettype, NodeInfo * _inf
 	 if (_info) {
 	   nodes[i]->updateNetParams(_info->params);
 	 }
+	 
+	 //our interface may have changed.
+	 interfaceChangeNotify();
        }
     }//for all nodes
   }//if not destroyed
