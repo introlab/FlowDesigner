@@ -19,20 +19,20 @@
 class Greater;
 DECLARE_NODE(Greater)
 /*Node
-
+ *
  * @name Greater
  * @category Logic
  * @description No description available
-
+ *
  * @input_name INPUT1
  * @input_description No description available
-
+ *
  * @input_name INPUT2
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 

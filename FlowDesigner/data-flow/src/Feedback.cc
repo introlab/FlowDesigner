@@ -88,7 +88,7 @@ public:
 
 
    /**Modified the request passing method in order to avoid strange behaviours*/
-      virtual void request(int output_id, const ParameterSet &req) 
+   virtual void request(int output_id, const ParameterSet &req) 
    {
       if (output_id == outputID)
 	 inputs[inputID].node->request(inputs[inputID].outputID,req);

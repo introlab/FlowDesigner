@@ -8,7 +8,6 @@
 #include "ParameterSet.h"
 #include <sys/stat.h>
 
-
 map<string, SubnetInfo *> UIDocument::externalDocInfo;
 
 
@@ -358,6 +357,8 @@ static vector<string> envList(char *envName)
    if (pos)
       list.insert(list.end(), string(&(path[start]), &(path[pos])));
 
+   list.insert(list.end(), INSTALL_PREFIX "/toolbox");
+   list.insert(list.end(), INSTALL_PREFIX "/lib");
    //cerr << pathList << endl;
    return list;
 }
