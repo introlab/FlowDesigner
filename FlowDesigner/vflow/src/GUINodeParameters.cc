@@ -12,7 +12,7 @@ static int user_count = 0;
 
 static void param_apply (GnomePropertyBox *propertybox, gint arg1, GUINodeParameters* user_data)
 {
-   //cerr << "user_data = " << user_data << endl;
+  //cerr << "Apply user_data = " << user_data << endl;
    user_data->apply();
 }
 
@@ -224,6 +224,7 @@ void GUINodeParameters::apply()
       textParams[i]->type = newType;
       textParams[i]->value = newValue;
    }
+
    //nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
    GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments));
    GtkTextIter start;
@@ -232,12 +233,10 @@ void GUINodeParameters::apply()
    gtk_text_buffer_get_bounds(buffer, &start, &end); 
    
    setComments(string(gtk_text_buffer_get_text(buffer, &start, &end, true)));
-   
+
    node->getNetwork()->setModified();
 
    node->getNetwork()->interfaceChangeNotify();   
-
-   hide();
 }
 
 void GUINodeParameters::changed()
@@ -707,8 +706,6 @@ void GUINodeParameters::createWindow() {
    gtk_signal_connect (GTK_OBJECT (button4), "clicked",
                        GTK_SIGNAL_FUNC (node_remove_output),
                        this);
-    
-   
 
    //gnome_property_box_changed(GNOME_PROPERTY_BOX(nodeproperty));
    gtk_signal_connect (GTK_OBJECT (nodeproperty), "apply",
