@@ -65,7 +65,7 @@ class FFNet : public Object {
      //void trainCGB(vector<float *> tin, vector<float *> tout, int iter, float sigma=.03, float lambda=.2);
 
    void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, float learnRate, 
-		      float mom, float increase, float decrease, int nbSets);
+		      float increase, float decrease);
    
    void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, float Ti, 
 		       float Tf, float increase, float decrease);
@@ -73,6 +73,8 @@ class FFNet : public Object {
    void printOn(ostream &out) const;
 
    void readFrom (istream &in);
+
+   void setDerivOffset(float d);
 
 };
 

@@ -37,8 +37,7 @@ public:
 //	      double learnRate, double mom, double increase, double decrease, double errRatio, int nbSets);
 
    void trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *> tout, 
-		      int iter, double learnRate, double mom, double increase, 
-		      double decrease, int nbSets);
+		      int iter, double learnRate, double increase, double decrease);
 
    //void trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, 
    //	      int iter, double sigma = .03, double lambda = .2);

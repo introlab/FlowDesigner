@@ -18,11 +18,14 @@ class FFLayer : public Object {
    float *weights;
    string funcType;
    int weightOffset, neuronOffset;
+   float derivOffset;
 
   public:
-   FFLayer() {}
+   FFLayer() 
+      : derivOffset(0) 
+   {}
 
-   FFLayer(float *_weights) : weights(_weights) {};
+   //FFLayer(float *_weights) : weights(_weights) {};
 
    FFLayer(int _nbNeurons, int _nbInputs, float *_weights, int _weightOffset, int _neuronOffset, string type = "tansig");
 
@@ -64,6 +67,8 @@ class FFLayer : public Object {
 	 if (deriv)
 	    deriv_func(value, deriv, nbNeurons);
       }
+      if (deriv)
+	 vec_add_scal(derivOffset, deriv, deriv, nbNeurons);
    }
 
    int size() {return nbNeurons;}
@@ -88,6 +93,7 @@ class FFLayer : public Object {
 
    void readFrom (istream &in);
 
+   void setDerivOffset(float d) {derivOffset=d;}
 };
 
 istream &operator >> (istream &in, FFLayer &layer);
