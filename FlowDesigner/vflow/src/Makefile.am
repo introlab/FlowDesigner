@@ -40,7 +40,8 @@ flowdesigner_SOURCES = vflow.cc \
 	codegen.cc \
 	GUINodeTooltip.cc \
 	vflow_pref.cc \
-	misc_gui.cc
+	misc_gui.cc \
+	GUINote.cc
 
 gflow_SOURCES = gflow.cc \
 	GRunContext.cc \
@@ -57,6 +58,6 @@ libbaseProbe_la_LDFLAGS = -release $(LT_RELEASE)
 
 LDFLAGS = $(FFTW_LDFLAGS)
 
-LDADD = @PACKAGE_LIBS@ $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
+LDADD = @PACKAGE_LIBS@ $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \
 	$(LIB_FFTW) $(GNOME_PIXBUF_LIB)
