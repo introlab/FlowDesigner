@@ -99,6 +99,8 @@ public:
 
    void build(Network *net);
 
+   void genCode(ostream &out);
+ 
    friend class UITerminal;
    
    UITerminal *getFromTerminal() {return from;}

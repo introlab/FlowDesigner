@@ -610,26 +610,114 @@ void UINetwork::genCode(ostream &out, int &id)
    }
 
 
-   /*out << "   Network *net;\n";
-   out << "   switch (type)\n";
-   out << "   {\n";
-   out << "      case iterator:\n";
-   out << "         net = new Iterator(netName, params);\n";
-   out << "         break;\n";
-   out << "      case subnet:\n";
-   out << "         net = new Network(netName, params);\n";
-   out << "         break;\n";
-   out << "      case threaded:\n";
-   out << "         net = new ThreadedIterator(netName, params);\n";
-   out << "         break;\n";
-   out << "   }\n";
-   */
    out << "\n   Node *aNode;\n";
    for (int i=0;i<ids.size();i++)
    {
       out << "   aNode = genNode" << ids[i] << "(params);\n";
       out << "   net->addNode(*aNode);\n\n";
    }
+
+
+   for (int i=0;i<links.size();i++)
+   {
+      links[i]->genCode(out);
+   }
+
+
+
+   bool inputExist=false;
+   for (int i=0;i<terminals.size();i++)
+   {
+      UINetTerminal::NetTermType type = terminals[i]->getType();
+      if (type == UINetTerminal::INPUT)
+         inputExist=true;
+   }
+
+   if (inputExist)
+   {
+      out << "   {\n";
+      out << "      ParameterSet empty;\n";
+      out << "      Node *node=NULL;\n";
+      out << "      _NodeFactory *factory = NULL;\n";
+      out << "      factory = Node::getFactoryNamed(\"Collector\");\n";
+      out << "      node = factory->Create(\"ALL_NETWORK_INPUTS\", empty);\n";
+      out << "      net->addNode(*node);\n";
+      out << "      net->setInputNode(node);\n";
+      out << "   }\n";
+   }
+   
+   {
+      out << "   {\n";
+      out << "      ParameterSet empty;\n";
+      out << "      Node *node=NULL;\n";
+      out << "      _NodeFactory *factory = NULL;\n";
+      out << "      factory = Node::getFactoryNamed(\"Collector\");\n";
+      out << "      node = factory->Create(\"ALL_NETWORK_OUTPUTS\", empty);\n";
+      out << "      net->addNode(*node);\n";
+      out << "      net->setSinkNode(node);\n";
+      out << "   }\n";
+   }
+   
+   if (type == iterator)
+   {
+      out << "   {\n";
+      out << "      ParameterSet empty;\n";
+      out << "      Node *node=NULL;\n";
+      out << "      _NodeFactory *factory = NULL;\n";
+      out << "      factory = Node::getFactoryNamed(\"Collector\");\n";
+      out << "      node = factory->Create(\"NETWORK_CONDITION\", empty);\n";
+      out << "      net->addNode(*node);\n";
+      out << "      dynamic_cast<Iterator *>(net)->setConditionNode(node);\n";
+      out << "   }\n";
+   }
+
+
+   bool found_output=false;
+   bool found_condition=false;
+   for (int i=0;i<terminals.size();i++)
+   {
+      UINetTerminal::NetTermType type = terminals[i]->getType();
+      if (type == UINetTerminal::INPUT)
+      {
+	 out << "   net->connect(\"" << terminals[i]->getTerminal()->getNode()->getName() << "\", \"" 
+	     << terminals[i]->getTerminal()->getName() << "\", \"ALL_NETWORK_INPUTS\", \"" 
+	     << terminals[i]->getName() << "\");\n";
+      }
+      if (type == UINetTerminal::OUTPUT)
+      { 
+	 out << "   net->connect(\"ALL_NETWORK_OUTPUTS\", \"" << terminals[i]->getName() << "\", \"" 
+	     << terminals[i]->getTerminal()->getNode()->getName() << "\", \"" << 
+	    terminals[i]->getTerminal()->getName() << "\");\n";
+	 found_output=true;
+      }
+      if (type == UINetTerminal::CONDITION)
+      {
+	 out << "   net->connect(\"NETWORK_CONDITION\", \"OUTPUT\", \"" 
+	     << terminals[i]->getTerminal()->getNode()->getName() << "\", \"" 
+	     << terminals[i]->getTerminal()->getName() << "\");\n";
+	 found_condition=true;
+      }
+      
+   }
+
+   //FIXME: Should be done with exceptions
+
+   if (!found_output)
+   {
+      //throw new GeneralException("No output defined for network", __FILE__,__LINE__);
+      cerr << "Error: network has no output\n";
+      exit(1);
+   }
+
+   if (type!=subnet && !found_condition)
+   {
+      //throw new GeneralException("No condition defined for iterator", __FILE__,__LINE__);
+      cerr << "Error: iterator has no output\n";
+      exit(1);
+   }
+
+
+   out << "   return net;\n";
    
    out << "}\n\n";
 }

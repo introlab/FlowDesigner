@@ -771,9 +771,9 @@ void UIDocument::genCode(ostream &out, const string &functName)
    
    out << "//This code has been generated automatically using codeflow\n";
    out << "//Note that automatic code generation is in a very experimental\n";
-   out << "//  stage right now\n";
-   out << "#include <Network.h>\n\n";
-   out << "#include <object_param.h>\n\n";
+   out << "//  stage right now, use at your own risk\n";
+   out << "#include <Network.h>\n";
+   out << "#include <object_param.h>\n\n\n";
    int id=0;
    UINetwork *uinet = getNetworkNamed("MAIN");
    uinet->genCode(out, id);

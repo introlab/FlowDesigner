@@ -96,14 +96,13 @@ void UILink::saveXML(xmlNode *root)
 
 void UILink::build(Network *net)
 {
-   //cerr << to->getName() << endl;
-   //cerr << to->getNode()->getName() << endl;
-   //cerr << from->getName() << endl;
-   //cerr << from->getNode()->getName() << endl << endl;
-
-   //cerr << "";
+   //FIXME: Safer to check here
    net->connect(to->getNode()->getName(), to->getName(), 
 		from->getNode()->getName(), from->getName());
-   //cerr << "";
+}
 
+void UILink::genCode(ostream &out)
+{
+   out << "   net->connect(\"" << to->getNode()->getName() << "\", \"" << to->getName()
+       << "\", \"" << from->getNode()->getName() << "\", \"" << from->getName() << "\");\n\n";
 }
