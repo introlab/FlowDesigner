@@ -2,6 +2,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 
 examplesdir = $(prefix)/examples
 
-examples_DATA = demo_if.n  find_beat.n  hello.n  play_mp3.n  tone.n
+examples_DATA = demo_if.n  find_beat.n  hello.n  play_mp3.n  tone.n \
+	demo_feedback.n jm.wav scuba.n
 
 EXTRA_DIST = $(examples_DATA)
