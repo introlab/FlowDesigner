@@ -1,7 +1,7 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include "FeatureMap.h"
@@ -10,88 +10,69 @@ class FMapCalc;
 
 DECLARE_NODE(FMapCalc)
 /*Node
-
+ *
  * @name FMapCalc
  * @category VQ
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @input_name FMAP
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name INPUTLENGTH
  * @parameter_description No description available
-
+ *
  * @parameter_name OUTPUTLENGTH
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class FMapCalc : public FrameOperation {
+class FMapCalc : public BufferedNode {
    
    int inputID;
    int netInputID;
-   int inputLength;
+   int outputID;
 
 public:
    FMapCalc(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
       netInputID = addInput("FMAP");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH")); 
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   }
-
-   ~FMapCalc() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
+      outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      NodeInput netInput = inputs[netInputID];
-
-      ObjectRef netValue = netInput.node->getOutput(netInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (netValue->status != Object::valid)
-      {
-         output.status = netValue->status;
-         return;
-      }
-
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
+      ObjectRef inputValue = getInput(inputID, count);
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+         out[count] = inputValue;
          return;
       }
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      FeatureMap &fmap = object_cast<FeatureMap> (netValue);
-      
-      /*double tmp[in.size()];
-      for (int i=0;i<in.size();i++)
-	 tmp[i]=in[i];
-      double *netOut = net.calc(tmp);
-      
-      for (int i=0;i<outputLength;i++)
-         output[i]=netOut[i];
-      */
-      fmap.calc(in.begin(), output.begin());
 
-      output.status = Object::valid;
+      ObjectRef netValue = getInput(netInputID, count);
+      if (netValue->status != Object::valid)
+      {
+         out[count] = netValue;
+         return;
+      }
+
+      FeatureMap &fmap = object_cast<FeatureMap> (netValue);
+
+      out[count] = Vector<float>::alloc(fmap.getOutDimension());
+      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+      
+      fmap.calc(in.begin(), output.begin());
    }
 
 };

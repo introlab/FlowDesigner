@@ -62,6 +62,8 @@ public:
    void printOn(ostream &out) const;
 
    void readFrom (istream &in);
+   
+   int getOutDimension() {return outDimension;}
 
    friend istream &operator >> (istream &in, FeatureMap &cell);
 };

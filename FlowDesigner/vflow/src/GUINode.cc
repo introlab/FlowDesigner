@@ -22,15 +22,9 @@ GUINode::GUINode(UINetwork* _net, string _name, string _type, double _x, double 
    : UINode(_net, _name, _type, _x, _y, false)
    , dragging(false)
    , grab(false)
+   , guiParams(NULL)
 {
-     
-   //draw();
-
-  initialize_widgets();
-
-
-  //parameters = newNodeParameters(this, type);
-
+   initialize_widgets();
    createPopup();
 }
 
@@ -40,27 +34,10 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    //: net(_net)
    , dragging(false)
    , grab(false)
+   , guiParams(NULL)
 {
-
-  
-
-   //cerr << "drawing node...\n";
-   //draw();
-  initialize_widgets();
-  
-
-   //cerr << "creating node popup...\n";
-
-   //cerr << "creating params\n";
-  //parameters = newNodeParameters(this, type);
-   //cerr << "loading params\n";
-   //parameters->load(def);
-
-
+   initialize_widgets();
    createPopup();
-
-
-
 }
 
 void GUINode::draw()
@@ -209,27 +186,12 @@ static void node_delete (GtkMenuItem *menuitem, gpointer user_data)
 {
    delete ((GUINode *)(user_data));
 }
-/*
-static void node_set_cond (GtkMenuItem *menuitem, gpointer user_data)
-{
-   //gnome_canvas_item_set((GnomeCanvasItem *)(user_data), "fill_color_rgba", 0xff000040, NULL);
-   ((GUINode *)(user_data))->setAsCondition();
-}
-*/
-/*void GUINode::setAsCondition()
-{
-   net->setCondition(this);
-   gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0xff000040, NULL);
-}
 
-void GUINode::unsetAsCondition()
-{
-   gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0x3cb37120, NULL);
-}
-*/
+
 void GUINode::propertiesShow()
 {
-   GUINodeParameters *guiParams = new GUINodeParameters (this, type, parameters);
+   if (!guiParams)
+      guiParams = new GUINodeParameters (this, type, parameters);
 }
 
 void GUINode::createPopup()
@@ -424,15 +386,6 @@ UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::Ne
 {
    return new GUINetTerminal (_terminal, _type, _name);
 }
-
-//FIXME: This method should be removed
-UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type)
-{
-   //cerr << "GUINode::newNodeParameters\n";
-   //return new GUINodeParameters (_node, type);
-}
-
-
 
 void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) {
 

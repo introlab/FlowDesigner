@@ -12,10 +12,14 @@
 #include <complex>
 
 static int dummy = Object::addObjectType ("Vector", new ObjectFactory<Vector<float> >);
+DECLARE_TYPE2(Vector<float>, 0)
+DECLARE_TYPE2(Vector<double>, 1)
 
 VectorPool<float> floatVectorPool;
 
 VectorPool<double> doubleVectorPool;
+
+
 
 ObjectRef addVectorFloat(ObjectRef x, ObjectRef y)
 {

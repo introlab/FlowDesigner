@@ -445,7 +445,7 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
 GUINodeParameters::~GUINodeParameters()
 {
    gtk_widget_destroy(nodeproperty);
-   //cerr << "destroyed\n";
+   node->paramClose();
 }
 
 void GUINodeParameters::show()

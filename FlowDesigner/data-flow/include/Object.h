@@ -101,7 +101,10 @@ private:
    static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
 };
 
-#define DECLARE_TYPE(type) static int dummy = \
+#define DECLARE_TYPE(type) static int dummy_init_for ## type = \
+               Object::addObjectType (# type, new ObjectFactory<type>);
+
+#define DECLARE_TYPE2(type, dummyID) static int dummy_init_for ## dummyID = \
                Object::addObjectType (# type, new ObjectFactory<type>);
 
 #endif
