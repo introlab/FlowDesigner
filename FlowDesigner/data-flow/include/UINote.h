@@ -14,7 +14,7 @@
 */
 class UINote {
 
- private:
+ protected:
   
   ///Text of the note
   std::string m_text;  
