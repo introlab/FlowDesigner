@@ -141,7 +141,10 @@ public:
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
 
    Network *build(const string &netName, const ParameterSet &params);
-   
+
+   /**Generate C++ code for building the document, instead of using XML*/
+   void genCode(ostream &out, int &id);
+ 
    vector<UINode *> getNodes() {return nodes;}
    vector<UILink *> getLinks() {return links;}
    vector<UINetTerminal *> getTerminals() {return terminals;}

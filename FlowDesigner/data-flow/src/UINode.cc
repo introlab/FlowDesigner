@@ -271,6 +271,50 @@ Node *UINode::build(const ParameterSet &params)
       cout << endl;
       }*/
 //cerr << "node created\n";
+
+   //FIXME: The "par" object is leaked
    return node;
    
+}
+
+void UINode::genCode(ostream &out, int &id)
+{
+   int bakID=id;
+   id++;
+   out << "static Node *genNode" << bakID << "(const ParameterSet &params)\n";
+   out << "{\n";
+
+   parameters->genCode(out);
+
+   Node *node=NULL;
+   _NodeFactory *factory = NULL;
+   factory = Node::getFactoryNamed(type);
+
+   
+   if (factory) 
+   {
+      out << "   _NodeFactory *factory = Node::getFactoryNamed(\"" << type << "\");\n";
+      //FIXME: Should still for (factory == NULL) in generated code and report errors
+      out << "   Node *node = factory->Create(\""<<name << "\", parameters);\n";
+      out << "   return node;\n";
+   } else {
+      cerr << "non-builtin nodes not supported yet\n";
+      /*UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
+      if (buildNet)
+	 node = buildNet->build(name, *par);
+      else
+      { 
+	 //cerr << "building external\n";
+	 node = UIDocument::buildExternal(type, name, *par);
+	 if (!node)
+	 {
+	    throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
+	 }
+	 //cerr << "done\n";
+	 }*/
+   }
+
+
+
+   out << "}\n\n";
 }

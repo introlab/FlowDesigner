@@ -129,7 +129,10 @@ public:
    virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
 
    Node *build(const ParameterSet &params);
-   
+
+   /**Generate C++ code for building the document, instead of using XML*/
+   void genCode(ostream &out, int &id);
+
    vector<UITerminal *> getInputs() {return inputs;}
    vector <UITerminal *> getOutputs() {return outputs;}
    UINodeParameters * getParameters() {return parameters;}

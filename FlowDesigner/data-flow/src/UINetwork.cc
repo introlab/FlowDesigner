@@ -449,14 +449,14 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    switch (type)
    {
       case iterator:
-     net = new Iterator(netName, params);
-     break;
+	 net = new Iterator(netName, params);
+	 break;
       case subnet:
-     net = new Network(netName, params);
-     break;
+	 net = new Network(netName, params);
+	 break;
       case threaded:
-     net = new ThreadedIterator(netName, params);
-     break;
+	 net = new ThreadedIterator(netName, params);
+	 break;
    }
 
 
@@ -581,6 +581,58 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    return net;
 }
 
+void UINetwork::genCode(ostream &out, int &id)
+{
+   int bakID=id;
+   id++;
+   vector<int> ids;
+   for (int i=0;i<nodes.size();i++)
+   {
+      ids.push_back(id);
+      nodes[i]->genCode(out, id);
+   }
+
+
+   out << "static Network *genNet" << bakID << "(const string &netName, const ParameterSet &params)\n";
+   out << "{\n";
+
+   switch (type)
+   {
+      case iterator:
+	 out << "   Network *net = new Iterator(netName, params);\n";
+	 break;
+      case subnet:
+	 out << "   Network *net = new Network(netName, params);\n";
+	 break;
+      case threaded:
+	 out << "   Network *net = new ThreadedIterator(netName, params);\n";
+	 break;
+   }
+
+
+   /*out << "   Network *net;\n";
+   out << "   switch (type)\n";
+   out << "   {\n";
+   out << "      case iterator:\n";
+   out << "         net = new Iterator(netName, params);\n";
+   out << "         break;\n";
+   out << "      case subnet:\n";
+   out << "         net = new Network(netName, params);\n";
+   out << "         break;\n";
+   out << "      case threaded:\n";
+   out << "         net = new ThreadedIterator(netName, params);\n";
+   out << "         break;\n";
+   out << "   }\n";
+   */
+   out << "\n   Node *aNode;\n";
+   for (int i=0;i<ids.size();i++)
+   {
+      out << "   aNode = genNode" << ids[i] << "(params);\n";
+      out << "   net->addNode(*aNode);\n\n";
+   }
+   
+   out << "}\n\n";
+}
 
 
 void UINetwork::rename(string newName)

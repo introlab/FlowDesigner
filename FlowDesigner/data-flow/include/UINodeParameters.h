@@ -42,6 +42,8 @@ public:
    
    ParameterSet *build(const ParameterSet &par);
    
+   void genCode(ostream &out);
+
    const string &getComments() {return comments;}
    void setComments(const string &_comments) {comments = _comments;}
 

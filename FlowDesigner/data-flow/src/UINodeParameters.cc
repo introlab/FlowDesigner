@@ -206,3 +206,21 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
    }
    return parameters;
 }
+
+void UINodeParameters::genCode(ostream &out)
+{
+   out << "   ParameterSet parameters;\n";
+   out << "   ObjectRef value;\n";
+   for (int i=0;i<textParams.size();i++)
+   {
+      ParameterText *curr = textParams[i];
+      if (curr->value != "")
+      {
+	 out << "   value = ObjectParam::stringParam(\"" << curr->type << "\", \"" 
+	     << curr->value << "\", const_cast<ParameterSet &> (params));\n";
+	 out << "   if (value->status == Object::valid)\n";
+	 out << "      parameters.add(\"" << curr->name << "\", value);\n";
+      }
+   }
+
+}

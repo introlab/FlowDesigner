@@ -44,12 +44,12 @@ class DocParameterDataText {
    string type;
 };
 
-class UIDocument {//: public GnomeMDIChild{
+/**GUI-independent memory representation for an XML Overflow document
+   author: Jean-Marc Valin
+*/
+class UIDocument {
    
 protected:
-   //GnomeMDIChild child; //this must be first!!!
-
-   //GtkWidget *view;
    vector<UINetwork *> networks;
    bool modified;
    
@@ -130,6 +130,9 @@ public:
    virtual UINetwork *newNetwork(xmlNodePtr _net);
    
    Network *build(const string &_name, const ParameterSet &params);
+
+   /**Generate C++ code for building the document, instead of using XML*/
+   void genCode(ostream &out, const string &functName);
 
    static Network *buildExternal(const string &type, const string &_name, const ParameterSet &params);
 

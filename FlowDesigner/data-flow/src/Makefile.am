@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.71 2001/07/07 07:53:14 jmvalin Exp $
+# $Id: Makefile.am,v 1.72 2001/07/09 04:31:26 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -107,7 +107,7 @@ libflow_la_SOURCES = Node.cc \
 libflow_la_LDFLAGS = -release $(LT_RELEASE)
 #libflow_LDADD = $(GNOME_XML_LIB)
 
-bin_PROGRAMS = batchflow flowdoc
+bin_PROGRAMS = batchflow flowdoc codeflow
 
 batchflow_SOURCES = \
 	batchflow.cc
@@ -115,9 +115,13 @@ batchflow_SOURCES = \
 flowdoc_SOURCES = \
 	flowdoc.cc
 
+codeflow_SOURCES = codeflow.cc
+
 batchflow_LDADD = $(GNOME_XML_LIB) libflow.la $(LIB_FFTW)
 
 flowdoc_LDADD = $(GNOME_XML_LIB) libflow.la 
+
+codeflow_LDADD = $(GNOME_XML_LIB) libflow.la 
 
 batchflow_LDFLAGS = $(FFTW_LDFLAGS)
 
