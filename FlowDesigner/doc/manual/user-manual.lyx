@@ -1701,6 +1701,33 @@ You can now start the Overflow environment by typing :
 \layout Standard
 
 % vflow (assuming <overflow prefix>/bin is in your path)
+\layout Section*
+
+Compiling on Win32
+\layout Standard
+
+Some parts of Overflow (sorry, no GUI yet!) have been ported to Win32 (w/
+ MSVC++).
+ Using the code generation feature (the "Build" button on the toolbar),
+ it is now possible to compile an overflow application on Windows.
+ Note that this has not been fully tested yet.
+\layout Standard
+
+One important thing to note with MSVC++ (version 6.0) is that it is a very
+ buggy compiler, mostly when it comes to templates.
+ For example, it does not support template partial specialization and it
+ chokes on a lot of valid template code (static template member functions,
+ pointer to template functions, ...).
+ For this reasons some Overflow features need to be switched off.
+\layout Standard
+
+So here are the settings you need for Overflow.
+ First, you need to turn on RTTI (which is not enabled be default).
+ Also, I suggest you turn the warnings off.
+ The preprocessor flags (define) you need to set are: BROKEN_TEMPLATES,
+ HAVE_FLOAT_H, NO_HASH_MAP, STUPID_COMPLEX_KLUDGE and (if not already defined),
+ WIN32.
+ 
 \layout Chapter
 
 Troubleshooting
