@@ -77,6 +77,8 @@ public:
    int getClassID (const float *v, float *dist_return = NULL) const;
    void calcDist (const float *v, float *dist_return) const;
 
+   void weightMeans (const vector<float> &w, vector<float> &out) const;
+   
    void printOn(ostream &out=cout) const;
    void readFrom (istream &in=cin);
    friend istream &operator >> (istream &in, KMeans &mdl);

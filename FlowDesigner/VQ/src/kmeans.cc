@@ -263,6 +263,33 @@ void KMeans::calcDist (const float *v, float *dist_return) const
    }
 }
 
+void KMeans::weightMeans (const vector<float> &w, vector<float> &out) const
+{
+   if ( !(w.size() == means.size() && out.size() == means[0].size()) )
+   {
+      cerr << "sizes don't match in KMeans::weightMeans\n";
+      cerr << w.size() << " "
+	   << means.size() << " "
+	   << out.size() << " "
+	   << means[0].size() << endl;
+   }
+   for (int j=0;j<out.size();j++)
+      out[j] = 0;
+   float sum = 0;
+   for (int i=0;i<means.size();i++)
+   {
+      sum += w[i]; 
+   } 
+   
+   float norm = 1.0/sum;
+   for (int i=0;i<means.size();i++)
+   {
+      float scale = norm*w[i];
+      for (int j=0;j<out.size();j++)
+	 out[j] += scale*means[i][j];
+   }
+}
+
 void KMeans::printOn(ostream &out) const
 {
    out << "<KMeans " << endl;
