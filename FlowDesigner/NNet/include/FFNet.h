@@ -28,7 +28,7 @@ class FFNet {
 	 int outputLayer = topo.size()-2;
 	 calc(input);
 
-
+	 //start with the output layer, towards the input
 	 for (int k=outputLayer;k>=0;k--)
 	 {
 	    float *previous, *current;
@@ -36,7 +36,9 @@ class FFNet {
 	       previous = input;
 	    else 
 	       previous = layers[k-1]->getValue();
+
 	    current = layers[k]->getValue();
+
 	    int layerSize = topo[k+1];
 	    int layerInputs = topo[k];
 	    float *err = layers[k]->getError();
@@ -53,7 +55,7 @@ class FFNet {
 	       {
 		  err[i] = 0;
 		  float *prevErr = layers[k+1]->getError();
-		  cerr << "topo: " << topo[k+2] << endl;
+		  //cerr << "topo: " << topo[k+2] << endl;
 		  for (int j=0;j<topo[k+2];j++)
 		  {
 		     float *prevW = layers[k+1]->getWeights(j);
@@ -70,6 +72,9 @@ class FFNet {
 	    }
 	 }
 
+	 //cout << layers[1]->getError()[0] << " " 
+	 //     << layers[0]->getError()[0] << endl;
+	 
       }
 
 };
