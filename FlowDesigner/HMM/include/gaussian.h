@@ -42,8 +42,9 @@ public:
    /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
     *(allows to create gaussians with either diagonal or full covariance*/
    Gaussian(int dim, Covariance *(*cov_new)(int)) 
-      : mean(new vector<float> (dim))
-      , covariance(cov_new (dim)) , dimension(dim)
+      : mean(new vector<float> (dim,0.0))
+      , covariance(cov_new (dim)) 
+      , dimension(dim)
    {}
 
    ///Copy constructor
@@ -80,6 +81,7 @@ public:
       {
          dist+=sqr((*fr)[i]-(*mean)[i]);// /(*covariance)[i];
       }
+      //cerr << "det: " << covariance->getDeterminant() << endl;
       return dist;//*covariance->getDeterminant();
    }
 

@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #include "covariance.h"
-
+#include "math.h"
 
 void DiagonalCovariance::to_real(const float accum_1, const vector<float> *mean)
 {
@@ -24,7 +24,7 @@ void DiagonalCovariance::to_real(const float accum_1, const vector<float> *mean)
 #endif
    for(unsigned int i = 0; i < data.size(); i++ )
    {
-      data[i] = data[i] * accum_1 - sqr( (*mean)[i] ) ;
+      data[i] = .01 + data[i] * accum_1 - sqr( (*mean)[i] ) ;
    }
 }
 
@@ -34,6 +34,7 @@ void DiagonalCovariance::compute_determinant() const
    determinant=1;
    for (unsigned int i=0;i<dimension;i++)
       determinant *= data[i];
+   //determinant = .5*log(determinant);
    determinant_is_valid = true;
 }
 

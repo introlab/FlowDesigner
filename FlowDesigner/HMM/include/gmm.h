@@ -46,8 +46,11 @@ public:
 
 ///Gaussian Mixture Model (GMM) class
 class GMM {
-protected:
+public:
 
+   typedef enum {real, accum} GMM_Mode;
+protected:
+   
    ///STL vector containing all the gaussians in the GMM
    vector<Gaussian *>  gaussians;
 
@@ -58,7 +61,7 @@ protected:
    int                 nb_gaussians;
 
    ///Whether of not the GMM trained (like real/accum mode)
-   bool                trained;
+   GMM_Mode            mode;
 
    ///Number of frames aligned to (used to train) the GMM
    int                 nb_frames_aligned;
@@ -71,7 +74,7 @@ public:
       : gaussians(vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
       , apriori (vector<float>(nb_gauss,0.0)) 
       , nb_gaussians (nb_gauss)
-      , trained(false)
+      , mode(accum)
       , nb_frames_aligned(0)
    {
       for (int i=0;i<nb_gauss;i++)
@@ -96,7 +99,7 @@ public:
    void init(vector<Frame *> frames);
 
    ///Performs k-means training
-   void kmeans1(vector<Frame *> frames);
+   void kmeans1(vector<Frame *> frames, int nb_iterations = 1);
 
    ///Performs k-means training (using another GMM to score)
    void kmeans2(vector<Frame *> frames, GMM *gmm);

@@ -37,6 +37,7 @@ void GMM::reset_to_accum_mode()
       gaussians[i]->reset_to_accum_mode();
       apriori[i]=0;
    }
+   mode = accum;
 }
 
 void GMM::kmeans2(vector<Frame *> frames, GMM *gmm)
@@ -44,17 +45,26 @@ void GMM::kmeans2(vector<Frame *> frames, GMM *gmm)
    vector<Score> scores;
    scores = gmm->score(frames);
    reset_to_accum_mode();
-   for (unsigned int i=0;i<frames.size();i++)
+   unsigned int i;
+   for (i=0;i<frames.size();i++)
    {
 #ifdef DEBUG
       cerr << "going to: " << scores[i].gaussian_id << " score: " << scores[i].score << endl;
 #endif
       accum_to_gaussian(scores[i].gaussian_id,*(frames[i]));
    }
+   for (i=0;i<nb_gaussians;i++)
+      if (gaussians[i]->get_accum_count()==0)
+      {
+         //cerr << "accum zero\n";
+         accum_to_gaussian(i, *(frames[rand()%frames.size()]));
+      }
+   to_real();
 }
-void GMM::kmeans1(vector<Frame *> frames)
+void GMM::kmeans1(vector<Frame *> frames, int nb_iterations)
 {
-   kmeans2(frames,this);
+   for (int i=0;i<nb_iterations;i++)
+      kmeans2(frames,this);
 }
 
 void GMM::binary_split()
@@ -74,11 +84,13 @@ void GMM::binary_split()
 
 void GMM::to_real()
 {
+   if (mode==real) return;
    for (int i=0;i<nb_gaussians;i++)
    {
       apriori[i]=log(apriori[i]/nb_frames_aligned);
       gaussians[i]->to_real();
    }
+   mode = real;
 }
 
 

@@ -12,7 +12,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, write to the Free Software Foundation,
-// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.#include "gaussian.h"
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
 
 #include "covariance.h"
 #include "gaussian.h"
@@ -44,12 +45,13 @@ void Gaussian::to_real()
    float accum_1 = 1/(float(accum_count));
    for( i = 0; i < mean->size(); i++ )
    {
+      //cerr << (*mean)[i] << " ";
       (*mean)[i] *= accum_1;
    }
 #ifdef DEBUG
    cerr << "accum_1: " << accum_1 <<endl;
 #endif
-   covariance->to_real(accum_1  , mean);
+   covariance->to_real(accum_1 , mean);
 }
 
 
