@@ -5,4 +5,7 @@
 
 #EXTRA_DIST = BUGS INSTALL.generic
 #SUBDIRS = data-flow audio_blocks VQ HMM NNet tools vflow video_blocks
+
+bin_SCRIPTS = overflow-config
+
 SUBDIRS = data-flow @modules@ vflow tools examples
