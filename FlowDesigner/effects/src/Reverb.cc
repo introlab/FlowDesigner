@@ -76,7 +76,8 @@ class Reverb : public BufferedNode {
 
 public:
    Reverb(string nodeName, ParameterSet params)
-   : BufferedNode(nodeName, params)
+      : BufferedNode(nodeName, params)
+      , rev(NULL)
    {
       leftInID = addInput("LEFT");
       rightInID = addInput("RIGHT");
