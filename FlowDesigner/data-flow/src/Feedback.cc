@@ -1,4 +1,4 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 2001 Jean-Marc Valin
 
 #include "Node.h"
 

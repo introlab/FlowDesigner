@@ -231,7 +231,7 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
 
    window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
    gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
-   gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
+   gtk_window_set_title (GTK_WINDOW (window1), _("Code generation"));
 
    vbox1 = gtk_vbox_new (FALSE, 0);
    gtk_widget_ref (vbox1);
@@ -342,7 +342,7 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
    gtk_widget_show (checkbutton1);
    gtk_box_pack_start (GTK_BOX (vbox1), checkbutton1, FALSE, FALSE, 0);
 
-   checkbutton2 = gtk_check_button_new_with_label (_("Put dependencies"));
+   checkbutton2 = gtk_check_button_new_with_label (_("Static linkage (copy dependencies)"));
    gtk_widget_ref (checkbutton2);
    gtk_object_set_data_full (GTK_OBJECT (window1), "checkbutton2", checkbutton2,
 			     (GtkDestroyNotify) gtk_widget_unref);
