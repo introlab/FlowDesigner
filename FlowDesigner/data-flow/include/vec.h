@@ -30,8 +30,31 @@ inline void vec_copy(T *x, T *y, int len)
 }
 
 
+template <class T>
+inline float inner_prod(T *a, T *b, int len)
+{
+  T sum1=0, sum2=0, sum3=0, sum4=0;
+  T *end = a+len;
+  while (a<end-3)
+    {
+      sum1+=a[0]*b[0];
+      sum2+=a[1]*b[1];
+      sum3+=a[2]*b[2];
+      sum4+=a[3]*b[3];
+      a+=4;
+      b+=4;
+    }
+  while (a<end)
+    {
+      sum1+=a[0]*b[0];
+      a++; b++;
+    }
+  return (sum1+sum2)+(sum3+sum4);
+}
+
 #ifdef USE_3DNOW
-inline float inner_prod(float *a, float *b, int len)
+template <>
+inline float inner_prod<float>(float *a, float *b, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -107,29 +130,6 @@ FP_DIRTY
     
   return sum[0];
 }
-#else
-
-inline float inner_prod(float *a, float *b, int len)
-{
-  float sum1=0, sum2=0, sum3=0, sum4=0;
-  float *end = a+len;
-  while (a<end-3)
-    {
-      sum1+=a[0]*b[0];
-      sum2+=a[1]*b[1];
-      sum3+=a[2]*b[2];
-      sum4+=a[3]*b[3];
-      a+=4;
-      b+=4;
-    }
-  while (a<end)
-    {
-      sum1+=a[0]*b[0];
-      a++; b++;
-    }
-  return (sum1+sum2)+(sum3+sum4);
-}
-
 #endif
 
 

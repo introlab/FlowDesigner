@@ -79,9 +79,9 @@ public:
    {
    }
 
-   /*Warning: overriding the initialize function should not be done unless you REALLY 
-              know what you're doing... and I'm not even sure I know what 
-              I'm doing here*/
+   /*Warning: Do not try this at home. Overriding the initialize function should not be 
+              done unless you REALLY know what you're doing... and I'm not even sure 
+              I know what I'm doing here*/
    void Feedback::initialize ()
    {
       if (initialized) return;
