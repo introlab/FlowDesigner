@@ -23,7 +23,7 @@
 class FDSaveFrame;
 
 //DECLARE_NODE(FDSaveFrame);
-NODE_INFO(FDSaveFrame,"Signal:Audio", "OBJECT:FD", "OUTPUT", "")
+NODE_INFO(FDSaveFrame,"Signal:Audio", "OBJECT:FD", "OUTPUT", "LEAD_IN")
 
 class FDSaveFrame : public Node {
 
@@ -87,6 +87,16 @@ public:
 	      stream.flush();*/
 	    Vector<float> &vec = object_cast<Vector<float> > (inputValue);
 	    short buff[vec.size()];
+
+	    if (count == 0 && parameters.exist("LEAD_IN"))
+	    {
+	       cerr << "lead\n";
+	       for (int i=0;i<vec.size();i++)
+		  buff[i]=0;
+	       write(stream, (const char *) buff, sizeof(short)*vec.size());
+
+	    }
+
 	    for (int i=0;i<vec.size();i++)
 	       buff[i]=vec[i];
 	    write(stream, (const char *) buff, sizeof(short)*vec.size());
