@@ -44,6 +44,11 @@ public:
    virtual void specificInitialize()
    {
       this->Node::specificInitialize();
+      
+      ParameterSet req;
+      req.add("LOOKAHEAD", ObjectRef(new Int(floor (ratio))));
+      inputs[inputID].node->request(inputs[inputID].outputID, req);
+
    }
 
    virtual void reset()
