@@ -28,6 +28,7 @@
 
 #ifdef MULTITHREAD
 #include <pthread.h>
+//#define pthread_join(a,b)
 #endif
 
 template <class T>
@@ -432,16 +433,19 @@ inline void getOutputFromThread (ThreadedGetOutputArgs *args)
    cerr << "Launching node " << args->node->getName() << " for count " << args->count << endl;
    *(args->ref) = args->node->getOutput(args->outputID, args->count);
    cerr << "Ending node " << args->node->getName() << " for count " << args->count << endl;
+   delete args;
 }
 
 inline pthread_t threadedGetOutput (ObjectRef *ref, Node *node, int outputID, int count)
 {
-   ThreadedGetOutputArgs args(ref, node, outputID, count);
+   ThreadedGetOutputArgs *args = new ThreadedGetOutputArgs(ref, node, outputID, count);
    pthread_t thread;
    cerr << "threadedGetOutput for node " << node->getName() << " for count " << count << endl;
-   int ret = pthread_create (&thread, NULL, (void * (*)(void *)) getOutputFromThread, &args);
+   int ret = pthread_create (&thread, NULL, (void * (*)(void *)) getOutputFromThread, args);
    cerr << "thread send for node " << node->getName() << " for count " << count 
         << " with return value: " << ret << endl;
+   //getOutputFromThread (&args);
+   //pthread_join(thread,NULL);
    return thread;
 }
 #endif
