@@ -75,6 +75,8 @@ public:
 	 else 
 	    throw NodeException(NULL, "Bad stream type: " + strType, __FILE__, __LINE__);
       }
+      else
+	 type = cpp;
    }
 
    void calculate(int output_id, int count, Buffer &out)

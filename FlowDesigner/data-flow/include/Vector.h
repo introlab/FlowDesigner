@@ -54,20 +54,25 @@ public:
 template <class T>
 inline void Vector<T>::readFrom(istream &in)
 {
-   int items_found=0;
-   
-   while (!in.eof())
+   while (1)
    {
+      char ch=' ';
+      while (ch == ' ')
+      {
+	 in >> ch;
+	 if (ch == '>')
+	 {
+	    return;
+	 } else if (ch != ' ') {
+	    in.putback(ch);
+	 }
+      }
       T tmp;
       in >> tmp;
-      if (in.fail()) break;
-      items_found++;
-      resize(items_found);
-      operator[] (items_found-1)=tmp;
+      if (in.fail()) 
+	 throw GeneralException("Error reading vector", __FILE__, __LINE__);
+      push_back(tmp);
    }
-   in.clear();
-   char ch;
-   in >> ch;       
 }
 
 /*template <>
@@ -141,13 +146,13 @@ inline Vector<double> *Vector<double>::alloc(int size)
 }
 
 
-/*template<class T>
+template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
 {
    if (!isValidType(in, "Vector")) return in;
    vec.readFrom(in);
    return in;
-   }*/
+}
 
 
 /**The object cast from ObjectRef*/
@@ -180,5 +185,25 @@ inline Vector<double> &object_cast<Vector<double> > (const ObjectRef &ref)
    }
    return *tmp;
 }
+
+
+
+/*template <class T>
+inline istream &operator >> (istream &in, Vector<T> &o)
+{
+   char ch;
+   in >> ch;
+   if (ch != '<'){
+      in.putback(ch);
+      //in.clear(ios::failbit);
+      return in;
+   }
+
+   string type;
+   in >> type;
+   o.readFrom(in);
+
+   return in;  
+   }*/
 
 #endif

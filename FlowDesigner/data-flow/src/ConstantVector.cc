@@ -25,19 +25,19 @@ class ConstantVector;
 
 DECLARE_NODE(ConstantVector)
 /*Node
-
+ *
  * @name ConstantVector
  * @category General
  * @description Creates a Constant vector
-
+ *
  * @output_name OUTPUT
  * @output_description The vector
  * @output_type Vector
-
+ *
  * @parameter_name VALUE
  * @parameter_description The string representation of the vector
  * @parameter_type string
-
+ *
 END*/
 
 

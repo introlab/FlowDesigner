@@ -61,19 +61,26 @@ inline istream &operator >> (istream &in, vector<T> &v)
 
    if (!isValidType(in,"Vector"))
       return in;
-   while (!in.eof())
+
+   while (1)
    {
+      char ch=' ';
+      while (ch == ' ')
+      {
+	 in >> ch;
+	 if (ch == '>')
+	 {
+	    return in;
+	 } else if (ch != ' ') {
+	    in.putback(ch);
+	 }
+      }
       T tmp;
       in >> tmp;
-      if (in.fail()) break;
-      items_found++;
-      v.resize(items_found);
-      v[items_found-1]=tmp;
+      if (in.fail()) 
+	 throw GeneralException("Error reading vector", __FILE__, __LINE__);
+      v.push_back(tmp);
    }
-   in.clear();
-   char ch;
-   in >> ch;
-   return in;
 }
 
 template <class T>
@@ -84,26 +91,25 @@ inline istream &operator >> (istream &in, vector<T*> &v)
    if (!isValidType(in,"Vector"))
       return in;
 
-   while (!in.eof())
+   while (1)
    {
+      char ch=' ';
+      while (ch == ' ')
+      {
+	 in >> ch;
+	 if (ch == '>')
+	 {
+	    return in;
+	 } else if (ch != ' ') {
+	    in.putback(ch);
+	 }
+      }
       T *tmp = new T;
       in >> *tmp;
       if (in.fail()) 
-      {
-	 //cerr << "end of vector\n";
-	 delete tmp;
-	 break;
-      }
-      //cerr << "found one\n";
-      items_found++;
-      v.resize(items_found);
-      v[items_found-1]=tmp;
+	 throw GeneralException("Error reading vector", __FILE__, __LINE__);
+      v.push_back(tmp);
    }
-   in.clear();
-   char ch;
-   in >> ch;
-
-   return in;
 }
 
 class ParsingException : public BaseException{
