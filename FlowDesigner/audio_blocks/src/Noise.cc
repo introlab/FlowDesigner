@@ -5,6 +5,7 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
+#include <math.h>
 
 class Noise;
 
