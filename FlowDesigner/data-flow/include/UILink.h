@@ -100,6 +100,8 @@ public:
    void build(Network *net);
 
    void genCode(ostream &out);
+
+   list<GUILinkPoint*> & get_link_points() {return m_points;}
  
    friend class UITerminal;
    
