@@ -13,14 +13,16 @@ do
 done
 ])
 
-AC_DEFUN(AC_LIBTOOL_ACC_KLUDGE,
+AC_DEFUN(AC_LIBTOOL_KLUDGE,
 [
-AC_ARG_WITH(libtool-acc-kludge,
-    [  --with-libtool-acc-kludge    tell libtool to use aCC instead of ld to link shared libraries],
+AC_ARG_WITH(libtool-ld,
+    [  --with-libtool-acc-kludge    tell libtool to use g++ instead of ld to link shared libraries],
     [mv libtool libtool-bak  
-cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"aCC\"/; print' > libtool
+export withval
+cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$ENV{"ldval"}\"/; print' > libtool
     ])
 ])
+
 
 AC_DEFUN(AC_PATH_FFTW,
 [

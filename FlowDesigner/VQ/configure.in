@@ -50,7 +50,7 @@ esac
 AC_DEFINE_UNQUOTED(${OS})
 dnl Initialize libtool.
 
-AC_LIBTOOL_ACC_KLUDGE
+AC_LIBTOOL_KLUDGE
 
 dnl Check header files
 AC_CHECK_HEADERS(float.h)

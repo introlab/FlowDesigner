@@ -27,6 +27,18 @@ cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*
     ])
 ])
 
+
+AC_DEFUN(AC_LIBTOOL_KLUDGE,
+[
+AC_ARG_WITH(libtool-ld,
+    [  --with-libtool-acc-kludge    tell libtool to use g++ instead of ld to link shared libraries],
+    [mv libtool libtool-bak  
+export withval
+cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$ENV{"ldval"}\"/; print' > libtool
+    ])
+])
+
+
 AC_DEFUN(AC_PATH_FFTW,
 [
 LIBFFTW="-lfftw -lrfftw"
