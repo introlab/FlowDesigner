@@ -258,7 +258,9 @@ class FFLayer : public Object {
 	       x=-10;
 	    if (x>10)
 	       x=10;
-	    saved_weights[i] *= .02+1.06/(1+exp((-2*x-2)));
+	    saved_weights[i] *= .02+1.03/(1+exp((-2*x-2)));
+	    if (saved_weights[i] > 10) 
+	       saved_weights[i] = 10;
 	       /*if (momentum[i]*gradient[i] > 0)
 	       saved_weights[i] *= inc;
 	    else
