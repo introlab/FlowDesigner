@@ -21,13 +21,15 @@ NODE_INFO(Constant, "General", "", "VALUE", "VALUE")
 
 Constant::Constant(string nodeName, ParameterSet params) 
    : Node(nodeName, params) 
-   , value (parameters.get("VALUE"))
+   //, value (parameters.get("VALUE"))
 {
    outputID = addOutput("VALUE");
+   //value = parameters.get("VALUE");
 }
 
 void Constant::specificInitialize()
 {
+   value = parameters.get("VALUE");
    this->Node::specificInitialize();
 }
 

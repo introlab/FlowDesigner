@@ -31,7 +31,6 @@ TextProbe::TextProbe(string nodeName, ParameterSet params)
 
 TextProbe::~TextProbe()
 {
-
 }
 
 void TextProbe::specificInitialize()
@@ -66,9 +65,21 @@ void TextProbe::display()
    out << *inputValue;
    out << "\000";
    //cerr << "Probe value = " << *inputValue << endl;
+
+   #ifdef HAVE_PTHREAD_CANCEL
+   pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+   #endif
+
    gdk_threads_enter();
+
    gnome_less_clear (GNOME_LESS(less1));
    gnome_less_show_string(GNOME_LESS(less1), probeOut);
-   gdk_threads_leave(); 
+
+   gdk_threads_leave();
+
+   #ifdef HAVE_PTHREAD_CANCEL
+   pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+   #endif
+
 }
 
