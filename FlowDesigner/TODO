@@ -1,7 +1,13 @@
-document parameters
-
-START/STOP
+document parameters for batch mode
 
 fix XML-related leaks
 
 fix leaks at build/run time
+
+support removing networks
+
+support removing network terminals
+
+remove the bunch of GTK warnings
+
+fix destructors order for UI/GUI classes

@@ -86,7 +86,8 @@ public:
 	 //exit(1);
       }
       
-      int arg=0x7fff0004;
+      //int arg=0x7fff0004;
+      int arg=0x0002000a;
       ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
       
 

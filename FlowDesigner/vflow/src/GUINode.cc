@@ -343,7 +343,10 @@ gint GUINode::event(GdkEvent *event)
          dynamic_cast<GUINetwork *> (net)->updateScroll();
       }
       break;
-          
+   case GDK_2BUTTON_PRESS:
+      //cerr << "double-click\n";
+      dynamic_cast<GUINodeParameters *> (parameters)->show();
+      break;
    default:
       break;
    }

@@ -21,6 +21,7 @@
 #include <iostream.h>
 #include <string>
 #include <fstream.h>
+#include <stdio.h>
 
 /** We must define network types that we want to use in our network.
     We will use a template class where all the proper operators are defined. */
@@ -164,6 +165,7 @@ typedef NetCType<unsigned char> U_char;
 typedef NetCType<unsigned int> U_int;
 typedef NetCType<unsigned long> U_long;
 typedef NetCType<bool> Bool;
+typedef NetCType<FILE *> FILEPTR;
 
 ///STL types
 //typedef PrintableGenericType<string> String;
