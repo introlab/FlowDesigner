@@ -7,6 +7,7 @@
 #include <sstream>
 #include "typemap.h"
 #include "conversion.h"
+#include "Complex.h"
 
 using namespace std;
 
@@ -53,6 +54,7 @@ ObjectRef IntStringConversion(ObjectRef in)
 
 REGISTER_CONVERSION_TEMPLATE(Float, Int, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Float, Double, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Complex<float>, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Double, Int, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Double, Float, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Int, Double, CTypeConversion);

@@ -41,12 +41,18 @@ class Conversion {
 };
 
 
+template<class T, class U>
+class dummy_conv_table_init_class {
+    static int dummy_var;
+};
+
 #define REGISTER_CONVERSION(from, to, func) \
-        static int dummy_conv_table_init_for ## _ ## from ## _ ## to =\
-        Conversion::addConvFunction<from,to>(func);
+   int dummy_conv_table_init_class<from,to >::dummy_var =         \
+        Conversion::addConvFunction<from,to >(func);
 
 #define REGISTER_CONVERSION_TEMPLATE(from, to, func) \
-        static int dummy_conv_table_init_for ## _ ## from ## _ ## to =\
-        Conversion::addConvFunction<from,to>(func<from,to>);
+   int dummy_conv_table_init_class<from,to >::dummy_var =         \
+        Conversion::addConvFunction<from,to >(func<from,to >);
+
 
 #endif
