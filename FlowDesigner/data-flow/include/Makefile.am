@@ -39,7 +39,8 @@ include_HEADERS = Array.h \
 	fmath.h \
 	ExceptionObject.h \
 	pseudosem.h \
-	path.h
+	path.h \
+	wrapper.h
 	
 noinst_HEADERS = \
 	Iterator.h \

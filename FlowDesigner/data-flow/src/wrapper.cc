@@ -14,26 +14,33 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef INTFNODE_H
-#define INTFNODE_H
 
-#include "Node.h"
-#include "Buffer.h"
+#include "wrapper.h"
+#include "UIDocument.h"
+#include "Network.h"
+#include "ParameterSet.h"
 
-class IntfNode : public Node {
-   int outputID;
-   RCPtr<Buffer> buff;
-   int lookAhead;
-   int lookBack;
-public:
-   IntfNode(string nodeName, const ParameterSet &params);
-   void specificInitialize();
-   void reset();
-   ObjectRef getOutput(int output_id, int count);
+OFWrapper::OFWrapper()
+{
+}
 
-   void IntfNode::request(int outputID, const ParameterSet &req);
-   void init();
-   void setValue(int count, ObjectRef val);
-};
+OFWrapper::~OFWrapper()
+{
+}
 
-#endif
+OFWrapper::OFWrapper(string name)
+{
+}
+
+void OFWrapper::open(string name)
+{
+}
+
+void OFWrapper::init(const ParameterSet &params)
+{
+}
+
+ObjectRef OFWrapper::process(ObjectRef in)
+{
+}
+
