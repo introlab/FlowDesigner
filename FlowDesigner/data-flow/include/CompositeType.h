@@ -22,6 +22,11 @@ public:
          throw new GeneralException(string("Unknown field: ") + name, __FILE__, __LINE__);
       return it->second;
    }
+
+   map_type getAllFields()
+   {
+     return fields;
+   }
 };
 
 #endif
