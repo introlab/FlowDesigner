@@ -95,7 +95,7 @@ public:
       for (int i=0;i<outputLength;i++)
       {
 	 output[i] /= sum;
-	 output[i] = 2*output[i] - 1;
+	 //output[i] = 2*output[i] - 1;
       }
 
       output.status = Object::valid;
