@@ -37,6 +37,9 @@ class Complex : public complex<T>, public Object {
   ///Constructor with a Complex<T>
   Complex(const Complex<T> &val) : complex<T>(val) {}
 
+  ///Constructor with a NetCType<complex<T> >
+  Complex(const NetCType<complex<T> > &obj) : complex<T>(obj.val()) {}
+
   /**
      Formatted output in the FlowDesigner format<br>
      <b>Format : </b> \<Complex\<T\> <i> complex<T> value</i> \>

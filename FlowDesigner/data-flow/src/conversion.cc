@@ -138,6 +138,7 @@ REGISTER_CONVERSION_TEMPLATE(Float, Complex<float>, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Double, Complex<float>, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(String, Complex<float>, StringCTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<float>, Complex<float>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(NetCType<complex<float> >, Complex<float>, CTypeConversion);
 //REGISTER_CONVERSION_TEMPLATE(Complex<double>, Complex<float>, CTypeConversion);
 REGISTER_CONVERSION(NilObject, Complex<float>, ReturnNilObject);
 
@@ -149,6 +150,8 @@ REGISTER_CONVERSION_TEMPLATE(Double, Complex<double>, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(String, Complex<double>, StringCTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<float>, Complex<double>, CTypeConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<double>, Complex<double>, CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(NetCType<complex<float> >,Complex<double>,CTypeConversion);
+REGISTER_CONVERSION_TEMPLATE(NetCType<complex<double> >,Complex<double>,CTypeConversion);
 REGISTER_CONVERSION(NilObject, Complex<double>, ReturnNilObject);
 
 //to String conversion
