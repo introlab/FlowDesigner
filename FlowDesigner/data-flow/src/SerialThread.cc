@@ -54,15 +54,25 @@ class SerialThread : public Node {
 
    RCPtr<Buffer> buff;
 
+   //True when the calculation thread is asked to terminate
    bool resetState;
+
+   //True when a calculation thread is running
    bool threadStarted;
+
+   //Main calculation thread
    pthread_t thread;
+
+   //mutex protecting the output buffer
    pthread_mutex_t bufferLock;
+
+   //Incremented (by getOutput) when a new calculation can be done
    sem_t sendSem;
+
+   //Incremented (by threadLoop) when a new result is available
    sem_t recSem;
 
-   //int internalCount;
-
+   //Destroy thread data
    void destroyThread()
    {
       resetState=true;
@@ -74,12 +84,12 @@ class SerialThread : public Node {
       resetState=false;
    }
 
+   //Init thread data
    void initThread()
    {
       pthread_mutex_init(&bufferLock, NULL);
       sem_init(&sendSem, 0, lookAhead);
       sem_init(&recSem, 0, 0);
-      //internalCount = 0;
    }
 
 public:
@@ -93,7 +103,6 @@ public:
       lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
       reqLookAhead=0;
       reqLookBack=0;
-      cerr << lookAhead << " " << reqLookAhead << " " << reqLookBack << endl;
    }
    
    ~SerialThread()
@@ -104,14 +113,12 @@ public:
 
    void specificInitialize()
    {
-      cerr << lookAhead << " " << reqLookAhead << " " << reqLookBack << endl;
       initThread();
       buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
       ParameterSet req;
       req.add("LOOKAHEAD", ObjectRef(new Int(lookAhead+reqLookAhead)));
       req.add("LOOKBACK", ObjectRef(new Int(reqLookBack)));
       inputs[inputID].node->request(inputs[inputID].outputID, req);
-      cerr << "init done\n";
       Node::specificInitialize();
    }
 
@@ -138,21 +145,22 @@ public:
       int threadCount = 0;
       while (1)
       {
-	 //cerr << "receiving" << endl;
-	 //cerr << "waiting\n";
+	 //Wait for permission to compute
 	 if (sem_wait(&sendSem))
 	    perror("sem_wait(&sendSem)) ");
-	 //cerr << "received" << endl;
-	 //cerr.flush();
 	 if (resetState)
 	    break;
-	 //cerr << "calling getOutput " << threadCount << endl;
+
+	 //Compute
 	 ObjectRef inputValue = getInput(inputID, threadCount);
+
+	 //Put result in buffer
 	 pthread_mutex_lock(&bufferLock);
 	 (*buff)[threadCount] = inputValue;
 	 //cerr << "calculated " << threadCount << endl;
 	 pthread_mutex_unlock(&bufferLock);
 
+	 //Notify that the result is ready
 	 if (sem_post(&recSem))
 	    perror("sem_post(&recSem) ");
 	 
@@ -167,27 +175,28 @@ public:
 
    void startThread()
    {
-      //cerr << "thread started\n";
       threadStarted=true;
       pthread_create(&thread, NULL, runThread, (void *) this);
    }
 
    ObjectRef getOutput(int output_id, int count)
    {
+      //Start computation thread if not started
       if (!threadStarted)
 	 startThread();
+
+      //Make sure that all results up to "count" are computed
       while (processCount < count)
       {
-	 //cerr << "posting" << endl;
 	 if (sem_post(&sendSem))
 	    perror("sem_post(&sendSem) ");
-	 //cerr << "posted" << endl;
 	 if (sem_wait(&recSem))
 	    perror("sem_wait(&recSem) ");
 	 
 	 processCount++;
       }
-      //sem_wait(&recSem);
+
+      //Get result in buffer
       pthread_mutex_lock(&bufferLock);
       //cerr << "returning " << count << endl;
       ObjectRef returnValue = (*buff)[count];
