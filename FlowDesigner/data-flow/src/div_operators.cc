@@ -67,7 +67,7 @@ REGISTER_ALL_MATRIX_VTABLE(divVtable, divMatrixFunction);
 ObjectRef divVectorObjectRef(ObjectRef op1, ObjectRef op2) {
 
   RCPtr<Vector<ObjectRef> > op1Value = op1;
-  RCPtr<Vector<ObjectRef> > op2Value = op1;
+  RCPtr<Vector<ObjectRef> > op2Value = op2;
 
   if (op1Value->size() != op2Value->size()) {
     throw new GeneralException("DivVectorFunction : Vector size mismatch ",__FILE__,__LINE__);
@@ -87,7 +87,7 @@ REGISTER_DOUBLE_VTABLE(divVtable,divVectorObjectRef,Vector<ObjectRef>,Vector<Obj
 ObjectRef divMatrixObjectRef(ObjectRef op1, ObjectRef op2) {
 
   RCPtr<Matrix<ObjectRef> > op1Value = op1;
-  RCPtr<Matrix<ObjectRef> > op2Value = op1;
+  RCPtr<Matrix<ObjectRef> > op2Value = op2;
 
   if (op1Value->nrows() != op2Value->nrows() || op1Value->ncols() != op2Value->ncols()) {
     throw new GeneralException("DivMatrixFunction : Matrix size mismatch ",__FILE__,__LINE__);

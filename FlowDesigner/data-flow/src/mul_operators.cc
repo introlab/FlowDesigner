@@ -69,7 +69,7 @@ REGISTER_ALL_MATRIX_VTABLE(mulVtable, mulMatrixFunction);
 ObjectRef mulVectorObjectRef(ObjectRef op1, ObjectRef op2) {
 
   RCPtr<Vector<ObjectRef> > op1Value = op1;
-  RCPtr<Vector<ObjectRef> > op2Value = op1;
+  RCPtr<Vector<ObjectRef> > op2Value = op2;
 
   if (op1Value->size() != op2Value->size()) {
     throw new GeneralException("MulVectorFunction : Vector size mismatch ",__FILE__,__LINE__);
@@ -89,7 +89,7 @@ REGISTER_DOUBLE_VTABLE(mulVtable,mulVectorObjectRef,Vector<ObjectRef>,Vector<Obj
 ObjectRef mulMatrixObjectRef(ObjectRef op1, ObjectRef op2) {
 
   RCPtr<Matrix<ObjectRef> > op1Value = op1;
-  RCPtr<Matrix<ObjectRef> > op2Value = op1;
+  RCPtr<Matrix<ObjectRef> > op2Value = op2;
 
   if (op1Value->nrows() != op2Value->nrows() || op1Value->ncols() != op2Value->ncols()) {
     throw new GeneralException("MulMatrixFunction : Matrix size mismatch ",__FILE__,__LINE__);
