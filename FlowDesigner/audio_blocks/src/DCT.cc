@@ -48,15 +48,14 @@ class DCT : public BufferedNode {
    int outputID;
    int length;
 
-   float *inputCopy;
-   float *outputCopy;
-   float *rNormalize;
-   float *iNormalize;
+   vector<float> inputCopy;
+   vector<float> outputCopy;
+   vector<float> rNormalize;
+   vector<float> iNormalize;
 
 public:
    DCT(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
-
    {
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");
@@ -67,10 +66,10 @@ public:
 	 throw new NodeException(NULL, "DCT only implemented for even sizes", __FILE__, __LINE__);
       }
 
-      inputCopy = new float [length];
-      outputCopy =new float [length];
-      rNormalize =new float [length];
-      iNormalize =new float [length];
+      inputCopy.resize(length);
+      outputCopy.resize(length);
+      rNormalize.resize(length);
+      iNormalize.resize(length);
       float sqrt2n=sqrt(2.0/length);
       for (int i=0;i<length;i++)
       {
@@ -79,15 +78,15 @@ public:
       }
       rNormalize[0] /= sqrt(2);
 
-}
+   }
 
-   ~DCT() 
+      /*~DCT() 
    {
       delete [] inputCopy;
       delete [] outputCopy;
       delete [] rNormalize;
       delete [] iNormalize;
-   }
+      }*/
 
    void calculate(int output_id, int count, Buffer &out)
    {
@@ -111,7 +110,7 @@ public:
          inputCopy[j]=in[i];
       
 
-      FFTWrap.rfft(inputCopy, outputCopy, length);
+      FFTWrap.rfft(&inputCopy[0], &outputCopy[0], length);
 
       for (i=1;i<length/2;i++)
       {
