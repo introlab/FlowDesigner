@@ -53,6 +53,7 @@ void FFNet::learn(double *input, double *output, double *err)
 {
    int outputLayer = topo.size()-2;
    double *calc_out = calc(input);
+   //double *calc_out = output;
    if (err)
    {
       for (int i=0;i<topo[topo.size()-1];i++)
@@ -377,6 +378,10 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
    double *in = new double [topo[0]];
    double *out = new double [topo[topo.size()-1]];
 
+   /*for (int i=0;i<topo[0];i++)
+      in[0]=0;
+   calc(in);
+   */
    for (i=0;i<layers.size();i++)
    {
       layers[i]->setDeltaRate(learnRate);

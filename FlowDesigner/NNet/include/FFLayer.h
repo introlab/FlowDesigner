@@ -156,8 +156,23 @@ class FFLayer : public Object {
 	    //value[i]=func(value[i]);
 	    //deriv[i]=deriv_func(value[i]);
 	 }
-	 func(value, value, nbNeurons);
-	 deriv_func(value, deriv, nbNeurons);
+	 if (func == tansig)
+	 {
+	    tansig(value, value, nbNeurons);
+	    deriv_tansig(value, deriv, nbNeurons);
+	 } else if (func == lin)
+	 {
+	    lin(value, value, nbNeurons);
+	    deriv_lin(value, deriv, nbNeurons);
+	 } else if (func == sigmoid)
+	 {
+	    sigmoid(value, value, nbNeurons);
+	    deriv_sigmoid(value, deriv, nbNeurons);
+	 } else {
+	    cerr << "unknown\n";
+	    func(value, value, nbNeurons);
+	    deriv_func(value, deriv, nbNeurons);
+	 }
       }
    void saveWeights()
       {
