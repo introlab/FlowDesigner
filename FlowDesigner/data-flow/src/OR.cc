@@ -20,7 +20,7 @@
 #include "Exception.h"
 
 //DECLARE_NODE(OR)
-NODE_INFO(OR,"Logic", "INPUT", "OUTPUT", "")
+NODE_INFO(OR,"Logic", "INPUT1:INPUT2", "OUTPUT", "")
 
 OR::OR(string nodeName, ParameterSet params)
  

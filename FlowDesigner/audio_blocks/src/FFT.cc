@@ -24,7 +24,7 @@
 class FFT;
 
 //DECLARE_NODE(FFT)
-NODE_INFO(FFT,"Signal", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(FFT,"Signal:DSP", "INPUT", "OUTPUT", "LENGTH")
 
 class FFT : public FrameOperation {
    

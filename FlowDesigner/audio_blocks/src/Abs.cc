@@ -23,7 +23,7 @@
 class Abs;
 
 //DECLARE_NODE(Abs)
-NODE_INFO(Abs,"Signal", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(Abs,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
 
 class Abs : public FrameOperation {
    

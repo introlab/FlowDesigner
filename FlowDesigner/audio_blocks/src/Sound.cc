@@ -31,7 +31,7 @@
 class Sound;
 
 //DECLARE_NODE(Sound)
-NODE_INFO(Sound,"Signal", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE")
+NODE_INFO(Sound,"Signal:Audio", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE")
 
 /** A constant node contains a value that will never changes. */
 class Sound : public Node

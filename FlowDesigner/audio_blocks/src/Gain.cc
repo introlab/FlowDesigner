@@ -22,7 +22,7 @@
 class Gain;
 
 //DECLARE_NODE(Gain)
-NODE_INFO(Gain,"Signal", "INPUT", "OUTPUT", "LENGTH:GAIN")
+NODE_INFO(Gain,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:GAIN")
 
 class Gain : public FrameOperation {
    

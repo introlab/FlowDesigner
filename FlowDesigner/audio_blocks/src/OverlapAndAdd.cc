@@ -21,7 +21,8 @@
 
 class OverlapAndAdd;
 
-DECLARE_NODE(OverlapAndAdd)
+//DECLARE_NODE(OverlapAndAdd)
+NODE_INFO(OverlapAndAdd, "Signal:Audio", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class OverlapAndAdd : public FrameOperation {
    

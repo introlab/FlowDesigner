@@ -4,6 +4,8 @@
 #include "ParameterSet.h"
 #include "Network.h"
 #include <pthread.h>
+#include "rc_ptrs.h"
+
 //#include <gdk/gdk.h>
 
 //UIDocument *UIDocument::currentDocument;
@@ -625,7 +627,7 @@ void GUIDocument::run()
    //cerr << "GUIDocument::run\n";
    
    pthread_cleanup_push(disposeFunct, NULL);
-
+   Network *net;
    try{
       ParameterSet parameters;
       {
@@ -668,7 +670,8 @@ void GUIDocument::run()
       }
       cerr << "building net...\n";
       parameters.print();
-      Network *net = build("MAIN", parameters);
+      net = build("MAIN", parameters);
+      //Ptr<Network> net(build("MAIN", parameters));
       cerr << "initializing...\n";
       net->initialize();
       cerr << "running...\n";
@@ -682,7 +685,7 @@ void GUIDocument::run()
    } catch (BaseException &e)
    {
       e.print();
-      
+      delete net;
    }
    
    pthread_cleanup_pop(1);

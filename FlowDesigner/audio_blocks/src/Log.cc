@@ -23,7 +23,7 @@
 class Log;
 
 //DECLARE_NODE(Log)
-NODE_INFO(Log,"Signal", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(Log,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
 
 class Log : public FrameOperation {
    

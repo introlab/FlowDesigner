@@ -23,7 +23,7 @@
 class FDSaveFrame;
 
 //DECLARE_NODE(FDSaveFrame);
-NODE_INFO(FDSaveFrame,"Signal", "OBJECT:FD", "OUTPUT", "")
+NODE_INFO(FDSaveFrame,"Signal:Audio", "OBJECT:FD", "OUTPUT", "")
 
 class FDSaveFrame : public Node {
 

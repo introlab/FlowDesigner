@@ -24,7 +24,7 @@
 class Entropy;
 
 //DECLARE_NODE(Entropy)
-NODE_INFO(Entropy,"Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:LOOKAHEAD:LOOKBACK")
+NODE_INFO(Entropy,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:LOOKAHEAD:LOOKBACK")
 
 class Entropy : public FrameOperation {
    

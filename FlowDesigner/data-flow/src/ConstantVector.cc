@@ -24,7 +24,7 @@
 class ConstantVector;
 
 //DECLARE_NODE(ConstantVector)
-NODE_INFO(ConstantVector,"Signal", "", "OUTPUT", "VALUE")
+NODE_INFO(ConstantVector,"General", "", "OUTPUT", "VALUE")
 
 /** A constant node contains a value that will never changes. */
 class ConstantVector : public Node

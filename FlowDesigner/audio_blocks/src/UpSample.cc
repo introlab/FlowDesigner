@@ -22,7 +22,7 @@
 class UpSample;
 
 //DECLARE_NODE(UpSample)
-NODE_INFO(UpSample,"Signal", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:FACTOR")
+NODE_INFO(UpSample,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:FACTOR")
 
 class UpSample : public FrameOperation {
    

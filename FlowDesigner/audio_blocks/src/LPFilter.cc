@@ -25,7 +25,7 @@
 class LPFilter;
 
 //DECLARE_NODE(LPFilter)
-NODE_INFO(LPFilter,"Signal", "", "OUTPUT", "LENGTH:THETA:HP")
+NODE_INFO(LPFilter,"Signal:DSP", "", "OUTPUT", "LENGTH:THETA:HP")
 
 /** A constant node contains a value that will never changes. */
 class LPFilter : public Node

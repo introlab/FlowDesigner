@@ -25,7 +25,7 @@
 #include "Network.h"
 
 //DECLARE_NODE(Concatenate)
-NODE_INFO(Concatenate,"Signal", "INPUT1:INPUT2", "OUTPUT", "INPUT1LENGTH:INPUT2LENGTH:OUTPUTLENGTH")
+NODE_INFO(Concatenate,"Signal:Manip", "INPUT1:INPUT2", "OUTPUT", "INPUT1LENGTH:INPUT2LENGTH:OUTPUTLENGTH")
 
 Concatenate::Concatenate(string nodeName, ParameterSet params)
    : FrameBinaryOperation(nodeName, params)

@@ -1,13 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.23 2000/01/26 00:12:20 jmvalin Exp $
+# $Id: Makefile.am,v 1.24 2000/01/26 03:30:27 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libablocks.la 
 
-libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
+libablocks_la_SOURCES =	\
         FrameUnaryOperation.cc \
         FrameBinaryOperation.cc \
         FrameOperation.cc \
@@ -16,7 +16,6 @@ libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
 	Histogram.cc \
 	PitchDecision.cc \
 	Sync.cc \
-	GenderID.cc \
 	FFT.cc \
 	PS.cc \
 	Mel.cc \
@@ -35,9 +34,6 @@ libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
 	SaveFrame.cc \
 	OverlapAndAdd.cc \
 	Gain.cc \
-	AllZero.cc \
-	AllPole.cc \
-	CAllZero.cc \
 	CAllPole.cc \
 	UpSample.cc \
 	DownSample.cc \

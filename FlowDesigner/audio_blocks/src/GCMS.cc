@@ -21,7 +21,7 @@
 #include "RotatingBuffer.h"
 
 //DECLARE_NODE(GCMS)
-NODE_INFO(GCMS,"Signal", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(GCMS,"Signal:DSP", "INPUT", "OUTPUT", "LENGTH")
 
 GCMS::GCMS(string nodeName, const ParameterSet &params) 
    : FrameOperation(nodeName, params) 

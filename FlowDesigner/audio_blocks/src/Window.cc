@@ -23,7 +23,7 @@
 class Window;
 
 //DECLARE_NODE(Window)
-NODE_INFO(Window, "Signal", "INPUT", "OUTPUT", "LENGTH:WINDOW")
+NODE_INFO(Window, "Signal:DSP", "INPUT", "OUTPUT", "LENGTH:WINDOW")
 
 class Window : public FrameOperation {
    

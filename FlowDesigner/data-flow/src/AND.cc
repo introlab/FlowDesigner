@@ -23,7 +23,7 @@
 #include "Exception.h"
 
 //DECLARE_NODE(AND)
-NODE_INFO(AND,"Logic", "INPUT", "OUTPUT", "")
+NODE_INFO(AND,"Logic", "INPUT1:INPUT2", "OUTPUT", "")
 
 AND::AND(string nodeName, ParameterSet params)
  
