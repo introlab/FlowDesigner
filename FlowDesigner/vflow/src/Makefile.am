@@ -13,18 +13,7 @@ INCLUDES = \
 	-I$(top_srcdir)/../data-flow/include \
 	-I$(top_srcdir)/include
 
-lib_LTLIBRARIES = libflowui.la 
-
-libflowui_la_SOURCES = \
-	UINode.cc \
-	UINetwork.cc \
-	UIDocument.cc \
-	UITerminal.cc \
-	UILink.cc \
-	UINodeParameters.cc \
-	UINetTerminal.cc
-
-bin_PROGRAMS = vflow batchflow
+bin_PROGRAMS = vflow
 
 vflow_SOURCES = \
 	main.cc \
@@ -42,13 +31,6 @@ vflow_SOURCES = \
 	GUINetTerminal.cc \
 	GUINetPopup.cc
 
-batchflow_SOURCES = \
-	batchflow.cc
-
 vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
-	$(top_srcdir)/../data-flow/src/libnetwork.la ./libflowui.la \
-	$(LIB_FFTW)
-
-batchflow_LDADD = $(GNOME_XML_LIB) \
-	$(top_srcdir)/../data-flow/src/libnetwork.la ./libflowui.la\
+	$(top_srcdir)/../data-flow/src/libflow.la \
 	$(LIB_FFTW)

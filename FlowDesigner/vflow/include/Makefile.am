@@ -11,11 +11,4 @@ include_HEADERS = GUIDocument.h \
 	PlotProbe.h \
 	Probe.h \
 	TextProbe.h \
-	UIDocument.h \
-	UILink.h \
-	UINetTerminal.h \
-	UINetwork.h \
-	UINode.h \
-	UINodeParameters.h \
-	UITerminal.h \
 	canvas-background.h

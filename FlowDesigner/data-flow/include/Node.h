@@ -85,6 +85,7 @@ public:
 private:   
 };
 
+class UINode;
 
 /**The Base Node class. All nodes to be inserted in a network must
    derive from this class. It contains the proper initializations
@@ -126,6 +127,13 @@ protected:
    /**Parameters given to the node at construction time*/
    ParameterSet parameters;
 
+#ifdef MULTITHREAD
+   /**pthread mutex*/
+   pthread_mutex_t mutex;
+#endif
+
+   UINode *uinode;
+
    /**Connect an input node using numeric (integer) input/output names*/
    virtual void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
 
@@ -135,10 +143,6 @@ protected:
    /**Adding an input to a node*/
    virtual int addInput (const string &inputName);
    
-#ifdef MULTITHREAD
-   /**pthread mutex*/
-   pthread_mutex_t mutex;
-#endif
 
    /**Returns the inputs vector */
    virtual vector<NodeInput>& getInputs () {return inputs;}
@@ -234,6 +238,8 @@ public:
    }
 #endif
 
+   void setUINode(UINode *_uinode) {uinode = _uinode;}
+   
    /**Adding a factory into the static dictionary*/
    static int addFactory (const string &factoryName, _NodeFactory* const factory);
 

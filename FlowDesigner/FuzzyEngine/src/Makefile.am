@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.2 2000/10/05 01:59:05 maestro Exp $
+# $Id: Makefile.am,v 1.3 2000/10/05 02:36:13 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -30,7 +30,7 @@ noinst_PROGRAMS = FuzzyTest
 FuzzyTest_SOURCES = FuzzyTest.cc
 
 LDADD = $(top_srcdir)/src/libfuzzy.la \
-        $(top_srcdir)/../data-flow/src/libnetwork.la
+        $(top_srcdir)/../data-flow/src/libflow.la
 
 #ifdef FREEBSD
 FREEBSD_FLAGS = -pthread

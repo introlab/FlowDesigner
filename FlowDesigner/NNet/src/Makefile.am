@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.24 2000/10/13 02:52:52 jmvalin Exp $
+# $Id: Makefile.am,v 1.25 2000/12/20 05:33:41 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -28,16 +28,17 @@ libnnet_la_SOURCES = FFLayer.cc FFNet.cc NNetTrain.cc \
 #libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libnnet_la_LDFLAGS = -release $(LT_RELEASE)
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include
+INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include \
+	$(GNOME_XML_INCLUDE)
 
 noinst_PROGRAMS = test 
 test_SOURCES = test.cc
 
 LDADD = $(top_srcdir)/src/libnnet.la \
-        $(top_srcdir)/../data-flow/src/libnetwork.la
+        $(top_srcdir)/../data-flow/src/libflow.la
 
 #ifdef FREEBSD
 FREEBSD_FLAGS = -pthread
 #endif
 
-LDFLAGS = $(FREEBSD_FLAGS)
+LDFLAGS = $(FREEBSD_FLAGS) $(GNOME_XML_LIB)

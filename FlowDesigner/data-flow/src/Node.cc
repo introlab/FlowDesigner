@@ -53,6 +53,7 @@ Node::Node(string nodeName, const ParameterSet &params)
    , outputInitializeCount (0)
    , parameters(params)
    , exit_status(false)
+   , uinode(NULL)
 {
 #ifdef MULTITHREAD
    pthread_mutex_init(&mutex, NULL);

@@ -66,10 +66,16 @@ dnl Checks for libraries.
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 dnl AC_CHECK_LIB(dl, dlopen)
-dnl AC_CHECK_LIB(pthread, pthread_create)
+AC_CHECK_LIB(pthread, pthread_create)
 
 dnl test for SGI audio library (required by SndLib) and define LIBS
 dnl AC_PATH_FFTW
+
+GNOME_XML_LIB=`gnome-config --libs xml`
+GNOME_XML_INCLUDE=`gnome-config --cflags xml`
+AC_SUBST(GNOME_XML_LIB)
+AC_SUBST(GNOME_XML_INCLUDE)
+
 
 dnl Checks for library functions.
 

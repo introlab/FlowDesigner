@@ -112,6 +112,12 @@ dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(pthread, pthread_create)
+
+GNOME_XML_LIB=`gnome-config --libs xml`
+GNOME_XML_INCLUDE=`gnome-config --cflags xml`
+AC_SUBST(GNOME_XML_LIB)
+AC_SUBST(GNOME_XML_INCLUDE)
+
 dnl AC_PATH_FFTW
 
 dnl Checks for library functions.

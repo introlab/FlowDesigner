@@ -15,6 +15,8 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "BufferedNode.h"
+#include "UINode.h"
+
 //#include "RotatingBuffer.h"
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
@@ -127,6 +129,8 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
    } catch (BaseException *e)
    {
       //e->print();
+      cerr << "error caught\n";
+      uinode->notifyError(string("tata"));
       throw e->add(new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__));
    }
 }

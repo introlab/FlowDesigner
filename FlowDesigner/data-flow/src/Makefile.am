@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.29 2001/01/19 20:15:14 jmvalin Exp $
+# $Id: Makefile.am,v 1.30 2001/01/19 22:07:48 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -9,10 +9,10 @@ install:
 	mkdir -p $(prefix)/toolbox/data-flow
 	perl $(top_srcdir)/tools/src/info2def.pl $(top_srcdir)/data-flow/src/*.cc > $(prefix)/toolbox/data-flow/data-flow.def
 
-lib_LTLIBRARIES = libnetwork.la
+lib_LTLIBRARIES = libflow.la
 
 # Sources for compilation in the library
-libnetwork_la_SOURCES = Node.cc \
+libflow_la_SOURCES = Node.cc \
 	BufferedNode.cc \
         Object.cc \
 	Load.cc \
@@ -64,10 +64,25 @@ libnetwork_la_SOURCES = Node.cc \
 	Mul.cc \
 	Div.cc \
 	Length.cc \
-	FrameAccumulator.cc
+	FrameAccumulator.cc \
+	UIDocument.cc \
+	UILink.cc \
+	UINetTerminal.cc \
+	UINetwork.cc \
+	UINode.cc \
+	UINodeParameters.cc \
+	UITerminal.cc
 
 
-#libnetwork_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
-libnetwork_la_LDFLAGS = -release $(LT_RELEASE)
 
-INCLUDES = -I$(top_srcdir)/data-flow/include
+#libflow_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
+libflow_la_LDFLAGS = -release $(LT_RELEASE)
+#libflow_LDADD = $(GNOME_XML_LIB)
+
+bin_PROGRAMS = batchflow
+batchflow_SOURCES = \
+	batchflow.cc
+
+batchflow_LDADD = $(GNOME_XML_LIB) libflow.la 
+
+INCLUDES = -I$(top_srcdir)/data-flow/include $(GNOME_XML_INCLUDE)

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.62 2000/12/02 00:54:49 jmvalin Exp $
+# $Id: Makefile.am,v 1.63 2001/01/23 23:31:48 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -82,7 +82,7 @@ libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
 INCLUDES = -I$(top_srcdir)/../data-flow/include -I$(top_srcdir)/include $(FFTW_INCLUDES)
 
-LDADD = $(top_srcdir)/../data-flow/src/libnetwork.la \
+LDADD = $(top_srcdir)/../data-flow/src/libflow.la \
 	$(LIB_FFTW)
 
 

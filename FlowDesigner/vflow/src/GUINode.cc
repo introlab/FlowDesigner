@@ -640,3 +640,9 @@ void GUINode::redraw() {
 
 
 }
+
+void GUINode::notifyError(const string &message)
+{
+   gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0xC0202020, NULL);
+   //dynamic_cast<GUINetwork *> (getNetwork())->updateScroll();
+}

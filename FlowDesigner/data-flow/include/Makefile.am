@@ -28,7 +28,14 @@ include_HEADERS = Array.h \
 	RotatingFrameBuffer.h \
 	variables.h \
 	ExternalApp.h \
-	VectorPool.h
+	VectorPool.h \
+	UIDocument.h \
+	UINetTerminal.h \
+	UINode.h \
+	UITerminal.h \
+	UILink.h \
+	UINetwork.h \
+	UINodeParameters.h \
 	
 noinst_HEADERS = \
 	InputStream.h \

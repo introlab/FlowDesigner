@@ -70,6 +70,8 @@ class GUINode : public UINode {
   
   virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
   
+  virtual void notifyError(const string &message);
+
   friend class GUINetwork;
 
 };
