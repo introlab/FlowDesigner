@@ -7,20 +7,20 @@
 class Sync;
 DECLARE_NODE(Sync)
 /*Node
-
+ *
  * @name Sync
  * @category Flow
- * @description No description available
-
+ * @description No-op node for which count ratio (getInput/getOutput) = RATIO
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_description Input
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_description Output (no-op) same as input with different count
+ *
  * @parameter_name RATIO
- * @parameter_description No description available
-
+ * @parameter_description (input/output) count ratio
+ *
 END*/
 
 
@@ -48,7 +48,7 @@ public:
       this->Node::specificInitialize();
       
       ParameterSet req;
-      req.add("LOOKAHEAD", ObjectRef(new Int(floor (ratio))));
+      req.add("LOOKAHEAD", ObjectRef(new Int(int(floor (ratio)))));
       inputs[inputID].node->request(inputs[inputID].outputID, req);
 
    }
@@ -68,13 +68,13 @@ public:
       if (req.exist("LOOKAHEAD"))
       {
 	 ParameterSet p;
-	 p.add("LOOKAHEAD", ObjectRef(new Int (1+ratio*dereference_cast<int> (req.get("LOOKAHEAD")))));
+	 p.add("LOOKAHEAD", ObjectRef(new Int (int(1+ratio*dereference_cast<int> (req.get("LOOKAHEAD"))))));
 	 inputs[inputID].node->request(inputs[inputID].outputID,p);
       }
       if (req.exist("LOOKBACK"))
       {
 	 ParameterSet p;
-	 p.add("LOOKBACK", ObjectRef(new Int (1+ratio*dereference_cast<int> (req.get("LOOKBACK")))));
+	 p.add("LOOKBACK", ObjectRef(new Int (int(1+ratio*dereference_cast<int> (req.get("LOOKBACK"))))));
 	 inputs[inputID].node->request(inputs[inputID].outputID,p);
       }
       //if (req.exist("CACHEALL"))
