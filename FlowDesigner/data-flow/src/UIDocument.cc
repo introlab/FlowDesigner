@@ -7,6 +7,7 @@
 #include "Network.h"
 #include "ParameterSet.h"
 #include <sys/stat.h>
+#include <dlfcn.h>
 
 map<string, SubnetInfo *> UIDocument::externalDocInfo;
 
@@ -577,15 +578,14 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
 }
 
 
-#include <dlfcn.h>
-
 void UIDocument::scanDL()
 {
    try {
       vector<string> dirs=envList("VFLOW_PATH");
       if (dirs.size() == 0)
       {
-     cerr << "Did you forget to set the VFLOW_PATH environment to the directory where the libraries are installed?\n";
+	 cerr << "Cannot find any toolbox. Exiting\n";
+	 exit(1);
       }
       for (int i = 0; i<dirs.size();i++)
       {
@@ -888,7 +888,7 @@ void UIDocument::setFullPath(const string &fullpath)
  * -> type is the unique description of the node type
  */
 vector<string> UIDocument::getAvailableNodes()
-{												 
+{
 	vector<string> allNodes;
 	string nextItem;
 	// first look at the externalDocInfo 
@@ -898,7 +898,7 @@ vector<string> UIDocument::getAvailableNodes()
 		nextItem = string((*iter).second->category) + "***" + 
 				   string((*iter).first);
 		allNodes.insert(allNodes.end(), nextItem);
-		iter++;											 
+		iter++;
 	}
 				
 	// now look at the preloadInfo
@@ -910,10 +910,8 @@ vector<string> UIDocument::getAvailableNodes()
 		allNodes.insert(allNodes.end(), nextItem);
 		iter++;
 	}
-													 
 	return allNodes;
 								
 }
-													 
 											
 
