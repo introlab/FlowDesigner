@@ -18,4 +18,5 @@ noinst_HEADERS = C_GMM.h \
 	gmm_set.h \
 	GMMScore.h \
 	GMMTrain.h \
-	viterbi.h
+	viterbi.h \
+	DiagGMM.h
