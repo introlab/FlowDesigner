@@ -6,7 +6,7 @@
 #define VEC_SSE_H
 
 
-#ifdef _ALLOW_SSE
+#ifdef _ENABLE_SSE
 
 
 #define CLOBBER_SSE : "memory"
@@ -267,12 +267,12 @@ mul4_skip%=:
 }
 
 
-#else /* _ALLOW_SSE */
+#else /* _ENABLE_SSE */
 
 
 #include "BaseException.h"
 
-#define ERROR_SSE_NI {throw new GeneralException("Trying to use SSE, but Overflow not compiled with _ALLOW_SSE. Bad, bad, this should never happen", __FILE__, __LINE__);}
+#define ERROR_SSE_NI {throw new GeneralException("Trying to use SSE, but Overflow not compiled with _ENABLE_SSE. Bad, bad, this should never happen", __FILE__, __LINE__);}
 
 inline float vec_inner_prod_sse(const float *a, const float *b, int len)
 ERROR_SSE_NI
@@ -283,7 +283,7 @@ ERROR_SSE_NI
 inline float vec_dist2_mul4_sse(const float *a, const float *b, int len)
 ERROR_SSE_NI
 
-#endif /* !_ALLOW_SSE */
+#endif /* !_ENABLE_SSE */
 
 
 #endif

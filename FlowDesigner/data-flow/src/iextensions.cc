@@ -44,7 +44,7 @@ void IExtensions::detect()
 
 #ifdef __GNUC__
 
-#if defined (_ALLOW_SSE) || defined (_ALLOW_3DNOW)
+#if defined (_ENABLE_SSE) || defined (_ENABLE_3DNOW)
 
 #include <setjmp.h>
 #include <signal.h>
@@ -59,7 +59,7 @@ static void illegal_inst(int sig)
 }
 #endif
 
-#ifdef _ALLOW_SSE
+#ifdef _ENABLE_SSE
 #define CHECK_SSE
 void IExtensions::detectSSE()
 {
@@ -80,9 +80,9 @@ void IExtensions::detectSSE()
    isse=true;
    //cerr << "SSE detected\n";
 }
-#endif /*_ALLOW_SSE*/
+#endif /*_ENABLE_SSE*/
 
-#ifdef _ALLOW_3DNOW
+#ifdef _ENABLE_3DNOW
 #define CHECK_3DNOW
 void IExtensions::detect3DNow()
 {
@@ -114,7 +114,7 @@ void IExtensions::detect3DNow()
 
 /* SSE detection (and hence 3DNow! too) taken from example in Intel's guide*/
 
-#ifdef _ALLOW_SSE
+#ifdef _ENABLE_SSE
 #define CHECK_SSE
 void IExtensions::detectSSE()
 {
@@ -141,7 +141,7 @@ void IExtensions::detectSSE()
 #endif
 
 
-#ifdef _ALLOW_3DNOW
+#ifdef _ENABLE_3DNOW
 #define CHECK_3DNOW
 void IExtensions::detect3DNow()
 {
@@ -172,8 +172,8 @@ void IExtensions::detect3DNow()
 #else /*WIN32*/
 
 
-#if (defined (_ALLOW_SSE) || defined (_ALLOW_3DNOW))
-#error "SSE and 3DNow! only supported on GCC and MSVC++ (help us get more support). Try disabling _ALLOW_SSE and _ALLOW_3DNOW"
+#if (defined (_ENABLE_SSE) || defined (_ENABLE_3DNOW))
+#error "SSE and 3DNow! only supported on GCC and MSVC++ (help us get more support). Try disabling _ENABLE_SSE and _ENABLE_3DNOW"
 #endif
 
 #endif

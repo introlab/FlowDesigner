@@ -454,12 +454,12 @@ template <>
 inline float vec_inner_prod<float>(const float *a, const float *b, int len)
 {
 #ifndef WIN32
-#ifdef _ALLOW_3DNOW
+#ifdef _ENABLE_3DNOW
    if (len >= 8 && IExtensions::have3DNow())
       return vec_inner_prod_3dnow(a,b,len);
    else 
 #endif
-#ifdef _ALLOW_SSE
+#ifdef _ENABLE_SSE
       if (len >=8 && IExtensions::haveSSE())
       return vec_inner_prod_sse(a,b,len);
    else

@@ -11,7 +11,7 @@ DECLARE_TYPE(DiagGMM)
 //@implements DGMM
 
 
-#ifdef _ALLOW_SSE
+#ifdef _ENABLE_SSE
 
 #ifdef __GNUC__
 inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, int len)
@@ -207,7 +207,7 @@ inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, in
    throw new GeneralException("Trying to use SSE routine, but code not compiled for SSE support", __FILE__,
 			      __LINE__);
 }
-#endif /*ALLOW_SSE*/
+#endif /*_ENABLE_SSE*/
 
 
 float DiagGMM::score(const float *vec)

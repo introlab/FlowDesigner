@@ -18,7 +18,7 @@ class IExtensions {
 
 
 
-#if defined(_ALLOW_SSE) || defined(_ALLOW_3DNOW)
+#if defined(_ENABLE_SSE) || defined(_ENABLE_3DNOW)
 
 #ifdef __GNUC__
 
@@ -85,7 +85,7 @@ inline void prefetcht1(void *ptr) {}
 inline void prefetcht2(void *ptr) {}
 inline void emms() {}
 
-#endif /*defined(_ALLOW_SSE) || defined(_ALLOW_3DNOW)*/
+#endif /*defined(_ENABLE_SSE) || defined(_ENABLE_3DNOW)*/
 
 
 

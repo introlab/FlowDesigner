@@ -1,6 +1,6 @@
 AC_INIT(src/vflow.cc)
 
-AM_CONFIG_HEADER(config.h)
+dnl AM_CONFIG_HEADER(config.h)
 
 AM_INIT_AUTOMAKE(VFlow, 0.6.0)
 
@@ -22,6 +22,8 @@ AC_PROG_CXX
 AC_ARG_PROGRAM
 AC_DISABLE_STATIC
 AM_PROG_LIBTOOL
+
+AC_INST_EXTENSIONS
 
 case "$host_os" in 
 hpux*) OS=HPUX ;;

@@ -1,3 +1,10 @@
+AC_DEFUN(AC_INST_EXTENSIONS,
+[
+AC_ARG_ENABLE(sse, [  --enable-sse           enable SSE support (will still work on other processors)], [if test "$enableval" = yes; then AC_DEFINE(_ENABLE_SSE)fi])
+AC_ARG_ENABLE(3dnow, [  --enable-3dnow         enable 3DNow! support (will still work on other processors)], [if test "$enableval" = yes; then AC_DEFINE(_ENABLE_3DNOW)fi])
+])
+
+
 AC_DEFUN(AC_MODULE_OPT,
 [
 AC_ARG_ENABLE($1, [  --enable-$1           enable module $1 (default: $2)], [if test "$enableval" = no; then $1=; else $1=$1; fi], [if test -f $1/Makefile.am && test $2 = yes; then $1=$1; else $1=; fi ])
@@ -260,6 +267,8 @@ AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 AC_PROG_MAKE_SET
 AC_C_BIGENDIAN
+
+AC_INST_EXTENSIONS
 
 dnl Checks for libraries.
 AC_CHECK_HEADERS(float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h)

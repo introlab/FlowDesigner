@@ -6,7 +6,7 @@
 #define VEC_3DNOW_H
 
 
-#ifdef _ALLOW_3DNOW
+#ifdef _ENABLE_3DNOW
 
 
 #define CLOBBER_3DNOW   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
@@ -838,12 +838,12 @@ CLOBBER_3DNOW
   );
 }
 
-#else /* _ALLOW_3DNOW */
+#else /* _ENABLE_3DNOW */
 
 
 #include "BaseException.h"
 
-#define ERROR_3DNOW_NI {throw new GeneralException("Trying to use 3DNow!, but Overflow not compiled with _ALLOW_3DNOW. Bad, bad, this should never happen", __FILE__, __LINE__);}
+#define ERROR_3DNOW_NI {throw new GeneralException("Trying to use 3DNow!, but Overflow not compiled with _ENABLE_3DNOW. Bad, bad, this should never happen", __FILE__, __LINE__);}
 
 inline float vec_inner_prod_3dnow(const float *a, const float *b, int len)
 ERROR_3DNOW_NI
@@ -881,7 +881,7 @@ ERROR_3DNOW_NI
 inline void vec_sqrt_3dnow(const float *a, float *b, int len)
 ERROR_3DNOW_NI
 
-#endif /* !_ALLOW_3DNOW */
+#endif /* !_ENABLE_3DNOW */
 
 
 
