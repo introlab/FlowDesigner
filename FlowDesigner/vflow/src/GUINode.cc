@@ -279,7 +279,9 @@ gint GUINode::event(GdkEvent *event)
       case 1:
          if (event->button.state & GDK_SHIFT_MASK)
          {
-            dynamic_cast<GUINodeParameters *> (parameters)->show();
+            //dynamic_cast<GUINodeParameters *> (parameters)->show();
+	    delete this;
+	    return true;
          }
          else 
          {

@@ -11,7 +11,11 @@ static void create_net_terminal(gchar * str, GUINetTerminal *term)
       term->setName("");
 }
 
-
+static gint net_terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
+{
+   cerr << "caught button\n";
+   return ((GUINetTerminal *)(data))->event(event);
+}
 
 GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string _name)
    : UINetTerminal(_terminal, _type, _name)
@@ -78,10 +82,44 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
                          "font", "fixed",
                          NULL);
 
+   gtk_signal_connect(GTK_OBJECT(item), "event",
+                      (GtkSignalFunc) net_terminal_handler,
+                      this);
+
 }
 
 
 GUINetTerminal::~GUINetTerminal()
 {
    gtk_object_destroy(GTK_OBJECT(item));
+}
+
+
+gint GUINetTerminal::event(GdkEvent *event)
+{
+   //return TRUE;
+   switch (event->type) 
+   {
+   case GDK_BUTTON_PRESS:
+      switch(event->button.button) 
+      {
+      case 1:
+         if (event->button.state & GDK_SHIFT_MASK)
+         {
+            delete this;
+            return TRUE;
+         }
+         break;
+         
+      default:
+         break;
+      }
+      break;
+     
+      
+   default:
+      break;
+   }
+        
+   return FALSE;
 }

@@ -7,6 +7,7 @@
 #include "UINetPopup.h"
 #include "Node.h"
 #include "GUINetTerminal.h"
+#include "canvas-background.h"
 
 template<class T>
 T abs(T x) {return x < 0 ? -x : x;}
@@ -19,6 +20,12 @@ static gboolean net_canvas_event   (GtkWidget       *widget,
    return net->buttonEvent(event);
 }
 
+static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
+{
+   cerr << "caught button\n";
+   return TRUE;
+   //return ((GUINetTerminal *)(data))->event(event);
+}
 
 GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
    : UINetwork(_doc, _name, _type)
@@ -134,6 +141,16 @@ void GUINetwork::create()
 
    gtk_notebook_append_page(GTK_NOTEBOOK(dynamic_cast<GUIDocument *>(doc)->getNotebook()), scrolledwindow1, label1);
 
+
+/*   GnomeCanvasItem *background = gnome_canvas_item_new(gnome_canvas_root(canvas),
+						       NULL);
+
+   gtk_signal_connect(GTK_OBJECT(background), "event",
+                      (GtkSignalFunc) background_handler,
+                      this);
+
+*/
+
    //group = gnome_canvas_root(canvas);
    group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (gnome_canvas_root(canvas),
                                                       gnome_canvas_group_get_type(),
@@ -142,9 +159,12 @@ void GUINetwork::create()
                                                       NULL));
    popup = new UINetPopup(doc,this);
 
-   gtk_signal_connect (GTK_OBJECT (canvas), "button_press_event",
+    gtk_signal_connect (GTK_OBJECT (canvas), "button_press_event",
                        GTK_SIGNAL_FUNC (net_canvas_event),
                        this);
+   
+
+
 
 }
 
