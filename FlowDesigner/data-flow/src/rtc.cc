@@ -78,6 +78,7 @@ RTCTimer::~RTCTimer()
 {
    cerr << "Destroying timer..." << endl;
    exit_status=true;
+   ioctl(fd, RTC_PIE_ON, 0);
    pthread_join(thread, NULL);
    cerr << "Done" << endl;
 }
