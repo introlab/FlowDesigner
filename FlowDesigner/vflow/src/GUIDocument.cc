@@ -14,7 +14,6 @@
 #  include <config.h>
 #endif
 
-
 //#include <gdk/gdk.h>
 
 //UIDocument *UIDocument::currentDocument;
@@ -36,7 +35,10 @@ static void add_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the network name?", "MAIN", 20, (GnomeStringCallback)create_net, doc, NULL);
+   GtkWidget *dialog = 
+      gnome_request_dialog (FALSE, "What's the network name?", 
+			    doc->getNewNetName(UINetwork::subnet).c_str(), 
+			    20, (GnomeStringCallback)create_net, doc, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -49,7 +51,10 @@ static void add_threaded_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the threaded iterator name?", "MAIN", 20, (GnomeStringCallback)create_threaded, doc, NULL);
+   GtkWidget *dialog = 
+      gnome_request_dialog (FALSE, "What's the threaded iterator name?", 
+			    doc->getNewNetName(UINetwork::threaded).c_str(), 
+			    20, (GnomeStringCallback)create_threaded, doc, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -62,7 +67,10 @@ static void add_iter_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the iterator's name?", "MAIN", 20, (GnomeStringCallback)create_iter, doc, NULL);
+   GtkWidget *dialog = 
+      gnome_request_dialog (FALSE, "What's the iterator's name?", 
+			    doc->getNewNetName(UINetwork::iterator).c_str(), 
+			    20, (GnomeStringCallback)create_iter, doc, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -825,4 +833,33 @@ void GUIDocument::less_clear() {
     less_text = string();
     gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
   }
+}
+
+string GUIDocument::getNewNetName(UINetwork::Type type)
+{
+   string baseName;
+   if (type == UINetwork::subnet)
+      baseName = "SUBNET";
+   else if (type == UINetwork::iterator)
+      baseName = "LOOP";
+   else if (type == UINetwork::threaded)
+      baseName = "THREAD";
+   bool OK=false;
+   int nb=0;
+   string newName;
+   while (!OK)
+   {
+      OK=true;
+      stringstream st;
+      st << nb;
+      newName = baseName + st.str();
+      for (int i=0;i<networks.size();i++)
+	 if (networks[i]->getName() == newName)
+	 {
+	    OK=false;
+	    nb++;
+	    break;
+	 }
+   }
+   return newName;
 }

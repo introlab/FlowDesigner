@@ -68,7 +68,7 @@ public:
    void renameCurrentNet ();
 
    UINetwork *newNetwork(const string &_name, UINetwork::Type type);
-   
+
    UINetwork *newNetwork(xmlNodePtr _net);
 
    virtual void setFullPath(const string &fullpath);
@@ -87,6 +87,9 @@ public:
 
    void threadRun();
    
+   string getNewNetName(UINetwork::Type type);
+   
+
    friend class GUINetPopup;
 
    static void threadStop();
