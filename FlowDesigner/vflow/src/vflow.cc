@@ -1354,7 +1354,7 @@ GLADE_HOOKUP_OBJECT (app1, edit1_menu_uiinfo[5].widget, "properties1");
   GLADE_HOOKUP_OBJECT (app1, appbar1, "appbar1");
 
 //return app1;
-gtk_widget_show (app1);
+//gtk_widget_show (app1);
 mdi=app1;
 
 set_run_mode(false);
@@ -1424,7 +1424,7 @@ int main (int argc, char *argv[])
       else {
 	vflow->create_empty_document();
       }
-      
+      gtk_widget_show (vflowGUI::instance()->get_mdi());
 
       //starting GTK loop
       gdk_threads_enter(); 
