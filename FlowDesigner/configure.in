@@ -108,6 +108,7 @@ dnl Output the makefiles and version.h.
 AC_OUTPUT([Makefile HMM/Makefile HMM/src/Makefile HMM/include/Makefile \
 	HMM/doc/Makefile HMM/doc/html/Makefile \
 	MMI/Makefile MMI/src/Makefile MMI/include/Makefile \
+	VQ/Makefile VQ/src/Makefile VQ/include/Makefile \
 	data-flow/Makefile \
 	data-flow/src/Makefile data-flow/include/Makefile \
 	data-flow/doc/Makefile data-flow/doc/html/Makefile \

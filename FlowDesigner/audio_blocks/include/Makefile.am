@@ -20,4 +20,5 @@ noinst_HEADERS = AudioFile.h \
 	MMIAccumulator.h \
 	MMITrain.h \
 	Histogram.h \
-	MMIScore.h
+	MMIScore.h \
+	VQTrain.h

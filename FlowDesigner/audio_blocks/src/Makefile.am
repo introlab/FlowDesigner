@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.11 1999/09/27 17:16:46 jmvalin Exp $
+# $Id: Makefile.am,v 1.12 1999/10/04 14:12:54 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -30,7 +30,9 @@ libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
         FrameBinaryOperation.cc \
         FrameOperation.cc \
         GMMTrain.cc \
+        VQTrain.cc \
         GMMScore.cc \
+	VQuantize.cc \
         GCMS.cc \
 	MMIAccumulator.cc \
 	MMITrain.cc \
@@ -47,6 +49,7 @@ libablocks_la_SOURCES =	DLFrameUnaryOperation.cc \
 	Select.cc \
 	TimeFilter.cc \
 	Log.cc \
+	Exp.cc \
 	FrameAccumulator.cc \
 	AudioFile.cc \
 	Concatenate.cc \
@@ -73,7 +76,7 @@ libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 # Flags for SGI CC:
 #libablocks_la_CXXFLAGS = -n32
 
-INCLUDES = -I$(top_srcdir)/HMM/include -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include -I$(top_srcdir)/MMI/include $(FFTW_INCLUDES)
+INCLUDES = -I$(top_srcdir)/HMM/include -I$(top_srcdir)/VQ/include -I$(top_srcdir)/data-flow/include -I$(top_srcdir)/audio_blocks/include -I$(top_srcdir)/MMI/include $(FFTW_INCLUDES)
 
 bin_PROGRAMS = AudioNetwork
 
@@ -84,6 +87,7 @@ LDFLAGS=$(FFTW_LDFLAGS)
 LDADD = $(top_srcdir)/audio_blocks/src/libablocks.la \
 	$(top_srcdir)/HMM/src/libhmm.la \
 	$(top_srcdir)/MMI/src/libmmi.la \
+	$(top_srcdir)/VQ/src/libvq.la \
 	$(top_srcdir)/data-flow/src/libnetwork.la \
 	$(LIB_FFTW)
 
