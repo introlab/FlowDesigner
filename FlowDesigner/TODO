@@ -15,3 +15,11 @@ catch exceptions on DL opening modules at startup
 *write logging system (eg. error curves in NNet)
 
 *create value class that supports operators using double dispatching
+
+
+For JM:
+
+- Feedback links
+
+- Clean variable inputs/outputs
+

@@ -40,32 +40,32 @@ class Sound;
 
 DECLARE_NODE(Sound)
 /*Node
-
+ *
  * @name Sound
  * @category Signal:Audio
  * @description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name DEVICE
  * @parameter_description No description available
-
+ *
  * @parameter_name RATE
  * @parameter_description No description available
-
+ *
  * @parameter_name STEREO
  * @parameter_description No description available
-
+ *
  * @parameter_name MODE
  * @parameter_description No description available
-
+ *
  * @parameter_name BUFFER
  * @parameter_description No description available
-
+ *
  * @parameter_name DUMMY
  * @parameter_description No description available
-
+ *
 END*/
 
 
