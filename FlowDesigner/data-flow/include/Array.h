@@ -39,7 +39,7 @@ public:
    
    void readFrom(istream &in=cin);
    
-
+   virtual void destroy() {delete this;}
 
    Array<T> &operator+= (const Array<T> &v2) 
    {
