@@ -7,4 +7,5 @@ noinst_HEADERS = \
 	MMIScore.h \
 	MMITrain.h \
 	vq.h \
-	msvq.h
+	msvq.h \
+	RBF.h
