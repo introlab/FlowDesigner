@@ -108,27 +108,9 @@ public:
 
    virtual void newNetNotify(const string &cat, const string &type);
 
-   void addTerminal(UINetTerminal *term) 
-      {terminals.insert(terminals.end(), term);}
+   void addTerminal(UINetTerminal *term);
 
-   void removeTerminal(UINetTerminal *term) 
-   {
-      //Now, this should comply to ANSI C++
-      vector<UINetTerminal *>::iterator i=terminals.begin();
-      while (i != terminals.end())
-      {
-         if (*i == term)
-	 {
-            terminals.erase(i);
-	    break;
-	 }
-	 ++i;
-      }
-	 /*for (int i=0;i<terminals.size();i++)
-         if (terminals[i]==term)
-            terminals.erase(&terminals[i]);
-      */
-   }
+   void removeTerminal(UINetTerminal *term);
 
    vector<string> getTerminals(UINetTerminal::NetTermType termType);
 
@@ -155,6 +137,9 @@ public:
    vector<UINetTerminal *> getTerminals() {return terminals;}
    
    void rename(string newName);
+
+   void interfaceChangeNotify();
+   
 
 };
 

@@ -71,6 +71,9 @@ GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
 
 GUINetwork::~GUINetwork() 
 {
+   //It's important that destroyed be set here because is has an effect 
+   //on methods that are called indirectly from the destructor.
+   destroyed=true;
    //Links are deleted through the nodes destructor
    for (int i=0;i<nodes.size();i++)
       delete nodes[i];
@@ -79,7 +82,6 @@ GUINetwork::~GUINetwork()
    gtk_object_destroy(GTK_OBJECT(group));
    gtk_widget_destroy(GTK_WIDGET(canvas));
 
-   destroyed=true;
 }
 
 void GUINetwork::create()

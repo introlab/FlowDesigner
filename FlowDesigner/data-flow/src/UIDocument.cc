@@ -5,7 +5,6 @@
 #include <parser.h>
 #include "UIDocument.h"
 #include "UINetwork.h"
-//#include "UINodeMenu.h"
 #include "Node.h"
 #include "Network.h"
 #include "ParameterSet.h"
@@ -47,24 +46,16 @@ UIDocument::~UIDocument()
 
 UINetwork *UIDocument::getNetworkNamed(const string &n)
 {
-   //cerr << "UIDocument::getNetworkNamed\n";
-   //cerr << n << endl;
-   //cerr << "size = " << networks.size() << endl;
    for (unsigned int i=0;i<networks.size();i++)
    {
-      //cerr << "ptr = " << &(networks[i]) << endl;
-      //cerr << networks[i]->getName() << " == " << n << endl;
       if (networks[i]->getName() == n)
          return networks[i];
    }
-   //cerr << "net not found in doc\n";
    return NULL;
 }
 
 vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 {
-   //FIXME: Eventually, we should only update a network when it changes
-   updateAllNetworks();
    vector <ItemInfo *> inputs;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->inputs;
@@ -74,8 +65,6 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 {
-   //FIXME: Eventually, we should only update a network when it changes
-   updateAllNetworks();
    vector <ItemInfo *> outputs;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->outputs;
@@ -85,8 +74,6 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
 {
-   //FIXME: Eventually, we should only update a network when it changes
-   updateAllNetworks();
    vector <ItemInfo *> params;
    if (subnetInfo.findNode(netName))
       return subnetInfo.findNode(netName)->params;

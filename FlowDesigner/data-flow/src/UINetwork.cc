@@ -292,7 +292,11 @@ void UINetwork::saveXML(xmlNode *root)
 
 }
 
-void UINetwork::setModified() {doc->setModified();}
+void UINetwork::setModified() 
+{
+   doc->setModified();
+   interfaceChangeNotify();
+}
 
 void UINetwork::export2net(ostream &out)
 {
@@ -725,6 +729,32 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
    out << "}\n\n";
 }
 
+void UINetwork::addTerminal(UINetTerminal *term) 
+{
+   terminals.insert(terminals.end(), term);
+   interfaceChangeNotify();
+}
+
+void UINetwork::removeTerminal(UINetTerminal *term) 
+{
+   vector<UINetTerminal *>::iterator i=terminals.begin();
+   while (i != terminals.end())
+   {
+      if (*i == term)
+      {
+	 terminals.erase(i);
+	 break;
+      }
+      ++i;
+   }
+   interfaceChangeNotify();
+}
+
+void UINetwork::interfaceChangeNotify()
+{
+   if (!destroyed)
+      doc->updateNetInfo(this);
+}
 
 void UINetwork::rename(string newName)
 {
