@@ -5,15 +5,26 @@
 #define TYPE_TRAITS_H
 
 #include "Object.h"
-//#include <complex>
 
+
+/* KLUDGE: This is a workaround for (I think) a bug in gcc 2.96 where you cannot 
+   include <complex> if you add -I/usr/include to the include path... strange...*/
+#ifdef __GNUC__
+#if (__GNUC__ == 2 && __GNUC_MINOR__ == 96)
+#define GCC_296_COMPLEX_KLUDGE
+#endif
+#endif
+
+#ifdef GCC_296_COMPLEX_KLUDGE
 template<class T>
 class complex;
-//class string;
+#else
+#include <complex>
+#endif
 
 class TTraits {
 public:
-   enum Kind {Object=0, Basic=1, Unknown=2, ObjectPointer=3};
+   enum Kind {Object=0, Basic=1, Unknown=2, ObjectPointer=3, BasicPointer=4, UnknownPointer=5};
 };
 
 template<class T>
@@ -39,17 +50,13 @@ _DEF_C_TYPE(unsigned long)
 
 _DEF_OBJECTPTR_TYPE(ObjectRef)
 
-//_DEF_C_TYPE(complex<float>)
-//_DEF_C_TYPE(complex<double>)
-
 //_DEF_C_TYPE(string)
-//_DEF_UNKNOWN_TYPE(ObjectRef)
-
-//template<class T>struct TypeTraits<T*> {enum {isBasic=2};};
-//template<class T>struct TypeTraits<RCPtr<T> > {enum {isBasic=2};};
 
 template<class T>struct TypeTraits<complex<T> > {enum {kind=TTraits::Basic};};
 template<class T>struct TypeTraits<RCPtr<T> > {enum {kind=TTraits::ObjectPointer};};
+
+//KLUDGE: This is a kludge but it should get the right traits for pointer types
+template<class T>struct TypeTraits<T*> {enum {kind=TTraits::ObjectPointer+TypeTraits<T>::kind};};
 
 
 #endif
