@@ -25,6 +25,11 @@ vector<Bool *> ObjectPool<Bool>::stack;
 vector<Float *> ObjectPool<Float>::stack;
 vector<Double *> ObjectPool<Double>::stack;
 
+FastMutex ObjectPool<Int>::mutex;
+FastMutex ObjectPool<Bool>::mutex;
+FastMutex ObjectPool<Float>::mutex;
+FastMutex ObjectPool<Double>::mutex;
+
 ObjectRef TrueObject(new Bool(true));
 ObjectRef FalseObject(new Bool(false));
 

@@ -189,21 +189,21 @@ public:
    X& operator* () const {if (ptr) return *ptr; else throw new PtrException("dereferencing NULL pointer in operator*");}
    X* operator->() const {if (ptr) return  ptr; else throw new PtrException("dereferencing NULL pointer in operator->");}
 #else
-   X& operator* () const {	return *ptr; }
-   X* operator->() const {	return  ptr; }
+   X& operator* () const {return *ptr; }
+   X* operator->() const {return  ptr; }
 #endif
    X* get () const { return ptr;}
 
    bool unique () const
    {
-      return (ptr && ptr->getCount() == 1);
+      return (ptr && ptr->unique());
    }
 
    X *detach () 
    {
       if (ptr)
       {
-         if (ptr->getCount() == 1) 
+         if (ptr->unique()) 
          {
             X *tmp = ptr;
             ptr = 0;

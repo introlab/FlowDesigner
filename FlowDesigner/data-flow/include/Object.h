@@ -9,6 +9,7 @@
 #include <map>
 #include "BaseException.h"
 #include <typeinfo>
+#include "multithread.h"
 
 class Object;
 /** Smart pointer to Object called ObjectRef
@@ -26,7 +27,7 @@ class _ObjectFactory;
 class Object {
   protected:
    
-   int ref_count;
+   AtomicCounter ref_count;
    
 public:
 
@@ -39,20 +40,20 @@ public:
    /**Notify the object we're adding a reference*/
    void ref() 
    {
-      ref_count++;
+      ref_count.inc();
    }
 
    /**Notify the object we're removing a reference (might destroy the object)*/
    void unref()
    {
-      if (--ref_count==0)
+      if (ref_count.dec()==0)
       {
 	 destroy();
       }
    }
 
    /**Returns the number of references*/
-   int getCount () {return ref_count;}
+   int unique () {return ref_count.unique();}
 
    /**Causes the object to be destroyed, it might be redefined for an object pool*/
    virtual void destroy()

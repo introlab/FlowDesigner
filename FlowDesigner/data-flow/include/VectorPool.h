@@ -8,6 +8,7 @@
 #endif
 
 #include "misc.h"
+#include "multithread.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ class VectorPool {
 
    vector<vector <Vector<T> *> > smallList;
    vector<vector <Vector<T> *> > largeList;
+   FastMutex mutex;
 
   public:
    VectorPool(int _max_stored=50) 
@@ -32,29 +34,33 @@ class VectorPool {
 
    Vector<T> *newVector (int size)
    {
+      mutex.lock();
       if (size <= MAX_SMALL)
       {
 	 vector <Vector<T> *> &stack = smallList[size];
 	 if (stack.empty())
 	 {
+            mutex.unlock();
 	    return new Vector<T> (size);
 	 } else {
 	    Vector<T> *ret = stack.back();
 	    stack.pop_back();
 	    ret->ref();
-	    
+            mutex.unlock();	    
 	    return ret;
 	 }
       } else {
 	 vector <Vector<T> *> &stack = largeList[log2(size)];
 	 if (stack.empty())
 	 {
+            mutex.unlock();
 	    return new Vector<T> (size);
 	 } else {
 	    Vector<T> *ret = stack.back();
 	    stack.pop_back();
 	    ret->ref();
 	    ret->resize(size);
+            mutex.unlock();
 	    return ret;
 	    
 	 }
@@ -62,6 +68,7 @@ class VectorPool {
    }
    void release(Vector<T> *vec)
    {
+      mutex.lock();
       int sz = vec->size();
       if (sz <= MAX_SMALL)
       {
@@ -82,6 +89,7 @@ class VectorPool {
 	    stack.push_back(vec);
 	 }
       }
+      mutex.unlock();
    }
 };
 

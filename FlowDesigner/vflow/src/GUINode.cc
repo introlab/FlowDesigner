@@ -470,7 +470,7 @@ void GUINode::initialize_widgets() {
 				"text", type.c_str(),
 				"anchor", GTK_ANCHOR_CENTER,
 				"fill_color", "black",
-				"font", "sans 14",
+				"font", "sans 11",
 				NULL);
 
   //getting the node bounds

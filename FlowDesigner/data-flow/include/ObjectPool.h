@@ -4,6 +4,7 @@
 #define OBJECT_POOL_H
 
 #include <vector>
+#include "multithread.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ template <class T>
 class ObjectPool {
   protected:
    static vector <T *> stack;
-
+   static FastMutex mutex;
   public:
    ObjectPool() 
    {
@@ -27,25 +28,30 @@ class ObjectPool {
 
    static T *alloc()
    {
+      mutex.lock();
       if (stack.size())
       {
 	 T *ret = stack.back();
 	 stack.pop_back();
 	 ret->ref();
+         mutex.unlock();
 	 return ret;
       } else {
+         mutex.unlock();
 	 return new T;
       }
    }
 
    static void release(T *obj)
    {
+      mutex.lock();
       if (stack.size() > MAX_STORE)
       {
 	 delete obj;
       } else {
 	 stack.push_back(obj);
       }
+      mutex.unlock();
    }
 
 };

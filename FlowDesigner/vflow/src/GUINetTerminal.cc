@@ -126,7 +126,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
                          "text", name.c_str(),
                          "anchor", anchor ,
                          "fill_color", color,
-                         "font", "sans 13",
+                         "font", "sans 10",
                          NULL);
 
    gtk_signal_connect(GTK_OBJECT(item), "event",
