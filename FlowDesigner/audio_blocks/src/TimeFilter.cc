@@ -124,7 +124,10 @@ public:
             output[j] += fir[i]*firRow[j];
       }
 
-      int iir_limit = min(iir.size() - 1, count + inputsCache[inputID].lookAhead + 1 - fir.size());
+      //int iir_limit = min(iir.size() - 1, count + inputsCache[inputID].lookAhead + 1 - fir.size());
+      int iir_limit = min(int(iir.size()) - 1, count);
+      //cerr << name << " " << iir_limit << endl;
+      //cerr << count << " " << inputsCache[inputID].lookAhead << " " << 
       for (i = 1; i <= iir_limit ; i++)
       {
          ObjectRef inputValue = this->getOutput(outputID, count - i);

@@ -14,24 +14,23 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <stream.h>
 #include "Node.h"
 
 class NOP;
 
 DECLARE_NODE(NOP)
 /*Node
-
+ *
  * @name NOP
  * @category General
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 

@@ -23,7 +23,7 @@
 #include <vector>
 #include "Object.h"
 #include "ObjectRef.h"
-#include "Exception.h"
+#include "BaseException.h"
 #include <typeinfo>
 #include "ParameterSet.h"
 
@@ -68,9 +68,12 @@ public:
    }
    /**equality operator*/
    NodeInput& operator= (const NodeInput &in) {
-      node = in.node; 
-      outputID = in.outputID; 
-      name = in.name;
+      if (&in != this)
+      {
+	 node = in.node; 
+	 outputID = in.outputID; 
+	 name = in.name;
+      }
       return *this;
    }
    /**default constructor*/
@@ -282,18 +285,7 @@ public:
    static int addNodeInfo (const string &info);
 };
 
-/** Node Class methods/data
-    @author Jean-Marc Valin
-*/
-class NodeClass {
-protected:
-public:
-   _NodeFactory &factory();
-   const string &name();
-   const vector<string> &inputNames();
-   const vector<string> &outputNames();
-   const vector<pair<string,string> > &paramNames();
-};
+
 
 /***************************************************************************/
 /*

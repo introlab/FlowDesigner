@@ -20,7 +20,7 @@
 #include <map>
 #include <string>
 #include "Object.h"
-#include "Exception.h"
+#include "BaseException.h"
 
 /** A ParameterSet is a data structure that holds all the parameters 
     needed for the construction of a new node.

@@ -136,42 +136,4 @@ public:
    string factoryName;
 };
 
-/***************************************************************************/
-/*
-  GeneralException
-  Jean-Marc Valin
- */
-/***************************************************************************/
-/** The GeneralException is intended to write a generic message to the user
-    with file where the exception occured and the line number.
-    user __FILE__ and __LINE__ for convenience.
-    @author Jean-Marc Valin
-    @version 1.0
-*/
-class GeneralException :public BaseException {
-public:
-
-   ///The constructor that takes the message the file name and the line number
-   GeneralException(string _message, string _file, int _line) 
-      : message(_message)
-      , file (_file)
-      , line (_line)
-   {}
-
-   ///The print method
-   virtual void print(ostream &out = cerr)
-   {
-      out << file << " line " << line << ": " << message << endl;
-   }
-
-protected:
-   ///the message
-   string message;
-
-   ///the file name
-   string file;
-   
-   ///the line number
-   int line;
-};
 #endif

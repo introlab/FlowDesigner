@@ -20,7 +20,7 @@
 #include "rc_ptrs.h"
 #include <string>
 #include <map>
-#include "Exception.h"
+#include "BaseException.h"
 
 class Object;
 /** Smart pointer to Object called ObjectRef

@@ -97,6 +97,7 @@ void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *>
    for (int i=0;i<nbNets;i++)
    {
       //if (i==47 || i==56)
+      //if (i==1 || i==2 || i==4 || i==5 || i==17 || i==23)
       nets[i]->trainDeltaBar(in[i],out[i],iter,learnRate,mom,increase,decrease,nbSets);
    }
    

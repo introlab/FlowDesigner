@@ -20,7 +20,7 @@
 
 #include "Object.h"
 #include "net_types.h"
-#include "Exception.h"
+#include "BaseException.h"
 #include <typeinfo>
 
 
