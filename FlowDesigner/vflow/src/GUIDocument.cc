@@ -1,6 +1,8 @@
 #include "GUIDocument.h"
 #include "GUINetwork.h"
 #include <typeinfo>
+#include "ParameterSet.h"
+#include "Network.h"
 
 //UIDocument *UIDocument::currentDocument;
 extern GnomeMDI *mdi;
@@ -256,7 +258,18 @@ void GUIDocument::setFullPath(const string &fullpath)
 //Run with a GUI
 void GUIDocument::run()
 {
-   //ask for params and desired output
-
-   //run in a window in a separated thread
+   cerr << "GUIDocument::run\n";
+   try{
+      ParameterSet params;
+      Network *net = build("MAIN", params);
+      net->initialize();
+      net->getOutput(0,0);
+      //ask for params and desired output
+      
+      //run in a window in a separated thread
+   } catch (BaseException &e)
+   {
+      e.print();
+      
+   }
 }
