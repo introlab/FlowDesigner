@@ -22,7 +22,7 @@
 class MergeChannels;
 
 //DECLARE_NODE(MergeChannels)
-NODE_INFO(MergeChannels, "Signal:Audio", "NUM:DEN", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(MergeChannels, "Signal:Audio", "LEFT:RIGHT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class MergeChannels : public FrameOperation {
    

@@ -24,7 +24,7 @@
 class SeparChannels;
 
 //DECLARE_NODE(SeparChannels)
-NODE_INFO(SeparChannels, "Signal:Audio", "NUM:DEN", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+NODE_INFO(SeparChannels, "Signal:Audio", "INPUT", "LEFT:RIGHT", "INPUTLENGTH:OUTPUTLENGTH")
 
 class SeparChannels : public BufferedNode {
    
@@ -39,8 +39,8 @@ public:
    : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      output1ID = addInput("LEFT");
-      output2ID = addInput("RIGHT");
+      output1ID = addOutput("LEFT");
+      output2ID = addOutput("RIGHT");
       inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
    }
