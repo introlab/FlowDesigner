@@ -15,16 +15,19 @@ DECLARE_NODE(LPC2PS)
  * @name LPC2PS
  * @category DSP:Adaptive
  * @require FFT
- * @description No description available
+ * @description Calculates the spectral envelope corresponding to an all-pole filter (LPC coefficients) 
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description LPC coefficients (including the '1' as first coefficient)
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Points of the spectral envelope
  *
  * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of points for the spectral envelope
  *
 END*/
 

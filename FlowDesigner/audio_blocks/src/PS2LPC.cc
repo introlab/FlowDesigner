@@ -17,22 +17,27 @@ DECLARE_NODE(PS2LPC)
  * @name PS2LPC
  * @category DSP:Adaptive
  * @require FFT
- * @description No description available
+ * @description Computes LPC coefficients from the spectral envelope of the all-pole filter
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description Spectral envelope
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description LPC coefficients
  *
  * @parameter_name INPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of points in the spectral envelope
  *
  * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of LPC coefficients (order + 1)
  *
  * @parameter_name LAG_THETA
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Lag-windowing parameter (roughly the minimum bandwidth of resonances)
  *
 END*/
 

@@ -24,7 +24,7 @@ DECLARE_NODE(ArgMax)
  *
  * @input_name INPUT
  * @input_type Vector
- * @input_description No description available
+ * @input_description Input vector
  *
  * @output_name OUTPUT
  * @output_type Vector
