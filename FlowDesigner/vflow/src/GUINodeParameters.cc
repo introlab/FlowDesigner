@@ -84,10 +84,8 @@ void GUINodeParameters::addInput()
 void GUINodeParameters::addOutput()
 {
 
- 
    char *new_output = (char*)gtk_entry_get_text(GTK_ENTRY(output_entry));
-   cerr<<"adding output "<<new_output<<endl;
-
+ 
    if (!new_output || strlen(new_output)==0)
       return;
 
