@@ -120,7 +120,7 @@ public:
          {
             can_look_ahead=true;
             next = &object_cast<Vector<float> > (nextInputValue);
-         }      
+         }
       }
 
       int size = filter.size();

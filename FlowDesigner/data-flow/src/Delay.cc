@@ -44,7 +44,6 @@ public:
    virtual void specificInitialize()
    {
       this->Node::specificInitialize();
-      
       ParameterSet req;
       if (delay > 0)
 	 req.add("LOOKBACK", ObjectRef(new Int(delay)));
@@ -101,5 +100,8 @@ public:
 ObjectRef Delay::getOutput(int output_id, int count)
 {
    NodeInput input = inputs[inputID];
-   return input.node->getOutput(input.outputID,count-delay);
+   if (count-delay >= 0)
+      return input.node->getOutput(input.outputID,count-delay);
+   else 
+      return Object::before_beginningObject;
 }
