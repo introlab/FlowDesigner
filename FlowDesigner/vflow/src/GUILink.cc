@@ -73,21 +73,28 @@ GUILink::~GUILink()
 
 void GUILink::grab(guint32 etime)
 {
-   GdkCursor *fleur = gdk_cursor_new(GDK_PLUS);
-   
-   gnome_canvas_item_grab(item,
-                          GDK_POINTER_MOTION_MASK | 
-                          GDK_BUTTON_RELEASE_MASK,
-                          fleur,
-                          etime);
-   gdk_cursor_destroy(fleur);
 
+  gnome_canvas_item_ungrab(item,etime);
+  
+  GdkCursor *fleur = gdk_cursor_new(GDK_PLUS);
+  
+  gnome_canvas_item_grab(item,
+			 GDK_POINTER_MOTION_MASK | 
+			 GDK_BUTTON_RELEASE_MASK | 
+			 GDK_BUTTON_PRESS_MASK,
+			 fleur,
+			 etime);
+  
+   gdk_cursor_destroy(fleur);
+   
 }
 
 
 gint GUILink::event(GdkEvent *event)
 {
    //return TRUE;
+
+
 
   static GUILinkPoint *my_point = NULL;
    double new_x, new_y;
@@ -105,6 +112,8 @@ gint GUILink::event(GdkEvent *event)
    switch (event->type) 
    {
    case GDK_BUTTON_PRESS:
+
+     //cerr<<"button press event"<<endl;
       switch(event->button.button) 
       {
       case 1:
@@ -228,6 +237,9 @@ gint GUILink::event(GdkEvent *event)
       break;
      
    case GDK_MOTION_NOTIFY:
+     
+     //cerr<<"motion notify event"<<endl;
+
       if (!complete && (event->motion.state & GDK_BUTTON1_MASK)) 
       {
          //gtk_object_get(new_line, "points", points, NULL);
@@ -291,15 +303,34 @@ gint GUILink::event(GdkEvent *event)
 
 	  gnome_canvas_points_unref(points);
 	}
+	else {
+
+	  //cursor grab bug...
+
+	  //not complete but not holding button 1
+	  gnome_canvas_item_ungrab(item, event->button.time);
+
+	  // commiting suicide
+	  delete this;
+	  return TRUE;
+     
+	}
+
       }
 
       break;
           
    case GDK_BUTTON_RELEASE:
+
+     //cerr<<"button release event"<<endl;
+     
+     gnome_canvas_item_ungrab(item, event->button.time);
+	
       if (!complete)
       {
-         //gnome_canvas_item_ungrab(item, event->button.time);
-         gnome_canvas_item_ungrab(item, event->button.time);
+	//gnome_canvas_item_ungrab(item, event->button.time);	
+	//gnome_canvas_item_ungrab(item, event->button.time);
+	
          if (!from)
          {
             UITerminal *term = dynamic_cast<GUINetwork *>(net)->isNearOutputTerminal(x1,y1);

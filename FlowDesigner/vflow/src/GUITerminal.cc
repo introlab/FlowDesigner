@@ -84,7 +84,7 @@ gint GUITerminal::event(GdkEvent *event)
 {
   double item_x, item_y;
   //printf("terminal event\n");
-
+  static GUILink *tmp_link = NULL;
   item_x = event->button.x;
   item_y = event->button.y;
   //gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
@@ -120,20 +120,33 @@ gint GUITerminal::event(GdkEvent *event)
               
            } else {
               //printf("terminal click\n");
-              GUILink *tmp;
-              double wx;
-              double wy;
-              wx=x;
-              wy=y;
-              gnome_canvas_item_i2w(item->parent, &wx, &wy);
-              if (isInput)
-                 tmp = new GUILink(NULL, this);//, wx, wy, wx, wy);
-              else
-                 tmp = new GUILink(this, NULL);//, wx, wy, wx, wy);
-              
-              tmp->grab(event->button.time);
-              connections.insert(connections.end(),tmp);
-              return TRUE;
+
+	      static int last_time = 0;
+
+	      //avoiding double click
+	      //Dominic Letourneau
+	      //oct. 1 2001
+	      if (event->button.time > last_time + 1000) {
+
+		//cerr<<"last_time "<<last_time<<endl;
+		//cerr<<"current_time "<<event->button.time<<endl;
+
+		last_time = event->button.time;
+
+		double wx;
+		double wy;
+		wx=x;
+		wy=y;
+		gnome_canvas_item_i2w(item->parent, &wx, &wy);
+		if (isInput)
+		  tmp_link = new GUILink(NULL, this);//, wx, wy, wx, wy);
+		else
+		  tmp_link = new GUILink(this, NULL);//, wx, wy, wx, wy);
+		
+		tmp_link->grab(event->button.time);
+		connections.insert(connections.end(),tmp_link);
+		return TRUE;
+	      }
            }
 	   } catch (bool b)
 	   {
