@@ -11,4 +11,5 @@ D = C .* C';
 D(1,1)
 sin(D)
 fft(D)
+who
 
