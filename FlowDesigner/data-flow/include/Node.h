@@ -22,21 +22,13 @@
 #include <map>
 #include <vector>
 #include "ObjectRef.h"
-//#include "net_types.h"
 #include "Exception.h"
 #include <typeinfo>
+#include "ParameterSet.h"
 
 #ifdef MULTITHREAD
 #include <pthread.h>
-//#define pthread_join(a,b)
 #endif
-
-template <class T>
-T &max(T &a, T &b) {return a > b ? a : b;}
-
-template <class T>
-T &min(T &a, T &b) {return a < b ? a : b;}
-
 
 //must be defined
 class Node;
@@ -78,68 +70,6 @@ public:
 private:   
 };
 
-/** A ParameterSet is a data structure that holds all the parameters 
-    needed for the construction of a new node.
-    @author Jean-Marc Valin
-    @version 1.0
-*/
-class ParameterSet : public map<string,pair<ObjectRef,bool> > {
-public:
-   /**Does a certain parameter exist?*/
-   bool exist(const string &param) const;
-
-   /**get a parameter's value*/
-   ObjectRef get(string param) const;
-
-   /**get the default parameter*/
-   ObjectRef getDefault(string param, ObjectRef value);
-
-   /**set the default parameter*/
-   void defaultParam(string param, ObjectRef value);
-
-   /**adding the parameters*/
-   void add(string param, ObjectRef value);
-
-   /**printing the parameters*/
-   void print(ostream &out = cerr) const;
-
-   /**check whether there are any unused (never read) parameters (unrecognized)*/
-   void checkUnused() const;
-};
-
-/** The ParameterException occurs when a node needs a parameter
-    for its initialization and couldn't find it or if a parameter
-    is unknown.
-    @author Jean-Marc Valin
-    @version 1.0
-*/
-class ParameterException : public BaseException {
-
-public:
-   /**The constructor with the parameters*/
-   ParameterException(string _message, string _param_name, ParameterSet _params)
-      : message(_message)
-      , param_name(_param_name)
-      , params(_params)
-   {}   
-   /**The print method*/
-   virtual void print(ostream &out = cerr) 
-   {
-      out << message << ": "<< param_name <<endl;
-      out << "Given parameters are:\n";
-      params.print(out);
-   }
-protected:
-   /**the parameter name*/
-   string param_name;
-   /**the parameter set*/
-   ParameterSet params;
-   /**The error message*/
-   string message;
-};
-
-/**A parameter entry in the parameterSet*/
-typedef map<string,ObjectRef>::value_type ParameterEntry;
 
 /**The Base Node class. All nodes to be inserted in a network must
    derive from this class. It contains the proper initializations
@@ -376,64 +306,6 @@ protected:
    int line;
 };
 
-inline bool ParameterSet::exist(const string &param) const
-{
-   if (find(param)!=end())
-   {
-      (const_cast <ParameterSet *> (this))->find(param)->second.second = true;
-      return true;
-   }
-   return false;
-}
-
-inline ObjectRef ParameterSet::get(string param) const
-{
-   if (find(param)==end())
-      throw ParameterException("Missing Parameter", param,*this);
-   //else return operator[](param);
-   else 
-      {
-         (const_cast <ParameterSet *> (this))->find(param)->second.second = true;
-         return find(param)->second.first;
-      }
-}
-inline ObjectRef ParameterSet::getDefault(string param, ObjectRef value) 
-{
-   if (find(param)==end()) 
-      return value;
-   else 
-      {
-         (const_cast <ParameterSet *> (this))->find(param)->second.second = true;
-         return operator[](param).first;
-      }
-}
-inline void ParameterSet::defaultParam(string param, ObjectRef value)
-{
-   if (find(param)==end())
-      (operator[](param))=pair<ObjectRef,bool> (value,false);
-}
-inline void ParameterSet::add(string param, ObjectRef value)
-{
-   cerr<<"adding parameter : "<<param<<endl;
-   (operator[](param))=pair<ObjectRef,bool> (value,false);
-}
-
-inline void ParameterSet::print (ostream &out) const
-{
-   for (ParameterSet::const_iterator it=begin(); it!=end();it++)
-      out << it->first << " -> " << typeid(*(it->second.first)).name() << endl;
-}
-
-inline void ParameterSet::checkUnused() const
-{
-   for (ParameterSet::const_iterator it=begin(); it != end();it++) {
-
-      if (!it->second.second)
-      {   
-         throw ParameterException("Unused (unknown) parameter", it->first,*this);
-      }
-   }
-}
 
 
 

@@ -16,10 +16,11 @@
 #ifndef GAUSSIAN_H
 #define GAUSSIAN_H
 
-#include "hmm.h"
 #include <stream.h>
 #include <string>
 #include "covariance.h"
+#include "ObjectParser.h"
+#include "misc.h"
 
 /**Gaussian class*/
 class Gaussian : public Object
@@ -79,7 +80,7 @@ public:
    int get_accum_count() const {return accum_count;} 
 
    /**Returns the mahalanobis distance between the gaussian and a frame*/
-   float mahalanobis(const Frame fr) const
+   float mahalanobis(const float * fr) const
    {
       float dist=0;
       for (unsigned int i=0;i<dimension;i++)
@@ -91,7 +92,7 @@ public:
    }
 
    /**Returns the euclidian distance between the gaussian and a frame*/
-   float euclidian(const Frame fr) const
+   float euclidian(const float * fr) const
    {
       float dist=0;
       for (unsigned int i=0;i<dimension;i++)
@@ -103,7 +104,7 @@ public:
    }
 
    /**Adds (accumulates) a frame to the gaussian*/
-   void accum_frame(const Frame fr)
+   void accum_frame(const float * fr)
    {
       accum_count++;
       for (unsigned int i=0;i<dimension;i++)

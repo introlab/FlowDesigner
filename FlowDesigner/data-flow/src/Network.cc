@@ -21,6 +21,10 @@ void Network::initializeFactories() {
       Network::addFactory ("EXEC", new ExecNodeFactory);
       Network::addFactory ("PATHLIST", new PathListFactory);
       Network::addFactory ("ISVALID", new IsValidFactory);
+      Network::addFactory ("SUM", new NodeFactory<Sum>);
+      Network::addFactory ("SAVE", new NodeFactory<Save>);
+      Network::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
+      Network::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;

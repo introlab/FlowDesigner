@@ -18,11 +18,11 @@
 #include <typeinfo>
 #include <vector>
 
-void GMM::init(vector<Frame> frames)
+void GMM::init(vector<float *> frames)
 {
    for (unsigned int i=0;i<frames.size();i++)
    {
-      Frame fr = frames[i];
+      float * fr = frames[i];
       int gaus = rand()%nb_gaussians;
 #ifdef DEBUG
       cerr << "going to: " << gaus << endl;
@@ -43,7 +43,7 @@ void GMM::reset_to_accum_mode()
    mode = accum;
 }
 
-void GMM::kmeans2(vector<Frame> frames, GMM *gmm)
+void GMM::kmeans2(vector<float *> frames, GMM *gmm)
 {
    vector<Score> scores;
    scores = gmm->minDistance(frames);
@@ -65,7 +65,7 @@ void GMM::kmeans2(vector<Frame> frames, GMM *gmm)
    to_real();
 }
 
-void GMM::kmeans1(vector<Frame> frames, int nb_iterations)
+void GMM::kmeans1(vector<float *> frames, int nb_iterations)
 {
    for (int i=0;i<nb_iterations;i++)
       kmeans2(frames,this);
@@ -119,7 +119,7 @@ void GMM::to_real()
    mode = real;
 }
 
-vector<Score> GMM::minDistance(vector <Frame > fr) const
+vector<Score> GMM::minDistance(vector <float * > fr) const
 {
    vector<Score> scores(fr.size());
    for (unsigned int i=0;i<fr.size();i++)
@@ -130,7 +130,7 @@ vector<Score> GMM::minDistance(vector <Frame > fr) const
    
 }
 
-vector<Score> GMM::score(vector <Frame > fr) const
+vector<Score> GMM::score(vector <float * > fr) const
 {
    vector<Score> scores(fr.size());
    for (unsigned int i=0;i<fr.size();i++)
@@ -141,7 +141,7 @@ vector<Score> GMM::score(vector <Frame > fr) const
    
 }
 
-Score GMM::minDistance(Frame fr) const
+Score GMM::minDistance(float * fr) const
 {
    float min_dist = FLT_MAX ;
    int min_gauss = 0;
@@ -163,7 +163,7 @@ Score GMM::minDistance(Frame fr) const
    return frame_score;
 }
 
-Score GMM::score(Frame fr) const
+Score GMM::score(float * fr) const
 {
    float min_dist = FLT_MAX ;
    int min_gauss = 0;

@@ -18,8 +18,9 @@
 
 #include <math.h>
 #include <vector>
-#include "hmm.h"
 #include "Object.h"
+#include "ObjectParser.h"
+#include "misc.h"
 
 class ifstream;
 class ofstream;
