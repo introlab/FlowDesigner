@@ -188,7 +188,7 @@ public:
       //cout << endl;
       output[0] = best_gain * factor;
       output[1] = best_T;
-      cout << output[0] << " " << output[1] << endl;
+      //cout << output[0] << " " << output[1] << endl;
       output.status = Object::valid;
    }
 
