@@ -357,33 +357,67 @@ gint GUILink::event(GdkEvent *event)
 
 void GUILink::move (bool isInput, double dx,double dy)
 {
-   GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
-   if (!isInput)
-   {
+
+  GUINetwork *my_net = dynamic_cast<GUINetwork*>(net);
+  GUINode *my_from = dynamic_cast<GUINode*>(from->getNode());
+  GUINode *my_to = dynamic_cast<GUINode*>(to->getNode());
+  
+  int pos = 0;
+  
+  if (my_net->isNodeSelected(my_from) &&
+      my_net->isNodeSelected(my_to)) {
+
+    if (isInput) {
+      GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
+      
       x1+=dx;
       y1+=dy;
-   } else {
       x2+=dx;
       y2+=dy;
-   }
+      
+      
+      for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+	   iter != m_points.end(); iter++) {
+	
+	(*iter)->x += dx;
+	(*iter)->y += dy;
+	
+	points->coords[pos++] = (*iter)->x;
+	points->coords[pos++] = (*iter)->y;
+      }
+      
+      gnome_canvas_item_set(item, "points", points, NULL);
+      gnome_canvas_points_unref(points);
+    }
+  }
+  else {
 
-   
+    GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
 
-   m_points.front()->setxy(x1,y1);
-   m_points.back()->setxy(x2,y2);
-   
+    if (!isInput) {
+      x1+=dx;
+      y1+=dy; 
+    } 
+    else {
+      x2+=dx;
+      y2+=dy;
+    }
 
-   int pos = 0;
+    m_points.front()->setxy(x1,y1);
+    m_points.back()->setxy(x2,y2);
 
-   
-   for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+     for (list<GUILinkPoint*>::iterator iter = m_points.begin();
 	iter != m_points.end(); iter++) {
-     
-     points->coords[pos++] = (*iter)->x;
-     points->coords[pos++] = (*iter)->y;
-     
-   }
+    
+        points->coords[pos++] = (*iter)->x;
+	points->coords[pos++] = (*iter)->y;
+     }
 
-   gnome_canvas_item_set(item, "points", points, NULL);
-   gnome_canvas_points_unref(points);
+     gnome_canvas_item_set(item, "points", points, NULL);
+     gnome_canvas_points_unref(points);
+  }
+   
+  
+
+   
 }
