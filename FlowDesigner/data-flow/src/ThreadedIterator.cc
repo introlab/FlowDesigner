@@ -27,8 +27,13 @@ ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
    
    if (!hasOutput(output_id)) throw NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
+   if (status == ThreadedIterator::STATUS_STOPPED) {
+     //We must start the thread
+     start_thread();
+   }
+ 
    iterator_lock();
-
+   
    ObjectRef output;
 
    if (processCount != count) {
@@ -73,7 +78,17 @@ void ThreadedIterator::loop() {
     try {
 
       // updating all outputs
-      sinkNode->getOutput(output_id,internal_pc++);
+      for (int i =0; ;i++) {	
+	if (hasOutput(i)) {
+	  sinkNode->getOutput(i,internal_pc);
+	}
+	else {
+	  //no more outputs
+	  break;
+	}
+      }
+
+      internal_pc++;
     
     }
     catch (GenericCastException &e) {
@@ -88,6 +103,8 @@ void ThreadedIterator::loop() {
     }
 
     iterator_unlock();
+
+    //SLEEP the amount of time needed
 
   }
   
@@ -109,6 +126,11 @@ void ThreadedIterator::reset() {
 
 void ThreadedIterator::start_thread() {
 
+  internal_pc = 0;
+
+  status = ThreadedIterator::STATUS_RUNNING;
+  
+  
 
 }
 

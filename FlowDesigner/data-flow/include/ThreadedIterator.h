@@ -20,18 +20,30 @@ class ThreadedIterator : public Iterator {
   /** The getOutput method overloaded from Node */
   virtual ObjectRef getOutput (int output_id, int count);
 
+  /** Locking the thread */
   void iterator_lock (){pthread_mutex_lock(&mutex);}
 
+  /** Unlocking the thread */
   void iterator_unlock(){pthread_mutex_unlock(&mutex);}
   
   /**Resets the node internal values and buffers*/
   virtual void reset();
 
+  /** Starts the working thread */
   void start_thread();
 
+  /** Stops the working thread */
   void stop_thread();
 
+  /** Destructor */
   ~ThreadedIterator () {
+
+    if (status != STATUS_STOPPED) {
+      cout<<"Stopping the Iterator thread...";
+      stop_thread();
+      cout<<"Done!"<<endl;
+    }
+
     //destroying the mutex
     pthread_mutex_destroy(mutex);
   }
