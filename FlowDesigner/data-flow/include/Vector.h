@@ -148,6 +148,7 @@ inline Vector<double> *Vector<double>::alloc(int size)
 }
 
 
+/*Temporarly commented out because it causes some problems with Vector<T*>
 template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
 {
@@ -155,7 +156,7 @@ istream &operator >> (istream &in, Vector<T> &vec)
    vec.readFrom(in);
    return in;
 }
-
+*/
 
 /**The object cast from ObjectRef*/
 template <>
