@@ -68,7 +68,7 @@ void GUINode::draw()
                                  "font", "fixed",
                                  NULL);
    gnome_canvas_item_get_bounds(item1, &x1,&y1, &x2, &y2);
-   //x2 *= .5;
+   //x2 *= .33;
       
    gnome_canvas_item_raise_to_top(item1);
 
@@ -103,6 +103,7 @@ void GUINode::draw()
                                           NULL);
 	    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(inputname.size()-1)-i));
 	    gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
+	    //tx2*=.33;
 	    x1=min(x1,tx1);
 	    y1=min(y1,ty1);
 	    y2=max(y2,ty2);
@@ -122,7 +123,7 @@ void GUINode::draw()
                                           NULL);
 	    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item1), 0.0, -15.0*(.5*(outputname.size()-1)-i));
 	    gnome_canvas_item_get_bounds(item1, &tx1,&ty1, &tx2, &ty2);
-	    
+	    //tx2=.33;
 	    x2=max(x2,tx2);
 	    y1=min(y1,ty1);
 	    y2=max(y2,ty2);

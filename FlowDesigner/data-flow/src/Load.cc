@@ -88,6 +88,11 @@ inline ObjectRef Load::getOutput(int output_id, int count)
 	 //cerr << "reading for count = " << count << endl;
 	 try {
 	    stream >> currentObject;
+	 } catch (BaseException *e)
+	 {
+	    cerr << "base exception\n";
+	    e->print();
+	    return Object::past_endObject;
 	 } catch (...)
 	 {
 	    cerr << "nil!\n";

@@ -115,6 +115,11 @@ void FFLayer::readFrom (istream &in)
 	 {
 	    //weights[i]=1.0;
 	    in >> weights[i];
+	    /* temporary workaround to gnome localisation "feature"
+	    string tata;
+	    in >> tata;
+	    weights[i] = atof (tata.c_str());
+	    cerr << tata << " ";*/
 	 }
 	 //cerr << "allocation...\n";
 	 gradient = new double [nbNeurons*(nbInputs+1)];
