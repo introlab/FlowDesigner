@@ -47,6 +47,7 @@ public:
 	 for (iterator i=begin();i!=end();i++)
 	    destr(i);
 	 delete[] (char *)(data);
+	 data = NULL;
       }      
    }
 
@@ -192,6 +193,7 @@ void Vector<T>::insert(iterator after, const T &x)
       constr(after,x);
 #else
       memmove(after+1, after, (end()-after)*sizeof(T));
+      constr(after,x);
 #endif
    }
    obj_size++;
