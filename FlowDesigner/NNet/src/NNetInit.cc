@@ -18,7 +18,7 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 #include <sstream>
 #include "ObjectParser.h"
 #include "Vector.h"
@@ -101,8 +101,8 @@ public:
 
       int i,j;
 
-      Buffer &inBuff = object_cast<Buffer> (trainInValue);
-      Buffer &outBuff = object_cast<Buffer> (trainOutValue);
+      GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
+      GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
       
       //cerr << "inputs converted\n";
       vector <float *> tin(inBuff.getCurrentPos());
