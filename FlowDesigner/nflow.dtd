@@ -1,0 +1,46 @@
+<!ELEMENT Document ((Network|Parameter)*)>
+<!ATTLIST Document>
+
+<!ELEMENT Network ((Node|Link|NetInput|NetOutput|NetCondition)*)>
+<!ATTLIST Network
+    type CDATA #REQUIRED
+    name CDATA #REQUIRED
+    category CDATA #IMPLIED>
+
+<!ELEMENT Node (Parameter*)>
+<!ATTLIST Node
+    name CDATA #REQUIRED
+    type CDATA #REQUIRED
+    x CDATA #REQUIRED
+    y CDATA #REQUIRED>
+
+<!ELEMENT Parameter EMPTY>
+<!ATTLIST Parameter
+    name CDATA #REQUIRED
+    type CDATA #IMPLIED
+    value CDATA #IMPLIED>
+
+<!ELEMENT Link EMPTY>
+<!ATTLIST Link
+    from CDATA #REQUIRED
+    output CDATA #REQUIRED
+    to CDATA #REQUIRED
+    input CDATA #REQUIRED>
+
+<!ELEMENT NetInput EMPTY>
+<!ATTLIST NetInput
+    name CDATA #REQUIRED
+    node CDATA #REQUIRED
+    terminal CDATA #REQUIRED>
+
+<!ELEMENT NetOutput EMPTY>
+<!ATTLIST NetOutput
+    name CDATA #REQUIRED
+    node CDATA #REQUIRED
+    terminal CDATA #REQUIRED>
+
+<!ELEMENT NetCondition EMPTY>
+<!ATTLIST NetCondition
+    name CDATA #REQUIRED
+    node CDATA #REQUIRED
+    terminal CDATA #REQUIRED>
