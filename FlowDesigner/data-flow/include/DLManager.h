@@ -33,7 +33,14 @@
 typedef shl_t DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
-   return shl_load (path.c_str(), BIND_IMMEDIATE, 0);
+   DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
+   cerr << "library = " << library << endl;
+   if (!library) 
+   {
+      perror ("Load error");
+      cerr << "errno: " << errno << endl;
+   }
+   return library;
 }
 inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 
 {
@@ -85,7 +92,7 @@ public:
    LoadedLibrary(const string &path) 
       : lib(_DL_OPEN(path))
       , count(1)
-   {if (!lib) throw ExceptionRef (new GeneralException(string("couldn't load library ")+path,__FILE__,__LINE__));}
+   {if (!lib) throw GeneralException(string("couldn't load library ")+path,__FILE__,__LINE__);}
    
    ///returns a pointer to the function named 'symbol'
    void *get_proc (string symbol) 

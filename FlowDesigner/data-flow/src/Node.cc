@@ -19,39 +19,7 @@
 #include <typeinfo>
 #include "Object.h"
 
-bool ParameterSet::exist(const string &param) const
-{
-   return find(param)!=end();
-}
 
-ObjectRef ParameterSet::get(string param) const
-{
-   if (find(param)==end())
-      throw ExceptionRef (new MissingParameterException(param,*this));
-   //else return operator[](param);
-   else return find(param)->second;
-}
-ObjectRef ParameterSet::getDefault(string param, ObjectRef value) 
-{
-   if (find(param)==end()) 
-      return value;
-   else return operator[](param);
-}
-void ParameterSet::defaultParam(string param, ObjectRef value)
-{
-   if (find(param)==end())
-      operator[](param)=value;
-}
-void ParameterSet::add(string param, ObjectRef value)
-{
-   operator[](param)=value;
-}
-
-void ParameterSet::print (ostream &out)
-{
-   for (ParameterSet::iterator it=begin(); it!=end();it++)
-      out << it->first << " -> " << typeid(*(it->second)).name() << endl;
-}
 
 Node::Node(string nodeName, const ParameterSet &params) 
    : name (nodeName)
@@ -90,7 +58,7 @@ void Node::initialize ()
          in->node->initialize();
 
          if (!in->node->hasOutput(in->outputID)) 
-            throw ExceptionRef (new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__));
+            throw NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
 
      }
       

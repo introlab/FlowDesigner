@@ -30,8 +30,6 @@ public:
 
 };
 
-typedef counted_ptr<BaseException> ExceptionRef;
-
 
 /***************************************************************************/
 /*

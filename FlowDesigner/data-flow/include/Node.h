@@ -68,7 +68,7 @@ private:
     @author Jean-Marc Valin
     @version 1.0
 */
-class ParameterSet : public map<string,ObjectRef> {
+class ParameterSet : public map<string,pair<ObjectRef,bool> > {
 public:
    ///Does a certain parameter exist?
    bool exist(const string &param) const;
@@ -86,7 +86,7 @@ public:
    void add(string param, ObjectRef value);
 
    ///printing the parameters
-   void print(ostream &out = cerr);
+   void print(ostream &out = cerr) const;
 };
 
 /** The MissingParameterException occurs when a node needs a parameter
@@ -218,7 +218,7 @@ private:
 
 protected:
    ///Default constructor, should not be used
-   Node() {throw ExceptionRef (new GeneralException("Node Constructor should not be called",__FILE__,__LINE__));}
+   Node() {throw GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 
    ///symbolic to numeric translation for input names
    virtual int translateInput(string inputName) = 0;
@@ -296,5 +296,48 @@ protected:
    ///the line number
    int line;
 };
+
+inline bool ParameterSet::exist(const string &param) const
+{
+   if (find(param)!=end())
+   {
+      (const_cast <ParameterSet *> (this))->find(param)->second.second = true;
+      return true;
+   }
+   return false;
+}
+
+inline ObjectRef ParameterSet::get(string param) const
+{
+   if (find(param)==end())
+      throw MissingParameterException(param,*this);
+   //else return operator[](param);
+   else 
+      {
+         (const_cast <ParameterSet *> (this))->find(param)->second.second = true;
+         return find(param)->second.first;
+      }
+}
+inline ObjectRef ParameterSet::getDefault(string param, ObjectRef value) 
+{
+   if (find(param)==end()) 
+      return value;
+   else return operator[](param).first;
+}
+inline void ParameterSet::defaultParam(string param, ObjectRef value)
+{
+   if (find(param)==end())
+      (operator[](param))=pair<ObjectRef,bool> (value,false);
+}
+inline void ParameterSet::add(string param, ObjectRef value)
+{
+   (operator[](param))=pair<ObjectRef,bool> (value,false);
+}
+
+inline void ParameterSet::print (ostream &out) const
+{
+   for (ParameterSet::const_iterator it=begin(); it!=end();it++)
+      out << it->first << " -> " << typeid(*(it->second.first)).name() << endl;
+}
 
 #endif

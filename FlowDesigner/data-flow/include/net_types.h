@@ -121,6 +121,7 @@ typedef NetCType<long> Long;
 typedef NetCType<unsigned char> U_char;
 typedef NetCType<unsigned int> U_int;
 typedef NetCType<unsigned long> U_long;
+typedef NetCType<bool> Bool;
 
 ///STL types
 typedef GenericType<string> String;
