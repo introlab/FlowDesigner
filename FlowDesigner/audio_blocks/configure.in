@@ -45,6 +45,7 @@ case "$host_os" in
 hpux*) OS=HPUX ;;
 linux*) OS=LINUX ;;
 freebsd*) OS=FREEBSD ;;
+solaris*) OS=SOLARIS ;;
 esac
 AC_DEFINE_UNQUOTED(${OS})
 dnl Initialize libtool.

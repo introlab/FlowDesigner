@@ -14,6 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#if !defined(SOLARIS)
 
 #include "Node.h"
 #include "Vector.h"
@@ -32,6 +33,10 @@
 
 #ifdef HAVE_SYS_SOUNDCARD_H
 #include <sys/soundcard.h>
+#endif
+
+#ifdef HAVE_SYS_AUDIO_H
+#include <sys/audio.h>
 #endif
 
 #include <unistd.h>
@@ -202,3 +207,5 @@ protected:
    Sound() {throw new GeneralException("Sound copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+#endif
