@@ -926,14 +926,20 @@ void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<
    doc.getNetworkNamed("MAIN")->genCode(out, id, nodeList);
 }
 
-set<string> UIDocument::genCode(ostream &out, const string &functName)
+set<string> UIDocument::genCode(ostream &out, const string &functName, bool localIncludes)
 {
    set<string> nodeList;
    out << "//This code has been generated automatically using codeflow\n";
    out << "//Note that automatic code generation is in a very experimental\n";
    out << "//  stage right now, use at your own risk\n";
-   out << "#include <Network.h>\n";
-   out << "#include <object_param.h>\n\n\n";
+   if (localIncludes)
+   {
+      out << "#include \"Network.h\"\n";
+      out << "#include \"object_param.h\"\n\n\n";
+   } else {
+      out << "#include <Network.h>\n";
+      out << "#include <object_param.h>\n\n\n";
+   }
    int id=0;
    UINetwork *uinet = getNetworkNamed("MAIN");
    uinet->genCode(out, id, nodeList);

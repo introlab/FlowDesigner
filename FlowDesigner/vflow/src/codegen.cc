@@ -20,12 +20,12 @@ class CodeGenState {
    GtkWidget *fileentry1;
    GtkWidget *combo_entry1;
    GtkWidget *combo_entry2;
-  GtkWidget *checkbutton1;
-  GtkWidget *checkbutton2;
-  GtkWidget *checkbutton3;
+   GtkWidget *checkbutton1;
+   GtkWidget *checkbutton2;
+   GtkWidget *checkbutton3;
 public:
    CodeGenState(GUIDocument *_doc);
-      ~CodeGenState() {gtk_widget_destroy(dialog);}
+   ~CodeGenState() {gtk_widget_destroy(dialog);}
    void ok();
    void cancel() {}
 };
@@ -41,11 +41,11 @@ void CodeGenState::ok()
 
       char *filename=gtk_entry_get_text(GTK_ENTRY(combo_entry2));
       if (!filename || !strlen(filename))
-	 filename = "vflow_code.cc";
+	 filename = "build_doc.cc";
 
       char *funcname = gtk_entry_get_text(GTK_ENTRY(combo_entry1));
       if (!funcname || !strlen(funcname))
-	 funcname = "buildDoc";
+	 funcname = "buildFunct";
  
       bool generateMain=false, copyDepend=false, createMakefile=false;
       bool compile = false;
@@ -66,7 +66,7 @@ void CodeGenState::ok()
       //cerr << "fullname = " << fullname << endl;
       doc->less_print("Warning: automatic code generation is still experimental");
       ofstream out(fullname.c_str());
-      set<string> nodeList = doc->genCode(out, funcname);
+      set<string> nodeList = doc->genCode(out, funcname, copyDepend);
 
       doc->less_print(string("C++ code generated in '") + filename 
 		      + "', build function name is '" + funcname + "'");
@@ -318,7 +318,7 @@ CodeGenState::CodeGenState(GUIDocument *_doc)
    gtk_object_set_data_full (GTK_OBJECT (window1), "combo_entry2", combo_entry2,
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (combo_entry2);
-   gtk_entry_set_text (GTK_ENTRY (combo_entry2), _("main.cc"));
+   gtk_entry_set_text (GTK_ENTRY (combo_entry2), _("build_doc.cc"));
 
    fileentry1 = gnome_file_entry_new (NULL, NULL);
    gtk_widget_ref (fileentry1);

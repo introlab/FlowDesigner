@@ -173,7 +173,7 @@ public:
    Network *build(const string &_name, const ParameterSet &params);
 
    /**Generate C++ code for building the document, instead of using XML*/
-   set<string> genCode(ostream &out, const string &functName);
+   set<string> genCode(ostream &out, const string &functName, bool localIncludes=false);
 
    static Network *buildExternal(const string &type, const string &_name, const ParameterSet &params);
 
