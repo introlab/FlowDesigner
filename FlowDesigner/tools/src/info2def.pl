@@ -114,6 +114,7 @@ while (<>)
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@require') {
+	  push @{$filedep{$curr_filename}}, $pval;
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@description') {
