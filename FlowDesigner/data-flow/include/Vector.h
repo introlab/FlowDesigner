@@ -352,6 +352,7 @@ template <class T>
 inline void _vector_readFrom(Vector<T> &v, istream &in)
 {
    //cerr << "Reading vector" << endl;
+   bool a=false;
    v.resize(0);
    while (1)
    {
@@ -368,8 +369,9 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
 	 if (in.fail()) 
          {
             //cerr << "Error here!" << endl;
-	    throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
-       
+	    //throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
+            a=true;
+            break;
          }
       }
       T tmp;
@@ -381,6 +383,8 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
       }
       v.push_back(tmp);
    }
+   if (a) 
+      throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
 }
 
 template <>
