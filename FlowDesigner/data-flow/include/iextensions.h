@@ -24,37 +24,37 @@ class IExtensions {
 
 inline void prefetchnta(void *ptr)
 {
-   if (IExtension::have3DNow() || IExtension::haveSSE())
+   if (IExtensions::have3DNow() || IExtensions::haveSSE())
       __asm__ __volatile__ ("prefetchnta (%0)" : : "r" (ptr));
 }
 
 inline void prefetcht0(void *ptr)
 {
-   if (IExtension::have3DNow() || IExtension::haveSSE())
+   if (IExtensions::have3DNow() || IExtensions::haveSSE())
       __asm__ __volatile__ ("prefetcht0 (%0)" : : "r" (ptr));
 }
 
 inline void prefetcht1(void *ptr)
 {
-   if (IExtension::have3DNow() || IExtension::haveSSE())
+   if (IExtensions::have3DNow() || IExtensions::haveSSE())
       __asm__ __volatile__ ("prefetcht1 (%0)" : : "r" (ptr));
 }
 
 inline void prefetcht2(void *ptr)
 {
-   if (IExtension::have3DNow() || IExtension::haveSSE())
+   if (IExtensions::have3DNow() || IExtensions::haveSSE())
       __asm__ __volatile__ ("prefetcht2 (%0)" : : "r" (ptr));
 }
 
 
 inline void emms()
 {
-   if (IExtension::have3DNow())
+   if (IExtensions::have3DNow())
    {
       __asm__ __volatile__ ("femms"
          : :
          : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)");
-   } else if (IExtension::haveSSE())
+   } else if (IExtensions::haveSSE())
    {
       __asm__ __volatile__ ("emms"
          : :
