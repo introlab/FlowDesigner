@@ -26,8 +26,8 @@ vector<string> envList(char *envName)
    {
       if (path[pos] == ':')
       {
-     list.insert(list.end(), string(&(path[start]), &(path[pos])));
-     start = pos+1;
+	 list.insert(list.end(), string(&(path[start]), &(path[pos])));
+	 start = pos+1;
       }
       pos++;
    }
@@ -40,6 +40,8 @@ vector<string> envList(char *envName)
 
 void scanDL(bool debug)
 {
+   if (debug)
+      cerr << "Overflow loading all toolbox code (DL)" << endl;
    vector<string> dirs=envList("VFLOW_PATH");
    if (dirs.size() == 0)
    {
@@ -49,7 +51,7 @@ void scanDL(bool debug)
    for (int i = 0; i<dirs.size();i++)
    {
       if (debug)
-	 cerr << "scalDL: Looking in directory " << dirs[i] << endl;
+	 cerr << "scanDL: Looking in directory " << dirs[i] << endl;
       DIR *my_directory = opendir (dirs[i].c_str());
       if (!my_directory)
 	 continue;
@@ -71,4 +73,6 @@ void scanDL(bool debug)
       
       closedir(my_directory);
    }
+   if (debug)
+      cerr << "DL Loading done." << endl;
 }

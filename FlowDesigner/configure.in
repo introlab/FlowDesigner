@@ -119,6 +119,6 @@ AC_OUTPUT([Makefile \
 	data-flow/doc/Makefile data-flow/doc/html/Makefile \
 	data-flow/doc/html/images/Makefile data-flow/n-files/Makefile \
 	tools/Makefile tools/src/Makefile tools/m/Makefile examples/Makefile \
-	overflow-config \
+	overflow-config Overflow.spec \
 	])
 
