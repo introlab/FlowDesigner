@@ -17,12 +17,18 @@
 #ifndef DLMANAGER_H
 #define DLMANAGER_H
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "path.h"
 #include <map>
 #include <string>
 #include <stdio.h>
 
 #include <errno.h>
 #include "Exception.h"
+
 //#include "rc_ptrs.h"
 
 //#define HPUX
@@ -33,10 +39,6 @@
 typedef shl_t DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
-   if (!strstr(path.c_str(), "/"))
-   {
-      path = "lib" + path + ".so";
-   }
    //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
    DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
    //cerr << "library = " << library << endl;
@@ -68,14 +70,10 @@ typedef void *DL_HANDLE_TYPE;
 /**How to open a library*/
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
-   if (!strstr(path.c_str(), "/"))
-   {
-      path = "lib" + path + ".so";
-   }
    //cerr << "opening lib " << path.c_str() << endl;
    DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY);
    if (!library) 
-      perror ("Load error");
+      cerr << "Toolbox load error: " << dlerror() << endl;
 
    return library;
 }
@@ -135,6 +133,8 @@ public:
    /**Returns a pointer to a Library specified by 'name' 
       (loads it if it hasn't been done before)*/
    static LoadedLibrary *get_lib(string name);
+
+
 };
 
 

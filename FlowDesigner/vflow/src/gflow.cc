@@ -8,6 +8,7 @@
 #include "Network.h"
 #include <sstream>
 #include "GRunContext.h"
+#include "path.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -32,7 +33,7 @@ void run2(GRunContext *ctx)
 int main(int argc, char **argv)
 {
    try {
-   UIDocument::scanDL();
+      scanDL();
    } catch (BaseException *e)
    {
       e->print();

@@ -109,8 +109,6 @@ public:
 
    void loadAllSubnetInfo(xmlNodePtr net);
 
-   static void scanDL();
-
    static void loadNodeDefInfo(const string &path, const string &name);
 
    static void loadExtDocInfo(const string &path, const string &name);

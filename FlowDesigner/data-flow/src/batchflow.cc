@@ -2,12 +2,13 @@
 #include <string>
 #include "ParameterSet.h"
 #include "ObjectRef.h"
+#include "path.h"
 
 int main(int argc, char **argv)
 {
 
   try {
-    UIDocument::scanDL();
+    scanDL();
     UIDocument::loadAllInfo();
     ParameterSet param;
     for (int arg = 2; arg<argc; arg++)
