@@ -573,7 +573,7 @@ static void disposeFunct(void *dummy)
    cerr << "deleting\n";
    GUIDocument::isRunning=false;
    delete GUIDocument::runningNet; 
-   runningNet=NULL;
+   GUIDocument::runningNet=NULL;
    //pthread_cleanup_push(routine,arg) 
 }
 
