@@ -32,4 +32,4 @@ dnl Checks for library functions.
 AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
 
-AC_OUTPUT(front-end/src/Makefile audio_blocks/src/Makefile audio_server/Makefile HMM/src/Makefile Network/Makefile front-end/Makefile audio_blocks/Makefile audio_server/src/Makefile Makefile Network/src/Makefile HMM/Makefile)
+AC_OUTPUT(front-end/src/Makefile audio_blocks/src/Makefile audio_server/Makefile HMM/src/Makefile data-flow/Makefile front-end/Makefile audio_blocks/Makefile audio_server/src/Makefile Makefile data-flow/src/Makefile HMM/Makefile)
