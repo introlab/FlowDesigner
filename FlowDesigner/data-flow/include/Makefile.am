@@ -61,7 +61,6 @@ include_HEADERS = Array.h \
 	flow_pref.h
 	
 noinst_HEADERS = \
-	NOT.h \
 	NetExec.h \
 	PathList.h \
 	Pack.h \

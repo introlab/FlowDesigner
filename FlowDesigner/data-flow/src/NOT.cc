@@ -1,64 +1,47 @@
-// Copyright (C) 1999 Dominic Letourneau
+// Copyright (C) 1999-2001 Dominic Letourneau & Jean-Marc Valin
 
-#include "NOT.h"
-#include "Object.h"
-#include "ObjectRef.h"
+#include "BufferedNode.h"
 #include "Exception.h"
+
+class NOT;
 
 DECLARE_NODE(NOT)
 /*Node
  *
  * @name NOT
  * @category Logic
- * @description Binary NOT
+ * @description Logical NOT of an input
  *
  * @input_name INPUT
- * @input_description The Bool Input
  * @input_type bool
+ * @input_description Boolean input
  *
  * @output_name OUTPUT
- * @output_description The Inverted Bool Output
  * @output_type bool
+ * @output_description Boolean output
  *
 END*/
 
+class NOT : public BufferedNode {
+   int inputID;
+   int outputID;
+public:
 
-NOT::NOT(string nodeName, ParameterSet params)
- 
-   : Node(nodeName, params)
-   , output (new Bool(false)){
 
-   outputID = addOutput("OUTPUT");
-   inputID = addInput ("INPUT");
-}
-
-ObjectRef NOT::getOutput (int output_id, int count) {
-   
- 
-   if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
-
-   if (count != processCount) {
-      //We are updating our output only if needed
-      
-      //getting all data from our inputs.
-      int OutputID = inputs[inputID].outputID;
-      
-      bool value = dereference_cast<bool> (inputs[inputID].node->getOutput(OutputID, count));
-      
-      //updating our output
-      
-      if (value == true) {
-	 output = ObjectRef(new Bool(false));
-      }
-      else {
-	 output = ObjectRef(new Bool(true));
-      }
-      
-      //updating processCount
-      processCount = count;                          
-      
+   NOT(string nodeName, ParameterSet params)
+      : BufferedNode(nodeName, params)
+   {
+      inputID = addInput("INPUT");
+      outputID = addOutput("OUTPUT");
    }
-   
-   return output;   
-}
 
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      ObjectRef inputValue = getInput(inputID, count);
+      if (dereference_cast<bool> (inputValue))
+	 out[count] = FalseObject;
+      else
+	 out[count] = TrueObject;
+
+   }
+};
