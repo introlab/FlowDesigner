@@ -26,27 +26,28 @@ using namespace std;
 template <class T>
 class ObjectPool {
   protected:
-   vector <T *> stack;
+   static vector <T *> stack;
 
   public:
    ObjectPool() 
-   {}
+   {
+      //Do not put anything there... everything is static!
+   }
 
    ~ObjectPool() 
    {
-      for (int i=0;i<stack.size();i++)
-	 delete stack[i];
+      //Do not put anything there... everything is static!
    }
 
-   //vector <Vector<T> *> &operator [] 
-   T *newVector (int size)
+   static T *alloc()
    {
       T *ret = stack.back();
       stack.pop_back();
       ret->ref();
       return ret;
    }
-   void release(T *obj)
+
+   static void release(T *obj)
    {
       if (stack.size() > MAX_STORE)
       {
@@ -56,6 +57,7 @@ class ObjectPool {
 	 stack.push_back(obj);
       }
    }
+
 };
 
 #endif

@@ -24,6 +24,7 @@ using namespace std;
 #include <string>
 #include <fstream>
 #include <stdio.h>
+#include "ObjectPool.h"
 
 /** We must define network types that we want to use in our network.
     We will use a template class where all the proper operators are defined. */
@@ -63,6 +64,8 @@ public:
       value = copy.value;
    }
 
+   //static GenericType<T> *alloc()  {return ObjectPool<GenericType<T> >::alloc();}
+
    virtual void printOn(ostream &out=cout) const {
       out << "<Generic Type: " << typeid(T).name() << ">" << endl;
    }
@@ -88,6 +91,8 @@ public:
    }
 
    T &val() {return GenericType<T>::value;}
+
+   //static PrintableGenericType<T> *alloc()  {return ObjectPool<PrintableGenericType<T> >::alloc();}
 };
 
 /**
@@ -151,26 +156,26 @@ public:
    int operator!= (T val) {
       return (GenericType<T>::value != val);
    }
+
+   static NetCType<T> *alloc()  {return ObjectPool<NetCType<T> >::alloc();}
+
+   void destroy() {ObjectPool<NetCType<T> >::release(this);}
+
 };
 
 
 ///defining the standard C types
 //@name type definitions
 //@{
-typedef NetCType<char> Char;
+//typedef NetCType<char> Char;
 typedef NetCType<int> Int;
-typedef NetCType<short> Short;
 typedef NetCType<float> Float;
 typedef NetCType<double> Double;
-typedef NetCType<long> Long;
-typedef NetCType<unsigned char> U_char;
-typedef NetCType<unsigned int> U_int;
-typedef NetCType<unsigned long> U_long;
 typedef NetCType<bool> Bool;
 
 
 //typedef NetCType<FILE *> FILEPTR;
-class FILEPTR : public NetCType<FILE *> {
+class FILEPTR : public GenericType<FILE *> {
   public: 
    FILEPTR(FILE *file);
    FILEPTR(const string &filename, const string &mode);
@@ -178,7 +183,7 @@ class FILEPTR : public NetCType<FILE *> {
 };
 
 //typedef NetCType<FILE *> FILEPTR;
-class FILEDES : public NetCType<int> {
+class FILEDES : public GenericType<int> {
   public: 
    FILEDES(int fd);
    FILEDES(const string &filename, int mode);

@@ -6,15 +6,25 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+//vector<GenericType<int> *> ObjectPool<GenericType<int> >::stack;
+//vector<GenericType<double> *> ObjectPool<GenericType<double> >::stack;
+//vector<GenericType<float> *> ObjectPool<GenericType<float> >::stack;
+//vector<GenericType<FILE *> *> ObjectPool<GenericType<FILE *> >::stack;
+//vector<GenericType<bool> *> ObjectPool<GenericType<bool> >::stack;
+vector<Int *> ObjectPool<Int>::stack;
+vector<Bool *> ObjectPool<Bool>::stack;
+vector<Float *> ObjectPool<Float>::stack;
+vector<Double *> ObjectPool<Double>::stack;
+
 ObjectRef TrueObject(new Bool(true));
 ObjectRef FalseObject(new Bool(false));
 
 FILEPTR::FILEPTR(FILE *file) 
-   : NetCType<FILE *> (file)
+   : GenericType<FILE *> (file)
 {}
 
 FILEPTR::FILEPTR(const string &filename, const string &mode) 
-   : NetCType<FILE *> (fopen(filename.c_str(), mode.c_str()))
+   : GenericType<FILE *> (fopen(filename.c_str(), mode.c_str()))
 {}
 
 FILEPTR::~FILEPTR() 
@@ -24,14 +34,16 @@ FILEPTR::~FILEPTR()
 
 
 FILEDES::FILEDES(int fd) 
-   : NetCType<int> (fd)
+   : GenericType<int> (fd)
 {}
 
 FILEDES::FILEDES(const string &filename, int mode) 
-   : NetCType<int> (open(filename.c_str(), mode))
+   : GenericType<int> (open(filename.c_str(), mode))
 {}
 
 FILEDES::~FILEDES() 
 {
    close(value);
 }
+
+

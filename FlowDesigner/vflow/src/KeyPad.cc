@@ -553,7 +553,10 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
   }
   else if (output_id == keypadNameID) {
     if (is_active) {
-      return ObjectRef(new Char(pad_description));
+       char tmp[2];
+       tmp[0]=pad_description;
+       tmp[1]=0;
+      return ObjectRef(new String(string(tmp)));
     }
     else {
       return Object::nilObject;
