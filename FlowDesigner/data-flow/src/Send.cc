@@ -36,7 +36,7 @@ class Send : public Node
 
 protected:
 
-  struct sockaddr_un m_name;
+  struct sockaddr_in m_name;
   struct sockaddr_in m_clientname;
 
   /**The value of the constant*/
@@ -55,7 +55,9 @@ public:
    {
       outputID = addOutput("OUTPUT");
       m_socket = socket(PF_INET,SOCK_STREAM,6);
-
+      if (m_socket == -1) {
+	throw new NodeException(NULL, "can't create socket",__FILE__,__LINE__);
+      }
       
    }
 
@@ -64,27 +66,41 @@ public:
    virtual ObjectRef getOutput(int output_id, int count)
    {
 
-     unsigned char in_buffer[2048];
+     char in_buffer[2048];
 
      while (1) {
 
        m_name.sin_family = AF_INET;
        m_name.sin_port = htons (5248);
        m_name.sin_addr.s_addr = htonl (INADDR_ANY);
-       cout<<"bind"<<endl;
-       bind (m_socket, (struct sockaddr *) &m_name, sizeof (m_name));
+       
 
+       cout<<"bind"<<endl;
+       //bind (m_socket, (struct sockaddr *) &m_name, sizeof (m_name));
+       
+       if ((bind (m_socket, (struct sockaddr *) &m_name, sizeof (m_name))) < 0);
+       {
+	 perror ("error binding socket");
+	 throw new NodeException(NULL, "can't bind socket",__FILE__,__LINE__);
+       }
+            
        cout<<"listen"<<endl;
-       listen (m_socket, 1);
-       int size;
+       //listen (m_socket, 1);
+       
+       if ((listen (m_socket, 1)) < 0) {
+	 perror ("error listening socket");
+	 throw new NodeException(NULL, "can't listen socket",__FILE__,__LINE__);
+       }
+	 
+       unsigned int size;
 
        cout<<"accept"<<endl;
-       int conn = accept (socket,(struct sockaddr *) &m_clientname,&size);
+       int conn = accept (m_socket,(struct sockaddr *) &m_clientname,&size);
 
 
        cout<<"recv"<<endl;
        int data_length = recv(conn,in_buffer,2048,NULL);
-       cout<<"got length : "<<data_lengt<<endl;
+       cout<<"got length : "<<data_length<<endl;
 
        cout<<"got this :";
        for (int i=0; i< data_length;i++) {
@@ -100,6 +116,8 @@ public:
 
        cout<<"sending"<<endl;
        send(conn,in_buffer,strlen(in_buffer), NULL);
+	 
+       
       
      }
    }
