@@ -5,6 +5,7 @@
 #include "GUINode.h"
 #include "GUINetwork.h"
 #include <iostream>
+#include "UIDocument.h"
 
 using namespace std;
 
@@ -92,6 +93,10 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    
    terminal->getNode()->getNetwork()->interfaceChangeNotify();
 
+   UIDocument *doc = terminal->getNode()->getNetwork()->getDocument();
+
+   doc->updateAllSubnetTerminals(terminal->getNode()->getNetwork()->getName(),getName(),getType(),false);
+
    item = gnome_canvas_item_new(dynamic_cast<GUINode *>(terminal->getNode())->getGroup(),
                          gnome_canvas_text_get_type(),
                          "x", x,
@@ -111,8 +116,13 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
 
 GUINetTerminal::~GUINetTerminal()
 {
-   if (item)
-      gtk_object_destroy(GTK_OBJECT(item));
+
+  UIDocument *doc = terminal->getNode()->getNetwork()->getDocument();
+
+  doc->updateAllSubnetTerminals(terminal->getNode()->getNetwork()->getName(),getName(),getType(),true);
+
+  if (item)
+    gtk_object_destroy(GTK_OBJECT(item));
 }
 
 
@@ -127,8 +137,9 @@ gint GUINetTerminal::event(GdkEvent *event)
       case 1:
          if (event->button.state & GDK_SHIFT_MASK)
          {
-            delete this;
-            return TRUE;
+	   delete this;	  
+	   return TRUE;
+
          }
          break;
          

@@ -135,7 +135,9 @@ public:
    virtual void rename(string newName);
 
    void interfaceChangeNotify();
-   
+
+   virtual void updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
+					 UINetTerminal::NetTermType _terminaltype, bool _remove); 
 
 };
 

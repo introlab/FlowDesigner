@@ -19,6 +19,7 @@ public:
 
 protected:
    GnomeCanvasItem *item;
+      
 public:
    GUINetTerminal(UITerminal *_terminal, NetTermType _type, string _name);
    void setup();

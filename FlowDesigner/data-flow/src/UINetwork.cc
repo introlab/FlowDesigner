@@ -733,3 +733,25 @@ void UINetwork::rename(string newName)
   }
 
 }
+
+
+void UINetwork::updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
+					 UINetTerminal::NetTermType _terminaltype, bool _remove) {
+
+  if (!destroyed) {
+
+    for (int i = 0; i < nodes.size(); i++) {
+      
+      if (nodes[i]->getType() == _nettype) {
+	if (_remove) {
+	  // Removes a terminal to a node
+	  nodes[i]->removeTerminal(_terminalname,_terminaltype);
+	}
+	else {
+	  // Adds a terminal to a node
+	  nodes[i]->addTerminal(_terminalname,_terminaltype);
+      }
+      }
+    }
+  }
+}

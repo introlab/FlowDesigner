@@ -91,6 +91,9 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
 
 ObjectRef BufferedNode::getOutput(int output_id, int count)
 {
+
+  //cerr<<"getOutput for node : "<<getName()<<endl;
+
    try 
    {
       Buffer &outBuffer = *(outputs[output_id].buffer);
@@ -100,12 +103,15 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
 	    calculate (output_id, i, outBuffer);
          if (count > processCount)
             processCount = count;
+	 //cerr<<getName()<<" done!"<<endl;
 	 return outBuffer.get(count);
       } else {
 	 if (!outBuffer.isValid(count))
 	 {
+	   
 	    calculate (output_id, count, outBuffer);
 	 }
+	 //cerr<<getName()<<" done!"<<endl;
 	 return outBuffer.get(count);
       }
       

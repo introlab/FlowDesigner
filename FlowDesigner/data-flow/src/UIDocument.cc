@@ -650,3 +650,13 @@ void UIDocument::updateAllNetworks() {
     subnetInfo.updateNetInfo(networks[i]);
   
 }
+
+
+void UIDocument::updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
+					  UINetTerminal::NetTermType _terminaltype, bool _remove) {
+
+  for (int i = 0; i < networks.size(); i++) {
+    networks[i]->updateAllSubnetTerminals(_nettype, _terminalname, _terminaltype, _remove);
+  }
+
+}

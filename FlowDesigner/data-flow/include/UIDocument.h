@@ -156,6 +156,9 @@ public:
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 
+   virtual void updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
+					 UINetTerminal::NetTermType _terminaltype, bool _remove); 
+   
  protected:
    
    virtual void error(char *err);
