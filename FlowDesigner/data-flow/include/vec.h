@@ -351,11 +351,12 @@ inline T vec_mahalanobis2(const T *a, const T *b, const T *c, int len)
       sum4+=c[3]*(a[3]-b[3])*(a[3]-b[3]);
       a+=4;
       b+=4;
+      c+=4;
     }
   while (a<end)
     {
       sum1+=c[0]*(a[0]-b[0])*(a[0]-b[0]);
-      a++; b++;
+      a++; b++; c++;
     }
   return (sum1+sum2)+(sum3+sum4);
 }

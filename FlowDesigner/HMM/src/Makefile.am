@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.22 2001/05/19 23:54:07 jmvalin Exp $
+# $Id: Makefile.am,v 1.23 2001/05/24 03:23:38 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -17,7 +17,7 @@ libhmm_la_SOURCES =	gmm.cc covariance.cc gaussian.cc \
 	audioinfo.cc acoustic_model.cc covariance_set.cc \
 	mean_set.cc gaussian_set.cc gmm_set.cc mean.cc \
 	GMMScore.cc GMMTrain.cc TransMatrix.cc MarkovProb.cc AdaptMAP.cc \
-	DiagGMM.cc MakeDiagGMM.cc DiagGMMScore.cc
+	DiagGMM.cc MakeDiagGMM.cc DiagGMMScore.cc DiagGMMSetScore.cc
 
 #libhmm_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libhmm_la_LDFLAGS = -release $(LT_RELEASE)
