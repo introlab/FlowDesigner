@@ -9,6 +9,7 @@ for file in *.n non-existant.n
 			echo $file passed
 		else
 			echo "** $file failed **"
+			echo
 		fi
 	else
 		batchflow $file > /dev/null 2>&1
@@ -17,6 +18,7 @@ for file in *.n non-existant.n
 			echo $file passed
 		else
 			echo "** $file failed **"
+			echo
 		fi
 	fi
 done

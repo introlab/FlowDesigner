@@ -53,7 +53,8 @@ include_HEADERS = Array.h \
 	stream_io.h \
 	SocketStream.h \
 	stream_wrap.h \
-	iextensions.h
+	iextensions.h \
+	SocketStream.h
 	
 noinst_HEADERS = \
 	NOT.h \
