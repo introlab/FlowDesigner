@@ -1,3 +1,7 @@
+override includedir=${prefix}/include/flowdesigner
+override datadir=${prefix}/share/flowdesigner
+override libdir=${prefix}/share/flowdesigner/lib
+
 lib_LTLIBRARIES = liblapackflow.la 
 
 install-data-local:

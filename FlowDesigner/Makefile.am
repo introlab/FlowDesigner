@@ -8,7 +8,7 @@
 
 bin_SCRIPTS = flowdesigner-config
 
-EXTRA_DIST = FlowDesigner.spec nflow.dtd
+EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd
 
 SUBDIRS = data-flow @modules@ tools examples
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-13 23:19-0500\n"
+"POT-Creation-Date: 2004-01-19 19:41-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,7 +27,7 @@ msgid "translator_credits"
 msgstr ""
 
 #: src/vflow.cc:981
-msgid "(C) 1999-2003 Jean-Marc Valin & Dominic Letourneau"
+msgid "(C) 1999-2004 Jean-Marc Valin & Dominic Letourneau"
 msgstr ""
 
 #: src/vflow.cc:982
@@ -76,7 +76,7 @@ msgid "_Networks"
 msgstr ""
 
 #: src/vflow.cc:1174
-msgid "VFlow"
+msgid "FlowDesigner"
 msgstr ""
 
 #: src/vflow.cc:1196
