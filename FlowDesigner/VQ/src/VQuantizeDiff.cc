@@ -19,12 +19,12 @@
 #include "Vector.h"
 #include "kmeans.h"
 
-class VQuantize;
+class VQuantizeDiff;
 
-DECLARE_NODE(VQuantize)
+DECLARE_NODE(VQuantizeDiff)
 /*Node
  *
- * @name VQuantize
+ * @name VQuantizeDiff
  * @category VQ
  * @description No description available
  *
@@ -37,22 +37,30 @@ DECLARE_NODE(VQuantize)
  * @output_name OUTPUT
  * @output_description No description available
  *
+ * @parameter_name LENGTH
+ * @parameter_description No description available
+ *
 END*/
 
 
-class VQuantize : public BufferedNode {
+class VQuantizeDiff : public BufferedNode {
    
    int inputID;
    int VQinputID;
    int outputID;
+   vector<float> previous;
+   int length;
 
 public:
-   VQuantize(string nodeName, ParameterSet params)
+   VQuantizeDiff(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
+      inOrder = true;
       inputID = addInput("INPUT");
       VQinputID = addInput("VQ");
       outputID = addOutput("OUTPUT");
+      length = dereference_cast<int> (parameters.get("LENGTH"));
+      previous.resize(length,0);
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -78,18 +86,27 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-
+      float diff[length];
+      for (int i=0;i<length;i++)
+	 diff[i] = in[i]-previous[i];
       
-      int classID = vq.getClassID(&in[0]);
+      
+      int classID = vq.getClassID(&diff[0]);
       const vector<float> &mean = vq[classID];
 
+      
+
       for (int i=0;i<inputLength;i++)
-         output[i]=mean[i];
+         output[i]=mean[i]+previous[i];
+
+      for (int i=0;i<inputLength;i++)
+	 previous[i] = output[i];
+
       if (0) {
 	 static int count=0;
 	 static double sse=0;
 	 for (int i=0;i<inputLength;i++)
-	    sse += (mean[i]-in[i]) * (mean[i]-in[i]);
+	    sse += (output[i]-in[i]) * (output[i]-in[i]);
 	 count++;
 	 if (count % 100 == 0)
 	    cout << sse/inputLength/count << endl;

@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "net_types.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 #include "msvq.h"
 #include "Vector.h"
 #include "Node.h"
@@ -111,7 +111,7 @@ class MSVQTrain : public Node {
 	    cerr << "getting frames..." << endl;
 	    ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
 	    cerr << "got frames..." << endl;
-	    Buffer &mat = object_cast<Buffer> (matRef);
+	    GrowingBuffer &mat = object_cast<GrowingBuffer> (matRef);
 	    
 	    MSVQ *vq = new MSVQ(stages);
 	    
