@@ -1,3 +1,7 @@
+/* WARNING: These routines are mostly untested, and I don't know
+   for sure how fast and how accurate they are. Use at your own risks
+*/
+
 #ifndef FMATH_H
 #define FMATH_H
 
@@ -24,7 +28,7 @@ union FloatManip {
 
 extern float logtable2[FLOGLOOKUP2SIZE];
 
-   
+//Log (base e) approximation
 inline float flog(float f)
 {
    FloatManip m;
@@ -52,7 +56,7 @@ inline float flog(float f)
 
 extern float exptable[FEXPSIZE];
 
-
+//Exponential approximation
 inline float fexp(float f)
 {
    FloatManip m;
