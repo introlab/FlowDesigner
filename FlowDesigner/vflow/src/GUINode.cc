@@ -27,7 +27,7 @@ GUINode::GUINode(UINetwork* _net, string _name, string _type, double _x, double 
   initialize_widgets();
 
 
-   parameters = newNodeParameters(this, type);
+  //parameters = newNodeParameters(this, type);
 
    createPopup();
 }
@@ -50,9 +50,9 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    //cerr << "creating node popup...\n";
 
    //cerr << "creating params\n";
-   parameters = newNodeParameters(this, type);
+  //parameters = newNodeParameters(this, type);
    //cerr << "loading params\n";
-   parameters->load(def);
+   //parameters->load(def);
 
 
    createPopup();
@@ -192,7 +192,7 @@ GUINode::~GUINode()
    for (int i=0;i<outputs.size();i++)
       delete outputs[i];
    
-   delete parameters;
+   //delete parameters;
    net->removeNode(this);
    gtk_object_destroy(GTK_OBJECT(group));
    destroyed=true;
@@ -227,7 +227,7 @@ void GUINode::unsetAsCondition()
 */
 void GUINode::propertiesShow()
 {
-   dynamic_cast<GUINodeParameters *> (parameters)->show();
+   GUINodeParameters *guiParams = new GUINodeParameters (this, type, parameters->get_textParams());
 }
 
 void GUINode::createPopup()
@@ -388,7 +388,8 @@ gint GUINode::event(GdkEvent *event)
       break;
    case GDK_2BUTTON_PRESS:
       //cerr << "double-click\n";
-      dynamic_cast<GUINodeParameters *> (parameters)->show();
+      //dynamic_cast<GUINodeParameters *> (parameters)->show();
+      propertiesShow();
       break;
    default:
       break;
@@ -425,7 +426,7 @@ UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::Ne
 UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type)
 {
    //cerr << "GUINode::newNodeParameters\n";
-   return new GUINodeParameters (_node, type);
+   //return new GUINodeParameters (_node, type);
 }
 
 

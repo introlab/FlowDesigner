@@ -31,7 +31,7 @@ public:
    void export2net(ostream &out);
    void load(xmlNodePtr node);
    ParameterText *getParamNamed(string n);
-   const vector<string> &allTypes();
+   static const vector<string> &allTypes();
    void insertNetParams(vector<ItemInfo *> &par);
    virtual void insertLoadedParam(ParameterText *param, string type, string value);
    ParameterText *addParameterText(string name, string type, string value,
@@ -40,7 +40,7 @@ public:
    
    ParameterSet *build(const ParameterSet &par);
    
-   vector<ParameterText *> get_textParams() {return textParams;}   
+   vector<ParameterText *> &get_textParams() {return textParams;}   
    UINode *getUINode() {return node;}
 
 };

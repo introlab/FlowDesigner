@@ -36,6 +36,8 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
 {
    //draw();
 
+   parameters = newNodeParameters(this,type);
+   
    if (doInit)
      {
       
@@ -87,6 +89,10 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    ytmp=y;
    //draw();
 
+   parameters = newNodeParameters(this, type);
+   //cerr << "ici\n";
+   parameters->load(def);
+
    if (doInit)
    {
       
@@ -112,17 +118,14 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
       for (int i=0;i<outputname.size();i++)
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
-		 
-	  description = net->getDocument()->getDescription(type);
-
-
-	  parameters = newNodeParameters(this, type);
-	  //cerr << "ici\n";
-	  parameters->load(def);
+      
+      description = net->getDocument()->getDescription(type);
+      
+      
 
    }
-      //parameters->show();
-      //createPopup();
+   //parameters->show();
+   //createPopup();
 }
 
 UINode::~UINode()

@@ -22,13 +22,15 @@ public:
 };
 
 
-class GUINodeParameters : public UINodeParameters{
+class GUINodeParameters {
 protected:
    GtkWidget *nodeproperty;
    vector<ParameterData> params;
+   vector<ParameterText *> textParams;
+   GUINode *node;
 
 public:
-   GUINodeParameters(UINode *_node, string type);
+   GUINodeParameters(GUINode *_node, string type, vector<ParameterText *> &_textParams);
    ~GUINodeParameters();
    void show();
    void hide();
@@ -37,6 +39,7 @@ public:
    void insertNetParams(vector<string> &par);
    ParameterData *getParamDataNamed(string n);
    void insertLoadedParam(ParameterText *param, string type, string value);
+   GUINode *getGUINode() {return node;}
 
 };
 

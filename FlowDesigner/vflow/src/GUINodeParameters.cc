@@ -5,27 +5,34 @@
 
 static int user_count = 0;
 
-static void param_apply (GnomePropertyBox *propertybox, gint arg1, gpointer user_data)
+static void param_apply (GnomePropertyBox *propertybox, gint arg1, GUINodeParameters* user_data)
 {
-   ((GUINodeParameters *)(user_data))->apply();
+   //cerr << "user_data = " << user_data << endl;
+   user_data->apply();
 }
 
-static void entry_changed (GtkEntry *entry, gpointer user_data)
+static void param_close (GnomePropertyBox *propertybox, GUINodeParameters* user_data)
 {
-   ((GUINodeParameters *)(user_data))->changed();
+   //cerr << "user_data = " << user_data << endl;
+   user_data->hide();
 }
 
-static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
+static void entry_changed (GtkEntry *entry, GUINodeParameters* user_data)
 {
-   ((GUINodeParameters *)(user_data))->changed();
+   user_data->changed();
 }
 
-static void input_adjustment_changed (GtkAdjustment *adjustment, gpointer user_data) {
+static void type_changed (GnomePropertyBox *propertybox, GUINodeParameters* user_data)
+{
+   user_data->changed();
+}
+
+static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
 
   
   //let's add the required UITerminal & GUITerminal
   
-  GUINode *node = dynamic_cast<GUINode*>(static_cast<GUINodeParameters*>(user_data)->getUINode());
+  GUINode *node = user_data->getGUINode();
   
   char input_name[9];
   sprintf(input_name,"USER_%3.3i",user_count++);
@@ -42,11 +49,11 @@ static void input_adjustment_changed (GtkAdjustment *adjustment, gpointer user_d
 
 }
 
-static void output_adjustment_changed (GtkAdjustment *adjustment, gpointer user_data) {
+static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
 
 
   //let's add the required UITerminal & GUITerminal
-  GUINode *node = dynamic_cast<GUINode*>(static_cast<GUINodeParameters*>(user_data)->getUINode());
+  GUINode *node = user_data->getGUINode();
   
   char input_name[9];
   sprintf(input_name,"USER_%3.3i",user_count++);
@@ -64,11 +71,13 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, gpointer user_
 
 
 
-GUINodeParameters::GUINodeParameters(UINode *_node, string type)
-   : UINodeParameters (_node, type)
+GUINodeParameters::GUINodeParameters(GUINode *_node, string type, vector<ParameterText *> &_textParams)
+   : node(_node)
+   , textParams(_textParams)
 {
    params.resize(textParams.size());
-   //cerr << "GUINodeParameters::GUINodeParameters\n";
+   //cerr << "GUINodeParameters::GUINodeParameters" << textParams.size() << "\n";
+   
    int i;
 
    //GtkWidget *nodeproperty;
@@ -98,8 +107,8 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
 
 
   nodeproperty = gnome_property_box_new ();
-  gnome_dialog_close_hides (GNOME_DIALOG(nodeproperty), TRUE);
-
+  //gnome_dialog_close_hides (GNOME_DIALOG(nodeproperty), TRUE);
+//
   gtk_object_set_data (GTK_OBJECT (nodeproperty), "nodeproperty", nodeproperty);
 
   notebook2 = GNOME_PROPERTY_BOX (nodeproperty)->notebook;
@@ -193,7 +202,7 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
                        (GtkAttachOptions) (0), 0, 0);
      params[i].optionmenu_menu = gtk_menu_new ();
 
-     const vector<string> &types=allTypes();
+     const vector<string> &types=UINodeParameters::allTypes();
      for (int j=0;j<types.size();j++)
      {
         glade_menuitem = gtk_menu_item_new_with_label ((const gchar *)types[j].c_str());
@@ -208,7 +217,10 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
 
      gtk_signal_connect (GTK_OBJECT ( params[i].optionmenu_menu ), "selection-done",
                         GTK_SIGNAL_FUNC( type_changed), this);
-
+     for (int k=0;k<types.size();k++)
+	if (types[k] == textParams[i]->type)
+	   gtk_option_menu_set_history (GTK_OPTION_MENU (params[i].optionmenu), k);
+     
 
 
 
@@ -230,6 +242,9 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
      GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
      gtk_signal_connect (GTK_OBJECT ( gtkentr  ), "changed",
                          GTK_SIGNAL_FUNC(entry_changed), this);
+     
+     gtk_entry_set_text(GTK_ENTRY(gtkentr),(gchar *)textParams[i]->value.c_str());
+     
   }
   
 
@@ -400,12 +415,18 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   gtk_signal_connect (GTK_OBJECT (nodeproperty), "apply",
                       GTK_SIGNAL_FUNC(param_apply), this);
 
+  gtk_signal_connect (GTK_OBJECT (nodeproperty), "close",
+                      GTK_SIGNAL_FUNC(param_close), this);
+
+  gnome_property_box_set_state(GNOME_PROPERTY_BOX (nodeproperty), false);
+  gtk_widget_show(nodeproperty);
   //cerr << "this is " << this << "\n";
 }
 
 GUINodeParameters::~GUINodeParameters()
 {
    gtk_widget_destroy(nodeproperty);
+   //cerr << "destroyed\n";
 }
 
 void GUINodeParameters::show()
@@ -415,12 +436,15 @@ void GUINodeParameters::show()
 
 void GUINodeParameters::hide()
 {
-   gtk_widget_hide (nodeproperty);
+   //gtk_widget_hide (nodeproperty);
+   delete this;
+   //cerr << this << endl;
 }
 
 
 void GUINodeParameters::apply()
 {
+   //cerr << this << endl;
    for (int i=0;i<params.size();i++)
    {
       //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
@@ -452,7 +476,7 @@ ParameterData *GUINodeParameters::getParamDataNamed(string n)
 void GUINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
 {
    ParameterData *data = getParamDataNamed(param->name);
-   const vector<string> &types=allTypes();
+   const vector<string> &types=UINodeParameters::allTypes();
    for (int i=0;i<types.size();i++)
       if (types[i] == type)
 	 gtk_option_menu_set_history (GTK_OPTION_MENU (data->optionmenu), i);
