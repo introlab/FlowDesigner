@@ -76,6 +76,7 @@ dnl Checks for libraries.
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 AC_CHECK_LIB(dl, dlopen)
+AC_CHECK_LIB(pthread, pthread_create)
 #AC_CHECK_LIB(fftw, fftw_one)
 #AC_CHECK_LIB(rfftw, rfftw_one)
 

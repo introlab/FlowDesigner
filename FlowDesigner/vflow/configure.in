@@ -19,6 +19,8 @@ AM_PROG_LIBTOOL
 
 GNOME_COMPILE_WARNINGS
 
+AC_CHECK_LIB(pthread, pthread_create)
+
 GNOME_XML_LIB=`gnome-config --libs xml`
 GNOME_XML_INCLUDE=`gnome-config --cflags xml`
 AC_SUBST(GNOME_XML_LIB)
