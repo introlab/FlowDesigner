@@ -6,6 +6,7 @@
 
 #include <unistd.h>
 #include <math.h>
+#include "Stream.h"
 
 class WriteAudio;
 

@@ -3,6 +3,7 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
+#include "Stream.h"
 
 class FrameLabel;
 
