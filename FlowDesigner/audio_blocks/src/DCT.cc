@@ -86,15 +86,18 @@ public:
 	 }
 	 rNormalize[0] /= sqrt(2);
       } else {
+	 float sqrt2n=sqrt(2.0/length);
 	 rNormalize.resize(length*outputLength);
 
 	 float c1 = M_PI / length;
 	 int counter = 0;
-	 for (int i = 0; i < outputLength; i++) {
-	    float c2 = c1 * (i + 1);
+	 for (int j = 0; j < length; j++)
+	    rNormalize[counter++] = sqrt2n*sqrt(.5);
+	 for (int i = 1; i < outputLength; i++) {
+	    float c2 = c1 * i;
 	    for (int j = 0; j < length; j++) {
 	       float x = (j + 0.5) * c2;
-	       rNormalize[counter++] = cos(x);
+	       rNormalize[counter++] = sqrt2n*cos(x);
 	    }
 	 }
 	 

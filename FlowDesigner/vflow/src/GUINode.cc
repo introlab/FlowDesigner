@@ -354,12 +354,12 @@ gint GUINode::event(GdkEvent *event)
       break;
 
    case GDK_MOTION_NOTIFY:
-      if (event->button.state & GDK_SHIFT_MASK)
+      /*if (event->button.state & GDK_SHIFT_MASK)
       {
 	 dynamic_cast<GUINetwork *>(net)->popTooltip(this);
       } else {
 	 dynamic_cast<GUINetwork *>(net)->popTooltip(NULL);
-      }
+	 }*/
       if (dragging && (grab || (event->motion.state & GDK_BUTTON1_MASK))) 
       {
          new_x = item_x;
