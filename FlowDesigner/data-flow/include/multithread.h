@@ -1,6 +1,8 @@
 #ifndef MULTITHREAD_H
 #define MULTITHREAD_H
 
+#ifdef MULTITHREAD
+
 #include "Node.h"
 #include <set>
 #include <pthread.h>
@@ -58,5 +60,6 @@ public:
    }
 };
 
+#endif
 
 #endif

@@ -20,6 +20,7 @@
 #include <typeinfo>
 #include <stream.h>
 #include <string>
+#include <strstream.h>
 
 ///Frame definition
 typedef float *Frame;

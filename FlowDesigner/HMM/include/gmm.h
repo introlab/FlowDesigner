@@ -116,11 +116,17 @@ public:
    ///Converts the GMM from real mode to accum mode and set everything to zero
    void reset_to_accum_mode();
 
+   ///Score a frame against the GMM without using the covariances (nearest euclidian distance)
+   Score minDistance(Frame fr) const;
+
    ///Score a frame against the GMM
    Score score(Frame fr) const;
 
    ///Double the number of gaussians
    void binary_split();
+
+   ///Score a list (STL vector) of frames against the GMM without using the covariances (nearest euclidian distance)
+   vector<Score> minDistance(vector <Frame> fr) const;
 
    ///Score a list (STL vector) of frames against the GMM
    vector<Score> score(vector <Frame> fr) const;
