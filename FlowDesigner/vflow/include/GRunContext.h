@@ -8,7 +8,7 @@
 #include "ParameterSet.h"
 #include <gnome.h>
 #include "Network.h"
-
+#include <pthread.h>
 
 class GRunContext {
 
@@ -16,7 +16,8 @@ class GRunContext {
 
   protected:
 
-  pthread_t *running_thread;
+   pthread_t *running_thread;
+   pthread_mutex_t del_lock;
    UIDocument *doc;
    ParameterSet &params;
    GtkWidget *win;

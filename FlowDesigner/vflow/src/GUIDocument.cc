@@ -10,12 +10,17 @@
 #include "rc_ptrs.h"
 #include <sstream>
 #include "object_param.h"
-
+#include "UserException.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
 
+
+bool GUIDocument::isRunning=false;
+pthread_t GUIDocument::runThread;
+Network * GUIDocument::runningNet=NULL;
+pthread_mutex_t GUIDocument::del_lock = PTHREAD_MUTEX_INITIALIZER;
 
 
 static void on_cut_activate (GtkMenuItem *menuitem, gpointer user_data) {
@@ -69,11 +74,6 @@ static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
   vflowGUI::instance()->clear(doc);
 
 }
-
-
-bool GUIDocument::isRunning=false;
-pthread_t GUIDocument::runThread;
-Network * GUIDocument::runningNet=NULL;
 
 
 void create_net(gchar * str, GUIDocument *doc)
@@ -829,9 +829,9 @@ void GUIDocument::threadStop()
    if (isRunning) {
       //cerr << "stopping...\n";
       isRunning=false;
-      //runningNet->cleanupNotify();
+      runningNet->cleanupNotify();
 #ifdef HAVE_PTHREAD_CANCEL
-      pthread_cancel(runThread);
+      //pthread_cancel(runThread);
 #endif
       //less_print("Stopping " + docName);
    }
@@ -845,7 +845,7 @@ void GUIDocument::threadStop()
 void GUIDocument::run()
 {
    //cerr << "GUIDocument::run\n";
-   pthread_cleanup_push(disposeFunct, this);
+   //pthread_cleanup_push(disposeFunct, this);
    //Network *net;
    try{
       ParameterSet parameters;
@@ -875,29 +875,19 @@ void GUIDocument::run()
       if (net->getInputNode())
 	 throw new GeneralException ("main network has input node", __FILE__, __LINE__);
       runningNet = net;
-      //RCPtr<Network> net(build("MAIN", parameters));
-      //cerr << "initializing...\n";
-      //net->verifyConnect();
+      net->verifyConnect();
       net->initialize();
       //cerr << "running...\n";
       
       // Getting all the network outputs.
       for (int k=0; ;k++) {
 	if (net->hasOutput(k)) {
-	   /*char str[3000];
-	   strstream execOut(str, 2999);
-	   
-	   //cerr<<"before main getOutput"<<endl;
-	   execOut << *net->getOutput(k,0);
-	   //cerr<<"after main getOutput"<<endl;
-	   */
 	   stringstream execOut;
 	   execOut << *net->getOutput(k,0);
 	   
 
 	   gdk_threads_enter();
 	   less_print(execOut.str());
-	   //less_print(str);
 	   gdk_threads_leave();
 
 	}
@@ -915,24 +905,21 @@ void GUIDocument::run()
       //run in a window in a separated thread
    } catch (BaseException *e)
    {
-      /*char str[3000];
-	strstream excOut(str, 2999);*/
       stringstream excOut;
 
       e->print (excOut);
       gdk_threads_enter();
       less_print(excOut.str());
-      //less_print(str);
       gdk_threads_leave();
       //cerr << "exception caught\n";
       //e->print();
       //cerr << "---\n";
 
       delete e;
-      /* The net will be deleted in the dispose function. */
-      //delete net;
-      //runningNet=NULL;
-   } 
+   } catch (UserException *e)
+   {
+      delete e;
+   }
    catch (...)
    {
       gdk_threads_enter();
@@ -940,8 +927,16 @@ void GUIDocument::run()
       gdk_threads_leave();
    }
      
-   
-   pthread_cleanup_pop(1);
+   gdk_threads_enter();
+   vflowGUI::instance()->set_run_mode(false);
+   gdk_threads_leave();
+
+   pthread_mutex_lock(&del_lock);
+   delete runningNet;
+   runningNet=NULL;
+   pthread_mutex_unlock(&del_lock);
+
+   //pthread_cleanup_pop(1);
 
 }
 

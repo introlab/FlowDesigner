@@ -41,6 +41,7 @@ protected:
 
    vector<DocParameterData> params;
 public:
+   static pthread_mutex_t del_lock;
    static pthread_t runThread;
    static bool isRunning;
    static Network *runningNet;

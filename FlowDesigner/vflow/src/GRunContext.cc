@@ -11,6 +11,7 @@
 gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_context) {
   gdk_threads_leave();
  
+  pthread_mutex_lock(&my_context->del_lock);
   if (my_context->net) {
     
     alarm(5);
@@ -21,7 +22,6 @@ gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_cont
       //pthread_cancel(*(my_context->running_thread));
       my_context->net->cleanupNotify();
       //cerr << "joining thread\n";
-      pthread_join(*my_context->running_thread, NULL);
     } else {
       cerr << "On a un crisse de gros probleme\n";
     }
@@ -29,6 +29,9 @@ gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_cont
     //cerr<<"Deleting network..."<<endl;
     //delete my_context->net;
   }
+  pthread_mutex_unlock(&my_context->del_lock);
+  pthread_join(*my_context->running_thread, NULL);
+
   //cerr<<"Stopping GTK"<<endl;
   gdk_threads_enter();
   gtk_main_quit();
@@ -47,6 +50,7 @@ void GRunContext::set_thread(pthread_t *thread) {
 GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
   : doc(_doc) , params(_params) , net(NULL), running_thread(NULL)
 {
+   pthread_mutex_init(&del_lock, NULL);
    //cerr << "opening...\n";
    win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
    gtk_signal_connect (GTK_OBJECT (win), "delete-event", GTK_SIGNAL_FUNC(delete_window), this);
@@ -125,31 +129,32 @@ void GRunContext::run()
 	 }
       }
       //cerr << "Deleting in run()" << endl;
-      delete net;
-      net = NULL;
       gdk_threads_enter();
       less_print("Network ended normally");
       gdk_threads_leave();
 	    
    } catch (BaseException *e)
    {
-     //cerr << "exception" << endl;
+      //cerr << "exception" << endl;
       stringstream excOut;
-	    
+      
       e->print (excOut);
       gdk_threads_enter();
       less_print(excOut.str());
       gdk_threads_leave();
-	    
+      
       delete e;
-      delete net;
    } catch (UserException *e) {
-     cerr << "User stop caught" << endl;
-     delete e;
+      cerr << "User stop caught" << endl;
+      delete e;
    } catch (...)
    {
       gdk_threads_enter();
       less_print("Unknown exception caught");
       gdk_threads_leave();
    }
+   pthread_mutex_lock(&del_lock);
+   delete net;
+   net=NULL;
+   pthread_mutex_unlock(&del_lock);
 }
