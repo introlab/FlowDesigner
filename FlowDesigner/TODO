@@ -1,11 +1,5 @@
 document parameters for batch mode
 
-fix XML-related leaks
-
 support removing networks
 
 support removing network terminals
-
-remove the bunch of GTK warnings
-
-fix destructors order for UI/GUI classes
