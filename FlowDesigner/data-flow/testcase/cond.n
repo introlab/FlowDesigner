@@ -1,0 +1,22 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node_Print_1" type="Print" x="-104.000000" y="77.000000"/>
+    <Node name="node_LOOP0_1" type="LOOP0" x="-172.000000" y="76.000000">
+      <Parameter name="DOWHILE" type="bool" value=""/>
+    </Node>
+    <Link from="node_LOOP0_1" output="VALUE" to="node_Print_1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node_Print_1" terminal="OUTPUT"/>
+  </Network>
+  <Network type="iterator" name="LOOP0">
+    <Node name="node_Constant_1" type="Constant" x="-144.000000" y="39.000000">
+      <Parameter name="VALUE" type="bool" value="false"/>
+    </Node>
+    <Node name="node_Constant_2" type="Constant" x="-241.000000" y="136.000000">
+      <Parameter name="VALUE" type="int" value="1"/>
+    </Node>
+    <NetCondition name="CONDITION" node="node_Constant_1" terminal="VALUE"/>
+    <NetOutput name="VALUE" node="node_Constant_2" terminal="VALUE"/>
+  </Network>
+</Document>
