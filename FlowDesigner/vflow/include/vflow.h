@@ -66,6 +66,8 @@ class vflowGUI {
   
   void remove_notebook_document(GUIDocument *doc, GtkWidget *child);
 
+  void display_statusbar_text(const string &text);
+
   void copy(GUIDocument *doc);
 
   void paste (GUIDocument *doc);
@@ -90,7 +92,7 @@ class vflowGUI {
   GtkWidget *notebook1;
   GtkWidget *button5;
   GtkWidget *button6;
-
+ 
 
   vflowGUI();
 

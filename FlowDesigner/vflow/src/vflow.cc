@@ -346,6 +346,33 @@ void vflowGUI::clear(GUIDocument *doc) {
   }
 }
 
+void vflowGUI::display_statusbar_text(const string &text) {
+
+  string to_display = text;
+
+  //replacing CRs by spaces
+  for (int i =0; i < to_display.size(); i++) {    
+    if (to_display[i] == '\n' || to_display[i] == '\r') {
+      to_display[i] = ' ';
+    }
+  }
+
+  //creating widget
+  //GtkWidget *my_label = gtk_label_new(to_display.c_str());
+  //gtk_widget_ref(my_label);
+  //gtk_widget_show(my_label);
+
+  //set statusbar widget
+  //gnome_app_set_statusbar (GNOME_APP(mdi),my_label);
+
+  GtkWidget *appbar_widget = GTK_WIDGET(gtk_object_get_data (GTK_OBJECT (mdi), "statusbar"));
+  gnome_appbar_set_status (GNOME_APPBAR(appbar_widget),to_display.c_str());
+
+
+}
+
+
+
 /**********************************************************************************************************
 
 **********************************************************************************************************/
@@ -1266,6 +1293,10 @@ void vflowGUI::create_mdi ()
   appbar1 = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
   gtk_widget_show (appbar1);
   gnome_app_set_statusbar (GNOME_APP (app1), appbar1);
+
+  gtk_object_set_data_full (GTK_OBJECT (app1), "statusbar", appbar1,
+                            (GtkDestroyNotify) gtk_widget_unref);
+
 
   gnome_app_install_menu_hints (GNOME_APP (app1), menubar1_uiinfo);
 

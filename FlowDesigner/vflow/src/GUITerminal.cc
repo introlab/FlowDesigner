@@ -4,6 +4,7 @@
 #include "GUINode.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
+#include "vflow.h"
 #include "UIDocument.h"
 #include <iostream>
 
@@ -97,6 +98,9 @@ gint GUITerminal::event(GdkEvent *event)
   item_y = event->button.y;
   //gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
 
+  string my_text = getNode()->getName() + "< " + getName() + " (" + getType() + ") > " + getDescription();
+
+  vflowGUI::instance()->display_statusbar_text(my_text);
 
   switch (event->type) 
     {
