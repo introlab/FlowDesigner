@@ -324,7 +324,7 @@ DiagGMM *GMM::createDiagGMM()
    DiagGMM *dg = new DiagGMM;
    dg->dim = dimensions;
    dg->nbGauss = nb_gaussians;
-   dg->augDim = (dimensions+4)&0xfffffff0;
+   dg->augDim = (dimensions+4)&0xfffffffc;
    int allocSize = 2 * dg->augDim * dg->nbGauss * sizeof(float)  +  CACHE_LINES;
    //allocSize += dg->augDim * sizeof(float);
    dg->ptr = new char [allocSize];
