@@ -47,6 +47,9 @@ protected:
    /**Name of the network*/
    string name;
 
+   /**Description of the network*/
+   string m_description;
+
    /**Network type (subnet, iterator, threaded iterator*/
    Type type;
 
@@ -94,6 +97,11 @@ public:
    void removeLink (UILink *link);
 
    const string &getName() {return name;}
+
+   string getDescription() {return m_description;}
+
+   void setDescription(const string & _description){m_description = _description;}
+
    
    Type getType() {return type;}
 

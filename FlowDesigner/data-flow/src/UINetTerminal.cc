@@ -8,13 +8,13 @@
 
 using namespace std;
 
-UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, string _name)
+UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, string _name, string _objType, string _description)
    : name(_name)
    , terminal(_terminal)
    , type(_type)
+   , m_objectType(_objType)
+   , m_description (_description)
 {
-
-
    terminal->getNode()->getNetwork()->addTerminal(this);
    terminal->connectNetTerminal (this);
 }
@@ -25,10 +25,6 @@ UINetTerminal::~UINetTerminal()
   terminal->disconnectNetTerminal();
 }
 
-void UINetTerminal::setName(const string &_name)
-{
-   name = _name;
-}
 
 void UINetTerminal::saveXML(xmlNode *root)
 {
@@ -44,5 +40,11 @@ void UINetTerminal::saveXML(xmlNode *root)
    xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)name.c_str());
    xmlSetProp(tree, (xmlChar *)"node", (xmlChar *)terminal->getNode()->getName().c_str());
    xmlSetProp(tree, (xmlChar *)"terminal", (xmlChar *)terminal->getName().c_str());
+   
+   //(DL 12/12/2003) Input & Output ObjectType & Description
+   if (type == INPUT || type == OUTPUT) {
+     xmlSetProp(tree, (xmlChar *)"object_type", (xmlChar *)m_objectType.c_str());
+     xmlSetProp(tree, (xmlChar *)"description", (xmlChar *)m_description.c_str());
+   }
 
 }

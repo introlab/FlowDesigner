@@ -45,6 +45,14 @@ void UINetwork::load (xmlNodePtr net)
       throw new GeneralException("No network name", __FILE__, __LINE__);
    name = string(netName);
    free(netName);
+
+   //(DL) 12/12/2003 Loading network description if available
+   char *netDescription = (char *)xmlGetProp(net, (xmlChar *)"description");
+   if (netDescription) {
+      m_description = string(netDescription);
+      free(netDescription);
+   }
+
    char *netType = (char *)xmlGetProp(net, (xmlChar *)"type");
    
    if (!netType)
@@ -284,8 +292,15 @@ void UINetwork::saveXML(xmlNode *root)
      break;
    }
    xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)name.c_str());
+
+   //(DL) 12/12/2003 Saving network description if available
+   if (m_description != "") {
+     xmlSetProp(tree, (xmlChar *)"description", (xmlChar *)m_description.c_str());
+   }
+   
    /*if (isIterator && conditionNode)
      xmlSetProp(tree, (xmlChar *)"condition", (xmlChar *)conditionNode->getName().c_str());*/
+
    for (unsigned int i=0;i<nodes.size();i++)
    {
       nodes[i]->saveXML(tree);
