@@ -90,46 +90,58 @@ void UINetwork::load (xmlNodePtr net)
 	 char *points=NULL;
 	 if (node->childs)
 	    points = (char *)node->childs->content;
-     //FIXME: potential segfault
-         newLink(getNodeNamed(fromnode)->getOutputNamed(out),
-                  getNodeNamed(tonode)->getInputNamed(in), points);
+	 if (getNodeNamed(fromnode) && getNodeNamed(tonode) && getNodeNamed(fromnode)->getOutputNamed(out) && getNodeNamed(tonode)->getInputNamed(in))
+	 {
+	    newLink(getNodeNamed(fromnode)->getOutputNamed(out),
+		    getNodeNamed(tonode)->getInputNamed(in), points);
+	 } else {
+	    cerr << "Invalid link from " << fromnode << ":" << out << " to "
+		 << tonode << ":" << in << endl;
+	 }
       }
       node = node->next;
    }
 
-   //cerr << "parsing netTerminals\n";
    node = net->childs;
    while (node != NULL)
    {
       if (string((char*)node->name) == "NetInput")
       {
-     //cerr << "in\n";
          string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
          string termTerm = string((char *)xmlGetProp(node, (CHAR *)"terminal"));
          string termNode = string((char *)xmlGetProp(node, (CHAR *)"node"));
-         newNetTerminal(getNodeNamed(termNode)->getInputNamed(termTerm),
-                 UINetTerminal::INPUT, termName);
+	 if (getNodeNamed(termNode) && getNodeNamed(termNode)->getInputNamed(termTerm))
+	 {
+	    newNetTerminal(getNodeNamed(termNode)->getInputNamed(termTerm),
+			   UINetTerminal::INPUT, termName);
+	 } else {
+	    cerr << "Invalid netTerminal at " << termNode << ":" << termTerm << endl;
+	 }
       } else if (string((char*)node->name) == "NetOutput")
       {
-     //cerr << "out\n";
          string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
          string termTerm = string((char *)xmlGetProp(node, (CHAR *)"terminal"));
          string termNode = string((char *)xmlGetProp(node, (CHAR *)"node"));
-     //FIXME: potential segfault
-     //cerr << termName << " " << termTerm << " " << termNode << endl;
-     //cerr << getNodeNamed(termNode)->getName() << endl;
-     //cerr << getNodeNamed(termNode)->getOutputNamed(termTerm) << endl;
-         newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
-                 UINetTerminal::OUTPUT, termName);
-     //cerr << "--\n";
+	 
+	 if (getNodeNamed(termNode) && getNodeNamed(termNode)->getOutputNamed(termTerm))
+	 {
+	    newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
+			   UINetTerminal::OUTPUT, termName);
+	 } else {
+	    cerr << "Invalid netTerminal at " << termNode << ":" << termTerm << endl;
+	 }
       } else if (string((char*)node->name) == "NetCondition")
       {
          string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
          string termTerm = string((char *)xmlGetProp(node, (CHAR *)"terminal"));
          string termNode = string((char *)xmlGetProp(node, (CHAR *)"node"));
-     //FIXME: potential segfault
-         newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
-                 UINetTerminal::CONDITION, termName);
+	 if (getNodeNamed(termNode) && getNodeNamed(termNode)->getOutputNamed(termTerm))
+	 {
+	    newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
+			   UINetTerminal::CONDITION, termName);
+	 } else {
+	    cerr << "Invalid netTerminal at " << termNode << ":" << termTerm << endl;
+	 }
       }
       node = node->next;
    }
