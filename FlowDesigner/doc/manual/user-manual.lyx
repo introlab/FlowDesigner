@@ -525,6 +525,17 @@ The
 ThreadJoin
 \emph default 
  node acts like a mutex and prevents
+\layout Section
+
+Threaded iterators
+\layout Standard
+
+
+\emph on 
+Threaded iterators
+\emph default 
+ are a special kind of subnets that provide a different level of multi-threading.
+ These too should be considered experimental for now.
 \layout Chapter
 
 Automatic C++ code generation
