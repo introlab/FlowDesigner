@@ -40,7 +40,7 @@ int main(int argc, char **argv)
       {
 	 if (!net->hasOutput(i)) 
 	    break;
-	 cerr << *net->getOutput(i,0) << endl;
+	 *net->getOutput(i,0);
       }
       
       
