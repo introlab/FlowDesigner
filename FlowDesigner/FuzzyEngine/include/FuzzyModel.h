@@ -37,6 +37,7 @@ public:
 
 	//default constructor
 	FuzzyModel();
+
 	FuzzyModel(string nodeName, ParameterSet params);
 
 	//destructor
@@ -78,7 +79,7 @@ protected:
 	vector<FuzzySet*> m_output_set;
 
 	//vector of input functions to be evaluated for a rule
-	vector<vector<string> > m_input_names;
+	vector<list<FuzzyFunction*> > m_input_functions;
 
 	//vector of output functions to be evaluated for a rule
 	vector<list<FuzzyFunction*> > m_output_functions;

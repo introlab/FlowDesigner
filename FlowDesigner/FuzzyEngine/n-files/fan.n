@@ -160,8 +160,8 @@
     <Link from="node37" output="OUTPUT" to="node36" input="ANTECEDENT_SETS"/>
     <Link from="node38" output="VALUE" to="node36" input="INPUT"/>
     <Link from="node35" output="OUTPUT" to="node36" input="RULES"/>
-    <Link from="node24" output="SET" to="node37" input="INPUT1"/>
-    <Link from="node21" output="SET" to="node37" input="INPUT2"/>
+    <Link from="node21" output="SET" to="node37" input="INPUT1"/>
+    <Link from="node24" output="SET" to="node37" input="INPUT2"/>
     <NetOutput name="OUTPUT" node="node36" terminal="OUTPUT"/>
   </Network>
 </Document>

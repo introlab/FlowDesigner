@@ -78,7 +78,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
 
   rule->set_rule_number(rule_number);
   
-  rule->print_rule(cerr);
+  //rule->print_rule(cerr);
 
 
   //let's verify this rule
@@ -87,16 +87,17 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
   
   
   //rule number verification
-  if (m_input_names.size() < rule_number) {
-    m_input_names.resize(rule_number);
+  if (m_input_functions.size() < rule_number) {
+    m_input_functions.resize(rule_number);
   }
   else {
-    if (!m_input_names[rule_number -1].empty()) {
+    if (!m_input_functions[rule_number -1].empty()) {
       char message[256];	
       sprintf(message,"RULE %i ALREADY EXISTS",rule_number);
       throw new GeneralException(message,__FILE__,__LINE__);
     }
   }
+
   if (m_output_functions.size() < rule_number) {
     m_output_functions.resize(rule_number);
   }
@@ -131,7 +132,7 @@ void FuzzyModel::add_fuzzy_rule(FuzzyRule *rule) {
       }
       else {
 	//keeping the name of the antecedant
-	m_input_names[rule_number - 1].push_back(antecedant[i].second);				
+	m_input_functions[rule_number -1].push_back(function);
       }
       
     }
@@ -290,52 +291,33 @@ vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
   //assuming that values are ordered like the rules
   for (int i = 0; i < m_input_set.size(); i++) {
     inputs.push_back(input_values[i]);
-    m_input_set[i]->get_all_membership_evaluation(input_values[i]);
+    //m_input_set[i]->get_all_membership_evaluation(input_values[i]);
   }
 
-
-  /*
-  for (list<pair<string,float> >::iterator iter = input_values.begin();
-       iter != input_values.end(); iter++) {
-    
-    FuzzySet * set = find_set_named((*iter).first, FuzzyModel::FUZZY_INPUT_SET);
-    
-    if (!set) {
-      char message[256];
-      sprintf(message,"SET NOT FOUND (%s)",(*iter).first.c_str());
-      throw new GeneralException(message,__FILE__,__LINE__);		
-    }
-    else {
-      inputs.push_back((*iter).second);
-      
-      //all membership evaluation
-      set->get_all_membership_evaluation((*iter).second);
-    }	
-  }
-  */
-
-  
   //we are assuming that the input variables are in the same order than the rules
   vector<float> conjunction_values(m_input_set.size());
   
   
   for (int x = 0; x < m_rules.size(); x++) {
     
-    vector<string>::iterator iter_input;
+    list<FuzzyFunction*>::iterator iter_input;
     
     int y = 0;
     
-    for (iter_input = m_input_names[x].begin();
-	 iter_input != m_input_names[x].end(); iter_input++) {
+    for (iter_input = m_input_functions[x].begin();
+	 iter_input != m_input_functions[x].end(); iter_input++) {
 
-      conjunction_values[y] = m_input_set[y]->get_value_with_name((*iter_input));
+      //conjunction_values[y] = m_input_set[y]->get_value_with_name((*iter_input));
+      conjunction_values[y] = (*iter_input)->evaluate(inputs[y]);
 
-      cerr<<"input set "<<m_input_set[y]->get_name()<<endl;
-      cerr<<"input name "<<(*iter_input)<<endl;
-      cerr<<"getting conjunction_value "<<conjunction_values[y]<<endl;
-
-
+      /*
+	cerr<<"input set "<<m_input_set[y]->get_name()<<endl;
+	cerr<<"input name "<<(*iter_input)->get_name()<<endl;
+	cerr<<"getting conjunction_value "<<conjunction_values[y]<<endl;
+      */
+      
       y++;
+
     }//for every antecedant of the rule
     
     list<FuzzyFunction*>::iterator iter;
@@ -344,8 +326,10 @@ vector<float>& FuzzyModel::evaluate(vector<float>  &input_values) {
     for (iter = m_output_functions[x].begin();
 	 iter != m_output_functions[x].end(); iter++) {
       
-      cerr<<"Pushing inference value of "<<conjunction(conjunction_values)
-	  <<" for output function "<<(*iter)->get_name()<<endl;
+      /*
+	cerr<<"Pushing inference value of "<<conjunction(conjunction_values)
+	<<" for output function "<<(*iter)->get_name()<<endl;
+      */
 
       (*iter)->push_inference_value(conjunction(conjunction_values));			
     }

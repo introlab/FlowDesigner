@@ -15,6 +15,7 @@ public:
 
 	//constructor
 	GenericModel();
+
 	GenericModel(string nodeName, ParameterSet params);
 
 	//destructor

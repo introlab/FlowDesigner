@@ -202,17 +202,11 @@ void GenericModel::calculate(int output_id, int count, Buffer &out) {
 
   //verify rule consistency
   verify_rules();
-  cerr<<"rules verified"<<endl;
 
   //calculate output
   Vector<float> &vect_value = object_cast<Vector<float> >(Input);  
 
-  for (int i = 0; i <   vect_value.size(); i++) {
-    cerr<<"got input : "<<vect_value[i]<<endl;
-  }
-
   vector<float>& calc_output = evaluate(vect_value);
-
 
   Vector<float> *my_output = new Vector<float>(calc_output.size());
 
