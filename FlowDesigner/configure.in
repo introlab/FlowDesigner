@@ -69,3 +69,25 @@ AC_OUTPUT([Makefile \
 	flowdesigner-config FlowDesigner.spec \
 	])
 
+
+dnl Notification message for the user to know which flags will be used for compilation
+dnl should use AC_MSG_NOTICE(), but that's apparently not defined in autoconf 2.13
+AC_MSG_RESULT([])
+AC_MSG_RESULT([*************************************************************])
+AC_MSG_RESULT([])
+AC_MSG_RESULT([$PACKAGE will be built on a $build system to run])
+AC_MSG_RESULT([on a $host system, with the following options:])
+AC_MSG_RESULT([])
+if test "x$enable_effects" = "xyes"; then
+	AC_MSG_RESULT([$PACKAGE will build effects toolkit])
+fi
+AC_MSG_RESULT([])
+AC_MSG_RESULT([*************************************************************])
+AC_MSG_RESULT([$PACKAGE will be installed in $prefix])
+AC_MSG_RESULT([To see the configuration options, do:])
+AC_MSG_RESULT([    ./configure --help])
+AC_MSG_RESULT([])
+AC_MSG_RESULT([When you're satisfied with the configuration, type 'make; make install'. ])
+AC_MSG_RESULT([])
+
+
