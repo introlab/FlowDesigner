@@ -84,6 +84,7 @@ protected:
 };
 
 #ifdef ENABLE_SPEED_HACKS
+
 #define NO_ORDER_NODE_SPEEDUP(nodeClass)                    \
 ObjectRef getOutput(int output_id, int count)               \
 {                                                           \
@@ -91,8 +92,53 @@ ObjectRef getOutput(int output_id, int count)               \
       if (!outBuffer.isValid(count))                        \
 	 nodeClass::calculate (output_id, count, outBuffer);\
       return outBuffer.get(count);}
+
+#define IN_ORDER_NODE_SPEEDUP(nodeClass)                    \
+ObjectRef getOutput(int output_id, int count)               \
+{                                                           \
+      Buffer &outBuffer = *(outputs[output_id].buffer);     \
+      for (int i=processCount+1;i<=count;i++)               \
+	 nodeClass::calculate(output_id, i, outBuffer);     \
+      if (count > processCount)                             \
+         processCount = count;                              \
+      return outBuffer.get(count);                          \
+}
+
+
 #else
-#define NO_ORDER_NODE_SPEEDUP(nodeClass)
+
+
+#define NO_ORDER_NODE_SPEEDUP(nodeClass)                    \
+ObjectRef getOutput(int output_id, int count)               \
+{                                                           \
+   try {                                                    \
+      Buffer &outBuffer = *(outputs[output_id].buffer);     \
+      if (!outBuffer.isValid(count))                        \
+	 nodeClass::calculate (output_id, count, outBuffer);\
+      return outBuffer.get(count);                          \
+   } catch (BaseException *e)                               \
+   {                                                        \
+      throw e->add(new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__));\
+   }                                                        \
+}
+
+#define IN_ORDER_NODE_SPEEDUP(nodeClass)                    \
+ObjectRef getOutput(int output_id, int count)               \
+{                                                           \
+   try {                                                    \
+      Buffer &outBuffer = *(outputs[output_id].buffer);     \
+      for (int i=processCount+1;i<=count;i++)               \
+	 nodeClass::calculate(output_id, i, outBuffer);     \
+      if (count > processCount)                             \
+         processCount = count;                              \
+      return outBuffer.get(count);                          \
+   } catch (BaseException *e)                               \
+   {                                                        \
+      throw e->add(new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__));\
+   }                                                        \
+}
+
+
 #endif
 
 #endif

@@ -172,6 +172,8 @@ public:
    ObjectRef range(size_t startInd, size_t endInd)
    {
       Vector<T> *v = Vector<T>::alloc(endInd-startInd+1);
+      if (endInd >= v->size() || startInd < 0)
+	 throw new GeneralException("Index out of range in BaseVector::range()", __FILE__, __LINE__);
       for (size_t i=startInd;i<=endInd;i++)
       {
 	 (*v)[i-startInd]=(*this)[i];
