@@ -81,6 +81,15 @@ protected:
    /**True if document has no real name yet*/
    bool untitled;
 
+   /**List of all files required for each module*/
+   static map<string, set<string> > moduleDepend;
+   
+   /**List of all modules required for each file*/
+   static map<string, set<string> > fileDepend;
+ 
+   /**List of all headers required for each file*/
+   static map<string, set<string> > headerDepend;
+
 public:
    static map<string, SubnetInfo *> externalDocInfo;
 

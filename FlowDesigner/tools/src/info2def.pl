@@ -284,11 +284,14 @@ while (<>)
     } 
     #Added by JMV 2001/07/31
     elsif (/\/\/\@implements ([a-zA-Z0-9_]*)/) {
-	push @{$dep{$1}}, $curr_filename;
+      push @{$dep{$1}}, $curr_filename;
     } 
     elsif (/\/\/\@require ([a-zA-Z0-9_]*)/) {
-	push @{$filedep{$curr_filename}}, $1;
+      push @{$filedep{$curr_filename}}, $1;
+    } elsif (/^\#include \"([a-zA-Z_0-9\.]*)\"/) {
+      push @{$headerdep{$curr_filename}}, $1;
     }
+
     
 
   }
@@ -307,9 +310,17 @@ foreach $module (keys %dep) {
 foreach $file (keys %filedep) {
   print "  <FileDepend file=\"$file\">\n";
   foreach $module (@{$filedep{$file}}) {
-    print "    <Require module=\"$module\"/>\n";
+    print "    <RequireModule module=\"$module\"/>\n";
   }
   print "  </FileDepend>\n";
+}
+
+foreach $file (keys %headerdep) {
+  print "   <FileDepend file=\"$file\">\n";
+  foreach $header (@{$headerdep{$file}}) {
+    print "      <RequireHeader header=\"$header\"/>\n";
+  }
+  print "   </FileDepend>\n";
 }
 
 #print "</Dependencies>\n";

@@ -16,6 +16,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+map<string, set<string> > UIDocument::moduleDepend;
+
+map<string, set<string> > UIDocument::fileDepend;
+
+map<string, set<string> > UIDocument::headerDepend;
+
+
 map<string, SubnetInfo *> UIDocument::externalDocInfo;
 
 
@@ -445,6 +452,62 @@ void UIDocument::loadNodeDefInfo(const string &path, const string &name)
 	    data = data->next;
 	 }
       }
+      /*Dependencies for modules*/
+      else if (string((char*)node->name) == "ModuleDepend")
+      {
+	 char *dep_module = (char *)xmlGetProp(node, (CHAR *)"module");
+	 if (!dep_module)
+	    throw new GeneralException("Empty module dependency", __FILE__, __LINE__);
+	 xmlNodePtr depend = node->childs;
+	 while (depend != NULL)
+	 {
+	    if (string((char*)depend->name) != "Require")
+	       throw new GeneralException(string("Unknown section in module dependency: ") + (char*)node->name, 
+				    __FILE__, __LINE__);
+
+	    char *req_file = (char *)xmlGetProp(depend, (CHAR *)"file");
+	    if (!req_file)
+	       throw new GeneralException(string("Empty dependency for module: ") + dep_module, __FILE__, __LINE__);
+	    
+	    moduleDepend[dep_module].insert(moduleDepend[dep_module].end(), req_file);
+
+	    depend = depend->next;
+	 }
+      } 
+      /*Dependencies for files*/
+      else if (string((char*)node->name) == "FileDepend")
+      {
+	 char *dep_file = (char *)xmlGetProp(node, (CHAR *)"file");
+	 if (!dep_file)
+	    throw new GeneralException("Empty file dependency", __FILE__, __LINE__);
+	 xmlNodePtr depend = node->childs;
+	 while (depend != NULL)
+	 {
+	    if (string((char*)depend->name) == "RequireModule")
+	    {
+	       char *req_module = (char *)xmlGetProp(depend, (CHAR *)"module");
+	       if (!req_module)
+		  throw new GeneralException(string("Empty module dependency for file: ") + dep_file, 
+					     __FILE__, __LINE__);
+	       fileDepend[dep_file].insert(fileDepend[dep_file].end(), req_module);
+	    }
+	    else if (string((char*)depend->name) == "RequireHeader")
+	    {
+	       char *req_header = (char *)xmlGetProp(depend, (CHAR *)"header");
+	       if (!req_header)
+		  throw new GeneralException(string("Empty header dependency for file: ") + dep_file, 
+					     __FILE__, __LINE__);
+	       headerDepend[dep_file].insert(headerDepend[dep_file].end(), req_header);	       
+	    } else 
+	       throw new GeneralException(string("Unknown section in file dependency: ") + (char*)node->name, 
+				    __FILE__, __LINE__);
+
+	    depend = depend->next;
+	 }	 
+      } 
+      else 
+	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + (char*)node->name, 
+				    __FILE__, __LINE__);
       
       node = node->next;
    }
