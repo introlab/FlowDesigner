@@ -64,6 +64,7 @@ public:
       {
          output[i]=in[i]*in[i]+in[inputLength-i]*in[inputLength-i];
       }
+
       
       output.status = Object::valid;
    }

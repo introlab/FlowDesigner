@@ -52,7 +52,8 @@ public:
       plan = rfftw_create_plan (inputLength*2, FFTW_FORWARD, FFTW_ESTIMATE);
 }
 
-   ~DCT() {
+   ~DCT() 
+   {
       rfftw_destroy_plan(plan);
       delete [] inputCopy;
       delete [] outputCopy;
