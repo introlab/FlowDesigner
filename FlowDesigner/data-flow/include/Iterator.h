@@ -34,8 +34,14 @@ public:
    }
 
    virtual void request(int outputID, const ParameterSet &req) 
-      {//The iterator translator does not need to pass on the request
-      }
+   {
+   }
+
+   virtual void requestForIterator(const ParameterSet &req) 
+   {
+      for (int i=0;i<inputs.size();i++)
+         inputs[i].node->request(inputs[i].outputID,req);
+   }
 
 private:
    
@@ -71,6 +77,19 @@ public:
          throw new NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
       }
       connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
+   }
+
+   virtual void request(int outputID, const ParameterSet &req) 
+   {
+      ParameterSet r;
+      Collector *col = dynamic_cast<Collector*> (sinkNode);
+      if (col)
+         col->requestAll(r);
+      else
+         throw NodeException(this, "Iterator output should be a collector", __FILE__, __LINE__);
+      conditionNode->request(0,r);  
+      if (translator)
+         translator->requestForIterator(req);
    }
 
    /** setting the condition Node */

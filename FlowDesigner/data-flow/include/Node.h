@@ -166,7 +166,7 @@ public:
  
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req) = 0;
-   
+
    /**Verify input connections for the node*/
    virtual void verifyConnect();
 

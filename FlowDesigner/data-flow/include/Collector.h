@@ -32,6 +32,12 @@ public:
 
    virtual void request(int outputID, const ParameterSet &req) {inputs[outputID].node->request(inputs[outputID].outputID,req);}
 
+   virtual void requestAll(const ParameterSet &req) 
+   {
+      for (int i=0;i<inputs.size();i++)
+         inputs[i].node->request(inputs[i].outputID,req);
+   }
+
 protected:
    ///symbolic to numeric translation for input names
    virtual int translateInput(string inputName);
