@@ -21,7 +21,7 @@
 #include "Vector.h"
 
 //DECLARE_NODE(MMITrain)
-NODE_INFO(MMITrain,"VQ", "FRAMES", "OUTPUT", "")
+NODE_INFO(MMITrain,"VQ", "FRAMES", "OUTPUT", "LEVELS")
 
 MMITrain::MMITrain(string nodeName, ParameterSet params) 
    : Node(nodeName, params)

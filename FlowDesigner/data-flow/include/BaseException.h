@@ -84,7 +84,7 @@ public:
 
 inline BaseException *BaseException::add(BaseException *e)
 {
-   return (new ExceptionStack)->add(e);
+   return (new ExceptionStack)->add(this)->add(e);
 }
 
 #endif

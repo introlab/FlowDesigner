@@ -10,7 +10,7 @@ void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)
 {
    if (level <= 0) 
    {
-      cerr << "LEAF: " << data.size() << endl;
+      cout << "LEAF: " << data.size() << endl;
       return;
    }
    int dim;
@@ -205,9 +205,6 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
 {
    float sum = 0;
    int i,k;
-   /*for (i=0;i<data.size();i++)
-      sum += data[i].second[dim];
-      thresh=sum/data.size();*/
    if (data.size()==0) thresh=0; 
    else {
       float sorted[data.size()];
@@ -242,6 +239,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    }
 
 }
+
 
 //find threshold using split at average and mutual information
 /*void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
