@@ -1,4 +1,5 @@
 // Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 2004 Dominic Letourneau
 
 #ifndef MATRIX_H
 #define MATRIX_H
