@@ -31,6 +31,8 @@ vflow_SOURCES = \
 	GUINetTerminal.cc \
 	GUINetPopup.cc
 
+LDFLAGS = $(FFTW_LDFLAGS)
+
 vflow_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \
 	$(LIB_FFTW)
