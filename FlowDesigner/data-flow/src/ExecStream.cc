@@ -63,6 +63,8 @@ public:
       if (!tmp)
 	 NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
       out[count] = ObjectRef (new IStream(new fileptr_istream(tmp, true, true)));
+      
+      //out[count] = ObjectRef (new IStream(new pipe_istream(cmd, false)));
    }
 
 protected:

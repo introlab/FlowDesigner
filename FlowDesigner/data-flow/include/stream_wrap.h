@@ -14,8 +14,18 @@
 #ifndef WIN32
 #include <unistd.h>
 #endif
+#include <string>
+
+#include "Object.h"
 
 using namespace std;
+
+
+class EOFObject : public Object {
+  public:
+   void printOn(ostream &out = cout) const {out << "<EOFObject >\n";}
+};
+
 
 class fileptr_streambuf : public streambuf {
   protected:
@@ -119,6 +129,45 @@ class fd_iostream : public iostream {
       , iostream(&_streambuffer)
       {clear();}
 };
+
+
+
+
+
+
+class pipe_streambuf : public streambuf {
+  protected:
+   virtual int overflow(int = EOF);
+   virtual streamsize xsputn(const char *s, streamsize n);
+
+   virtual int uflow();
+   virtual int underflow();
+   virtual streamsize xsgetn(char *s, streamsize n);
+   virtual int pbackfail(int c);
+  public:
+   //pipe_streambuf(int _ifd, int _ofd, pid_t _pid, bool _waitOnClose=false);
+   pipe_streambuf(const string &command, bool _waitOnClose=false);
+   ~pipe_streambuf();
+  protected:
+   int ifd;
+   int ofd;
+   pid_t pid;
+   bool waitOnClose;
+   bool takeFromBuf;
+   char charBuf;
+};
+
+
+
+class pipe_istream : public istream {
+   pipe_streambuf _streambuffer;
+  public:
+   pipe_istream(const string &command, bool waitOnClose=false)
+      : _streambuffer (command, waitOnClose)
+      , istream(&_streambuffer)
+      {clear();}
+};
+
 #endif
 
 

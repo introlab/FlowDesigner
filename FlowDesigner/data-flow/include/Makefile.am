@@ -50,7 +50,6 @@ include_HEADERS = Array.h \
 	typetraits.h \
 	binio.h \
 	typemap.h \
-	stream_io.h \
 	SocketStream.h \
 	stream_wrap.h \
 	iextensions.h \
