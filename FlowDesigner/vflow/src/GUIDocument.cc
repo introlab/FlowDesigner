@@ -18,7 +18,7 @@
 //UIDocument *UIDocument::currentDocument;
 extern GnomeMDI *mdi;
 
-static GnomeMDIChildClass *parent_class = NULL;
+//static GnomeMDIChildClass *parent_class = NULL;
 
 bool GUIDocument::isRunning=false;
 pthread_t GUIDocument::runThread;
@@ -33,7 +33,8 @@ void create_net(gchar * str, GUIDocument *doc)
 static void add_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the network name?", "MAIN", 20, (GnomeStringCallback)create_net, mdi->active_child, NULL);
+   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the network name?", "MAIN", 20, (GnomeStringCallback)create_net, doc, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -45,7 +46,8 @@ void create_threaded(gchar * str, GUIDocument *doc)
 static void add_threaded_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the threaded iterator name?", "MAIN", 20, (GnomeStringCallback)create_threaded, mdi->active_child, NULL);
+   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the threaded iterator name?", "MAIN", 20, (GnomeStringCallback)create_threaded, doc, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
@@ -57,14 +59,16 @@ void create_iter(gchar * str, GUIDocument *doc)
 static void add_iter_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the iterator's name?", "MAIN", 20, (GnomeStringCallback)create_iter, mdi->active_child, NULL);
+   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+   GtkWidget *dialog = gnome_request_dialog (FALSE, "What's the iterator's name?", "MAIN", 20, (GnomeStringCallback)create_iter, doc, NULL);
    gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
 }
 
 static void remove_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
-   GUIDOCUMENT (mdi->active_child)->removeCurrentNet();
+   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+   doc->removeCurrentNet();
    //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
    //doc
  //cerr << "remove net\n";
@@ -93,6 +97,11 @@ static GnomeUIInfo doc_menu[] = {
 };
 
 
+static GtkWidget *create_view (GnomeMDIChild *child, GUIDocument *doc)
+{
+   //GUIDocument *doc = gtk_object_get_data (GTK_OBJECT (child), "doc");
+   return doc->getView();
+}
 
 
 GUIDocument::GUIDocument(string _name)
@@ -105,7 +114,11 @@ GUIDocument::GUIDocument(string _name)
 //   , modified(false)
 {
    //cerr << "GUIDocument::GUIDocument\n";
-   gnome_mdi_child_set_name (GNOME_MDI_CHILD(this), (gchar *)docName.c_str());
+   mdiChild = gnome_mdi_generic_child_new((gchar *)docName.c_str());
+   gtk_object_set_data (GTK_OBJECT (mdiChild), "doc", this);
+   gnome_mdi_child_set_name (GNOME_MDI_CHILD(mdiChild), (gchar *)docName.c_str());
+   gnome_mdi_generic_child_set_view_creator(mdiChild, (GnomeMDIChildViewCreator)create_view, this);
+
    create();
 
    createParamDialog();
@@ -116,7 +129,7 @@ GUIDocument::GUIDocument(string _name)
 void GUIDocument::create()
 {
    createView();
-   gnome_mdi_child_set_menu_template (GNOME_MDI_CHILD (this), doc_menu);
+   gnome_mdi_child_set_menu_template (GNOME_MDI_CHILD (mdiChild), doc_menu);
 }
 
 
@@ -188,7 +201,7 @@ GtkWidget *GUIDocument::createView()
 
   //view = vbox2;
   less_print("VFlow by Jean-Marc Valin & Dominic Letourneau");
-  less_print("You can print here by using GUIDocument::less_print (const char* message).");
+  //less_print("You can print here by using GUIDocument::less_print (const char* message).");
   less_print("--\n");
   
 
@@ -252,121 +265,6 @@ void GUIDocument::removeCurrentNet()
 }
 
 
-static void GUIDocument_class_init(GUIDocument_class *);
-static void GUIDocument_init(GUIDocument *);
-
-
-GtkType GUIDocument_get_type ()
-{
-
-   static GtkType doc_type = 0;
-	
-   if (!doc_type) {
-	  	
-      static const GtkTypeInfo doc_info = {
-         "GUIDocument",
-         sizeof (GUIDocument),
-         sizeof (GUIDocument_class),
-         (GtkClassInitFunc) GUIDocument_class_init,
-         (GtkObjectInitFunc) GUIDocument_init,
-         //(GtkArgSetFunc) NULL,
-         //(GtkArgSetFunc) NULL,
-         (gpointer) NULL,
-         (gpointer) NULL,
-	  
-      };
-	  
-      doc_type = gtk_type_unique (gnome_mdi_child_get_type (), &doc_info);
-	  
-   }
-	  
-   return doc_type;
-	
-}
-
-
-static GtkWidget *GUIDocument_create_view (GnomeMDIChild *child)
-{
-   return GUIDOCUMENT (child)->getView();
-}
-
-static gchar *GUIDocument_get_config_string (GnomeMDIChild *child)
-{
-
-   return (gchar *)(GUIDOCUMENT (child)->getName().c_str());
-	
-}
-static void GUIDocument_destroy (GtkObject *obj)
-{
-
-   GUIDocument *doc;
-	
-   doc = GUIDOCUMENT(obj);
-	
-   doc->~GUIDocument();
-
-   //GnomeMDIChildClass *parent_class = gtk_type_class (gnome_mdi_child_get_type ());
-
-   if (GTK_OBJECT_CLASS (parent_class)->destroy)
-      (* GTK_OBJECT_CLASS (parent_class)->destroy)(GTK_OBJECT (doc));
-
-}
-
-
-static void GUIDocument_class_init (GUIDocument_class *klass)
-{
-
-   GtkObjectClass 		*object_class;
-   GnomeMDIChildClass	*child_class;
-	
-   object_class = (GtkObjectClass*)klass;
-   child_class = GNOME_MDI_CHILD_CLASS (klass);
-	
-	
-   object_class->destroy = GUIDocument_destroy;
-	
-   child_class->create_view = (GnomeMDIChildViewCreator)(GUIDocument_create_view);
-   //child_class->get_config_string = (GnomeMDIChildConfigFunc)(GUIDocument_get_config_string);
-	
-	//class->document_changed = gE_document_real_changed;
-	
-   parent_class = (GnomeMDIChildClass*)gtk_type_class (gnome_mdi_child_get_type ());
-	
-}
-
-void GUIDocument_init (GUIDocument *doc)
-{
-
-   new(doc) GUIDocument("Untitled");
-   //GUIDOCUMENT (child)->getView();
-		
-   //gnome_mdi_child_set_menu_template (GNOME_MDI_CHILD (doc), doc_menu);
-	
-}
-
-GUIDocument *GUIDocument_new ()
-{
-
-   GUIDocument *doc;
-	
-   int i;
-	
-   // FIXME: Blarg!! 
-	
-   if ((doc = (GUIDocument*)gtk_type_new (GUIDocument_get_type ()))) {
-	
-      //gnome_mdi_child_set_name(GNOME_MDI_CHILD(doc), "Untitled");
-	  
-
-      return doc;
-   }
-	
-   g_print ("Eeek.. bork!\n");
-   gtk_object_destroy (GTK_OBJECT(doc));
-	
-   return NULL;
-	
-}
 
 
 UINetwork *GUIDocument::newNetwork(UIDocument *_doc, const string &_name, UINetwork::Type type)
@@ -386,7 +284,7 @@ void GUIDocument::setFullPath(const string &fullpath)
 {
    // call the non-gui code in UIDocument
    UIDocument::setFullPath(fullpath);
-   gnome_mdi_child_set_name (GNOME_MDI_CHILD(this), (gchar *)docName.c_str());
+   gnome_mdi_child_set_name (GNOME_MDI_CHILD(mdiChild), (gchar *)docName.c_str());
 }
 
 

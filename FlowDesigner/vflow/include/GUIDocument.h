@@ -19,8 +19,10 @@ public:
 
 
 
-class GUIDocument : public GnomeMDIChild , public UIDocument {
+class GUIDocument : public UIDocument {
 protected:
+   
+   GnomeMDIGenericChild *mdiChild;
 
    //GtkWidget *view;
    GtkWidget *docproperty;
@@ -41,6 +43,8 @@ public:
 
    ~GUIDocument() {};
    
+   GnomeMDIGenericChild *getMDIChild() {return mdiChild;}
+
    GtkWidget *getView() {return vbox2;}
 
    GtkWidget *getNotebook() {return notebook1;}
@@ -84,24 +88,5 @@ public:
    static void threadStop();
 };
 
-
-
-
-
-class GUIDocument_class {
-   GnomeMDIChildClass parent_class;
-   
-   void (*document_changed)(GUIDocument *, gpointer);
-};
-
-//void UIDocument_class_init(UIDocument_class *);
-//void UIDocument_init(UIDocument *);
-//GtkType UIDocument_get_type ();
-
-#define GUIDOCUMENT(obj)	         GTK_CHECK_CAST (obj, GUIDocument_get_type (), GUIDocument)
-#define GUIDOCUMENT_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, GUIDocument_get_type (), GUIDocument_class)
-#define IS_GUIDOCUMENT(obj)	 GTK_CHECK_TYPE (obj, GUIDocument_get_type ())
-GtkType GUIDocument_get_type ();
-GUIDocument *GUIDocument_new ();
 
 #endif
