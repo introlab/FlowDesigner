@@ -25,7 +25,7 @@
 #include "Exception.h"
 //#include "rc_ptrs.h"
 
-#define LINUX
+//#define HPUX
 
 #ifdef HPUX
 #include <dl.h>
@@ -33,12 +33,13 @@
 typedef shl_t DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
+   //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
    DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
    //cerr << "library = " << library << endl;
    if (!library) 
    {
       perror ("Load error");
-      cerr << "errno: " << errno << endl;
+      //cerr << "errno: " << errno << endl;
    }
    return library;
 }
@@ -64,7 +65,7 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 typedef void *DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(string path) 
 {
-   cerr << "opening lib " << path.c_str() << endl;
+   //cerr << "opening lib " << path.c_str() << endl;
    return dlopen (path.c_str(), RTLD_LAZY);
 }
 inline void * _DL_GET_SYM(DL_HANDLE_TYPE lib, string symbol) 

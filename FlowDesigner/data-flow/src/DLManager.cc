@@ -20,6 +20,7 @@ map<string,LoadedLibrary* > DLManager::loaded;
 
 LoadedLibrary *DLManager::get_lib(string name)
 {
+   //cerr << "DLManager::get_lib(" << name << ")\n";
    if (loaded.find(name)==loaded.end())
    {
       loaded[name] = new LoadedLibrary (name);

@@ -1,9 +1,52 @@
-The two parts that compile are:
+To compile everything you need:
+   automake (1.4)
+   aclocal (1.4, comes with automake)
+   autoconf (2.13)
+   libtool (included in cvs)
+   make (GNU)
+   cvs (1.10)
+   doc++ (3.3.11)
+   perl 5
+   m4
+   an ANSI C++ compiler (a recent aCC, g++ 2.8 or higher, egcs 1.1.2 or higher)
 
-audio_server and
-front-end
 
-just type make to compile. You need a C++ compiler that compiles STL correctly 
-(g++ 2.7.2 does NOT work, but egcs does)
+How to compile:
+
+% aclocal
+% automake
+% autoconf
+% ./configure <options>
+% make
+% make install
 
 
+notes about configure
+One some HP's, you should use aCC instead of the default g++
+you need to set the environment variables CXX and CC
+
+On csh:
+% setenv CXX aCC
+% setenv CC cc
+% ./configure <options>
+
+On sh/ksh
+% CXX=aCC CC=cc ./configure <options>
+
+To have a list of all configure options type ./configure --help
+The important options are:
+--prefix=install-path=/path/where/to/install
+--with-fftw-dir=/path/to/fftw
+--with-libtool-acc-kludge     (you MUST use this options ONLY if you are 
+                               using aCC as the C++ compiler)
+
+If you plan to use the audio modules, then only shared libraries will work 
+(because the program makes use of dynamically loaded "plugins"). 
+To do that, add:
+--enable-shared --disable-static
+
+note: in the case of the --with-xxx-dir=path options, configure looks for 
+libxxx in path/lib and includes in path/include
+
+Here is a example:
+CXX=aCC CC=cc ./configure --enable-shared --disable-static --prefix=/home/jmvalin/net-install --with-fftw-dir=/opt --with-libtool-acc-kludge

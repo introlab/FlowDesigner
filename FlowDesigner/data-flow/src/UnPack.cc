@@ -44,13 +44,19 @@ ObjectRef UnPack::getOutput(int output_id, int count)
       processCount=count;
       
       NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
+      ObjectRef inputValue = input.node->getOutput(input.outputID,0);
       
       Vector<ObjectRef> &packed = object_cast <Vector<ObjectRef> > (inputValue);
       if (count < packed.size())
+      {
+         //cerr << packed[count] << endl;
          return packed[count];
+      }
       else
+      {
+         //cerr << "Past the end in Unpack\n";
          return Object::past_endObject;
+      }
    }
    else 
       throw NodeException (this, "UnPack: Unknown output id", __FILE__, __LINE__);

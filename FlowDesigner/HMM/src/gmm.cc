@@ -47,6 +47,7 @@ void GMM::kmeans2(vector<float *> frames, GMM *gmm)
 {
    vector<Score> scores;
    scores = gmm->minDistance(frames);
+   //scores = gmm->score(frames);
    reset_to_accum_mode();
    unsigned int i;
    for (i=0;i<frames.size();i++)
@@ -131,14 +132,16 @@ vector<Score> GMM::minDistance(vector <float * > fr) const
       (*cov)[j]=0;
    }
    if (1) {
+      int cov_count = 0;
    for (i=0;i<nb_gaussians;i++)
       for (j=0;j<dimensions;j++)
       {
-         (*cov)[j]+=1/(*(gaussians[i]->covariance))[j];
+         (*cov)[j]+=gaussians[i]->get_accum_count()/(*(gaussians[i]->covariance))[j];
+         cov_count += gaussians[i]->get_accum_count();
       }
    for (j=0;j<dimensions;j++)
    {
-      (*cov)[j]=nb_gaussians/((*cov)[j]);
+      (*cov)[j]=cov_count/((*cov)[j]);
       //cerr << (*cov)[j] << " ";
    }
    //cerr << endl;
@@ -177,8 +180,8 @@ Score GMM::minDistance(float * fr,Covariance *cov) const
    for (j=0;j<nb_gaussians;j++)
    {
       
-      float dist = gaussians[j]->euclidian(fr);
-      //float dist = gaussians[j]->mahalanobis(fr,cov);
+      //float dist = gaussians[j]->euclidian(fr);
+      float dist = gaussians[j]->mahalanobis(fr,cov);
       if (dist < min_dist)
       {
          min_dist=dist;

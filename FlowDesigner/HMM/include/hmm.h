@@ -22,7 +22,5 @@
 #include <string>
 #include <strstream.h>
 
-class HMM {
-};
 
 #endif

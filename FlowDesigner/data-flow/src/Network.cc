@@ -39,6 +39,7 @@ void Network::initializeFactories() {
       Network::addFactory ("ISVALID", new IsValidFactory);
       Network::addFactory ("SUM", new NodeFactory<Sum>);
       Network::addFactory ("VSUM", new NodeFactory<VSum>);
+      Network::addFactory ("VNSUM", new NodeFactory<VNSum>);
       Network::addFactory ("SAVE", new NodeFactory<Save>);
       Network::addFactory ("INPUTSTREAM", new NodeFactory<InputStream>);
       Network::addFactory ("OUTPUTSTREAM", new NodeFactory<OutputStream>);

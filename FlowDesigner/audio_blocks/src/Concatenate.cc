@@ -30,7 +30,7 @@ Concatenate::Concatenate(string nodeName, ParameterSet params)
 
 void Concatenate::specificInitialize()
 {
-   cerr << "Concatenate initialize...\n";
+   //cerr << "Concatenate initialize...\n";
    this->FrameBinaryOperation::specificInitialize();
 }
 
@@ -41,7 +41,7 @@ void Concatenate::reset()
 
 Concatenate::~Concatenate()
 {
-   cerr << "Destroying Concatenate\n";
+   //cerr << "Destroying Concatenate\n";
 }
 
 void Concatenate::computeFrame(ObjectRef input1, ObjectRef input2, int count)
