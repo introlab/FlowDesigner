@@ -177,7 +177,7 @@ void GUIDocument::load()
    //cerr << "this = " << this << endl;
    UIDocument::load();
    //cerr << "almost loaded\n";
-   cerr << "doc loaded\n";
+   //cerr << "doc loaded\n";
    for (int i=0;i<networks.size();i++)
    {
       dynamic_cast<GUINetwork *> (networks[i])->updateScroll();
