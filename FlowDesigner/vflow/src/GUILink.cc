@@ -303,19 +303,6 @@ gint GUILink::event(GdkEvent *event)
 
 	  gnome_canvas_points_unref(points);
 	}
-	else {
-
-	  //cursor grab bug...
-
-	  //not complete but not holding button 1
-	  gnome_canvas_item_ungrab(item, event->button.time);
-
-	  // commiting suicide
-	  delete this;
-	  return TRUE;
-     
-	}
-
       }
 
       break;

@@ -9,17 +9,14 @@
       <Parameter name="BUFFER" type="int" value="40000"/>
       <Parameter name="DUMMY" type="int" value=""/>
     </Node>
-    <Node name="node2" type="Constant" x="-379.000000" y="38.000000">
-      <Parameter name="VALUE" type="subnet_param" value="ARG1"/>
+    <Node name="node2" type="Constant" x="-375.000000" y="33.000000">
+      <Parameter name="VALUE" type="string" value="~/song.mp3"/>
     </Node>
-    <Node name="node4" type="MAIN_LOOP" x="107.000000" y="26.000000">
+    <Node name="node4" type="MAIN_LOOP" x="65.000000" y="26.000000">
       <Parameter name="FRAME_SIZE" type="int" value="256"/>
     </Node>
-    <Node name="node3" type="ExecStream" x="-146.000000" y="37.000000">
+    <Node name="node3" type="ExecStream" x="-186.000000" y="34.000000">
       <Parameter name="COMMAND" type="string" value="mpg123 --stdout "/>
-    </Node>
-    <Node name="node5" type="Constant" x="-585.000000" y="-49.000000">
-      <Parameter name="VALUE" type="subnet_param" value="ARG2"/>
     </Node>
     <Link from="node1" output="OUTPUT" to="node4" input="OUT_FILE"/>
     <Link from="node2" output="VALUE" to="node3" input="INPUT"/>
@@ -69,5 +66,4 @@
     <NetCondition name="CONDITION" node="node1" terminal="NOT_EOF"/>
   </Network>
   <Parameter name="ARG1" type="string" value="~/song.mp3"/>
-  <Parameter name="ARG2" type="int" value=""/>
 </Document>

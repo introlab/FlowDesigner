@@ -39,7 +39,7 @@ static void on_copy_activate (GtkMenuItem *menuitem, gpointer user_data) {
   //getting doc
   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
 
-  //calling application cut
+  //calling application copy
   vflowGUI::instance()->copy(doc);
 }
 
@@ -51,7 +51,7 @@ static void on_paste_activate (GtkMenuItem *menuitem, gpointer user_data) {
   //getting doc
   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
 
-  //calling application cut
+  //calling application paste
   vflowGUI::instance()->paste(doc);
 
 }
@@ -319,43 +319,14 @@ void GUIDocument::createView()
 void GUIDocument::load()
 {
    //cerr << "GUIDocument::load\n";
-   //cerr << "this = " << this << endl;
+
    UIDocument::load();
 	
-   // convert the textParams into GUI params
-   /*for (int i=0; i<textParams.size(); i++)
-   {
-	 DocParameterData newParam;
-	 newParam.name = textParams[i].name;
-	 newParam.value = textParams[i].value;
-	 newParam.type = textParams[i].type;
-	 params.insert(params.end(), newParam);
-	 }*/
-   params.resize(textParams.size());
-
-   //cerr << "almost loaded\n";
-   //cerr << "doc loaded\n";
    for (int i=0;i<networks.size();i++)
    {
       dynamic_cast<GUINetwork *> (networks[i])->updateScroll();
    }
-   //cerr << "aa\n";
-   //BUG I guess we should delete this, but it screws up with the threads
 
-   
-   //if (docproperty)
-   //{
-     // gtk_widget_destroy(docproperty);
-   //}
-   //cerr << "bb\n";
-   //createParamDialog();
-   //cerr << "cc\n";
-
-   for (int i=0;i<params.size();i++)
-   {
-      insertLoadedParam(&(params[i]), textParams[i]->type, textParams[i]->value);
-   }
-   //cerr << "doc load updated\n";
 }
 
 
@@ -448,9 +419,74 @@ static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
 
 void GUIDocument::showParams() {
 
-  createParamDialog();  
+  GUINetwork *net = dynamic_cast<GUINetwork*>(getNetworkNamed("MAIN"));
 
-  gtk_widget_show (docproperty);
+
+  //FIXME : FIND A BETTER IMPLEMENTATION !
+  if (net) {
+
+    vector<ItemInfo *> my_params;
+    
+    net->insertNetParams(my_params);
+    
+    //cerr<<"params size "<<my_params.size()<<endl;
+    
+    //looking for non existing parameters
+    for (int i = 0; i < my_params.size(); i++) {
+      
+      bool found = false;
+      
+      for (int j = 0; j < textParams.size(); j++) {
+	if (textParams[j]->name == my_params[i]->name) {
+	  found = true;
+	  break;
+	}
+      }
+      if (!found) {
+	//adding parameter
+	addParameterText(my_params[i]->name,my_params[i]->value,my_params[i]->type);   
+      }
+    }
+    
+    list<DocParameterDataText*> tmp_list;
+
+    for (int i = 0; i < textParams.size(); i++) {
+
+      bool found = false;
+ 
+      for (int j = 0; j < my_params.size(); j++) {
+	if (textParams[i]->name == my_params[j]->name) {
+	  found = true;
+	  break;
+	}
+      }
+      if (!found) {
+	//removing parameter
+	delete textParams[i];
+	textParams[i] = NULL;
+      }
+      else {
+	//keeping the parameter
+	tmp_list.push_back(textParams[i]);
+      }
+    }
+    
+    textParams.resize(tmp_list.size());
+
+    int i = 0; 
+    list<DocParameterDataText*>::iterator iter = tmp_list.begin();
+
+    for ( ;iter != tmp_list.end(); iter++,i++) {
+      textParams[i] = (*iter);
+    }
+
+    createParamDialog();  
+    
+    gtk_widget_show (docproperty);
+  }
+  else {
+    cerr<<"MAIN subnet does not exist..."<<endl;
+  }
 
 }
 
@@ -584,83 +620,84 @@ void GUIDocument::createParamDialog()
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
 
 
-
+  //making sure we have allocated enough GUI widgets for all parameters
+  params.resize(textParams.size());
   
-  for (i=0;i<params.size();i++)
-  {
+  for (i=0; i < textParams.size(); i++) {
 
     //creating label
-     params[i].label = gtk_label_new (textParams[i]->name.c_str());
-     gtk_widget_ref (params[i].label);
-     gtk_object_set_data_full (GTK_OBJECT (docproperty), "label", params[i].label,
-                               (GtkDestroyNotify) gtk_widget_unref);
-     gtk_widget_show (params[i].label);
-     gtk_table_attach (GTK_TABLE (table2), params[i].label, 0, 1, 2+i, 3+i,
-                       (GtkAttachOptions) (0),
-                       (GtkAttachOptions) (0), 0, 0);
-
-
-     //creating option menu
-     params[i].optionmenu = gtk_option_menu_new ();
-     gtk_widget_ref (params[i].optionmenu);
-     gtk_object_set_data_full (GTK_OBJECT (docproperty), "optionmenu", params[i].optionmenu,
-                               (GtkDestroyNotify) gtk_widget_unref);
-     gtk_widget_show (params[i].optionmenu);
-     gtk_table_attach (GTK_TABLE (table2), params[i].optionmenu, 1, 2, 2+i, 3+i,
-                       (GtkAttachOptions) (0),
-                       (GtkAttachOptions) (0), 0, 0);
-     params[i].optionmenu_menu = gtk_menu_new ();
-
-     const vector<string> &types=ObjectParam::allTypes(false);
-     for (int j=0;j<types.size();j++)
-     {
+    params[i].label = gtk_label_new (textParams[i]->name.c_str());
+    gtk_widget_ref (params[i].label);
+    gtk_object_set_data_full (GTK_OBJECT (docproperty), "label", params[i].label,
+			      (GtkDestroyNotify) gtk_widget_unref);
+    gtk_widget_show (params[i].label);
+    gtk_table_attach (GTK_TABLE (table2), params[i].label, 0, 1, 2+i, 3+i,
+		      (GtkAttachOptions) (0),
+		      (GtkAttachOptions) (0), 0, 0);
+    
+    
+    //creating option menu
+    params[i].optionmenu = gtk_option_menu_new ();
+    gtk_widget_ref (params[i].optionmenu);
+    gtk_object_set_data_full (GTK_OBJECT (docproperty), "optionmenu", params[i].optionmenu,
+			      (GtkDestroyNotify) gtk_widget_unref);
+    gtk_widget_show (params[i].optionmenu);
+    gtk_table_attach (GTK_TABLE (table2), params[i].optionmenu, 1, 2, 2+i, 3+i,
+		      (GtkAttachOptions) (0),
+		      (GtkAttachOptions) (0), 0, 0);
+    params[i].optionmenu_menu = gtk_menu_new ();
+    
+    const vector<string> &types=ObjectParam::allTypes(false);
+    for (int j=0;j<types.size();j++)
+      {
         glade_menuitem = gtk_menu_item_new_with_label ((const gchar *)types[j].c_str());
         gtk_object_set_user_data(GTK_OBJECT(glade_menuitem), (void *)types[j].c_str());
         gtk_widget_show (glade_menuitem);
         gtk_menu_append (GTK_MENU (params[i].optionmenu_menu), glade_menuitem);
-     }
-
-     gtk_option_menu_set_menu (GTK_OPTION_MENU (params[i].optionmenu), params[i].optionmenu_menu);
-     
-     //setting history according to the type
-     for (int j=0;j<types.size();j++) {
-       if (types[j] == textParams[i]->type) {
-         gtk_option_menu_set_history (GTK_OPTION_MENU (params[i].optionmenu), j);
-       }
-     }        
-
-     gtk_signal_connect (GTK_OBJECT ( params[i].optionmenu_menu ), "selection-done",
+      }
+    
+    gtk_option_menu_set_menu (GTK_OPTION_MENU (params[i].optionmenu), params[i].optionmenu_menu);
+    
+    //setting history according to the type
+    for (int j=0;j<types.size();j++) {
+      if (types[j] == textParams[i]->type) {
+	gtk_option_menu_set_history (GTK_OPTION_MENU (params[i].optionmenu), j);
+      }
+    }        
+    
+    gtk_signal_connect (GTK_OBJECT ( params[i].optionmenu_menu ), "selection-done",
                         GTK_SIGNAL_FUNC( type_changed), this);
+    
+    
+    
+    //entry
+    params[i].entry = gnome_entry_new (NULL);
+    gtk_widget_ref (params[i].entry);
+    gtk_object_set_data_full (GTK_OBJECT (docproperty), "entry", params[i].entry,
+			      (GtkDestroyNotify) gtk_widget_unref);
 
+    gtk_widget_show (params[i].entry);
+	
 
+    gtk_table_attach (GTK_TABLE (table2), params[i].entry, 2, 3, 2+i, 3+i,
+		      (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+		      (GtkAttachOptions) (0), 0, 0);
+    
+    params[i].combo_entry = gnome_entry_gtk_entry (GNOME_ENTRY (params[i].entry));
+    gtk_widget_ref (params[i].combo_entry);
+    gtk_object_set_data_full (GTK_OBJECT (docproperty), "combo_entry", params[i].combo_entry,
+			      (GtkDestroyNotify) gtk_widget_unref);
+    gtk_widget_show (params[i].combo_entry);
 
-     //entry
-     params[i].entry = gnome_entry_new (NULL);
-     gtk_widget_ref (params[i].entry);
-     gtk_object_set_data_full (GTK_OBJECT (docproperty), "entry", params[i].entry,
-                               (GtkDestroyNotify) gtk_widget_unref);
-     gtk_widget_show (params[i].entry);
-     gtk_table_attach (GTK_TABLE (table2), params[i].entry, 2, 3, 2+i, 3+i,
-                       (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                       (GtkAttachOptions) (0), 0, 0);
-     
-     params[i].combo_entry = gnome_entry_gtk_entry (GNOME_ENTRY (params[i].entry));
-     gtk_widget_ref (params[i].combo_entry);
-     gtk_object_set_data_full (GTK_OBJECT (docproperty), "combo_entry", params[i].combo_entry,
-                               (GtkDestroyNotify) gtk_widget_unref);
-     gtk_widget_show (params[i].combo_entry);
-     
-     GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
-     gtk_signal_connect (GTK_OBJECT ( gtkentr  ), "changed",
-                         GTK_SIGNAL_FUNC(entry_changed), this);
+    //setting combo entry text
+    gtk_entry_set_text (GTK_ENTRY(params[i].combo_entry), textParams[i]->value.c_str());  
+
+    
+    GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
+    gtk_signal_connect (GTK_OBJECT ( gtkentr  ), "changed",
+			GTK_SIGNAL_FUNC(entry_changed), this);
   }
   
-
-
-
-
-
-
   label12 = gtk_label_new (_("Parameters"));
   gtk_widget_ref (label12);
   gtk_object_set_data_full (GTK_OBJECT (docproperty), "label12", label12,
