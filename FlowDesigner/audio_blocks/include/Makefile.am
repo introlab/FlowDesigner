@@ -2,10 +2,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 
 include_HEADERS = 
 
-noinst_HEADERS = GCMS.h \
-	Label.h \
-	LabelSet.h \
-	MMIAccumulator.h \
+noinst_HEADERS = MMIAccumulator.h \
 	Histogram.h \
 	lpc.h \
 	window.h \

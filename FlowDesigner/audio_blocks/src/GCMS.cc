@@ -13,100 +13,116 @@
 // You should have received a copy of the GNU General Public License
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#include "GCMS.h"
-#include "FrameOperation.h"
+
+#include "BufferedNode.h"
 #include "Vector.h"
+
+class GCMS;
 
 DECLARE_NODE(GCMS)
 /*Node
  *
  * @name GCMS
  * @category Signal:DSP
- * @description Deprecated
+ * @description Growing-Window Cepstral Mean Subtraction
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input frames
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description CMS output
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Frame lentgh (features)
  *
 END*/
 
+class GCMS : public BufferedNode {
+protected:
+   /**Length of input frames*/
+   int length;
 
-GCMS::GCMS(string nodeName, const ParameterSet &params) 
-   : FrameOperation(nodeName, params) 
-   , sum(outputLength, float ())
-   , accumCount(0)
-{
-   inputID = addInput("INPUT");
-   if (parameters.exist("INPUTLENGTH"))
-      inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-   else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-}
+   /** inputID*/
+   int inputID;
 
-void GCMS::specificInitialize()
-{
-   //cerr << "GCMS initialize...\n";
-   this->FrameOperation::specificInitialize();
-   
-   for (int i=0;i<outputLength;i++)
-      sum[i]=0;
-   accumCount=0;
-}
+   /** outputID */
+   int outputID;
 
-void GCMS::reset()
-{
-   this->FrameOperation::reset();
+   /** sum for the running average */
+   vector<float> sum;
 
-   for (int i=0;i<outputLength;i++)
-      sum[i]=0;
-   accumCount=0;
-}
+   /** number of frames accumulated */
+   int accumCount;
 
-ObjectRef GCMS::getOutput(int output_id, int count)
-{
-   try {
-      Buffer &out = object_cast<Buffer> (output);
-      
-      if (count != processCount)
-      {
-         int i;
-         ObjectRef inputValue;
-         processCount = count;
-         NodeInput input = inputs[inputID];
-         
-         inputValue = input.node->getOutput(input.outputID, count);
-         if (inputValue->status != Object::valid)
-         {
-            return inputValue;
-         }
-         //cerr << "input invalid? " << invalid<< endl;
-         
-         
-         //cerr << "computing\n";
-         //this->computeFrame(inputBuffer, count);
-         Vector<float> &cms = object_cast<Vector<float> > (out[count]);
-         Vector<float> &in = object_cast<Vector<float> > (inputValue);
-         accumCount++;
-         float inv_accum=1.0/accumCount;
-         for (i=0;i<outputLength;i++)
-         {
-            sum[i] = (1-inv_accum)*sum[i] + inv_accum*in[i];
-            cms[i] = in[i]-sum[i];
-           
-         }
-         out[count]->status = Object::valid;
-      }
-      
-      //cerr << "leaving GCMS::getOutput for " << name << " count: " << count << endl;
-      //cerr << "returning status " << out[count]->status << endl;
-      return out[count];
-   } catch (BaseException *e)
+public:
+   GCMS(string nodeName, const ParameterSet &params) 
+      : BufferedNode(nodeName, params) 
+      , accumCount(0)
    {
-      //e->print();
-      throw e->add(new NodeException (this, "Exception in GCMS::getOutput", __FILE__, __LINE__));
+      outputID = addOutput ("OUTPUT");
+      inputID = addInput("INPUT");
+      length = dereference_cast<int> (parameters.get("LENGTH"));
+      sum.resize(length);
+      inOrder = true;
    }
-}
+
+   void specificInitialize()
+   {
+      //cerr << "GCMS initialize...\n";
+      BufferedNode::specificInitialize();
+      
+      for (int i=0;i<length;i++)
+	 sum[i]=0;
+      accumCount=0;
+   }
+   
+   void reset()
+   {
+      BufferedNode::reset();
+      
+      for (int i=0;i<length;i++)
+	 sum[i]=0;
+      accumCount=0;
+   }
+
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      int i;
+      ObjectRef inputValue = getInput(inputID, count);
+      if (inputValue->status != Object::valid)
+      {
+	 out[count] = inputValue;
+      }
+
+      //Vector<float> &cms = object_cast<Vector<float> > (out[count]);
+      Vector<float> &output = *Vector<float>::alloc(length);
+      out[count] = &output;
+
+      Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      accumCount++;
+      float inv_accum=1.0/accumCount;
+      for (i=0;i<length;i++)
+      {
+	 sum[i] = (1-inv_accum)*sum[i] + inv_accum*in[i];
+	 output[i] = in[i]-sum[i];
+           
+      }
+   }
+
+protected:
+   /**Default constructor, should not be used*/
+   GCMS() {throw new GeneralException("GCMS copy constructor should not be called",__FILE__,__LINE__);}
+
+};
+
+
+
+
+
+
+
+
+
