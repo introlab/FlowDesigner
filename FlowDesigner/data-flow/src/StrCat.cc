@@ -2,7 +2,6 @@
 
 #include "BufferedNode.h"
 #include "Buffer.h"
-#include "Vector.h"
 
 class StrCat;
 
@@ -10,7 +9,7 @@ DECLARE_NODE(StrCat)
 /*Node
  *
  * @name StrCat
- * @category General
+ * @category ZDeprecated
  * @description Concatenates two strings together (deprecated, use Concat instead)
  *
  * @input_name INPUT1

@@ -2,7 +2,6 @@
 
 
 #include "Node.h"
-#include "Vector.h"
 #include "ObjectParser.h"
 
 #include "variables.h"

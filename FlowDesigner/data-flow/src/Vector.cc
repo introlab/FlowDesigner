@@ -12,13 +12,13 @@
 #include <complex>
 
 //static int dummy = Object::addObjectType<Vector<float> > ("Vector", new ObjectFactory<Vector<float> > ("Vector"));
+DECLARE_TYPE3("Vector", Vector<float>, 6)
 DECLARE_TYPE2(Vector<float>, 0)
 DECLARE_TYPE2(Vector<double>, 1)
 DECLARE_TYPE2(Vector<int>, 2)
 DECLARE_TYPE2(Vector<ObjectRef>, 3)
 DECLARE_TYPE3("Vector<complex<float>>", Vector<complex<float> >, 4)
 DECLARE_TYPE3("Vector<complex<double>>", Vector<complex<double> >, 5)
-DECLARE_TYPE3("Vector", Vector<float>, 6)
 
 VectorPool<float> floatVectorPool;
 

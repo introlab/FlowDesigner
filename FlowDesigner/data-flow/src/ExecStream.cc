@@ -2,7 +2,6 @@
 
 
 #include "BufferedNode.h"
-#include "Vector.h"
 #include "ObjectParser.h"
 
 #include <stdio.h>

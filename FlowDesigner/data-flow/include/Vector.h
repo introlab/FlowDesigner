@@ -24,7 +24,7 @@ public:
    explicit Vector(int n, const T &x = T()) : vector<T>(n, x) {}
    void printOn(ostream &out) const
    {
-      out << className();
+      out << "<" << className();
       for (int i=0; i < size(); i++)
       {
 	 out << " " << operator[](i);
@@ -44,6 +44,14 @@ public:
    static Vector<T> *alloc(int size);
 
 };
+
+/*template <class T>
+inline ostream &operator << (ostream &out, const Vector<T> &v)
+{
+   v.printOn(out);
+   return out;
+   }*/
+
 
 
 template <class T>
@@ -145,6 +153,8 @@ struct VecBinary<T,TTraits::Object> {
 	 if (!isValidType(in, v.className())) return in;
 	 v[i].unserialize(in);
       }
+      char ch;
+      in >> ch;
    }
 };
 
@@ -171,6 +181,8 @@ struct VecBinary<T,TTraits::ObjectPointer> {
       {
 	 in >> v[i];
       }
+      char ch;
+      in >> ch;
    }
 };
 
@@ -192,6 +204,8 @@ struct VecBinary<T,TTraits::Basic> {
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
       BinIO::read(in, &(const_cast<Vector<T> &>(v))[0], v.size());
+      char ch;
+      in >> ch;
    }
 };
 
@@ -265,7 +279,7 @@ inline Vector<double> *Vector<double>::alloc(int size)
 {
    return doubleVectorPool.newVector(size);
 }
-
+/*
 inline bool isValidVectorType (istream &in, const string &className, bool binary=false)
 {
    char ch;
@@ -276,22 +290,50 @@ inline bool isValidVectorType (istream &in, const string &className, bool binary
       in >> type;
       if (type != "Vector" && type != className)
 	 throw new ParsingException ("Parser expected type Vector<Type> and got " + type);
+      return binary;
    } else {
+      throw new GeneralException ("Vector type validation failed", __FILE__, __LINE__);
       in.putback(ch);
       in.clear(ios::failbit);
       return false;
    }
    return true;
 }
+*/
 
-
-
+//FIXME: should check type
 template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
 {
-   if (!isValidVectorType(in, vec.className())) return in;
-   vec.readFrom(in);
+   /*if (validateVectorType(in, vec.className()))
+      vec.readFrom(in);
+   else
+      vec.unserialize(in);
    return in;
+   */
+
+   char ch;
+   in >> ch;
+
+   if (ch == '<')
+   {
+      string type;
+      in >> type;
+      vec.readFrom(in);
+   } else if (ch == '{')
+   {
+      string type;
+      in >> type;
+      char dummy;
+      do {
+         in >> dummy;
+      } while(dummy != '|');
+      vec.unserialize(in);
+   } else {
+      in.putback(ch);
+   }
+   
+
 }
 
 

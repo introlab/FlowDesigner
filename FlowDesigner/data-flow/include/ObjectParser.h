@@ -140,7 +140,6 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
 {
    char ch;
    in >> ch;
-
    if (ch == '<')
    {
       string type;
