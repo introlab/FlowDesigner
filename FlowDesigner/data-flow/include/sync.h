@@ -13,6 +13,7 @@ inline void spinlock_init(spinlock_t *spin)
 
 inline void spinlock_lock(spinlock_t *spin)
 {
+   //Should use sched_yield on UP systems when we cannot lock
    __asm__ __volatile__ (
    "
    pushl %%ebx

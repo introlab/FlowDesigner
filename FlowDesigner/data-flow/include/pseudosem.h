@@ -26,9 +26,9 @@ inline void pseudosem_wait(pseudosem_t *sem)
    pthread_mutex_lock(&sem->mutex);
    if (!sem->val)
    {
-      cerr << "waiting\n";
+      //cerr << "waiting\n";
       pthread_cond_wait(&sem->cond, &sem->mutex);
-      cerr << "end waiting\n";
+      //cerr << "end waiting\n";
    }
    sem->val--;
    pthread_mutex_unlock(&sem->mutex);
@@ -36,9 +36,9 @@ inline void pseudosem_wait(pseudosem_t *sem)
 
 inline void pseudosem_post(pseudosem_t *sem)
 {
-   cerr << "locking for post\n";
+   //cerr << "locking for post\n";
    pthread_mutex_lock(&sem->mutex);
-   cerr << "locked for post\n";
+   //cerr << "locked for post\n";
    pthread_cond_signal(&sem->cond);
    sem->val++;
    pthread_mutex_unlock(&sem->mutex);

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.100 2002/01/16 05:15:46 jmvalin Exp $
+# $Id: Makefile.am,v 1.101 2002/01/16 14:48:58 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -122,7 +122,8 @@ libflow_la_SOURCES = Node.cc \
 	VectorCode.cc \
 	CompositeType.cc \
 	MakeComposite.cc \
-	GetComposite.cc
+	GetComposite.cc \
+	rtc.cc
 
 
 

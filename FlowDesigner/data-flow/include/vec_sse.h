@@ -12,7 +12,87 @@
 #define CLOBBER_SSE : "memory"
 
 
+//template <>
+inline void vec_mul_and_add_sse(const float a, const float *b, float *c, int len)
+{
+  __asm__ __volatile__ (
+  "
+  push %0
+  push %1
+  push %2
+  push %3
 
+  movss (%0), %%xmm0
+  shufps $0, %%xmm0, %%xmm0
+
+  sub $8, %2
+  jb mul8_skip%=
+
+mul8_loop%=:
+  movups (%1), %%xmm1
+  movups 16(%1), %%xmm2
+  mulps %%xmm0, %%xmm1
+  mulps %%xmm0, %%xmm2
+  
+  movups (%3), %%xmm3
+  movups 16(%3), %%xmm4
+  addps %%xmm1, %%xmm3
+  addps %%xmm2, %%xmm4
+  movups %%xmm3, (%3)
+  movups %%xmm4, 16(%3)
+
+  add $32, %1
+  add $32, %3
+  sub $8,  %2
+
+  jae mul8_loop%=
+
+mul8_skip%=:
+
+  add $4, %2
+  jl mul4_skip%=
+
+  movups (%1), %%xmm1
+  mulps %%xmm0, %%xmm1
+  movups (%3), %%xmm3
+  addps %%xmm1, %%xmm3
+  movups %%xmm3, (%3)
+
+  add $16, %1
+  add $16, %3
+
+  sub $4,  %2
+
+mul4_skip%=:
+
+
+  add $4, %2
+
+  jmp cond1%=
+
+mul1_loop%=:
+
+  movss (%1), %%xmm1
+  mulss %%xmm0, %%xmm1
+  movss (%3), %%xmm3
+  addss %%xmm1, %%xmm3
+  movss %%xmm3, (%3)
+  add $4, %1
+  add $4, %3
+
+cond1%=:
+  sub $1, %2
+  jae mul1_loop%=
+
+  pop %3
+  pop %2
+  pop %1
+  pop %0
+  "
+  : : "r" (&a), "r" (b), "q" (len), "r" (c)
+  CLOBBER_SSE
+  );
+}
 
 inline float vec_inner_prod_sse(const float *a, const float *b, int len)
 {
