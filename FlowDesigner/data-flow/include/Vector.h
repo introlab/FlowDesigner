@@ -46,7 +46,7 @@ class BaseVector  : public Object {
 	\return ObjectRef the newly created Object
    */
    virtual ObjectRef index(int pos) {
-   	throw new GeneralException(string("index not implemented for object : ") + className(),__FILE__,__LINE__);
+   	throw new GeneralException(string("Vector index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 };
 

@@ -9,6 +9,30 @@
 #include "typetraits.h"
 #include "binio.h"
 
+class BaseMatrix : public Object {
+
+public:   
+   ///constructor
+   BaseMatrix(){}
+
+   ///return matrix size 
+   virtual size_t msize() const = 0;
+   
+   ///return true if matrix empty
+   virtual bool mempty() const = 0;
+      
+   /**
+   	Returns an element (in an ObjectRef) of the vector
+	\param pos the position of the element
+	\return ObjectRef the newly created Object
+   */
+   virtual ObjectRef index(int _row, int _col) {
+   	throw new GeneralException(string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
+   }
+	
+
+};
+
 /**
 
 Matrix class (template). Registered Matrices are : Matrix<bool>, Matrix<int>, Matrix<float>, 
@@ -20,7 +44,7 @@ Matrix<double>, Matrix<complex<float>>, Matrix<complex<double>>, Matrix<ObjectRe
 
 */
 template<class T>
-class Matrix : public Object
+class Matrix : public BaseMatrix
 {
 protected:
 
@@ -155,6 +179,8 @@ public:
 
    ///returns the number of cols
    int ncols() const {return cols;}
+   
+   
 
    ///transpose the matrix (i,j) becomes (j,i), cols = rows, rows = cols.
    void transpose()
@@ -221,6 +247,12 @@ public:
      return (cols * rows);
    }
 
+   ///return matrix size 
+   virtual size_t msize() const {return cols * rows;}
+   
+   ///return true if matrix empty
+   virtual bool mempty() const {return (cols == 0 && rows == 0);}
+   
 
    /**
       Binary Matrix output in the FlowDesigner Format.<br>
@@ -245,6 +277,9 @@ public:
       else
 	 return name;
    }
+   
+   ///Return matrix element at _row, _col
+   virtual ObjectRef index(int _row, int _col);
 
 };
 
