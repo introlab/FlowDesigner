@@ -284,8 +284,15 @@ void vflowGUI::clear(GUIDocument *doc) {
   }
 }
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
+static gboolean delete_app(GtkWidget *widget, GdkEvent *event, vflowGUI *appPtr)
+{
 
+  exit_event(NULL, appPtr);
+  return TRUE;
+}
 
 
 /**********************************************************************************************************
@@ -1039,6 +1046,11 @@ static GnomeUIInfo menubar1_uiinfo[] =
   GtkWidget *appbar1;
 
   app1 = gnome_app_new ("VFlow", _("VFlow"));
+
+  //call the delete_app function when closing window
+  gtk_signal_connect (GTK_OBJECT (app1), "delete-event",GTK_SIGNAL_FUNC (delete_app), this);
+
+
 
   bonobodock1 = GNOME_APP (app1)->dock;
   gtk_widget_show (bonobodock1);
