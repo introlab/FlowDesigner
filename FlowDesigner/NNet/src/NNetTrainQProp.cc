@@ -13,6 +13,7 @@ DECLARE_NODE(NNetTrainQProp)
  *
  * @name NNetTrainQProp
  * @category NNet
+ * @require FFNetTrain
  * @description Neural network (MLP) training unsing the Quickprop algorithm
  *
  * @input_name TRAIN_IN

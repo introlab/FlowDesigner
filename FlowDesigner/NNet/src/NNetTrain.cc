@@ -12,6 +12,7 @@ DECLARE_NODE(NNetTrain)
  *
  * @name NNetTrain
  * @category NNet
+ * @require FFNetTrain
  * @description No description available
  *
  * @input_name TRAIN_IN

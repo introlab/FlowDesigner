@@ -13,6 +13,7 @@ DECLARE_NODE(NNetTrainSCG)
  *
  * @name NNetTrainSCG
  * @category NNet
+ * @require FFNetTrain
  * @description Neural network (MLP) training unsing the scaled conjugate gradient algorithm
  *
  * @input_name TRAIN_IN

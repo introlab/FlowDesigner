@@ -13,6 +13,7 @@ DECLARE_NODE(NNetTrainWeightDBD)
  *
  * @name NNetTrainWeightDBD
  * @category NNet
+ * @require FFNetTrain
  * @description Neural network (MLP) training unsing the Delta-bar-delta algorithm
  *
  * @input_name TRAIN_IN

@@ -6,6 +6,9 @@
 #include <vector>
 #include "Vector.h"
 
+//@require FFNet
+//@implements FFNetTrain
+
 void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float *> tout, 
 				  int iter, float learnRate, float increase, float decrease, 
 				  int nbSets, bool rprop)

@@ -12,6 +12,7 @@ DECLARE_NODE(NNetTrainRecurrent)
 
  * @name NNetTrainRecurrent
  * @category NNet
+ * @require FFNetTrain
  * @description No description available
 
  * @input_name TRAIN_IN
