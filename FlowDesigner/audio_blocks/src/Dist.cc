@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <math.h>
@@ -23,36 +23,33 @@ class Dist;
 
 DECLARE_NODE(Dist)
 /*Node
-
+ *
  * @name Dist
  * @category Signal:DSP
- * @description No description available
-
- * @input_name INPUT
- * @input_description No description available
-
- * @input_name REF
- * @input_description No description available
-
+ * @description Calculates the distance between two vectors
+ *
+ * @input_name INPUT1
+ * @input_type Vector
+ * @input_description First input vector
+ *
+ * @input_name INPUT2
+ * @input_type Vector
+ * @input_description Second input vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
- * @parameter_name INPUTLENGTH
- * @parameter_description No description available
-
- * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
+ * @output_type Vector
+ * @output_description Distance between INPUT1 and INPUT2
+ *
 END*/
 
 
-class Dist : public FrameOperation {
+class Dist : public BufferedNode {
    
-   int refID;
-   int inputID;
-   int inputLength;
+   int input2ID;
+   int input1ID;
+   int outputID;
 
-   static float cos_dist(const float *x1, const float *x2, int len)
+   static float ncos_dist(const float *x1, const float *x2, int len)
    {
       double xx=0,xy=0,yy=0;
       double sx=0,sy=0;
@@ -72,7 +69,7 @@ class Dist : public FrameOperation {
       }
       return xy/sqrt(xx*yy);
    }
-/*  
+
    static float cos_dist(const float *x1, const float *x2, int len)
    {
       double xx=0,xy=0,yy=0;
@@ -93,57 +90,43 @@ class Dist : public FrameOperation {
       }
       return xy/sqrt(xx*yy);
    }
-*/
+
 public:
    Dist(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
-      inputID = addInput("INPUT");
-      refID = addInput("REF");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      input1ID = addInput("INPUT1");
+      input2ID = addInput("INPUT2");
+      outputID = addOutput("OUTPUT");
    }
 
-   ~Dist() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-   }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      ObjectRef input1Value = getInput(input1ID, count);
+      ObjectRef input2Value = getInput(input2ID, count);
 
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (inputValue->status != Object::valid)
+      if (input1Value->status != Object::valid)
       {
-         output.status = inputValue->status;
+         out[count] = input1Value;
          return;
       }
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
-      NodeInput refInput = inputs[refID];
-      ObjectRef refValue = refInput.node->getOutput(refInput.outputID, count);
-     
-      Vector<ObjectRef> &ref = object_cast<Vector<ObjectRef> > (refValue);
-      for (int i=0;i<outputLength;i++)
+      if (input2Value->status != Object::valid)
       {
-	 output[i]=cos_dist(&in[0], &object_cast<Vector<float> > (ref[i])[0], in.size());
-	 }
-      
-      /*NodeInput refInput = inputs[refID];
-      ObjectRef refValue = refInput.node->getOutput(refInput.outputID, count);
-     
-      Vector<float> &ref = object_cast<Vector<float> > (refValue);
-      for (int i=0;i<outputLength;i++)
-      {
-	 output[i]=cos_dist(in.begin(), ref.begin(), inputLength);
-	 }*/
+         out[count] = input2Value;
+         return;
+      }
 
-      output.status = Object::valid;
+      const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
+      const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
+      
+      if (in1.size() != in2.size())
+	 throw new NodeException(this, "Vector size don't match", __FILE__, __LINE__);
+      
+      float dist = cos_dist(&in1[0], &in2[0], in1.size());
+      
+      out[count] = ObjectRef (new Float (dist));
+
    }
 
 };
