@@ -58,7 +58,8 @@ include_HEADERS = Array.h \
 	vec_3dnow.h \
 	vec_sse.h \
 	flow_pref.h \
-	flow_version.h
+	flow_version.h \
+	compile_object.h
 	
 noinst_HEADERS = \
 	NetExec.h \

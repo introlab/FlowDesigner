@@ -57,7 +57,7 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 #include <dl.h>
 
 typedef shl_t DL_HANDLE_TYPE;
-inline DL_HANDLE_TYPE _DL_OPEN(string path) 
+inline DL_HANDLE_TYPE _DL_OPEN(string path)
 {
    //cerr << "_DL_OPEN(" << path.c_str() << ") \n";
    DL_HANDLE_TYPE library = shl_load (path.c_str(), BIND_IMMEDIATE, 0);
