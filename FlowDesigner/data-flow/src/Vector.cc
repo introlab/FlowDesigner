@@ -7,6 +7,7 @@
 #include "DoubleDispatch.h"
 #include "operators.h"
 #include "vec.h"
+#include <complex>
 
 static int dummy = Object::addObjectType ("Vector", new ObjectFactory<Vector<float> >);
 
@@ -113,3 +114,42 @@ ObjectRef mulVectorFloatFloat (ObjectRef x, ObjectRef y)
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorFloatFloat, Vector<float>, Float);
+
+
+
+ObjectRef addVectorComplexFloat(ObjectRef x, ObjectRef y)
+{
+   Vector<complex<float> > &v1 = object_cast<Vector<complex<float> > > (x);
+   Vector<complex<float> > &v2 = object_cast<Vector<complex<float> > > (y);
+   if (v1.size() != v2.size())
+   {
+      cerr << v1.size() << " != " << v2.size() << endl;
+      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
+   }
+   int length = v1.size();
+
+   Vector<complex<float> > *v = Vector<complex<float> >::alloc(length);
+   vec_add_vec(&v1[0], &v2[0], &(*v)[0], length);
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addVectorComplexFloat, Vector<complex<float> >, Vector<complex<float> >);
+
+
+ObjectRef mulVectorComplexFloat(ObjectRef x, ObjectRef y)
+{
+   Vector<complex<float> > &v1 = object_cast<Vector<complex<float> > > (x);
+   Vector<complex<float> > &v2 = object_cast<Vector<complex<float> > > (y);
+   if (v1.size() != v2.size())
+   {
+      cerr << v1.size() << " != " << v2.size() << endl;
+      throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
+   }
+   int length = v1.size();
+
+   Vector<complex<float> > *v = Vector<complex<float> >::alloc(length);
+   vec_mul_vec(&v1[0], &v2[0], &(*v)[0], length);
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulVectorComplexFloat, Vector<complex<float> >, Vector<complex<float> >);
+
+
