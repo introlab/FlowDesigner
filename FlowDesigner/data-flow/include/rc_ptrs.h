@@ -109,8 +109,10 @@ public:
    bool isNil() {return ptr == 0;}
 
    template <class Z>
-   RCPtr(const RCPtr<Z> &r)
-   {
+     RCPtr(const RCPtr<Z> &r);
+
+   /*{
+     cerr << "RCPtr(const RCPtr<Z> &r)" << endl;
       ptr=dynamic_cast<X*> (r.ptr);
       if (!ptr) 
          {
@@ -119,7 +121,7 @@ public:
          }
       //count=r.count;
       acquire();
-   }
+      }*/
    
    RCPtr(const RCPtr<X> &r)
    {
@@ -280,6 +282,29 @@ RCPtr<X>& RCPtr<X>::operator= (const RCPtr<Z> &r)
    return *this;
 }
 
+template <class X>
+template <class Z>
+RCPtr<X>::RCPtr (const RCPtr<Z> &r)
+{
+  X *tmp=dynamic_cast<X*> (r.ptr);
+  //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
+  if (!tmp) {
+    
+    //calling conversion code
+    RCPtr<Object> conv = Conversion::convertTo<X>(r);
+    tmp = dynamic_cast<X*>(conv.ptr);
+    
+    if (!tmp) {
+      throw new GeneralException("Something is wrong in RCPtr::operator=, this should not happen.",__FILE__,__LINE__);
+    }
+    //must do that, since conv is local and we don't want the object to be deleted!
+    ptr=tmp;
+    acquire();
+  } else {
+    ptr=tmp;
+    acquire();
+  }
+}
 
 #endif
 
