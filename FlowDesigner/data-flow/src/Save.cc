@@ -25,56 +25,72 @@ DECLARE_NODE(Save)
  * @output_name OUTPUT
  * @output_description The input object
  *
+ * @parameter_name PRETTY_PRINT
+ * @parameter_type bool
+ * @parameter_value false
+ * @parameter_description If we want to print human readable output (and Matlab)
+ *
 END*/
 
 class Save : public BufferedNode {
 
 protected:
    
-   /**The ID of the 'output' output*/
-   int outputID;
-
-   /**The ID of the 'stream' input*/
-   int streamInputID;
-
-   /**The ID of the 'object' input*/
-   int objectInputID;
-
-   /**Reference to the opened stream*/
-   ObjectRef openedFile;
-
+  /**The ID of the 'output' output*/
+  int outputID;
+  
+  /**The ID of the 'stream' input*/
+  int streamInputID;
+  
+  /**The ID of the 'object' input*/
+  int objectInputID;
+  
+  /**Pretty print instead of printOn*/
+  bool pretty_print;
+  
+  /**Reference to the opened stream*/
+  ObjectRef openedFile;
+  
 public:
-   Save(string nodeName, ParameterSet params) 
-      : BufferedNode(nodeName, params)
-   {
-      outputID = addOutput("OUTPUT");
-      streamInputID = addInput("STREAM");
-      objectInputID = addInput("OBJECT");
-   }
+  Save(string nodeName, ParameterSet params) 
+    : BufferedNode(nodeName, params)
+  {
+    outputID = addOutput("OUTPUT");
+    streamInputID = addInput("STREAM");
+    objectInputID = addInput("OBJECT");
+    pretty_print = dereference_cast<bool>(parameters.get("PRETTY_PRINT"));
+  }
 
 
-   void calculate(int output_id, int count, Buffer &out)
-   {
-      ObjectRef objectValue = getInput(objectInputID,count);
-      Object &object = *objectValue;
-      
-      ObjectRef streamValue = getInput(streamInputID,count);
-
-      OStream &stream = object_cast<OStream> (streamValue);
-      
+  void calculate(int output_id, int count, Buffer &out)
+  {
+    ObjectRef objectValue = getInput(objectInputID,count);
+    Object &object = *objectValue;
+    
+    ObjectRef streamValue = getInput(streamInputID,count);
+    
+    OStream &stream = object_cast<OStream> (streamValue);
+  
+    if (pretty_print) {
+      objectValue->prettyPrint(stream);
+    }
+    else {
       stream << object;
-      ostream &tmp = stream;
-      tmp << endl;
-      stream.flush();
-      out[count] = objectValue;
-   }
+    }
 
-   virtual void request(int outputID, const ParameterSet &req) 
-   {
-      inputs[objectInputID].node->request(outputID,req);
-   }
+    ostream &tmp = stream;
+    tmp << endl;
+    stream.flush();
 
-
+    out[count] = objectValue;
+  }
+  
+  virtual void request(int outputID, const ParameterSet &req) 
+  {
+    inputs[objectInputID].node->request(outputID,req);
+  }
+  
+  
 };
 
 
