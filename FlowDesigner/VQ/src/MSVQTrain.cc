@@ -84,29 +84,29 @@ public:
       and for the 'count' iteration */
    virtual void calculate(int output_id, int count, Buffer &out)
    {
-	    bool binary = false;
-	    if (parameters.exist("BINARY"))
-	       binary = dereference_cast<bool> (parameters.get("BINARY"));
-	    int i;
-	    NodeInput framesInput = inputs[framesInputID];
+      bool binary = false;
+      if (parameters.exist("BINARY"))
+         binary = dereference_cast<bool> (parameters.get("BINARY"));
+      int i;
+      NodeInput framesInput = inputs[framesInputID];
 	    
-	    cerr << "getting frames..." << endl;
-	    ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
-	    cerr << "got frames..." << endl;
-	    Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
+      cerr << "getting frames..." << endl;
+      ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
+      cerr << "got frames..." << endl;
+      Vector<ObjectRef>  &mat = object_cast<Vector<ObjectRef> > (matRef);
 	    
-	    MSVQ *vq = new MSVQ(stages);
+      MSVQ *vq = new MSVQ(stages);
 	    
-	    vector <float *> data(mat.size());
-	    for (i=0;i<mat.size();i++)
-	       data[i]= &object_cast <Vector<float> > (mat[i])[0];
-	    int length =  object_cast <Vector<float> > (mat[0]).size();
+      vector <float *> data(mat.size());
+      for (i=0;i<mat.size();i++)
+         data[i]= &object_cast <Vector<float> > (mat[i])[0];
+      int length =  object_cast <Vector<float> > (mat[0]).size();
 	    
-	    cerr << "training..." << endl;
-	    vq->train(data,length,binary);
-	    cerr << "training complete." << endl;
+      cerr << "training..." << endl;
+      vq->train(data,length,binary);
+      cerr << "training complete." << endl;
 
-	    out[count] = ObjectRef(vq);
+      out[count] = ObjectRef(vq);
    }
 
 };

@@ -46,18 +46,6 @@ public:
    }
    
    ~Sleep() {RTCTimer::destroy(rtc);}
-
-   /**Do nothing for requests since we have no inputs*/
-   virtual void request(int outputID, const ParameterSet &req) {}
-
-   void specificInitialize() {
-      this->Node::specificInitialize();
-   }
-  
-   void reset() 
-   {
-      this->Node::reset();
-   }
    
    ObjectRef getOutput(int output_id, int count) 
    {      

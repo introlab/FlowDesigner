@@ -40,9 +40,6 @@ public:
       maxIter = dereference_cast<int> (parameters.get("MAX_ITER"));
    }
    
-   /**Do nothing for requests since we have no inputs*/
-   virtual void request(int outputID, const ParameterSet &req) {}
-
    virtual ObjectRef getOutput(int output_id, int count) 
    {
       if (count < maxIter)

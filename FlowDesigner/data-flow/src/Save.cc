@@ -84,12 +84,7 @@ public:
 
     out[count] = objectValue;
   }
-  
-  virtual void request(int outputID, const ParameterSet &req) 
-  {
-    inputs[objectInputID].node->request(outputID,req);
-  }
-  
+    
   
 };
 

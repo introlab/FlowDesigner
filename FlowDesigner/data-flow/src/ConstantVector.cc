@@ -58,11 +58,6 @@ public:
       //cerr << "vector is: " << val << endl;
    }
 
-   /**Do nothing for requests since we have no inputs*/
-   virtual void request(int outputID, const ParameterSet &req) {}
-
-   /**Ask for the node's output which ID (number) is output_id 
-      and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
    {
       if (output_id==outputID) return value;

@@ -44,26 +44,8 @@ public:
       delay = dereference_cast<int> (parameters.get("DELAY"));
    }
    
-   virtual void specificInitialize()
-   {
-      this->Node::specificInitialize();
-      ParameterSet req;
-      if (delay > 0)
-	 req.add("LOOKBACK", ObjectRef(Int::alloc(delay)));
-      else
-	 req.add("LOOKAHEAD", ObjectRef(Int::alloc(-delay)));
-      inputs[inputID].node->request(inputs[inputID].outputID, req);
-
-   }
-
-   virtual void reset()
-   {
-      this->Node::reset();
-   }
-
    virtual ObjectRef getOutput(int output_id, int count);
    
-
    void request(int outputID, const ParameterSet &req)
    {
       //cerr << "name = " << name << " this = " << this << " outputID = " << outputID << endl;   cerr << "lookahead = " << outputs[outputID].lookAhead << " lookback = " << outputs[outputID].lookBack << endl;   

@@ -35,9 +35,6 @@ public:
       outputID = addOutput("OUTPUT");
    }
 
-   /**Do nothing for requests since we have no inputs*/
-   virtual void request(int outputID, const ParameterSet &req) {}
-
    virtual ObjectRef getOutput(int output_id, int count)
    {
       if (output_id==outputID) 

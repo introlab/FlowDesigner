@@ -47,16 +47,6 @@ public:
       varName = object_cast<String> (parameters.get("VARIABLE"));
    }
 
-   void specificInitialize()
-   {
-      Node::specificInitialize();
-   }
-      
-   /**Do nothing for requests since we have no inputs*/
-   virtual void request(int outputID, const ParameterSet &req) {}
-
-   /**Ask for the node's output which ID (number) is output_id 
-      and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
    {
       if (output_id==outputID) 
@@ -72,9 +62,5 @@ public:
       
       
    }
-
-protected:
-   /**Default constructor, should not be used*/
-   VarLoad() {throw new GeneralException("VarLoad copy constructor should not be called",__FILE__,__LINE__);}
 
 };

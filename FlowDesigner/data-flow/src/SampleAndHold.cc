@@ -44,23 +44,8 @@ public:
       down = dereference_cast<int> (parameters.get("DOWNSAMPLING"));
    }
    
-   virtual void specificInitialize()
-   {
-      this->Node::specificInitialize();
-      ParameterSet req;
-      req.add("LOOKBACK", ObjectRef(Int::alloc(down)));
-      inputs[inputID].node->request(inputs[inputID].outputID, req);
-
-   }
-
-   virtual void reset()
-   {
-      this->Node::reset();
-   }
-
    virtual ObjectRef getOutput(int output_id, int count);
    
-
    void request(int outputID, const ParameterSet &req)
    {
       //cerr << "name = " << name << " this = " << this << " outputID = " << outputID << endl;   cerr << "lookahead = " << outputs[outputID].lookAhead << " lookback = " << outputs[outputID].lookBack << endl;   

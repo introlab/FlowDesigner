@@ -58,12 +58,6 @@ public:
    {
    }
 
-   /**Propagate requests*/
-   virtual void request(int outputID, const ParameterSet &req)
-   {
-      inputs[inputID].node->request(inputs[inputID].outputID, req);
-   }
-
    void specificInitialize()
    {
       Node::specificInitialize();

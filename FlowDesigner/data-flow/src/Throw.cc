@@ -40,9 +40,6 @@ public:
       
    }
 
-   /**Do nothing for requests since we have no inputs*/
-   virtual void request(int outputID, const ParameterSet &req) {}
-
    ObjectRef getOutput(int output_id, int count)
    {
       //throw new FlowException(getInput(inputID, count));
