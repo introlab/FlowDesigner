@@ -44,7 +44,7 @@ void GCMS::specificInitialize()
    req.add("LOOKBACK", ObjectRef(new Int(outputLookBack)));
    //cerr << "Request to node type: " << typeid(inputs[0].node).name() << " name: " << inputs[0].node->getName() << endl;
    //req.print(cerr);
-   inputs[0].node->request(req);
+   inputs[0].node->request(0,req);
 
    for (int i=0;i<outputLength;i++)
       sum[i]=0;

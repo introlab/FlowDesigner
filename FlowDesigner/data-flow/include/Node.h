@@ -190,7 +190,11 @@ public:
    string getName() {return name;}
  
    /**Standard request-passing method between nodes during initialization*/
-   virtual void request(const ParameterSet &req) {}
+   virtual void request(int outputID, const ParameterSet &req) {}
+
+   /**Standard request-passing method between nodes during initialization
+    This one will be removed*/
+   //virtual void request(const ParameterSet &req) {}
 
    /**locks the node's mutex*/
    void lock() 

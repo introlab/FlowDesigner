@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.4 1999/09/07 04:35:03 jmvalin Exp $
+# $Id: Makefile.am,v 1.5 1999/09/08 04:55:42 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -9,6 +9,7 @@ lib_LTLIBRARIES = libnetwork.la
 
 # Sources for compilation in the library
 libnetwork_la_SOURCES = Node.cc \
+	BufferedNode.cc \
         Object.cc \
 	Load.cc \
         ParameterSet.cc \

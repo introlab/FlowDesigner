@@ -2,6 +2,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 
 noinst_HEADERS = Node.h \
 	Buffer.h \
+	BufferedNode.h \
 	Collector.h \
 	Constant.h \
 	DLManager.h \

@@ -19,8 +19,39 @@
 
 #include "Node.h"
 
+class OutputCacheInfo {
+public:
+   OutputCacheInfo () 
+      : lookAhead(0)
+      , lookBack(0)
+      , cacheAll(false)
+   {}
+
+   ObjectRef buffer;
+   int lookAhead;
+   int lookBack;
+   bool cacheAll;
+};
+
+class InputCacheInfo {
+public:
+   InputCacheInfo () 
+      : lookAhead(0)
+      , lookBack(0)
+      , cacheAll(false)
+   {}
+   int lookAhead;
+   int lookBack;
+   bool cacheAll;
+};
+
 class BufferedNode : public Node {
 protected:
+
+   vector<OutputCacheInfo> outputs;
+
+   vector<InputCacheInfo> inputsCache;
+ 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    BufferedNode(string nodeName, const ParameterSet &params);
@@ -30,15 +61,31 @@ public:
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count) = 0; 
+   //virtual ObjectRef getOutput(int output_id, int count); 
 
    /**Standard request-passing method between nodes during initialization*/
-   virtual void request(const ParameterSet &req) {}
+   virtual void request(int outputID, const ParameterSet &req);
+
+   //virtual void request(const ParameterSet &req) {throw "error: maudit request";}
 
    /**Class specific initialization routine.
       Each class will call its subclass specificInitialize() method*/
    virtual void specificInitialize();
 
+   /**Resets the node internal values and buffers*/
+   virtual void reset();
+
+   /**Adding an output to a node*/
+   virtual int addOutput (const string &outputName);
+
+   /**Adding an input to a node*/
+   virtual int addInput (const string &inputName);
+
+   /***/
+   virtual void initializeBuffers();
+
+   /***/
+   virtual void performRequests();
 };
 
 #endif

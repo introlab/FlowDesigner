@@ -15,53 +15,84 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "BufferedNode.h"
+#include "GrowingBuffer.h"
+#include "RotatingBuffer.h"
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)
 {}
 
-int BufferedNode::addInput (const string &input_name)
+int BufferedNode::addInput (const string &inputName)
 {
-   /*handle input buffers here*/
-   return Node::addInput (input_name);
+   int inID = this->Node::addInput(inputName);
+   if (inID >= inputsCache.size())
+      inputsCache.resize(inID+1);
+   return inID;
 }
 
 int BufferedNode::addOutput(const string &output_name)
 {
    /*handle output buffers here*/
-   return Node::addOutput(output_name);
+   int outID = this->Node::addOutput(output_name);
+   if (outID >= outputs.size())
+      outputs.resize(outID+1);
+   return outID;
+}
+
+void BufferedNode::initializeBuffers()
+{
+   for (int i=0;i<outputs.size();i++)
+   {
+      if (outputs[i].cacheAll)
+      {
+         outputs[i].buffer = ObjectRef(new GrowingBuffer (outputs[i].lookAhead+outputs[i].lookBack+1));
+      } else {
+         outputs[i].buffer = ObjectRef(new RotatingBuffer (outputs[i].lookAhead+outputs[i].lookBack+1));
+      }
+   }
+}
+
+void BufferedNode::performRequests ()
+{
+   int i;
+   int outputLookAhead=0, outputLookBack=0;
+   for (i=0;i<outputs.size();i++)
+   {
+      outputLookAhead=max(outputLookAhead, outputs[i].lookAhead);
+      outputLookBack =max(outputLookBack, outputs[i].lookBack);
+   }
+   
+   for (i=0;i<inputsCache.size();i++)
+   {
+      ParameterSet req;
+      req.add("LOOKAHEAD", ObjectRef(new Int(inputsCache[i].lookAhead+outputLookAhead)));
+      req.add("LOOKBACK", ObjectRef(new Int(inputsCache[i].lookBack+outputLookBack)));
+      inputs[i].node->request(inputs[i].outputID, req);
+   }
 }
 
 void BufferedNode::specificInitialize()
 {
    //cerr << "FrameOperation initialize...\n";
    this->Node::specificInitialize();
-   if (cacheAll)
-   {
-      output = ObjectRef(new GrowingFrameBuffer<float> (outputLength, outputLookAhead+outputLookBack+1));
-   } else {
-      output = ObjectRef(new RotatingFrameBuffer<float> (outputLength, outputLookAhead+outputLookBack+1));
-   }
+   this->initializeBuffers();
+
+   this->performRequests();
 }
 
 void BufferedNode::reset()
 {
    this->Node::reset();
-   if (cacheAll)
-   {
-      output = ObjectRef(new GrowingFrameBuffer<float> (outputLength, outputLookAhead+outputLookBack+1));
-   } else {
-      output = ObjectRef(new RotatingFrameBuffer<float> (outputLength, outputLookAhead+outputLookBack+1));
-   }
+   this->initializeBuffers();
 }
 
-void BufferedNode::request(const ParameterSet &req)
+void BufferedNode::request(int outputID, const ParameterSet &req)
 {
    if (req.exist("LOOKAHEAD"))
-   {
-      outputLookAhead = max(outputLookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
-   }
+      outputs[outputID].lookAhead = max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
    if (req.exist("LOOKBACK"))
-      outputLookBack = max(outputLookBack,dereference_cast<int> (req.get("LOOKBACK")));
-   this->Node::request(req);
+      outputs[outputID].lookBack = max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
+   if (req.exist("CACHEALL"))
+      outputs[outputID].cacheAll = true;
+   this->Node::request(outputID,req);
 }

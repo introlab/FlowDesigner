@@ -104,7 +104,7 @@ public:
    virtual void reset();
    
    /**Standard request-passing method between nodes during initialization*/
-   virtual void request(const ParameterSet &req) {sinkNode->request(req);}
+   virtual void request(int outputID, const ParameterSet &req) {sinkNode->request(outputID,req);}
 
    /**Subnet : NetworkNode specific initialize*/
    virtual void specificInitialize();
