@@ -18,12 +18,12 @@
 \paperorientation portrait
 \secnumdepth 2
 \tocdepth 2
-\paragraph_separation indent
+\paragraph_separation skip
 \defskip medskip
 \quotes_language english
 \quotes_times 2
 \papercolumns 1
-\papersides 2
+\papersides 1
 \paperpagestyle default
 
 \layout Title
@@ -78,8 +78,8 @@ Overflow features a GUI that allows rapid application development and features
  
 \layout Standard
 
-It is written in C++ and features a plugin mechanism that allows plugins/toolbox
-es to be easiliy added.
+It is written in C++ and features a plugin mechanism that allows new nodes/toolb
+oxes to be easiliy added.
  Overflow currently includes the following toolboxes: 
 \layout Itemize
 
@@ -121,6 +121,140 @@ Audio Synthesis
 \layout Itemize
 
 Robotics (In progres)
+\layout Chapter
+
+Terminology
+\layout Standard
+
+This section defines the concepts and terms used by Overflow and shows how
+ they relate to C or Matlab constructs.
+\layout Section
+
+Nodes
+\layout Standard
+
+The basic processing using in Overflow is a Node, a Node is in all ways
+ similar to a C or Matlab function.
+ It takes some input data, performs some operations and send data out.
+ 
+\layout Subsection
+
+Built-in nodes
+\layout Standard
+
+A built-in Overflow node is written in C++ and is part of the Overflow code
+ (or compiled in an Overflow toolbox, like Matlab's mex files).
+ In Overflow, all nodes are implemented as a class that derive (directly
+ or indirectly) from a base class called "Node" (note that most nodes derive
+ from "BufferedNode").
+ Although the Overflow implementation of different nodes uses C++ inheritance
+ mechanism (using classes), there's no reason for the user to be aware of
+ that.
+ For that reason, it's not recommended to refer to nodes as "types" (e.g..
+ if Overflow were written in C, nodes would be implemented as functions).
+ 
+\layout Subsection
+
+Sub-networks (composite nodes)
+\layout Standard
+
+An Overflow sub-network (or subnet) is a collection of connected nodes that
+ can be used as if it were a single node.
+ Most Overflow subnets will be saved into .n files, which are almost the
+ exact equivalent of Matlab's .m files.
+ There's no real C equivalent because C is a compiled language (although
+ it could be seen as a C function calling other C function).
+ 
+\layout Subsection
+
+Node terminals (inputs/outputs)
+\layout Standard
+
+The inputs of an Overflow nodes are equivalent to the arguments to a Matlab/C
+ function.
+ The same for outputs, while C is restricted to one return value, Overflow
+ and Matlab can have several outputs.
+ Node inputs and outputs are also called 
+\begin_inset Quotes eld
+\end_inset 
+
+terminals
+\begin_inset Quotes erd
+\end_inset 
+
+.
+\layout Subsection
+
+Node parameters
+\layout Standard
+
+Overflow node parameters are also equivalent to C/Matlab function arguments.
+ The difference between node parameters and node inputs is that the parameters
+ cannot change at run-time.
+ It is chosen at "build-time" and stays constant throughout the run.
+ For instance, the "Constant" node has no input, but has a parameter called
+ "VALUE" that is returned as the output of the node.
+ Using constants, you can always "transform" another node's input into a
+ parameter.
+ The reverse is not true, however.
+ Why then have parameters and not define every argument as an input? Simplicity
+ and run-time performances.
+ Sometimes, it's just a lot easier to know certain arguments in advance
+ and be sure that they don't change during the run.
+ However, when possible, it is better to implement arguments as inputs,
+ as this allows more flexibility.
+\layout Section
+
+Data Types
+\layout Standard
+
+Unlike Matlab, that only supports the complex-double-matrix type (well,
+ that's not totally true, but...), Overflow (like C and C++) has support for
+ many different types.
+ The basic Overflow types are: Bool, Int, Float, Double, Stream and Vector.
+ There are also toolbox-specific types, like FFNet (neural network), VQ
+ (Vector Quantizer), GMM (Gaussian Mixture Model), ...
+ 
+\layout Standard
+
+Right now, the only way to define a new type in Overflow is by adding C++
+ code for it in a toolbox (or the core).
+ Eventually, there will (could?) be a way to pack data in a "struct" using
+ Overflow nodes, but this is not implemented yet.
+ 
+\layout Standard
+
+Some Overflow Nodes expect a certain type of data as input/parameter and
+ will generate a run-time exception (which will abort execution) if the
+ wrong data type is used (e.g..
+ a Load node expects a Stream as input and nothing else).
+ Some nodes, like the NOP (no-op) node, can take any type as input.
+ Some node have more complex behaviour, like the Add node that can add two
+ floats, two Vectors of the same dimension, but cannot add a Bool and a
+ Vector.
+ 
+\layout Section
+
+Links
+\layout Standard
+
+There's no real correspondence between Overflow links and C or Matlab constructs.
+ The best analogy would be to say that Links represent the order of the
+ lines in a C/Matlab function.
+ You also need to keep in mind that Overflow a "pull method" in order to
+ compute data.
+ What does that mean? When you run a network, the last node (output node)
+ of the main network (called "MAIN" -- how original) is asked for its output.
+ In order to compute its output, it needs to ask its input nodes for their
+ output.
+ That way everything propagates from the end to the beginning recursively.
+ 
+\layout Standard
+
+Now, why going backwards like that? That's a bit long to explain.
+ The quick answer is "because".
+ The longer answer involves faster handling of dependencies, faster processing,
+ buffer management and things like that.
 \layout Chapter
 
 Getting started
@@ -254,7 +388,7 @@ When your program is complete, you can execute it by clicking "Run" in the
  is in the path.
 \layout Chapter
 
-Automatic code generation
+Automatic C++ code generation
 \layout Standard
 
 Is is now possible to generate C++ code from an Overflow .n file.
