@@ -76,11 +76,11 @@ inline ObjectRef concat(ObjectRef x, ObjectRef y)
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Int,Int,0)	  \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Float,Float,1)	\
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Double,Double,2) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Int,Int,3) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Int,Float,3) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Float,Float,4) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Float,Double,Double,5) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Int,Int,6) \
-REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Float,Float,7) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Int,Double,6) \
+REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Float,Double,7) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Double,Double,Double,8) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Complex<float>,Complex<float>,9) \
 REGISTER_DOUBLE_VTABLE_TEMPLATE(table,function,Int,Complex<double>,Complex<double>,10) \
