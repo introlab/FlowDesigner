@@ -8,6 +8,20 @@
 #include <gnome.h>
 #include <iostream>
 
+#include "vflow_pref.h"
+
+VFlowPref VFlowPref::pref;
+
+VFlowPref::VFlowPref()
+{
+   
+}
+
+VFlowPref::~VFlowPref()
+{
+}
+
+
 GtkWidget *create_propertybox1 ()
 {
    cerr << "For the moment, this preference dialog box is nothing more than decoration, sorry:-(" << endl;
@@ -269,7 +283,7 @@ GtkWidget *create_propertybox1 ()
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
 
-  label4 = gtk_label_new (_("    Regular nodes"));
+  label4 = gtk_label_new (_("Regular nodes"));
   gtk_widget_ref (label4);
   gtk_object_set_data_full (GTK_OBJECT (propertybox1), "label4", label4,
                             (GtkDestroyNotify) gtk_widget_unref);
@@ -279,7 +293,7 @@ GtkWidget *create_propertybox1 ()
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
 
-  label5 = gtk_label_new (_("    Highlited nodes"));
+  label5 = gtk_label_new (_("Highlited nodes"));
   gtk_widget_ref (label5);
   gtk_object_set_data_full (GTK_OBJECT (propertybox1), "label5", label5,
                             (GtkDestroyNotify) gtk_widget_unref);
@@ -289,7 +303,7 @@ GtkWidget *create_propertybox1 ()
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label5), 0, 0.5);
 
-  label6 = gtk_label_new (_("    Errors"));
+  label6 = gtk_label_new (_("Errors"));
   gtk_widget_ref (label6);
   gtk_object_set_data_full (GTK_OBJECT (propertybox1), "label6", label6,
                             (GtkDestroyNotify) gtk_widget_unref);
