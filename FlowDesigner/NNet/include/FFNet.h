@@ -36,6 +36,9 @@ class FFNet : public Object {
 
    void traincg(vector<float *> in, vector<float *> out, int iter);
 
+   void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
+		      double mom, double increase, double decrease, int nbSets);
+
    //void trainlm(vector<float *> in, vector<float *> out, int maxIter);
    
    void printOn(ostream &out) const;

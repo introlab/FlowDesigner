@@ -357,6 +357,73 @@ void FFNet::traincg(vector<float *> tin, vector<float *> tout, int iter)
 }
 
 
+void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
+			  double mom, double increase, double decrease, int nbSets)
+{
+
+   int i,j;
+   double in[topo[0]];
+   double out[topo[topo.size()-1]];
+
+
+   while (iter)
+   {
+
+	 
+      //error = 0;
+      //cerr << "iter...\n";
+      //int nbSets = 10;
+
+      for (int batchSet=0; batchSet < nbSets; batchSet++)
+      {
+	 for (i=0;i<layers.size();i++)
+	 {
+	    layers[i]->resetGradient();
+	 }
+	 for (i=batchSet;i<tin.size();i+=nbSets)
+	 {
+	    //double in[topo[0]];
+	    //double out[topo[topo.size()-1]];
+	    for (j=0;j<topo[0];j++)
+	       in[j]=tin[i][j];
+	    for (j=0;j<topo[topo.size()-1];j++)
+	       out[j]=tout[i][j];
+	    learn (in, out);
+	    
+	 }
+
+	 for (i=0;i<layers.size();i++)
+	 {
+	    //layers[i]->updateGradient(alpha,momentum);
+	 }
+
+      }
+
+      iter--;
+/*
+      double SSE = 0;
+      for (i=0;i<tin.size();i++)
+      {
+	 //double in[topo[0]];
+	 //double out[topo[topo.size()-1]];
+	 for (j=0;j<topo[0];j++)
+	    in[j]=tin[i][j];
+	 for (j=0;j<topo[topo.size()-1];j++)
+	    out[j]=tout[i][j];
+
+	 double *netOut = calc (in);
+	 for (j=0;j<topo[topo.size()-1];j++)
+	    SSE += (netOut[j]-out[j])*(netOut[j]-out[j]);
+      }
+
+*/
+      //cout << (min_error/tin.size()/topo[topo.size()-1]) << "\t" << middle << "\t" << tin.size() << endl;
+
+
+   }
+}
+
+
 /*
 void FFNet::learnlm(double *input, double *output, double **jacob, double *err, double &sse)
 {
