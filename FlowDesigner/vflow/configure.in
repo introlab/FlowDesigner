@@ -80,7 +80,7 @@ AC_SUBST(LDFLAGS)
 #  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale")
 #fi
 
-AC_OUTPUT([ m4/Makefile  intl/Makefile m4/Makefile 
+AC_OUTPUT([ m4/Makefile  intl/Makefile m4/Makefile  intl/Makefile m4/Makefile 
 Makefile
 macros/Makefile
 src/Makefile
