@@ -1,9 +1,8 @@
-#LyX 1.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 218
+#LyX 1.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 220
 \textclass book
 \begin_preamble
 \usepackage{graphicx}
-\usepackage{hyperref}
 \end_preamble
 \language english
 \inputencoding latin1
@@ -15,20 +14,22 @@
 \paperpackage a4
 \use_geometry 0
 \use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
 \paperorientation portrait
 \secnumdepth 2
 \tocdepth 2
-\paragraph_separation skip
+\paragraph_separation indent
 \defskip medskip
 \quotes_language english
 \quotes_times 2
 \papercolumns 1
-\papersides 1
+\papersides 2
 \paperpagestyle default
 
 \layout Title
 
-Overflow User's Manual
+Overflow User's Manual v1.0
 \layout Author
 
 Jean-Marc Valin
@@ -45,23 +46,17 @@ Dominic Létourneau
 \layout Standard
 
 
-\begin_inset LatexCommand \listoffigures{}
+\begin_inset FloatList figure
 
 \end_inset 
 
 
 \layout Chapter
 
-What is Overflow?
+Introduction
 \layout Standard
 
-
-\latex latex 
-
-\backslash 
-href{http://freespeech.sourceforge.net/overflow.html}{Overflow}
-\latex default 
- is a free (GPL/LGPL) "data-flow oriented" development environment.
+Overflow is a free (GPL/LGPL) "data flow oriented" development environment.
  It can be use to build complex applications by combining small, reusable
  building blocks.
  In some way, it has similarities with Simulink and LabView, although it
@@ -78,18 +73,13 @@ Overflow features a GUI that allows rapid application development and features
  
 \layout Standard
 
-It is written in C++ and features a plugin mechanism that allows new nodes/toolb
-oxes to be easiliy added.
+It is written in C++ and features a plugin mechanism that allows plugins/toolbox
+es to be easiliy added.
  Overflow currently includes the following toolboxes: 
 \layout Itemize
 
-Signal processing Speech processing (part of the 
-\latex latex 
-
-\backslash 
-href{http://freespeech.sourceforge.net/}{Open Mind Speech}
-\latex default 
- project) 
+Signal processing Speech processing (part of the Open Mind Speech project)
+ 
 \layout Itemize
 
 Vector quantization 
@@ -121,159 +111,184 @@ Audio Synthesis
 \layout Itemize
 
 Robotics (In progres)
+\layout Chapter
+
+Compiling & Installing Overflow
 \layout Section
 
-The idea behind Overflow
+Requirements
+\layout Itemize
+
+an ANSI C++ compiler 
+\layout Itemize
+
+gcc 2.95.x is OK
+\layout Itemize
+
+most of gcc 2.96 variants are OK
+\layout Itemize
+
+gcc 3.0.x should work (maybe some modifs required) 
+\layout Itemize
+
+egcs 1.1.2 is untested (probably doesn't work) 
+\layout Itemize
+
+MSVC++ is completely broken, but it possible build a subset of Overflow
+ with it (see here)
+\layout Itemize
+
+HP's aCC should work after some modifications
+\layout Itemize
+
+autoconf, automake, libtool (which require perl and m4)
+\layout Itemize
+
+GNU make
+\layout Itemize
+
+FFTW (now optional, but recommended) compiled with --enable-float
+\layout Itemize
+
+gnome (including the development libraries and libxml)
+\layout Itemize
+
+pthreads (now included in most Linux distributions)
 \layout Section
 
-Terminology
+Installing the software 
 \layout Standard
 
-This section defines the concepts and terms used by Overflow and shows how
- they relate to C or Matlab constructs.
+To compile, type:
+\layout Standard
+
+% ./configure --disable-static --prefix=<your install directory> % make %
+ make install
+\layout Standard
+
+Notes:
+\layout Itemize
+
+As of version 0.5.1, it is now recommended to set the install prefix to /usr
+ or /usr/local, unless you want to keep more than one version installed
+ at the same time.
+\layout Itemize
+
+If you are using a CVS tarball, you need to use ./autogen.sh instead of ./configure
+\layout Itemize
+
+You might also need to set your LD_LIBRARY_PATH to <overflow prefix>/lib
+\layout Standard
+
+You can now start the Overflow environment by typing : % vflow
+\layout Standard
+
+(assuming <overflow prefix>/bin is in your path)
+\layout Standard
+
+Configure options
+\layout Itemize
+
+--with-libtool-ld=<c++ compiler> You need to specify this option if libtool
+ tries to use ld to link the C++ libraries and executables.
+ These need to be linked with the C++ compiler (e.g.
+ g++) because of initializations that must be performed before the main()
+ starts (On linux you most likely don't need that).
+ 
+\layout Itemize
+
+--with-fftw-dir=<fftw path> If FFTW is not installed in a standard path,
+ you will need to specify this option.
+\layout Itemize
+
+--disable-static This option is required.
+ Overflow does not work with static libraries (because it uses dlopen).
+ 
+\layout Itemize
+
+--disable-package Doesn't build a certain package (e.g.
+ HMM, VQ, ...)
 \layout Subsection
 
-Nodes
+Compiling on Win32
 \layout Standard
 
-The basic processing using in Overflow is a Node, a Node is in all ways
- similar to a C or Matlab function.
- It takes some input data, performs some operations and send data out.
- 
-\layout Subsubsection
-
-Built-in nodes
+Some parts of Overflow (sorry, no GUI yet!) have been ported to Win32 (w/
+ MSVC++).
+ Using the code generation feature (the "Build" button on the toolbar),
+ it is now possible to compile an overflow application on Windows.
+ Note that this has not been fully tested yet.
 \layout Standard
 
-A built-in Overflow node is written in C++ and is part of the Overflow code
- (or compiled in an Overflow toolbox, like Matlab's .mex files).
- In Overflow, all nodes are implemented as a class that derive (directly
- or indirectly) from a base class called "Node" (note that most nodes derive
- from "BufferedNode").
- Although the Overflow implementation of different nodes uses C++ inheritance
- mechanism (using classes), there's no reason for the user to be aware of
- that.
- For that reason, it's not recommended to refer to nodes as "types" or 
-\begin_inset Quotes eld
-\end_inset 
-
-classes
-\begin_inset Quotes erd
-\end_inset 
-
- (e.g..
- if Overflow were written in C, nodes would be implemented as functions).
- 
-\layout Subsubsection
-
-Sub-networks (composite nodes)
+One important thing to note with MSVC++ is that it is a very buggy compiler,
+ mostly when it comes to templates.
+ For example it does not support template partial specialization and it
+ chokes on a lot of valid template code (static template member functions,
+ pointer to template functions, ...).
+ For this reasons some Overflow features need to be switched off.
 \layout Standard
 
-An Overflow sub-network (or subnet) is a collection of connected nodes that
- can be used as if they were a single node.
- Most Overflow subnets will be saved into .n files, which are almost the
- exact equivalent of Matlab's .m files.
- There's no real C equivalent because C is a compiled language (although
- it could be seen as a C function calling other C function).
- 
-\layout Subsubsection
-
-Node terminals (inputs/outputs)
-\layout Standard
-
-The inputs of an Overflow nodes are equivalent to the arguments to a Matlab/C
- function.
- The same for outputs, but while C is restricted to one return value, Overflow
- and Matlab can have several outputs.
- Node inputs and outputs are sometimes refered to as 
-\begin_inset Quotes eld
-\end_inset 
-
-terminals
-\begin_inset Quotes erd
-\end_inset 
-
-.
-\layout Subsubsection
-
-Node parameters
-\layout Standard
-
-Overflow node parameters are also equivalent to C/Matlab function arguments.
- The difference between node parameters and node inputs is that parameters
- cannot change at run-time.
- They are specified at "build-time" and stay constant throughout the run.
- For instance, the "Constant" node has no input, but has a parameter called
- "VALUE" that is returned as the output of the node.
- Using constants, you can always "transform" another node's input into a
- parameter (to the constant).
- The reverse is not true, however.
- Why then have parameters and not define every argument as an input? Mostly
- simplicity and run-time performance.
- Sometimes, it is just a lot easier to know certain arguments in advance
- and be sure that they don't change during the run.
- However, when possible, it is better to implement arguments as inputs,
- as this allows more flexibility.
-\layout Subsection
-
-Data Types
-\layout Standard
-
-Unlike Matlab, that only supports the complex-double-matrix type (well,
- that's not totally true, but...), Overflow (like C and C++) has support for
- many different types.
- The 
-\begin_inset Quotes eld
-\end_inset 
-
-basic
-\begin_inset Quotes erd
-\end_inset 
-
- Overflow types are: Bool, Int, Float, Double, Stream and Vector.
- There are also toolbox-specific types, like FFNet (neural network), VQ
- (Vector Quantizer), GMM (Gaussian Mixture Model), ...
- 
-\layout Standard
-
-Right now, the only way to define a new type in Overflow is by adding C++
- code for it in a toolbox (or the core).
- Eventually, there will (could?) be a way to pack data in a "struct" using
- Overflow nodes, but this is not implemented yet.
- 
-\layout Standard
-
-Some Overflow Nodes expect a certain type of data as input/parameter and
- will generate a run-time exception (which will abort execution) if the
- wrong data type is used (e.g..
- a Load node expects a Stream as input and nothing else).
- Some nodes, like the NOP (no-op) node, can take any type as input.
- Some node have more complex behaviour, like the Add node that can add two
- floats, two Vectors of the same dimension, but cannot add a Bool and a
- Vector.
+So here are the settings you need for Overflow.
+ First, you need to turn on RTTI (which is not enabled be default).
+ Also, I suggest you turn the warnings off.
+ The preprocessor flags (define) you need to set are: BROKEN_TEMPLATES,
+ HAVE_FLOAT_H, NO_HASH_MAP, STUPID_COMPLEX_KLUDGE and (if not already defined),
+ WIN32.
  
 \layout Subsection
 
-Links
-\layout Standard
+Troubleshooting
+\layout Enumerate
 
-There's no real correspondence between Overflow links and C or Matlab constructs.
- The best analogy would be to say that Links represent the order of the
- lines in a C/Matlab function.
- You also need to keep in mind that Overflow uses a "pull method" in order
- to compute data.
- What does that mean? When you run a network, the last node (output node)
- of the main network (called "MAIN" -- how original!) is asked for its output.
- In order to compute its output, it needs to ask its input nodes for their
- output.
- That way everything propagates from the end to the beginning recursively.
+The binary distribution I downloaded crashes on startup There can be many
+ causes of that.
+ The most common is that you have a different libstdc++ than the one Overflow
+ was compiled with.
+ Another cause could be that you have FFTW compiled without --enable-float,
+ while Overflow was linked with a float version of FFTW.
+ Overflow has no way to detect that so it crashes.
+ In both cases, the best thing to do is to build Overflow yourself.
+\layout Enumerate
+
+Overflow tells me it cannot find libflow.so This can happen if you compile
+ Overflow and then move the installation directory (I can sometimes happen
+ for other reasons).
+ You can set the LD_LIBRARY_PATH to <overflow install dir>/lib.
+ Note that if you moved the Overflow directory, you'll also need to set
+ VFLOW_HOME.
  
+\layout Enumerate
+
+The "New Node" menu is empty You probably moved the Overflow install directory,
+ see 2)
+\layout Enumerate
+
+Overflow doesn't compile on my box First, make sure you have the latest
+ release version.
+ If it doesn't work, you should try the CVS version.
+ If it fails too, please contact us and we'll do our best to make Overflow
+ compile on your platforms.
+\layout Enumerate
+
+I downloaded a more recent version and it doesn't even compile This can
+ be due to the fact that you installed an earlier version in a path like
+ /usr or /usr/local.
+ The problem is that the old Overflow includes ended up somewhere like /usr/incl
+ude and when you try compiling a newer version, g++ sees the old includes
+ (because they are in the include path) instead of the new ones.
 \layout Standard
 
-Now, why going backwards like that? That's a bit long to explain.
- The quick answer is "because".
- The longer answer involves faster handling of dependencies, faster processing,
- buffer management and things like that.
+
+\begin_inset Foot
+collapsed false
+
+\layout Standard
+
+UPDATED 2001/08/15: As of 0.5.1, it is now safe (and recommended) to install
+ with /usr or /usr/local set as prefix.
+\end_inset 
+
+
 \layout Chapter
 
 Getting started
@@ -306,7 +321,12 @@ Networks->Add Network
  
 \layout Standard
 
-\begin_float fig 
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
 \layout Standard
 \align center 
 
@@ -326,7 +346,9 @@ vflow main window
 \end_inset 
 
 
-\end_float 
+\end_inset 
+
+
 \layout Standard
 
 You can then add nodes to your network by clicking on the right button in
@@ -416,11 +438,7 @@ Feed-back loops
 In some circumstances, it is desirable to insert feed-back loops into a
  program.
  Normaly, Overflow only supports acyclic graphs, but feed-back loops can
- be made using the special 
-\emph on 
-Feedback
-\emph default 
- node.
+ be made using the special Feedback node.
 \layout Section
 
 Exceptions
@@ -431,12 +449,8 @@ Run-time exceptions
 
 First, it is important to note that there are two types of exceptions that
  can happen.
- The first type, which we'll call 
-\emph on 
-run-time exceptions
-\emph default 
-, is thrown (usually by a node) when an error happens during processing
- by Overflow.
+ The first type, which we'll call run-time exceptions, is thrown (usually
+ by a node) when an error happens during processing by Overflow.
  Such type of exception can be thrown when a node receives an object of
  an unexpected type, but there can be many other causes.
  Run-time exceptions usually terminate the current Overflow program with
@@ -446,38 +460,16 @@ run-time exceptions
 \layout Standard
 
 It is possible to prevent a run-time exception from stopping a program.
- This can be done with the 
-\emph on 
-Recover
-\emph default 
- node, that catches all run-time exceptions.
+ This can be done with the Recover node, that catches all run-time exceptions.
 \layout Subsection
 
 User exceptions
 \layout Standard
 
-The second type of exceptions, 
-\emph on 
-user exceptions
-\emph default 
-, can be thrown and caught by a user program using the 
-\emph on 
-Throw
-\emph default 
- and 
-\emph on 
-Catch
-\emph default 
- nodes.
- They are serve the same function as the 
-\emph on 
-throw
-\emph default 
- and 
-\emph on 
-catch
-\emph default 
- statements in a C++ program.
+The second type of exceptions, user exceptions, can be thrown and caught
+ by a user program using the Throw and Catch nodes.
+ They are serve the same function as the throw and catch statements in a
+ C++ program.
 \layout Section
 
 Multi-threading
@@ -485,63 +477,37 @@ Multi-threading
 
 It must first be noted that multi-threading in Overflow is still an experimental
  feature and not all structures are fully MT-safe.
- Overflow multi-threading is provided through three special nodes: 
-\emph on 
-SerialThread
-\emph default 
-, 
-\emph on 
-ParallelThread
-\emph default 
- and 
-\emph on 
-ThreadJoin
-\emph default 
-.
+ Overflow multi-threading is provided through three special nodes: SerialThread,
+ ParallelThread and ThreadJoin.
 \layout Subsection
 
 SerialThread
 \layout Standard
 
-The 
-\emph on 
-SerialThread
-\emph default 
- node provides the type of multi-threading known as pipelining.
+The SerialThread node provides the type of multi-threading known as pipelining.
 \layout Subsection
 
 ParallelThread
 \layout Standard
 
-The 
-\emph on 
-ParallelThread
-\emph default 
- node provides parallelism-type multi-threading.
+The ParallelThread node provides parallelism-type multi-threading.
 \layout Subsection
 
 ThreadJoin
 \layout Standard
 
-The 
-\emph on 
-ThreadJoin
-\emph default 
- node acts like a mutex and prevents
+The ThreadJoin node acts like a mutex and prevents
 \layout Section
 
 Threaded iterators
 \layout Standard
 
-
-\emph on 
-Threaded iterators
-\emph default 
- are a special kind of subnets that provide a different level of multi-threading.
+Threaded iterators are a special kind of subnets that provide a different
+ level of multi-threading.
  These too should be considered experimental for now.
 \layout Chapter
 
-Automatic C++ code generation
+Automatic code generation
 \layout Standard
 
 Is is now possible to generate C++ code from an Overflow .n file.
@@ -555,7 +521,12 @@ Is is now possible to generate C++ code from an Overflow .n file.
 ).
 \layout Standard
 
-\begin_float fig 
+
+\begin_inset Float figure
+placement htbp
+wide false
+collapsed false
+
 \layout Standard
 \align center 
 
@@ -575,7 +546,9 @@ Code generation dialog
 \end_inset 
 
 
-\end_float 
+\end_inset 
+
+
 \layout Standard
 
 The "Build function name" is the name given to the function that will return
@@ -609,15 +582,785 @@ Static linkage: This will copy all the required Overflow files in the same
 Generate makefile: Un-implemented yet 
 \layout Standard
 
-Note: the 
-\family typewriter 
-VFLOW_SOURCE
-\family default 
- environment variable must be set to your Overflow source directory in order
- for the "static linkage" option to work.
+Note: the VFLOW_SOURCE environment variable must be set to your Overflow
+ source directory in order for the "static linkage" option to work.
 \layout Chapter
-\start_of_appendix 
-Node documentation
+
+Software Architecture
+\layout Standard
+
+This chapter explains the sofware architecture used for the Overflow base
+ library and the mecanisms used for blocks initialization.
+\layout Section
+
+Overflow Internals
+\layout Subsection
+
+Nodes
+\layout Standard
+
+A node is the smallest processing unit in Overflow.
+ Once it has been initialized, the only method it understands is getOutput(int
+ output_id, int count).
+ In other words, all you can do with it is to ask it for its output.
+ One obvious consequence of that is that all node must have at least one
+ output, but it can have more than one.
+ A node can have any number of input, including zero (examples of node with
+ no inputs are constants and random generators).
+\layout Standard
+
+If a node requires input data in order to perform some calculations, it
+ will call getOutput(...) on its input node(s).
+ Computation is hence performed in a recursive manner until everything is
+ calculated and the last node returns its output.
+ The count argument to the getOutput(...) method is used when loops are involved.
+ It specifies the number of the iteration.
+ Note that it is possible for a node to ask its inputs for a different count
+ that the one received.
+ It is even possible to ask for many different count values in a row.
+\layout Standard
+
+The Node class is an abstract class from which all types of nodes must derive
+ (directly or indirectly).
+ Information on how to derive new types of nodes is given in Extending Overflow
+ chapter.
+ 
+\layout Subsection
+
+Networks
+\layout Standard
+
+A network is a graph containing nodes that are linked together in order
+ to perform some operation and/or return a result.
+ Most of the time, the graph will be acyclic that is, it will not contain
+ loops.
+ It is now (as of march 2001) possible to have feedback loops using the
+ FeedBack node, but this is a more advanced topic.
+ One thing worth mentioning is that the Network class derives directly from
+ the Node class.
+ This means that any network can be used just as if it were a single Node.
+ This makes it possible to include networks in other networks.
+ The included network is often refered to as sub-network, or subnet.
+\layout Standard
+
+In order for a network to ba valid, it must meet the following criteria
+\layout Itemize
+
+It must have at least one output 
+\layout Itemize
+
+Every node it contains must have a connection to at least one of its output
+\layout Itemize
+
+All node must have all their inputs connected
+\layout Itemize
+
+A toplevel network may not have inputs
+\layout Itemize
+
+There should be no loop (except by using a FeedBack node)
+\layout Section
+
+Class Diagrams
+\layout Section
+
+Data Types
+\layout Section
+
+Operators
+\layout Chapter
+
+Extending Overflow
+\layout Standard
+
+Overflow is designed to be extendible in many areas, so that it is possible
+ to create new: node types, operators and data types.
+\layout Section
+
+Creating New Nodes
+\layout Standard
+
+Most of the new nodes will derive from either the Node abstract class or
+ the BufferedNode abstract class.
+ You should use public inheritance when deriving you new class.
+ In all cases, you will need to define a constructor for your new node class.
+ The parameters for this constructors are: (string nodeName, const ParameterSet
+ &params), which are used to initialize the base class, e.g..
+\layout Standard
+
+class MyNode : public BufferedNode { 
+\layout Standard
+
+public: 
+\layout Standard
+
+MyNode(nodeName, params) : BufferedNode(nodeName, params) ...
+ };
+\layout Standard
+
+Also, if you derive from BufferedNode, you need to override the void calculate(i
+nt output_id, int count, Buffer &out) method.
+ The arguments are the ID ot the input requested (output_id), the iteration
+ ID (count) and the output buffer for the requested output (out).
+ The method is expected to assign an object in out[count].
+\layout Standard
+
+If you derive directly from the Node class, you need to override the ObjectRef
+ getOutput(int output_id, int count) method.
+ The meaning of output_id and count is the same as for the BufferedNode
+ equivalent, and the result should be returned as an ObjectRef.
+\layout Standard
+
+Here's a list of the methods than you may implement in your new node class:
+\layout Standard
+
+
+\begin_inset  Tabular
+<lyxtabular version="2" rows="10" columns="3">
+<features rotate="false" islongtable="false" endhead="0" endfirsthead="0" endfoot="0" endlastfoot="0">
+<column alignment="left" valignment="top" leftline="true" rightline="false" width="" special="">
+<column alignment="left" valignment="top" leftline="true" rightline="false" width="" special="">
+<column alignment="left" valignment="top" leftline="true" rightline="true" width="" special="">
+<row topline="true" bottomline="true" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+Method(s)
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+Impact Level
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+Comment(s)
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual ObjectRef getOutputNamed (const string &outputName, int count)
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+DEPRECATED
+\end_inset 
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+We are using output names only for convenience.
+ The already defined getOutputNamed from Node will work if you did add inputs
+ and outputs with the addOutput(...) and addInput(...) methods.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual void connectToNode (string in, Node *inputNode, string out);
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+REALLY NOT RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+This is very dangerous to change this method.
+ It connects two Nodes with a predetermined protocol.
+ We only had to redefine this method for sub-networks and the iterators.
+ You should not need to redefine this method for standard nodes.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="left" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual void initialize ();
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+REALLY NOT RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+This is very dangerous to change this method.
+ The initialization of the nodes requires a special handling for proper
+ initialization.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual void specificInitialize ();
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+This is the specific Node initialization.
+ If you have initialization to do when all the nodes are connected, you
+ should redefine this method.
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual bool hasOutput (int output_id) const;
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+NOT RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+If you have added outputs with the addOutput method, you shooed never need
+ to redefine this method.
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual void reset ();
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+Needed if the node needs proper reinitialization else than setting the processCo
+unt to -1.
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual void request (const ParameterSet &req);
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+OPTIONAL
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+This is a way to request something to our inputs node at initialization
+ time.
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="false" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual int translateInput (string inputName);
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+NOT RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+Be careful with that.
+ It translates input strings to integer that represent the input number.
+ You do not need to take care of this method if you are using addInput.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true" newpage="false">
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+virtual int translateOutput (string inputName);
+\end_inset 
+</cell>
+<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+NOT RECOMMENDED
+\end_inset 
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" rotate="false" usebox="none" width="" special="">
+\begin_inset Text
+
+\layout Standard
+
+Be careful with that.
+ It translates output strings to integer that represent the output number.
+ You do not need to take care of this method if you are using addOutput.
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset 
+
+
+\layout Standard
+
+At last for a new node to be visible, a special header must be present.
+ An example of this is:
+\layout Standard
+
+class MyNode;
+\layout Standard
+
+DECLARE_NODE(MyNode) 
+\layout Standard
+
+/*Node 
+\layout Standard
+
+*
+\layout Standard
+
+* @name MyNode 
+\layout Standard
+
+* @category MyCategory:MySubCategory 
+\layout Standard
+
+* @description Some description of what MyNode does 
+\layout Standard
+
+* 
+\layout Standard
+
+* @input_name SOME_INPUT_NAME 
+\layout Standard
+
+* @input_description The description of what this input takes 
+\layout Standard
+
+* 
+\layout Standard
+
+* @input_name SOME_OTHER_INPUT 
+\layout Standard
+
+* @input_description The description of what this other input takes 
+\layout Standard
+
+* 
+\layout Standard
+
+* @output_name SOME_OUTPUT 
+\layout Standard
+
+* @output_description The description of what come out from that output
+ 
+\layout Standard
+
+* 
+\layout Standard
+
+* @parameter_name SOME_PARAMETER 
+\layout Standard
+
+* @parameter_description The description of what the parameter takes 
+\layout Standard
+
+* END*/
+\layout Standard
+
+Although this header is mostly a C++ comment, it is parsed by a PERL script
+ to produce an XML description of each toolbox.
+ The DECLARE_NODE(MyNode) macro is used to register the node in a dictionary
+ when the toolbox is loaded.
+ 
+\layout Section
+
+Creating New Operators
+\layout Subsection
+
+Double Dispatched Operators
+\layout Standard
+
+It is possible to define binary operators that can act on different kinds
+ of input.
+ One example is the "add" operator, which can we used to add two ints, two
+ floats, two vectors, or an int and a float, ...
+ See data-flow/include/operators.h 
+\layout Section
+
+Adding New Data Type
+\layout Standard
+
+It is possible to define new types in Overflow.
+ In order to be used in new nodes, new types must derive from the Object
+ base class.
+ That the only absolute requirement.
+ However, if you want the new type to integrate more closely with Overflow,
+ there are several things you can do:
+\layout Standard
+
+* Implement the void printOn(ostream &out) const method.
+ This method writes the object to the out stream.
+ * Implement the void readFrom (istream &in) * Add the macro DECLARE_TYPE(MyType
+) to the C++ file where the object is implemented
+\layout Standard
+
+There is a certain format which all Object must respect.
+ The object should start with "<MyType" and end with ">" (without the quotes).
+ Usually, every field will be inside < and > signs.
+\layout Chapter
+
+A Comparison of Overflow and C/Matlab
+\layout Section
+
+Nodes
+\layout Standard
+
+The basic processing using in Overflow is a Node, a Node is in all ways
+ similar to a C or Matlab function.
+ It takes some input data, performs some operations and send data out.
+\layout Itemize
+
+Built-in nodes : A built-in Overflow node is written in C++ and is part
+ of the Overflow code (or compiled in an Overflow toolbox, like Matlab's
+ mex files).
+ In Overflow, all nodes are implemented as a class that derive (directly
+ or indirectly) from a base class called "Node" (note that most nodes derive
+ from "BufferedNode").
+ Although the Overflow implementation of different nodes uses C++ inheritance
+ mechanism (using classes), there's no reason for the user to be aware of
+ that.
+ For that reason, it's not recommended to refer to nodes as "types" (e.g..
+ if Overflow were written in C, nodes would be implemented as functions).
+ 
+\layout Itemize
+
+Subnets (composite nodes) : An Overflow subnet is a collection of connected
+ nodes that can be used as if it were a single node.
+ Most Overflow subnets will be saved into .n files, which are almost the
+ exact equivalent of Matlab's .m files.
+ There's no real C equivalent because C is a compiled language (although
+ it could be seen as a C function calling other C function).
+ 
+\layout Itemize
+
+Node inputs/outputs : The inputs of an Overflow nodes are equivalent to
+ the arguments to a Matlab/C function.
+ The same for outputs, while C is restricted to one return value, Overflow
+ and Matlab can have several outputs.
+ 
+\layout Itemize
+
+Node parameters : Overflow node parameters are also equivalent to C/Matlab
+ function arguments.
+ The difference between node parameters and node inputs is that the parameters
+ cannot change at run-time.
+ It is chosen at "build-time" and stays constant throughout the run.
+ For instance, the "Constant" node has no input, but has a parameter called
+ "VALUE" that is returned as the output of the node.
+ Using constants, you can always "transform" another node's input into a
+ parameter.
+ The reverse is not true, however.
+ Why then have parameters and not define every argument as an input? Simplicity
+ and run-time performances.
+ Sometimes, it's just a lot easier to know certain arguments in advance
+ and be sure that they don't change during the run.
+ However, when possible, it is better to implement arguments as inputs,
+ as this allows more flexibility.
+\layout Section
+
+Data Types 
+\layout Standard
+
+Unlike Matlab, that only supports the complex-double-matrix type (well,
+ that's not totally true, but...), Overflow (like C and C++) has support for
+ many different types.
+ The basic Overflow types are: Bool, Int, Float, Double, Stream and Vector.
+ There are also toolbox-specific types, like FFNet (neural network), VQ
+ (Vector Quantizer), GMM (Gaussian Mixture Model), ...
+\layout Standard
+
+Right now, the only way to define a new type in Overflow is by adding C++
+ code for it in a toolbox (or the core).
+ Eventually, there will (could?) be a way to pack data in a "struct" using
+ Overflow nodes, but this is not implemented yet.
+\layout Standard
+
+Some Overflow Nodes expect a certain type of data as input/parameter and
+ will generate a run-time exception (which will abort execution) if the
+ wrong data type is used (e.g..
+ a Load node expects a Stream as input and nothing else).
+ Some nodes, like the NOP (no-op) node, can take any type as input.
+ Some node have more complex behaviour, like the Add node that can add two
+ floats, two Vectors of the same dimension, but cannot add a Bool and a
+ Vector.
+ 
+\layout Section
+
+Links 
+\layout Standard
+
+There's no real correspondence between Overflow links and C or Matlab constructs.
+ The best analogy would be to say that Links represent the order of the
+ lines in a C/Matlab function.
+ You also need to keep in mind that Overflow a "pull method" in order to
+ compute data.
+ What does that mean? When you run a network, the last node (output node)
+ of the main network (called "MAIN" -- how original) is asked for its output.
+ In order to compute its output, it needs to ask its input nodes for their
+ output.
+ That way everything propagates from the end to the beginning recursively.
+\layout Standard
+
+Now, why going backwards like that? That's a bit long to explain.
+ The quick answer is "because".
+ The longer answer involves faster handling of dependencies, faster processing,
+ buffer management and things like that.
+ 
+\layout Chapter
+
+Frequently Asked Questions
+\layout Section
+
+Compiling
+\layout Enumerate
+
+What do I need to compile?
+\layout Itemize
+
+an ANSI C++ compiler
+\layout Itemize
+
+gcc 2.95.x is OK * most of gcc 2.96 variants are OK
+\layout Itemize
+
+gcc 3.0.x should work (maybe some modifs required)
+\layout Itemize
+
+egcs 1.1.2 is untested (probably doesn't work)
+\layout Itemize
+
+autoconf, automake, libtool (which require perl and m4)
+\layout Itemize
+
+GNU make * FFTW (now optional, but recommended) compiled with --enable-float
+ 
+\layout Itemize
+
+gnome (including the development libraries and libxml) * pthreads (now included
+ in most distributions)
+\layout Enumerate
+
+I get an error about ios::~ios() being protected.
+ What's the problem? You're using an old version of Overflow.
+ Download the latest version and it'll work.
+ 3- What's the problem with FFTW? The FFTW package must be installed in
+ order to build and use Overflow.
+ It must be configured with --enable-float.
+ At least for now, DO NOT use the --enable-type-prefix option.
+\layout Enumerate
+
+I have FFTW installed, but I get an error message about (FFTW_REAL *) not
+ matching (float *).
+ What do I do? The most likely cause for this error is forgetting to compile
+ FFTW with the --enable-float option (the default for FFTW is FFTW_REAL==double,
+ so it doesn't match with float vectors).See 3) 
+\layout Enumerate
+
+What about Redhat 7.0 and gcc 2.96(RH)? There seem to be some bugs with the
+ early gcc 2.96 versions.
+ The compiled shipped with RedHat 7.0 is broken and often generates bad code.
+ 
+\layout Enumerate
+
+What platform does it run on? The main development platform is Linux.
+ However, Overflow is known to run on FreeBSD and Solaris (x86 at least)
+ too.
+ For most other UN*X, the port should be easy.
+ HP-UX is more tricky, but since an earlier version worked on it, it probably
+ wouldn't be that hard to make the code compile on HP-UX.
+ 7- Is there a MS Windows port? Yes, but it's limited and still experimental.
+ Details here.
+ 
+\layout Section
+
+License
+\layout Standard
+
+Please not that this section tries to explain the license in plain english.
+ However, it may not be completly accurate.
+ If in doubt about what you are allowed to do with Overflow, please refer
+ to the files COPYING and COPYING.LGPL in the Overflow distribution.
+ 
+\layout Enumerate
+
+How much does it cost? How much do you want to pay me for it :-) Overflow
+ is Free (libre) software, and is released under the LGPL (the Lesser General
+ Public License) license, which is an open-source compliant license.
+ 
+\layout Enumerate
+
+What am I allowed to do with it? What you can do with it is explained in
+ the LGPL.
+ This can be summarized as this: you may use the software without restriction.
+ You may redistribute the software as you wish as long as you make the source
+ code available with the same license.
+ You may modify the source code, once again, as long as you release the
+ source code for these modifications.
+\layout Enumerate
+
+What about plugins/toolbox? You may distribute binary-only plugins/toolbox.
+ However, if you need to modify Overflow itself, you need to release the
+ source code to these modifications.
+\layout Enumerate
+
+What about the Overflow "programs" (.n) I write? There are no restrictions
+ at all on distribution of Overflow programs.
+ However, if you think your .n program or subnet may be useful to others,
+ please post it on the mailing list so I can be included in future versions
+ of Overflow, or at least be made available to others.
+ 
+\layout Section
+
+Development
+\layout Enumerate
+
+I think I found a bug.
+ What should I do? First, don't hit me ;-) You can either post it on the
+ mailing list or submit the bug here.
+ Note that Overflow is in heavy development and there are certainly some
+ bugs.
+ 
+\layout Enumerate
+
+What about patches ? Same thing, the best is to post any patch to the mailing
+ list.
+ 
+\layout Enumerate
+
+Is backward compatibility preserved from release to release? Depends on
+ what kind of compatibility.
+ Overflow programs (.n) created with older versions will most of time work
+ with a newer version (or require very minor modifications).
+ Source compatibility for external (custom) toolboxes and Piper is also
+ preserved most of the time.
+ However, binary compatibility is most of the times NOT preserved from release
+ to release.
+ This may change when we reach 1.0, but for now, don't count on it.
+\layout Chapter
+
+Node Documentation
 \layout Standard
 
 
