@@ -14,73 +14,72 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "List.h"
 #include "net_types.h"
 #include "Vector.h"
-#include "multithread.h"
+#include "BufferedNode.h"
 
+class List;
 DECLARE_NODE(List)
 /*Node
-
+ *
  * @name List
  * @category General
  * @description Load a string from a file (seperated into chunks of 256 bytes)
-
+ *
  * @input_name STREAM
  * @input_description The stream to load from
  * @input_type Stream
-
+ *
  * @output_name OUTPUT
  * @output_description The vector output
  * @output_type Vector
-
+ *
 END*/
 
 
-List::List(string nodeName, ParameterSet params) 
-   : Node(nodeName, params)
-{
-   outputID = addOutput("OUTPUT");
-   streamInputID = addInput("STREAM");
-}
+class List : public BufferedNode {
 
-void List::specificInitialize()
-{
-   this->Node::specificInitialize();
-}
+protected:
+   
+   int outputID;
 
-void List::reset()
-{
-   this->Node::reset();
-}
+   int streamInputID;
 
-ObjectRef List::getOutput(int output_id, int count)
-{
-   //cerr << "Getting output in List\n";
-   if (output_id==outputID)
+public:
+
+   List(string nodeName, ParameterSet params) 
+      : BufferedNode(nodeName, params)
    {
-      lock();
-      if (count != processCount)
-      {
-         processCount=count;
-         Vector<ObjectRef> *strList = new Vector<ObjectRef>;
-         
-         NodeInput input = inputs[streamInputID];
-         ObjectRef inputValue = input.node->getOutput(input.outputID,count);
-         
-         Stream &file = object_cast<Stream> (inputValue);
-
-         char tmpLine[256];
-         while (true)
-         {
-            file.getline(tmpLine, 255);
-            if (file.fail()) break;
-            strList->insert(strList->end(), ObjectRef (new String(tmpLine)));
-         }
-         currentList = ObjectRef(strList);
-      }
-      return unlock_and_return(currentList);
+      outputID = addOutput("OUTPUT");
+      streamInputID = addInput("STREAM");
    }
-   else 
-      throw new NodeException (this, "List: Unknown output id", __FILE__, __LINE__);
-}
+
+   void calculate(int output_id, int count, Buffer &out)
+   {
+      Vector<ObjectRef> *strList = new Vector<ObjectRef>;
+      
+      NodeInput input = inputs[streamInputID];
+      ObjectRef inputValue = input.node->getOutput(input.outputID,count);
+      
+      Stream &file = object_cast<Stream> (inputValue);
+      
+      char tmpLine[256];
+      while (true)
+      {
+	 file.getline(tmpLine, 255);
+	 if (file.fail()) break;
+	 strList->insert(strList->end(), ObjectRef (new String(tmpLine)));
+      }
+
+      out[count] = ObjectRef(strList);
+   }
+
+
+protected:
+   /**Default constructor, should not be used*/
+   List() {throw new GeneralException("List copy constructor should not be called",__FILE__,__LINE__);}
+
+};
+
+
+

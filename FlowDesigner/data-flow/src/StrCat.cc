@@ -18,66 +18,66 @@
 #include "Buffer.h"
 #include "Vector.h"
 
-class Length;
+class StrCat;
 
-DECLARE_NODE(Length)
+DECLARE_NODE(StrCat)
 /*Node
  *
- * @name Length
- * @category Vector
- * @description Get the length of a vector
+ * @name StrCat
+ * @category General
+ * @description Concatenates two strings together
  *
- * @input_name INPUT
- * @input_description The vector input
- * @input_type Vector
+ * @input_name INPUT1
+ * @input_type String
+ * @input_description First input string
+ *
+ * @input_name INPUT2
+ * @input_type String
+ * @input_description Second input string
  *
  * @output_name OUTPUT
- * @output_description The length of the vector
- * @output_type int
+ * @output_type String
+ * @output_description Concatenated strings
  *
 END*/
 
 
-class Length : public BufferedNode {
+class StrCat : public BufferedNode {
    
-   int inputID;
+   int input1ID;
+   int input2ID;
    int outputID;
 
 public:
-   Length(string nodeName, ParameterSet params)
+   StrCat(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
-      inputID = addInput("INPUT");
+      input1ID = addInput("INPUT1");
+      input2ID = addInput("INPUT2");
       outputID = addOutput("OUTPUT");
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      ObjectRef inputValue = getInput(inputID, count);
+      ObjectRef input1Value = getInput(input1ID, count);
+      ObjectRef input2Value = getInput(input2ID, count);
 
-      if (inputValue->status != Object::valid)
+      if (input1Value->status != Object::valid)
       {
-	 out[count] = inputValue;
+	 out[count] = input1Value;
+         return;
+      }
+      if (input2Value->status != Object::valid)
+      {
+	 out[count] = input2Value;
          return;
       }
 
-      int sz;
-      if (typeid(*inputValue) == typeid(Vector<ObjectRef>))
-      {
-	 //cerr << "Vector<ObjectRef>\n";
-	 sz = object_cast<Vector<ObjectRef> > (inputValue).size();
-      } else if (typeid(*inputValue) == typeid(Vector<float>))
-      {
-	 //cerr << "Vector<float>\n";
-	 sz = object_cast<Vector<float> > (inputValue).size();
-      } else {
-	 //cerr << "error!!!\n";
-	 throw new NodeException(this, "Unknown input type", __FILE__, __LINE__);
-      }
+      const String &in1 = object_cast<String> (input1Value);
+      const String &in2 = object_cast<String> (input2Value);
 
-      out[count] = new Int (sz);
-
+      out[count] = new String(in1+in2);
+      
    }
 
-      
 };

@@ -41,7 +41,6 @@ include_HEADERS = Array.h \
 	
 noinst_HEADERS = \
 	Iterator.h \
-	List.h \
 	Mux.h \
 	NOT.h \
 	NetExec.h \
