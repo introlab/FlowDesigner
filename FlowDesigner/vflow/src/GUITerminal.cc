@@ -32,13 +32,13 @@ GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, 
   //creating the ellipse
   item = gnome_canvas_item_new(group,
 			       gnome_canvas_ellipse_get_type(),
-			       "x1", x-2.0,
-			       "y1", y-2.0,
-			       "x2", x+2.0,
-			       "y2", y+2.0,
+			       "x1", x-4.0,
+			       "y1", y-4.0,
+			       "x2", x+4.0,
+			       "y2", y+4.0,
 			       "fill_color_rgba", 0x000000FF,
 			       "outline_color", "black",
-			       "width_units", 2.0,
+			       "width_units", 4.0,
 			       NULL);
   
   gtk_signal_connect(GTK_OBJECT(item), "event",
