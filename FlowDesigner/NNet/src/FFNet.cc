@@ -370,10 +370,18 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    getWeights(wk.begin());
 
    calcGradient(tin, tout, wk, dEk, SSE);
-   pk=dEk;
-   rk=dEk;
+   pk=-dEk;
+   rk=-dEk;
    while (k < iter)
    {
+
+      /*wk += pk*-.000000001;
+      calcGradient(tin, tout, wk, nextdE, nextE);
+      pk = nextdE;
+      cerr << nextE << endl;
+      k++;
+      continue;*/
+
       double norm2 = pk.norm2();
       double norm = sqrt(norm2);
 
@@ -404,6 +412,9 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       //5. Step size
       double uk = pk * rk;
       double ak = uk/deltak;
+
+      //ak = .000000001;
+      //pk = -rk;
 
       //6. Comparison
       calcGradient(tin, tout, wk+pk*ak, nextdE, nextE);
@@ -439,7 +450,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       if (DK < .25)
 	 lambda *= 4;
       
-      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << deltak << "\t" << uk << "\t" << endl;
+      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << deltak << "\t" << uk << "\t" << ak << endl;
 
       //9. Have we found the minimum
       if (rk.norm() == 0)
