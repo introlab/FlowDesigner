@@ -57,7 +57,7 @@ public:
       outputCopy =new fftw_complex [inputLength];
       rNormalize =new float [inputLength];
       iNormalize =new float [inputLength];
-      float sqrt2n=.25*sqrt(inputLength/2.0);
+      float sqrt2n=sqrt(2.0/inputLength);
       for (int i=0;i<inputLength;i++)
       {
 	 rNormalize[i]=cos(M_PI*i/(2*inputLength))*sqrt2n;
