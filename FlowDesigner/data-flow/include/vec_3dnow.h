@@ -19,7 +19,6 @@ inline float vec_inner_prod_3dnow(const float *a, const float *b, int len)
 
   sub $4, %%ecx
   jb mul4_skip%=
-  //jb .+47
 
 mul4_loop%=:
   movq (%%eax), %%mm0
@@ -36,7 +35,6 @@ mul4_loop%=:
   sub $4,  %%ecx
 
   jae mul4_loop%=
-  //jae .-39
 
   pfadd %%mm5,%%mm4
 
@@ -44,7 +42,6 @@ mul4_skip%=:
 
   add $2, %%ecx
   jae mul2_skip%=
-  //jae .+22
 
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
@@ -56,7 +53,6 @@ mul2_skip%=:
 
   and $1, %%ecx
   jz even%=
-  //jz .+22
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -95,7 +91,6 @@ inline void vec_add_vec_3dnow(const float *a, const float *b, float *c, int len)
 
   sub $4, %%ecx
   jb mul4_skip%=
-  //jb .+45
 
 mul4_loop%=:
   movq (%%eax), %%mm0
@@ -113,13 +108,11 @@ mul4_loop%=:
   sub $4,  %%ecx
 
   jae mul4_loop%=
-  //jae .-41
 
 mul4_skip%=:
 
   add $2, %%ecx
   jae mul2_skip%=
-  //jae .+24
   
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
@@ -133,7 +126,6 @@ mul2_skip%=:
 
   and $1, %%ecx
   jz even%=
-  //jz .+21
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -166,10 +158,9 @@ inline void vec_sub_vec_3dnow(const float *a, const float *b, float *c, int len)
   push %%edx
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+45
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
   pfsubr %%mm0, %%mm1
@@ -184,14 +175,12 @@ inline void vec_sub_vec_3dnow(const float *a, const float *b, float *c, int len)
   add $16, %%edx
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-41
+  jae mul4_loop%=
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+24
+  jae mul2_skip%=
 
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
@@ -201,11 +190,10 @@ inline void vec_sub_vec_3dnow(const float *a, const float *b, float *c, int len)
   add $8, %%edi
   add $8, %%edx
 
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+21
+  jz even%=
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -213,7 +201,7 @@ inline void vec_sub_vec_3dnow(const float *a, const float *b, float *c, int len)
   movd (%%edi), %%mm1
   pfsubr %%mm0, %%mm1
   movd %%mm1, (%%edx)
-//even:
+even%=:
 
   pop %%edx
   pop %%ecx
@@ -238,10 +226,9 @@ inline void vec_mul_vec_3dnow(const float *a, const float *b, float *c, int len)
   push %%edx
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+45
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
@@ -256,14 +243,12 @@ inline void vec_mul_vec_3dnow(const float *a, const float *b, float *c, int len)
   add $16, %%edx
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-41
+  jae mul4_loop%=
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+24
+  jae mul2_skip%=
 
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
@@ -273,11 +258,10 @@ inline void vec_mul_vec_3dnow(const float *a, const float *b, float *c, int len)
   add $8, %%edi
   add $8, %%edx
 
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+21
+  jz even%=
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -285,7 +269,7 @@ inline void vec_mul_vec_3dnow(const float *a, const float *b, float *c, int len)
   movd (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movd %%mm1, (%%edx)
-//even:
+even%=:
 
   pop %%edx
   pop %%ecx
@@ -312,10 +296,9 @@ inline void vec_add_scal_3dnow(const float a, const float *b, float *c, int len)
   movq (%%eax), %%mm0
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+35
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movq 8(%%edi), %%mm2
@@ -327,14 +310,12 @@ inline void vec_add_scal_3dnow(const float a, const float *b, float *c, int len)
   add $16, %%edx
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-31
+  jae mul4_loop%=
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+18
+  jae mul2_skip%=
   
   movq (%%edi), %%mm1
   pfadd %%mm0, %%mm1
@@ -342,11 +323,10 @@ inline void vec_add_scal_3dnow(const float a, const float *b, float *c, int len)
   add $8, %%edi
   add $8, %%edx
 
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+21
+  jz even%=
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -354,7 +334,7 @@ inline void vec_add_scal_3dnow(const float a, const float *b, float *c, int len)
   movd (%%edi), %%mm1
   pfadd %%mm0, %%mm1
   movd %%mm1, (%%edx)
-//even:
+even%=:
 
   pop %%edx
   pop %%ecx
@@ -380,10 +360,9 @@ inline void vec_mul_scal_3dnow(const float a, const float *b, float *c, int len)
   movq (%%eax), %%mm0
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+35
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movq 8(%%edi), %%mm2
@@ -395,14 +374,12 @@ inline void vec_mul_scal_3dnow(const float a, const float *b, float *c, int len)
   add $16, %%edx
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-31
+  jae mul4_loop%=
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+18
+  jae mul2_skip%=
   
   movq (%%edi), %%mm1
   pfmul %%mm0, %%mm1
@@ -410,11 +387,10 @@ inline void vec_mul_scal_3dnow(const float a, const float *b, float *c, int len)
   add $8, %%edi
   add $8, %%edx
 
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+21
+  jz even%=
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -422,7 +398,7 @@ inline void vec_mul_scal_3dnow(const float a, const float *b, float *c, int len)
   movd (%%edi), %%mm1
   pfmul %%mm0, %%mm1
   movd %%mm1, (%%edx)
-//even:
+even%=:
 
   pop %%edx
   pop %%ecx
@@ -436,7 +412,7 @@ FP_DIRTY
 
 
 
-inline float vec_dist2_3dnow(const float *a, const float *b, int len)
+inline float vec_dist_3dnow(const float *a, const float *b, int len)
 {
   //float sum=0;
   float sum[2]={0,0};
@@ -449,10 +425,9 @@ inline float vec_dist2_3dnow(const float *a, const float *b, int len)
   pxor %%mm5, %%mm5
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+55
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
   movq 8(%%eax), %%mm2
@@ -468,16 +443,14 @@ inline float vec_dist2_3dnow(const float *a, const float *b, int len)
 
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-47
+  jae mul4_loop%=
 
   pfadd %%mm5,%%mm4
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+26
+  jae mul2_skip%=
 
   movq (%%eax), %%mm0
   movq (%%edi), %%mm1
@@ -486,11 +459,10 @@ inline float vec_dist2_3dnow(const float *a, const float *b, int len)
   pfsub %%mm0, %%mm1
   pfmul %%mm1, %%mm1
   pfadd %%mm1, %%mm4
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+26
+  jz even%=
 
   pxor %%mm0, %%mm0
   pxor %%mm1, %%mm1
@@ -499,7 +471,7 @@ inline float vec_dist2_3dnow(const float *a, const float *b, int len)
   pfsub %%mm0, %%mm1
   pfmul %%mm1, %%mm1
   pfadd %%mm1, %%mm4
-//even:
+even%=:
 
   pxor %%mm5, %%mm5
   pfacc %%mm5, %%mm4
@@ -518,7 +490,7 @@ FP_DIRTY
 }
 
 
-inline float vec_mahalanobis2_3dnow(const float *a, const float *b, const float *c, int len)
+inline float vec_mahalanobis_3dnow(const float *a, const float *b, const float *c, int len)
 {
    float sum[2]={0,0};
    __asm__ __volatile__ (
@@ -626,10 +598,9 @@ inline float vec_sum_3dnow(const float *a, int len)
   pxor %%mm5, %%mm5
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+29
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%eax), %%mm0
   pfadd %%mm0, %%mm4
   movq 8(%%eax), %%mm1
@@ -638,30 +609,27 @@ inline float vec_sum_3dnow(const float *a, int len)
   add $16, %%eax
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-21
+  jae mul4_loop%=
 
   pfadd %%mm5,%%mm4
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+12
+  jae mul2_skip%=
 
   movq (%%eax), %%mm0
   add $8, %%eax
   pfadd %%mm0, %%mm4
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+12
+  jz even%=
 
   pxor %%mm0, %%mm0
   movd (%%eax), %%mm0
   pfadd %%mm0, %%mm4
-//even:
+even%=:
 
   pxor %%mm5, %%mm5
   pfacc %%mm5, %%mm4
@@ -691,10 +659,9 @@ inline float vec_norm2_3dnow(const float *a, int len)
   pxor %%mm5, %%mm5
 
   sub $4, %%ecx
-  //jb mul4_skip
-  jb .+37
+  jb mul4_skip%=
 
-//mul4_loop:
+mul4_loop%=:
   movq (%%eax), %%mm0
   pfmul %%mm0, %%mm0
   pfadd %%mm0, %%mm4
@@ -705,32 +672,29 @@ inline float vec_norm2_3dnow(const float *a, int len)
   add $16, %%eax
   sub $4,  %%ecx
 
-  //jae mul4_loop
-  jae .-29
+  jae mul4_loop%=
 
   pfadd %%mm5,%%mm4
 
-//mul4_skip:
+mul4_skip%=:
 
   add $2, %%ecx
-  //jae mul2_skip
-  jae .+16
+  jae mul2_skip%=
 
   movq (%%eax), %%mm0
   pfmul %%mm0, %%mm0
   add $8, %%eax
   pfadd %%mm0, %%mm4
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+16
+  jz even%=
 
   pxor %%mm0, %%mm0
   movd (%%eax), %%mm0
   pfmul %%mm0, %%mm0
   pfadd %%mm0, %%mm4
-//even:
+even%=:
 
   pxor %%mm5, %%mm5
   pfacc %%mm5, %%mm4
@@ -758,10 +722,9 @@ inline void vec_inv_3dnow(const float *a, float *b, int len)
   push %%edx
 
   sub $2, %%ecx
-  //jb mul2_skip
-  jb .+51
+  jb mul2_skip%=
 
-//mul2_loop:
+mul2_loop%=:
   movd (%%eax), %%mm0
   pfrcp %%mm0, %%mm2
   movd 4(%%eax), %%mm1
@@ -779,14 +742,12 @@ inline void vec_inv_3dnow(const float *a, float *b, int len)
   add $8, %%edx
   sub $2,  %%ecx
 
-  //jae mul2_loop
-  jae .-47
+  jae mul2_loop%=
 
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+20
+  jz even%=
 
   movd (%%eax), %%mm0
   pfrcp %%mm0, %%mm2
@@ -794,7 +755,7 @@ inline void vec_inv_3dnow(const float *a, float *b, int len)
   pfrcpit1 %%mm2, %%mm0
   pfrcpit2 %%mm2, %%mm0
   movd %%mm0, (%%edx)
-//even:
+even%=:
 
   pop %%edx
   pop %%ecx
@@ -817,10 +778,9 @@ inline void vec_sqrt_3dnow(const float *a, float *b, int len)
   push %%edx
 
   sub $2, %%ecx
-  //jb mul2_skip
-  jb .+79
+  jb mul2_skip%=
 
-//mul2_loop:
+mul2_loop%=:
   movd (%%eax), %%mm0
   movd 4(%%eax), %%mm1
   movq %%mm0, %%mm6
@@ -844,14 +804,12 @@ inline void vec_sqrt_3dnow(const float *a, float *b, int len)
   add $8, %%edx
   sub $2,  %%ecx
 
-  //jae mul2_loop
-  jae .-75
+  jae mul2_loop%=
 
-//mul2_skip:
+mul2_skip%=:
 
   and $1, %%ecx
-  //jz even
-  jz .+34
+  jz even%=
 
   movd (%%eax), %%mm0
   movq %%mm0, %%mm6
@@ -863,7 +821,7 @@ inline void vec_sqrt_3dnow(const float *a, float *b, int len)
   pfmul %%mm6, %%mm0
 
   movd %%mm0, (%%edx)
-//even:
+even%=:
 
   pop %%edx
   pop %%ecx
