@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.28 2001/02/28 18:29:37 jmvalin Exp $
+# $Id: Makefile.am,v 1.29 2001/03/18 07:09:48 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -33,8 +33,4 @@ test_SOURCES = test.cc
 LDADD = $(top_srcdir)/src/libnnet.la \
         $(top_srcdir)/../data-flow/src/libflow.la
 
-#ifdef FREEBSD
-FREEBSD_FLAGS = -pthread
-#endif
-
-LDFLAGS = $(FREEBSD_FLAGS) $(GNOME_XML_LIB)
+LDFLAGS = $(GNOME_XML_LIB)

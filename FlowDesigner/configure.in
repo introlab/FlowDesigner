@@ -113,7 +113,8 @@ AC_CHECK_HEADERS(semaphore.h)
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 AC_CHECK_LIB(dl, dlopen)
-AC_CHECK_LIB(pthread, pthread_create)
+dnl AC_CHECK_LIB(pthread, pthread_create)
+AC_THREAD
 
 GNOME_XML_LIB=`gnome-config --libs xml`
 GNOME_XML_INCLUDE=`gnome-config --cflags xml`

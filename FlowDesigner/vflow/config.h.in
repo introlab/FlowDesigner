@@ -125,9 +125,6 @@
 /* Define if you have the i library (-li).  */
 #undef HAVE_LIBI
 
-/* Define if you have the pthread library (-lpthread).  */
-#undef HAVE_LIBPTHREAD
-
 /* Name of package */
 #undef PACKAGE
 

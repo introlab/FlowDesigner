@@ -67,7 +67,8 @@ dnl Checks for libraries.
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
 dnl AC_CHECK_LIB(dl, dlopen)
-AC_CHECK_LIB(pthread, pthread_create)
+dnl AC_CHECK_LIB(pthread, pthread_create)
+AC_THREAD
 
 dnl test for SGI audio library (required by SndLib) and define LIBS
 dnl AC_PATH_FFTW

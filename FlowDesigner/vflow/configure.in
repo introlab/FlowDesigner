@@ -30,7 +30,8 @@ AC_LIBTOOL_KLUDGE
 
 GNOME_COMPILE_WARNINGS
 
-AC_CHECK_LIB(pthread, pthread_create)
+dnl AC_CHECK_LIB(pthread, pthread_create)
+AC_THREAD
 
 AC_CHECK_FUNCS(pthread_cancel)
 
