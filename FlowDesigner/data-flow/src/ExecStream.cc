@@ -5,6 +5,7 @@
 #include "ObjectParser.h"
 
 #include <stdio.h>
+#include "stream_wrap.h"
 
 class ExecStream;
 
@@ -61,7 +62,7 @@ public:
       FILE *tmp = popen(cmd.c_str(), "r");
       if (!tmp)
 	 NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
-      out[count] = ObjectRef (new FILEPTR(tmp));
+      out[count] = ObjectRef (new Stream(new fileptr_istream(tmp)));
    }
 
 protected:
