@@ -13,7 +13,7 @@ void DiagonalCovariance::processMean(RCPtr<Mean> mean)
    if (mode != accum) throw string("DiagonalCovariance::processMean");
 
    Mean &v=*mean;
-   float accum_1 = 1.0/v.getAccum();
+   double accum_1 = 1.0/v.getAccum();
    for(int i = 0; i < dimension; i++ )
       data[i] -= sqr(v[i])*accum_1;
 }
@@ -22,7 +22,7 @@ void DiagonalCovariance::invert()
 {
    if (mode == inverted) return;
    if (mode != accum) throw string("DiagonalCovariance::invert");
-   float accum_1 = 1.0/accum_count;
+   double accum_1 = 1.0/accum_count;
 for(int i = 0; i < data.size(); i++ )
    {
       data[i] = 1.0 / (.001 + data[i] * accum_1);
@@ -30,10 +30,10 @@ for(int i = 0; i < data.size(); i++ )
    mode = inverted;
 }
 
-float DiagonalCovariance::mahalanobisDistance(const float *x1, const float *x2) const
+double DiagonalCovariance::mahalanobisDistance(const float *x1, const double *x2) const
 {
    if (mode != inverted) throw string ("DiagonalCovariance::mahalanobisDistance");
-   float dist=0;
+   double dist=0;
    for (int i=0;i<dimension;i++)
       dist += sqr(x1[i]-x2[i]) * data[i];
    return dist-getDeterminant();

@@ -100,7 +100,7 @@ void GMM::adaptMAP(vector<float *> frames, GMM *gmm)
       if (weight > 1)
 	 weight = 1;
       //weight=0;
-      vector<float> &mean = *gaussians[i]->mean;
+      vector<double> &mean = *gaussians[i]->mean;
       for (int j=0;j<mean.size();j++)
 	 mean[j] = weight*adaptMean[j] + (1-weight)*mean[j];
       //gaussians[i+old_size]= RCPtr<Gaussian> (new Gaussian(*(gaussians[i])));
@@ -131,7 +131,7 @@ void GMM::split1()
    }
    //cout << "spliting " << max_gauss << endl;
    gaussians[nb_gaussians]= RCPtr<Gaussian> (new Gaussian(*(gaussians[max_gauss])));
-   vector <float> &mean = gaussians[nb_gaussians]->getMean();
+   vector <double> &mean = gaussians[nb_gaussians]->getMean();
    for (unsigned int j=0;j<mean.size();j++)
       mean[j]+=.00001*(rand()%100-49.5);
    ++nb_gaussians;
@@ -146,7 +146,7 @@ void GMM::binary_split()
    for (int i=0;i<old_size;i++)
    {
       gaussians[i+old_size]= RCPtr<Gaussian> (new Gaussian(*(gaussians[i])));
-      vector <float> &mean = gaussians[i+old_size]->getMean();
+      vector <double> &mean = gaussians[i+old_size]->getMean();
       for (unsigned int j=0;j<mean.size();j++)
       {
          mean[j]+=.000001*(rand()%100-49.5);

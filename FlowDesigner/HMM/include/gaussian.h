@@ -104,21 +104,21 @@ public:
    int get_accum_count() const {return accum_count;} 
 
    /**Returns the mahalanobis distance between the gaussian and a frame*/
-   float mahalanobis(const float * fr) const
+   double mahalanobis(const float * fr) const
    {
       return covariance->mahalanobisDistance(fr,&(*mean)[0]);
    }
 
    /**Returns the mahalanobis distance between the gaussian and a frame*/
-   float mahalanobis(const float * fr, Covariance *cov) const
+   double mahalanobis(const float * fr, Covariance *cov) const
    {
       return cov->mahalanobisDistance(fr,&(*mean)[0]);
    }
 
    /**Returns the euclidian distance between the gaussian and a frame*/
-   float euclidian(const float * fr) const
+   double euclidian(const float * fr) const
    {
-      float dist=0;
+      double dist=0;
       for (unsigned int i=0;i<dimension;i++)
       {
          dist+=sqr(fr[i]-(*mean)[i]);

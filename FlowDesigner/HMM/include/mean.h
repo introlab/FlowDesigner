@@ -9,7 +9,7 @@
 #include "misc.h"
 #include "Vector.h"
 
-class Mean : public Vector<float>
+class Mean : public Vector<double>
 {
 protected:
    int mode;
@@ -18,14 +18,14 @@ protected:
 public:
    enum Mode {accum=0, real, rotated, inverted};
    Mean() 
-      : Vector<float>() 
+      : Vector<double>() 
       , mode(accum)
       , accum_count(0)
       , dimension(0)
    {}
 
-   Mean(int n, const float &x = 0) 
-      : Vector<float>(n, x)
+   Mean(int n, const double &x = 0) 
+      : Vector<double>(n, x)
       , mode(accum)
       , accum_count(0)
       , dimension(n)
@@ -49,7 +49,7 @@ public:
 
    void toReal()
    {
-      float accum_1 = 1.0/accum_count;
+      double accum_1 = 1.0/accum_count;
       for (int i=0;i<dimension;i++)
          this->operator[] (i) *= accum_1;
       mode = real;

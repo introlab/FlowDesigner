@@ -23,7 +23,7 @@ protected:
    int   dimension;
    
    /**Log of the determinant*/
-   mutable float determinant;
+   mutable double determinant;
    
    /**Whether or not the determinant has been computed*/
    mutable bool  determinant_is_valid;
@@ -60,7 +60,7 @@ public:
    unsigned int   size() const { return dimension; }
 
    /**Returns (and compute if necessary) the covariance log determinant*/
-   float getDeterminant() const 
+   double getDeterminant() const 
    { 
       if (!determinant_is_valid) compute_determinant(); 
       return determinant; 
@@ -74,13 +74,13 @@ public:
    
    /**Computed the mahalanobis distance between the vectors using the 
       covariance*/
-   virtual float mahalanobisDistance(const float *x1, const float *x2) const =0;
+   virtual double mahalanobisDistance(const float *x1, const double *x2) const =0;
 
    /**Virtual indexing operator 1D (for diagonal covariance)*/
-   virtual float&      operator[](int )=0;
+   virtual double&      operator[](int )=0;
 
    /**Virtual indexing operator 2D*/
-   virtual float&      operator()(int,int)=0;
+   virtual double&      operator()(int,int)=0;
 
    /**Resets accumulation to zero*/
    virtual void reset()=0;
@@ -101,7 +101,7 @@ public:
 /**Diagonal Covariance class*/
 class DiagonalCovariance : public Covariance  {
    /**The covariance data as the diagonal vector*/
-   vector<float> data;
+   vector<double> data;
 public:
    DiagonalCovariance(istream &in)
       : Covariance(0)
@@ -109,13 +109,13 @@ public:
    
    DiagonalCovariance() 
       : Covariance(0)
-      , data(vector<float>(0,0.0))
+      , data(vector<double>(0,0.0))
    {}
 
    /**Constructs a Diagonal Covariance with dimension dim*/
    DiagonalCovariance(int dim) 
       : Covariance(dim) 
-      , data(vector<float>(dim,0.0)) 
+      , data(vector<double>(dim,0.0)) 
    {}
 
    /**Copy Constructor*/
@@ -125,16 +125,16 @@ public:
    {}
 
    /**returns the mahalanobis distance between x1 and x2 using the covariance*/
-   float mahalanobisDistance(const float *x1, const float *x2) const;
+   double mahalanobisDistance(const float *x1, const double *x2) const;
 
    /**virtual, should not be used*/
-   float&      operator[](int i) {return data[i];}
+   double&      operator[](int i) {return data[i];}
 
    /**virtual, should not be used*/
-   float&      operator()(int i) {return data[i];}
+   double&      operator()(int i) {return data[i];}
 
    /**virtual, should not be used*/
-   float&      operator()(int i,int) {return data[i];}
+   double&      operator()(int i,int) {return data[i];}
 
    /**Computes the determinant*/
    void compute_determinant() const;
