@@ -93,25 +93,16 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 
 vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
 {
-   //cerr << "UIDocument::getNetParams for document: " << docName << "\n";
    UINetwork *net = getNetworkNamed(netName);
-   //cerr << "got the network\n";
    vector <ItemInfo *> params;
    if (net)
    {
-      //cerr << "net is already loaded...\n";
-      /*vector<string> paramNames;
-      paramNames.resize(preloadInfo[netName]->params.size());
-    
-      for (int i = 0; i < preloadInfo[netName]->params.size(); i++)
-          paramNames[i] = preloadInfo[netName]->params[i]->name;*/
-      
       net->insertNetParams(params);
-   } else if (preloadInfo.find(netName) != preloadInfo.end()) {
-      //cerr << "net is not loaded...\n";
+   } else if (preloadInfo.find(netName) != preloadInfo.end()) 
+   {
       params = preloadInfo[netName]->params;
-   } else if (externalDocInfo.find(netName) != externalDocInfo.end()) {
-      //cerr << "net is not loaded...\n";
+   } else if (externalDocInfo.find(netName) != externalDocInfo.end()) 
+   {
       params = externalDocInfo[netName]->params;
    }
    return params;
@@ -383,88 +374,88 @@ void UIDocument::loadNodeDefInfo(const string &path, const string &name)
       string nodeName;
       if (string((char*)node->name) == "NodeClass")
       {
-     SubnetInfo *info = new SubnetInfo;
-     info->category = string((char *)xmlGetProp(node, (CHAR *)"category"));
-     nodeName = string((char *)xmlGetProp(node, (CHAR *)"name"));
-     externalDocInfo[nodeName] = info;
-     xmlNodePtr data = node->childs;
-     while (data != NULL)
-     {
-        string kind = string((char*)data->name);
-        if (kind == "Input")
-        {
-		   xmlChar *tmp;
-		   ItemInfo *newInfo = new ItemInfo;
-           newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-           newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-		   
-		   tmp = xmlGetProp(data, (CHAR *)"value");
-		   if (tmp == NULL)
-			   newInfo->value = "";
-		   else
-			   newInfo->value = string((char *)tmp);
-		   
-           tmp = xmlNodeListGetString(doc, data->childs, 1);
-		   if (tmp == NULL)
-		       newInfo->description = "No Description Available.";
-		   else
-			   newInfo->description = string((char *)tmp);
-		   
-          info->inputs.insert(info->inputs.end(), newInfo);
-        } else if (kind == "Output")
-        {
-		   xmlChar *tmp;
-		   ItemInfo *newInfo = new ItemInfo;
-           newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-           newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-		   
-		   tmp = xmlGetProp(data, (CHAR *)"value");
-		   if (tmp == NULL)
-			   newInfo->value = "";
-		   else
-			   newInfo->value = string((char *)tmp);
-		   
-           tmp = xmlNodeListGetString(doc, data->childs, 1);
-		   if (tmp == NULL)
-		       newInfo->description = "No Description Available.";
-		   else
-			   newInfo->description = string((char *)tmp);
-		   
-           info->outputs.insert(info->outputs.end(), newInfo);
-        } else if (kind == "Parameter")
-        {
-		   xmlChar *tmp;
-		   ItemInfo *newInfo = new ItemInfo;
-           newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-           newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-		   tmp = xmlGetProp(data, (CHAR *)"value");
-		   if (tmp == NULL)
-		       newInfo->value = "";
-		   else
-			   newInfo->value = string((char *)tmp);
-		   
-           tmp = xmlNodeListGetString(doc, data->childs, 1);
-		   if (tmp == NULL)
-		       newInfo->description = "No Description Available.";
-		   else
-			   newInfo->description = string((char *)tmp);
-		   
-		   info->params.insert(info->params.end(), newInfo);
-        } else if (kind == "Description")
-        {
-			xmlChar *tmp;
-			tmp = xmlNodeListGetString(doc, data->childs, 1);
-			if (tmp == NULL)
-				info->description = "No description available";
-			else
-				info->description = string((char *)tmp);
-			
-        } else 
-        {
-           cerr << "other\n";
-        }
-        data = data->next;
-     }
+	 SubnetInfo *info = new SubnetInfo;
+	 info->category = string((char *)xmlGetProp(node, (CHAR *)"category"));
+	 nodeName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 externalDocInfo[nodeName] = info;
+	 xmlNodePtr data = node->childs;
+	 while (data != NULL)
+	 {
+	    string kind = string((char*)data->name);
+	    if (kind == "Input")
+	    {
+	       xmlChar *tmp;
+	       ItemInfo *newInfo = new ItemInfo;
+	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
+	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
+	       
+	       tmp = xmlGetProp(data, (CHAR *)"value");
+	       if (tmp == NULL)
+		  newInfo->value = "";
+	       else
+		  newInfo->value = string((char *)tmp);
+	       
+	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       if (tmp == NULL)
+		  newInfo->description = "No Description Available.";
+	       else
+		  newInfo->description = string((char *)tmp);
+	       
+	       info->inputs.insert(info->inputs.end(), newInfo);
+	    } else if (kind == "Output")
+	    {
+	       xmlChar *tmp;
+	       ItemInfo *newInfo = new ItemInfo;
+	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
+	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
+	       
+	       tmp = xmlGetProp(data, (CHAR *)"value");
+	       if (tmp == NULL)
+		  newInfo->value = "";
+	       else
+		  newInfo->value = string((char *)tmp);
+	       
+	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       if (tmp == NULL)
+		  newInfo->description = "No Description Available.";
+	       else
+		  newInfo->description = string((char *)tmp);
+	       
+	       info->outputs.insert(info->outputs.end(), newInfo);
+	    } else if (kind == "Parameter")
+	    {
+	       xmlChar *tmp;
+	       ItemInfo *newInfo = new ItemInfo;
+	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
+	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
+	       tmp = xmlGetProp(data, (CHAR *)"value");
+	       if (tmp == NULL)
+		  newInfo->value = "";
+	       else
+		  newInfo->value = string((char *)tmp);
+	       
+	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       if (tmp == NULL)
+		  newInfo->description = "No Description Available.";
+	       else
+		  newInfo->description = string((char *)tmp);
+	       
+	       info->params.insert(info->params.end(), newInfo);
+	    } else if (kind == "Description")
+	    {
+	       xmlChar *tmp;
+	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       if (tmp == NULL)
+		  info->description = "No description available";
+	       else
+		  info->description = string((char *)tmp);
+	       
+	    } else 
+	    {
+	       cerr << "other\n";
+	    }
+	    data = data->next;
+	 }
       }
       
       node = node->next;

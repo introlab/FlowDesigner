@@ -24,20 +24,21 @@ class DCT;
 
 DECLARE_NODE(DCT)
 /*Node
-
+ *
  * @name DCT
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name LENGTH
+ * @parameter_type int
  * @parameter_description No description available
-
+ *
 END*/
 
 

@@ -49,21 +49,27 @@ DECLARE_NODE(Sound)
  * @output_description No description available
  *
  * @parameter_name DEVICE
+ * @parameter_type string
  * @parameter_description No description available
  *
  * @parameter_name RATE
+ * @parameter_type int
  * @parameter_description No description available
  *
  * @parameter_name STEREO
+ * @parameter_type int
  * @parameter_description No description available
  *
  * @parameter_name MODE
+ * @parameter_type string
  * @parameter_description No description available
  *
  * @parameter_name BUFFER
+ * @parameter_type int
  * @parameter_description No description available
  *
  * @parameter_name DUMMY
+ * @parameter_type any
  * @parameter_description No description available
  *
 END*/
