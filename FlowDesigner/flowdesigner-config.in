@@ -9,7 +9,7 @@ exec_prefix=@exec_prefix@
 bindir=@bindir@
 sbindir=@sbindir@
 libexecdir=@libexecdir@
-datadir=@datadir@/flowdesigner
+datadir=@prefix@/lib/flowdesigner/toolbox
 sysconfdir=@sysconfdir@
 sharedstatedir=@sharedstatedir@
 localstatedir=@localstatedir@
@@ -17,7 +17,7 @@ libdir=@libdir@
 infodir=@infodir@
 mandir=@mandir@
 includedir=@includedir@/flowdesigner
-
+toolboxdir=@libdir@/flowdesigner/toolbox
 pkgdatadir=${datadir}/@PACKAGE@
 pkglibdir=${libdir}/@PACKAGE@
 pkgincludedir=${includedir}/@PACKAGE@
@@ -61,12 +61,18 @@ Compilation support options
 Install directories FlowDesigner was configured to
   --prefix  --exec-prefix  --bindir  --sbindir  --libexecdir  --datadir
   --sysconfdir  --sharedstatedir  --localstatedir  --libdir  --infodir
-  --mandir  --includedir
+  --mandir  --includedir --toolboxdir
 
 Known values for LIBRARY are:
 
     libflow        (Base FlowDesigner lib)
     audio_blocks   (DSP toolkit)
+    effects        (effects toolkit)
+    fuzzy          (fuzzy toolkit)
+    vflow          (GUI)
+    hmm            (HMM toolkit)
+    nnet           (NNet toolkit)
+    vq             (VQ toolkit)
     config         (Stuff found by autoconf)
 
 EOF
@@ -134,16 +140,32 @@ while test $# -gt 0; do
 	the_libs="$the_libs -L$libdir -lflow"
 	the_flags="$the_flags -I$includedir"
 	;;
+    effects)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/effects -lflow -leffects"
+	the_flags="$the_flags -I$includedir"
+	;;
     hmm)
-	the_libs="$the_libs -L$libdir -L$datadir/lib -lflow -lhmm"
+	the_libs="$the_libs -L$libdir -L$toolboxdir/HMM -lflow -lhmm"
 	the_flags="$the_flags -I$includedir"
 	;;
     nnet)
-	the_libs="$the_libs -L$libdir -L$datadir/lib -lflow -lnnet"
+	the_libs="$the_libs -L$libdir -L$toolboxdir/NNet -lflow -lNNet"
 	the_flags="$the_flags -I$includedir"
 	;;
     audio_blocks)
-	the_libs="$the_libs -L$libdir -L$datadir/lib -lflow -laudio_blocks"
+	the_libs="$the_libs -L$libdir -L$toolboxdir/audio_blocks -lflow -lablocks"
+	the_flags="$the_flags -I$includedir"
+	;;
+    fuzzy)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/fuzzy -lflow -lfuzzy"
+	the_flags="$the_flags -I$includedir"
+	;;
+    vq)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/VQ -lflow -lvq"
+	the_flags="$the_flags -I$includedir"
+	;;
+    vflow)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/vflow -lflow"
 	the_flags="$the_flags -I$includedir"
 	;;
     config)
