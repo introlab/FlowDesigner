@@ -60,14 +60,14 @@ AC_CHECK_FUNCS(pthread_cancel)
 
 GNOME_XML_LIB=`xml2-config --libs`
 GNOME_XML_INCLUDE=`xml2-config --cflags`
-GNOME_PIXBUF_INCLUDE=`gnome-config --cflags gdk_pixbuf gnomecanvaspixbuf`
+GNOME_PIXBUF_INCLUDE=`pkg-config --cflags gdk-pixbuf-2.0 libgnomecanvas-2.0`
 AC_SUBST(GNOME_XML_LIB)
 AC_SUBST(GNOME_XML_INCLUDE)
 AC_SUBST(GNOME_PIXBUF_INCLUDE)
 
-GNOME_GTHR_LIB=`glib-config --libs gthread`
-GNOME_GTHR_INCLUDE=`glib-config --cflags gthread`
-GNOME_PIXBUF_LIB=`gnome-config --libs gdk_pixbuf gnomecanvaspixbuf`
+GNOME_GTHR_LIB=`pkg-config --libs gthread-2.0`
+GNOME_GTHR_INCLUDE=`pkg-config --cflags gthread-2.0`
+GNOME_PIXBUF_LIB=`pkg-config --libs gdk-pixbuf-2.0 libgnomecanvas-2.0`
 AC_SUBST(GNOME_GTHR_LIB)
 AC_SUBST(GNOME_GTHR_INCLUDE)
 AC_SUBST(GNOME_PIXBUF_LIB)
