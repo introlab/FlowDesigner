@@ -97,6 +97,7 @@ class DoubleDispatch {
 //Maybe it should be called something else and moved somewhere else
 //(DL)
 //
+/*
 class SingleDispatch;
 
 class SingleDispatchException : public BaseException {
@@ -162,7 +163,7 @@ class SingleDispatch {
 #define REGISTER_SINGLE_VTABLE(klass, func, type1) \
         int dummy_vtable_init_for ## klass ## _ ## func =\
         klass::reg(func, &typeid(type1));
-
+*/
 
 
 

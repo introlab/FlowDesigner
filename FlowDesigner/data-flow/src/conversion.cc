@@ -9,6 +9,8 @@
  *Type conversion from one type to another. Should be implemented otherwise?
  * (DL) July 22 2003
 */
+
+/*
 //Conversion from Int to Int (useless?)
 ObjectRef convertIntToInt(ObjectRef x)
 {
@@ -38,4 +40,4 @@ ObjectRef convertFloatToFloat(ObjectRef x)
    return ObjectRef(Float::alloc(dereference_cast<float> (x)));
 }
 REGISTER_SINGLE_VTABLE(convertToFloatVtable, convertFloatToFloat, Float);
-
+*/

@@ -98,7 +98,9 @@ public:
    /**Makes a (deep) copy of the object*/
    virtual ObjectRef clone()
    {
-      throw new GeneralException("Method clone() not implemented for this object", __FILE__, __LINE__);
+     char message[256];
+     sprintf(message,"Method clone() not implemented for this object : %s",typeid(this).name());
+     throw new GeneralException(message, __FILE__, __LINE__);
    }
 
    /**Returns the name of the class of the Object*/

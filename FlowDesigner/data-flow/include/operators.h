@@ -73,6 +73,7 @@ inline ObjectRef concat(ObjectRef x, ObjectRef y)
 }
 
 //let's try that (DL 22/07/2003)
+/*
 DEFINE_SINGLE_VTABLE(convertToIntVtable);
 inline ObjectRef convertToInt(ObjectRef x)
 {
@@ -96,6 +97,6 @@ inline ObjectRef convertToVectorFloat(ObjectRef x)
 {
    return convertToVectorFloatVtable::perform(x);
 }
-
+*/
 
 

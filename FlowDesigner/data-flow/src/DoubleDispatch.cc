@@ -17,7 +17,7 @@ void DoubleDispatchException::print(ostream &out)
 }
 
 
-
+/*
 SingleDispatchException::SingleDispatchException(SingleDispatch *_table, string _type1)
    : table(_table)
    , type1(_type1) {
@@ -27,3 +27,4 @@ SingleDispatchException::SingleDispatchException(SingleDispatch *_table, string 
 void SingleDispatchException::print(ostream &out) {
    out << "SingleDisptach Vtable error: no match for " << table->getName() << "(" << type1 << ")" << endl;
 }
+*/
