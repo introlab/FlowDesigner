@@ -3,11 +3,15 @@
 #include <typeinfo>
 #include "ParameterSet.h"
 #include "Network.h"
+#include <pthread.h>
 
 //UIDocument *UIDocument::currentDocument;
 extern GnomeMDI *mdi;
 
 static GnomeMDIChildClass *parent_class = NULL;
+
+bool GUIDocument::isRunning=false;
+pthread_t GUIDocument::runThread;
 
 
 void create_net(gchar * str, GUIDocument *doc)
@@ -562,6 +566,32 @@ void GUIDocument::createParamDialog()
 
 }
 
+
+static void threadFunct(GUIDocument *doc)
+{
+   doc->run();
+   //pthread_cleanup_push(routine,arg) 
+}
+
+void GUIDocument::threadRun()
+{
+   if (!isRunning)
+   {
+      isRunning=true;
+      pthread_create(&runThread, NULL, (void * (*)(void *))threadFunct, this);
+   }
+}
+
+void GUIDocument::threadStop()
+{
+   if (isRunning)
+   {
+      isRunning=false;
+      pthread_cancel(runThread);
+      //pthread_create(&runThread, NULL, threadFunct, this);
+   }
+
+}
 
 //Run with a GUI
 void GUIDocument::run()
