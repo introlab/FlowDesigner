@@ -134,7 +134,7 @@ public:
 
    /**Returns a pointer to a Library specified by 'name' 
       (loads it if it hasn't been done before)*/
-   static LoadedLibrary *get_lib(string name);
+   static LoadedLibrary *getLib(const string &name);
 
 
 };

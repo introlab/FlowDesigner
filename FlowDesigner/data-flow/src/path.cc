@@ -59,7 +59,8 @@ void scanDL()
 	    continue;
 	 }
 	 string fullname = dirs[i] + "/" + current_entry->d_name;
-	 _DL_OPEN(fullname.c_str());
+	 DLManager::getLib(fullname);
+	 //_DL_OPEN(fullname.c_str());
       }
       
       closedir(my_directory);

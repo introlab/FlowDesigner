@@ -52,6 +52,10 @@ DECLARE_NODE(AudioStream)
  * @parameter_type string
  * @parameter_description Type of stream (stream, fd, FILE)
  *
+ * @parameter_name REWIND
+ * @parameter_type bool
+ * @parameter_description If true, the stream rewinds to the beginning of the file when EOF is met
+ *
 END*/
 
 
@@ -149,6 +153,7 @@ class AudioStream : public BufferedNode {
    /**Internal temporary variable used when converting sample to float*/
    vector<char> tmpBuffer;
 
+   bool rewind;
 public:
    AudioStream(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
@@ -175,6 +180,13 @@ public:
 	 else if (object_cast<String> (parameters.get("STREAM_TYPE")) == "stream")
 	    strType = cpp;
       }
+
+      if (parameters.exist("REWIND"))
+      {
+	 rewind = dereference_cast<bool> (parameters.get("REWIND"));
+      } else
+	 rewind = false;
+
       inOrder = true;
    }
 
@@ -285,7 +297,14 @@ public:
 	 file.read(buffer,itemSize*length);
 	 if (file.eof())
 	 {
-	    return false;
+	    if (rewind)
+	    {
+	       file.seekg(0, ios::beg);
+	       file.read(buffer,itemSize*length);
+	       istream &istr=file;
+	       istr.clear();
+	    } else
+	       return false;
 	 }
       } else if (strType == fptr)
       {
