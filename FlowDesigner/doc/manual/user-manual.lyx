@@ -1575,6 +1575,115 @@ There is a certain format which all Object must respect.
  Usually, every field will be inside < and > signs.
 \layout Chapter
 \start_of_appendix 
+Compiling and Installing
+\layout Section*
+
+What you need
+\layout Itemize
+
+An ANSI C++ compiler 
+\begin_deeper 
+\layout Itemize
+
+gcc 2.95.x is OK 
+\layout Itemize
+
+most of gcc 2.96 variants are OK 
+\layout Itemize
+
+gcc 3.0.x compile, but there are run-time glitches
+\layout Itemize
+
+egcs 1.1.2 is untested (probably doesn't work) 
+\layout Itemize
+
+MSVC++ is completely broken, but it possible build a subset of Overflow
+ with it (see here) 
+\layout Itemize
+
+HP's aCC should work after some modifications 
+\end_deeper 
+\layout Itemize
+
+autoconf, automake, libtool (which require perl and m4) 
+\layout Itemize
+
+GNU make 
+\layout Itemize
+
+FFTW (now optional, but recommended) compiled with --enable-float 
+\layout Itemize
+
+gnome (including the development libraries and libxml)
+\layout Itemize
+
+pthreads (now part of libc in most Linux distributions)
+\layout Section*
+
+Compilation flags
+\layout Standard
+
+If you are using gcc, you can control optimization with the CFLAGS and CXXFLAGS
+ environment variables.
+ For building on a Pentium III or an Athlon XP, we suggest to set both CFLAGS
+ and CXXFLAGS to: '-O3 -march=pentiumpro -D_ENABLE_SSE'.
+ For T-bird Athlon, we suggest replacing -D_ENABLE_SSE by -D_ENABLE_3DNOW.
+ This must be done 
+\series bold 
+before running configure
+\series default 
+.
+ Also, note that the default flags used if CFLAGS and CXXFLAGS are not set
+ are '-O2 -g'.
+ 
+\series bold 
+It is strongly recommended not to compile Overflow with -g 
+\series default 
+unless you're really desperate, as the binaries might take up to 600 MB
+ of disk space (instead of 6-10 MB otherwise) due to the C++ name mangling.
+ 
+\layout Section*
+
+Installing the software
+\layout Standard
+
+To compile, type:
+\layout Standard
+
+% ./configure --disable-static --prefix=<your install directory> 
+\layout Standard
+
+% make 
+\layout Standard
+
+% make install
+\layout Standard
+
+Notes:
+\layout Itemize
+
+As of version 0.5.1, it is now recommended to set the install prefix to /usr
+ or /usr/local, unless you want to keep more than one version installed
+ at the same time.
+ 
+\layout Itemize
+
+If you are using a CVS tarball, you need to use ./autogen.sh instead of ./configure
+ 
+\layout Itemize
+
+You might also need to set your LD_LIBRARY_PATH to <overflow prefix>/lib
+\layout Standard
+
+You can now start the Overflow environment by typing : 
+\layout Standard
+
+% vflow (assuming <overflow prefix>/bin is in your path)
+\layout Chapter
+
+Troubleshooting
+\layout Chapter
+
 Node Documentation
 \layout Standard
 
