@@ -69,7 +69,7 @@ DECLARE_NODE(Sound)
  *
  * @parameter_name BUFFER
  * @parameter_type int
- * @parameter_description Length of the audio buffer to allocate (nor reliable)
+ * @parameter_description Length of the audio buffer to allocate (not reliable)
  *
  * @parameter_name DUMMY
  * @parameter_type any
