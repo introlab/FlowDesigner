@@ -35,12 +35,11 @@ Iterator::Iterator (string nodeName, ParameterSet params)
    translator = NULL;
    conditionNode = NULL;
    
-   //BUG output should'n be a static array
-   for (int i=0;i<10;i++)
-   {
-      output[i] = ObjectRef(new Object(Object::nil));
-   }
+   //FIXME: this should be set dynamically.
+   output.resize(30,Object::nilObject);
 }
+
+
 /***************************************************************************/
 /*
   Iterator::getOutput(...)
