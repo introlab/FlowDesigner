@@ -4,9 +4,10 @@
     <Node name="node2" type="Constant" x="183.000000" y="41.000000">
       <Parameter name="VALUE" type="bool" value="true"/>
     </Node>
-    <Node name="node1" type="KeyPad" x="98.000000" y="100.000000">
+    <Node name="node1" type="KeyPad" x="97.000000" y="100.000000">
       <Parameter name="BREAK_AT" type="int" value="-1"/>
       <Parameter name="SHOW" type="bool" value="true"/>
+      <Parameter name="HOLD" type="int" value="1000"/>
     </Node>
     <Node name="node4" type="Constant" x="-42.000000" y="100.000000">
       <Parameter name="VALUE" type="int" value="1"/>

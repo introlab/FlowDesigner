@@ -519,7 +519,6 @@ void keypad_button_clicked(GtkObject  *object, KeyPad *keypad) {
   try {
   
     int pad_number = keypad->key_map[GTK_WIDGET(object)];
-    cerr<<"got pad number"<<pad_number<<endl;
     keypad->update_values(pad_number);
     
   }
@@ -528,7 +527,7 @@ void keypad_button_clicked(GtkObject  *object, KeyPad *keypad) {
     delete e;
   }
   catch (...) {
-    cerr<<"Unknown exception occured"<<endl;
+    cerr<<"Unknown exception occured in KeyPad.cc"<<endl;
     exit(-1);
   }
 }
