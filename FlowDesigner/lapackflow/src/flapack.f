@@ -15,6 +15,7 @@
       DO I=1,N
          IPIV(I)=I
       ENDDO
+      call SGETRF(N, N, A, N, IPIV, INFO)
       call SGETRS('N', N, NRHS, A, LDA, IPIV, B, LDB, INFO)
       RETURN
       END
@@ -27,10 +28,12 @@
       INTEGER INFO
       REAL FDUMMY
       INTEGER IDUMMY
+      INTEGER IDUMMY2
       REAL ISUPPZ(2*N)
       INTEGER IWORK(10*N)
       call SSYTRD('U', N, A, N, D, E, TAU, WORK, 18*N, INFO)
       call SSTEGR('V', 'A', N, D, E, FDUMMY, FDUMMY, IDUMMY, IDUMMY, 
-     *DLAMCH, IDUMMY, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
+     *0, IDUMMY2, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
+c     *DLAMCH, IDUMMY, D, V, N, ISUPPZ, WORK, 18*N, IWORK, 10*N, INFO)
       RETURN
       END
