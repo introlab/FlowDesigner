@@ -131,7 +131,8 @@ public:
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to, char *str=NULL);
 
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name, 
+					  const string &_objType="any", const string &_description="No description available");
 
    Network *build(const string &netName, const ParameterSet &params);
 

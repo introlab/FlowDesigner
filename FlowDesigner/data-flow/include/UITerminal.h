@@ -5,7 +5,6 @@
 
 using namespace std;
 
-//#include <gnome.h>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -44,8 +43,7 @@ protected:
    UINetTerminal *netTerminal;
 
 public:
-   UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, 
-			   double _x, double _y);
+   UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual ~UITerminal();
 

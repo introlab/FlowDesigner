@@ -125,17 +125,40 @@ void UINetwork::load (xmlNodePtr net)
 	 char *str_termName = (char *)xmlGetProp(node, (xmlChar *)"name");
 	 char *str_termTerm = (char *)xmlGetProp(node, (xmlChar *)"terminal");
 	 char *str_termNode = (char *)xmlGetProp(node, (xmlChar *)"node");
+	 //(DL) 15/12/2003 reading obj type & description
+	 char *str_termObjType = (char*)xmlGetProp(node, (xmlChar *) "object_type");
+	 char *str_termDescription = (char*)xmlGetProp(node, (xmlChar *) "description");
+
 	 string termName = string(str_termName);
 	 string termTerm = string(str_termTerm);
 	 string termNode = string(str_termNode);
-	 free(str_termName); free(str_termTerm); free(str_termNode);
+
+	 string termType = "any"; //default to "any"	 
+	 if (str_termObjType) {
+	   termType = string(str_termObjType);
+	   free(str_termObjType);
+	 }
+
+	 string termDesc = "No description available"; //default to no description available
+	 if (str_termDescription) {
+	   termDesc = string(str_termDescription);
+	   free(str_termDescription);
+	 }
+	 
+	 //Free XML strings
+	 free(str_termName); free(str_termTerm); free(str_termNode);	 
 
 	 if (getNodeNamed(termNode))
-	 {
-            if (!getNodeNamed(termNode)->getInputNamed(termTerm))
-               getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::INPUT);
-	    newNetTerminal(getNodeNamed(termNode)->getInputNamed(termTerm),
-			   UINetTerminal::INPUT, termName);
+	 {	   
+	   //update terminal (all info)
+	   if (!getNodeNamed(termNode)->getInputNamed(termTerm))
+	     getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::INPUT, termType, termDesc);
+	   
+	   //update Net terminal (all info) for the subnet
+	   newNetTerminal(getNodeNamed(termNode)->getInputNamed(termTerm),
+			  UINetTerminal::INPUT, termName, termType, termDesc);
+
+
 	 } else {
 	    cerr << "Invalid netTerminal at " << termNode << ":" << termTerm << endl;
 	 }
@@ -144,17 +167,42 @@ void UINetwork::load (xmlNodePtr net)
 	 char *str_termName = (char *)xmlGetProp(node, (xmlChar *)"name");
 	 char *str_termTerm = (char *)xmlGetProp(node, (xmlChar *)"terminal");
 	 char *str_termNode = (char *)xmlGetProp(node, (xmlChar *)"node");
+	 //(DL) 15/12/2003 reading obj type & description
+	 char *str_termObjType = (char*)xmlGetProp(node, (xmlChar *) "object_type");
+	 char *str_termDescription = (char*)xmlGetProp(node, (xmlChar *) "description");
+
+
 	 string termName = string(str_termName);
 	 string termTerm = string(str_termTerm);
 	 string termNode = string(str_termNode);
+
+	 string termType = "any"; //default to "any"	 
+	 if (str_termObjType) {
+	   termType = string(str_termObjType);
+	   free(str_termObjType);
+	 }
+	 
+	 string termDesc = "No description available"; //default to no description available
+	 if (str_termDescription) {
+	   termDesc = string(str_termDescription);
+	   free(str_termDescription);
+	 }
+
+
+
 	 free(str_termName); free(str_termTerm); free(str_termNode);
 	 
 	 if (getNodeNamed(termNode))
 	 {
-            if (!getNodeNamed(termNode)->getOutputNamed(termTerm))
-               getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::OUTPUT);
-	    newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
-			   UINetTerminal::OUTPUT, termName);
+
+	   //update terminal (all info)
+	   if (!getNodeNamed(termNode)->getOutputNamed(termTerm)) {
+	     getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::OUTPUT, termType, termDesc);
+	   }
+
+	   //update Net terminal (all info) for the subnet
+	   newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
+			  UINetTerminal::OUTPUT, termName, termType, termDesc);
 	 } else {
 	    cerr << "Invalid netTerminal at " << termNode << ":" << termTerm << endl;
 	 }
@@ -394,11 +442,12 @@ UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
    return new UILink (_from, _to, str);
 }
 
-UINetTerminal *UINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
+UINetTerminal *UINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name, const string &_objType, const string &_description)
 {
    //BUG HERE
-   //cerr << "UINetwork::newNetTerminal\n";
-   return new UINetTerminal (_terminal, _type, _name);
+  //cerr << "UINetwork::newNetTerminal "<<_name<<" "<<_objType<<" "<<_description<<endl;
+  
+  return new UINetTerminal (_terminal, _type, _name, _objType, _description);
 }
 
 

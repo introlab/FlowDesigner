@@ -8,7 +8,8 @@
 
 using namespace std;
 
-UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, string _name, string _objType, string _description)
+UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name, 
+			     const string &_objType, const string &_description)
    : name(_name)
    , terminal(_terminal)
    , type(_type)

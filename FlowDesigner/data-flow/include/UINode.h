@@ -90,7 +90,8 @@ public:
    virtual void rename (const string &newName);
 
    /**Adds a new terminal to a node*/
-   virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
+   virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
+			    const string &_objType="any", const string &_description="No description available");
 
    /**Removes a terminal from a node*/
    virtual void removeTerminal(const string &_name, UINetTerminal::NetTermType _type);
@@ -118,7 +119,7 @@ public:
       y = new_y;
    }
 
-   virtual void redraw() {}
+  
 
    void setNodeParameters(UINodeParameters *params);   
    
@@ -132,11 +133,12 @@ public:
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
 
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
+					  const string &_objType="any", const string &_description="No description available");
 
    virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
  
-
+   virtual void redraw() {}
 
    Node *build(const ParameterSet &params);
 

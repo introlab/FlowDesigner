@@ -176,10 +176,10 @@ UILink *UINode::newLink (UITerminal *_from, UITerminal *_to)
   return new UILink (_from, _to);
 }
 
-UINetTerminal *UINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
-{
+UINetTerminal *UINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
+				       const string &_objType, const string &_description) {
   //cerr<<"UINode::newNetTerminal\n";
-  return new UINetTerminal (_terminal, _type, _name);
+  return new UINetTerminal (_terminal, _type, _name, _objType, _description);
 }
 
 UINodeParameters *UINode::newNodeParameters (UINode *_node, string type)
@@ -232,13 +232,15 @@ Node *UINode::build(const ParameterSet &params)
    
 }
 
-void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) 
+void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type, const string &_objType, const string &_description) 
 {
 
    double x1=0,y1=0,x2=0,y2=0;
    ItemInfo info;
    
    info.name = _name;
+   info.type = _objType;
+   info.description = _description;
    
    switch (_type) {
 
