@@ -1,6 +1,7 @@
 #include "Cell.h"
 #include <string>
 #include "ObjectParser.h"
+#include "misc.h"
 
 DECLARE_TYPE(Cell)
 
@@ -126,7 +127,69 @@ void Cell::split(const vector<pair<int, float *> > &data, int &bestDim, float &b
    }
    }*/
 
-void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
+void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &bestThresh, float &bestScore)
+{
+   float sum = 0, s2 = 0;
+   int i,k;
+   for (i=0;i<data.size();i++)
+   {
+      sum += data[i].second[dim];
+      s2+= sqr(data[i].second[dim]);
+   }
+   if (data.size()<=1)
+   {
+      bestThresh=0;
+      bestScore=0;
+      return;
+   }
+   sum /= data.size();
+   s2=sqrt(s2/data.size() - sqr(sum) );
+   cerr << "s2 = " << s2 << " N = " << data.size() << endl;
+   float min_value = sum - 1.5*s2;
+   float max_value = sum + 1.5*s2;
+   //thresh=sum/data.size();
+   //if (data.size()==0) thresh=0;
+
+   bestThresh = 0;
+   bestScore = -FLT_MAX;
+   float thresh;
+   float score;
+   for (thresh = min_value; thresh < max_value; thresh += (max_value-min_value)/15.0)
+   {
+      int sumAi = 0, sumBi = 0;
+      vector<int> Ai (numberClasses, 0);
+      vector<int> Bi (numberClasses, 0);
+      for (k=0;k<data.size();k++)
+      {
+         if (data[k].second[dim] >= thresh) 
+         {
+            sumAi++;
+            Ai[data[k].first]++;
+         } else {
+            sumBi++;
+            Bi[data[k].first]++;
+         }
+      }
+      
+      double weight = double(sumAi)/data.size();
+      score = - numberClasses * .01*abs(thresh-sum)/s2;
+      //score = 0;
+      for (i = 0;i<numberClasses;i++)
+      {
+         score += - weight     *  entropy_funct (double( Ai[i] ) / sumAi )
+         - (1-weight) *  entropy_funct (double( Bi[i] ) / sumBi );
+      }
+      if (score > bestScore)
+      {
+         bestThresh = thresh;
+         bestScore = score;
+      }
+   }
+   
+}
+
+
+/*void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
 {
    float sum = 0;
    int i,k;
@@ -151,17 +214,14 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    }
    
    double weight = double(sumAi)/data.size();
-   //cerr << "weight: " << weight << "   sumAi = " << sumAi << endl;
    score = 0.0;
    for (i = 0;i<numberClasses;i++)
    {
-      //cerr << "A[" << i << "] = " << Ai[i] << "\t" << "Ai[i] / sumAi = " << (double( Ai[i] ) / sumAi ) << "\t";
       score += - weight     *  entropy_funct (double( Ai[i] ) / sumAi )
                - (1-weight) *  entropy_funct (double( Bi[i] ) / sumBi );
-      //cerr << "score = " << score << endl;
    }
 
-}
+}*/
 
 /*void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
 {

@@ -43,16 +43,22 @@ int KMeans::split (const vector<float *> &data, int len)
    float max_dist = 0;
    int maxID=0;
    for (i=0; i<nbMeans;i++)
+      if (totalDist[i] > max_dist)
+      {
+         max_dist=totalDist[i];
+         maxID=i;
+      }
+   /*   for (i=0; i<nbMeans;i++)
       if (totalDist[i]/accum[i] > max_dist)
       {
          max_dist=totalDist[i]/accum[i];
          maxID=i;
       }
-   
-   cerr << "about to perform split\n";
+   */
+   /*cerr << "about to perform split\n";
    cerr << "nbMeans = " << nbMeans << endl;
    cerr << "length = " << length << endl;
-   cerr << "maxID = " << maxID << endl;
+   cerr << "maxID = " << maxID << endl;*/
    means.resize(nbMeans+1);
    means[nbMeans].resize(length);
    for (i=0; i<length;i++)
@@ -64,6 +70,29 @@ int KMeans::split (const vector<float *> &data, int len)
    }
    nbMeans++;
 }
+
+
+int KMeans::bsplit ()
+{
+   int nbMeans = means.size();
+   int i;
+   
+   means.resize(nbMeans*2);
+   for (i=nbMeans;i<nbMeans*2;i++)
+   {
+      means[i].resize(length);
+      
+      for (int j=0; j<length;j++)
+      {
+         float factor = .99 + ((rand() % 2000) *.00001);
+         //factor = 1.01;
+         means[i][j]=means[i-nbMeans][j]*factor;
+         //cerr << means[nbMeans][i] << " " << means[maxID][i] << endl;
+      }
+   }
+   nbMeans*=2;
+}
+
 
 void KMeans::update (const vector<float *> &data, int len)
 {
@@ -113,10 +142,10 @@ void KMeans::update (const vector<float *> &data, int len)
    
 }
 
-void KMeans::train (int codeSize, const vector<float *> &data, int len)
+void KMeans::train (int codeSize, const vector<float *> &data, int len, bool binary)
 {
    int i,j;
-   cerr << "void KMeans::train (" << codeSize << ", " << data << ", "<<len <<")" << endl;
+   //cerr << "void KMeans::train (" << codeSize << ", " << data << ", "<<len <<")" << endl;
    length=len;
    means.resize(1);
    means[0].resize(length);
@@ -130,14 +159,23 @@ void KMeans::train (int codeSize, const vector<float *> &data, int len)
    for (j=0;j<length;j++)
       means[0][j] /= data.size();
    int splitID=0;
-   cerr << "init done..." << endl;
-   for (i=1;i<codeSize;i++)
+   //cerr << "init done..." << endl;
+   
+   if (binary)
    {
-      cerr << "spliting\n";
-      split (data, len);
-      cerr << "updating\n";
-      for (j=0;j<2;j++)
-         update(data, len);
+      for (i=0;i<codeSize;i++)
+      {
+         bsplit ();
+         for (j=0;j<10;j++)
+            update(data, len);
+      }
+   } else {
+      for (i=1;i<codeSize;i++)
+      {
+         split (data, len);
+         for (j=0;j<4;j++)
+            update(data, len);
+      }
    }
 }
 

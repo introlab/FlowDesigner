@@ -46,9 +46,11 @@ public:
 
    int split (const vector<float *> &data, int len);
 
+   int bsplit ();
+
    void update (const vector<float *> &data, int len);
 
-   void train (int codeSize, const vector<float *> &data, int len);
+   void train (int codeSize, const vector<float *> &data, int len, bool binary=false);
 
    int getClassID (const float *v, float *dist_return = NULL) const;
 

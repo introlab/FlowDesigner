@@ -44,7 +44,7 @@ public:
       : Node(nodeName, params) 
       //, value (parameters.get("VALUE"))
    {
-      outputID = addOutput("VALUE");
+      outputID = addOutput("OUTPUT");
       
       value = ObjectRef(new Vector<float>);
       Vector<float> &val = object_cast<Vector<float> > (value);
