@@ -1,0 +1,80 @@
+dnl Process this file with autoconf to produce a configure script. -*-m4-*-
+
+AC_INIT(include/FuzzyModel.h)
+
+dnl Stolen from gtk+:
+
+
+FREESPEECH_MAJOR_VERSION=0
+FREESPEECH_MINOR_VERSION=2
+FREESPEECH_MICRO_VERSION=0
+FREESPEECH_VERSION=$FREESPEECH_MAJOR_VERSION.$FREESPEECH_MINOR_VERSION.$FREESPEECH_MICRO_VERSION
+FREESPEECH_INTERFACE_AGE=0
+FREESPEECH_BINARY_AGE=0
+
+
+AC_SUBST(FREESPEECH_MAJOR_VERSION)
+AC_SUBST(FREESPEECH_MINOR_VERSION)
+AC_SUBST(FREESPEECH_MICRO_VERSION)
+AC_SUBST(FREESPEECH_INTERFACE_AGE)
+AC_SUBST(FREESPEECH_BINARY_AGE)
+AC_SUBST(FREESPEECH_VERSION)
+
+# libtool versioning
+LT_RELEASE=$FREESPEECH_MAJOR_VERSION.$FREESPEECH_MINOR_VERSION
+LT_CURRENT=`expr $FREESPEECH_MICRO_VERSION - $FREESPEECH_INTERFACE_AGE`
+LT_REVISION=$FREESPEECH_INTERFACE_AGE
+LT_AGE=`expr $FREESPEECH_BINARY_AGE - $FREESPEECH_INTERFACE_AGE`
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+
+# For automake.
+VERSION=$FREESPEECH_VERSION
+PACKAGE=FuzzyEngine
+
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+AC_CANONICAL_HOST
+
+AM_PROG_LIBTOOL
+
+case "$host_os" in 
+hpux*) OS=HPUX ;;
+linux*) OS=LINUX ;;
+freebsd*) OS=FREEBSD ;;
+esac
+AC_DEFINE_UNQUOTED(${OS})
+dnl Initialize libtool.
+
+AC_LIBTOOL_ACC_KLUDGE
+
+dnl Checks for programs.
+
+dnl AM_C_PROTOTYPES
+AC_PROG_CXX
+AC_PROG_MAKE_SET
+dnl AC_PROG_RANLIB
+
+dnl Check header files
+AC_CHECK_HEADERS(float.h)
+
+dnl Checks for libraries.
+
+dnl Test for math library, and define LIBS
+AC_CHECK_LIB(m, sin)
+dnl AC_CHECK_LIB(dl, dlopen)
+dnl AC_CHECK_LIB(pthread, pthread_create)
+
+dnl test for SGI audio library (required by SndLib) and define LIBS
+dnl AC_PATH_FFTW
+
+dnl Checks for library functions.
+
+dnl Output the makefiles and version.h.
+
+AC_OUTPUT([Makefile include/Makefile src/Makefile
+	])
+
