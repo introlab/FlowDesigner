@@ -8,6 +8,7 @@ install:
 liblapackflow_la_SOURCES = lapackflow.cc \
 	flapack.f \
 	LinSolve.cc \
+	SolveLS.cc \
 	Eig.cc \
 	SVD.cc
 
