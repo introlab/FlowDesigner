@@ -266,6 +266,33 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
    }
 }
 
+/*
+void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
+{
+   int k=1;
+   double sigma = 1;
+   double lambda = .5;
+   double lambdaBar = 0;
+   double sigmak;
+   bool success = true;
+
+   int nbWeights = ;
+   vector<double> pk(nbWeights);
+   vector<double> rk(nbWeights);
+   
+   pk = rk = -gradient
+
+   if (success)
+   {
+      sigmak = sigma / norm(pk);
+      sk = ...;
+      deltak = ...;
+   }
+
+
+}
+*/
+
 double FFNet::calcError(const vector<float *> &tin, const vector<float *> &tout)
 {
    int i,j;

@@ -33,5 +33,77 @@ inline T sqr(T x) {return x*x;}
 template <class T>
 inline T abs(T x) {return x >= 0 ? x : -x;}
 
+/**Norm of a vector*/
+template <class T>
+inline T norm(T *x, int len)
+{
+   T sum1=0,sum2=0,sum3=0,sum4=0;
+   while (len > 3)
+   {
+      sum1 += *x* *x;
+      x++;
+      sum2 += *x* *x;
+      x++;
+      sum3 += *x* *x;
+      x++;
+      sum4 += *x* *x;
+      x++;
+      len -= 4;
+   }
+   while (len)
+   {
+      sum1 += *x* *x;
+      x++;      
+   }
+
+   return sqrt((sum1+sum2)+(sum3+sum4));
+}
+
+/**Squared norm of a vector*/
+template <class T>
+inline T norm2(T *x, int len)
+{
+   T sum1=0,sum2=0,sum3=0,sum4=0;
+   while (len > 3)
+   {
+      sum1 += *x* *x;
+      x++;
+      sum2 += *x* *x;
+      x++;
+      sum3 += *x* *x;
+      x++;
+      sum4 += *x* *x;
+      x++;
+      len -= 4;
+   }
+   while (len)
+   {
+      sum1 += *x* *x;
+      x++;      
+   }
+
+   return (sum1+sum2)+(sum3+sum4);
+}
+
+/**dot product of two vector*/
+template <class T>
+inline T dot_prod(T *x, T *y, int len)
+{
+   T sum1=0,sum2=0,sum3=0,sum4=0;
+   while (len > 3)
+   {
+      sum1 += *x++* *y++;
+      sum2 += *x++* *y++;
+      sum3 += *x++* *y++;
+      sum4 += *x++* *y++;
+      len -= 4;
+   }
+   while (len)
+   {
+      sum1 += *x++* *y++;
+   }
+
+   return (sum1+sum2)+(sum3+sum4);
+}
 
 #endif
