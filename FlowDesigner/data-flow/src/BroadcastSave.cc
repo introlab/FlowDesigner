@@ -1,4 +1,4 @@
-// Copyright (C) 2001 Dominic Letourneau
+// Copyright (C) 2002 Dominic Letourneau
 
 #include "BufferedNode.h"
 #include "net_types.h"
@@ -70,7 +70,7 @@ public:
       }
       
       //writing to temporary stream
-      stringstream temp_stream;
+      ostringstream temp_stream;
 
       temp_stream << object;
 

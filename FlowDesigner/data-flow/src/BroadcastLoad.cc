@@ -1,11 +1,10 @@
-// Copyright (C) 2001 Dominic Letourneau
+// Copyright (C) 2002 Dominic Letourneau
 
 #include "Vector.h"
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "ObjectParser.h"
 #include <sstream>
-#include <strstream>
 #include "SocketStream.h"
 
 class BroadcastLoad;
@@ -50,7 +49,7 @@ public:
 
   void calculate(int output_id, int count, Buffer &out) {
 
-    strstream m_stream;
+    
 
     istream & my_stream = (istream&) object_cast<IStream>(getInput(socketInputID,count));
     
@@ -81,7 +80,12 @@ public:
       
       if (size > 0) {
 	//cerr<<"BROADCAST LOAD SIZE : "<<size<<endl;
-	m_stream.write(&packet[0],size);
+
+	string data((char*) &packet[0], size);
+
+	
+	istringstream m_stream(data);
+
 	ObjectRef my_object;      
 	
 	try {
