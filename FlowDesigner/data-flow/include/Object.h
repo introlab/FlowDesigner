@@ -77,20 +77,11 @@ public:
       delete this;
    }
 
-   virtual void serialize(ostream &out) const
-   {
-      throw new GeneralException("Object doesn't know how to serialize itself", __FILE__, __LINE__);
-   }
+   virtual void serialize(ostream &out) const;
 
-   virtual void unserialize(ostream &out) const
-   {
-      throw new GeneralException("Object doesn't know how to unserialize itself", __FILE__, __LINE__);
-   }
-
-   virtual void doesNotUnderstand(string method)
-   {
-      throw new GeneralException(string(typeid (*this).name()) + ": Does Not Understand method " + method, __FILE__, __LINE__);
-   }
+   virtual void unserialize(ostream &out);
+   
+   virtual void doesNotUnderstand(string method);
 
    /**Generic print function*/
    virtual void printOn(ostream &out=cout) const
