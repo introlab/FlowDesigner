@@ -38,7 +38,8 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    char *color;
    if (type == INPUT)
    {
-      defaultName = "INPUT";
+      //defaultName = "INPUT";
+     defaultName = terminal->getName();
       prompt = "Input name?";
       anchor = GTK_ANCHOR_EAST;
       x -= 10;
@@ -46,7 +47,8 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    }   
    else if (type == OUTPUT)
    {
-      defaultName = "OUTPUT";
+      //defaultName = "OUTPUT";
+     defaultName = terminal->getName();
       prompt = "Output name";
       anchor = GTK_ANCHOR_WEST;
       x += 10;
