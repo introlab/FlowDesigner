@@ -60,7 +60,7 @@ void GUINodeParameters::addInput()
    char *new_input = (char*) gtk_entry_get_text(GTK_ENTRY(input_entry));
    if (!new_input || strlen(new_input)==0)
       return;
-   gtk_entry_set_text(GTK_ENTRY(input_entry), "");
+
    gtk_list_select_all(GTK_LIST(list1));
 
    GtkWidget *inp1 = gtk_list_item_new_with_label(new_input);
@@ -83,14 +83,19 @@ void GUINodeParameters::addInput()
 
 void GUINodeParameters::addOutput()
 {
+
+ 
    char *new_output = (char*)gtk_entry_get_text(GTK_ENTRY(output_entry));
+   cerr<<"adding output "<<new_output<<endl;
+
    if (!new_output || strlen(new_output)==0)
       return;
-   gtk_entry_set_text(GTK_ENTRY(output_entry), "");
+
    gtk_list_select_all(GTK_LIST(list1));
 
    GtkWidget *outp1 = gtk_list_item_new_with_label(new_output);
    gtk_widget_ref (outp1);
+
    gtk_object_set_data (GTK_OBJECT (outp1), "label", (gpointer)new_output);
    gtk_signal_connect (GTK_OBJECT (outp1), "select",
                        GTK_SIGNAL_FUNC (node_remove_output_select),
