@@ -433,13 +433,14 @@ UILink *GUINode::newLink (UITerminal *_from, UITerminal *_to)
    return new GUILink (_from, _to);
 }
 
-UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
-{
-   return new GUINetTerminal (_terminal, _type, _name);
+UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
+					  const string &_objType, const string &_description) {
+
+  return new GUINetTerminal (_terminal, _type, _name, _objType, _description);
 }
 
-void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) 
-{
+void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type,
+			  const string &_objType, const string &_description) {
 
   double x1=0,y1=0,x2=0,y2=0;
   
@@ -449,6 +450,8 @@ void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type)
   ItemInfo info;
 
   info.name = _name;
+  info.type = _objType;
+  info.description = _description;
 
  
   switch (_type) {

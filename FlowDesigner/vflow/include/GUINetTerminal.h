@@ -14,6 +14,7 @@ class UITerminal;
 //struct xmlNode;
 
 class GUINetTerminal : public UINetTerminal {
+
 public:
    //enum NetTermType {INPUT, OUTPUT, CONDITION};
 
@@ -21,7 +22,9 @@ protected:
    GnomeCanvasItem *item;
       
 public:
-   GUINetTerminal(UITerminal *_terminal, NetTermType _type, string _name);
+
+   GUINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name,
+		  const string &_objType = "any", const string &_description = "No description available");
    void setup();
    ~GUINetTerminal();
    gint event(GdkEvent *event);

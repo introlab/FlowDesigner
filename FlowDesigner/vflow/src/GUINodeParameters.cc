@@ -211,9 +211,10 @@ void GUINodeParameters::apply()
 	  //cerr<<"value: "<<newValue<<endl;
 	}
       }
+
+      //update type, value
       textParams[i]->type = newType;
       textParams[i]->value = newValue;
-
    }
    //nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
    GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments));
@@ -227,6 +228,8 @@ void GUINodeParameters::apply()
    node->getNetwork()->setModified();
 
    node->getNetwork()->interfaceChangeNotify();   
+
+
 }
 
 void GUINodeParameters::changed()

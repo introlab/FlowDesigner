@@ -507,9 +507,10 @@ UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
    return new GUILink (_from, _to, str);
 }
 
-UINetTerminal *GUINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name)
+UINetTerminal *GUINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
+					   const string &_objType, const string &_description )
 {
-   return new GUINetTerminal (_terminal, _type, _name);
+  return new GUINetTerminal (_terminal, _type, _name, _objType, _description);
 }
 
 void GUINetwork::moveSelectedNodes(double dx, double dy) {

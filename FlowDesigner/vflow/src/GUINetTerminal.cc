@@ -27,8 +27,9 @@ static gint net_terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpoint
    return ((GUINetTerminal *)(data))->event(event);
 }
 
-GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string _name)
-   : UINetTerminal(_terminal, _type, _name)
+GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name,
+			       const string &_objType, const string &_description)
+  : UINetTerminal(_terminal, _type, _name, _objType, _description)
    , item(NULL)
 {
 

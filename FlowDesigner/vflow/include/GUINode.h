@@ -34,7 +34,6 @@ protected:
 
 public:
 
-   void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
   
    GUINode(UINetwork* _net, string _name, string _type, double x, double y);
 
@@ -66,15 +65,21 @@ public:
 
    void help();
 
+
+   virtual void addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
+			    const string &_objType="any", const string &_description="No description available");
+   
+
    virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
-  
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
 
+   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
+					  const string &_objType="any", const string &_description="No description available");
+   
    virtual void notifyError(const string &message);
 
-   void redraw();
+   virtual void redraw();
 
    friend class GUINetwork;
 
