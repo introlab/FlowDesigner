@@ -9,8 +9,11 @@
 #include "typetraits.h"
 #include <complex>
 #include "binio.h"
+#include "net_types.h"
 
 using namespace std;
+
+
 
 /**
    Base class for Complex<T> numbers.
@@ -125,8 +128,15 @@ class Complex : public complex<T>, public Object {
      Destroy any Complex<T> from memory. This function is used by the ObjectPool<Complex<T> > class.
   */
   void destroy() {ObjectPool<Complex<T> >::release(this);}
-};
 
+  /**
+     clone a Complex<T>
+  */
+  virtual ObjectRef clone() {
+    return ObjectRef(Complex<T>::alloc(*(complex<T>*) this));
+  }
+
+};
 
 /**
    operator >> for Complex<T>
@@ -176,5 +186,7 @@ istream &operator >> (istream &in, Complex<T> &value) {
   return in;
 }
 
+_DEF_OBJECT_TYPE(Complex<float>)
+_DEF_OBJECT_TYPE(Complex<double>)
 
 #endif

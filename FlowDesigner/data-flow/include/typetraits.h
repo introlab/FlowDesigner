@@ -5,22 +5,7 @@
 #define TYPE_TRAITS_H
 
 #include "Object.h"
-
-
-/* KLUDGE: This is a workaround for (I think) a bug in gcc 2.96 where you cannot 
-   include <complex> if you add -I/usr/include to the include path... strange...*/
-#ifdef __GNUC__
-#if (__GNUC__ == 2 && __GNUC_MINOR__ == 96)
-#define GCC_296_COMPLEX_KLUDGE
-#endif
-#endif
-
-#ifdef GCC_296_COMPLEX_KLUDGE
-template<class T>
-class complex;
-#else
 #include <complex>
-#endif
 
 class TTraits {
 public:

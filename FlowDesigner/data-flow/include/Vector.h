@@ -45,29 +45,15 @@ class BaseVector  : public Object {
 	\param pos the position of the element
 	\return ObjectRef the newly created Object
    */
-   virtual ObjectRef getIndex(int pos) {
-   	throw new GeneralException(string("Vector getIndex not implemented for object : ") + className(),__FILE__,__LINE__);
-   }
+   virtual ObjectRef getIndex(int pos) = 0;
    
    /**
    	Set an element value at the desired position
 	\param pos The position in the vector
    	\param val The value to put at the desired position
    */
-   virtual void setIndex(int pos, ObjectRef val) {
-   	throw new GeneralException(string("Vector setIndex not implemented for object : ") + className(),__FILE__,__LINE__);   
-   }
-      
-   /**
-   	Push an element at the beginning of the vector
-   	\param val The value to push at the beginning of the vector
-   */
-   virtual void pushBack(ObjectRef val) {
-   	throw new GeneralException(string("Vector pushBack not implemented for object : ") + className(),__FILE__,__LINE__);   
-   }
-   
-   
-   
+   virtual void setIndex(int pos, ObjectRef val) = 0;
+               
 };
 
 /**The (template) Overflow Vector type, it adds functionnality to the 
@@ -210,11 +196,6 @@ public:
    */
    virtual void setIndex(int pos, ObjectRef val);
       
-   /**
-   	Push an element at the beginning of the vector
-   	\param val The value to push at the beginning of the vector
-   */
-   virtual void pushBack(ObjectRef val);         
 };
 
 
@@ -351,19 +332,27 @@ inline void Vector<T>::readFrom(istream &in)
 
 //FIXME: Serialize problems with (Object *)
 template<class T, int I>
-struct VecBinary {
+struct VecMethod {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
-      throw new GeneralException("VecBinary default serialize should never be called", __FILE__, __LINE__);
+     throw new GeneralException("VecMethod default serialize should never be called", __FILE__, __LINE__);
    }
    static inline void unserialize(Vector<T> &v, istream &in)
    {
-      throw new GeneralException("VecBinary default unserialize should never be called", __FILE__, __LINE__);
+     throw new GeneralException("VecMethod default unserialize should never be called", __FILE__, __LINE__);
+   }  
+   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   {
+     throw new GeneralException("VecMethod getIndex should never be called", __FILE__, __LINE__);   				
+   }   
+   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   {
+     throw new GeneralException("VecMethod setIndex should never be called", __FILE__, __LINE__);   				
    }
 };
 
 template<class T>
-struct VecBinary<T,TTraits::Object> {
+struct VecMethod<T,TTraits::Object> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       out << "{" << v.className() << endl;
@@ -391,10 +380,28 @@ struct VecBinary<T,TTraits::Object> {
       char ch;
       in >> ch;
    }
+  
+
+   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   {
+     if (pos < 0 || pos >= v.size()) {
+       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+     }
+     return ObjectRef(v[pos].clone());
+   }   
+
+   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   {
+     if (pos < 0 || pos >= v.size()) {
+       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+     }
+     RCPtr<T> obj = val;
+     v[pos] = *obj;
+   }
 };
 
 template<class T>
-struct VecBinary<T,TTraits::ObjectPointer> {
+struct VecMethod<T,TTraits::ObjectPointer> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       out << "{" << v.className() << endl;
@@ -419,11 +426,27 @@ struct VecBinary<T,TTraits::ObjectPointer> {
       char ch;
       in >> ch;
    }
+
+   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   {
+     if (pos < 0 || pos >= v.size()) {
+       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+     }
+     return v[pos];
+   }   
+
+   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   {
+     if (pos < 0 || pos >= v.size()) {
+       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+     }
+     v[pos] = val;
+   }
 };
 
 
 template<class T>
-struct VecBinary<T,TTraits::Basic> {
+struct VecMethod<T,TTraits::Basic> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       out << "{" << v.className() << endl;
@@ -442,10 +465,27 @@ struct VecBinary<T,TTraits::Basic> {
       char ch;
       in >> ch;
    }
+   
+   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   {
+     if (pos < 0 || pos >= v.size()) {
+       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+     }     
+     return ObjectRef( NetCType<T>::alloc(v[pos]));
+   }   
+   
+   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   {
+     if (pos < 0 || pos >= v.size()) {
+       throw new GeneralException("getIndex : index out of bound",__FILE__,__LINE__);
+     }  
+     RCPtr<NetCType<T> > obj = val;     
+     v[pos] = *obj;   
+   }
 };
 
 template<class T>
-struct VecBinary<T,TTraits::Unknown> {
+struct VecMethod<T,TTraits::Unknown> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
@@ -456,13 +496,25 @@ struct VecBinary<T,TTraits::Unknown> {
       throw new GeneralException(string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
+
+   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   {
+     throw new GeneralException(string("Sorry, can't getIndex for this type of vector (") + typeid(T).name()
+				 + ")", __FILE__, __LINE__);
+   }
+   
+   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   {
+     throw new GeneralException(string("Sorry, can't getIndex for this type of vector (") + typeid(T).name()
+				+ ")", __FILE__, __LINE__);
+   }
 };
 
 #else /* #ifndef BROKEN_TEMPLATES */
 
 /* This is for broken compilers */
 template<class T, int I>
-struct VecBinary {
+struct VecMethod {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       throw new GeneralException("Binary IO not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);
@@ -471,6 +523,16 @@ struct VecBinary {
    {
       throw new GeneralException("Binary IO not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);
    }
+
+   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   {
+     throw new GeneralException("getIndex not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);   				
+   }
+   
+   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   {
+     throw new GeneralException("getIndex not supported because compiler doesn't support template partial specialization", __FILE__, __LINE__);   				
+   }
 };
 
 #endif
@@ -478,15 +540,26 @@ struct VecBinary {
 template <class T>
 inline void Vector<T>::serialize(ostream &out) const
 {
-   VecBinary<T, TypeTraits<T>::kind>::serialize(*this, out);
+   VecMethod<T, TypeTraits<T>::kind>::serialize(*this, out);
 }
 
 template <class T>
 inline void Vector<T>::unserialize(istream &in)
 {
-   VecBinary<T, TypeTraits<T>::kind>::unserialize(*this, in);
+   VecMethod<T, TypeTraits<T>::kind>::unserialize(*this, in);
 }
 
+template <class T>
+inline ObjectRef Vector<T>::getIndex(int pos)
+{
+  return VecMethod<T, TypeTraits<T>::kind>::getIndex(*this,pos);
+}
+
+template <class T>
+inline void Vector<T>::setIndex(int pos, ObjectRef val)
+{
+  VecMethod<T, TypeTraits<T>::kind>::setIndex(*this,pos,val);
+}
 
 
 template <class T>
@@ -725,15 +798,6 @@ inline Vector<T> operator/ (const Vector<T> &v1, T scal)
 }
 
 
-/*T operator* (const Vector<T> &v2) 
-{
-   if (size() != v2.size())
-      cerr << "Vector size mismatch\n";
-   T sum=0;
-   for (int i=0;i<size();i++)
-      sum += operator[](i)*v2[i];
-   return sum;
-   }*/
 
 
 

@@ -199,6 +199,9 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
 
 }
 
+
+/*
+
 //getIndex implementation for Vector<bool>
 ObjectRef Vector<bool>::getIndex(int pos) {
 	//look for range ?
@@ -372,3 +375,5 @@ void Vector<ObjectRef>::pushBack(ObjectRef val) {
 	this->push_back(val);
 }
 
+
+*/

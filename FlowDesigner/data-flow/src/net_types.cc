@@ -23,6 +23,8 @@ DECLARE_TYPE(String)
 DECLARE_TYPE(NilObject)
 DECLARE_TYPE(Complex<float>)
 DECLARE_TYPE(Complex<double>)
+DECLARE_TYPE(NetCType<complex<float> >)
+DECLARE_TYPE(NetCType<complex<double> >)
 
 vector<Int *> ObjectPool<Int>::stack;
 vector<Bool *> ObjectPool<Bool>::stack;
@@ -30,6 +32,8 @@ vector<Float *> ObjectPool<Float>::stack;
 vector<Double *> ObjectPool<Double>::stack;
 vector<Complex<float> *> ObjectPool<Complex<float> >::stack;
 vector<Complex<double> *> ObjectPool<Complex<double> >::stack;
+vector<NetCType<complex<float> > *> ObjectPool<NetCType<complex<float> > >::stack;
+vector<NetCType<complex<double> > *> ObjectPool<NetCType<complex<double> > >::stack;
 
 FastMutex ObjectPool<Int>::mutex;
 FastMutex ObjectPool<Bool>::mutex;
@@ -37,6 +41,8 @@ FastMutex ObjectPool<Float>::mutex;
 FastMutex ObjectPool<Double>::mutex;
 FastMutex ObjectPool<Complex<float> >::mutex;
 FastMutex ObjectPool<Complex<double> >::mutex;
+FastMutex ObjectPool<NetCType<complex<float> > >::mutex;
+FastMutex ObjectPool<NetCType<complex<double> > >::mutex;
 
 ObjectRef TrueObject(new Bool(true));
 ObjectRef FalseObject(new Bool(false));
