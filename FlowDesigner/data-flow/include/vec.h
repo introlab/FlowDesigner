@@ -193,11 +193,12 @@ inline void add_vec_vec(float *a, float *b, float *c, int len)
       c[3]=a[3]+b[3];
       a+=4;
       b+=4;
+      c+=4;
     }
   while (a<end)
     {
       c[0]=a[0]+b[0];
-      a++; b++;
+      a++; b++; c++;
     }
 }
 
@@ -286,11 +287,12 @@ inline void sub_vec_vec(float *a, float *b, float *c, int len)
       c[3]=a[3]-b[3];
       a+=4;
       b+=4;
+      c+=4;
     }
   while (a<end)
     {
       c[0]=a[0]-b[0];
-      a++; b++;
+      a++; b++; c++;
     }
 }
 
@@ -380,17 +382,18 @@ inline void mul_vec_vec(float *a, float *b, float *c, int len)
       c[3]=a[3]*b[3];
       a+=4;
       b+=4;
+      c+=4;
     }
   while (a<end)
     {
-      c[0]=a[0]-b[0];
-      a++; b++;
+      c[0]=a[0]*b[0];
+      a++; b++; c++;
     }
 }
 
 #endif
 
-
+#ifdef USE_3DNOW
 inline void add_scal_vec(float a, float *b, float *c, int len)
 {
   float tmp[2];
@@ -456,7 +459,32 @@ inline void add_scal_vec(float a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
+#else
 
+inline void add_scal_vec(float a, float *b, float *c, int len)
+{
+  float *end = a+len;
+  while (a<end-3)
+    {
+      c[0]=a+b[0];
+      c[1]=a+b[1];
+      c[2]=a+b[2];
+      c[3]=a+b[3];
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]=a+b[0];
+      b++; c++;
+    }
+}
+
+#endif
+
+
+
+#ifdef USE_3DNOW
 inline void mul_scal_vec(float a, float *b, float *c, int len)
 {
   float tmp[2];
@@ -522,6 +550,30 @@ inline void mul_scal_vec(float a, float *b, float *c, int len)
 FP_DIRTY
   );
 }
+#else
+
+inline void mul_scal_vec(float a, float *b, float *c, int len)
+{
+  float *end = a+len;
+  while (a<end-3)
+    {
+      c[0]=a*b[0];
+      c[1]=a*b[1];
+      c[2]=a*b[2];
+      c[3]=a*b[3];
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]=a*b[0];
+      b++; c++;
+    }
+}
+
+#endif
+
+
 
 #ifdef USE_3DNOW
 inline float vec_dist2(float *a, float *b, int len)
@@ -809,7 +861,7 @@ inline float vec_norm2(float *a, int len)
 
 #endif
 
-
+#ifdef USE_3DNOW
 inline void vec_inv(float *a, float *b, int len)
 {
   __asm__ __volatile__ (
@@ -866,6 +918,27 @@ inline void vec_inv(float *a, float *b, int len)
 FP_DIRTY
   );
 }
+#else
+
+inline void vec_inv(float *a, float *b, int len)
+{
+  float *end = a+len;
+  while (a<end-3)
+    {
+      b[0]=1/a[0];
+      b[1]=1/a[1];
+      b[2]=1/a[2];
+      b[3]=1/a[3];
+      a+=4; b+=4;
+    }
+  while (a<end)
+    {
+      b[0]=1/a[0];
+      a++; b++;
+    }
+}
+
+#endif
 
 inline void vec_rsqrt(float *a, float *b, int len)
 {
