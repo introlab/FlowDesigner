@@ -326,7 +326,35 @@ streamsize pipe_streambuf::xsgetn(char *s, streamsize n)
    } else
       throw new GeneralException("Cannot read from write-only pipe", __FILE__, __LINE__);
 }
+#if 0
+struct buff {
+   int fd;
+   char *data;
+   int length;
+};
 
+void *send_thread(void *in)
+{
+   buff *b=(buff*)in;
+   write(b->fd, b->data, b->length);
+}
+#endif
+
+void pipe_streambuf::pipeString(const string &in, string &out)
+{
+#if 0
+   pthread_t thr;
+   buff b = {ifd, const_cast<char *>(in.c_str()), in.size()};
+   pthread_create(&thr, NULL, send_thread, (void*)&b);
+   int len=1024;
+   char *buf;
+   while (len==1024)
+   {
+      len=ll_read((void *)buf, 1024);
+      cerr.write(buf,len);
+   }
+#endif
+}
 
 
 #endif

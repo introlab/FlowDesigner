@@ -150,6 +150,7 @@ class pipe_streambuf : public streambuf {
    //pipe_streambuf(int _ifd, int _ofd, pid_t _pid, bool _waitOnClose=false);
    pipe_streambuf(const string &command, bool _waitOnClose=false);
    ~pipe_streambuf();
+   void pipeString(const string &in, string &out);
   protected:
    int ifd;
    int ofd;
@@ -177,6 +178,7 @@ class pipe_iostream : public iostream {
       : _streambuffer (command, waitOnClose)
       , iostream(&_streambuffer)
       {clear();}
+   void pipeString(const string &in, string &out) {_streambuffer.pipeString(in,out);}
 };
 
 #endif
