@@ -76,9 +76,10 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamet
 
 
 
-GUINodeParameters::GUINodeParameters(GUINode *_node, string type, vector<ParameterText *> &_textParams)
+GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams)
    : node(_node)
-   , textParams(_textParams)
+   , nodeParams(_nodeParams)
+   , textParams(_nodeParams->get_textParams())
 {
    params.resize(textParams.size());
    //cerr << "GUINodeParameters::GUINodeParameters" << textParams.size() << "\n";
@@ -288,7 +289,11 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, vector<Paramet
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (label13);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label13);
-
+  {
+     int a=0;
+     const char *str = nodeParams->getComments().c_str();
+     gtk_editable_insert_text (GTK_EDITABLE(text_comments), str, nodeParams->getComments().size(), &a);
+  }
   gtk_signal_connect (GTK_OBJECT ( text_comments  ), "changed",
 		      GTK_SIGNAL_FUNC(comments_changed), this);
   
@@ -466,7 +471,7 @@ void GUINodeParameters::apply()
       //cerr << "<param: " << params[i].name << ", " << params[i].type << ":" << params[i].value << ">\n";
    }
    //cerr << "apply\n";
-   cerr << gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1);
+   nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
    node->getNetwork()->setModified();
 }
 

@@ -227,7 +227,7 @@ void GUINode::unsetAsCondition()
 */
 void GUINode::propertiesShow()
 {
-   GUINodeParameters *guiParams = new GUINodeParameters (this, type, parameters->get_textParams());
+   GUINodeParameters *guiParams = new GUINodeParameters (this, type, parameters);
 }
 
 void GUINode::createPopup()

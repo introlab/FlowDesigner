@@ -25,13 +25,14 @@ public:
 class GUINodeParameters {
 protected:
    GtkWidget *nodeproperty;
+   UINodeParameters *nodeParams;
    vector<ParameterData> params;
-   vector<ParameterText *> textParams;
+   vector<ParameterText *> &textParams;
    GUINode *node;
    GtkWidget *text_comments;
 
 public:
-   GUINodeParameters(GUINode *_node, string type, vector<ParameterText *> &_textParams);
+   GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams);
    ~GUINodeParameters();
    void show();
    void hide();
