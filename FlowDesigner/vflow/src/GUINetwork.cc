@@ -325,15 +325,7 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 
 	   double nx1,ny1,nx2,ny2;
 
-	   gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(nodePtr->group),
-					 &nx1,
-					 &ny1,
-					 &nx2,
-					 &ny2);
-
-	   //printf("rect (%f,%f) : (%f,%f)\n",ibx1,iby1,ibx2,iby2);
-	   //printf("node (%f,%f) : (%f,%f)\n",nx1,ny1,nx2,ny2);
-	   
+	   nodePtr->getBounds(nx1,ny1,nx2,ny2);
 
 	   if (nx1 >= ibx1 && 
 	       nx2 <= ibx2 &&
@@ -341,28 +333,16 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 	       ny2 <= iby2) {
 
 	     selectedNodes.push_back(nodePtr);
-	     //cerr<<"node inside"<<endl;
-
+	    
 	     //node inside rectangle
-	     gnome_canvas_item_set (nodePtr->nodeRect,
-				    "fill_color_rgba", 0x8ca0af20,
-				    NULL);
+	     nodePtr->select();
 
 	   }
 	   else {
-	     gnome_canvas_item_set (nodePtr->nodeRect,
-				    "fill_color_rgba", 0x8cd0af20,
-				    NULL);
+	     nodePtr->unselect();
 	   }
-
-
 	 }
        }
-
-
-
-
-
      }
      break;
 
@@ -375,19 +355,12 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 
 	 GUINode *nodePtr = dynamic_cast<GUINode*>(nodes[i]);
 	 
-
 	 if (isNodeSelected(nodePtr)) {
-	   gnome_canvas_item_set (nodePtr->nodeRect,
-				  "fill_color_rgba", 0x8ca0af20,
-				  NULL);
+	   nodePtr->select();
 	 }
 	 else {
-	   gnome_canvas_item_set (nodePtr->nodeRect,
-				  "fill_color_rgba", 0x8cd0af20,
-				  NULL);
+	   nodePtr->unselect();
 	 }
-	 
-
        }
 
        gtk_object_destroy(GTK_OBJECT(item));

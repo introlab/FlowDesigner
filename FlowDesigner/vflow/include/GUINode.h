@@ -38,7 +38,6 @@ public:
 
    void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
   
-  
    GUINode(UINetwork* _net, string _name, string _type, double x, double y);
   
    GUINode(UINetwork* _net, xmlNodePtr def);
@@ -60,7 +59,13 @@ public:
    void move (double dx,double dy);
 
    void selectedMove(double dx,double dy);
+
+   void select();
+
+   void unselect();
   
+   void getBounds(double &x1, double &y1, double &x2, double &y2);
+
    void propertiesShow();
   
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);

@@ -621,3 +621,61 @@ void GUINode::notifyError(const string &message)
    gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0xC0202020, NULL);
    //dynamic_cast<GUINetwork *> (getNetwork())->updateScroll();
 }
+
+void GUINode::select() {
+
+  gnome_canvas_item_set (nodeRect,
+			 "fill_color_rgba", 0x8ca0af20,
+			 NULL);
+}
+
+void GUINode::unselect() {
+  
+ gnome_canvas_item_set (nodeRect,
+			"fill_color_rgba", 0x8cd0af20,
+			NULL);
+}
+
+void GUINode::getBounds(double &x1, double &y1, double &x2, double &y2) {
+
+
+  //double gx1,gy1,gx2,gy2;
+  //double rx1,ry1,rx2,ry2;
+
+  //getting bounds of the group
+  gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(group),
+				&x1,
+				&y1,
+				&x2,
+				&y2);
+
+/*
+
+  //getting bounds of the group
+  gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(group),
+				&gx1,
+				&gy1,
+				&gx2,
+				&gy2);
+
+  printf("group bounds (%f,%f) : (%f,%f)\n",gx1,gy1,gx2,gy2);
+
+
+  //getting bounds of the rectangle (relative to the group)
+  gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(nodeRect),
+				&rx1,
+				&ry1,
+				&rx2,
+				&ry2);
+
+  printf("rect bounds (%f,%f) : (%f,%f)\n",rx1,ry1,rx2,ry2);
+ 
+
+
+  x1 = gx1 + rx1;
+  y1 = gy1 + ry1;
+  x2 = gx2 + rx2;
+  y2 = gy2 + ry2;
+*/
+
+}
