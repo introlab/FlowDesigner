@@ -1,6 +1,9 @@
 #include "GUINodeParameters.h"
 #include "GUINode.h"
 #include "GUINetwork.h"
+#include "Network.h"
+
+static int user_count = 0;
 
 static void param_apply (GnomePropertyBox *propertybox, gint arg1, gpointer user_data)
 {
@@ -16,6 +19,43 @@ static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
 {
    ((GUINodeParameters *)(user_data))->changed();
 }
+
+static void input_adjustment_changed (GtkAdjustment *adjustment, gpointer user_data) {
+
+  
+  //let's add the required UITerminal & GUITerminal
+  
+  GUINode *node = dynamic_cast<GUINode*>(static_cast<GUINodeParameters*>(user_data)->getUINode());
+  
+  char input_name[9];
+  sprintf(input_name,"USER_%3.3i",user_count++);
+  
+  
+  cerr<<"creating input : "<<input_name<<endl;
+  
+  node->addTerminal(string(input_name), UINetTerminal::INPUT);
+  
+  
+  cerr<<"input adjustment callback"<<endl;
+  ((GUINodeParameters *)(user_data))->changed();
+  
+
+}
+
+static void output_adjustment_changed (GtkAdjustment *adjustment, gpointer user_data) {
+
+
+  //let's add the required UITerminal & GUITerminal
+
+
+
+  cout<<"output adjustment callback"<<endl;
+  ((GUINodeParameters *)(user_data))->changed();
+
+}
+
+
+
 
 GUINodeParameters::GUINodeParameters(UINode *_node, string type)
    : UINodeParameters (_node, type)
@@ -40,6 +80,15 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   GtkWidget *scrolledwindow2;
   GtkWidget *text1;
   GtkWidget *label13;
+  GtkWidget *label_properties;
+  GtkWidget *table_properties;
+  GtkWidget *input_size_label;
+  GtkWidget *output_size_label;
+  GtkObject *input_adjustment;
+  GtkObject *output_adjustment;
+  GtkWidget *input_spinbutton;
+  GtkWidget *output_spinbutton;
+
 
   nodeproperty = gnome_property_box_new ();
   gnome_dialog_close_hides (GNOME_DIALOG(nodeproperty), TRUE);
@@ -205,12 +254,140 @@ GUINodeParameters::GUINodeParameters(UINode *_node, string type)
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), text1);
   gtk_text_set_editable(GTK_TEXT(text1),TRUE);
 
+
+
   label13 = gtk_label_new (_("Comments"));
   gtk_widget_ref (label13);
   gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "label13", label13,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (label13);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label13);
+
+  //properties tab (DL)
+
+  label_properties = gtk_label_new(_("Properties"));
+  gtk_widget_ref (label_properties);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "label_properties", label_properties,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (label_properties);
+
+
+  table_properties = gtk_table_new (2, 2, TRUE);
+  gtk_widget_ref (table_properties);
+  
+
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "table_properties", table_properties,
+                            (GtkDestroyNotify) gtk_widget_unref);
+
+  gtk_widget_show(table_properties);
+
+
+  input_size_label = gtk_label_new(_("Input Size"));
+  gtk_widget_ref (input_size_label);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "input_size_label", input_size_label,
+			  (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show(input_size_label);
+
+
+  cout<<"input size : "<< _node->getInputs().size()<<endl;
+
+  input_adjustment = gtk_adjustment_new ((float) _node->getInputs().size(), //value
+                                         (float) _node->getInputs().size(), //lower
+					 100.0, //higher
+					 1.0,
+					 1.0,
+					 1.0);
+
+ 
+
+  input_spinbutton =  gtk_spin_button_new (GTK_ADJUSTMENT(input_adjustment),
+					   1.0,0);
+  gtk_widget_ref (input_spinbutton);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "input_spinbutton",input_spinbutton,
+			    (GtkDestroyNotify) gtk_widget_unref);
+
+  gtk_widget_show(input_spinbutton);
+
+  //Here we should check if the node is resizable and set to TRUE if needed
+  gtk_entry_set_editable (GTK_ENTRY(input_spinbutton),FALSE);
+
+  //we should also activate/deactivate the button if the node is resizable
+
+  output_size_label = gtk_label_new(_("Output Size"));
+  gtk_widget_ref (output_size_label);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "output_size_label", output_size_label,
+			  (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show(output_size_label);
+
+  cout<<"output size : "<< _node->getOutputs().size()<<endl;
+
+
+  output_adjustment = gtk_adjustment_new ((float) _node->getOutputs().size(), //value
+					  (float) _node->getOutputs().size(), //lower
+					  100.0, //higher
+					  1.0,
+					  1.0,
+					  1.0);
+  
+
+
+  output_spinbutton =  gtk_spin_button_new (GTK_ADJUSTMENT(output_adjustment),
+					   1.0,0);
+  gtk_widget_ref (output_spinbutton);
+  gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "output_spinbutton",output_spinbutton,
+			    (GtkDestroyNotify) gtk_widget_unref);
+
+  gtk_widget_show(output_spinbutton);
+
+  //Here we should check if the node is resizable and set to TRUE if needed
+  gtk_entry_set_editable (GTK_ENTRY(output_spinbutton),FALSE);
+
+  //we should also activate/deactivate the button if the node is resizable
+
+                                              
+
+
+  gtk_table_attach (GTK_TABLE (table_properties), input_size_label, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+  gtk_table_attach (GTK_TABLE (table_properties), input_spinbutton, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+
+  gtk_table_attach (GTK_TABLE (table_properties), output_size_label, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+  gtk_table_attach (GTK_TABLE (table_properties), output_spinbutton, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+
+
+  gtk_table_set_homogeneous (GTK_TABLE(table_properties),TRUE);
+
+
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook2),
+			    table_properties,
+			    label_properties);
+
+
+  gtk_signal_connect (GTK_OBJECT (input_adjustment ), "value-changed",
+		       GTK_SIGNAL_FUNC(input_adjustment_changed),this);
+  
+  //gtk_signal_connect (GTK_OBJECT (input_adjustment ), "changed",
+  //		      GTK_SIGNAL_FUNC(input_adjustment_changed), this);
+  
+  gtk_signal_connect (GTK_OBJECT (output_adjustment ), "value-changed",
+		      GTK_SIGNAL_FUNC(output_adjustment_changed),this);
+  
+  //gtk_signal_connect (GTK_OBJECT (output_adjustment ), "changed",
+  //		      GTK_SIGNAL_FUNC(output_adjustment_changed), this);
+
+
+  //end properties tab (DL)
+
 
   //gnome_property_box_changed(GNOME_PROPERTY_BOX(nodeproperty));
   gtk_signal_connect (GTK_OBJECT (nodeproperty), "apply",

@@ -13,23 +13,28 @@ static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer d
 GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, double _x, double _y)
    : UITerminal(terminalInfo, _node, _isInput, _x, _y)
 {
-   GnomeCanvasGroup *group = dynamic_cast<GUINode *>(node)->getGroup();
-   
-   item = gnome_canvas_item_new(group,
-                                 gnome_canvas_ellipse_get_type(),
-                                 "x1", x-2.0,
-                                 "y1", y-2.0,
-                                 "x2", x+2.0,
-                                 "y2", y+2.0,
-                                 "fill_color_rgba", 0x000000FF,
-                                 "outline_color", "black",
-                                 "width_units", 2.0,
-                                 NULL);
-   
-   gtk_signal_connect(GTK_OBJECT(item), "event",
-                      (GtkSignalFunc) terminal_handler,
-                      this);
 
+  
+  GnomeCanvasGroup *group = dynamic_cast<GUINode *>(node)->getGroup();
+   
+
+  item = gnome_canvas_item_new(group,
+			       gnome_canvas_ellipse_get_type(),
+			       "x1", x-2.0,
+			       "y1", y-2.0,
+			       "x2", x+2.0,
+			       "y2", y+2.0,
+			       "fill_color_rgba", 0x000000FF,
+			       "outline_color", "black",
+			       "width_units", 2.0,
+			       NULL);
+  
+  gtk_signal_connect(GTK_OBJECT(item), "event",
+		     (GtkSignalFunc) terminal_handler,
+		     this);
+  
+  
+  
 }
 
 

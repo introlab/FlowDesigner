@@ -6,6 +6,7 @@
 #include <vector>
 #include <tree.h>
 #include "UINodeParameters.h"
+#include "GUINode.h"
 
 class UINode;
 
@@ -36,6 +37,7 @@ public:
    void insertNetParams(vector<string> &par);
    ParameterData *getParamDataNamed(string n);
    void insertLoadedParam(ParameterText *param, string type, string value);
+
 };
 
 

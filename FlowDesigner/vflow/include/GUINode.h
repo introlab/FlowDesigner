@@ -25,6 +25,11 @@ class GUINode : public UINode {
 
   public:
 
+
+   //test (DL)
+   void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
+
+
    GUINode(UINetwork* _net, string _name, string _type, double x, double y);
 
    GUINode(UINetwork* _net, xmlNodePtr def);

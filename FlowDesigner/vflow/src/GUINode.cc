@@ -20,9 +20,10 @@ GUINode::GUINode(UINetwork* _net, string _name, string _type, double _x, double 
    , dragging(false)
    , grab(false)
 {
-   parameters = newNodeParameters(this, type);
-   
+     
    draw();
+
+   parameters = newNodeParameters(this, type);
 
    createPopup();
 }
@@ -34,15 +35,23 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    , dragging(false)
    , grab(false)
 {
-   //cerr << "creating params\n";
-   parameters = newNodeParameters(this, type);
-   //cerr << "loading params\n";
-   parameters->load(def);
+
+  
+
    //cerr << "drawing node...\n";
    draw();
    //cerr << "creating node popup...\n";
 
+   //cerr << "creating params\n";
+   parameters = newNodeParameters(this, type);
+   //cerr << "loading params\n";
+   parameters->load(def);
+
+
    createPopup();
+
+
+
 }
 
 void GUINode::draw()
@@ -86,6 +95,7 @@ void GUINode::draw()
      } else*/ {
      inputname = net->getDocument()->getNetInputs(type); 
      outputname = net->getDocument()->getNetOutputs(type); 
+
      //cerr << "UINode::draw factory not found in simple nodes\n";
       }
       if (inputname.size() > 1)
@@ -148,7 +158,12 @@ void GUINode::draw()
       gnome_canvas_item_lower_to_bottom(item2);
       nodeRect=item2;  
       //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
+      
       //cerr << "creating terminals\n";
+      //cerr << "inputs size "<<inputname.size()<<endl;
+      //cerr << "output size "<<outputname.size()<<endl;
+
+
       for (int i=0;i<inputname.size();i++)
          inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
                                                      -15.0*(.5*(inputname.size()-1)-i)));
@@ -405,3 +420,82 @@ UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type)
    //cerr << "GUINode::newNodeParameters\n";
    return new GUINodeParameters (_node, type);
 }
+
+
+
+void GUINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type) {
+
+  //this is buggy (DL)
+
+  
+  double x1=0,y1=0,x2=0,y2=0;
+  double tx1,tx2,ty1,ty2;
+
+  GnomeCanvasItem *item = NULL;
+
+
+  
+  gnome_canvas_item_get_bounds(nodeRect, &x1,&y1,&x2,&y2);
+  
+  double xx1=x1-15.0;
+  double xx2=x2+15.0;
+
+
+  ItemInfo *info = new ItemInfo();
+
+  info->name = _name;
+
+ 
+  switch (_type) {
+
+  case UINetTerminal::INPUT :
+
+
+    inputs.insert(inputs.end(), new GUITerminal (info, 
+						 this, 
+						 true,
+						 x1,
+						 +15.0*(.5*(inputs.size()))));
+
+    item = gnome_canvas_item_new(group,
+				 gnome_canvas_text_get_type(),
+				 "x", x1 + 5.0,
+				 "y", 0.0,
+				 "text", _name.c_str(),
+				 "anchor", GTK_ANCHOR_WEST ,
+				 "fill_color", "blue",
+				 "font", "fixed",
+				 NULL);
+
+    gnome_canvas_item_move(GNOME_CANVAS_ITEM(item), 0.0, -15.0*(.5*(_name.size()-1)- inputs.size() -1));
+
+    gnome_canvas_item_get_bounds(item, &tx1,&ty1, &tx2, &ty2);
+
+    x2=max(x2,tx2);
+    y1=min(y1,ty1);
+    y2=max(y2,ty2);
+
+
+    /*
+    gnome_canvas_item_set(nodeRect,
+			  "x1",x1,
+			  "y1",y1,
+			  "x2",x2,
+			  "y2",y2,NULL);
+    */
+
+    
+    break;
+
+  case UINetTerminal::OUTPUT:
+    outputs.insert(outputs.end(), new GUITerminal (info, this, false, x2,y2 ));
+    break;
+
+  default:
+    break;
+
+  }
+  
+
+}
+
