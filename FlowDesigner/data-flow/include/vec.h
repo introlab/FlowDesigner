@@ -1416,12 +1416,12 @@ cond1%=:
   movaps %%xmm3, %%xmm4
   shufps $33, %%xmm4, %%xmm4
   addss %%xmm4, %%xmm3
-  movups %%xmm3, (%%edx)
+  movss %%xmm3, (%%edx)
   
   pop %%ecx
   pop %%edi
   pop %%eax
-  //emms
+  emms
   "
   : : "a" (a), "D" (b), "c" (len), "d" (&sum)
 FP_DIRTY
@@ -1430,6 +1430,96 @@ FP_DIRTY
   //cerr << sum[0] << " " << sum[1] << endl;
   //return sum[0];//+sum[1];//+sum[2]+sum[3];
 }
+
+
+template <>
+inline float vec_mahalanobis2<float>(const float *a, const float *b, const float *c, int len)
+{
+   float sum=0;
+   __asm__ __volatile__ (
+   "
+   push %%eax
+   push %%esi
+   push %%edi
+   push %%ecx
+   xorps %%xmm4, %%xmm4
+   xorps %%xmm5, %%xmm5
+
+   sub $8, %%ecx
+   jb mul8_skip%=
+
+mul8_loop%=:
+   movups (%%eax), %%xmm0
+   movups (%%edi), %%xmm1
+   movups 16(%%eax), %%xmm2
+   movups 16(%%edi), %%xmm3
+   movups (%%esi), %%xmm6
+   movups 16(%%esi), %%xmm7
+   add $32, %%eax
+   add $32, %%edi
+   add $32, %%esi
+   subps %%xmm0, %%xmm1
+   subps %%xmm2, %%xmm3
+   mulps %%xmm1, %%xmm1
+   mulps %%xmm3, %%xmm3
+   mulps %%xmm6, %%xmm1
+   mulps %%xmm7, %%xmm3
+   addps %%xmm1, %%xmm4
+   addps %%xmm3, %%xmm5
+
+   sub $8,  %%ecx
+   jae mul8_loop%=
+
+mul8_skip%=:
+   addps %%xmm5, %%xmm4
+
+
+   add $4, %%ecx
+   jl mul4_skip%=
+
+   movups (%%eax), %%xmm0
+   movups (%%edi), %%xmm1
+   movups (%%esi), %%xmm6
+   add $16, %%eax
+   add $16, %%edi
+   add $16, %%esi
+
+   subps %%xmm0, %%xmm1
+   mulps %%xmm1, %%xmm1
+   mulps %%xmm6, %%xmm1
+   addps %%xmm1, %%xmm4
+
+   sub $4,  %%ecx
+
+mul4_skip%=:
+
+
+
+   movaps %%xmm4, %%xmm3
+
+
+   movhlps %%xmm3, %%xmm4
+   addps %%xmm4, %%xmm3
+   movaps %%xmm3, %%xmm4
+   shufps $33, %%xmm4, %%xmm4
+   addss %%xmm4, %%xmm3
+   movss %%xmm3, (%%edx)
+
+
+   pop %%ecx
+   pop %%edi
+   pop %%esi
+   pop %%eax
+   emms
+   "
+   : : "a" (a), "S" (c), "D" (b), "c" (len), "d" (&sum)
+   FP_DIRTY
+   );
+    
+   return sum;
+}
+
+
 
 #endif
 
