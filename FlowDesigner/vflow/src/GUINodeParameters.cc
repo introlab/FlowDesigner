@@ -39,7 +39,7 @@ static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamete
 
   
   //let's add the required UITerminal & GUITerminal
-  
+  /*
   GUINode *node = user_data->getGUINode();
   
   char input_name[9];
@@ -53,14 +53,18 @@ static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamete
   
   cerr<<"input adjustment callback"<<endl;
   ((GUINodeParameters *)(user_data))->changed();
-  
+  */
+
+  cerr<<"Input & Output size adjustment not yet implemented!"<<endl;
 
 }
 
 static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
 
-
+  
   //let's add the required UITerminal & GUITerminal
+
+  /*
   GUINode *node = user_data->getGUINode();
   
   char input_name[9];
@@ -73,6 +77,9 @@ static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParamet
 
   //cout<<"output adjustment callback"<<endl;
   ((GUINodeParameters *)(user_data))->changed();
+  */
+  cerr<<"Input & Output size adjustment not yet implemented!"<<endl;
+  
 
 }
 
