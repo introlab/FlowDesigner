@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 
-#include "Node.h"
+#include "BufferedNode.h"
 #include "Vector.h"
 #include "ObjectParser.h"
 
@@ -25,113 +25,58 @@ class ExecStream;
 
 DECLARE_NODE(ExecStream)
 /*Node
-
+ *
  * @name ExecStream
  * @category IO
  * @description A command to be executed (stdout is streamed)
-
+ *
  * @input_name INPUT
  * @input_description The command arg
  * @input_type string
-
+ *
  * @output_name OUTPUT
  * @output_description The stream
  * @output_type Stream
-
+ *
  * @parameter_name COMMAND
  * @parameter_description The command
  * @parameter_type string
-
+ *
 END*/
 
 
-/** A constant node contains a value that will never changes. */
-class ExecStream : public Node
-{
+class ExecStream : public BufferedNode {
 
 protected:
-
-   /**The value of the constant*/
-   ObjectRef value;
-
-   /*the file descriptor*/
-   int audio_fd;
-   /**The ID of the 'value' output*/
+   
+   /**The ID of the 'output' output*/
    int outputID;
 
+   /**The ID of the 'input' input*/
    int inputID;
 
-   ObjectRef current;
-
-   bool opened;
-      
    String command;
-public:
 
-   /**Constructor, takes the name of the node and a set of parameters*/
-   ExecStream(string nodeName, ParameterSet params)
-      : Node(nodeName, params)
-      , opened(false)
-      //, value (parameters.get("VALUE"))
+public:
+   ExecStream(string nodeName, ParameterSet params) 
+      : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
       inputID = addInput("INPUT");
       command = object_cast<String> (parameters.get("COMMAND"));
    }
 
-   void specificInitialize()
+   void calculate(int output_id, int count, Buffer &out)
    {
-      Node::specificInitialize();
+      //cerr << "opening for count = " << count << endl;
+      ObjectRef inputValue = getInput(inputID, count);
+      const String &args = object_cast<String> (inputValue);
 
-      //String command = object_cast <String> (parameters.get("COMMAND"));
-
-      
-   }
-      
-   virtual ~ExecStream()
-   {
-      //cerr << "ExecStream destructor\n";
-      //if (opened)
-      // pclose (dereference_cast<FILE *> (current));
-   }
-
-   /**Ask for the node's output which ID (number) is output_id 
-      and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count)
-   {
-      if (output_id==outputID) 
-      {
-	 if (count == processCount)
-	    return current;
-	 //cerr << "opening pipe\n";
-	 processCount=count;
-	 NodeInput input = inputs[inputID];
-	 ObjectRef inputValue = input.node->getOutput(input.outputID,count);
-	 String name = object_cast<String> (inputValue);
-
-	 //if (opened)
-	 //   pclose (dereference_cast<FILE *> (current));
-	 //string cmd = "mpg123 --stdout " + name ;
-	 string cmd = command + " " + name ;
-	 FILE *tmp = popen(cmd.c_str(), "r");
-	 if (!tmp)
-	    NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
-	 opened = true;
-	 current = ObjectRef (new FILEPTR (tmp));
-
-	 //fileno (file)
-	 //new ofstream(fileno(tmp)); 
-
-	 return current;
-
-
-	 /*openedFile = ObjectRef (new IFStream());
-	 IFStream &tmp = object_cast<IFStream> (openedFile);
-	 tmp.open(fileName.c_str());*/
-      }
-      else throw new NodeException (this, "ExecStream: Unknown output id", __FILE__, __LINE__);
-      
-      
+      string cmd = command + " " + args ;
+      FILE *tmp = popen(cmd.c_str(), "r");
+      if (!tmp)
+	 NodeException (this, "ExecStream: popen call failed", __FILE__, __LINE__);
+      out[count] = ObjectRef (new FILEPTR(tmp));
    }
 
 protected:
