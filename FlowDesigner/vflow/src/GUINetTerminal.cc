@@ -87,7 +87,9 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    vector<UINetTerminal*> my_terminals = terminal->getNode()->getNetwork()->getTerminals();
 
    for (unsigned int i = 0; i < my_terminals.size(); i++) {
-     if (my_terminals[i]->getName() == name && my_terminals[i] != static_cast<UINetTerminal*>(this)) {
+     if (my_terminals[i]->getName() == name 
+	 && my_terminals[i] != static_cast<UINetTerminal*>(this)
+	 && my_terminals[i]->getType() == type) {
        
        cerr<<"*WARNING* duplicate terminal name"<<endl;
        
