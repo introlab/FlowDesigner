@@ -17,15 +17,15 @@ DECLARE_NODE(Eig)
  * @description Finds the eigenvalues and eigenvectors of a matrix (A=V*D*V')
  *
  * @input_name INPUT
- * @input_description Input matrix A
+ * @input_description Input matrix A (N x N)
  * @input_type Matrix
  *
  * @output_name VALUES
- * @output_description Eigenvalues D
+ * @output_description Eigenvalues D (diag N)
  * @output_type Vector
  *
  * @output_name VECTORS
- * @output_description Eigenvectors V
+ * @output_description Eigenvectors V (N x N)
  * @output_type Vector
  *
 END*/

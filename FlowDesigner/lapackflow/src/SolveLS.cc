@@ -17,15 +17,15 @@ DECLARE_NODE(SolveLS)
  * @description Solves the min[(A*x-b)**2] least square system
  *
  * @input_name A
- * @input_description The A matrix
+ * @input_description The A matrix  (M x N)
  * @input_type Matrix
  *
  * @input_name B
- * @input_description The b vector
+ * @input_description The b vector (M)
  * @input_type Vector
  *
  * @output_name OUTPUT
- * @output_description Result X
+ * @output_description Result X (N)
  * @output_type Vector
  *
 END*/

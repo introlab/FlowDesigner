@@ -14,20 +14,24 @@ DECLARE_NODE(IDCT)
  * @name IDCT
  * @category Signal:DSP
  * @require FFT
- * @description No description available
+ * @description Fast implementation of the inverse discrete cosine transform (IDCT) using an FFT
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description The input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description The result of the DCT
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Length of the input and output vectors
  *
 END*/
 
-
+// Details on this fast inverse DCT algorithm at 
+// http://mulan.eng.hmc.edu/~rwang/e186/handouts/dct/node4.html
 class IDCT : public BufferedNode {
    
    int inputID;
@@ -79,6 +83,7 @@ public:
       DYN_VEC(float, length, outputCopy);
       inputCopy[0]=rNormalize[0]*in[0];
       
+      //Y(n) = X(n)*exp(j*n*pi/2N) and transform the result so we have a symetric (conjugate) spectrum
       for (i=1;i<(length+1)>>1;i++)
       {
 	 inputCopy[i] = .5*(rNormalize[i]*in[i]+rNormalize[length-i]*in[length-i]);
@@ -87,8 +92,10 @@ public:
       if (!(length&1))
 	 inputCopy[length>>1] = rNormalize[length>>1]*in[length>>1];
 
+      //Real inverse FFT (that's why having a symetric spectrum saved a factor of two)
       FFTWrap.irfft(inputCopy, outputCopy, length);
 
+      /*Re-arrange the vector*/
       for (i=0, j=0 ;i<length ; i+=2, j++)
          output[i]=outputCopy[j];
 

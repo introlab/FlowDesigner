@@ -17,19 +17,19 @@ DECLARE_NODE(SVD)
  * @description Finds the eigenvalues and eigenvectors of a matrix (A=U*SIGMA*V')
  *
  * @input_name INPUT
- * @input_description Input matrix A
+ * @input_description Input matrix A (M x N, M > N)
  * @input_type Matrix
  *
  * @output_name U
- * @output_description Left singular vectors U
+ * @output_description Left singular vectors U (M x M)
  * @output_type Matrix
  *
  * @output_name SIGMA
- * @output_description Singular values SIGMA
+ * @output_description Singular values SIGMA (M x N)
  * @output_type Vector
  *
  * @output_name V
- * @output_description Right singular vectors V
+ * @output_description Right singular vectors V (N x N)
  * @output_type Matrix
  *
 END*/

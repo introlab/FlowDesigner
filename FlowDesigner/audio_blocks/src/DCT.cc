@@ -14,12 +14,14 @@ DECLARE_NODE(DCT)
  * @name DCT
  * @category Signal:DSP
  * @require FFT
- * @description Computes the Discrete Cosine Transform (DCT)
+ * @description Fast implementation of the discrete cosine transform (DCT) using an FFT
  *
  * @input_name INPUT
+ * @input_type Vector<float>
  * @input_description The input vector
  *
  * @output_name OUTPUT
+ * @output_type Vector<float>
  * @output_description The result of the DCT
  *
  * @parameter_name LENGTH
@@ -29,6 +31,8 @@ DECLARE_NODE(DCT)
 END*/
 
 
+// Details on this fast DCT algorithm at 
+// http://mulan.eng.hmc.edu/~rwang/e186/handouts/dct/node3.html
 class DCT : public BufferedNode {
    
    int inputID;
@@ -75,14 +79,17 @@ public:
       DYN_VEC(float, length, inputCopy);
       DYN_VEC(float, length, outputCopy);
       int i,j;
+      //Re-order the vector for the DCT (see reference)
       for (i=0, j=0 ;i<length ; i+=2, j++)
          inputCopy[j]=in[i];
 
       for (j=length-1,i=1;i<length;i+=2,j--)
 	 inputCopy[j]=in[i];
 
+      //Real FFT
       FFTWrap.rfft(inputCopy, outputCopy, length);
 
+      //X(n) = Re[ Y(n) * exp(-j*n*pi/2N) ]
       output[0]=outputCopy[0]*rNormalize[0];
       for (i=1;i<(length+1)>>1;i++)
       {

@@ -13,20 +13,24 @@ DECLARE_NODE(FMapTrain)
 
  * @name FMapTrain
  * @category VQ
- * @description No description available
-
+ * @require FeatureMap
+ * @description Trains an hetero-associative map based on a decision tree.
+ *
  * @input_name TRAIN_IN
- * @input_description No description available
-
+ * @input_type Vector<ObjectRef>
+ * @input_description An accumulator with input features
+ *
  * @input_name TRAIN_OUT
- * @input_description No description available
-
+ * @input_type Vector<ObjectRef>
+ * @input_description An accumulator with input features
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type FeatureMap
+ * @output_description The trained 'feature map'
+ *
  * @parameter_name LEVELS
- * @parameter_description No description available
-
+ * @parameter_description Number of levels to the decision tree
+ *
 END*/
 
 

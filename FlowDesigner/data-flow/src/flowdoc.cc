@@ -11,8 +11,10 @@ void node2html(string nodeName, SubnetInfo *info, ostream &out)
 
    out << "<p><a NAME=\"" << nodeName << "\"></a>\n"
        << "<h3>\n"
-       << nodeName << " (" << info->category << ")</h3>\n"
-       << info->description
+       << nodeName << " (" << info->category << ")</h3>\n";
+   if (info->requireList.size())
+      out << "<i>(require: " << info->requireList << ")</i><br>";
+   out << info->description
        << "<br>&nbsp;\n"
        << "<table BORDER WIDTH=\"100%\" NOSAVE >\n"
        << "<tr>\n"

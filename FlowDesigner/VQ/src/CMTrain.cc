@@ -15,19 +15,23 @@ DECLARE_NODE(CMTrain)
  * @name CMTrain
  * @category VQ
  * @require CMap
- * @description No description available
+ * @description Trains a codebook map
  *
  * @input_name TRAIN_IN
- * @input_description No description available
+ * @input_type Vector<ObjectRef>
+ * @input_description Input feature accumulator
  *
  * @input_name TRAIN_OUT
- * @input_description No description available
+ * @input_type Vector<ObjectRef>
+ * @input_description Output feature accumulator
  *
  * @input_name VQ
- * @input_description No description available
+ * @input_type KMeans
+ * @input_description Already trained vector quantizer
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type CodebookMap
+ * @output_description Resulting codebook map
  *
 END*/
 

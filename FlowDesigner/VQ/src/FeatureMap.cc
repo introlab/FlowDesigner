@@ -15,6 +15,7 @@
 #endif
 
 DECLARE_TYPE(FeatureMap)
+//@implements FeatureMap
 
 void FeatureMap::recursiveSplit (const vector<float *> &inData, const vector<float *> &outData, int level)
 {

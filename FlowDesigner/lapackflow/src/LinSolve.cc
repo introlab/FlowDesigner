@@ -17,15 +17,15 @@ DECLARE_NODE(LinSolve)
  * @description Solves the A*x=b linear system
  *
  * @input_name A
- * @input_description The A matrix
+ * @input_description The A matrix (N x N
  * @input_type Matrix
  *
  * @input_name B
- * @input_description The b vector
+ * @input_description The b vector (N)
  * @input_type Vector
  *
  * @output_name OUTPUT
- * @output_description Result X
+ * @output_description Result X (N)
  * @output_type Vector
  *
 END*/

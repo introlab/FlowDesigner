@@ -13,22 +13,28 @@ DECLARE_NODE(FMapCalc)
  *
  * @name FMapCalc
  * @category VQ
- * @description No description available
+ * @require FeatureMap
+ * @description Calculates the result of an hetero-associative map (trained by FMapTrain) for an input vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector<float>
+ * @input_description Input vector
  *
  * @input_name FMAP
- * @input_description No description available
+ * @input_type FeatureMap
+ * @input_description The feature map that will be used
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector<float>
+ * @output_description Output features
  *
  * @parameter_name INPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of input features
  *
  * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of output features
  *
 END*/
 
