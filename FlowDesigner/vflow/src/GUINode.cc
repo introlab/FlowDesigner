@@ -152,6 +152,8 @@ void GUINode::draw()
 
 GUINode::~GUINode()
 {
+   dynamic_cast<GUINetwork*>(net)->removeSelectedNode(this);
+
    for (int i=0;i<inputs.size();i++)
       delete inputs[i];
    for (int i=0;i<outputs.size();i++)
