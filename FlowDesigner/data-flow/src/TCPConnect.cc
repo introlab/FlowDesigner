@@ -12,6 +12,7 @@
 #include "BufferedNode.h"
 #include "stream_wrap.h"
 #include "Stream.h"
+#include <errno.h>
 
 class TCPConnect;
 

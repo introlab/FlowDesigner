@@ -101,9 +101,9 @@ public:
    {
    }
  
-   virtual size_t vsize() const {return size();}
+   virtual size_t vsize() const {return this->size();}
    
-   virtual bool vempty() const {return empty();}
+   virtual bool vempty() const {return this->empty();}
    
    /**
       Formatted output (only values) for Vectors <br>

@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include "stream_wrap.h"
+#include <errno.h>
 
 //@implements core
 

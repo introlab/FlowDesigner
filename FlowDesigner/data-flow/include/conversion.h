@@ -47,10 +47,12 @@ class dummy_conv_table_init_class {
 };
 
 #define REGISTER_CONVERSION(from, to, func) \
+   template<> \
    int dummy_conv_table_init_class<from,to >::dummy_var =         \
         Conversion::addConvFunction<from,to >(func);
 
 #define REGISTER_CONVERSION_TEMPLATE(from, to, func) \
+   template<> \
    int dummy_conv_table_init_class<from,to >::dummy_var =         \
         Conversion::addConvFunction<from,to >(func<from,to >);
 

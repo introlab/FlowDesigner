@@ -31,19 +31,19 @@ public:
 
    Array<T> &operator+= (const Array<T> &v2) 
    {
-      if (size() != v2.size())
+      if (this->size() != v2.size())
 	 cerr << "Array size mismatch\n";
-      for (int i=0;i<size();i++)
-	 operator[](i) += v2[i];
+      for (int i=0;i<this->size();i++)
+	 this->operator[](i) += v2[i];
       return *this;
    }
 
    Array<T> &operator-= (const Array<T> &v2) 
    {
-      if (size() != v2.size())
+      if (this->size() != v2.size())
 	 cerr << "Array size mismatch\n";
-      for (int i=0;i<size();i++)
-	 operator[](i) -= v2[i];
+      for (int i=0;i<this->size();i++)
+	 this->operator[](i) -= v2[i];
       return *this;
    }
 
@@ -63,33 +63,33 @@ public:
 
    Array<T> operator- () 
    {
-      Array<T> v(size());
-      for (int i=0;i<size();i++)
-	 v[i] = -operator[](i);
+      Array<T> v(this->size());
+      for (int i=0;i<this->size();i++)
+	 v[i] = -this->operator[](i);
       return v;
    }
    
    T operator* (const Array<T> &v2) 
    {
-      if (size() != v2.size())
+      if (this->size() != v2.size())
 	 cerr << "Array size mismatch\n";
       T sum=0;
-      for (int i=0;i<size();i++)
-	 sum += operator[](i)*v2[i];
+      for (int i=0;i<this->size();i++)
+	 sum += this->operator[](i)*v2[i];
       return sum;
    }
 
    Array<T> &operator*= (T scal) 
    {
-      for (int i=0;i<size();i++)
-	 operator[](i) *= scal;
+      for (int i=0;i<this->size();i++)
+	 this->operator[](i) *= scal;
       return *this;
    }
 
    Array<T> &operator/= (T scal) 
    {
-      for (int i=0;i<size();i++)
-	 operator[](i) /= scal;
+      for (int i=0;i<this->size();i++)
+	 this->operator[](i) /= scal;
       return *this;
    }
 
@@ -110,12 +110,12 @@ public:
 
    T norm() 
    {
-      return sqrt(vec_norm2(&operator[](0), size()));
+      return sqrt(vec_norm2(&this->operator[](0), this->size()));
    }
 
    T norm2() 
    {
-      return vec_norm2(&operator[](0), size());
+      return vec_norm2(&this->operator[](0), this->size());
    }
 
 };
@@ -133,8 +133,8 @@ inline void Array<T>::readFrom(istream &in)
       in >> tmp;
 	 if (in.fail()) break;
 	 items_found++;
-	 resize(items_found);
-	 operator[] (items_found-1)=tmp;
+	 this->resize(items_found);
+	 this->operator[] (items_found-1)=tmp;
    }
    in.clear();
    char ch;

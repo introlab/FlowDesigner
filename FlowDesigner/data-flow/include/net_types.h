@@ -104,7 +104,7 @@ public:
    */
    void printOn(ostream &out) const
    {
-      out << "<" << className() << " " << value << " >";
+      out << "<" << this->className() << " " << this->value << " >";
    }
 
    /**
@@ -112,7 +112,7 @@ public:
       \param out output stream
    */
    virtual void prettyPrint(ostream &out=cout) const {
-     out << value << " ";
+     out << this->value << " ";
    }
 
    /**
@@ -122,7 +122,7 @@ public:
    */
    void readFrom(istream &in)
    {
-      in >> value;
+      in >> this->value;
       char ch;
       in >> ch;
       if (ch != '>')
@@ -136,7 +136,7 @@ public:
    */
    void serialize(ostream &out) const
    {
-      out << "{" << className() << " |" << value << " }";
+      out << "{" << this->className() << " |" << this->value << " }";
    }
 
    /**
@@ -146,7 +146,7 @@ public:
    */
    void unserialize(istream &in)
    {
-      in >> value;
+      in >> this->value;
       char ch;
       in >> ch;
       if (ch != '}')

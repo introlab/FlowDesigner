@@ -249,6 +249,7 @@ class Object;
  */
 typedef RCPtr<Object> ObjectRef;
 
+extern ObjectRef nilObject;
 
 #include "conversion.h"
 template <class X>
