@@ -203,8 +203,9 @@ class Stream : public Object
    Stream &read (char *ch, int len) {dynamic_cast<istream *> (int_stream)->read(ch,len); return *this;}
    Stream &write (char *ch, int len) {dynamic_cast<ostream *> (int_stream)->write(ch,len); return *this;}
    Stream &getline (char *ch, int len) {dynamic_cast<istream *> (int_stream)->getline(ch,len); return *this;}
-   Stream &seekg (int pos, ios::seek_dir dir) {dynamic_cast<iostream *> (int_stream)->seekg(pos, dir); return *this;}
-   
+   Stream &seekg (int pos, ios::seek_dir dir) {dynamic_cast<istream *> (int_stream)->seekg(pos, dir); return *this;}
+   Stream &seekp (int pos, ios::seek_dir dir) {dynamic_cast<ostream *> (int_stream)->seekp(pos, dir); return *this;}
+
    operator istream &() {return *dynamic_cast<istream *> (int_stream);}
    operator ostream &() {return *dynamic_cast<ostream *> (int_stream);}
    
