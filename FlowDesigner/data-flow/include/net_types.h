@@ -12,6 +12,9 @@
 #include "ObjectPool.h"
 #include "ObjectParser.h"
 #include "typetraits.h"
+#include "Complex.h"
+
+
 
 using namespace std;
 
@@ -233,6 +236,8 @@ public:
 istream &operator >> (istream &in, String &str);
 
 _DEF_OBJECT_TYPE(String)
+
+
 
 
 /**Base Overflow Stream type, wraps a C++ stream
