@@ -26,6 +26,7 @@ class URLHandler {
   static int RegisterURLHandler(const string& name, url_func func) 
   {
     url_table()[name] = func;
+    //cerr<<"inserting "<<name<<" into url table"<<endl;
     return 0;
   }
   
@@ -38,24 +39,26 @@ class URLHandler {
 
       if (pos == string::npos) 
       {
-	//default URL type is FILE:// if nothing specified
+	//default URL type is file: if nothing specified
 	return url_table()["file"](inputURL, flags);
       }
       else
       {
-	if (url_table().find(inputURL.substr(0,pos - 1)) != url_table().end())
+	//cerr<<"tring to get url type : "<<inputURL.substr(0,pos)<<endl;
+
+	if (url_table().find(inputURL.substr(0,pos)) != url_table().end())
 	{
-	  return url_table()[inputURL.substr(0,pos - 1)](inputURL, flags);
+	  return url_table()[inputURL.substr(0,pos)](inputURL, flags);
         }
 	else
 	{
-	  throw new GeneralException(string("Unable to create URL of type :") + inputURL,__FILE__,__LINE__);
+	  throw new GeneralException(string("Unable to create URL of type : ") + inputURL,__FILE__,__LINE__);
 	}
       }
     }
     catch(BaseException *e) 
     {
-      throw e->add(new GeneralException(string("Unable to create URL of type :") + inputURL,__FILE__,__LINE__));
+      throw e->add(new GeneralException(string("Unable to create URL of type : ") + inputURL,__FILE__,__LINE__));
     }
   }   
 };

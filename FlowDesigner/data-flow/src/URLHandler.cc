@@ -9,6 +9,8 @@
 #include <sstream>
 #include <fstream>
 
+//@implements core
+
 using namespace std;
 
 map<string,url_func>  &URLHandler::url_table()
