@@ -735,9 +735,7 @@ void on_segfault(int sig) {
       gnome_error_dialog("The user program caused a segmentation violation.\nMemory corruption might have occured, so it is recommended\nto restart Overflow (unless you know what you're doing).");
       gdk_threads_leave();
       in_segfault=false;
-      //_exit(NULL);
       pthread_exit(NULL);
-//pthread_cancel (GUIDocument::runThread);
    } else {
       cerr << "Overflow just crashed... you should have saved :-(\n";
       gnome_error_dialog("Overflow just crashed... you should have saved :-(");

@@ -98,8 +98,7 @@ GtkPlotProbe::~GtkPlotProbe()
 void GtkPlotProbe::specificInitialize()
 {
    Probe::specificInitialize();
-   NO_CANCEL
-      gdk_threads_enter(); 
+   gdk_threads_enter(); 
 
    try {
       gtk_window_set_default_size(GTK_WINDOW(window1), int(xmax-xmin), int(ymax-ymin));
@@ -195,13 +194,10 @@ void GtkPlotProbe::specificInitialize()
    } catch (BaseException *e)
    {
       gdk_threads_leave();
-      SET_CANCEL
-	 throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
+      throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
    
    gdk_threads_leave();
-   SET_CANCEL
-
 }
 
 void GtkPlotProbe::reset()
@@ -213,7 +209,6 @@ void GtkPlotProbe::reset()
 void GtkPlotProbe::display()
 {
    GnomeCanvasPoints *points;
-   NO_CANCEL;
 
    Vector<float> &data = object_cast<Vector<float> > (inputValue);
    int inputLength = data.size();
@@ -248,8 +243,6 @@ void GtkPlotProbe::display()
 
    gdk_threads_leave();
 
-   SET_CANCEL;
-   
 }
 
 void GtkPlotProbe::show_hide()

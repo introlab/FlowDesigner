@@ -65,7 +65,6 @@ KeyPad::KeyPad(string nodeName, ParameterSet params)
 
 KeyPad::~KeyPad() {
   
-  NO_CANCEL;
   gdk_threads_enter(); 
   
   if (window1) {
@@ -73,7 +72,6 @@ KeyPad::~KeyPad() {
   }
   
   gdk_threads_leave(); 
-  SET_CANCEL;
 }
 
 void KeyPad::specificInitialize() {
@@ -82,7 +80,6 @@ void KeyPad::specificInitialize() {
    this->Node::specificInitialize();
 
 
-   NO_CANCEL;
    gdk_threads_enter(); 
 
    //creating accelerator
@@ -493,8 +490,6 @@ void KeyPad::specificInitialize() {
    gtk_widget_show(window1);
 
    gdk_threads_leave(); 
-   SET_CANCEL;
-
 }
 
 void KeyPad::reset() {

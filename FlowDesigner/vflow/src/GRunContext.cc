@@ -19,7 +19,6 @@ gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_cont
     //stopping processing thread
     if (my_context->running_thread) {
       //cerr<<"Stopping processing thread"<<endl;
-      //pthread_cancel(*(my_context->running_thread));
       my_context->net->stop();
       //cerr << "joining thread\n";
     } else {

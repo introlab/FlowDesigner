@@ -98,8 +98,7 @@ MultiPlotProbe::~MultiPlotProbe()
 void MultiPlotProbe::specificInitialize()
 {
    Probe::specificInitialize();
-   NO_CANCEL
-      gdk_threads_enter(); 
+   gdk_threads_enter(); 
 
    try {
       gtk_window_set_default_size(GTK_WINDOW(window1), int(xmax-xmin), int(ymax-ymin));
@@ -195,13 +194,10 @@ void MultiPlotProbe::specificInitialize()
    } catch (BaseException *e)
    {
       gdk_threads_leave();
-      SET_CANCEL
-	 throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
+      throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
    
    gdk_threads_leave();
-   SET_CANCEL
-
 }
 
 void MultiPlotProbe::reset()
@@ -213,7 +209,6 @@ void MultiPlotProbe::reset()
 void MultiPlotProbe::display()
 {
    GnomeCanvasPoints *points;
-   NO_CANCEL;
 
    Vector<float> &data = object_cast<Vector<float> > (inputValue);
    int inputLength = data.size();
@@ -248,8 +243,6 @@ void MultiPlotProbe::display()
 
    gdk_threads_leave();
 
-   SET_CANCEL;
-   
 }
 
 void MultiPlotProbe::show_hide()

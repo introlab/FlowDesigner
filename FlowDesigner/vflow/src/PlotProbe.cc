@@ -54,7 +54,6 @@ PlotProbe::~PlotProbe()
 void PlotProbe::specificInitialize()
 {
    Probe::specificInitialize();
-   NO_CANCEL
    gdk_threads_enter(); 
 
    try {
@@ -125,12 +124,10 @@ void PlotProbe::specificInitialize()
    } catch (BaseException *e)
    {
       gdk_threads_leave();
-      SET_CANCEL
       throw e->add(new NodeException(this, "Exception caught in Probe::specifigInitialize", __FILE__, __LINE__));
    }
    
    gdk_threads_leave();
-   SET_CANCEL
 
 }
 
@@ -143,7 +140,6 @@ void PlotProbe::reset()
 void PlotProbe::display()
 {
    GnomeCanvasPoints *points;
-   NO_CANCEL
    gdk_threads_enter();
    
    Vector<float> &data = object_cast<Vector<float> > (inputValue);
@@ -171,8 +167,6 @@ void PlotProbe::display()
    gnome_canvas_points_unref(points);
       
    gdk_threads_leave();
-   SET_CANCEL
-
 }
 
 void PlotProbe::show_hide()
