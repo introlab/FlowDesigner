@@ -23,9 +23,15 @@ DECLARE_TYPE(KMeans)
 int KMeans::split (const vector<float *> &data, int len)
 {
    int nbMeans = means.size();
+#ifdef STACK_ALLOC
    float totalDist[nbMeans];
    int belongs[data.size()];
    int accum[data.size()];
+#else 
+   float *totalDist = new float [nbMeans];
+   int *belongs = new int [data.size()];
+   int *accum = new int [data.size()];
+#endif
    int i;
    
    for (i=0; i<nbMeans;i++)
@@ -69,6 +75,11 @@ int KMeans::split (const vector<float *> &data, int len)
       //cerr << means[nbMeans][i] << " " << means[maxID][i] << endl;
    }
    nbMeans++;
+#ifndef STACK_ALLOC
+   delete [] totalDist;
+   delete [] belongs;
+   delete [] accum;
+#endif
 }
 
 
@@ -97,9 +108,17 @@ int KMeans::bsplit ()
 void KMeans::update (const vector<float *> &data, int len)
 {
    int nbMeans = means.size();
+
+#ifdef STACK_ALLOC
    float totalDist[nbMeans];
    int belongs[data.size()];
    int accum[data.size()];
+#else 
+   float *totalDist = new float [nbMeans];
+   int *belongs = new int [data.size()];
+   int *accum = new int [data.size()];
+#endif
+
    int i,j;
    
    for (i=0; i<nbMeans;i++)
@@ -139,7 +158,11 @@ void KMeans::update (const vector<float *> &data, int len)
       //cerr << endl;
    }
    
-   
+#ifndef STACK_ALLOC
+   delete [] totalDist;
+   delete [] belongs;
+   delete [] accum;
+#endif
 }
 
 void KMeans::train (int codeSize, const vector<float *> &data, int len, bool binary)
