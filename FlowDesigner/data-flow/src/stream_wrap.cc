@@ -161,17 +161,6 @@ int fd_streambuf::pbackfail(int c)
 
 streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 {
-   int nbytes = read(fd, s, n);
-   if (nbytes > 0)
-      return nbytes;
-   else
-      return EOF;
-}
-
-
-/*
-streamsize fd_streambuf::xsgetn(char *s, streamsize n)
-{
    int tot_read = 0;
    while (1) {
       int nbytes = read(fd, s+tot_read, n-tot_read);
@@ -187,6 +176,7 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
             return tot_read;
       }
    }
+   //Old implementation
    //cerr << "fd_streambuf::xsgetn read " << nbytes << " byte." << endl;
    //if (nbytes > 0)
    //   return nbytes;
@@ -196,7 +186,7 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
    //   return EOF;
    //}
 }
-*/
+
 
 
 pipe_streambuf::pipe_streambuf(const string &command, bool _waitOnClose)
