@@ -33,8 +33,6 @@
 
 using namespace std;
 
-hash_map<int, int, hash<int> > stackList;
-
 #define MAX_SMALL 512
 
 

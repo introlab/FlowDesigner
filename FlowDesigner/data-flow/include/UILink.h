@@ -1,5 +1,8 @@
 #ifndef UILINK_H
 #define UILINK_H
+
+using namespace std;
+
 #include <list>
 #include "misc.h"
 #include <math.h>
