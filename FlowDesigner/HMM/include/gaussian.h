@@ -64,12 +64,12 @@ public:
    ~Gaussian();
       
    ///Returns the dimension of the gaussian
-   int         getDimension() const  { return dimension; }
+   int getDimension() const  { return dimension; }
 
    ///Returns the mean of the gaussian
-   vector<float>      &getMean()      const  { return *mean; }
+   vector<float> &getMean() const  { return *mean; }
 
-   ///Returns the covriance of the gaussian
+   ///Returns the covariance of the gaussian
    Covariance &getCovariance() const { return *covariance; }
 
    ///Convert from accumulate to real mode
@@ -90,7 +90,7 @@ public:
       return dist;// + covariance->getDeterminant();
    }
 
-   ///Returns the mahalanobis distance between the gaussian and a frame
+   ///Returns the euclidian distance between the gaussian and a frame
    float euclidian(const Frame fr) const
    {
       float dist=0;

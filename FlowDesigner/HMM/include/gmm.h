@@ -90,7 +90,7 @@ public:
    ///Returns the i'th gaussian
    Gaussian &gaussian (int i) const {return *(gaussians[i]);}
 
-   ///Accumulates (adds) the frame the the i'th gaussian
+   ///Accumulates (adds) the frame to the i'th gaussian
    void accum_to_gaussian(int i, const Frame fr)
    {
       gaussians[i]->accum_frame(fr);
