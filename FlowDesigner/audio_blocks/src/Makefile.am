@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.49 2000/07/06 05:55:37 jmvalin Exp $
+# $Id: Makefile.am,v 1.50 2000/07/11 19:20:38 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -9,6 +9,8 @@ lib_LTLIBRARIES = libablocks.la
 
 install:
 	(cd $(prefix)/lib; rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
+	mkdir -p $(prefix)/toolbox/audio_blocks
+	$(top_srcdir)/../tools/src/scan_toolbox.sh $(top_srcdir)/../tools/src/info2def.pl  $(top_srcdir)/src $(prefix)/toolbox/audio_blocks
 
 libablocks_la_SOURCES =	\
 	GCMS.cc \

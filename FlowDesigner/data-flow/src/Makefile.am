@@ -1,9 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.19 2000/05/28 19:15:25 jmvalin Exp $
+# $Id: Makefile.am,v 1.20 2000/05/28 20:01:12 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
+
+install:
+	mkdir -p $(prefix)/toolbox/data-flow
+	$(top_srcdir)/tools/src/scan_toolbox.sh $(top_srcdir)/tools/src/info2def.pl  $(top_srcdir)/data-flow/src $(prefix)/toolbox/data-flow
 
 lib_LTLIBRARIES = libnetwork.la
 

@@ -1,5 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 
+install:
+	mkdir -p $(prefix)/toolbox/vflow
+	$(top_srcdir)/../tools/src/scan_toolbox.sh $(top_srcdir)/../tools/src/info2def.pl  $(top_srcdir)/src $(prefix)/toolbox/vflow
+
 INCLUDES = \
 	-I$(top_srcdir)/intl \
 	$(GNOME_INCLUDEDIR) \
