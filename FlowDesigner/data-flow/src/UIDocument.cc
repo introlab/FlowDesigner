@@ -834,12 +834,50 @@ void UIDocument::exportNetwork(const std::string &networkName, const std::string
    
    
 void UIDocument::importNetwork(const std::string &fileName) {
+
+  //TODO Merge stuff with load to avoid duplication of the code.
+  //The difference is that we do not reset document data before loading
+  //and we do not create a "MAIN" network.
  
   string docStr;
 
   ifstream inputFile(fileName.c_str());
 
   if (!inputFile.fail()) {
+
+    char ch;
+    inputFile >> ch;
+    if (ch=='#') 
+    {
+        //let's read the leading characters (script like format)
+	while (ch != '<')
+	{
+	  inputFile >> ch;
+	  if (inputFile.fail())
+	  {
+	    error("Error: this doesn't look like an FlowDesigner document");
+	    resetModified();
+	    return;
+	  }
+        }
+   } else if (ch!='<')
+   {
+      error("Error: this doesn't look like an FlowDesigner document");
+      resetModified();
+      return;
+   }
+   string xmlStr;
+   inputFile >> xmlStr;
+   if (xmlStr != "?xml")
+   {
+      error("Error: this doesn't look like an FlowDesigner document");
+      resetModified();
+      return;      
+   }
+
+   //put back xml starting string
+   docStr = "<?xml";
+
     //read all data from file
     while(1) {
       char buff[1025];
@@ -866,10 +904,34 @@ void UIDocument::importNetwork(const std::string &fileName) {
  
 	//loading all networks
 	while (net != NULL) {	
-	  if (string((char*)net->name) == "Network")
+
+	  //Standard network
+	  if (string((char*)net->name) == "Network") {
 	    addNetwork (net);
+	  }
+
+	  //File included (prototype)
+	  if (string((char*)net->name) == "IncludeNetwork") {
+	    
+	    cerr<<"Warning, included network is still a prototype, use at your own risk"<<endl;
+	    xmlChar *fname = xmlGetProp(net,(xmlChar *)"file");
+	    
+	    if (fname) {
+	      cerr<<"(Recursive) Including : "<<(char*) fname<<endl;
+	      try {
+		//let's import the network
+		importNetwork(string((char*) fname));
+		
+	      }
+	      catch(BaseException *e) {
+		e->print(cerr);
+		delete e;
+	      }
+	      free(fname);
+	    }//Valid filename		
+	  }//IncludeNetwork	     
 	  net = net->next;
-	}
+	}//while net
       }
 
       //free XML data
@@ -881,7 +943,6 @@ void UIDocument::importNetwork(const std::string &fileName) {
     catch (BaseException *e) {
        throw e->add(new GeneralException(string("Unable to import from file ") + fileName,__FILE__,__LINE__));
     }
-
   }
   else {
     throw new GeneralException(string("File does not exist : ") + fileName,__FILE__,__LINE__);
