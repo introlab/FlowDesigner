@@ -120,6 +120,17 @@ void Network::addNode (const string &factoryName,const string &nodeName, const P
 } 
 /***************************************************************************/
 /*
+  Network::addNode (...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+void Network::addNode (Node &node) {
+   
+   nodeDictionary.insert(nodeEntry (node.getName(),&node));
+   numNodes++;
+}
+/***************************************************************************/
+/*
   Network::removeNode (...)
   Dominic Letourneau
  */
@@ -244,6 +255,32 @@ void Network::addFactory (const string &factoryName, _NodeFactory* const factory
 /***************************************************************************/
 void Network::specificInitialize() {
    this->Node::specificInitialize();
+
+
+
+   //We need an input Node
+   if (!inputNode) {
+      throw new NoInputNodeException();
+   }
+   
+   //We need a sink Node
+   if (!sinkNode) {
+      throw new NoSinkNodeException();
+   }
+
+   /* We must be careful with the input node. 
+      If we are a subnet we must copy all the Network inputs to the
+      InputNode inputs  if we want the requests to be propagated.
+   */
+
+   vector<NodeInput>::iterator in;
+
+   //resizing
+   inputNode->inputs.resize(inputs.size());
+   
+   //copying
+   inputNode->inputs = inputs;
+
 }
 
 /***************************************************************************/

@@ -39,9 +39,16 @@ typedef map<string, _NodeFactory*>::value_type factoryEntry;
    begin at the sink node and is propagated through the network until it reaches
    the input node.A network can be included as a node as well.
  */
+
+//@author Dominic Letourneau
+//@version 1.0
+
 class Network : public Node {
 
 public:
+
+   //@name public methods
+   //@{
 
    ///Subnet: NetworkNode constructor
    Network (string nodeName, ParameterSet params);
@@ -62,6 +69,9 @@ public:
        of the Node and store the node in the node dictionary with an associated name.*/
    void addNode (const string &factoryName,const string &nodeName, const ParameterSet &parameters);
   
+   /** Adding a already constructed node. WATCHOUT , THE NODE IS NOT COPIED AT THE MOMENT */
+   void addNode (Node &node);
+
    ///connecting two nodes. We are using the node names.
    void connect (const string &currentNodeName,const string &inputName, 
                  const string &inputNodeName, const string &outputName);
@@ -113,17 +123,24 @@ public:
 
    ///Subnet : checks if the sinkNode has the desired output
    virtual bool hasOutput (int output_id) const;
+   //@}
 
 protected: 
 
+   
+   //@name protected methods 
+   //@{
    ///Subnet : getting the related number of the input description
    virtual int translateInput (string   inputName);
 
    ///Subnet : getting the related number of the output description
    virtual int translateOutput (string outputName);
+   //@}
 
 private:
 
+   //@name private parameters
+   //@{
    ///The number of nodes in the network
    int numNodes;
    ///The node instance factory
@@ -138,11 +155,18 @@ private:
    Node *inputNode;
    ///The debug mode flag
    bool debugMode;
+   //@}
+
+   //@name private methods
+   //@{
+ 
    ///The factory lookup function
    static _NodeFactory* getFactoryNamed (const string &name);
+   
    ///default constructor should never be used
-   Network (); 
 
+   Network (); 
+   //@}
 };
 
 /// Our Network factory.

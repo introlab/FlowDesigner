@@ -5,12 +5,11 @@
 #include <iostream.h>
 #include <string>
 
-//We must define network types that we want to use in our network.
-//We will use a template class where all the proper operators are defined.
+/** We must define network types that we want to use in our network.
+    We will use a template class where all the proper operators are defined. */
 
-
-/**This is a generic type that the network will handle. Subclass GenericType if
-   you want to add specific operations and operators*/
+/** This is a generic type that the network will handle. Subclass GenericType if
+    you want to add specific operations and operators */
 template <class T> 
 class GenericType : public Object {
 
@@ -46,7 +45,12 @@ public:
 
 };
 
-
+/**
+   The NetCType. We are using this class to wrap standard C types into objects
+   tha are Object compatible.
+   @autor Dominic Letourneau
+   @version 1.0
+ */
 template <class T>
 class NetCType : public GenericType<T> {
    
@@ -105,8 +109,9 @@ public:
 };
 
 
-//defining the standard C types
-
+///defining the standard C types
+//@name type definitions
+//@{
 typedef NetCType<char> Char;
 typedef NetCType<int> Int;
 typedef NetCType<short> Short;
@@ -117,8 +122,8 @@ typedef NetCType<unsigned char> U_char;
 typedef NetCType<unsigned int> U_int;
 typedef NetCType<unsigned long> U_long;
 
-//STL types
+///STL types
 typedef GenericType<string> String;
-
+//@}
 
 #endif

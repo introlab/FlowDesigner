@@ -25,7 +25,7 @@
 // i.e. (reference count drops to zero)
 
 #include <stddef.h>
-
+#include <stream.h>
 template <class X>
 class counted_pod_ptr
 {
@@ -45,6 +45,7 @@ protected:
 public:
    explicit counted_pod_ptr(X* p=0) : ptr(p)
    {
+      cerr << "alloc" << endl;
       count=new size_type(1);
    }
    
@@ -90,6 +91,7 @@ protected:
    {
       if (count && --(*count)==0)
       {
+      cerr << "delete" << endl;
          delete ptr;
          delete count;
       }

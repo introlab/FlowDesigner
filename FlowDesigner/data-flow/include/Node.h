@@ -26,38 +26,70 @@
 #include "NetworkException.h"
 #include <typeinfo>
 
+//must be defined
 class Node;
 
+/** A NodeInput is a data structure that holds a reference to
+    the node we are connected at and its related output number.
+    @author Jean-Marc Valin
+    @version 1.0
+*/
 class NodeInput {
 public:
+   ///The outputID of the connected node
    int outputID;
+   ///The reference of the node
    Node *node;
+   ///Constructor with a node and an outputID
    NodeInput(Node *n, int t) :outputID(t),node(n) {}
+   ///Copy constructor
+   NodeInput (const NodeInput &in) {
+      node = in.node; outputID = in.outputID;
+   }
+   ///equality operator
+   NodeInput& operator= (const NodeInput &in) {
+      node = in.node; outputID = in.outputID; return *this;
+   }
+   ///default constructor
    NodeInput() : outputID(-1) {} //-1 means unused
-private:
-   
+private:   
 };
 
-
+/** A ParameterSet is a data structure that holds all the parameters 
+    needed for the construction of a new node.
+    @author Jean-Marc Valin
+    @version 1.0
+*/
 class ParameterSet : public map<string,ObjectRef> {
-public: 
+public:
+   ///require a parameter
    void requireParam(string param);
+   ///get a parameter's value
    ObjectRef get(string param);
+   ///get the default parameter
    ObjectRef getDefault(string param, ObjectRef value);
+   ///set the default parameter
    void defaultParam(string param, ObjectRef value);
+   ///adding the parameters
    void add(string param, ObjectRef value);
+   ///printing the parameters
    void print(ostream &out = cerr);
 };
 
-
+/** The MissingParameterException occurs when a node needs a parameter
+    for its initialization and couldn't find it. 
+    @author Jean-Marc Valin
+    @version 1.0
+*/
 class MissingParameterException : public NetworkBaseException {
 
 public:
+   ///The constructor with the parameters
    MissingParameterException(string _param_name, ParameterSet _params) 
       : param_name(_param_name)
       , params(_params)
    {}   
-
+   ///The print method
    virtual void print(ostream &out = cerr) 
    {
       out<<"Missing parameter: "<< param_name <<endl;
@@ -65,18 +97,25 @@ public:
       params.print(out);
    }
 protected:
+   ///the parameter name
    string param_name;
+   ///the parameter set
    ParameterSet params;
 };
 
-
+///A parameter entry in the parameterSet
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
-///Base node class
-
+/* The Base Node class. All nodes to be inserted in a network must
+   derive from this class. It contains the proper initializations
+   for the connectivity of the nodes.
+   @author Jean-Marc Valin & Dominic Letourneau
+   @version 1.0
+*/
 class Node { 
 
-friend class Network;
+   ///A network can have access to private members of Node
+   friend class Network;
 
 protected:
    ///Node's name
@@ -173,22 +212,26 @@ protected:
    virtual int translateOutput(string inputName) = 0;
 };
 
-
-
-
 /***************************************************************************/
 /*
   NotInitializedException
   Dominic Letourneau
  */
 /***************************************************************************/
+/** The NotInitializedException occurs when a node is not properly 
+    initialized before the processing begins. It happens when the network
+    is not properly connected.
+    @author Dominic Letourneau
+    @version 1.0
+ */
 class NotInitializedException : public NetworkBaseException {
 
 public:
+   ///The constructor that takes a map of nodes not properly initialized
    NotInitializedException (map<string,Node*> aMap) {
       nodeMap = aMap;
    }
-   
+   ///The print method
    virtual void print(ostream &out = cerr) {
       out<<"NotInitializedException occured"<<endl;
       
@@ -199,21 +242,28 @@ public:
       }
    }   
 
-   //variables
+   ///The node map
    map<string,Node*> nodeMap;
 };
 
-
+/** The NodeException is a easy way to send a message for an general 
+    exception in a node. You should use __FILE__ and __LINE__ in the 
+    arguments.
+    @author Jean-Marc Valin
+    @version 1.0
+*/
 class NodeException : public NetworkBaseException {
 
 public:
+
+   ///The constructor with a message a file name and a line number
    NodeException( Node *_node, string _message, char *_file, int _line) 
       : message(_message)
       , node(_node)
       , file(_file)
       , line(_line)
    {}   
-
+   ///the print method
    virtual void print(ostream &out = cerr) 
    {
       if (node)
@@ -222,9 +272,13 @@ public:
       else out << file << ", line " << line << ": " << message << endl;
    }
 protected:
+   ///the message
    string message;
+   ///the node pointer
    Node *node;
+   ///the file name
    string file;
+   ///the line number
    int line;
 };
 

@@ -25,7 +25,7 @@
 #include "NetworkException.h"
 //#include "rc_ptrs.h"
 
-#define HPUX
+#define LINUX
 
 #ifdef HPUX
 #include <dl.h>
