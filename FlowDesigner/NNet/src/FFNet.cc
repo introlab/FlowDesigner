@@ -846,6 +846,69 @@ void FFNet::traincg(vector<float *> tin, vector<float *> tout, int iter)
 void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 			  double mom, double increase, double decrease, int nbSets)
 {
+   int i,j;
+   double SSE;
+   int k=1;
+
+   int nbWeights = 0;
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+
+   cerr << "found " << nbWeights << " weights\n";
+
+   Array<double> alpha(nbWeights);
+   Array<double> wk(nbWeights);
+   Array<double> nextW(nbWeights);
+   Array<double> dEk(nbWeights);
+   Array<double> nextdE(nbWeights);
+   double nextE;
+
+   getWeights(wk.begin());
+
+   for (i=0;i<nbWeights;i++)
+      alpha[i] = learnRate;
+
+   calcGradient(tin, tout, wk, dEk, SSE);
+   while (iter--)
+   {
+
+      double norm = dEk.norm();
+      double norm_1 = 1/norm;
+      
+      for (i=0;i<nbWeights;i++)
+	 nextW[i] = wk[i] - alpha[i] * norm_1 * dEk[i];
+
+      calcGradient(tin, tout, nextW, nextdE, nextE);
+
+      if (nextE > SSE)
+      {
+	 alpha *= decrease;
+	 continue;
+      }
+
+      for (i=0;i<nbWeights;i++)
+      {
+	 if (nextdE[i]*dEk[i] >= 0)
+	    alpha[i] *= increase;
+	 else
+	    alpha[i] *= decrease;
+      }
+      cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
+      SSE=nextE;
+      dEk = nextdE;
+
+
+   }
+   setWeights(wk.begin());
+}
+
+
+/*
+void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
+			  double mom, double increase, double decrease, int nbSets)
+{
 
    int i,j;
    //double in[topo[0]];
@@ -901,6 +964,8 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
    delete [] in;
    delete [] out;
 }
+*/
+
 
 void FFNet::trainRecurrent(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 			  double mom, double increase, double decrease)
