@@ -54,27 +54,60 @@ void vec_prefetchnta(T *a, int len)
    int size=sizeof(T)*len;
    if (size > MAX_PREFETCH)
       return;
-   __asm__ __volatile__ (
+   __asm__ /*__volatile__*/ (
    "
    push %%eax
    push %%ecx
 
-prefetch_loop$=
-   prefetchnta %%eax
-   sub $CACHE_LINES %%ecx
-   ja prefetch_loop$=
+prefetch_loop%=:
+   prefetchnta (%%eax)
+   add %%edi, %%eax
+   sub %%edi, %%ecx
+   ja prefetch_loop%=
 
    pop %%ecx
    pop %%eax
    "
-   : : "a" (a), "c" (size)
+   : : "a" (a), "D" (CACHE_LINES), "c" (size)
+   : "memory"
    );
 }
+
+template <class T>
+void vec_prefetch(T *a, int len)
+{
+   int size=sizeof(T)*len;
+   if (size > MAX_PREFETCH)
+      return;
+   __asm__ /*__volatile__*/ (
+   "
+   push %%eax
+   push %%ecx
+
+prefetch_loop%=:
+   prefetch (%%eax)
+   add %%edi, %%eax
+   sub %%edi, %%ecx
+   ja prefetch_loop%=
+
+   pop %%ecx
+   pop %%eax
+   "
+   : : "a" (a), "D" (CACHE_LINES), "c" (size)
+   : "memory"
+   );
+}
+
 
 #else
 
 template <class T>
 void vec_prefetchnta(T *a, int len)
+{
+}
+
+template <class T>
+void vec_prefetch(T *a, int len)
 {
 }
 
@@ -417,7 +450,17 @@ template <class T>
 inline void vec_corr_cont(const T *a, T *filt, T *out, int len, int filtLen)
 {
    for (int i=0;i<len;i++)
-      out[i] = vec_inner_prod(a-filtLen+1, filt, filtLen);   
+      out[i] = vec_inner_prod(a-filtLen+1, filt, filtLen);
+}
+
+template <class T>
+inline void vec_conv_cont(const T *a, T *filt, T *out, int len, int filtLen)
+{
+   T filt2[filtLen];
+   for (int i=0;i<filtLen;i++)
+      filt2[i] = filt[filtLen-i-1];
+   for (int i=0;i<len;i++)
+      out[i] = vec_inner_prod(a-filtLen+1, filt2, filtLen);
 }
 
 #ifdef _USE_3DNOW

@@ -235,11 +235,23 @@ void FFNet::learn(float *input, float *output, double *gradient, double *err, fl
       }
       
       
-      }
+   }
+
+   /* Trying to prefetch the gradient... not much speadup though ;-)
+   int chunks = (nbWeights>>5);
+   vec_prefetchnta(gradient, 32);
+   for (int j=0;j<chunks;j++)
+   {
+      if (j!=chunks-1)
+	 vec_prefetchnta(gradient+32*(j+1), 32);
+      for (int i=32*j;i<32*(j+1);i++)
+	 gradient[i] += fgradient[i];
+   }
+   for (int i=32*chunks;i<nbWeights;i++)
+      gradient[i] += fgradient[i];
+   */
    for (int i=0;i<nbWeights;i++)
       gradient[i] += fgradient[i];
-   //for (int i=0;i<nbWeights;i++)
-   //   gradient[i] += 0;
 }
 
 
@@ -262,6 +274,11 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
 
    for (i=0;i<tin.size();i++)
    {
+      if (i != tin.size()-1)
+      {
+	 vec_prefetchnta(tin[i+1], topo[0]);
+	 vec_prefetchnta(tout[i+1], topo[topo.size()-1]);
+      }
       learn (tin[i], tout[i], &gradient[0], &err);
    }
 
