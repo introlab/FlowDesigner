@@ -216,3 +216,27 @@ void UINodeParameters::genCode(ostream &out)
    }
 
 }
+
+
+void UINodeParameters::copyParameterText(UINodeParameters *cpy) {
+
+  //deleting already entered parameter text
+  for (int i = 0; i < textParams.size(); i++) {
+    delete textParams[i];
+  }
+  textParams.resize(0);
+
+  //copying all textParameters
+  vector<ParameterText *> &text_params = cpy->get_textParams();
+  
+  for (int i = 0; i < text_params.size(); i++) {
+    
+    //copying parameters
+    string my_name = text_params[i]->name;
+    string my_type = text_params[i]->type;
+    string my_value = text_params[i]->value;
+    string my_description = text_params[i]->description;
+  
+    addParameterText(my_name, my_type, my_value, my_description);
+  }
+}

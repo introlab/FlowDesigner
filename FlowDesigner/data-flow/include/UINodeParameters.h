@@ -29,6 +29,7 @@ protected:
    string comments;
    UINode *node;
 public:
+   
    UINodeParameters(UINode *_node, string type);
    virtual ~UINodeParameters();
    void saveXML(xmlNode *root);
@@ -42,6 +43,8 @@ public:
    void removeParameterText(string nameToRemove);
    
    ParameterSet *build(const ParameterSet &par);
+
+   void copyParameterText(UINodeParameters *cpy);
    
    void genCode(ostream &out);
 

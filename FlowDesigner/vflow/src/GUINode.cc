@@ -312,10 +312,13 @@ gint GUINode::event(GdkEvent *event)
 	   GUINode *my_node = dynamic_cast<GUINode*>(my_net->addNode(getType(),item_x + 10,item_y + 10));
 
 	   //copying parameters
-	
-	   
+	   UINodeParameters *params_source = getParameters() ;
 
-	   my_node->setNodeParameters(getParameters());
+	   UINodeParameters *params_destination = new UINodeParameters(my_node,getType());
+	   
+	   params_destination->copyParameterText(params_source);
+
+	   my_node->setNodeParameters(params_destination);
 
 	   return true;
          }

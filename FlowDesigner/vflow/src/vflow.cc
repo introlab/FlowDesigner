@@ -125,7 +125,13 @@ void vflowGUI::paste (GUIDocument *doc) {
     created_nodes.insert(make_pair((*iter),my_node));    
 
     //copying parameters
-    my_node->setNodeParameters((*iter)->getParameters());
+    UINodeParameters *params_source = (*iter)->getParameters();
+    
+    UINodeParameters *params_destination = new UINodeParameters(my_node,(*iter)->getType());
+    
+    params_destination->copyParameterText(params_source);
+    
+    my_node->setNodeParameters(params_destination);
 
     //unselecting old node
     (*iter)->unselect();
