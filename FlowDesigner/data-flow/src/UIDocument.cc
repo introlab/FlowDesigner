@@ -6,7 +6,7 @@
 #include "Node.h"
 #include "Network.h"
 #include "ParameterSet.h"
-
+#include <sys/stat.h>
 
 
 map<string, SubnetInfo *> UIDocument::externalDocInfo;
@@ -508,36 +508,73 @@ void UIDocument::loadExtDocInfo(const string &path, const string &name)
 
 #include <dirent.h>
 
+//
+//Fixed to load recursively all toolboxes starting with the directories included
+//In the VFLOW_PATH environment variable. 
+//Dominic Letourneau Feb. 20 2001
+//
+
 void UIDocument::loadAllInfo()
 {
-   vector<string> dirs = envList("VFLOW_PATH");
-   for (int i=0;i<dirs.size();i++)
-   {
-      string path = dirs[i];
-      vector<string> files;
-      DIR *my_directory = opendir (path.c_str());
-      if (!my_directory) 
-     continue;
-      struct dirent *current_entry;
-      for (current_entry = readdir(my_directory); 
-       current_entry != NULL; current_entry = readdir(my_directory)) 
-      {
-     
-     string name = current_entry->d_name;
 
-     if (strstr(current_entry->d_name, ".n") && !strstr(current_entry->d_name, ".nn"))
-     {
-        //cerr << current_entry->d_name << " is not a document\n";
-        loadExtDocInfo(path, name);
-     }
-     if (strstr(current_entry->d_name, ".def"))
-     {
-        loadNodeDefInfo(path, name);
-     }
-      }
-      closedir(my_directory);
-   }
+
+  vector<string> dirs = envList("VFLOW_PATH");
+
+
+  for (int i=0;i<dirs.size();i++) {
+    loadAllInfoRecursive(dirs[i]);
+  }
+
+
 }
+
+
+void UIDocument::loadAllInfoRecursive(const string &path) {
+
+  struct stat my_stat;
+  DIR *my_directory = opendir (path.c_str());
+
+  if (!my_directory) return;
+
+  struct dirent *current_entry;
+
+  for (current_entry = readdir(my_directory); 
+       current_entry != NULL; current_entry = readdir(my_directory)) {
+    
+    string name = current_entry->d_name;
+    string fullpath = path + string("/") + name;
+
+    if (stat(fullpath.c_str(), &my_stat) < 0) {
+      cerr<<"stat error"<<endl;
+      continue;
+    }
+    
+    if (S_ISDIR(my_stat.st_mode)) {
+      //it is a directory, let's doing it recursively
+      if (name != string("..") && name != string(".")) {
+	loadAllInfoRecursive(fullpath);
+      }
+    }
+    else {
+       
+      //loading network
+      if (strstr(current_entry->d_name, ".n") && !strstr(current_entry->d_name, ".nn")){
+	cout<<"Loading network : "<<fullpath<<endl;
+        loadExtDocInfo(path, name);
+      }
+      
+      //loading toolbox
+      if (strstr(current_entry->d_name, ".def")) {
+	cout<<"Loading toolbox : "<<fullpath<<endl;
+        loadNodeDefInfo(path, name);
+      }
+
+    }
+  }
+
+  closedir(my_directory);
+}
+
 
 #include <dlfcn.h>
 

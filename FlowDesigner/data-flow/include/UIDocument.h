@@ -134,6 +134,10 @@ public:
    virtual void setFullPath(const string &fullpath);
    
    vector<string> getAvailableNodes();
+
+ private:
+   
+   static void loadAllInfoRecursive(const string &path);
    
    
 };
