@@ -161,6 +161,10 @@ inline istream &operator >> (istream &in, RCPtr<T> &o)
       string type;
       in >> type;
       o = Object::newObject(type);
+      char dummy;
+      do {
+         in >> dummy;
+      } while(dummy != '|');
       o->unserialize(in);
    } else {
       in.putback(ch);

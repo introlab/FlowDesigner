@@ -7,20 +7,20 @@
 
 class BinIO {
 public:
-   void _sread(istream &in, void* data, size_t typeSize, size_t length);
+   static void _read(istream &in, void* data, size_t typeSize, size_t length);
    
    template<class T>
-   inline void sbinread(istream &in, T* data, int length)
+   static inline void read(istream &in, T* data, int length)
    {
-      _sread(in, (void *)data, sizeof(T), length);
+      _read(in, (void *)data, sizeof(T), length);
    }
 
-   void _swrite(ostream &out, void* data, size_t typeSize, size_t length);
+   static void _write(ostream &out, void* data, size_t typeSize, size_t length);
 
    template<class T>
-   inline void swrite(ostream &out, T* data, int length)
+   static inline void write(ostream &out, T* data, int length)
    {
-      _swrite(out, (void *)data, sizeof(T), length);
+      _write(out, (void *)data, sizeof(T), length);
    }
 
 };

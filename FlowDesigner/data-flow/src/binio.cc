@@ -2,16 +2,33 @@
 
 #include "binio.h"
 
-void BinIO::_sread(istream &in, void* data, size_t typeSize, size_t length)
+#define LITTLE_ENDIAN
+
+void BinIO::_read(istream &in, void* data, size_t typeSize, size_t length)
 {
-#ifdef BIG_ENDIAN
-#elif defined (LITTLE_ENDIAN)
+#ifdef WORDS_BIGENDIAN
+   in.read(data, typeSize*length);
 #else
-//#error unknown endianness
+   char *orig = (char *)(data);
+   char copy[length*typeSize];
+   in.read(copy, typeSize*length);
+   for (int i=0;i<length;i++)
+      for (int j=0;j<typeSize;j++)
+         orig[typeSize*(i+1)-1-j] = copy[typeSize*i+j];
 #endif
 }
 
-void BinIO::_swrite(ostream &out, void* data, size_t typeSize, size_t length)
+void BinIO::_write(ostream &out, void* data, size_t typeSize, size_t length)
 {
+#ifdef WORDS_BIGENDIAN
+   out.write(data, typeSize*length);
+#else
+   char *orig = (char *)(data);
+   char copy[length*typeSize];
+   for (int i=0;i<length;i++)
+      for (int j=0;j<typeSize;j++)
+         copy[typeSize*i+j] = orig[typeSize*(i+1)-1-j];
+   out.write(copy, typeSize*length);
+#endif
 }
 

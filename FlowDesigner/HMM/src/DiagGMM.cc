@@ -4,6 +4,7 @@
 #include "misc.h"
 #include "vec.h"
 #include "ObjectParser.h"
+#include "binio.h"
 
 DECLARE_TYPE(DiagGMM)
 
@@ -115,11 +116,43 @@ void DiagGMM::readFrom (istream &in)
 
 void DiagGMM::serialize(ostream &out) const
 {
-   
+   out << "{DiagGMM " << endl;
+   out << "|";
+   BinIO::write(out, &nbGauss, 1);
+   BinIO::write(out, &dim, 1);
+
+   int inc=2*augDim;
+   float *mean=base;
+   float *cov=base+augDim;
+   for (int i=0;i<nbGauss;i++)
+   {
+      BinIO::write(out, mean, dim+1);
+      BinIO::write(out, cov, dim+1);
+      mean+=inc;
+      cov += inc;
+   }
+   out << "}" << endl;
 }
 
 void DiagGMM::unserialize(istream &in)
 {
+   BinIO::read(in, &nbGauss, 1);
+   BinIO::read(in, &dim, 1);
+
+   augDim = (dim+4)&0xfffffffc;
+   int allocSize = 2 * augDim * nbGauss * sizeof(float)  +  CACHE_LINES;
+   ptr = new char [allocSize];
+   base = (float *) (((unsigned long)(ptr) + (CACHE_LINES-1))&CACHE_MASK);
+   int inc=2*augDim;
+   float *mean=base;
+   float *cov=base+augDim;
+   for (int i=0;i<nbGauss;i++)
+   {
+      BinIO::read(in, mean, dim+1);
+      BinIO::read(in, cov, dim+1);
+      mean+=inc;
+      cov += inc;
+   }
    
 }
 
