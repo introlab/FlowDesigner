@@ -760,6 +760,7 @@ void UINetwork::rename(string newName)
 {
    //FIXME: We should update the subnet list and rename the node that 
    //correspond to this subnet
-   //name = newName;
-   cerr << "Network renaming does not work yet, sorrry :-(\n";
+   name = newName;
+   doc->updateAllNetworks();
+   //cerr << "Network renaming does not work yet, sorrry :-(\n";
 }
