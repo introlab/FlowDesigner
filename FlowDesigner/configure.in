@@ -39,6 +39,10 @@ if test $video_blocks = video_blocks; then
 AC_CONFIG_SUBDIRS(video_blocks)
 fi
 
+AC_MODULE_OPT(FuzzyEngine)
+if test $FuzzyEngine = FuzzyEngine; then
+AC_CONFIG_SUBDIRS(FuzzyEngine)
+fi
 
 FREESPEECH_MAJOR_VERSION=0
 FREESPEECH_MINOR_VERSION=2
@@ -69,7 +73,7 @@ AC_SUBST(LT_AGE)
 VERSION=$FREESPEECH_VERSION
 PACKAGE=FreeSpeech
 
-modules="$audio_blocks $VQ $HMM $NNet $video_blocks $visix"
+modules="$audio_blocks $VQ $HMM $NNet $video_blocks $visix $FuzzyEngine"
 AC_SUBST(modules)
 
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
