@@ -96,3 +96,19 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
       outputs[outputID].cacheAll = true;
    this->Node::request(outputID,req);
 }
+
+ObjectRef BufferedNode::getOutput(int output_id, int count)
+{
+   Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
+
+   ObjectRef result = outBuffer[count];
+   if (result->status == Object::valid)
+      return result;
+   else
+   {
+      calculate (output_id, count, outBuffer);
+      if (count > processCount)
+         processCount = count;
+      return outBuffer[count];
+   }
+}

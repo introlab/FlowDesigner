@@ -38,14 +38,6 @@ void GCMS::specificInitialize()
    //cerr << "GCMS initialize...\n";
    this->FrameOperation::specificInitialize();
    
-   //perform requests for input node
-   ParameterSet req;
-   req.add("LOOKAHEAD", ObjectRef(new Int(outputLookAhead)));
-   req.add("LOOKBACK", ObjectRef(new Int(outputLookBack)));
-   //cerr << "Request to node type: " << typeid(inputs[0].node).name() << " name: " << inputs[0].node->getName() << endl;
-   //req.print(cerr);
-   inputs[0].node->request(0,req);
-
    for (int i=0;i<outputLength;i++)
       sum[i]=0;
    accumCount=0;

@@ -18,6 +18,7 @@
 #define BUFFERED_NODE_H
 
 #include "Node.h"
+#include "Buffer.h"
 
 class OutputCacheInfo {
 public:
@@ -61,7 +62,11 @@ public:
 
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
-   //virtual ObjectRef getOutput(int output_id, int count); 
+   virtual ObjectRef getOutput(int output_id, int count); 
+
+   /**Ask for the node's output which ID (number) is output_id 
+      and for the 'count' iteration */
+   virtual ObjectRef calculate(int output_id, int count, Buffer &buf) = 0;
 
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req);
@@ -86,6 +91,10 @@ public:
 
    /***/
    virtual void performRequests();
+
+protected:
+   /**Default constructor, should not be used*/
+   BufferedNode() {throw GeneralException("BufferedNode copy constructor should not be called",__FILE__,__LINE__);}
 };
 
 #endif
