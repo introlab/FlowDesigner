@@ -11,6 +11,7 @@
 #include "UINodeRepository.h"
 #include "object_param.h"
 #include <signal.h>
+#include "UserException.h"
 
 class batchflowApp {
 
@@ -36,8 +37,17 @@ public:
       delete m_doc;
     }
     if (m_net) {
-      delete m_net;
+       Network *net=m_net;
+       m_net=NULL;
+       net->cleanupNotify();
+       delete net;
     }
+  }
+
+  void stop()
+  {
+     if (m_net)
+        m_net->stop();
   }
 
   void initialize(int argc, char** argv) {
@@ -103,9 +113,7 @@ public:
 batchflowApp* batchflowApp::m_app = NULL;
 
 static void sig_usr(int sig_no) {
-  cerr<<"batchflow exiting (SIGINT)."<<endl;
-  delete batchflowApp::instance();
-  exit(0);
+ batchflowApp::instance()->stop();
 }
 
 int main(int argc, char **argv) {
@@ -140,6 +148,11 @@ int main(int argc, char **argv) {
       cerr << e.what() << endl;
       delete batchflowApp::instance();
       return 2;
+   }
+   catch (UserException *e) {
+      cerr << "User stop" << endl;
+      delete batchflowApp::instance();
+      return 0;
    }
    catch (...) {
       cerr<<"Unknown unhandled exception in "<<argv[1]<<endl;
