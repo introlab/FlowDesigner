@@ -28,9 +28,26 @@ union FloatManip {
 
 extern float logtable2[FLOGLOOKUP2SIZE];
 
+inline void build_flog_table()
+{
+   static bool init=false;
+   if (!init)
+   {
+      FloatManip m;
+      
+      for (int i=0;i<FLOGLOOKUP2SIZE;i++)
+      {
+	 m.i = (i<<FLOGLOOKUP2SHIFT) | 0x3f800000;
+	 logtable2[i]=log(m.f);
+      }
+   }
+}
+
+
 //Log (base e) approximation
 inline float flog(float f)
 {
+   build_flog_table();
    FloatManip m;
    m.f = f;
    //The exponent in id1
@@ -56,9 +73,28 @@ inline float flog(float f)
 
 extern float exptable[FEXPSIZE];
 
+inline void build_fexp_table()
+{
+   static bool init=false;
+   if (!init)
+   {
+      FloatManip m;
+      
+      for (int i=0;i<FEXPSIZE;i++)
+      {
+	 m.i = i<<FEXPSHIFT;
+	 exptable[i]=exp(m.f);
+      }
+      init=true;
+   }
+}
+
+
+
 //Exponential approximation
 inline float fexp(float f)
 {
+   build_fexp_table();
    FloatManip m;
    m.f = f;
    //Exponent plus part of the mantissa for first approximation

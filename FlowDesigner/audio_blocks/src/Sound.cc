@@ -14,8 +14,6 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#if !defined(SOLARIS)
-
 #include "Node.h"
 #include "Vector.h"
 #include "ObjectParser.h"
@@ -134,51 +132,56 @@ public:
       } else {
 	 rt_assert((audio_fd=open(device.c_str(),mode)) != -1, "Can't open sound device\n", __FILE__, __LINE__);
       }
+
+#if !defined(SOLARIS)
+
       
       if (!parameters.exist("DUMMY"))
       {
-      //int arg=0x7fff0004;
-      int arg=0x0004000a;
-      if (parameters.exist("BUFFER"))
-      {
-	 unsigned int buffLen = dereference_cast<int> (parameters.get("BUFFER"));
-	 buffLen--;
-	 arg=-1;
-	 while (buffLen)
+	 //int arg=0x7fff0004;
+	 int arg=0x0004000a;
+	 if (parameters.exist("BUFFER"))
 	 {
-	    arg++;
-	    buffLen >>= 1;
+	    unsigned int buffLen = dereference_cast<int> (parameters.get("BUFFER"));
+	    buffLen--;
+	    arg=-1;
+	    while (buffLen)
+	    {
+	       arg++;
+	       buffLen >>= 1;
+	    }
+	    if (arg < 4)
+	       arg=4;
+	    arg |= 0x00040000;
+	    //cerr << "arg = " << arg << endl;
+	 }      
+	 ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
+	 
+	 
+	 int format=AFMT_S16_LE;
+	 if (ioctl(audio_fd, SNDCTL_DSP_SETFMT, &format)==-1)
+	 {
+	    perror("SNDCTL_DSP_SETFMT");
+	    close(audio_fd);
+	    throw_error (true, "Can't set the sample format\n", __FILE__, __LINE__);
 	 }
-	 if (arg < 4)
-	    arg=4;
-	 arg |= 0x00040000;
-	 //cerr << "arg = " << arg << endl;
-      }      
-      ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
-      
+	 
+	 if (ioctl(audio_fd, SNDCTL_DSP_STEREO, &stereo)==-1)
+	 {
+	    perror("SNDCTL_DSP_STEREO");
+	    close(audio_fd);
+	    throw_error (true, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
+	 }
+	 
+	 if (ioctl(audio_fd, SNDCTL_DSP_SPEED, &speed)==-1)
+	 {
+	    perror("SNDCTL_DSP_SPEED");
+	    close(audio_fd);
+	    throw_error (true, "Can't set sound device speed\n", __FILE__, __LINE__);
+	 }
+      }
 
-      int format=AFMT_S16_LE;
-      if (ioctl(audio_fd, SNDCTL_DSP_SETFMT, &format)==-1)
-      {
-	 perror("SNDCTL_DSP_SETFMT");
-	 close(audio_fd);
-	 throw_error (true, "Can't set the sample format\n", __FILE__, __LINE__);
-      }
-      
-      if (ioctl(audio_fd, SNDCTL_DSP_STEREO, &stereo)==-1)
-      {
-	 perror("SNDCTL_DSP_STEREO");
-	 close(audio_fd);
-	 throw_error (true, "Can't set/reset stereo mode\n", __FILE__, __LINE__);
-      }
-      
-      if (ioctl(audio_fd, SNDCTL_DSP_SPEED, &speed)==-1)
-      {
-	 perror("SNDCTL_DSP_SPEED");
-	 close(audio_fd);
-	 throw_error (true, "Can't set sound device speed\n", __FILE__, __LINE__);
-      }
-      }
+#endif
 
       value = ObjectRef(new Int(audio_fd));
       //Vector<float> &val = object_cast<Vector<float> > (value);
@@ -208,4 +211,3 @@ protected:
 
 };
 
-#endif
