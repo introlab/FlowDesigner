@@ -20,7 +20,7 @@ static void type_changed (GnomePropertyBox *propertybox, gpointer user_data)
 GUINodeParameters::GUINodeParameters(UINode *_node, string type)
    : UINodeParameters (_node, type)
 {
-   cerr << "GUINodeParameters::GUINodeParameters\n";
+   //cerr << "GUINodeParameters::GUINodeParameters\n";
    int i;
 
    //GtkWidget *nodeproperty;

@@ -34,13 +34,13 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    , dragging(false)
    , grab(false)
 {
-   cerr << "creating params\n";
+   //cerr << "creating params\n";
    parameters = newNodeParameters(this, type);
-   cerr << "loading params\n";
+   //cerr << "loading params\n";
    parameters->load(def);
-   cerr << "drawing node...\n";
+   //cerr << "drawing node...\n";
    draw();
-   cerr << "creating node popup...\n";
+   //cerr << "creating node popup...\n";
 
    createPopup();
 }
@@ -378,6 +378,6 @@ UINetTerminal *GUINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::Ne
 
 UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type)
 {
-   cerr << "GUINode::newNodeParameters\n";
+   //cerr << "GUINode::newNodeParameters\n";
    return new GUINodeParameters (_node, type);
 }
