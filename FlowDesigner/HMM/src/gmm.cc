@@ -139,9 +139,9 @@ vector<Score> GMM::minDistance(vector <float * > fr) const
    for (j=0;j<dimensions;j++)
    {
       (*cov)[j]=nb_gaussians/((*cov)[j]);
-      cerr << (*cov)[j] << " ";
+      //cerr << (*cov)[j] << " ";
    }
-   cerr << endl;
+   //cerr << endl;
    } 
    cov->mode = (Covariance::inverted);
 
