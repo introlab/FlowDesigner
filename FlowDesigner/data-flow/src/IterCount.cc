@@ -30,8 +30,6 @@ public:
    IterCount(string nodeName, ParameterSet params) : Node (nodeName,params)
    {
       outputID = addOutput ("OUTPUT");
-      //trueObject = ObjectRef (new Int(Zero));
-      //falseObject = ObjectRef (new Bool(false));
    }
    
    virtual void specificInitialize()
