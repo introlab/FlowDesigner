@@ -88,6 +88,8 @@ public:
 
    void applyParams();
 
+   void updateTooltip();
+
    void insertLoadedParam(DocParameterData *param, string type, string value);
 
    void threadRun();

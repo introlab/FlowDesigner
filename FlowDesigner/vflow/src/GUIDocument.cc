@@ -981,3 +981,12 @@ void GUIDocument::error(char *err)
    gtk_signal_connect (GTK_OBJECT ( errDialog ), "close",
 		       GTK_SIGNAL_FUNC( error_dismiss), NULL);
 }
+
+void GUIDocument::updateTooltip() {
+
+  for (int j = 0; j < networks.size(); j++) {
+    for (int i= 0; i < networks.size(); i++) {
+      networks[i]->newNetNotify("Subnet",networks[j]->getName());
+    }
+  }
+}

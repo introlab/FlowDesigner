@@ -290,10 +290,14 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
        
      case 3:
 
+       //update popup
+       delete popup;
+       popup = new GUINetPopup(doc,this);
 
-
+       dynamic_cast<GUIDocument*>(doc)->updateTooltip();
 
        popup->popup(event);
+
        return TRUE;
        break;
        

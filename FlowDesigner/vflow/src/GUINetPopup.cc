@@ -195,7 +195,6 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
    gtk_widget_show(label);
    gtk_menu_append(GTK_MENU(menu),label);
 
-
 }
 
 GUINetPopup::~GUINetPopup()
