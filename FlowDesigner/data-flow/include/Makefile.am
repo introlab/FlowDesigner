@@ -56,7 +56,8 @@ include_HEADERS = Array.h \
 	iextensions.h \
 	SocketStream.h \
 	UINodeRepository.h \
-	vec_3dnow.h
+	vec_3dnow.h \
+	vec_sse.h
 	
 noinst_HEADERS = \
 	NOT.h \
