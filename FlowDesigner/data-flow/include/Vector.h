@@ -220,7 +220,33 @@ inline void _vector_printOn(const Vector<T> &v, ostream &out)
 }
 
 template <>
-inline void _vector_printOn(const Vector<string> &v, ostream &out);
+inline void _vector_printOn(const Vector<string> &v, ostream &out)
+{
+   out << "<Vector<string>";
+   for (unsigned int n=0; n < v.size(); n++)
+   {
+      out << " ";
+      const string &str = v[n];
+      for (unsigned int i=0;i<str.size();i++)
+      {
+	 if (str[i] == '>')
+	 {
+	    out.put('\\');
+	    out.put('>');
+	 } else if (str[i] == ' ')
+	 {
+	    out.put('\\');
+	    out.put(' ');
+	 } else if (str[i] == '\\')
+	 {
+	    out.put('\\');
+	    out.put('\\');
+	 } else
+	    out.put(str[i]);
+      }
+   }
+   out << "> ";
+}
 
 template <class T>
 inline void _vector_printOn(const Vector<T*> &v, ostream &out)
@@ -284,9 +310,57 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
       throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
 }
 
-template <>
-inline void _vector_readFrom(Vector<string> &v, istream &in);
 
+template <>
+inline void _vector_readFrom(Vector<string> &v, istream &in)
+{
+   bool done=false;
+   while (1)
+   {      
+      string tmp;
+      int i=0;
+      while(1)
+      {
+	 char ch;
+	 in.get(ch);
+	 if (in.eof() || in.fail())
+	    throw new GeneralException("Error reading String: '>' or '}' expected", __FILE__, __LINE__);
+	 if (ch == '\\')
+	 {
+	    in.get(ch);
+	    tmp += ch;
+	 }
+	 else if (ch == ' ')
+	 {
+	    if (i)
+	    {
+	       break;
+	    }
+	    else
+	       continue;
+	 }
+	 else if (ch == '>')
+	 {
+	    done=true;
+	    break;
+	 }
+	 else if (ch == '}')
+	 {
+	    break;
+	 }
+	 else
+	 {
+	    tmp += ch;
+	 }
+	 i++;
+      }
+
+      if (tmp != "")
+	 v.push_back(tmp);
+      if (done)
+	 break;
+   }
+}
 
 template <class T>
 inline void _vector_readFrom(Vector<T*> &v, istream &in)
