@@ -107,7 +107,6 @@ if test "$ac_fftw_includes" = NO || test "$ac_fftw_libraries" = NO; then
     ac_fftw_notfound="(libraries)";
   fi
 
-  AC_MSG_ERROR([FFTW not found. Please check your installation! ]);
 else
   have_fftw="yes"
 fi
@@ -143,15 +142,16 @@ fi
 
 if test "$fftw_libraries" = "$x_libraries" || test -z "$fftw_libraries"; then
  FFTW_LDFLAGS=""
+ LIB_FFTW=""
 else
  FFTW_LDFLAGS="-L$fftw_libraries"
+ LIB_FFTW='-lrfftw -lfftw'
  all_libraries="$FFTW_LDFLAGS $all_libraries"
 fi
 
 AC_SUBST(FFTW_INCLUDES)
 AC_SUBST(FFTW_LDFLAGS)
 
-LIB_FFTW='-lfftw -lrfftw'
 AC_SUBST(LIB_FFTW)
 
 ])
