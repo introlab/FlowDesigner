@@ -1,4 +1,4 @@
-// Copyright (C) 2001 Jean-Marc Valin
+// Copyright (C) 2002 Jean-Marc Valin
 
 #include "CompositeType.h"
 #include <iostream>
@@ -19,7 +19,6 @@ void CompositeType::printOn(ostream &out) const
 void CompositeType::readFrom(istream &in)
 {
    string tag;
-   //cerr << "FFNet::readFrom\n";
    while (1)
    {
       char ch;

@@ -1,4 +1,4 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 2002 Jean-Marc Valin
 
 #include "BufferedNode.h"
 #include "CompositeType.h"
