@@ -13,13 +13,15 @@
 #include <signal.h>
 #include "UserException.h"
 
+typedef Network *NetworkPtr;
+
 class batchflowApp {
 
 private:
 
   static batchflowApp* m_app;
   UIDocument *m_doc;
-  Network *m_net;
+  volatile NetworkPtr m_net;
   string m_filename;
 
 public:
