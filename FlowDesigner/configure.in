@@ -12,7 +12,7 @@ dnl Stolen from gtk+:
 # if backwards compatibility has been broken,
 # set SF_BINARY_AGE and SF_INTERFACE_AGE to 0.
 #
-FREESPEECH_MAJOR_VERSION=1
+FREESPEECH_MAJOR_VERSION=o
 FREESPEECH_MINOR_VERSION=0
 FREESPEECH_MICRO_VERSION=0
 FREESPEECH_VERSION=$FREESPEECH_MAJOR_VERSION.$FREESPEECH_MINOR_VERSION.$FREESPEECH_MICRO_VERSION
@@ -74,6 +74,7 @@ dnl Checks for libraries.
 
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
+AC_CHECK_LIB(dl, dlopen)
 
 dnl test for SGI audio library (required by SndLib) and define LIBS
 AC_PATH_FFTW
