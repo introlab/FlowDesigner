@@ -23,7 +23,7 @@
   date  : 09/06/99 
  */
 
-#include "NetworkNode.h"
+#include "Node.h"
 
 
 //abstract factory class
