@@ -20,8 +20,13 @@
 #include "Object.h"
 
 //our static factory dictionary
-map<string,_NodeFactory*> Node::factoryDictionary;
+map<string,_NodeFactory*> &Node::factoryDictionary()
+{ 
+   static map<string,_NodeFactory*> var;
+   return var; 
+}
 
+//map<string,_NodeFactory*> Node::factoryDictionary;
 /***************************************************************************/
 /*
   Node(...)
@@ -244,7 +249,7 @@ _NodeFactory* Node::getFactoryNamed (const string &name) {
    
    //let's find the key in our map
    //if not found will return NULL
-   for (iter = factoryDictionary.begin(); iter != factoryDictionary.end(); iter++) {
+   for (iter = factoryDictionary().begin(); iter != factoryDictionary().end(); iter++) {
       if ((*iter).first == name) {
          factory = (*iter).second;
          break;
@@ -263,7 +268,7 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
    if (!getFactoryNamed(factoryName)) {
       //the factory doesn't exist inserting it...
       if (factory != NULL) {
-         factoryDictionary.insert (factoryEntry(factoryName,factory));
+         factoryDictionary().insert (factoryEntry(factoryName,factory));
       }
       else {
          cerr<<"NULL _NodeFactory pointer, exiting"<<endl;

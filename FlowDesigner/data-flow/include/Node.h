@@ -249,7 +249,7 @@ protected:
    virtual int translateOutput(string inputName);
 
    ///The node instance factory
-   static map<string,_NodeFactory*> factoryDictionary;
+   static map<string,_NodeFactory*> &factoryDictionary();
    
 };
 

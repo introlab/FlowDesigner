@@ -30,7 +30,7 @@
 void Network::initializeFactories() {
 
    try {
-      Node::addFactory ("Constant", new ConstantNodeFactory);
+      //Node::addFactory ("Constant", new ConstantNodeFactory);
       Node::addFactory ("COLLECTOR", new CollectorNodeFactory);
       Node::addFactory ("MUX", new MuxNodeFactory);
       Node::addFactory ("EXEC", new ExecNodeFactory);
@@ -119,14 +119,14 @@ Network::~Network() {
    map<string, _NodeFactory*>::iterator factoryIter;
  
 
-   /*while (factoryDictionary.size() > 0) {
+   /*while (factoryDictionary().size() > 0) {
 
-      factoryIter = factoryDictionary.begin();
+      factoryIter = factoryDictionary().begin();
       if (debugMode) {
          cout<<"Deleting factory : "<<(*factoryIter).first<<endl;
       }
       factory = (*factoryIter).second;
-      factoryDictionary.erase((*factoryIter).first);  
+      factoryDictionary().erase((*factoryIter).first);  
       delete factory;
       }*/
 
