@@ -1,2 +1,2 @@
-SUBDIRS = po src pixmaps include n-files
+SUBDIRS = src pixmaps include n-files
 
