@@ -164,13 +164,7 @@ inline Vector<float> &object_cast<Vector<float> > (const ObjectRef &ref)
 {
    Vector<float> *tmp = dynamic_cast<Vector<float> *>(&(*ref));
    if (!tmp)
-   {
-      Float *tmp2 = dynamic_cast<Float *>(&(*ref));
-      if (!tmp2)
-	 throw new CastException<Vector<float> > (typeid ((*ref)).name());
-      Vector<float> *vec = Vector<float>::alloc(1);
-      (*vec)[0] = (*tmp2).val();
-   }
+      throw new CastException<Vector<float> > (typeid ((*ref)).name());
    return *tmp;
 }
 
@@ -179,13 +173,7 @@ inline Vector<double> &object_cast<Vector<double> > (const ObjectRef &ref)
 {
    Vector<double> *tmp = dynamic_cast<Vector<double> *>(&(*ref));
    if (!tmp)
-   {
-      Double *tmp2 = dynamic_cast<Double *>(&(*ref));
-      if (!tmp2)
-	 throw new CastException<Vector<double> > (typeid ((*ref)).name());
-      Vector<double> *vec = Vector<double>::alloc(1);
-      (*vec)[0] = (*tmp2).val();
-   }
+      throw new CastException<Vector<double> > (typeid ((*ref)).name());
    return *tmp;
 }
 
