@@ -16,30 +16,30 @@
 
 #include "VQTrain.h"
 #include "net_types.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 #include "kmeans.h"
 #include "Vector.h"
 //#include "multithread.h"
 
 DECLARE_NODE(VQTrain)
 /*Node
-
+ *
  * @name VQTrain
  * @category VQ
  * @description No description available
-
+ *
  * @input_name FRAMES
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name MEANS
  * @parameter_description No description available
-
+ *
  * @parameter_name BINARY
  * @parameter_description No description available
-
+ *
 END*/
 
 
@@ -85,7 +85,7 @@ ObjectRef VQTrain::getOutput(int output_id, int count)
          cerr << "getting frames..." << endl;
          ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
          cerr << "got frames..." << endl;
-         Buffer &mat = object_cast<Buffer> (matRef);
+         GrowingBuffer &mat = object_cast<GrowingBuffer> (matRef);
 
          KMeans *vq = new KMeans;
 

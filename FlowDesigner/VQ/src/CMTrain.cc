@@ -18,7 +18,7 @@
 #include "Node.h"
 #include "ObjectRef.h"
 #include "kmeans.h"
-#include "Buffer.h"
+#include "GrowingBuffer.h"
 #include "Vector.h"
 #include "CodebookMap.h"
 
@@ -26,23 +26,23 @@ class CMTrain;
 
 DECLARE_NODE(CMTrain)
 /*Node
-
+ *
  * @name CMTrain
  * @category VQ
  * @description No description available
-
+ *
  * @input_name TRAIN_IN
  * @input_description No description available
-
+ *
  * @input_name TRAIN_OUT
  * @input_description No description available
-
+ *
  * @input_name VQ
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 
@@ -119,8 +119,8 @@ public:
 	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
 
 	       //cerr << "inputs calculated\n";
-	       Buffer &inBuff = object_cast<Buffer> (trainInValue);
-	       Buffer &outBuff = object_cast<Buffer> (trainOutValue);
+	       GrowingBuffer &inBuff = object_cast<GrowingBuffer> (trainInValue);
+	       GrowingBuffer &outBuff = object_cast<GrowingBuffer> (trainOutValue);
 
 	       //cerr << "inputs converted\n";
 	       vector <float *> in(inBuff.getCurrentPos());
