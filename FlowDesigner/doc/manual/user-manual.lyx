@@ -1,5 +1,5 @@
-#LyX 1.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 220
+#LyX 1.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 221
 \textclass book
 \begin_preamble
 \usepackage{graphicx}
@@ -30,7 +30,7 @@
 
 \layout Title
 
-Overflow User's Manual
+FlowDesigner User's Manual
 \layout Author
 
 Jean-Marc Valin
@@ -64,7 +64,7 @@ status Collapsed
 \layout Standard
 
 \backslash 
-href{http://freespeech.sourceforge.net/overflow.html}{Overflow}
+href{http://flowdesigner.sourceforge.net/}{FlowDesigner}
 \end_inset 
 
  is a free (GPL/LGPL) 
@@ -89,11 +89,11 @@ LabView
 , although it is not designed (and far) to be a "clone" of any of them.
 \layout Standard
 
-Overflow features a GUI that allows rapid application development and includes
- a visual debugger.
- Although Overflow can be seen as a rapid prototyping tool, it can also
+FlowDesigner features a GUI that allows rapid application development and
+ includes a visual debugger.
+ Although FlowDesigner can be seen as a rapid prototyping tool, it can also
  be used for building real-time applications, such as audio effects processing.
- Since overflow is not really an 
+ Since FlowDesigner is not really an 
 \begin_inset Quotes eld
 \end_inset 
 
@@ -107,23 +107,13 @@ interpreted language
 
 It is written in C++ and features a plug-in mechanism that allows new nodes/tool
 boxes to be easily added.
- Overflow currently includes the following toolboxes: 
+ FlowDesigner currently includes the following toolboxes: 
 \layout Itemize
 
 Signal processing
 \layout Itemize
 
-Speech processing (part of the 
-\begin_inset ERT
-status Collapsed
-
-\layout Standard
-
-\backslash 
-href{http://freespeech.sourceforge.net/}{Open Mind Speech}
-\end_inset 
-
- project)
+Speech processing (GMMs)
 \layout Itemize
 
 Vector quantization (VQ)
@@ -144,10 +134,10 @@ Linear algebra using LAPACK/BLAS/ATLAS (early stage)
 Image processing (early stage)
 \layout Section
 
-The Idea Behind Overflow
+The Idea Behind FlowDesigner
 \layout Standard
 
-Overflow was designed with the following goals in mind:
+FlowDesigner was designed with the following goals in mind:
 \layout Itemize
 
 Ease of use
@@ -181,14 +171,14 @@ you don't pay for the features you don't use
 Terminology
 \layout Standard
 
-This section defines the concepts and terms used by Overflow and shows how
- they relate to C or Matlab constructs.
+This section defines the concepts and terms used by FlowDesigner and shows
+ how they relate to C or Matlab constructs.
 \layout Subsection
 
 Nodes
 \layout Standard
 
-The basic processing using in Overflow is a Node, a Node is in all ways
+The basic processing using in FlowDesigner is a Node, a Node is in all ways
  similar to a C or Matlab function.
  It takes some input data, performs some operations and send data out.
  
@@ -197,14 +187,14 @@ The basic processing using in Overflow is a Node, a Node is in all ways
 Built-in nodes
 \layout Standard
 
-A built-in Overflow node is written in C++ and is part of the Overflow code
- (or compiled in an Overflow toolbox, like Matlab's .mex files).
- In Overflow, all nodes are implemented as a class that derive (directly
+A built-in FlowDesigner node is written in C++ and is part of the FlowDesigner
+ code (or compiled in an FlowDesigner toolbox, like Matlab's .mex files).
+ In FlowDesigner, all nodes are implemented as a class that derive (directly
  or indirectly) from a base class called "Node" (note that most nodes derive
  from "BufferedNode").
- Although the Overflow implementation of different nodes uses C++ inheritance
- mechanism (using classes), there's no reason for the user to be aware of
- that.
+ Although the FlowDesigner implementation of different nodes uses C++ inheritanc
+e mechanism (using classes), there's no reason for the user to be aware
+ of that.
  For that reason, it's not recommended to refer to nodes as "types" or 
 \begin_inset Quotes eld
 \end_inset 
@@ -213,18 +203,18 @@ classes
 \begin_inset Quotes erd
 \end_inset 
 
- (e.g..
- if Overflow were written in C, nodes would be implemented as functions).
+ (e.g.
+ if FlowDesigner were written in C, nodes would be implemented as functions).
  
 \layout Subsubsection
 
 Sub-networks (composite nodes)
 \layout Standard
 
-An Overflow sub-network (or subnet) is a collection of connected nodes that
- can be used as if they were a single node.
- Most Overflow subnets will be saved into .n files, which are almost the
- exact equivalent of Matlab's .m files.
+A FlowDesigner sub-network (or subnet) is a collection of connected nodes
+ that can be used as if they were a single node.
+ Most FlowDesigner subnets will be saved into .n files, which are almost
+ the exact equivalent of Matlab's .m files.
  There's no real C equivalent because C is a compiled language (although
  it could be seen as a C function calling other C function).
  
@@ -233,10 +223,10 @@ An Overflow sub-network (or subnet) is a collection of connected nodes that
 Node terminals (inputs/outputs)
 \layout Standard
 
-The inputs of an Overflow nodes are equivalent to the arguments to a Matlab/C
- function.
- The same for outputs, but while C is restricted to one return value, Overflow
- and Matlab can have several outputs.
+The inputs of a FlowDesigner nodes are equivalent to the arguments to a
+ Matlab/C function.
+ The same for outputs, but while C is restricted to one return value, FlowDesign
+er and Matlab can have several outputs.
  Node inputs and outputs are sometimes referred to as 
 \begin_inset Quotes eld
 \end_inset 
@@ -251,7 +241,7 @@ terminals
 Node parameters
 \layout Standard
 
-Overflow node parameters are also equivalent to C/Matlab function arguments.
+FlowDesigner node parameters are also equivalent to C/Matlab function arguments.
  The difference between node parameters and node inputs is that parameters
  cannot change at run-time.
  They are specified at "build-time" and stay constant throughout the run.
@@ -271,11 +261,12 @@ Overflow node parameters are also equivalent to C/Matlab function arguments.
 Links
 \layout Standard
 
-There's no real correspondence between Overflow links and C or Matlab constructs.
+There's no real correspondence between FlowDesigner links and C or Matlab
+ constructs.
  The best analogy would be to say that Links represent the order of the
  lines in a C/Matlab function.
- You also need to keep in mind that Overflow uses a "pull method" in order
- to compute data.
+ You also need to keep in mind that FlowDesigner uses a "pull method" in
+ order to compute data.
  What does that mean? When you run a network, the last node (output node)
  of the main network (called "MAIN" -- how original!) is asked for its output.
  In order to compute its output, it needs to ask its input nodes for their
@@ -294,8 +285,8 @@ Data Types
 \layout Standard
 
 Unlike Matlab, that only supports the complex-double-matrix type (well,
- that's not totally true, but...), Overflow (like C and C++) has support for
- many different types.
+ that's not totally true, but...), FlowDesigner (like C and C++) has support
+ for many different types.
  The 
 \begin_inset Quotes eld
 \end_inset 
@@ -304,22 +295,22 @@ basic
 \begin_inset Quotes erd
 \end_inset 
 
- Overflow types are: Bool, Int, Float, Stream, String and Vector.
+ FlowDesigner types are: Bool, Int, Float, Stream, String and Vector.
  There are also toolbox-specific types, like FFNet (neural network), VQ
  (Vector Quantizer), GMM (Gaussian Mixture Model), ...
  
 \layout Standard
 
-Right now, the only way to define a new type in Overflow is by adding C++
- code for it in a toolbox (or the core).
+Right now, the only way to define a new type in FlowDesigner is by adding
+ C++ code for it in a toolbox (or the core).
  Eventually, there will (could?) be a way to pack data in a "struct" using
- Overflow nodes, but this is not implemented yet.
+ FlowDesigner nodes, but this is not implemented yet.
  
 \layout Standard
 
-Some Overflow Nodes expect a certain type of data as input/parameter and
- will generate a run-time exception (which will abort execution) if the
- wrong data type is used (e.g..
+Some FlowDesigner Nodes expect a certain type of data as input/parameter
+ and will generate a run-time exception (which will abort execution) if
+ the wrong data type is used (e.g..
  a Load node expects a Stream as input and nothing else).
  Some nodes, like the NOP (no-op) node, can take any type as input.
  Some node have more complex behavior, like the Add node that can add two
@@ -337,7 +328,7 @@ If called with no argument, the
 \emph on 
 vflow
 \emph default 
- program will start with a new empty Overflow document (fig.
+ program will start with a new empty FlowDesigner document (fig.
  
 \begin_inset LatexCommand \ref{fig:vflow_main}
 
@@ -362,15 +353,12 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename vflow
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 199pt
+
 \end_inset 
 
 
@@ -434,7 +422,7 @@ All networks must have at least one output.
 <lyxtabular version="3" rows="7" columns="2">
 <features>
 <column alignment="center" valignment="top" leftline="true" width="0pt">
-<column alignment="left" valignment="center" leftline="true" rightline="true" width="2.4in">
+<column alignment="block" valignment="center" leftline="true" rightline="true" width="2.4in">
 <row topline="true" bottomline="true">
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -621,21 +609,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_main
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 201pt
+
 \end_inset 
 
 
 \layout Caption
 
-Including a subnet with Overflow 
+Including a subnet with FlowDesigner 
 \begin_inset LatexCommand \label{cap:sample_main}
 
 \end_inset 
@@ -655,21 +640,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_subnet
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 201pt
+
 \end_inset 
 
 
 \layout Caption
 
-Subnet with Overflow
+Subnet with FlowDesigner
 \begin_inset LatexCommand \label{cap:sample_subnet}
 
 \end_inset 
@@ -715,21 +697,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_main3
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 201pt
+
 \end_inset 
 
 
 \layout Caption
 
-Including an iterator with Overflow
+Including an iterator with FlowDesigner
 \begin_inset LatexCommand \label{cap:sample_main3}
 
 \end_inset 
@@ -749,21 +728,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_iterator2
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 201pt
+
 \end_inset 
 
 
 \layout Caption
 
-Iterator with Overflow
+Iterator with FlowDesigner
 \begin_inset LatexCommand \label{cap:sample_iterator2}
 
 \end_inset 
@@ -792,7 +768,7 @@ ading.
  You should not use them, unless you REALLY know what you are doing.
 \layout Section
 
-Executing an Overflow Program
+Executing a FlowDesigner Program
 \layout Standard
 
 When your program is complete, you can execute it by clicking "Run" in the
@@ -807,7 +783,7 @@ When your program is complete, you can execute it by clicking "Run" in the
 Using nodes
 \layout Standard
 
-This section presents different Overflow nodes categories.
+This section presents different FlowDesigner nodes categories.
  The nodes categories are divided in two by level of diffiuclty: the 
 \emph on 
 Basic Nodes
@@ -859,7 +835,7 @@ Constant
 
 \end_inset 
 
- shows how you can make Overflow write 
+ shows how you can make FlowDesigner write 
 \begin_inset Quotes eld
 \end_inset 
 
@@ -884,15 +860,12 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_hello
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 199pt
+
 \end_inset 
 
 
@@ -1114,7 +1087,7 @@ This example is used to save an object in a file or a network stream.
 \emph on 
  Save
 \emph default 
- takes two inputs: an object to save and an Overflow write stream where
+ takes two inputs: an object to save and an FlowDesigner write stream where
  to save the object.
  The write stream is opened using the 
 \emph on 
@@ -1132,21 +1105,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_IO
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 198pt
+
 \end_inset 
 
 
 \layout Caption
 
-I/O with Overflow
+I/O with FlowDesigner
 \begin_inset LatexCommand \label{cap:sample_IO}
 
 \end_inset 
@@ -1188,7 +1158,7 @@ On of the most important control structure in a language is conditional
 \emph on 
 IF
 \emph default 
- statement in Overflow.
+ statement in FlowDesigner.
  The node
 \emph on 
  IF
@@ -1227,21 +1197,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_if
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 188pt
+
 \end_inset 
 
 
 \layout Caption
 
-If/then/else with Overflow
+If/then/else with FlowDesigner
 \begin_inset LatexCommand \label{cap:sample_if}
 
 \end_inset 
@@ -1281,7 +1248,7 @@ Figure
 \emph on 
 MIN
 \emph default 
- statement in Overflow.
+ statement in FlowDesigner.
  The node
 \emph on 
  MIN
@@ -1298,21 +1265,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_min
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 204pt
+
 \end_inset 
 
 
 \layout Caption
 
-Min with Overflow
+Min with FlowDesigner
 \begin_inset LatexCommand \label{cap:overflow_min}
 
 \end_inset 
@@ -1355,7 +1319,7 @@ Figure
 
 \end_inset 
 
- shows an Overflow program that uses 
+ shows an FlowDesigner program that uses 
 \emph on 
 textProbe
 \emph default 
@@ -1383,21 +1347,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_textProbe
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 204pt
+
 \end_inset 
 
 
 \layout Caption
 
-textProbe with Overflow
+textProbe with FlowDesigner
 \begin_inset LatexCommand \label{cap:overflow_textProbe}
 
 \end_inset 
@@ -1433,7 +1394,7 @@ Figure
 
 \end_inset 
 
- shows an Overflow program that creates a vector and make the summation
+ shows a FlowDesigner program that creates a vector and make the summation
  of all its objects.
  For creating a 
 \emph on 
@@ -1460,21 +1421,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_vector
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 204pt
+
 \end_inset 
 
 
 \layout Caption
 
-Using a vector with Overflow
+Using a vector with FlowDesigner
 \begin_inset LatexCommand \label{cap:overflow_vector}
 
 \end_inset 
@@ -1517,8 +1475,8 @@ Feed-back Loops
 
 In some circumstances, it is desirable to insert feed-back loops into a
  program.
- Normally, Overflow only supports acyclic graphs, but feed-back loops can
- be made using the special 
+ Normally, FlowDesigner only supports acyclic graphs, but feed-back loops
+ can be made using the special 
 \emph on 
 Feedback
 \emph default 
@@ -1528,7 +1486,7 @@ Feedback
 
 \end_inset 
 
- shows an Overflow program that uses a 
+ shows a FlowDesigner program that uses a 
 \emph on 
 Feedback
 \emph default 
@@ -1570,21 +1528,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_feedback
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 204pt
+
 \end_inset 
 
 
 \layout Caption
 
-Feed-back Loop with Overflow
+Feed-back Loop with FlowDesigner
 \begin_inset LatexCommand \label{cap:overflow_feedback}
 
 \end_inset 
@@ -1607,9 +1562,9 @@ FreeSpeech/examples/demo_feedback.n .
 Multi-threading
 \layout Standard
 
-It must first be noted that multi-threading in Overflow is still an experimental
- feature and not all structures are fully MT-safe.
- Overflow multi-threading is provided through three special nodes: 
+It must first be noted that multi-threading in FlowDesigner is still an
+ experimental feature and not all structures are fully MT-safe.
+ FlowDesigner multi-threading is provided through three special nodes: 
 \emph on 
 SerialThread
 \emph default 
@@ -1655,7 +1610,7 @@ The
 \emph on 
 ThreadJoin
 \emph default 
- node acts like a mutex and prevents two Overflow threads from accessing
+ node acts like a mutex and prevents two FlowDesigner threads from accessing
  the same (input) node at the same time.
 \layout Standard
 
@@ -1664,7 +1619,7 @@ Figure
 
 \end_inset 
 
- shows an example of Overflow program that uses multi-threading.
+ shows an example of FlowDesigner program that uses multi-threading.
 \layout Standard
 
 
@@ -1676,21 +1631,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_thread
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 204pt
+
 \end_inset 
 
 
 \layout Caption
 
-Feed-back Loop with Overflow
+Feed-back Loop with FlowDesigner
 \begin_inset LatexCommand \label{cap:overflow_thread}
 
 \end_inset 
@@ -1726,8 +1678,8 @@ As the name mentions, this category is about matrix, that is, two dimensions
 
 \end_inset 
 
- shows an example of Overflow program that create matrix and use it with
- the node 
+ shows an example of FlowDesigner program that create matrix and use it
+ with the node 
 \emph on 
 MProduct
 \emph default 
@@ -1743,21 +1695,18 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename overflow_matrix
 	display color
-	size_type 1
 	width 90col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 267pt
-	lyxheight 204pt
+
 \end_inset 
 
 
 \layout Caption
 
-Matrix with Overflow
+Matrix with FlowDesigner
 \begin_inset LatexCommand \label{cap:sample_matrix}
 
 \end_inset 
@@ -1798,11 +1747,11 @@ Run-time Exceptions
 First, it is important to note that there are two types of exceptions that
  can happen.
  The first type, which we'll call run-time exceptions, is thrown (usually
- by a node) when an error happens during processing by Overflow.
+ by a node) when an error happens during processing by FlowDesigner.
  Such type of exception can be thrown when a node receives an object of
  an unexpected type, but there can be many other causes.
- Run-time exceptions usually terminate the current Overflow program with
- an error message indicating where the error happened.
+ Run-time exceptions usually terminate the current FlowDesigner program
+ with an error message indicating where the error happened.
  They are analogous to run-time errors in most interpreted languages.
  
 \layout Standard
@@ -1823,7 +1772,7 @@ The second type of exceptions, user exceptions, can be thrown and caught
 Automatic Code Generation
 \layout Standard
 
-Is is now possible to generate C++ code from an Overflow .n file.
+Is is now possible to generate C++ code from a FlowDesigner .n file.
  You can do that by clicking the "Build" button on the toolbar.
  Doing so brings up the code generation dialog (fig.
  
@@ -1843,15 +1792,12 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename codegen
 	display color
-	size_type 1
 	width 60col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 178pt
-	lyxheight 112pt
+
 \end_inset 
 
 
@@ -1889,34 +1835,34 @@ Generate main: Check that if you want to build an application (as opposed
  to a library) 
 \layout Itemize
 
-Static linkage: This will copy all the required Overflow files in the same
- directory.
- This will allow to build an application/library without linking to Overflow.
- Note that the Overflow license (LGPL) still applies to the copied files.
+Static linkage: This will copy all the required FlowDesigner files in the
+ same directory.
+ This will allow to build an application/library without linking to FlowDesigner.
+ Note that the FlowDesigner license (LGPL) still applies to the copied files.
  
 \layout Itemize
 
 Generate makefile: Unimplemented yet 
 \layout Standard
 
-Note: the VFLOW_SOURCE environment variable must be set to your Overflow
+Note: the VFLOW_SOURCE environment variable must be set to your FlowDesigner
  source directory in order for the "static linkage" option to work.
 \layout Chapter
 
 Software Architecture
 \layout Standard
 
-This chapter explains the software architecture used for the Overflow base
- library and the mechanisms used for blocks initialization.
+This chapter explains the software architecture used for the FlowDesigner
+ base library and the mechanisms used for blocks initialization.
 \layout Section
 
-Overflow Internals
+FlowDesigner Internals
 \layout Subsection
 
 Nodes
 \layout Standard
 
-A node is the smallest processing unit in Overflow.
+A node is the smallest processing unit in FlowDesigner.
  Once it has been initialized, the only method it understands is 
 \family typewriter 
 getOutput(int output_id, int count)
@@ -1950,8 +1896,8 @@ getOutput(...)
 
 The Node class is an abstract class from which all types of nodes must derive
  (directly or indirectly).
- Information on how to derive new types of nodes is given in Extending Overflow
- chapter 7.
+ Information on how to derive new types of nodes is given in Extending FlowDesig
+ner chapter 7.
  
 \layout Subsection
 
@@ -2001,21 +1947,18 @@ collapsed false
 \layout Standard
 
 
-\begin_inset Graphics FormatVersion 1
+\begin_inset Graphics
 	filename classes
 	display color
-	size_type 1
 	width 100col%
 	rotateOrigin center
-	lyxsize_type 1
-	lyxwidth 297pt
-	lyxheight 133pt
+
 \end_inset 
 
 
 \layout Caption
 
-Main Overflow classes
+Main FlowDesigner classes
 \end_inset 
 
 
@@ -2045,10 +1988,10 @@ vector: Series of object references.
 matrix: Two dimensions vector.
 \layout Chapter
 
-Extending Overflow
+Extending FlowDesigner
 \layout Standard
 
-Overflow is designed to be extendible in many areas, so that it is possible
+FlowDesigner is designed to be extendible in many areas, so that it is possible
  to create new: node types, operators and data types.
 \layout Section
 
@@ -2603,11 +2546,11 @@ It is possible to define binary operators that can act on different kinds
 Adding New Data Type
 \layout Standard
 
-It is possible to define new types in Overflow.
+It is possible to define new types in FlowDesigner.
  In order to be used in new nodes, new types must derive from the Object
  base class.
  That the only absolute requirement.
- However, if you want the new type to integrate more closely with Overflow,
+ However, if you want the new type to integrate more closely with FlowDesigner,
  there are several things you can do:
 \layout Itemize
 
@@ -2662,7 +2605,7 @@ gcc 3.0.x compiles, but there are run-time glitches
 egcs 1.1.2 is untested (probably doesn't work) 
 \layout Itemize
 
-MSVC++ is completely broken, but it possible build a subset of Overflow
+MSVC++ is completely broken, but it possible build a subset of FlowDesigner
  with it (see here
 \begin_inset Quotes erd
 \end_inset 
@@ -2710,7 +2653,7 @@ before running configure
  are '-O2 -g'.
  
 \series bold 
-It is strongly recommended not to compile Overflow with -g 
+It is strongly recommended not to compile FlowDesigner with -g 
 \series default 
 unless you're really desperate, as the binaries might take up to 600 MB
  of disk space (instead of 6-10 MB otherwise) due to the C++ name mangling.
@@ -2732,7 +2675,7 @@ Configure options
 \layout Itemize
 
 --disable-static This option is required.
- Overflow does not work with static libraries (because it uses dlopen).
+ FlowDesigner does not work with static libraries (because it uses dlopen).
 \layout Itemize
 
 --disable-<package> Doesn't build a certain package (<package> is HMM, VQ,
@@ -2767,22 +2710,22 @@ If you are using a CVS tarball, you need to use ./autogen.sh instead of ./config
  
 \layout Itemize
 
-You might also need to set your LD_LIBRARY_PATH to <overflow prefix>/lib
+You might also need to set your LD_LIBRARY_PATH to <flowdesigner prefix>/lib
 \layout Standard
 
-You can now start the Overflow environment by typing : 
+You can now start the FlowDesigner environment by typing : 
 \layout Standard
 
-% vflow (assuming <overflow prefix>/bin is in your path)
+% vflow (assuming <flowdesigner prefix>/bin is in your path)
 \layout Section*
 
 Compiling on Win32
 \layout Standard
 
-Some parts of Overflow (sorry, no GUI yet!) have been ported to Win32 (w/
- MSVC++).
+Some parts of FlowDesigner (sorry, no GUI yet!) have been ported to Win32
+ (w/ MSVC++).
  Using the code generation feature (the "Build" button on the toolbar),
- it is now possible to compile an overflow application on Windows.
+ it is now possible to compile a FlowDesigner application on Windows.
  Note that this has not been fully tested yet.
 \layout Standard
 
@@ -2791,10 +2734,10 @@ One important thing to note with MSVC++ (version 6.0) is that it is a very
  For example, it does not support template partial specialization and it
  chokes on a lot of valid template code (static template member functions,
  pointer to template functions, ...).
- For this reasons some Overflow features need to be switched off.
+ For this reasons some FlowDesigner features need to be switched off.
 \layout Standard
 
-So here are the settings you need for Overflow.
+So here are the settings you need for FlowDesigner.
  First, you need to turn on RTTI (which is not enabled by default).
  Also, I suggest you turn the warnings off.
  The preprocessor flags (define) you need to set are: BROKEN_TEMPLATES,
@@ -2810,15 +2753,15 @@ Troubleshooting
 \layout Standard
 
 There can be many causes of that.
- The most common is that you have a different libstdc++ than the one Overflow
- was compiled with.
+ The most common is that you have a different libstdc++ than the one FlowDesigne
+r was compiled with.
  Another cause could be that you have FFTW compiled without --enable-float,
- while Overflow was linked with a float version of FFTW.
- Overflow has no way to detect that so it crashes.
- In both cases, the best thing to do is to build Overflow yourself.
+ while FlowDesigner was linked with a float version of FFTW.
+ FlowDesigner has no way to detect that so it crashes.
+ In both cases, the best thing to do is to build FlowDesigner yourself.
 \layout Subsection*
 
-2) I compiled Overflow myself and it crashes on startup
+2) I compiled FlowDesigner myself and it crashes on startup
 \layout Standard
 
 The main cause for this is a bug/missing feature in libtool that prevents
@@ -2831,14 +2774,14 @@ The main cause for this is a bug/missing feature in libtool that prevents
  option.
 \layout Subsection*
 
-3) Overflow tells me it cannot find libflow.so
+3) FlowDesigner tells me it cannot find libflow.so
 \layout Standard
 
-This can happen if you compile Overflow and then move the installation directory
- (It can sometimes happen for other reasons).
- You can set the LD_LIBRARY_PATH to <overflow install dir>/lib.
- Note that if you moved the Overflow directory, you'll also need to set
- VFLOW_HOME.
+This can happen if you compile FlowDesigner and then move the installation
+ directory (It can sometimes happen for other reasons).
+ You can set the LD_LIBRARY_PATH to <flowdesigner install dir>/lib.
+ Note that if you moved the FlowDesigner directory, you'll also need to
+ set VFLOW_HOME.
 \layout Subsection*
 
 4) The 
@@ -2852,22 +2795,22 @@ New Node
  menu is empty
 \layout Standard
 
-You probably moved the Overflow install directory, see 3).
+You probably moved the FlowDesigner install directory, see 3).
  Another possibility is if you compiled with 
 \family typewriter 
 --enable-static
 \family default 
  flag.
- Because Overflow toolboxes are dynamically loaded, everything must be compiled
- as shared libraries (which is the default in configure).
+ Because FlowDesigner toolboxes are dynamically loaded, everything must
+ be compiled as shared libraries (which is the default in configure).
 \layout Subsection*
 
-5) Overflow doesn't compile on my box
+5) FlowDesigner doesn't compile on my box
 \layout Standard
 
 First, make sure you have the latest release version.
  If it doesn't work, you should try the CVS version.
- If it fails too, please contact us and we'll do our best to make Overflow
+ If it fails too, please contact us and we'll do our best to make FlowDesigner
  compile on your platforms.
 \layout Subsection*
 
@@ -2876,20 +2819,21 @@ First, make sure you have the latest release version.
 
 This can be due to the fact that you installed an earlier version (0.5.0 and
  earlier) in a path like /usr or /usr/local.
- The problem is that the old Overflow includes ended up somewhere like /usr/incl
-ude so when you try compiling a newer version, g++ sees the old includes
- (because they are in the include path) instead of the new ones.
+ The problem is that the old FlowDesigner includes ended up somewhere like
+ /usr/include so when you try compiling a newer version, g++ sees the old
+ includes (because they are in the include path) instead of the new ones.
 \layout Chapter
 
 Node Documentation
 \layout Standard
 
 This documentation is generated automatically from the comments included
- in the Overflow C++ source code.
+ in the FlowDesigner C++ source code.
 \layout Standard
 
 
 \begin_inset Include \input{nodes.tex}
+preview false
 
 \end_inset 
 
