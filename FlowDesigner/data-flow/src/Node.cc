@@ -51,10 +51,10 @@ Node::Node(string nodeName, const ParameterSet &params)
 /***************************************************************************/
 void Node::connectToNode(unsigned int in, Node *inputNode, unsigned int out)
 {
-
-
    if (inputs.size() <= in) {
-      throw new NodeException(this, "Input doesn't exist", __FILE__, __LINE__);
+     char message[256];
+     sprintf(message,"Input %i doesn't exist",in,getName().c_str());
+     throw new NodeException(this,message, __FILE__, __LINE__);
    }
    else {
       inputs[in].outputID = out;
@@ -139,11 +139,13 @@ void Node::verifyConnect()
    vector<NodeInput>::iterator in;
    for (in = inputs.begin(); in < inputs.end(); in++)
    {        
-      if (!in->node || in->outputID == -1)
-	 throw new NodeException(this, "The node is not properly connected",__FILE__,__LINE__);
+     if (!in->node || in->outputID == -1) {
+       throw new NodeException(this, string("The node is not properly connected") + string(" input name : ") + in->name,__FILE__,__LINE__);
+     }
       
-      if (!in->node->hasOutput(in->outputID))
-	 throw new NodeException(this, "Input node doesn't implement output", __FILE__, __LINE__);
+     if (!in->node->hasOutput(in->outputID)) {
+       throw new NodeException(this, string("The node is connected to an invalid output on node : ") + in->node->getName(),__FILE__, __LINE__);
+     }
       
    }
    
