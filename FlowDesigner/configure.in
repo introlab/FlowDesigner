@@ -85,6 +85,7 @@ dnl Put configuration information in config.h.
 
 AC_CANONICAL_HOST
 
+AC_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
 case "$host_os" in 
@@ -133,8 +134,13 @@ AC_PATH_FFTW
 dnl Checks for library functions.
 AC_CHECK_FUNCS(pthread_cancel)
 
+if test "x$prefix" != "xDONE"; then
 AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${prefix}")
 AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${prefix}/toolbox")
+else
+AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${ac_default_prefix}")
+AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${ac_default_prefix}/toolbox")
+fi
 
 dnl Output the makefiles and version.h.
 

@@ -51,46 +51,49 @@ void TrainingDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<float 
       //float norm = dEk.norm();
       float norm_1 = 1.0/tin.size();// / norm;
       
-      /*for (i=0;i<nbWeights;i++)
-	 nextW[i] = wk[i] - alpha[i] * norm_1 * dEk[i];
-	 net->calcGradient(tin, tout, nextW, nextdE, nextE);*/
-
-      for (i=0;i<nbWeights;i++)
-	 nextW[i] = wk[i];
-
-      nextE=0;
-      for (i=0;i<nbWeights;i++)
-	 nextdE[i] = 0;
-
-      vector<int> remaining(tin.size());
-      for (i=0;i<tin.size();i++)
-	 remaining[i]=i;
-      vector<float *> batchIn;
-      vector<float *> batchOut;
-      for (i=0;i<nbSets;i++)
+      if (nbSets ==1)
       {
-	 batchIn.resize(0);
-	 batchOut.resize(0);
-	 for (j=0;j<nbWeights;j++)
-	    nextW[j] -= alpha[j] * norm_1 * tmpdE[j];
-
-	 int putBack=0;
-	 for (j=0;j<remaining.size();j++)
+	 for (i=0;i<nbWeights;i++)
+	    nextW[i] = wk[i] - alpha[i] * norm_1 * dEk[i];
+	 net->calcGradient(tin, tout, nextW, nextdE, nextE);
+      } else {
+	 for (i=0;i<nbWeights;i++)
+	    nextW[i] = wk[i];
+	 
+	 nextE=0;
+	 for (i=0;i<nbWeights;i++)
+	    nextdE[i] = 0;
+	 
+	 vector<int> remaining(tin.size());
+	 for (i=0;i<tin.size();i++)
+	    remaining[i]=i;
+	 vector<float *> batchIn;
+	 vector<float *> batchOut;
+	 for (i=0;i<nbSets;i++)
 	 {
-	    int id = remaining[j];
-	    if (rand()%(nbSets-i) == 0)
+	    batchIn.resize(0);
+	    batchOut.resize(0);
+	    for (j=0;j<nbWeights;j++)
+	       nextW[j] -= alpha[j] * norm_1 * tmpdE[j];
+	    
+	    int putBack=0;
+	    for (j=0;j<remaining.size();j++)
 	    {
-	       batchIn.push_back(tin[id]);
-	       batchOut.push_back(tout[id]);
-	    } else {
-	       remaining[putBack++] = id;
+	       int id = remaining[j];
+	       if (rand()%(nbSets-i) == 0)
+	       {
+		  batchIn.push_back(tin[id]);
+		  batchOut.push_back(tout[id]);
+	       } else {
+		  remaining[putBack++] = id;
+	       }
 	    }
+	    remaining.resize(putBack);
+	    net->calcGradient(batchIn, batchOut, nextW, tmpdE, tmpE);
+	    nextE+=tmpE;
+	    for (j=0;j<nbWeights;j++)
+	       nextdE[j] += tmpdE[j];
 	 }
-	 remaining.resize(putBack);
-	 net->calcGradient(batchIn, batchOut, nextW, tmpdE, tmpE);
-	 nextE+=tmpE;
-	 for (j=0;j<nbWeights;j++)
-	    nextdE[j] += tmpdE[j];
       }
       
       if (nextE > SSE)
