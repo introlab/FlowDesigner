@@ -905,9 +905,12 @@ void GUIDocument::run()
    gdk_threads_leave();
 
    pthread_mutex_lock(&del_lock);
-   runningNet->cleanupNotify();
-   delete runningNet;
-   runningNet=NULL;
+   if (runningNet)
+   {
+      runningNet->cleanupNotify();
+      delete runningNet;
+      runningNet=NULL;
+   }
    isRunning=false;
    pthread_mutex_unlock(&del_lock);
 
