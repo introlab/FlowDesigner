@@ -11,3 +11,6 @@ bin_SCRIPTS = overflow-config
 EXTRA_DIST = Overflow.spec nflow.dtd
 
 SUBDIRS = data-flow @modules@ tools examples
+
+rpm: dist
+	rpmbuild -ta ${PACKAGE}-${VERSION}.tar.gz

@@ -1,5 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 
+override includedir=${prefix}/include/overflow
+override datadir=${prefix}/share/overflow
+override libdir=${prefix}/share/overflow/lib
+
 install-data-local:
 	mkdir -p $(datadir)/toolbox/vflow
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h> $(datadir)/toolbox/vflow/vflow.def)

@@ -1,9 +1,12 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.108 2003/07/30 15:05:09 maestro Exp $
+# $Id: Makefile.am,v 1.109 2003/09/10 01:17:09 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
+
+override includedir=${prefix}/include/overflow
+override datadir=${prefix}/share/overflow
 
 install-data-local:
 	mkdir -p $(datadir)/toolbox/data-flow

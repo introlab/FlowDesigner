@@ -1,6 +1,9 @@
+override includedir=${prefix}/include/overflow
+override datadir=${prefix}/share/overflow
+override libdir=${prefix}/share/overflow/lib
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.29 2002/04/22 21:28:32 jmvalin Exp $
+# $Id: Makefile.am,v 1.30 2003/10/01 23:25:38 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
