@@ -135,6 +135,18 @@ public:
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to, char *str=NULL);
 
+
+   /**
+      Create a new UINote
+      \param text the text of the note
+      \param x the x position of the note (useful for GUINote)
+      \param y the y position of the note (usfeul for GUINote)
+      \param visible true if the note is visible (useful for GUINote)
+      \return UINote *the pointer to the newly created note
+   */
+   virtual UINote* newNote(const std::string &text, double x, double y, bool visible);
+
+
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name, 
 					  const string &_objType="any", const string &_description="No description available");
 
@@ -146,6 +158,15 @@ public:
    vector<UINode *> getNodes() {return nodes;}
    vector<UILink *> getLinks() {return links;}
    vector<UINetTerminal *> getTerminals() {return terminals;}
+
+   ///Direct access to the note vector
+   vector<UINote*> getNotes() {return m_notes;}
+
+   void addNote(UINote *note);
+
+
+   void removeNote(UINote *note);
+   
    
    virtual void rename(string newName);
 

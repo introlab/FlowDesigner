@@ -29,10 +29,8 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
    //create();
 
   //(DL 04/08/2004)
-  //TODO DEBUG CODE TO BE REMOVED WHEN NOTES ARE FULLY TESTED
-  //lets add a dummy note
-  m_notes.push_back(new UINote(string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
-  //ENDDEBUG
+  //Adding version to newly created network, could be improved
+  addNote(newNote(string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
 
 }
 
@@ -490,6 +488,11 @@ UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
    return new UILink (_from, _to, str);
 }
 
+UINote *UINetwork::newNote(const std::string &text, double x, double y, bool visible) {
+  return new UINote(text,x,y,visible);
+}
+
+
 UINetTerminal *UINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name, const string &_objType, const string &_description)
 {
    //BUG HERE
@@ -919,3 +922,43 @@ void UINetwork::updateAllSubnetParameters(const string _nettype, NodeInfo * _inf
 
 
 }
+
+void UINetwork::addNote(UINote *note) {
+
+  if (note) {
+    m_notes.push_back(note);
+  }
+}
+
+
+void UINetwork::removeNote(UINote *note) {
+
+  vector<UINote*> temp_vect;
+  bool found = false;
+  
+  if (note) {
+
+    for (int i = 0; i < m_notes.size(); i++) {
+      if (m_notes[i] == note) {
+	found = true;
+      }
+      else {
+	temp_vect.push_back(m_notes[i]);
+      }    
+    }
+    if (found) {
+      delete note;
+    }
+    else {
+      //TODO Should throw an exception?
+      cerr<<"UINetwork::removeNote trying to remove non existing note :"<<note->getText()<<endl;
+    }
+    
+    //update the note vector
+    m_notes = temp_vect;
+  }
+
+
+
+}
+   
