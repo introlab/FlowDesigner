@@ -128,6 +128,7 @@ typedef NetCType<bool> Bool;
 typedef GenericType<string> String;
 typedef GenericType<ifstream> IFStream;
 typedef GenericType<ofstream> OFStream;
+
 //@}
 
 #endif

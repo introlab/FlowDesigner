@@ -29,6 +29,8 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
    
    if (!hasOutput(output_id)) throw new NodeException (this, "Cannot getOutput id",__FILE__,__LINE__);
 
+   lock();
+
    if (processCount != count) {
 
       try {
@@ -61,6 +63,8 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          throw NodeException (this,string("Error!!! "), __FILE__,__LINE__);
       }      
    }
+
+   unlock();
 
    return output;   
 }

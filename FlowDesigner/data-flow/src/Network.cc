@@ -349,7 +349,9 @@ ObjectRef Network::getOutput (int output_id, int count) {
    if (!sinkNode) {
       throw NoSinkNodeException();
    }
+   lock();
    return sinkNode->getOutput(output_id, count);
+   unlock();
 }
 
 /***************************************************************************/

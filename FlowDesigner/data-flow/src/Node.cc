@@ -34,7 +34,11 @@ Node::Node(string nodeName, const ParameterSet &params)
    , processCount(-1)
    , outputInitializeCount (0)
    , parameters(params)
-{}
+{
+#ifdef MULTITHREAD
+   pthread_mutex_init(&mutex, NULL);
+#endif
+}
 /***************************************************************************/
 /*
   connectToNode(...)
