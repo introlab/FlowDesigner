@@ -215,3 +215,11 @@ ObjectRef equalString(ObjectRef x, ObjectRef y)
    return ObjectRef(new Bool(object_cast<String> (x) == (object_cast<String> (y))));
 }
 REGISTER_DOUBLE_VTABLE(equalVtable, equalString, String, String);
+
+
+
+ObjectRef concatString(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new String(object_cast<String> (x) + (object_cast<String> (y))));
+}
+REGISTER_DOUBLE_VTABLE(concatVtable, concatString, String, String);

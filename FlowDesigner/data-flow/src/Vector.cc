@@ -167,7 +167,6 @@ ObjectRef maxVectorFloat(ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   //vec_add_vec(&v1[0], &v2[0], &(*v)[0], length);
    for (int i=0;i<length;i++)
       (*v)[i] = max(v1[i], v2[i]);
    return ObjectRef(v);
@@ -187,9 +186,59 @@ ObjectRef minVectorFloat(ObjectRef x, ObjectRef y)
    int length = v1.size();
 
    Vector<float> *v = Vector<float>::alloc(length);
-   //vec_add_vec(&v1[0], &v2[0], &(*v)[0], length);
    for (int i=0;i<length;i++)
       (*v)[i] = min(v1[i], v2[i]);
    return ObjectRef(v);
 }
 REGISTER_DOUBLE_VTABLE(minVtable, minVectorFloat, Vector<float>, Vector<float>);
+
+
+
+ObjectRef concatVectorFloat(ObjectRef x, ObjectRef y)
+{
+   Vector<float> &v1 = object_cast<Vector<float> > (x);
+   Vector<float> &v2 = object_cast<Vector<float> > (y);
+
+   Vector<float> *v = Vector<float>::alloc(v1.size()+v2.size());
+   vec_copy(&v1[0], &(*v)[0], v1.size());
+   vec_copy(&v2[0], &(*v)[v1.size()], v2.size());
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloat, Vector<float>, Vector<float>);
+
+
+ObjectRef concatVectorFloatFloat(ObjectRef x, ObjectRef y)
+{
+   Vector<float> &v1 = object_cast<Vector<float> > (x);
+   float f = dereference_cast<float> (y);
+
+   Vector<float> *v = Vector<float>::alloc(v1.size()+1);
+   vec_copy(&v1[0], &(*v)[0], v1.size());
+   (*v)[v1.size()] = f;
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(concatVtable, concatVectorFloatFloat, Vector<float>, float);
+
+ObjectRef concatFloatVectorFloat(ObjectRef x, ObjectRef y)
+{
+   Vector<float> &v1 = object_cast<Vector<float> > (y);
+   float f = dereference_cast<float> (x);
+
+   Vector<float> *v = Vector<float>::alloc(v1.size()+1);
+   vec_copy(&v1[0], &(*v)[1], v1.size());
+   (*v)[0] = f;
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatVectorFloat, float, Vector<float>);
+
+ObjectRef concatFloatFloat(ObjectRef x, ObjectRef y)
+{
+   float f1 = dereference_cast<float> (x);
+   float f2 = dereference_cast<float> (y);
+
+   Vector<float> *v = Vector<float>::alloc(2);
+   (*v)[0] = f1;
+   (*v)[1] = f2;
+   return ObjectRef(v);
+}
+REGISTER_DOUBLE_VTABLE(concatVtable, concatFloatFloat, float, float);

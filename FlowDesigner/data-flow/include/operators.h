@@ -63,3 +63,10 @@ inline ObjectRef min(ObjectRef x, ObjectRef y)
 {
    return minVtable::perform(x,y);
 }
+
+
+DEFINE_DOUBLE_VTABLE(concatVtable);
+inline ObjectRef concat(ObjectRef x, ObjectRef y)
+{
+   return concatVtable::perform(x,y);
+}
