@@ -212,6 +212,7 @@ void Node::initialize ()
 void Node::specificInitialize()
 {
    initialized = true;
+   processCount = -1;
 }
 /***************************************************************************/
 /*

@@ -73,44 +73,41 @@ public:
    void addNode (Node &node);
 
    ///connecting two nodes. We are using the node names.
-   void connect (const string &currentNodeName,const string &inputName, 
+   virtual void connect (const string &currentNodeName,const string &inputName, 
                  const string &inputNodeName, const string &outputName);
  
    ///removing a node. We are using the node name.
    Node* removeNode (const string &nodeName);
    
    ///Returns the name of the node (the same as in the node dictionary)
-   string getName() {return netName;}
+   string getName() {return name;}
 
    ///Naming the current network
-   void setName(const string &name) {netName = name;}
+   void setName(const string &my_name) {name = my_name;}
 
    ///Returns the sinkNode
    Node* getSinkNode () {return sinkNode;}
 
    ///Setting the sink node (unique)
-   void setSinkNode (Node* node) {sinkNode = node;} 
+   virtual void setSinkNode (Node* node) {sinkNode = node;} 
  
    ///Returns the inputNode pointer
    Node* getInputNode () {return inputNode;}
 
    ///Setting the input node (unique)
-   void setInputNode (Node* node) {inputNode = node;}
-
-   ///If we want to know if we are in debug mode.
-   bool isDebugMode () {return debugMode;}
+   virtual void setInputNode (Node* node) {inputNode = node;}
 
    ///Setting the debug mode
-   void setDebugMode();
+   virtual void setDebugMode();
 
    ///Exiting debug mode
-   void resetDebugMode();
+   virtual void resetDebugMode();
 
    /** 
        Network initialization. Must be done after all connections.
        The sink node must be set.
    */
-   void initialize (); 
+   virtual void initialize (); 
    
    ///Adding a factory into the static dictionary
    static void addFactory (const string &factoryName, _NodeFactory* const factory);
@@ -123,6 +120,14 @@ public:
 
    ///Subnet : checks if the sinkNode has the desired output
    virtual bool hasOutput (int output_id) const;
+
+   /**Subnet : The connectToNode method overloaded from Node */
+   virtual void connectToNode(string in, Node *inNode, string out) {
+      if (!inputNode) {
+         throw NodeException(this,string("No input node in iterator :") + name, __FILE__,__LINE__);
+      }
+      connectToNode(inputNode->translateInput(in), inNode, inNode->translateOutput(out));      
+   }
    //@}
 
 protected: 
@@ -130,46 +135,41 @@ protected:
    
    //@name protected methods 
    //@{
+
    ///Subnet : getting the related number of the input description
    virtual int translateInput (string   inputName);
 
    ///Subnet : getting the related number of the output description
    virtual int translateOutput (string outputName);
-   //@}
+  
+   ///Subnet : Connect an input node using numeric (integer) input/output names
+   virtual void connectToNode(unsigned int in, Node *inNode, unsigned int out);
 
-private:
-
-   //@name private parameters
-   //@{
    ///The number of nodes in the network
    int numNodes;
+
    ///The node instance factory
    static map<string,_NodeFactory*> factoryDictionary;
+   
    ///The node dictionary
    map<string,Node*> nodeDictionary;
-   ///The network name
-   string netName;
    ///The sink node
    Node *sinkNode;
    ///The input node
    Node *inputNode;
    ///The debug mode flag
    bool debugMode;
-   //@}
-
-   //@name private methods
-   //@{
  
    ///The factory lookup function
    static _NodeFactory* getFactoryNamed (const string &name);
+
+
+
    
    ///default constructor should never be used
-
-   Network (); 
+   Network () {
+     throw NodeException (NULL,"The default constructor should not be called from Network",__FILE__,__LINE__);
+   } 
    //@}
 };
-
-/// Our Network factory.
-typedef NodeFactory<Network> NetworkFactory;
-
 #endif

@@ -22,7 +22,8 @@
 #include <string>
 
 ///Frame definition
-typedef vector<float> Frame;
+typedef float *Frame;
+//typedef vector<float> Frame;
 
 ///Square function
 template <class T>
@@ -57,7 +58,7 @@ inline ostream &operator << (ostream &out, const vector<T*> &v)
 template <class T>
 inline istream &operator >> (istream &in, vector<T> &v)
 {
-   cerr << "parsing vector of " << typeid(T).name() << "s" << endl;
+   //cerr << "parsing vector of " << typeid(T).name() << "s" << endl;
    int items_found=0;
    //string nimportequoi;
    //in >> nimportequoi;
@@ -79,7 +80,7 @@ inline istream &operator >> (istream &in, vector<T> &v)
 template <class T>
 inline istream &operator >> (istream &in, vector<T*> &v)
 {
-   cerr << "parsing vector of " << typeid(T).name() << " pointers" << endl;
+   //cerr << "parsing vector of " << typeid(T).name() << " pointers" << endl;
    int items_found=0;
    string nimportequoi;
    //in >> nimportequoi;

@@ -137,7 +137,7 @@ protected:
 ///A parameter entry in the parameterSet
 typedef map<string,ObjectRef>::value_type ParameterEntry;
 
-/* The Base Node class. All nodes to be inserted in a network must
+/**The Base Node class. All nodes to be inserted in a network must
    derive from this class. It contains the proper initializations
    for the connectivity of the nodes.
    @author Jean-Marc Valin & Dominic Letourneau
@@ -147,6 +147,7 @@ class Node {
 
    ///A network can have access to private members of Node
    friend class Network;
+   friend class Iterator;
 
 protected:
    ///Node's name
@@ -180,7 +181,7 @@ protected:
    ParameterSet parameters;
 
    ///Connect an input node using numeric (integer) input/output names
-   void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
+   virtual void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
 
    /// Adding an output to a node
    int addOutput (const string &outputName);
@@ -208,7 +209,7 @@ public:
    }
 
    ///Connect an input node using symbolic (strings) input/output names
-   void connectToNode(string in, Node *inputNode, string out);
+   virtual void connectToNode(string in, Node *inputNode, string out);
 
    ///Initialize a node
    void initialize ();
@@ -227,10 +228,10 @@ public:
    bool isDebugMode() {return debugMode;}
 
    ///Sets the node to debug mode
-   void setDebugMode(){debugMode = 1;}
+   virtual void setDebugMode(){debugMode = true;}
 
    ///Resets debug mode
-   void resetDebugMode(){debugMode = 0;}
+   virtual void resetDebugMode(){debugMode = false;}
 
    ///Resets the node internal values and buffers
    void reset();
@@ -250,6 +251,7 @@ private:
 
 
 protected:
+
    ///Default constructor, should not be used
    Node() {throw GeneralException("Node Constructor should not be called",__FILE__,__LINE__);}
 

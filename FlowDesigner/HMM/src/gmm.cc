@@ -18,17 +18,18 @@
 #include <typeinfo>
 #include <vector>
 
-void GMM::init(vector<Frame *> frames)
+void GMM::init(vector<Frame> frames)
 {
    for (unsigned int i=0;i<frames.size();i++)
    {
-      Frame &fr = *frames[i];
+      Frame fr = frames[i];
       int gaus = rand()%nb_gaussians;
 #ifdef DEBUG
       cerr << "going to: " << gaus << endl;
 #endif
       accum_to_gaussian(gaus,fr);
    }
+   to_real();
 }
 
 void GMM::reset_to_accum_mode()
@@ -42,7 +43,7 @@ void GMM::reset_to_accum_mode()
    mode = accum;
 }
 
-void GMM::kmeans2(vector<Frame *> frames, GMM *gmm)
+void GMM::kmeans2(vector<Frame> frames, GMM *gmm)
 {
    vector<Score> scores;
    scores = gmm->score(frames);
@@ -53,17 +54,18 @@ void GMM::kmeans2(vector<Frame *> frames, GMM *gmm)
 #ifdef DEBUG
       cerr << "going to: " << scores[i].gaussian_id << " score: " << scores[i].score << endl;
 #endif
-      accum_to_gaussian(scores[i].gaussian_id,*(frames[i]));
+      accum_to_gaussian(scores[i].gaussian_id,(frames[i]));
    }
    for (i=0;i<nb_gaussians;i++)
       if (gaussians[i]->get_accum_count()==0)
       {
          //cerr << "accum zero\n";
-         accum_to_gaussian(i, *(frames[rand()%frames.size()]));
+         accum_to_gaussian(i, (frames[rand()%frames.size()]));
       }
    to_real();
 }
-void GMM::kmeans1(vector<Frame *> frames, int nb_iterations)
+
+void GMM::kmeans1(vector<Frame> frames, int nb_iterations)
 {
    for (int i=0;i<nb_iterations;i++)
       kmeans2(frames,this);
@@ -83,7 +85,7 @@ void GMM::split1()
          max_accum=accum;
       }
    }
-   cout << "spliting " << max_gauss << endl;
+   //cout << "spliting " << max_gauss << endl;
    gaussians[nb_gaussians]=new Gaussian(*(gaussians[max_gauss]));
    vector <float> &mean = gaussians[nb_gaussians]->getMean();
    for (unsigned int j=0;j<mean.size();j++)
@@ -118,7 +120,7 @@ void GMM::to_real()
 }
 
 
-vector<Score> GMM::score(vector <Frame *> fr) const
+vector<Score> GMM::score(vector <Frame > fr) const
 {
    vector<Score> scores(fr.size());
    for (unsigned int i=0;i<fr.size();i++)
@@ -129,7 +131,7 @@ vector<Score> GMM::score(vector <Frame *> fr) const
    
 }
 
-Score GMM::score(Frame * fr) const
+Score GMM::score(Frame fr) const
 {
    float min_dist = FLT_MAX ;
    int min_gauss = 0;

@@ -4,6 +4,7 @@
 #include "Object.h"
 #include <iostream.h>
 #include <string>
+#include <fstream.h>
 
 /** We must define network types that we want to use in our network.
     We will use a template class where all the proper operators are defined. */
@@ -125,6 +126,7 @@ typedef NetCType<bool> Bool;
 
 ///STL types
 typedef GenericType<string> String;
+typedef GenericType<ifstream> IFStream;
 //@}
 
 #endif

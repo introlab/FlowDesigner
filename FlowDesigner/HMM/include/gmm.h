@@ -32,7 +32,7 @@ public:
    int gaussian_id;
 
    ///Pointer to the frame scored
-   Frame *frame;
+   Frame frame;
 
    ///Pointer to the GMM used when scoring
    const GMM *gmm;
@@ -91,7 +91,7 @@ public:
    Gaussian &gaussian (int i) const {return *(gaussians[i]);}
 
    ///Accumulates (adds) the frame the the i'th gaussian
-   void accum_to_gaussian(int i, const Frame &fr)
+   void accum_to_gaussian(int i, const Frame fr)
    {
       gaussians[i]->accum_frame(fr);
       apriori[i]+=1.0;
@@ -99,16 +99,16 @@ public:
    }
 
    ///Randomly init the GMM with a list (STL vector) of frames
-   void init(vector<Frame *> frames);
+   void init(vector<Frame > frames);
 
    ///Performs k-means training
-   void kmeans1(vector<Frame *> frames, int nb_iterations = 1);
+   void kmeans1(vector<Frame > frames, int nb_iterations = 1);
    
    ///splits the largest gaussian in two
    void split1();
 
    ///Performs k-means training (using another GMM to score)
-   void kmeans2(vector<Frame *> frames, GMM *gmm);
+   void kmeans2(vector<Frame > frames, GMM *gmm);
 
    ///Converts the GMM from accum mode to real mode
    void to_real();
@@ -117,13 +117,13 @@ public:
    void reset_to_accum_mode();
 
    ///Score a frame against the GMM
-   Score score(Frame * fr) const;
+   Score score(Frame fr) const;
 
    ///Double the number of gaussians
    void binary_split();
 
    ///Score a list (STL vector) of frames against the GMM
-   vector<Score> score(vector <Frame *> fr) const;
+   vector<Score> score(vector <Frame> fr) const;
 
    friend ostream &operator << (ostream &out, const GMM &gmm);
    friend istream &operator >> (istream &in, GMM &gmm);

@@ -19,6 +19,8 @@ void Network::initializeFactories() {
       Network::addFactory ("COLLECTOR", new CollectorNodeFactory);
       Network::addFactory ("MUX", new MuxNodeFactory);
       Network::addFactory ("EXEC", new ExecNodeFactory);
+      Network::addFactory ("PATHLIST", new PathListFactory);
+      Network::addFactory ("ISVALID", new IsValidFactory);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;
@@ -31,7 +33,7 @@ void Network::initializeFactories() {
  */
 /***************************************************************************/
 Network::Network (string nodeName, ParameterSet params) 
-   : netName(nodeName), Node(nodeName,params) {
+   : Node(nodeName,params) {
 
    numNodes = 0;
    sinkNode = NULL;
@@ -91,7 +93,9 @@ Network::~Network() {
    while (factoryDictionary.size() > 0) {
 
       factoryIter = factoryDictionary.begin();
-      cout<<"Deleting factory : "<<(*factoryIter).first<<endl;
+      if (debugMode) {
+         cout<<"Deleting factory : "<<(*factoryIter).first<<endl;
+      }
       factory = (*factoryIter).second;
       factoryDictionary.erase((*factoryIter).first);  
       delete factory;
@@ -103,7 +107,9 @@ Network::~Network() {
    
    while (nodeDictionary.size() > 0)  {
       nodeIter = nodeDictionary.begin();
-      cout<<"Deleting node : "<<(*nodeIter).first<<endl;
+      if (debugMode) {
+         cout<<"Deleting node : "<<(*nodeIter).first<<endl;
+      }
       node = (*nodeIter).second;
       nodeDictionary.erase((*nodeIter).first);
       delete node;
@@ -224,7 +230,13 @@ void Network::connect (const string &currentNodeName,const string &inputName,
    Node* inputNode = getNodeNamed(inputNodeName);
    
    if (currentNode && inputNode) {
-      currentNode->connectToNode(inputName,inputNode,outputName);
+
+      if (debugMode) {
+         cout<<"Network "<<name<<" : Connecting "<<currentNodeName<<" ["<<inputName<<"]"
+             <<" to "<<inputNodeName<<" ["<<outputName<<"]"<<endl;
+      }
+
+     currentNode->connectToNode(inputName,inputNode,outputName);
    }
    else {
       if (!currentNode) {throw NodeNotFoundException(currentNodeName);}
@@ -296,8 +308,6 @@ void Network::addFactory (const string &factoryName, _NodeFactory* const factory
 void Network::specificInitialize() {
    this->Node::specificInitialize();
 
-
-
    //We need an input Node
    if (!inputNode) {
       throw NoInputNodeException();
@@ -307,19 +317,6 @@ void Network::specificInitialize() {
    if (!sinkNode) {
       throw NoSinkNodeException();
    }
-
-   /* We must be careful with the input node. 
-      If we are a subnet we must copy all the Network inputs to the
-      InputNode inputs  if we want the requests to be propagated.
-   */
-
-   vector<NodeInput>::iterator in;
-
-   //resizing
-   inputNode->inputs.resize(inputs.size());
-   
-   //copying
-   inputNode->inputs = inputs;
 
 }
 
@@ -376,4 +373,15 @@ int Network::translateOutput (string outputName) {
    }
    return sinkNode->translateOutput(outputName);
 }
+
+/***************************************************************************/
+/*
+  Network::connectToNode(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
+   inputNode->connectToNode(in,inNode,out);
+}
+
 #endif

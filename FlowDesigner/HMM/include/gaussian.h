@@ -78,34 +78,34 @@ public:
    int get_accum_count() const {return accum_count;} 
 
    ///Returns the mahalanobis distance between the gaussian and a frame
-   float mahalanobis(const Frame *fr) const
+   float mahalanobis(const Frame fr) const
    {
       float dist=0;
-      for (unsigned int i=0;i<fr->size();i++)
+      for (unsigned int i=0;i<dimension;i++)
       {
-         dist+=sqr((*fr)[i]-(*mean)[i]) /(*covariance)[i];
+         dist+=sqr(fr[i]-(*mean)[i]);// /(*covariance)[i];
       }
       //cerr << "det: " << covariance->getDeterminant() << endl;
-      return dist + covariance->getDeterminant();
+      return dist;// + covariance->getDeterminant();
    }
 
    ///Returns the mahalanobis distance between the gaussian and a frame
-   float euclidian(const Frame *fr) const
+   float euclidian(const Frame fr) const
    {
       float dist=0;
-      for (unsigned int i=0;i<fr->size();i++)
+      for (unsigned int i=0;i<dimension;i++)
       {
-         dist+=sqr((*fr)[i]-(*mean)[i]);
+         dist+=sqr(fr[i]-(*mean)[i]);
       }
       //cerr << "det: " << covariance->getDeterminant() << endl;
       return dist;
    }
 
    ///Adds (accumulates) a frame to the gaussian
-   void accum_frame(const Frame &fr)
+   void accum_frame(const Frame fr)
    {
       accum_count++;
-      for (unsigned int i=0;i<fr.size();i++)
+      for (unsigned int i=0;i<dimension;i++)
       {
          (*mean)[i]+=fr[i];
          (*covariance)[i]+=sqr(fr[i]);
