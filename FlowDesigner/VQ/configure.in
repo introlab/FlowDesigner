@@ -40,49 +40,7 @@ PACKAGE=VQ
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 AM_MAINTAINER_MODE
 
-AC_CANONICAL_HOST
-
-AC_DISABLE_STATIC
-AM_PROG_LIBTOOL
-
-case "$host_os" in 
-hpux*) OS=HPUX ;;
-linux*) OS=LINUX ;;
-freebsd*) OS=FREEBSD ;;
-solaris*) OS=SOLARIS ;;
-esac
-AC_DEFINE_UNQUOTED(${OS})
-dnl Initialize libtool.
-
-AC_LIBTOOL_KLUDGE
-
-dnl Check header files
-AC_CHECK_HEADERS(values.h float.h)
-AC_HASH_MAP
-
-dnl Checks for programs.
-
-dnl AM_C_PROTOTYPES
-AC_PROG_CXX
-AC_LANG_CPLUSPLUS
-AC_PROG_MAKE_SET
-dnl AC_PROG_RANLIB
-
-dnl Checks for libraries.
-
-dnl Test for math library, and define LIBS
-AC_CHECK_LIB(m, sin)
-dnl AC_CHECK_LIB(dl, dlopen)
-dnl AC_CHECK_LIB(pthread, pthread_create)
-AC_THREAD
-
-
-dnl test for SGI audio library (required by SndLib) and define LIBS
-dnl AC_PATH_FFTW
-
-dnl Checks for library functions.
-
-dnl Output the makefiles and version.h.
+AC_OVERFLOW_CHECKS
 
 AC_OUTPUT([Makefile include/Makefile src/Makefile
 	])

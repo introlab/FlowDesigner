@@ -1,6 +1,6 @@
 AC_DEFUN(AC_MODULE_OPT,
 [
-AC_ARG_ENABLE($1, [  --enable-$1   enable module], [if test "$enableval" = no; then $1=; else $1=$1; fi], [if test -f $1/Makefile.am; then $1=$1; else $1=; fi ])
+AC_ARG_ENABLE($1, [  --enable-$1           enable module $1 (default: $2)], [if test "$enableval" = no; then $1=; else $1=$1; fi], [if test -f $1/Makefile.am && test $2 = yes; then $1=$1; else $1=; fi ])
 ])
 
 AC_DEFUN(AC_FIND_FILE,
@@ -227,4 +227,71 @@ AC_CHECK_HEADERS(hash_map ext/hash_map, FOUND_HASH=yes)
 if test $FOUND_HASH = "no"; then
 AC_DEFINE_UNQUOTED(NO_HASH_MAP)
 fi
+])
+
+
+AC_DEFUN(AC_OVERFLOW_CHECKS,
+[
+
+AC_CANONICAL_HOST
+
+AC_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+case "$host_os" in 
+hpux*) OS=HPUX ;;
+dnl mv libtool libtool-bak  
+dnl cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$CXX\"/; print' > libtool;;
+linux*) OS=LINUX ;;
+freebsd*) OS=FREEBSD ;;
+solaris*) OS=SOLARIS ;;
+esac
+AC_DEFINE_UNQUOTED(${OS})
+dnl Initialize libtool.
+
+dnl AC_LIBTOOL_ACC_KLUDGE
+AC_LIBTOOL_KLUDGE
+
+#AM_SANITY_CHECK
+
+dnl Checks for programs.
+
+AM_C_PROTOTYPES
+AC_PROG_CXX
+AC_LANG_CPLUSPLUS
+AC_PROG_MAKE_SET
+AC_C_BIGENDIAN
+
+dnl Checks for libraries.
+AC_CHECK_HEADERS(float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h)
+AC_HASH_MAP
+
+dnl Test for math library, and define LIBS
+AC_CHECK_LIB(m, sin)
+AC_CHECK_LIB(dl, dlopen)
+dnl AC_CHECK_LIB(pthread, pthread_create)
+AC_THREAD
+
+echo checking for libxml...
+if gnome-config xml --cflags | grep I;then echo libxml found;else echo libxml not found; exit 1; fi
+GNOME_XML_LIB=`gnome-config --libs xml`
+GNOME_XML_INCLUDE=`gnome-config --cflags xml`
+AC_SUBST(GNOME_XML_LIB)
+AC_SUBST(GNOME_XML_INCLUDE)
+
+AC_PATH_FFTW
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(pthread_cancel)
+
+if test "x$prefix" != "xDONE"; then
+AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${prefix}")
+AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${prefix}/toolbox")
+else
+AC_DEFINE_UNQUOTED(INSTALL_PREFIX, "${ac_default_prefix}")
+AC_DEFINE_UNQUOTED(TOOLBOX_PATH, "${ac_default_prefix}/toolbox")
+fi
+
+
+
 ])
