@@ -10,6 +10,7 @@
 class UINode;
 class UILink;
 class UINetTerminal;
+class ItemInfo;
 
 class GUITerminal : public UITerminal {
 protected:
@@ -19,7 +20,7 @@ protected:
 
 
 public:
-   GUITerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
+   GUITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
    ~GUITerminal() {}
 

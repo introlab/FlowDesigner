@@ -150,10 +150,10 @@ void GUINode::draw()
       //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
       //cerr << "creating terminals\n";
       for (int i=0;i<inputname.size();i++)
-         inputs.insert(inputs.end(), new GUITerminal (inputname[i]->name, this, true, x1-5.0, 
+         inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
                                                      -15.0*(.5*(inputname.size()-1)-i)));
       for (int i=0;i<outputname.size();i++)
-         outputs.insert(outputs.end(), new GUITerminal (outputname[i]->name, this, false, x2+5.0, 
+         outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2+5.0, 
                                                      -15.0*(.5*(outputname.size()-1)-i)));
    }
    gtk_signal_connect(GTK_OBJECT(group), "event",
@@ -385,10 +385,10 @@ void GUINode::move(double dx, double dy)
       dynamic_cast<GUITerminal *>(outputs[i])->move(dx, dy);
 }
 
-UITerminal *GUINode::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
+/*UITerminal *GUINode::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
 {
    return new GUITerminal (_name, _node, _isInput, _x, _y);
-}
+}*/
 
 UILink *GUINode::newLink (UITerminal *_from, UITerminal *_to)
 {

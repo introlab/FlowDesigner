@@ -2,6 +2,7 @@
 #include "GUINode.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
+#include "UIDocument.h"
 
 static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -9,8 +10,8 @@ static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer d
 }
 
 
-GUITerminal::GUITerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
-   : UITerminal(_name, _node, _isInput, _x, _y)
+GUITerminal::GUITerminal (ItemInfo* terminalInfo, UINode *_node, bool _isInput, double _x, double _y)
+   : UITerminal(terminalInfo, _node, _isInput, _x, _y)
 {
    GnomeCanvasGroup *group = dynamic_cast<GUINode *>(node)->getGroup();
    

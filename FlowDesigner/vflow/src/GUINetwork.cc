@@ -328,10 +328,10 @@ UINode *GUINetwork::newNode(UINetwork* _net, xmlNodePtr def)
    return new GUINode(_net, def);
 }
 
-UITerminal *GUINetwork::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
+/*UITerminal *GUINetwork::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
 {
    return new GUITerminal (_name, _node, _isInput, _x, _y);
-}
+}*/
 
 UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to)
 {
