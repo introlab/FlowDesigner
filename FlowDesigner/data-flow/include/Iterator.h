@@ -28,12 +28,19 @@ public:
    /** Returns the current processCount of this node */
    int  getProcessCount() {return processCount;}
    
-   /*
+   
    virtual void request(int outputID, const ParameterSet &req) 
    {
+      if (req.exist("LOOKAHEAD"))
+      outputs[outputID].lookAhead = max(outputs[outputID].lookAhead,dereference_cast<int> (req.get("LOOKAHEAD")));
+   if (req.exist("LOOKBACK"))
+      outputs[outputID].lookBack = max(outputs[outputID].lookBack,dereference_cast<int> (req.get("LOOKBACK")));
+   if (req.exist("INORDER"))
+      inOrder = true;
+
      //handled by BufferedNode
    }
-   */
+   
 
    virtual void calculate(int output_id, int count, Buffer &out) {
 
@@ -41,6 +48,12 @@ public:
      
      //same as the collector's job!
      out[count] = (inputs[output_id].node)->getOutput(outputID,processCount);
+   }
+
+   int addInput (const string &inputName)
+   {
+      BufferedNode::addInput(inputName);
+      return BufferedNode::addOutput(inputName);
    }
 
    virtual int translateInput (string inputName) {
@@ -63,11 +76,15 @@ public:
    }
    
    
-   virtual void requestForIterator(const ParameterSet &req) {
-     //request propagation to nodes before the iterator
-     for (int i=0;i<inputs.size();i++) {
-       inputs[i].node->request(inputs[i].outputID,req);
-     }
+   virtual void requestForIterator(const ParameterSet &req) 
+   {
+      //request propagation to nodes before the iterator
+      for (int i=0;i<inputs.size();i++) 
+      {
+         inputs[i].node->request(inputs[i].outputID,req);
+      }
+      
+
    }
    
 
