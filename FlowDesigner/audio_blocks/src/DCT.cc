@@ -20,6 +20,7 @@
 #include "Vector.h"
 #include <fftw.h>
 #include <rfftw.h>
+#include <math.h>
 
 class DCT;
 
@@ -34,7 +35,8 @@ class DCT : public FrameOperation {
    rfftw_plan plan;
    float *inputCopy;
    float *outputCopy;
-   float normalize;
+   float *rNormalize;
+   float *iNormalize;
 
 public:
    DCT(string nodeName, ParameterSet params)
@@ -45,11 +47,26 @@ public:
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   
-      inputCopy = new float [inputLength*2];
-      outputCopy =new float [inputLength*2];
-      normalize = .5/inputLength;
-      plan = rfftw_create_plan (inputLength*2, FFTW_FORWARD, FFTW_ESTIMATE);
+
+      if (inputLength & 1) 
+      {
+	 throw NodeException(NULL, "DCT only implemented for even sizes", __FILE__, __LINE__);
+      }
+
+      inputCopy = new float [inputLength];
+      outputCopy =new float [inputLength];
+      rNormalize =new float [inputLength];
+      iNormalize =new float [inputLength];
+      float sqrt2n=sqrt(2.0/inputLength);
+      for (int i=0;i<inputLength;i++)
+      {
+	 rNormalize[i]=cos(M_PI*i/(2*inputLength))*sqrt2n;
+	 iNormalize[i]=-sin(M_PI*i/(2*inputLength))*sqrt2n;
+      }
+      rNormalize[0] /= sqrt(2);
+
+      //normalize = .5/inputLength;
+      plan = rfftw_create_plan (inputLength, FFTW_FORWARD, FFTW_ESTIMATE);
 }
 
    ~DCT() 
@@ -79,15 +96,24 @@ public:
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
       int i,j;
-      for (i=0, j=inputLength*2-1 ;i<inputLength ; i++, j--)
-      {
-         inputCopy[i]=inputCopy[j] = in[i];
-      }
+      for (i=0, j=0 ;i<inputLength ; i+=2, j++)
+         inputCopy[j]=in[i];
+
+      for (i = inputLength-1; i>=0 ; i-=2, j++)
+         inputCopy[j]=in[i];
+      
+
       rfftw_one(plan, inputCopy, outputCopy);
-      for (i=0;i<outputLength;i++)
+      
+      
+      for (i=1;i<inputLength/2;i++)
       {
-         output[i]=normalize*outputCopy[i];
+	 output[i]=rNormalize[i]*outputCopy[i] + iNormalize[i]*outputCopy[inputLength-i];
+	 output[inputLength-i]=rNormalize[inputLength-i]*outputCopy[i] + iNormalize[inputLength-i]*outputCopy[inputLength-i];
       }
+
+      output[0]=outputCopy[0]*rNormalize[0];
+      output[inputLength/2] = outputCopy[inputLength/2]*rNormalize[inputLength/2];
       
       output.status = Object::valid;
    }
