@@ -14,10 +14,12 @@
 #include "stream_wrap.h"
 
 #ifdef HAVE_MACHINE_SOUNDCARD_H
+#define HAVE_OSS_AUDIO
 #include <machine/soundcard.h>
 #endif
 
 #ifdef HAVE_SYS_SOUNDCARD_H
+#define HAVE_OSS_AUDIO
 #include <sys/soundcard.h>
 #endif
 
@@ -124,7 +126,7 @@ public:
 	 rt_assert((audio_fd=open(device.c_str(),mode)) != -1, "Can't open sound device\n", __FILE__, __LINE__);
       }
 
-#if !defined(SOLARIS)
+#ifdef HAVE_OSS_AUDIO
 
       
       if (!parameters.exist("DUMMY"))
