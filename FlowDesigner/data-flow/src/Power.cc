@@ -62,10 +62,10 @@ Power::~Power()
 
 void Power::calculate(int output_id, int count, Buffer &out)
 {
-   int base = dereference_cast<int>(getInput(m_baseInID,count));
-   int exp = dereference_cast<int>(getInput(m_expID,count));
+   RCPtr<Float> base = getInput(m_baseInID,count);//will do automatic conversion to float
+   RCPtr<Float> exp = getInput(m_expID,count); //will do automatic conversion to float
 
-   (*outputs[m_outputID].buffer)[count] = ObjectRef(Int::alloc((int)(pow((double)base, (double)exp))));
+   (*outputs[m_outputID].buffer)[count] = ObjectRef(Float::alloc(pow(base->val(),exp->val())));
 }
 #endif //_POWER_CC_
 
