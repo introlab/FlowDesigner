@@ -130,7 +130,7 @@ dnl fi
 AC_SUBST(fftw_libraries)
 AC_SUBST(fftw_includes)
 
-if test "$fftw_includes" = "$x_includes" || test -z "$fftw_includes"; then
+if test "$fftw_includes" = "/usr/include" || "$fftw_includes" = "$x_includes" || test -z "$fftw_includes"; then
  FFTW_INCLUDES="";
 else
  FFTW_INCLUDES="-I$fftw_includes"
