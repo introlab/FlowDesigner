@@ -1,18 +1,16 @@
-#ifndef _VECTORSETINDEX_CC_
-#define _VECTORSETINDEX_CC_
+#ifndef _VECTORGETINDEX_CC_
+#define _VECTORGETINDEX_CC_
 
 #include "BufferedNode.h"
 #include "Vector.h"
 #include "Exception.h"
 
-#warning "VectorSetIndex should use BaseVector->clone() (not yet implemented) to avoid modifying the vector"
+class VectorGetIndex;
 
-class VectorSetIndex;
-
-DECLARE_NODE(VectorSetIndex)
+DECLARE_NODE(VectorGetIndex)
 
 /*Node
- * @name VectorSetIndex
+ * @name VectorGetIndex
  * @category Vector
  * @description Change data at the INDEX of the VECTOR by the VALUE.
  *
@@ -20,26 +18,21 @@ DECLARE_NODE(VectorSetIndex)
  * @input_type Vector
  * @input_description Vector
  *
- * @input_name VALUE
- * @input_type any
- * @input_description value to put in Vector[index]
- *
  * @input_name INDEX
  * @input_type int
  * @input_description Vector index
  *
  * @output_name OUTPUT
- * @output_type Vector
- * @output_description The same vector as the input vector
+ * @output_type any
+ * @output_description Vector element at position index
  *
 END*/
 
 
-class VectorSetIndex : public BufferedNode {
+class VectorGetIndex : public BufferedNode {
    
   //inputs
   int m_vectorID;
-  int m_valueID;
   int m_indexID;
 
   //outputs
@@ -47,12 +40,11 @@ class VectorSetIndex : public BufferedNode {
 
 public:
 
-   VectorSetIndex(string nodeName, ParameterSet params)
+   VectorGetIndex(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params) {
 
      //inputs
      m_vectorID = addInput("VECTOR");
-     m_valueID = addInput("VALUE");
      m_indexID = addInput("INDEX");
 
      //outputs
@@ -60,27 +52,18 @@ public:
    }
 
    void calculate(int output_id, int count, Buffer &out) {
-
+     
      try {
        RCPtr<Int> index = getInput(m_indexID,count);
-
-       //should clone the vector before modifying it
        RCPtr<BaseVector> vect = getInput(m_vectorID,count);
-
-       ObjectRef value = getInput(m_valueID,count);
-       
-       vect->setIndex(index->val(),value);
-       
-       out[count] = vect;
+       out[count] = vect->getIndex(index->val());
      }
-     catch(BaseException *e) {
-
+     catch (BaseException *e) {
        char message[256];
        RCPtr<Int> index = getInput(m_indexID,count);
-       sprintf(message,"unable to set vector index at : %i",index->val());
-       throw e->add(new GeneralException(message,__FILE__,__LINE__));
+       sprintf(message,"Unable to get vector index at : %i",index->val());
+       throw e->add (new GeneralException(message, __FILE__, __LINE__));
      }
-
    }//calculate
   
 };
