@@ -185,7 +185,7 @@ public:
    
    vector<string> getAvailableNodes();
 
-   static string findExternal(const string &type);
+   static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true);
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 

@@ -8,8 +8,9 @@ using namespace std;
 #include <vector>
 #include <string>
 
+vector<string> envList(char *envName, bool include_home=true);
+
 extern "C" {
-vector<string> envList(char *envName);
 void scanDL(bool debug=false);
 }
 

@@ -7,15 +7,18 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-vector<string> envList(char *envName)
+vector<string> envList(char *envName, bool include_home)
 {
    vector<string> list;
-   string prefix = INSTALL_PREFIX;
-   char *home = getenv("VFLOW_HOME");
-   if (home && strcmp(home, "")!=0)
-      prefix=home;
-   list.insert(list.end(), prefix+ "/share/overflow/toolbox");
-   list.insert(list.end(), prefix+ "/share/overflow/lib");
+   if (include_home)
+   {
+      string prefix = INSTALL_PREFIX;
+      char *home = getenv("VFLOW_HOME");
+      if (home && strcmp(home, "")!=0)
+	 prefix=home;
+      list.insert(list.end(), prefix+ "/share/overflow/toolbox");
+      list.insert(list.end(), prefix+ "/share/overflow/lib");
+   }
    char *strPath = getenv(envName);
    if (!strPath)
       return list;

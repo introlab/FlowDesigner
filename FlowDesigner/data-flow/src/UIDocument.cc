@@ -737,19 +737,19 @@ void UIDocument::export2net()
    
 }
 
-string UIDocument::findExternal(const string &type)
+string UIDocument::findExternal(const string &filename, char *searchPath, bool include_home)
 {
-   vector<string> pathlist = envList("VFLOW_PATH");
+   vector<string> pathlist = envList(searchPath, include_home);
    string fullname;
    for (unsigned int i=0;i<pathlist.size();i++)
    {
-      if (findExternalRecursive(pathlist[i],type,fullname))
+      if (findExternalRecursive(pathlist[i],filename,fullname))
 	  return fullname;
    }
    return "";
 }
 
-bool UIDocument::findExternalRecursive(const string &path, const string &type, string &fullname)
+bool UIDocument::findExternalRecursive(const string &path, const string &filename, string &fullname)
 {
    struct stat my_stat;
    DIR *my_directory = opendir (path.c_str());
@@ -772,7 +772,7 @@ bool UIDocument::findExternalRecursive(const string &path, const string &type, s
       if (S_ISDIR(my_stat.st_mode)) {
 	 //it is a directory, let's doing it recursively
 	 if (name != string("..") && name != string(".")) {
-	    if (findExternalRecursive(fullpath,type,fullname))
+	    if (findExternalRecursive(fullpath,filename,fullname))
 	    {
 	       closedir(my_directory);
 	       return true;
@@ -781,7 +781,7 @@ bool UIDocument::findExternalRecursive(const string &path, const string &type, s
       }
       else {
 	 //it's a file, check if it's the right one
-	 if (name == (type + string(".n"))) {
+	 if (name == filename) {
 	    fullname = fullpath;
 	    closedir(my_directory);
 	    return true;
@@ -796,7 +796,7 @@ bool UIDocument::findExternalRecursive(const string &path, const string &type, s
 
 Network *UIDocument::buildExternal(const string &type, const string &_name, const ParameterSet &params)
 {
-   string fullname = findExternal(type);
+   string fullname = findExternal(type + ".n");
    if (fullname == "")
       return NULL;
    UIDocument doc(fullname);
@@ -839,6 +839,7 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
 {
    int nbDepends = initial_files.size();
 
+   //Process module/file dependencies, loop until there's nothing else to add
    do {
       nbDepends = initial_files.size();
       set<string> addMod;
@@ -882,7 +883,8 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
    //Repeat recursivly until there's nothing else to add
    //if (nbDepends != initial_files.size())
    //   processDependencies(initial_files, false);
-   
+
+   //Process header dependencies, loop until there's nothing else to add
    do {
       nbDepends = initial_files.size();
       if (toplevel)
@@ -896,7 +898,11 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
 	       set<string>::iterator header = headerDep.begin();
 	       while (header != headerDep.end())
 	       {
-		  initial_files.insert(initial_files.end(), *header);
+		  string fullHeader = findExternal(*header, "VFLOW_SOURCE", false);
+		  if (fullHeader == "")
+		     cerr << "Header file not found: " << *header << endl;
+		  else
+		     initial_files.insert(initial_files.end(), fullHeader);
 		  header++;
 	       }
 	    }
@@ -906,11 +912,24 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
       }
    } while (nbDepends != initial_files.size());
 
+
+   /*set<string>::iterator file=initial_files.begin();
+   while (file != initial_files.end())
+   {
+      string fullPath = findExternal(*file, "VFLOW_SOURCE", false);
+      if (fullPath != "")
+      {
+	 
+	 //*file = fullPath;
+      }
+      file++;
+   }
+   */
 }
 
 void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
 {
-   string fullname = findExternal(type);
+   string fullname = findExternal(type+".n");
    if (fullname == "")
       throw new GeneralException(string("External node not found: ") + type, __FILE__, __LINE__);
    UIDocument doc(fullname);
