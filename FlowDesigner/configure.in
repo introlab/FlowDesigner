@@ -59,7 +59,9 @@ AC_CANONICAL_HOST
 AC_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-AC_DEFINE(VERSION, "$VERSION")
+dnl AC_DEFINE(VERSION, ${VERSION})
+dnl AC_DEFINE_UNQUOTED(VERSION, ${VERSION})
+AC_DEFINE_UNQUOTED(VERSION, "${VERSION}")
 AC_OVERFLOW_CHECKS
 AC_CHECK_HEADER(sstream, rm -f $srcdir/data-flow/include/sstream, cp -pf $srcdir/data-flow/include/sstream.unused $srcdir/data-flow/include/sstream)
 
