@@ -60,20 +60,20 @@ void GMMSet::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("GMMSet::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "gmms")
          in >> gmms;
       else if (tag == "nb_gmms")
          in >> nb_gmms;
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("GMMSet::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("GMMSet::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("GMMSet::readFrom : Parse error: '>' expected ");
    }
 }
 

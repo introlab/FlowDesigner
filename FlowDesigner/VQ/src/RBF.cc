@@ -64,7 +64,7 @@ void RBF::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("RBF::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "length")
          in >> length;
@@ -73,13 +73,13 @@ void RBF::readFrom (istream &in)
       else if (tag == "means")
          in >> means;
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("RBF::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("RBF::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("RBF::readFrom : Parse error: '>' expected ");
    }
 }
 

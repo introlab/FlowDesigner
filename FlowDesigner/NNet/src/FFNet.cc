@@ -417,7 +417,7 @@ void FFNet::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("FFNet::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "topo")
          in >> topo;
@@ -426,11 +426,11 @@ void FFNet::readFrom (istream &in)
          in >> layers;
       }
       else
-         throw new ParsingException ("unknown argument: " + tag);
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+         throw new ParsingException ("FFNet::readFrom : unknown argument: " + tag);
+      if (!in) throw new ParsingException ("FFNet::readFrom : Parse error trying to build " + tag);
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("FFNet::readFrom : Parse error: '>' expected ");
    }
    setupLayersAfterRead();
 }

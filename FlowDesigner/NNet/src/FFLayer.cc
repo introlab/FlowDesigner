@@ -108,7 +108,7 @@ void FFLayer::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("FFLayer::readFrom : Parse error: '<' expected");
       in >> tag;
       //cerr << "layer tag = " << tag << endl;
       if (tag == "nbNeurons")
@@ -144,14 +144,14 @@ void FFLayer::readFrom (istream &in)
 	 }
       }
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("FFLayer::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("FFLayer::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       //cerr << "end tag = " << tag << endl;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("FFLayer::readFrom : Parse error: '>' expected ");
    }
    //cerr << "done with layer\n";
 }

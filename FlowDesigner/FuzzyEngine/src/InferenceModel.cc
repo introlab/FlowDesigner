@@ -211,7 +211,7 @@ void InferenceModel::readFrom(istream &in) {
       if (ch == '>') break;
 
       else if (ch != '<') {
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("InferenceModel::readFrom : Parse error: '<' expected");
       }
       in >> tag;
 
@@ -231,14 +231,14 @@ void InferenceModel::readFrom(istream &in) {
 	add_fuzzy_rule(value);
       }
       else {
-	throw new ParsingException ("unknown argument: " + tag);
+	throw new ParsingException ("InferenceModel::readFrom : unknown argument: " + tag);
       }
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("InferenceModel::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("InferenceModel::readFrom : Parse error: '>' expected ");
    }
 
 }

@@ -339,10 +339,10 @@ void FeatureMap::readFrom (istream &in)
          in >> *tmp;
          second = tmp;
       } else 
-         throw new ParsingException ("unknown argument: " + tag);
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+         throw new ParsingException ("FeatureMap::readFrom : unknown argument: " + tag);
+      if (!in) throw new ParsingException ("FeatureMap::readFrom : Parse error trying to build " + tag);
       in >> tag;
-      if (tag != ">") throw new ParsingException ("Parse error: '>' expected ");
+      if (tag != ">") throw new ParsingException ("FeatureMap::readFrom : Parse error: '>' expected ");
    }
    
 }

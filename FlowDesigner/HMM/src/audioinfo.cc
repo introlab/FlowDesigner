@@ -33,7 +33,7 @@ void AudioInfo::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("AudioInfo::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "ortho")
       {
@@ -69,13 +69,13 @@ void AudioInfo::readFrom (istream &in)
          in >> fine_end;
          fine_endpointed=true;
       } else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("AudioInfo::readFrom : unknown argument: " + tag);
       
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("AudioInfo::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("AudioInfo::readFrom : Parse error: '>' expected ");
    }
 
 }

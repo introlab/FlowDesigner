@@ -42,14 +42,14 @@ void Mean::readFrom (istream &in)
       else if (tag == "data")
       {
          if (dimension==-1)
-            throw new ParsingException("dimension must be specified before data");
+            throw new ParsingException("Mean::readFrom : dimension must be specified before data");
          for (int i=0;i<dimension;i++)
             in >> operator[] (i);
       } else 
-         throw new ParsingException ("unknown argument: " + tag);
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+         throw new ParsingException ("Mean::readFrom : unknown argument: " + tag);
+      if (!in) throw new ParsingException ("Mean::readFrom : Parse error trying to build " + tag);
       in >> tag;
-      if (tag != ">") throw new ParsingException ("Parse error: '>' expected ");
+      if (tag != ">") throw new ParsingException ("Mean::readFrom : Parse error: '>' expected ");
    }
 }
 

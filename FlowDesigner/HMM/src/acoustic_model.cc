@@ -41,7 +41,7 @@ void AcousticModel::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("AcousticModel::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "covariances")
          in >> covariances;
@@ -56,13 +56,13 @@ void AcousticModel::readFrom (istream &in)
       //else if (tag == "phones")
       //   in >> phones;
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("AcousticModel::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("AcousticModel::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("AcousticModel::readFrom : Parse error: '>' expected ");
    }
 }
 

@@ -177,7 +177,7 @@ void TrapezoidalFunction::readFrom(istream &in) {
       if (ch == '>') break;
 
       else if (ch != '<') {
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("TrapezoidalFunction::readFrom : Parse error: '<' expected");
       }
       in >> tag;
 
@@ -197,14 +197,14 @@ void TrapezoidalFunction::readFrom(istream &in) {
 	in >> m_d;
       }
       else {
-	throw new ParsingException ("unknown argument: " + tag);
+	throw new ParsingException ("TrapezoidalFunction::readFrom : unknown argument: " + tag);
       }
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("TrapezoidalFunction::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("TrapezoidalFunction::readFrom : Parse error: '>' expected ");
    }
 }
 

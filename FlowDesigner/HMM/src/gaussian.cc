@@ -104,10 +104,10 @@ void Gaussian::readFrom (istream &in)
          in >> meanID;
          using_meanID=true;
       } else 
-         throw new ParsingException ("unknown argument: " + tag);
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+         throw new ParsingException ("Gaussian::readFrom : unknown argument: " + tag);
+      if (!in) throw new ParsingException ("Gaussian::readFrom : Parse error trying to build " + tag);
       in >> tag;
-      if (tag != ">") throw new ParsingException ("Parse error: '>' expected ");
+      if (tag != ">") throw new ParsingException ("Gaussian::readFrom : Parse error: '>' expected ");
    }
 }
 

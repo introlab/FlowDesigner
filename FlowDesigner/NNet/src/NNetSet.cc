@@ -152,7 +152,7 @@ void NNetSet::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("NNetSet::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "nets")
       {
@@ -161,13 +161,13 @@ void NNetSet::readFrom (istream &in)
 	 cerr << "done\n";
       }
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("NNetSet::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("NNetSet::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("NNetSet::readFrom : Parse error: '>' expected ");
    }
    value = new float [nets[0]->getNbWeights()];
 }

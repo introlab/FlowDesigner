@@ -283,7 +283,7 @@ void FuzzySet::readFrom(istream &in) {
       if (ch == '>') break;
 
       else if (ch != '<') {
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("FuzzySet::readFrom : Parse error: '<' expected");
       }
       in >> tag;
 
@@ -301,13 +301,13 @@ void FuzzySet::readFrom(istream &in) {
 	m_functions.push_back(value);
       }
       else {
-	throw new ParsingException ("unknown argument: " + tag);
+	throw new ParsingException ("FuzzySet::readFrom : unknown argument: " + tag);
       }
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("FuzzySet::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("FuzzySet::readFrom : Parse error: '>' expected ");
    }
 }

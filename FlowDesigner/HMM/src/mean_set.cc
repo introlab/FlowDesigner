@@ -45,20 +45,20 @@ void MeanSet::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("MeanSet::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "means")
          in >> means;
       else if (tag == "nb_means")
          in >> nb_means;
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("MeanSet::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("MeanSet::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("MeanSet::readFrom : Parse error: '>' expected ");
    }
 }
 

@@ -66,7 +66,7 @@ void CodebookMap::readFrom (istream &in)
       in >> ch;
       if (ch == '>') break;
       else if (ch != '<') 
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("CodebookMap::readFrom : Parse error: '<' expected");
       in >> tag;
       if (tag == "mapIn")
       {
@@ -77,13 +77,13 @@ void CodebookMap::readFrom (istream &in)
       }
 
       else
-         throw new ParsingException ("unknown argument: " + tag);
+         throw new ParsingException ("CodebookMap::readFrom : unknown argument: " + tag);
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("CodebookMap::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("CodebookMap::readFrom : Parse error: '>' expected ");
    }
 }
 

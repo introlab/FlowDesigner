@@ -216,7 +216,7 @@ void FuzzyRule::readFrom(istream &in) {
       if (ch == '>') break;
 
       else if (ch != '<') {
-       throw new ParsingException ("Parse error: '<' expected");
+       throw new ParsingException ("FuzzyRule::readFrom : Parse error: '<' expected");
       }
       in >> tag;
 
@@ -236,13 +236,13 @@ void FuzzyRule::readFrom(istream &in) {
 	m_consequent.push_back(make_pair(first,second));
       }
       else {
-	throw new ParsingException ("unknown argument: " + tag);
+	throw new ParsingException ("FuzzyRule::readFrom : unknown argument: " + tag);
       }
 
-      if (!in) throw new ParsingException ("Parse error trying to build " + tag);
+      if (!in) throw new ParsingException ("FuzzyRule::readFrom : Parse error trying to build " + tag);
 
       in >> tag;
       if (tag != ">") 
-         throw new ParsingException ("Parse error: '>' expected ");
+         throw new ParsingException ("FuzzyRule::readFrom : Parse error: '>' expected ");
    }
 }
