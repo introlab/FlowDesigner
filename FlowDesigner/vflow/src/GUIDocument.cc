@@ -976,7 +976,7 @@ void error_dismiss(GtkWidget *widget, gpointer user_data)
 
 void GUIDocument::error(char *err)
 {
-   GtkWidget *errDialog = gnome_error_dialog ("Error while saving file");
+   GtkWidget *errDialog = gnome_error_dialog (err);
 
    gtk_signal_connect (GTK_OBJECT ( errDialog ), "close",
 		       GTK_SIGNAL_FUNC( error_dismiss), NULL);

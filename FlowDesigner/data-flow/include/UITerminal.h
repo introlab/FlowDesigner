@@ -104,8 +104,6 @@ public:
    
    bool isConnected() {return connections.size()!=0 || netTerminal;}
    
-   void export2net (ostream &out);
-   
    vector<UILink *> getConnections() {return connections;}
 
 };

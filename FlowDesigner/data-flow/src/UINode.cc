@@ -150,14 +150,6 @@ void UINode::saveXML(xmlNode *root)
    parameters->saveXML(tree);
 }
 
-void UINode::export2net (ostream &out)
-{
-   out << "   <node: " << name << "> <type: " << type << ">" << endl;
-   parameters->export2net(out);
-   for (int i=0;i<inputs.size();i++)
-      inputs[i]->export2net(out);
-   out << endl;
-}
 
 UITerminal *UINode::getInputNamed(string n)
 {

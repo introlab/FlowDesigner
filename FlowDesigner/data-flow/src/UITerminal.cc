@@ -40,27 +40,6 @@ UITerminal::~UITerminal()
 }
 
 
-void UITerminal::export2net (ostream &out)
-{
-   if (!isInput) 
-      return;
-   if (connections.size() != 1 && !netTerminal)
-   {
-      cerr << "input error!\n";
-      return;
-   }
-
-   if (netTerminal)
-   {
-      out << "   <input: " << name << ", ALL_NETWORK_INPUTS, " 
-          << netTerminal->getName() << ">" << endl;
-   } else {
-      out << "   <input: " << name << ", " << connections[0]->from->node->getName() 
-          << ", " << connections[0]->from->name << ">" << endl;
-   }
-   //connections[0]
-}
-
 void UITerminal::connectNetTerminal(UINetTerminal *term) 
 {
    netTerminal = term;

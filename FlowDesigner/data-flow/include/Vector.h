@@ -28,7 +28,7 @@ public:
 protected:
    T *data;
    size_t obj_size;
-   int obj_capacity;
+   size_t obj_capacity;
 public:
    Vector()
       : data(NULL)
@@ -43,7 +43,7 @@ public:
       if (obj_size)
 	 data=(T*)new char [obj_size*sizeof(T)];
 #if 1
-      for (int i=0;i<obj_size;i++)
+      for (size_t i=0;i<obj_size;i++)
 	 constr(data+i,v.data[i]);
 #else
       memcpy(data, v.data, obj_size*sizeof(T));
@@ -85,7 +85,7 @@ public:
 	 if (obj_size)
 	    data=(T*)new char [obj_size*sizeof(T)];
 #if 1
-	 for (int i=0;i<obj_size;i++)
+	 for (size_t i=0;i<obj_size;i++)
 	    constr(data+i,v.data[i]);
 #else
 	 memcpy(data, v.data, obj_size*sizeof(T));
@@ -94,7 +94,7 @@ public:
       return *this;
    }
 
-   inline void resize(int new_size, const T &x = T());
+   inline void resize(size_t new_size, const T &x = T());
 
    iterator begin() {return data;}
 
@@ -142,7 +142,7 @@ public:
 
    virtual void destroy();
 
-   static Vector<T> *alloc(int size);
+   static Vector<T> *alloc(size_t size);
 
    static string GetClassName() 
    {
@@ -165,22 +165,22 @@ public:
    void destr(T* ptr) { ptr->~T(); }
 
   private:
-   size_t realloc_size(size_t new_size) {if (!obj_size) return new_size; return 1+int(new_size*1.5);}
+   size_t realloc_size(size_t new_size) {if (!obj_size) return new_size; return 1+size_t(new_size*1.5);}
 };
 
 
 template<class T>
-void Vector<T>::resize(int new_size, const T &x)
+void Vector<T>::resize(size_t new_size, const T &x)
 {
    if (new_size > obj_size)
    {
       if (new_size > obj_capacity)
       {
-	 int new_capacity = realloc_size(new_size);
+	 size_t new_capacity = realloc_size(new_size);
 
 	 T* tmp = (T*)new char [new_capacity*sizeof(T)];
 #if 1
-	 for (int i=0;i<obj_size;i++)
+	 for (size_t i=0;i<obj_size;i++)
 	    constr(tmp+i,data[i]);
 	 if (data)
 	 {
@@ -197,12 +197,12 @@ void Vector<T>::resize(int new_size, const T &x)
 	 obj_capacity = new_capacity;
       }
 
-      for (int i=obj_size;i<new_size;i++)
+      for (size_t i=obj_size;i<new_size;i++)
 	 constr(data+i,x);
 
    } else {
 
-      for (int i=new_size;i<obj_size;i++)
+      for (size_t i=new_size;i<obj_size;i++)
 	 destr(data+i);
 
    }
@@ -212,21 +212,21 @@ void Vector<T>::resize(int new_size, const T &x)
 template<class T>
 void Vector<T>::insert(iterator after, const T &x)
 {
-   int pos = after-begin();
+   size_t pos = after-begin();
    if (obj_size+1 > obj_capacity)
    {
-      int new_capacity = realloc_size(obj_size+1);
+      size_t new_capacity = realloc_size(obj_size+1);
       //Allocate new memory
       T* tmp = (T*)new char [new_capacity*sizeof(T)];
 
 #if 1
       //copy the elements before the inserted object
-      for (int i=0;i<pos;i++)
+      for (size_t i=0;i<pos;i++)
 	 constr(tmp+i,data[i]);
       //copy inserted object
       constr(tmp+pos,x);
       //copy elements after insertion
-      for (int i=pos+1;i<obj_size+1;i++)
+      for (size_t i=pos+1;i<obj_size+1;i++)
 	 constr(tmp+i,data[i-1]);
       //Free old memory
       if (data)
@@ -289,7 +289,7 @@ template <class T>
 inline void _vector_printOn(const Vector<T> &v, ostream &out)
 {
    out << "<" << v.className();
-   for (unsigned int i=0; i < v.size(); i++)
+   for (size_t i=0; i < v.size(); i++)
    {
       out << " " << v[i];
    }
@@ -305,7 +305,7 @@ template <class T>
 inline void _vector_printOn(const Vector<T*> &v, ostream &out)
 {
    out << "<" << v.className();
-   for (unsigned int i=0; i < v.size(); i++)
+   for (size_t i=0; i < v.size(); i++)
    {
       out << " " << *(v[i]);
    }
@@ -410,7 +410,7 @@ struct VecBinary<T,TTraits::Object> {
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
-      for (unsigned int i=0;i<v.size();i++)
+      for (size_t i=0;i<v.size();i++)
       {
 	 v[i].serialize(out);
       }
@@ -422,7 +422,7 @@ struct VecBinary<T,TTraits::Object> {
       string expected = Vector<T>::GetClassName();
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
-      for (unsigned int i=0;i<v.size();i++)
+      for (size_t i=0;i<v.size();i++)
       {
 	 if (!isValidType(in, expected))
 	    throw new ParsingException("Expected type " + expected);
@@ -441,7 +441,7 @@ struct VecBinary<T,TTraits::ObjectPointer> {
       out << "|";
       int tmp=v.size();
       BinIO::write(out, &tmp, 1);
-      for (unsigned int i=0;i<v.size();i++)
+      for (size_t i=0;i<v.size();i++)
       {
 	 v[i]->serialize(out);
       }
@@ -452,7 +452,7 @@ struct VecBinary<T,TTraits::ObjectPointer> {
       int tmp;
       BinIO::read(in, &tmp, 1);
       v.resize(tmp);
-      for (unsigned int i=0;i<v.size();i++)
+      for (size_t i=0;i<v.size();i++)
       {
 	 in >> v[i];
       }
@@ -553,20 +553,20 @@ inline void Vector<double>::destroy()
 }
 
 template <class T>
-inline Vector<T> *Vector<T>::alloc(int size)
+inline Vector<T> *Vector<T>::alloc(size_t size)
 {
    return new Vector<T> (size);
 }
 
 
 template <>
-inline Vector<float> *Vector<float>::alloc(int size)
+inline Vector<float> *Vector<float>::alloc(size_t size)
 {
    return floatVectorPool.newVector(size);
 }
 
 template <>
-inline Vector<double> *Vector<double>::alloc(int size)
+inline Vector<double> *Vector<double>::alloc(size_t size)
 {
    return doubleVectorPool.newVector(size);
 }
@@ -621,7 +621,7 @@ inline Vector<T> &operator+= (Vector<T> &v1, const Vector<T> &v2)
 {
    if (v1.size() != v2.size())
       throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] += v2[i];
    return v1;
 }
@@ -631,7 +631,7 @@ inline Vector<T> &operator-= (Vector<T> &v1, const Vector<T> &v2)
 {
    if (v1.size() != v2.size())
       throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] -= v2[i];
    return v1;
 }
@@ -641,7 +641,7 @@ inline Vector<T> &operator*= (Vector<T> &v1, const Vector<T> &v2)
 {
    if (v1.size() != v2.size())
       throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] *= v2[i];
    return v1;
 }
@@ -651,7 +651,7 @@ inline Vector<T> &operator/= (Vector<T> &v1, const Vector<T> &v2)
 {
    if (v1.size() != v2.size())
       throw new GeneralException("Vector size mismatch", __FILE__, __LINE__);
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] /= v2[i];
    return v1;
 }
@@ -693,7 +693,7 @@ template<class T>
 inline Vector<T> operator- (Vector<T> &v1) 
 {
    Vector<T> v(v1.size());
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v[i] = -v1[i];
    return v;
 }
@@ -702,7 +702,7 @@ inline Vector<T> operator- (Vector<T> &v1)
 template<class T>
 inline Vector<T> &operator+= (Vector<T> &v1, T scal) 
 {
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] += scal;
    return v1;
 }
@@ -710,7 +710,7 @@ inline Vector<T> &operator+= (Vector<T> &v1, T scal)
 template<class T>
 inline Vector<T> &operator-= (Vector<T> &v1, T scal) 
 {
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] -= scal;
    return v1;
 }
@@ -718,7 +718,7 @@ inline Vector<T> &operator-= (Vector<T> &v1, T scal)
 template<class T>
 inline Vector<T> &operator*= (Vector<T> &v1, T scal) 
 {
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] *= scal;
    return v1;
 }
@@ -726,7 +726,7 @@ inline Vector<T> &operator*= (Vector<T> &v1, T scal)
 template<class T>
 inline Vector<T> &operator/= (Vector<T> &v1, T scal) 
 {
-   for (int i=0;i<v1.size();i++)
+   for (size_t i=0;i<v1.size();i++)
       v1[i] /= scal;
    return v1;
 }

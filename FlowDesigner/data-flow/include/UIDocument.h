@@ -109,8 +109,8 @@ public:
    /**Save the document to file specified in internal variables 'path' and 'docName'*/
    void save();
    
-   /**Save in old Overflow format (deprecated*/
-   void export2net();
+   /**Convert document to an XML string in memory*/
+   char *saveToMemory(int &size);
    
    void addParameterText(string name, string value, string type);
    

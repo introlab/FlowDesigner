@@ -102,10 +102,6 @@ public:
 
    void saveXML(xmlNode *root);
 
-   void export2net (ostream &out);
-
-   //void setCondition(UINode *cond);
-
    virtual void newNetNotify(const string &cat, const string &type);
 
    void addTerminal(UINetTerminal *term);

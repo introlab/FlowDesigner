@@ -458,38 +458,7 @@ void save_doc_event(GtkWidget *widget, vflowGUI *vflow) {
 
    doc->resetModified();
 }
-/**********************************************************************************************************
 
-**********************************************************************************************************/
-void export_doc_event(GtkWidget *widget, vflowGUI *vflow) {
-
-  //until user_data (2nd arg works)
-  vflow = vflowGUI::instance();
-
-   if (vflow->mdi->active_child == NULL) {
-      return;
-   }
-
-   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(vflow->mdi->active_child), "doc");
-      
-   if (doc->isUntitled()) {
-      saveas_doc_event(widget, vflow);
-   }
-
-   if (doc->isModified())
-      doc->save();
-
-   doc->resetModified();
-
-   doc->export2net();
-}
-
-/**
-   static void run_arg_cb(gchar * str, string *str2) {
-
-   *str2=str;
-   }
-*/
 /**********************************************************************************************************
 
 **********************************************************************************************************/

@@ -488,28 +488,23 @@ inline float vec_inner_prod_float(const float *a, const float *b, int len)
    return (sum1+sum2)+(sum3+sum4);
 }
 
-
-
 template <>
 inline float vec_inner_prod<float>(const float *a, const float *b, int len)
 {
 #ifndef WIN32
 #ifdef _ALLOW_3DNOW
    if (len >= 8 && IExtensions::have3DNow())
-      vec_inner_prod_3dnow(a,b,len);
+      return vec_inner_prod_3dnow(a,b,len);
    else 
 #endif
 #ifdef _ALLOW_SSE
       if (len >=8 && IExtensions::haveSSE())
-      vec_inner_prod_sse(a,b,len);
+      return vec_inner_prod_sse(a,b,len);
    else
 #endif
 #endif
-      vec_inner_prod_float(a,b,len);      
+      return vec_inner_prod_float(a,b,len);
 }
-
-
-
 
 
 #endif /* ifndef VEC_H*/

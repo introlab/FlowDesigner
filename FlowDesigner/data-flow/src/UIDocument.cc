@@ -120,7 +120,8 @@ void UIDocument::load()
    ifstream docFile(fullpath.c_str());
    if (docFile.fail())
    {
-      cerr << "load: error loading " << fullpath << "\n";
+      error("Error: cannot open file");
+      //cerr << "load: error loading " << fullpath << "\n";
       addNetwork("MAIN", UINetwork::subnet);
       resetModified();
       return;
@@ -134,12 +135,30 @@ void UIDocument::load()
 	 docFile >> ch;
 	 if (docFile.fail())
 	 {
-	    cerr << "ERROR\n";
+	    error("Error: this doesn't look like an Overflow document");
+	    addNetwork("MAIN", UINetwork::subnet);
+	    resetModified();
+	    return;
 	 }
       }
+   } else if (ch!='<')
+   {
+      error("Error: this doesn't look like an Overflow document");
+      addNetwork("MAIN", UINetwork::subnet);
+      resetModified();
+      return;
    }
-   docFile.putback(ch);
-   string docStr;
+   string xmlStr;
+   docFile >> xmlStr;
+   if (xmlStr != "?xml")
+   {
+      error("Error: this doesn't look like an Overflow document");
+      addNetwork("MAIN", UINetwork::subnet);
+      resetModified();
+      return;      
+   }
+   //docFile.putback(ch);
+   string docStr="<?xml";
    while(1)
    {
       char buff[1025];
@@ -159,13 +178,14 @@ void UIDocument::load()
 void UIDocument::loadFromMemory(const char *mem, int size)
 {
    xmlDocPtr doc = xmlParseMemory (const_cast<char *> (mem), size);
-   xmlNodePtr root=doc->root;
    if (!doc || !doc->root || !doc->root->name)
    {
-      cerr << "load: error: cannot parse memory\n";
-      xmlFreeDoc (doc);
+      error("Error: corrupted XML in file");
+      addNetwork("MAIN", UINetwork::subnet);
+      resetModified();      
       return;
    }
+   xmlNodePtr root=doc->root;
    loadXML(root);
    xmlFreeDoc(doc);
 
@@ -308,6 +328,34 @@ void UIDocument::error(char *err)
 
 void UIDocument::save()
 {
+   string fullname = path+docName;
+   int size;
+
+   ofstream outFile(fullname.c_str());
+   if (outFile.fail())
+   {
+      error("Error while saving file");
+      return;
+   }
+   
+   char *mem = saveToMemory(size);
+   outFile << "#!/usr/bin/env batchflow" << endl;
+   outFile.write(mem, size);
+   if (outFile.fail())
+   {
+      free(mem);
+      error("Error while saving file");
+      return;
+   }
+   
+   free(mem);
+   resetModified();
+
+}
+
+
+char *UIDocument::saveToMemory(int &size)
+{
    xmlDocPtr doc;
    doc = xmlNewDoc((CHAR *)"1.0");
    doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Document", NULL);
@@ -324,27 +372,12 @@ void UIDocument::save()
       xmlSetProp(tree, (CHAR *)"type", (CHAR *)textParams[i]->type.c_str());
       xmlSetProp(tree, (CHAR *)"value", (CHAR *)textParams[i]->value.c_str());
    }
-
-   string fullname = path+docName;
-   if (xmlSaveFile(fullname.c_str(), doc)==-1)
-   {
-      error("Error while saving file");
-   } else {
-      resetModified();
-   }
+   
+   char *mem;
+   xmlDocDumpMemory(doc,(CHAR **)&mem,&size);
 
    xmlFreeDoc(doc);
-}
-
-void UIDocument::export2net()
-{
-   string netName = path+docName+"et";
-   ofstream out(netName.c_str());;
-   for (unsigned int i=0;i<networks.size();i++)
-   {
-      networks[i]->export2net(out);
-   }
-   
+   return mem;
 }
 
 string UIDocument::findExternal(const string &filename, char *searchPath, bool include_home, bool fullPathOutput)

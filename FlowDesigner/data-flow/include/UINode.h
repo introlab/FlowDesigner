@@ -111,14 +111,6 @@ public:
 	   y = new_y;
    }
 
-   /**Export to old network format (deprecated)*/
-   void export2net (ostream &out);
-/*
-   virtual void setAsCondition();
-   
-   virtual void unsetAsCondition();
-*/   
-   
    void setNodeParameters(UINodeParameters *params);   
    
    void insertNetParams(vector<ItemInfo *> &params);
