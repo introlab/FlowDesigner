@@ -15,7 +15,7 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <fftw.h>
@@ -23,59 +23,52 @@
 
 class Select;
 
-//DECLARE_NODE(Select)
-NODE_INFO(Select, "Signal:Manip", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH:START:END")
+NODE_INFO(Select, "Signal:Manip", "INPUT", "OUTPUT", "START:END")
 
-class Select : public FrameOperation {
+class Select : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
 
    int start;
    int end;
 
 public:
    Select(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
+      : BufferedNode(nodeName, params)
 
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-   
+      outputID = addOutput("OUTPUT");
+      
       start = dereference_cast<int>(parameters.get("START"));
       end = dereference_cast<int> (parameters.get("END"));
-}
-
-   ~Select() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-      
    }
+
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      ObjectRef inputValue = getInput(inputID, count);
+      
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      if (inputLength <= end)
+	 throw new NodeException(this, "Input vector too short", __FILE__, __LINE__);
+
       int i,j;
       for (i=start, j = 0 ;i<=end;i++,j++)
       {
          output[j]=in[i];
       }
-
-      output.status = Object::valid;
    }
 
 };

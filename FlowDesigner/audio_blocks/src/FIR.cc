@@ -15,35 +15,31 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stream.h>
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
 
 class FIR;
 
-//DECLARE_NODE(FIR)
-NODE_INFO(FIR,"Signal:DSP", "INPUT:FILTER", "OUTPUT", "LENGTH:CONTINUOUS:NONCAUSAL")
+NODE_INFO(FIR,"Signal:DSP", "INPUT:FILTER", "OUTPUT", "CONTINUOUS:NONCAUSAL")
 
-   //float *i_heap = ((float *)malloc( sizeof(float) * 2048))+2047;
-
-class FIR : public FrameOperation {
+class FIR : public BufferedNode {
    
    int inputID;
-   int inputLength;
+   int outputID;
    int filterID;
    int noncausal;
    bool continuous;
 
 public:
    FIR(string nodeName, ParameterSet params)
-   : FrameOperation(nodeName, params)
+   : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
+      outputID = addOutput("OUTPUT");
+
       filterID = addInput("FILTER");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
 
       if (parameters.exist("CONTINUOUS"))
          continuous=true;
@@ -62,50 +58,41 @@ public:
  
    }
 
-   ~FIR() {}
-
-   virtual void specificInitialize()
-   {
-      
-      this->FrameOperation::specificInitialize();
-      
-      
-   }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
-
-      NodeInput filterInput = inputs[filterID];
-      ObjectRef filterValue = filterInput.node->getOutput(filterInput.outputID, count);
-
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
-
-      for (int i=0;i<outputLength;i++)
-         output[i]=0;
+      ObjectRef inputValue = getInput(inputID, count);
+      ObjectRef filterValue = getInput(filterID, count);
 
       if (inputValue->status != Object::valid)
       {
-         output.status = inputValue->status;
+	 out[count] = inputValue;
          return;
       }
 
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      int inputLength = in.size();
+
+      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      out[count] = &output;
+
+      for (int i=0;i<inputLength;i++)
+         output[i]=0;
+
       if (filterValue->status != Object::valid)
       {
-	 output.status = Object::valid;
-	 return;
+         return;
       }
 
-      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const Vector<float> &filter = object_cast<Vector<float> > (filterValue);
+
       const Vector<float> *past;
       const Vector<float> *next;
       bool can_look_back = false;
       bool can_look_ahead = false;
       if (count > 0 && continuous)   
       {
-         ObjectRef pastInputValue = input.node->getOutput(input.outputID, count-1);
+         ObjectRef pastInputValue = getInput(inputID, count-1);
          if (pastInputValue->status == Object::valid)
          {
             can_look_back=true;
@@ -115,7 +102,7 @@ public:
       
       if (noncausal && continuous)
       {
-         ObjectRef nextInputValue = input.node->getOutput(input.outputID, count+1);
+         ObjectRef nextInputValue = getInput(inputID, count+1);
          if (nextInputValue->status == Object::valid)
          {
             can_look_ahead=true;
@@ -125,7 +112,7 @@ public:
 
       int size = filter.size();
       
-
+      //past frames
       if (can_look_back)
       {
          for (int i=0;i<size-noncausal-1;i++)
@@ -138,19 +125,21 @@ public:
          }
       }
 
+      //future frames
       if (can_look_ahead)
       {
-         for (int i=outputLength-noncausal;i<outputLength;i++)
+         for (int i=inputLength-noncausal;i<inputLength;i++)
          {
             int j, k;
-            for (j=i+noncausal-outputLength, k=0; j>= 0; j--, k++)
+            for (j=i+noncausal-inputLength, k=0; j>= 0; j--, k++)
             {
                output[i]+=(*next)[j]*filter[k];
             }
          }
       }
 
-      for (int i=0;i<outputLength;i++)
+      //current frames
+      for (int i=0;i<inputLength;i++)
       {
          int j, k;
          j=min(i+noncausal,inputLength-1);
@@ -161,8 +150,6 @@ public:
          }
       }
             
-
-      output.status = Object::valid;
    }
 
 };
