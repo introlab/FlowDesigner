@@ -203,8 +203,12 @@ fi
 SEM_LIBS=error
 AC_CHECK_FUNC(sem_init, SEM_LIBS="")
 if test "x$SEM_LIBS" = xerror; then
+     AC_CHECK_LIB(pthread, sem_init,
+     	SEM_LIBS="")
+fi
+if test "x$SEM_LIBS" = xerror; then
      AC_CHECK_LIB(rt, sem_init,
-     	SEM_LIBS="-lpthreads")
+     	SEM_LIBS="-lrt")
 fi
 if test "x$SEM_LIBS" = xerror; then
      SEM_LIBS=""
