@@ -484,6 +484,20 @@ void KeyPad::specificInitialize() {
    gtk_signal_connect(GTK_OBJECT(window1), "event",
 		      GTK_SIGNAL_FUNC (keypad_event_function),this);
 
+
+   //adding numeric keys
+   key_map.insert(make_pair(65456,pad_0_number));
+   key_map.insert(make_pair(65457,pad_1_number));
+   key_map.insert(make_pair(65458,pad_2_number));
+   key_map.insert(make_pair(65459,pad_3_number));
+   key_map.insert(make_pair(65460,pad_4_number));
+   key_map.insert(make_pair(65461,pad_5_number));
+   key_map.insert(make_pair(65462,pad_6_number));
+   key_map.insert(make_pair(65463,pad_7_number));
+   key_map.insert(make_pair(65464,pad_8_number));
+   key_map.insert(make_pair(65465,pad_9_number));
+   key_map.insert(make_pair(65450,pad_star_number));
+
    //let's show window
    gtk_accel_group_attach(accel,GTK_OBJECT(window1));
    gtk_widget_show(window1);
@@ -657,16 +671,12 @@ void KeyPad::add_accelerator(char key, GtkWidget *button) {
 }
 
 void KeyPad::keyboard_action(unsigned int key) {
-  cerr<<"keyboard_action key : "<<key<<endl;
-  cerr<<"keyboard_action char : "<<(char)key<<endl;
-  char my_key = (char) key;
   
-  if (key_map.find(my_key) != key_map.end()) {
+  if (key_map.find(key) != key_map.end()) {
     //we found this key
-    update_values(key_map[my_key],false);
+    update_values(key_map[key],false);
     key_stroke+= 5;
   }
-
 
 }
 
@@ -690,9 +700,7 @@ void keypad_button_pressed(GtkButton  *button, KeyPad *keypad) {
 
 
 void keypad_button_released(GtkButton  *button, KeyPad *keypad) {
-
   keypad->active = false;
-
 }
 
 

@@ -59,7 +59,7 @@ class KeyPad : public Node {
 
   //a lookup map with widgets/ids
   map <GtkWidget*,int> button_map;
-  map <char,int> key_map;
+  map <unsigned int,int> key_map;
 
   public:
 
