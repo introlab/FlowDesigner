@@ -1,35 +1,8 @@
 dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
-AC_INIT(HMM/include/covariance.h)
+AC_INIT(include/kmeans.h)
 
 dnl Stolen from gtk+:
-
-AC_CONFIG_SUBDIRS(vflow)
-
-AC_MODULE_OPT(audio_blocks)
-if test $audio_blocks = audio_blocks; then
-AC_CONFIG_SUBDIRS(audio_blocks)
-fi
-
-AC_MODULE_OPT(NNet)
-if test $NNet = NNet; then
-AC_CONFIG_SUBDIRS(NNet)
-fi
-
-AC_MODULE_OPT(HMM)
-if test $HMM = HMM; then
-AC_CONFIG_SUBDIRS(HMM)
-fi
-
-AC_MODULE_OPT(VQ)
-if test $VQ = VQ; then
-AC_CONFIG_SUBDIRS(VQ)
-fi
-
-AC_MODULE_OPT(video_blocks)
-if test $video_blocks = video_blocks; then
-AC_CONFIG_SUBDIRS()
-fi
 
 
 FREESPEECH_MAJOR_VERSION=0
@@ -59,21 +32,10 @@ AC_SUBST(LT_AGE)
 
 # For automake.
 VERSION=$FREESPEECH_VERSION
-PACKAGE=FreeSpeech
+PACKAGE=VQ
 
-dnl AC_MODULE_OPT(audio_blocks)
-dnl AC_MODULE_OPT(HMM)
-dnl AC_MODULE_OPT(VQ)
-dnl AC_MODULE_OPT(NNet)
-dnl AC_MODULE_OPT(video_blocks)
-
-modules="$audio_blocks $VQ $HMM $NNet $video_blocks"
-AC_SUBST(modules)
 
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
-
-dnl Put configuration information in config.h.
-#AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_HOST
 
@@ -81,16 +43,12 @@ AM_PROG_LIBTOOL
 
 case "$host_os" in 
 hpux*) OS=HPUX ;;
-dnl mv libtool libtool-bak  
-dnl cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$CXX\"/; print' > libtool;;
 linux*) OS=LINUX ;;
 esac
 AC_DEFINE_UNQUOTED(${OS})
 dnl Initialize libtool.
 
 AC_LIBTOOL_ACC_KLUDGE
-
-#AM_SANITY_CHECK
 
 dnl Checks for programs.
 
@@ -103,19 +61,16 @@ dnl Checks for libraries.
 
 dnl Test for math library, and define LIBS
 AC_CHECK_LIB(m, sin)
-AC_CHECK_LIB(dl, dlopen)
-AC_CHECK_LIB(pthread, pthread_create)
+dnl AC_CHECK_LIB(dl, dlopen)
+dnl AC_CHECK_LIB(pthread, pthread_create)
+
+dnl test for SGI audio library (required by SndLib) and define LIBS
 AC_PATH_FFTW
 
 dnl Checks for library functions.
 
 dnl Output the makefiles and version.h.
 
-AC_OUTPUT([Makefile \
-	data-flow/Makefile \
-	data-flow/src/Makefile data-flow/include/Makefile \
-	data-flow/doc/Makefile data-flow/doc/html/Makefile \
-	data-flow/doc/html/images/Makefile \
-	tools/Makefile tools/src/Makefile tools/m/Makefile \
+AC_OUTPUT([Makefile include/Makefile src/Makefile
 	])
 

@@ -1,6 +1,6 @@
 document parameters for batch mode
 
-support removing network terminals
+support removing network terminals (implemented, but buggy)
 
 set the isModified flag when adding a net terminal or moving a node, ...
 
@@ -10,3 +10,11 @@ implement variable number of inputs/outputs
 
 prevent from running a network that has an input (ie that has to be included
 somewhere else)
+
+complete "count" display in probe
+
+implement Matrix class
+
+implement image/matrix probe
+
+
