@@ -89,9 +89,9 @@ void FFNet::learn(double *input, double *output)
 	 }
 	 for (int j=0;j<layerInputs;j++)
 	 {
-	    w[j] = previousValue[j] * delta[i];
+	    w[j] += previousValue[j] * delta[i];
 	 }
-	 w[layerInputs] = delta[i];
+	 w[layerInputs] += delta[i];
       }
    }	 
 }
