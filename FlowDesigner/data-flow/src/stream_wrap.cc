@@ -3,10 +3,11 @@
 
 //@implements core
 
-fileptr_streambuf::fileptr_streambuf(FILE *_file, bool _owner)
+fileptr_streambuf::fileptr_streambuf(FILE *_file, bool _owner, bool _isPipe)
    : file(_file)
    , owner(_owner)
    , takeFromBuf(false)
+   , isPipe(_isPipe)
 {
 
 }

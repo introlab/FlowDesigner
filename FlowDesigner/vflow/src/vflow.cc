@@ -666,7 +666,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) {
    about = gnome_about_new ("vflow", VERSION,
                             _("(C) 1999-2001 Jean-Marc Valin & Dominic Letourneau"),
                             authors,
-                            _("Overflow (http://freespeech.sourceforge.net/overflow.html) is a free (LGPL) ""data flow oriented"" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a ""clone"" of any of them.\n\nThis software is part of the Open Mind Speech project (http://freespeech.sourceforge.net/)."),
+                            _("Overflow (http://freespeech.sourceforge.net/overflow.html) is a free (LGPL) ""data flow oriented"" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a ""clone"" of any of them.\n\nThis software is part of the Open Mind Speech project (http://freespeech.sourceforge.net/).\nOther contributors: Brad Chapman, Luc Lussier, Andre Charbonneau"),
                             NULL);
    gtk_object_set_data (GTK_OBJECT (about), "about", about);
    gtk_window_set_modal (GTK_WINDOW (about), TRUE);

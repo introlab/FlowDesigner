@@ -2,10 +2,28 @@ implement variable number of inputs/outputs
 
 manage to handle subnet dependencies
 
-vflow preferences...
-
 allow to change the thread stack size
 
 *write logging system (eg. error curves in NNet)
 
 implement tooltips
+
+Node type below node
+
+Terminal name as popup (option)
+
+Red nodes when exception
+
+**For 0.6.0**
+
+Message for save
+Permission 755
+Concat for float+vector
+Examples
+Clear less sub-window
+Fix doc parameters
+Network renaming
+Preference classes + XML
+Speaker verification (OMS)
+fix stream wrapper ownership
+remove default -g compile switch

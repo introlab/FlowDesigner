@@ -27,13 +27,14 @@ class fileptr_streambuf : public streambuf {
    virtual streamsize xsgetn(char *s, streamsize n);
    virtual int pbackfail(int c);
   public:
-   fileptr_streambuf(FILE *_file, bool _owner=false);
-   ~fileptr_streambuf() {if (owner) fclose (file);}
+   fileptr_streambuf(FILE *_file, bool _owner=true, bool _isPipe=false);
+   ~fileptr_streambuf() {if (owner) { if (isPipe) pclose(file); else fclose (file);}}
   protected:
    FILE *file;
    bool owner;
    bool takeFromBuf;
    char charBuf;
+   bool isPipe;
 };
 
 
@@ -41,8 +42,8 @@ class fileptr_streambuf : public streambuf {
 class fileptr_ostream : public ostream {
    fileptr_streambuf _streambuffer;
   public:
-   fileptr_ostream(FILE *_file, bool _owner=false)
-      : _streambuffer (_file, _owner)
+   fileptr_ostream(FILE *_file, bool _owner=true, bool _isPipe=false)
+      : _streambuffer (_file, _owner, _isPipe)
       , ostream(&_streambuffer)
       {clear();}
 };
@@ -50,8 +51,8 @@ class fileptr_ostream : public ostream {
 class fileptr_istream : public istream {
    fileptr_streambuf _streambuffer;
   public:
-   fileptr_istream(FILE *_file, bool _owner=false)
-      : _streambuffer (_file, _owner)
+   fileptr_istream(FILE *_file, bool _owner=true, bool _isPipe=false)
+      : _streambuffer (_file, _owner, _isPipe)
       , istream(&_streambuffer)
       {clear();}
 };
@@ -59,8 +60,8 @@ class fileptr_istream : public istream {
 class fileptr_iostream : public iostream {
    fileptr_streambuf _streambuffer;
   public:
-   fileptr_iostream(FILE *_file, bool _owner=false)
-      : _streambuffer (_file, _owner)
+   fileptr_iostream(FILE *_file, bool _owner=true, bool _isPipe=false)
+      : _streambuffer (_file, _owner, _isPipe)
       , iostream(&_streambuffer)
       {clear();}
 };
@@ -80,7 +81,7 @@ class fd_streambuf : public streambuf {
    virtual streamsize xsgetn(char *s, streamsize n);
    virtual int pbackfail(int c);
   public:
-   fd_streambuf(int _fd, bool _owner=false);
+   fd_streambuf(int _fd, bool _owner=true);
    ~fd_streambuf() {if (owner) close (fd);}
   protected:
    int fd;
@@ -94,7 +95,7 @@ class fd_streambuf : public streambuf {
 class fd_ostream : public ostream {
    fd_streambuf _streambuffer;
   public:
-   fd_ostream(int _fd, bool _owner=false)
+   fd_ostream(int _fd, bool _owner=true)
       : _streambuffer (_fd, _owner)
       , ostream(&_streambuffer)
       {clear();}
@@ -104,7 +105,7 @@ class fd_ostream : public ostream {
 class fd_istream : public istream {
    fd_streambuf _streambuffer;
   public:
-   fd_istream(int _fd, bool _owner=false)
+   fd_istream(int _fd, bool _owner=true)
       : _streambuffer (_fd, _owner)
       , istream(&_streambuffer)
       {clear();}
@@ -113,7 +114,7 @@ class fd_istream : public istream {
 class fd_iostream : public iostream {
    fd_streambuf _streambuffer;
   public:
-   fd_iostream(int _fd, bool _owner=false)
+   fd_iostream(int _fd, bool _owner=true)
       : _streambuffer (_fd, _owner)
       , iostream(&_streambuffer)
       {clear();}
