@@ -99,10 +99,12 @@ void UINodeParameters::load(xmlNodePtr xml_node)
 	    //insertLoadedParam(param, type, value);
 	    //cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
 	 } else {
-	   if (node) {
+	   if (node) 
+	   {
 	     cerr << node->getName() <<" : param " << name << " no longer used\n";
 	   }
-	   else {
+	   else 
+	   {
 	     cerr <<" : param " << name << " no longer used\n";
 	   }
 	 }
