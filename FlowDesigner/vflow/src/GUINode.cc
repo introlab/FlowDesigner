@@ -78,12 +78,12 @@ void GUINode::draw()
       double xx2=x2+15.0;
       vector<string> inputname;
       vector<string> outputname;
-      _NodeFactory *factory = Node::getFactoryNamed(type);
+      /*_NodeFactory *factory = Node::getFactoryNamed(type);
       if (factory)
       {
 	 inputname = factory->getInputs();
 	 outputname = factory->getOutputs();
-      } else {
+	 } else*/ {
 	 inputname = net->getDocument()->getNetInputs(type); 
 	 outputname = net->getDocument()->getNetOutputs(type); 
 	 //cerr << "UINode::draw factory not found in simple nodes\n";

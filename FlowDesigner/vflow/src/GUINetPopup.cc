@@ -70,18 +70,18 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
    //addType("Signal", "FFT");
    //addType("General", "Constant");
 
-    map<string,_NodeFactory*> &factories = Node::factoryDictionary();
+   /*map<string,_NodeFactory*> &factories = Node::factoryDictionary();
    map<string,_NodeFactory*>::iterator f=factories.begin();
    while (f!=factories.end())
    {
       //newMenu->add(f->second->getCategory(),f->second->getName());
       addType(f->second->getCategory(),f->second->getName());
       f++;
-   }
+      }*/
    map<string, SubnetInfo *>::iterator info = GUIDocument::externalDocInfo.begin();
    while (info != GUIDocument::externalDocInfo.end()) 
    {
-      addType("External",info->first);
+      addType(info->second->category,info->first);
       info++;
    }
 
