@@ -139,22 +139,9 @@ inline ObjectRef & Buffer::operator[] (int ind)
 
 inline ObjectRef Buffer::operator[] (int ind) const
 {
-      if (ind < 0 || ind <= currentPos-bufferLength)
+   if (ind < 0 || ind <= currentPos-bufferLength || ind > currentPos)
    {
       throw new BufferException (this, "trying to access non-existing element",ind);
-   }
-   if (ind > currentPos)
-   {
-      int diff = ind-currentPos;
-      while (diff--)
-      {
-	 bufferPos++;
-	 if (bufferPos == bufferLength)
-	    bufferPos=0;
-	 data[bufferPos] = Object::nilObject;
-      }
-      currentPos = ind;
-      return data[bufferPos];
    }
    
    int tmp = bufferPos+ind-currentPos;
