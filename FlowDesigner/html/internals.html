@@ -1,0 +1,64 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76 [fr] (X11; U; Linux 2.2.17-21mdk i686) [Netscape]">
+   <title>Overflow Internals</title>
+</head>
+<body>
+
+<center>
+<h1>
+Overflow Internals</h1></center>
+
+<h2>
+Nodes</h2>
+A node is the smallest processing unit in Overflow. Once it has been initialized,
+the only method it understands is <i>getOutput(int output_id, int count)</i>.
+In other words, all you can do with it is to ask it for its output. One
+obvious consequence of that is that all node must have at least one output,
+but it can have more than one. A node can have any number of input, including
+zero (examples of node with no inputs are constants and random generators).
+<p>If a node requires input data in order to perform some calculations,
+it will call <i>getOutput(...)</i> on its input node(s). Computation is
+hence performed in a recursive manner until everything is calculated and
+the last node returns its output. The <i>count</i> argument to the <i>getOutput(...)</i>
+method is used when loops are involved. It specifies the number of the
+iteration. Note that it is possible for a node to ask its inputs for a
+different <i>count</i> that the one received. It is even possible to ask
+for many different <i>count</i> values in a row.
+<p>The <i>Node</i> class is an abstract class from which all types of nodes
+must derive (directly or indirectly). Information on how to derive new
+types of nodes is given in <a href="extend.html">Extending Overflow</a>.
+<br>&nbsp;
+<h2>
+Networks</h2>
+A network is a graph containing nodes that are linked together in order
+to perform some operation and/or return a result. Most of the time, the
+graph will be acyclic that is, it will not contain loops. It is now (as
+of march 2001) possible to have feedback loops using the <i>FeedBack</i>
+node, but this is a more advanced topic. One thing worth mentioning is
+that the Network class derives directly from the Node class. This means
+that any network can be used just as if it were a single Node. This makes
+it possible to include networks in other networks. The included network
+is often refered to as <i>sub-network</i>, or <i>subnet</i>.
+<p>In order for a network to ba valid, it must meet the following criteria:
+<ul>
+<li>
+It must have at least one output</li>
+
+<li>
+Every node it contains must have a connection to at least one of its output</li>
+
+<li>
+All node must have all their inputs connected</li>
+
+<li>
+A toplevel network may not have inputs</li>
+
+<li>
+There should be no loop (except by using a <i>FeedBack</i> node)</li>
+</ul>
+
+</body>
+</html>

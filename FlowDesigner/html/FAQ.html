@@ -1,0 +1,143 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [fr] (X11; U; Linux 2.4.13 i686) [Netscape]">
+   <title>FAQ</title>
+</head>
+<body>
+
+<center>
+<h1>
+Frequently Asked Questions</h1></center>
+
+<h2>
+A) Compiling</h2>
+
+<h3>
+1- What do I need to compile?</h3>
+
+<ul>
+<li>
+an ANSI C++ compiler</li>
+
+<ul>
+<li>
+gcc 2.95.x is OK</li>
+
+<li>
+most of gcc 2.96 variants are OK</li>
+
+<li>
+gcc 3.0.x should work (maybe some modifs required)</li>
+
+<li>
+egcs 1.1.2 is untested (probably doesn't work)</li>
+</ul>
+
+<li>
+autoconf, automake, libtool (which require perl and m4)</li>
+
+<li>
+GNU make</li>
+
+<li>
+<a href="http://www.fftw.org">FFTW</a> (now optional, but recommended)
+compiled with --enable-float</li>
+
+<li>
+<a href="http://www.gnome.org">gnome</a> (including the development libraries
+and libxml)</li>
+
+<li>
+pthreads (now included in most distributions)</li>
+</ul>
+
+<h3>
+2- I get an error about ios::~ios() being protected. What's the problem?</h3>
+You're using an old version of Overflow. Download the latest version and
+it'll work.
+<h3>
+3- What's the problem with FFTW?</h3>
+The <a href="http://www.fftw.org">FFTW</a> package must be installed in
+order to build and use Overflow. It must be configured with --enable-float.
+At least for now, DO NOT use the --enable-type-prefix option.
+<p>UPDATED 2001/05/30: The CVS and snapshots and versions > 0.4.3 should
+be able to deal with FFTW using either float or double. However, your FFTW
+installation has to match your binary Overflow installation.
+<h3>
+4- I have FFTW installed, but I get an error message about (FFTW_REAL *)
+not matching (float *). What do I do?</h3>
+The most likely cause for this error is forgetting to compile FFTW with
+the --enable-float option (the default for FFTW is FFTW_REAL==double, so
+it doesn't match with float vectors).
+<p>See 3)
+<h3>
+5- What about Redhat 7.0 and gcc 2.96(RH)?</h3>
+There seem to be some bugs with the early gcc 2.96 versions. The compiled
+shipped with RedHat 7.0 is broken and often generates bad code.
+<h3>
+6- What platform does it run on?</h3>
+The main development platform is Linux. However, Overflow is known to run
+on FreeBSD and Solaris (x86 at least) too. For most other UN*X, the port
+should be easy. HP-UX is more tricky, but since an earlier version worked
+on it, it probably wouldn't be that hard to make the code compile on HP-UX.
+<h3>
+7- Is there a MS Windows port?</h3>
+Yes, but it's limited and still experimental. Details <a href="compiling.html#WIN32">here</a>.
+<br>&nbsp;
+<h2>
+B) License</h2>
+Please not that this section tries to explain the license in plain english.
+However, it may not be completly accurate. If in doubt about what you are
+allowed to do with Overflow, please refer to the files COPYING and COPYING.LGPL
+in the Overflow distribution.
+<h3>
+1- How much does it cost?</h3>
+How much do you want to pay me for it :-) Overflow is Free (libre) software,
+and is released under the <a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a>
+(the <i>Lesser General Public License</i>) license, which is an open-source
+compliant license.
+<br>&nbsp;
+<h3>
+2- What am I allowed to do with it?</h3>
+What you can do with it is explained in the LGPL. This can be summarized
+as this: you may <i>use</i> the software without restriction. You may <i>redistribute</i>
+the software as you wish as long as you make the source code available
+with the same license. You may modify the source code, once again, as long
+as you release the source code for these modifications.
+<br>&nbsp;
+<h3>
+3- What about plugins/toolbox?</h3>
+You may distribute binary-only plugins/toolbox. However, if you need to
+modify Overflow itself, you need to release the source code to these modifications.
+<br>&nbsp;
+<h3>
+4- What about the Overflow "programs" (.n) I write?</h3>
+There are no restrictions at all on distribution of Overflow programs.
+However, if you think your .n program or subnet may be useful to others,
+please post it on the mailing list so I can be included in future versions
+of Overflow, or at least be made available to others.
+<br>&nbsp;
+<h2>
+C) Development</h2>
+
+<h3>
+1- I think I found a bug. What should I do?</h3>
+First, don't hit me ;-) You can either post it on the mailing list or submit
+the bug <a href="http://sourceforge.net/tracker/?func=add&group_id=590&atid=100590">here</a>.
+Note that Overflow is in heavy development and there are certainly some
+bugs.
+<h3>
+2- What about patches</h3>
+Same thing, the best is to post any patch to the mailing list.
+<h3>
+3- Is backward compatibility preserved from release to release?</h3>
+Depends on what kind of compatibility. Overflow programs (.n) created with
+older versions will most of time work with a newer version (or require
+very minor modifications). Source compatibility for external (custom) toolboxes
+and Piper is also preserved most of the time. However, binary compatibility
+is most of the times NOT preserved from release to release. This may change
+when we reach 1.0, but for now, don't count on it.
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE webproject>
+<webproject>
+<project usePreviewPrefix="0" previewPrefix="file:file%3A//" type="Local" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
+<upload remote_host="shell.sf.net" remote_port="22" remote_path="/home/groups/f/fl/flowdesigner/htdocs" remote_protocol="sftp" user="maestro" />
+<defaultDTD>-//w3c//dtd html 4.01 frameset//en</defaultDTD>
+<templates>templates/</templates>
+<toolbars>toolbars/</toolbars>
+<author>Dominic Letourneau</author>
+<email>Dominic.Letourneau@USherbrooke.ca</email>
+<item upload_time="" url="CVS/" />
+<item upload_time="1074267188" modified_time="1074267188" url="CVS/Entries" />
+<item upload_time="1074113611" modified_time="1074113611" url="CVS/Repository" />
+<item upload_time="1074113611" modified_time="1074113611" url="CVS/Root" />
+<item upload_time="" url="images/" />
+<item upload_time="" url="images/CVS/" />
+<item upload_time="1074173650" modified_time="1074173650" url="images/CVS/Entries" />
+<item upload_time="1074113611" modified_time="1074113611" url="images/CVS/Repository" />
+<item upload_time="1074113611" modified_time="1074113611" url="images/CVS/Root" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/authors_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/authors_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/b17.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/copybtn.gif" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/doc_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/doc_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/download_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/download_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/home_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/home_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/infbtbar.gif" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/links_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/links_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/news_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/news_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/overflow.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/overflow.png" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/screenshots_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/screenshots_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/status_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/status_on.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/todo_off.jpg" />
+<item upload_time="1074113612" modified_time="1074113612" url="images/todo_on.jpg" />
+<item upload_time="" url="templates/" />
+<item upload_time="" url="toolbars/" />
+<item upload_time="1074113611" modified_time="1074113611" url="announce-0.1.0.html" />
+<item upload_time="1074113611" modified_time="1074113611" url="API.html" />
+<item upload_time="1074260145" modified_time="1074260145" url="authors.html" />
+<item upload_time="997150957" modified_time="997150957" url="collect.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="collection.html" />
+<item upload_time="1074113611" modified_time="1074113611" url="compiling.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="decoding.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="description.html" />
+<item upload_time="1074113611" modified_time="1074113611" url="doc.css" />
+<item upload_time="1074260204" modified_time="1074260204" url="doc.html" />
+<item upload_time="1074267188" modified_time="1074267188" url="download.html" />
+<item upload_time="1074113611" modified_time="1074113611" url="extend.html" />
+<item upload_time="1074113611" modified_time="1074113611" url="FAQ.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="front_end.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="hmm.html" />
+<item upload_time="1074260204" modified_time="1074260204" url="home.html" />
+<item upload_time="1074260181" modified_time="1074260181" url="index.html" />
+<item upload_time="1074113612" modified_time="1074113612" url="internals.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="library.html" />
+<item upload_time="1074260145" modified_time="1074260145" url="links.html" />
+<item upload_time="1074115241" modified_time="1074115238" url="menu.html" />
+<item upload_time="1074260204" modified_time="1074260204" url="modules.html" />
+<item upload_time="1074260146" modified_time="1074260146" url="news.html" />
+<item upload_time="1074113612" modified_time="1074113612" url="overview.html" />
+<item upload_time="917462501" modified_time="917462501" url="people.txt" />
+<item upload_time="1074260146" modified_time="1074260146" url="screenshots.html" />
+<item upload_time="1074260204" modified_time="1074260204" url="server.html" />
+<item upload_time="1074113740" modified_time="1074113740" url="sound_interface.html" />
+<item upload_time="1074260146" modified_time="1074260146" url="status.html" />
+<item upload_time="1074260146" modified_time="1074260146" url="todo.html" />
+<item upload_time="1074260204" modified_time="1074260204" url="training.html" />
+<item upload_time="1074260204" modified_time="1074260204" url="user-guide.html" />
+<item upload_time="" url="doc/" />
+<item upload_time="1074200434" modified_time="1074200434" url="doc/nodes.html" />
+</project>
+</webproject>

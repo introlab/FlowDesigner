@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [fr] (X11; U; Linux 2.4.13 i686) [Netscape]">
+</head>
+<body>
+
+<center>
+<h1>
+User Guide</h1></center>
+
+<h2>
+Getting started with <i>vflow</i></h2>
+If called with no argument, the <i>vflow</i> program will start with a
+new empty Overflow document. It will already have a network named "MAIN".
+It is important that every "program" contain a network called "MAIN", which
+is equivalent to the main() function in a C program. You can add more sub-networks
+(equivalent of sub-routines) from the menu "Networks->Add Network".
+<p>You can then add nodes to your network by clicking on the right button
+in the background, select "New Node" and the type of node you want. The
+node inputs are displayed as a dot on the left side of each node, while
+the outputs are displayed on the right side. Inputs and outputs are called
+<i>terminals</i>. You can connect two nodes by clicking on a terminal and
+dragging the mouse to another terminal. Note that you cannot connect two
+outputs together, nor can you connect two inputs together. Except by using
+the Feedback node ("advanced" feature), you should not have feedback loops
+in your network. Links can be deleted by clicking on them with the SHIFT
+modifier on.
+<p>Right-clicking on a node brings up the node menu. Selecting "Properties"
+in the node menu brings a dialog with parameters used by the node. Each
+parameter has a name a type and a value. Some of the parameters are mandatory,
+while some others are optional. See the <a href="nodes.html">node documentation</a>
+for a description of all the parameters.
+<p>All networks must have at least one output. Any network that is not
+a toplevel network (MAIN) may also have inputs. Inputs and outputs can
+be added by left clicking on a terminal with the SHIFT modifier on. You
+will be asked to provide the input/output name.
+<br>&nbsp;
+<h2>
+Using sub-networks (subnets) and iterators</h2>
+In order to simplify programming, you can create sub-networks (main menu
+Network->Add network) that can contain several nodes connected together.
+That way, you can reuse those networks as subnets in a higher level network.&nbsp;
+It is very important to name the newly created network a different name
+than "MAIN" for obvious reasons.&nbsp; Those networks must absolutely have
+"named" inputs and outputs in order to be used in higher level networks
+as explained in the previous section.
+<p>Another useful type of network you can create is the Iterator (main
+menu Network->Add iterator). An iterator, is a control structure that performs
+a loop. It stops looping when a certain "control condition" is met. The
+condition is a boolean value the iterator gets from a node. To define the
+iterator's condition, left click on a node output while holding the CONTROL
+(or ALT) modifier. Note that there is a bug in some versions of gnome for
+which CONTROL does not work with the canvas, so you'll have to use ALT.
+<p>For now, Threaded Iterators are experimental. You should not use them,
+unless you REALLY know what you are doing.
+<h2>
+Executing a program</h2>
+When your program is complete, you can execute it by clicking "Run" in
+the toolbar. If an error occurs, the program will abort and the error will
+be printed in the text box in the bottom pane. Node that as of 0.6.0, the
+created documents have execute permission and can be executed as a like
+a script, provided that the batchflow executable is in the path.
+<h2>
+Automatic code generation</h2>
+Is is now possible to generate C++ code from an Overflow .n file. You can
+do that by clicking the "Build" button on the toolbar. Doing so brings
+up the following dialog:
+<center><img SRC="codegen.gif" height=257 width=408></center>
+
+<p><br>
+<br>
+<br>
+<br>
+<br>
+<p>The "Build function name" is the name given to the function that will
+return the network (<tt>Network *</tt>) corresponding to the XML file.
+You will only care if you want to build a library or if you want multiple
+networks. The "Output file name" option specifies the name of the C++ file
+that builds the network. Of course, "Directory" specifies where to put
+all that.
+<p>There are 3 code generation options:
+<ul>
+<li>
+<b>Generate main:</b> Check that if you want to build an application (as
+opposed to a library)</li>
+
+<li>
+<b>Static linkage:</b> This will copy all the required Overflow files in
+the same directory. This will allow to build an application/library without
+linking to Overflow. Note that the Overflow license (LGPL) still applies
+to the copied files.</li>
+
+<li>
+<b>Generate makefile:</b> Un-implemented yet</li>
+</ul>
+Note: the VFLOW_SOURCE environment variable must be set to your Overflow
+source directory in order for the "static linkage" option to work.
+<br>
+<hr WIDTH="100%">
+<div align=right><a href="mailto:jean-marc.valin@hermes.usherb.ca">Jean-Marc Valin</a>
+<br><a href="mailto:dominic.letourneau@usherbrooke.ca">Dominic L&eacute;tourneau</a>
+<br><i>$Date: 2004/01/16 13:36:44 $</i></div>
+
+</body>
+</html>

@@ -2,30 +2,95 @@
 <html>
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" content="Mozilla/4.6 [en] (X11; I; Linux 2.2.9 i686) [Netscape]">
-   <meta name="Author" content="Jean-Marc Valin">
+   <meta name="GENERATOR" content="Mozilla/4.77 [fr] (X11; U; Linux 2.4.3-20mdk i686) [Netscape]">
    <title>Overview</title>
 </head>
-<body background="BACK8.png">
+<body>
 
 <center>
 <h1>
-Overview</h1></center>
-FreeSpeech is an attempt to provide free (GPL) speech recognition for Linux
-(or other UN*X eventually). We want it to be as easy as possible to integrate
-with applications,desktops (<a href="http://www.gnome.org">gnome</a> and
-<a href="http://www.kde.org">KDE</a>) or GUI libraries. To achieve that,
-it will be in the form of a server to which "speech aware" processes can
-connect to get speech input. We want to use a model similar to the one
-X is using (although I have to say I'm not very familiar with the internals).
-In that way, it will also be available through a network.
-<p>This project is very young, and we don't have much code so far (we're
-far from something working). We'd like to get the foundations as soon as
-possible to have basic functionnalities working so we can start the <i><a href="http://www.tuxedo.org/~esr/writings/cathedral-bazaar/">bazaar</a></i>.
+Overflow (Piper PL) versus Matlab/C</h1></center>
+
+<h2>
+Nodes</h2>
+The basic processing using in Overflow is a Node, a Node is in all ways
+similar to a C or Matlab function. It takes some input data, performs some
+operations and send data out.
+<blockquote>
+<h3>
+Built-in nodes</h3>
+A built-in Overflow node is written in C++ and is part of the Overflow
+code (or compiled in an Overflow toolbox, like Matlab's mex files). In
+Overflow, all nodes are implemented as a class that derive (directly or
+indirectly) from a base class called "Node" (note that most nodes derive
+from "BufferedNode"). Although the Overflow implementation of different
+nodes uses C++ inheritance mechanism (using classes), there's no reason
+for the user to be aware of that. For that reason, it's not recommended
+to refer to nodes as "types" (e.g.. if Overflow were written in C, nodes
+would be implemented as functions).
+<h3>
+Subnets (composite nodes)</h3>
+An Overflow subnet is a collection of connected nodes that can be used
+as if it were a single node. Most Overflow subnets will be saved into .n
+files, which are almost the exact equivalent of Matlab's .m files. There's
+no real C equivalent because C is a compiled language (although it could
+be seen as a C function calling other C function).
+<h3>
+Node inputs/outputs</h3>
+The inputs of an Overflow nodes are equivalent to the arguments to a Matlab/C
+function. The same for outputs, while C is restricted to one return value,
+Overflow and Matlab can have several outputs.
+<h3>
+Node parameters</h3>
+Overflow node parameters are also equivalent to C/Matlab function arguments.
+The difference between node parameters and node inputs is that the parameters
+cannot change at run-time. It is chosen at "build-time" and stays constant
+throughout the run. For instance, the "Constant" node has no input, but
+has a parameter called "VALUE" that is returned as the output of the node.
+Using constants, you can always "transform" another node's input into a
+parameter. The reverse is not true, however. Why then have parameters and
+not define every argument as an input? Simplicity and run-time performances.
+Sometimes, it's just a lot easier to know certain arguments in advance
+and be sure that they don't change during the run. However, when possible,
+it is better to implement arguments as inputs, as this allows more flexibility.</blockquote>
+
+<h2>
+Data Types</h2>
+Unlike Matlab, that only supports the complex-double-matrix type (well,
+that's not totally true, but...), Overflow (like C and C++) has support
+for many different types. The basic Overflow types are: Bool, Int, Float,
+Double, Stream and Vector. There are also toolbox-specific types, like
+FFNet (neural network), VQ (Vector Quantizer), GMM (Gaussian Mixture Model),
+...
+<p>Right now, the only way to define a new type in Overflow is by adding
+C++ code for it in a toolbox (or the core). Eventually, there will (could?)
+be a way to pack data in a "struct" using Overflow nodes, but this is not
+implemented yet.
+<p>Some Overflow Nodes expect a certain type of data as input/parameter
+and will generate a run-time exception (which will abort execution) if
+the wrong data type is used (e.g.. a Load node expects a Stream as input
+and nothing else). Some nodes, like the NOP (no-op) node, can take any
+type as input. Some node have more complex behaviour, like the Add node
+that can add two floats, two Vectors of the same dimension, but cannot
+add a Bool and a Vector.
+<h2>
+Links</h2>
+There's no real correspondence between Overflow links and C or Matlab constructs.
+The best analogy would be to say that Links represent the order of the
+lines in a C/Matlab function. You also need to keep in mind that Overflow
+a "pull method" in order to compute data. What does that mean? When you
+run a network, the last node (output node) of the main network (called
+"MAIN" -- how original) is asked for its output. In order to compute its
+output, it needs to ask its input nodes for their output. That way everything
+propagates from the end to the beginning recursively.
+<p>Now, why going backwards like that? That's a bit long to explain. The
+quick answer is "because". The longer answer involves faster handling of
+dependencies, faster processing, buffer management and things like that.
 <br>
 <hr WIDTH="100%">
-<br><i><a href="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</a></i>, Universit&eacute;
-de Sherbrooke
-<br>$Date: 1999/01/21 00:15:37 $
+<div align=right><a href="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</a>
+<br><i>$Date: 2001/08/15 07:26:33 $</i></div>
+
+<br><a href="mailto:valj01@gel.usherb.ca"></a>&nbsp;
 </body>
 </html>

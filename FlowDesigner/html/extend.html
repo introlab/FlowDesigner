@@ -1,0 +1,265 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76 [fr] (X11; U; Linux 2.2.17-21mdk i686) [Netscape]">
+   <title>Extending Overflow</title>
+</head>
+<body>
+
+<center>
+<h1>
+<font size=+4>Extending Overflow</font></h1></center>
+Overflow is designed to be extendible in many areas, so that it is possible
+to create new:
+<ul>
+<li>
+Node types</li>
+
+<li>
+Data types</li>
+
+<li>
+Double-dispatched operators</li>
+</ul>
+
+<h2>
+<font size=+3>Node types</font></h2>
+Most of the new nodes will derive from either the <i>Node</i> abstract
+class or the <i>BufferedNode</i> abstract class. You should use <b>public</b>
+inheritance when deriving you new class. In all cases, you will need to
+define a constructor for your new node class. The parameters for this constructors
+are: <i>(string nodeName, const ParameterSet &amp;params)</i>, which are
+used to initialize the base class, e.g..
+<p><tt>class MyNode : public BufferedNode {</tt>
+<br><tt>&nbsp; public:</tt>
+<br><tt>&nbsp;&nbsp; MyNode(nodeName, params)</tt>
+<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : BufferedNode(nodeName, params)</tt>
+<br><tt>&nbsp;&nbsp; ...</tt>
+<br><tt>};</tt>
+<p>Also, if you derive from <i>BufferedNode</i>, you need to override the
+<i>void
+calculate(int output_id, int count, Buffer &amp;out)</i><tt> </tt>method.
+The arguments are the ID ot the input requested (<i>output_id</i>), the
+iteration ID (<i>count</i>) and the output buffer for the requested output
+(<i>out</i>). The method is expected to assign an object in <i>out[count]</i>.
+<p>If you derive directly from the <i>Node</i> class, you need to override
+the <i>ObjectRef getOutput(int output_id, int count)</i><tt> </tt>method.
+The meaning of <i>output_id</i> and <i>count</i> is the same as for the
+<i>BufferedNode</i>
+equivalent, and the result should be returned as an
+<i>ObjectRef</i>.
+<p>Here's a list of the methods than you may implement in your new node
+class:
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER COLS=3 WIDTH="100%" NOSAVE >
+<tr>
+<td>
+<h3>
+Method(s)</h3>
+</td>
+
+<td>
+<h3>
+Impact Level</h3>
+</td>
+
+<td>
+<h3>
+Comment(s)</h3>
+</td>
+</tr>
+
+<tr>
+<td>virtual ObjectRef getOutputNamed (const string &amp;outputName, int
+count);</td>
+
+<td>DEPRECATED</td>
+
+<td>
+<ul>
+<li>
+We are using output names only for convenience. The already defined getOutputNamed
+from Node will work if you did add inputs and outputs with the addOutput(...)
+and addInput(...) methods.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual void connectToNode (string in, Node *inputNode, string out);</td>
+
+<td><font color="#FF0000">REALLY NOT RECOMMENDED</font></td>
+
+<td>
+<ul>
+<li>
+This is very dangerous to change this method. It connects two Nodes with
+a predetermined protocol. We only had to redefine this method for sub-networks
+and the iterators. You should not need to redefine this method for standard
+nodes.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual void initialize ();</td>
+
+<td><font color="#FF0000">REALLY NOT RECOMMENDED</font></td>
+
+<td>
+<ul>
+<li>
+This is very dangerous to change this method. The initialization of the
+nodes requires a special handling for proper initialization.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual void specificInitialize ();</td>
+
+<td>RECOMMENDED</td>
+
+<td>
+<ul>
+<li>
+This is the specific Node initialization. If you have initialization to
+do when all the nodes are connected, you should redefine this method.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual bool hasOutput (int output_id) const;</td>
+
+<td>NOT RECOMMENDED</td>
+
+<td>
+<ul>
+<li>
+If you have added outputs with the addOutput method, you shooed never need
+to redefine this method.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual void reset ();</td>
+
+<td>RECOMMENDED</td>
+
+<td>
+<ul>
+<li>
+Needed if the node needs proper reinitialization else than setting the
+processCount to -1.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual void request (const ParameterSet &amp;req);</td>
+
+<td>OPTIONAL</td>
+
+<td>
+<ul>
+<li>
+This is a way to request something to our inputs node at initialization
+time.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual int translateInput (string inputName);</td>
+
+<td>NOT RECOMMENDED</td>
+
+<td>
+<ul>
+<li>
+Be careful with that. It translates input strings to integer that represent
+the input number. You do not need to take care of this method if you are
+using addInput.</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>virtual int translateOutput (string inputName);</td>
+
+<td>NOT RECOMMENDED</td>
+
+<td>
+<ul>
+<li>
+Be careful with that. It translates output strings to integer that represent
+the output number. You do not need to take care of this method if you are
+using addOutput.</li>
+</ul>
+</td>
+</tr>
+</table>
+
+<p>At last for a new node to be visible, a special header must be present.
+An example of this is:
+<p><tt>class MyNode;</tt>
+<p><tt>DECLARE_NODE(MyNode)</tt>
+<br><tt>/*Node</tt>
+<br><tt>&nbsp;*</tt>
+<br><tt>&nbsp;* @name MyNode</tt>
+<br><tt>&nbsp;* @category MyCategory:MySubCategory</tt>
+<br><tt>&nbsp;* @description Some description of what MyNode does</tt>
+<br><tt>&nbsp;*</tt>
+<br><tt>&nbsp;* @input_name SOME_INPUT_NAME</tt>
+<br><tt>&nbsp;* @input_description The description of what this input takes</tt>
+<br><tt>&nbsp;*</tt>
+<br><tt>&nbsp;* @input_name SOME_OTHER_INPUT</tt>
+<br><tt>&nbsp;* @input_description The description of what this other input
+takes</tt>
+<br><tt>&nbsp;*</tt>
+<br><tt>&nbsp;* @output_name SOME_OUTPUT</tt>
+<br><tt>&nbsp;* @output_description The description of what come out from
+that output</tt>
+<br><tt>&nbsp;*</tt>
+<br><tt>&nbsp;* @parameter_name SOME_PARAMETER</tt>
+<br><tt>&nbsp;* @parameter_description The description of what the parameter
+takes</tt>
+<br><tt>&nbsp;*</tt>
+<br><tt>END*/</tt>
+<p>Although this header is mostly a C++ comment, it is parsed by a PERL
+script to produce an XML description of each toolbox. The <tt>DECLARE_NODE(MyNode)
+</tt>macro
+is used to register the node in a dictionary when the toolbox is loaded.
+<h2>
+<font size=+3>Data types</font></h2>
+It is possible to define new types in Overflow. In order to be used in
+new nodes, new types must derive from the <i>Object</i> base class. That
+the only absolute requirement. However, if you want the new type to integrate
+more closely with Overflow, there are several things you can do:
+<ul>
+<li>
+Implement the <i>void printOn(ostream &amp;out) const</i><tt> </tt>method.
+This method writes the object to the <tt>out</tt> stream.</li>
+
+<li>
+Implement the <i>void readFrom (istream &amp;in)</i></li>
+
+<li>
+Add the macro <i>DECLARE_TYPE(MyType)</i> to the C++ file where the object
+is implemented</li>
+</ul>
+There is a certain format which all Object must respect. The object should
+start with "&lt;MyType" and end with ">" (without the quotes). Usually,
+every field will be inside &lt; and > signs.
+<h2>
+<font size=+3>Double-dispatched operators</font></h2>
+It is possible to define binary operators that can act on different kinds
+of input. One example is the "add" operator, which can we used to add two
+ints, two floats, two vectors, or an int and a float, ...
+<p>See <tt>data-flow/include/operators.h</tt>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [fr] (X11; U; Linux 2.4.13 i686) [Netscape]">
+</head>
+<body>
+
+<center>
+<h1>
+Compiling &amp; Installing</h1></center>
+
+<h2>
+What you need</h2>
+
+<ul>
+<li>
+an ANSI C++ compiler</li>
+
+<ul>
+<li>
+gcc 2.95.x is OK</li>
+
+<li>
+most of gcc 2.96 variants are OK</li>
+
+<li>
+gcc 3.0.x should work (maybe some modifs required)</li>
+
+<li>
+egcs 1.1.2 is untested (probably doesn't work)</li>
+
+<li>
+MSVC++ is completely broken, but it possible build a subset of Overflow
+with it (see <a href="compiling.html#WIN32">here</a>)</li>
+
+<li>
+HP's aCC should work after some modifications</li>
+</ul>
+
+<li>
+autoconf, automake, libtool (which require perl and m4)</li>
+
+<li>
+GNU make</li>
+
+<li>
+<a href="http://www.fftw.org">FFTW</a> (now optional, but recommended)
+compiled with --enable-float</li>
+
+<li>
+<a href="http://www.gnome.org">gnome</a> (including the development libraries
+and libxml)</li>
+
+<br>pthreads (now included in most distributions)</ul>
+
+<h2>
+Installing the software</h2>
+First read the <a href="download.html">Download </a>section.
+<p>To compile, type:
+<p>% ./configure --disable-static --prefix=&lt;your install directory>
+<br>% make
+<br>% make install
+<p>Notes:
+<ul>
+<li>
+As of version 0.5.1, it is now recommended to set the install <i>prefix</i>
+to /usr or /usr/local, unless you want to keep more than one version installed
+at the same time.</li>
+
+<li>
+If you are using a CVS tarball, you need to use ./autogen.sh instead of
+./configure</li>
+
+<li>
+You might also need to set your LD_LIBRARY_PATH to &lt;overflow prefix>/lib</li>
+</ul>
+
+<p><br>You can now start the Overflow environment by typing :
+<br>% vflow
+<p>(assuming &lt;overflow prefix>/bin is in your path)
+<br>&nbsp;
+<h2>
+Configure options</h2>
+
+<ul>
+<li>
+<tt>-with-libtool-ld=&lt;</tt><i>c++ compiler</i><tt>></tt>&nbsp; You need
+to specify this option if libtool tries to use ld to link the C++ libraries
+and executables. These need to be linked with the C++ compiler (e.g. g++)
+because of initializations that must be performed before the main() starts
+(On linux you most likely don't need that).</li>
+
+<li>
+<tt>--with-fftw-dir=&lt;</tt><i>fftw path</i><tt>></tt>&nbsp; If FFTW is
+not installed in a standard path, you will need to specify this option.</li>
+
+<li>
+<tt>--disable-static</tt>&nbsp; This option is required. Overflow does
+not work with static libraries (because it uses <i>dlopen</i>).</li>
+
+<li>
+<tt>--disable-</tt><i>package&nbsp;&nbsp; </i>Doesn't build a certain package
+(e.g. HMM, VQ, ...)</li>
+</ul>
+
+<h2>
+<a NAME="WIN32"></a>Compiling on Win32</h2>
+Some parts of Overflow (sorry, no GUI yet!) have been ported to Win32 (w/
+MSVC++). Using the code generation feature (the "Build" button on the toolbar),
+it is now possible to compile an overflow application on Windows. Note
+that this has not been fully tested yet.
+<p>One important thing to note with MSVC++ is that it is a very buggy compiler,
+mostly when it comes to templates. For example it does not support template
+partial specialization and it chokes on a lot of valid template code (static
+template member functions, pointer to template functions, ...). For this
+reasons some Overflow features need to be switched off.
+<p>So here are the settings you need for Overflow. First, you need to turn
+on RTTI (which is not enabled be default). Also, I suggest you turn the
+warnings off. The preprocessor flags (define) you need to set are: <tt>BROKEN_TEMPLATES,
+HAVE_FLOAT_H, NO_HASH_MAP, STUPID_COMPLEX_KLUDGE </tt>and (if not already
+defined), <tt>WIN32</tt>.
+<h2>
+Troubleshooting</h2>
+
+<h3>
+<font size=+0>1) The binary distribution I downloaded crashes on startup</font></h3>
+<font size=+0>There can be many causes of that. The most common is that
+you have a different libstdc++ than the one Overflow was compiled with.
+Another cause could be that you have FFTW compiled without --enable-float,
+while Overflow was linked with a float version of FFTW. Overflow has no
+way to detect that so it crashes. In both cases, the best thing to do is
+to build Overflow yourself.</font>
+<h3>
+<font size=+0>2) Overflow tells me it cannot find libflow.so</font></h3>
+<font size=+0>This can happen if you compile Overflow and then move the
+installation directory (I can sometimes happen for other reasons). You
+can set the LD_LIBRARY_PATH to &lt;overflow install dir>/lib. Note that
+if you moved the Overflow directory, you'll also need to set VFLOW_HOME.</font>
+<h3>
+<font size=+0>3) The "New Node" menu is empty</font></h3>
+<font size=+0>You probably moved the Overflow install directory, see 2)</font>
+<h3>
+<font size=+0>4) Overflow doesn't compile on my box</font></h3>
+<font size=+0>First, make sure you have the latest release version. If
+it doesn't work, you should try the CVS version. If it fails too, please
+contact us and we'll do our best to make Overflow compile on your platforms.</font>
+<h3>
+<font size=+0>5) I downloaded a more recent version and it doesn't even
+compile</font></h3>
+<font size=+0>This can be due to the fact that you installed an earlier
+version in a path like /usr or /usr/local. The problem is that the old
+Overflow includes ended up somewhere like /usr/include and when you try
+compiling a newer version, g++ sees the old includes (because they are
+in the include path) instead of the new ones.</font>
+<p><font size=+0><b>UPDATED 2001/08/15:</b> As of 0.5.1, it is now safe
+(and recommended) to install with /usr or /usr/local set as prefix.</font>
+<div align=right>
+<hr WIDTH="100%"><a href="mailto:valj01@gel.usherb.ca">Jean-Marc Valin</a>
+<br>$Date: 2001/11/09 21:06:58 $</div>
+
+</body>
+</html>

@@ -1,93 +1,130 @@
-<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-   <meta name="GENERATOR" content="Mozilla/4.7 [fr] (X11; I; Linux 2.2.14-15mdk i686) [Netscape]">
+    
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+
+  <meta name="GENERATOR"
+ content="Mozilla/4.77 [fr] (X11; U; Linux 2.4.3-20mdk i686) [Netscape]">
+  <title></title>
 </head>
-<body>
+  <body>
 
 <center>
-<h1>
-Download</h1></center>
+<h1> Download</h1>
+</center>
 
-<h2>
-Source</h2>
-You can download a daily tarball of the CVS <a href="OpenMindSpeech-snapshot.tgz">here</a>.
-<br>&nbsp;
-<h2>
-Binaries</h2>
-<a href="http://download.sourceforge.net/freespeech/FreeSpeech-0.1.2.tar.gz">FreeSpeech-0.1.2.tar.gz</a>
-<br><a href="http://download.sourceforge.net/freespeech/FreeSpeech-0.1.2-linux_x86.tar.gz">FreeSpeech-0.1.2-linux_x86.tar.gz</a>
-<h2>
-CVS</h2>
-The source is also available via anonymous CVS:
-<p><tt>export CVSROOT=:pserver:anonymous@cvs.freespeech.sourceforge.net:/cvsroot/freespeech</tt>
-<br>or (for csh users) <tt>setenv CVSROOT :pserver:anonymous@cvs.freespeech.sourceforge.net:/cvsroot/freespeech</tt>
-<br><tt>cvs login</tt>&nbsp; (the password is <i>return</i>)
-<br><tt>cvs checkout FreeSpeech</tt>
-<p><tt>Note: you must use the ./autogen.sh with the --disable-static option
-to compile from CVS.</tt>
-<h2>
-Required</h2>
+<p>
+Please refer to the <a href="http://sourceforge.net/project/showfiles.php?group_id=99346">SourceForge FILE section for download</a> (binaries & sources).
+</p>
+<hr>
+<p>
 
-<ul>
-<li>
-<a href="http://www.fftw.org/">FFTW</a> (you must give use the following
-options with configure: --enable-float --enable-shared )</li>
+<a NAME="Modules"></a>
+<h4>Available CVS Modules</h4>
 
-<br>a precompiled binary for linux is available <a href="../../fftw.tgz">here</a>
-<li>
-<a href="http://www.gnome.org">GNOME</a> (for the GUI part) including libxml</li>
+<table border=0 width="100%">
+  <tr>
+    <td width="20%" bgcolor="#AABBCC"><div align="left">Module Name</div></td>
+    <td width="80%" bgcolor="#AABBCC"><div align=left>CVS Path</div></td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> data-flow </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/data-flow </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> audio_blocks </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/audio_blocks </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> VQ </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/VQ </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> HMM </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/HMM </div> </td>
+  </tr>
+    <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> NNet </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/NNet </div> </td>
+  </tr>
+    <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> doc </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/doc </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> html </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/html </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> macros </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/macros </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> vflow </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/vflow </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> examples </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/examples </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> root </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/ (root directory only) </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> FuzzyEngine </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/FuzzyEngine </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> effects </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> FlowDesiger/effects </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> FlowCore </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> (alias) &root &macros &data-flow &doc &html &vflow &tools &examples </div> </td>
+  </tr>
+  <tr>
+    <td width="20%" bgcolor="#CCDDEE"> <div align="left"> FlowDesigner </div> </td>
+    <td width="80%" bgcolor="#CCDDEE"> <div align=left> Everything </div> </td>
+  </tr>
+</table>
+</p>
+<p>
+You can also download sources from the FlowDesigner CVS repository with the following commands : <br>
 
-<li>
-The following patch to glib 1.2.6 until the next version is released (fixes
-a very nasty thread bug)</li>
+<h6>Anonymous CVS Access</h6>
 
-<pre>--- gdataset.c-premerge Sun Oct 17 18:14:15 1999&nbsp;
-+++ gdataset.c Sun Oct 17 18:15:00 1999&nbsp;
-@@ -110,7 +110,11 @@ g_datalist_clear_i (GData **datalist)&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list = prev->next;&nbsp;
+FlowDesigner CVS repository can be checked out through anonymous (pserver) CVS with the following instruction set.
+The module you wish to check out must be specified as the modulename. When prompted for a password for anonymous,
+simply press the Enter key. To determine the names of the modules created by this project, please see the list of
+<a href="#Modules">available modules</a> from the following list.<br>
+<br>
+<b>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/flowdesigner login</b><br>
+<b>cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/flowdesigner co <a href="#Modules">modulename</a></b><br>
+<br>
+NOTE: UNIX file and directory names are case sensitive. The path to the project CVSROOT must be specified using lowercase characters (i.e. /cvsroot/flowdesigner)
+<br>
+<br>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (prev->destroy_func)&nbsp;
-+ {&nbsp;
-+ G_UNLOCK (g_dataset_global);&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prev->destroy_func (prev->data);&nbsp;
-+ G_LOCK (g_dataset_global);&nbsp;
-+ }&nbsp;
+<h6>Developer CVS Access via SSH</h6>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (g_data_cache_length &lt; G_DATA_CACHE_MAX)&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;
-@@ -233,7 +237,11 @@ g_data_set_internal (GData **datalist,&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * data without destroy notification&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (list->destroy_func &amp;&amp; !destroy_func)&nbsp;
-+ {&nbsp;
-+ G_UNLOCK (g_dataset_global);&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list->destroy_func (list->data);&nbsp;
-+ G_LOCK (g_dataset_global);&nbsp;
-+ }&nbsp;
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (g_data_cache_length &lt; G_DATA_CACHE_MAX)&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;
-@@ -275,7 +283,9 @@ g_data_set_internal (GData **datalist,&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* we need to have updated all structures prior to&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * invokation of the destroy function&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */&nbsp;
-+ G_UNLOCK (g_dataset_global);&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dfunc (ddata);&nbsp;
-+ G_LOCK (g_dataset_global);&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp;
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;</pre>
-A linux binary version of glib 1.2.6 with the patch applied is available
-<a href="../../libglib-1.2.so.0.0.6">here</a>
-<br>&nbsp;
-<li>
-At least <a href="http://gcc.gnu.org">gcc 2.95.x</a></li>
-
-<li>
-automake, autoconf, libtool if you plan to work from the CVS code</li>
-</ul>
-
+Only project developers can access the CVS tree via this method. A SSH client must be installed on your client
+machine. Substitute <a href="#Modules">modulename</a> and developername with the proper values. Enter your site password when prompted.
+Developers may also make use of shared SSH keys for authentication.
+<br>
+<br>
+<b>export CVS_RSH=ssh</b><br>
+<b>cvs -z3 -d:ext:developername@cvs.sourceforge.net:/cvsroot/flowdesigner co <a href="#Modules">modulename</a></b><br>
+<br>
+<br>
+NOTE: UNIX file and directory names are case sensitive. The path to the project CVSROOT must be specified using lowercase characters (i.e. /cvsroot/flowdesigner)
+<br>
+<hr>
+<div align="Right">
+<br><i>$Date: 2004/01/16 15:33:08 $</i></div>
+</div>
+</p>
 </body>
 </html>
