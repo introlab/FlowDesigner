@@ -18,6 +18,7 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <stdlib.h>
+#include <math.h>
 
 class NLMS;
 
@@ -46,6 +47,9 @@ DECLARE_NODE(NLMS)
  * @parameter_name BETA
  * @parameter_description Adaptation rate of the normalization energy estimate
  *
+ * @parameter_name POWER
+ * @parameter_description Normalization power
+ *
 END*/
 
 
@@ -59,6 +63,7 @@ class NLMS : public BufferedNode {
    float alpha;
    float beta;
    float E;
+   float power;
       //Vector<float> w;
       //Vector<float> grad;
 public:
@@ -73,6 +78,7 @@ public:
       size = dereference_cast<int> (parameters.get("FILTER_LENGTH"));
       alpha = dereference_cast<float> (parameters.get("ALPHA"));
       beta = dereference_cast<float> (parameters.get("BETA"));
+      power = dereference_cast<float> (parameters.get("POWER"));
       a.resize(size,0.0);
       //w.resize(size,1.0);
       //grad.resize(size,0.0);
@@ -162,30 +168,10 @@ public:
 	 float err = ref[i]-output[i];
 	 
 	 E = (1-beta)*E + beta*x[i]*x[i];
-	 norm = alpha*err/E;
-	 for (int j=0;j<size;j++)
-	    a[j] += norm*x[i-j];
-	 /*
-	 for (int j=0;j<size;j++)
-	 {
-	    float deriv=w[j]*norm*x[i-j];
-	    if (deriv*grad[j] < 0)
-	       w[j] *= .98;
-	    else
-	       w[j] *= 1.01;
-	    a[j] += deriv;
-	    if (w[j] > 10)
-	       w[j] = 10;
-	    if (w[j] < .01)
-	       w[j] = .01;
-	    grad[j] = deriv;
-	 }
-	 */
+	 norm = alpha*err/pow(E, power);
+	    for (int j=0;j<size;j++)
+	       a[j] += norm*x[i-j];
       }
-      /*for (int j=0;j<size;j++)
-	 cout << a[j] << "\t";
-	 cout << endl;*/
-
    }
 
 };

@@ -5,14 +5,7 @@
 
 int main(int argc, char **argv)
 {
-   try {
    UIDocument::scanDL();
-   } catch (BaseException *e)
-   {
-      e->print();
-      delete e;
-      exit(1);
-   }
    UIDocument::loadAllInfo();
    ParameterSet param;
    for (int arg = 2; arg<argc; arg++)
@@ -24,9 +17,4 @@ int main(int argc, char **argv)
    UIDocument *doc = new UIDocument(argv[1]);
    doc->load();
    doc->run(param);
-/*doc->export2net();
-   string command = "xterm -e sh -c 'AudioNetwork " + doc->getPath() + doc->getName() + "et ; sleep 1000' &";
-   cerr << command << endl;
-   system (command.c_str());
-   */
 }
