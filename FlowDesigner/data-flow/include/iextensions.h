@@ -1,3 +1,7 @@
+//This file is a copy used for static linking of Overflow applications. If it is
+//part of the Overflow code base, then it is released under the LGPL license.
+//For more information, see the COPYING file in the Overflow source directory.
+
 // Copyright (C) 2001 InfoSpace Speech Solutions
 // author: Jean-Marc Valin
 
@@ -65,11 +69,16 @@ inline void emms()
 #endif /*__GUNC__*/
 
 #ifdef WIN32
-inline void prefetchnta(void *ptr) {_asm {prefetchnta ptr}}
-inline void prefetcht0(void *ptr) {_asm {prefetcht0 ptr}}
-inline void prefetcht1(void *ptr) {_asm {prefetcht1 ptr}}
-inline void prefetcht2(void *ptr) {_asm {prefetcht2 ptr}}
-inline void emms() {_asm {femms}}
+
+
+//FIXME: Until I understand how to use the prefetch* instructions under VC++
+inline void prefetchnta(void *ptr) {}
+inline void prefetcht0(void *ptr) {}
+inline void prefetcht1(void *ptr) {}
+inline void prefetcht2(void *ptr) {}
+inline void emms() {}
+
+
 #endif /*WIN32*/
 
 #else

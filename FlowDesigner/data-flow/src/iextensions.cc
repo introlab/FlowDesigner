@@ -1,3 +1,7 @@
+//This file is a copy used for static linking of Overflow applications. If it is
+//part of the Overflow code base, then it is released under the LGPL license.
+//For more information, see the COPYING file in the Overflow source directory.
+
 // Copyright (C) 2001 InfoSpace Speech Solutions
 // author: Jean-Marc Valin
 
@@ -104,6 +108,10 @@ void IExtensions::detect3DNow()
 
 #elif defined (WIN32)
 
+#include <excpt.h>
+
+#define STATUS_ILLEGAL_INSTRUCTION       0xC000001DL
+
 /* SSE detection (and hence 3DNow! too) taken from example in Intel's guide*/
 
 #ifdef _ALLOW_SSE
@@ -122,12 +130,12 @@ void IExtensions::detectSSE()
 	 //fprintf(stdout, "In catch\n");
 	 if (_exception_code()==STATUS_ILLEGAL_INSTRUCTION)
 	 {
-	    cerr << "SSE detected\n";
+	    cerr << "SSE not detected\n";
 	    isse=false;
-	    return
+	    return;
 	 }
       }
-   cerr << "SSE notdetected\n";
+   cerr << "SSE detected\n";
    isse=true;
 }
 #endif
@@ -150,12 +158,12 @@ void IExtensions::detect3DNow()
 	 //fprintf(stdout, "In catch\n");
 	 if (_exception_code()==STATUS_ILLEGAL_INSTRUCTION)
 	 {
-	    cerr << "3DNow! detected\n";
+	    cerr << "3DNow! not detected\n";
 	    i3dnow=false;
-	    return
+	    return;
 	 }
       }
-   cerr << "3DNow! not detected\n";
+   cerr << "3DNow! detected\n";
    i3dnow=true;
 
 }
