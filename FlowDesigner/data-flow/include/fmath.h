@@ -72,7 +72,7 @@ inline float flog(float f)
    float f2=m.f;
    //Refining step: first order taylor
    m.i &= 0xffff8000;
-   return (id1-127)*M_LN2 + logtable2[id2] + (f2-m.f)/f2;
+   return (int(id1)-127)*M_LN2 + logtable2[id2] + (f2-m.f)/f2;
 }
 
 //Log (base e) rough approximation
@@ -87,7 +87,7 @@ inline void fflogv(const float *fin, float *fout, int len)
       unsigned int id1 = m.i>>23;
       //The first bits of the mantissa in id2
       unsigned int id2 = (m.i & 0x007fffff)>>FLOGLOOKUP2SHIFT;
-      fout[i] = (id1-127)*M_LN2 + logtable2[id2];
+      fout[i] = (int(id1)-127)*M_LN2 + logtable2[id2];
    }
 }
 
