@@ -168,7 +168,7 @@ class _FFTWrap {
 #else /* ifdef HAVE_FFTW */
 
 #ifndef WIN32
-#warning FFTW is not present. Overflow will use a (very, very) slow DFT implementation.
+#warning FFTW is not present. FlowDesigner will use a (very, very) slow DFT implementation.
 #endif
 
 #include <iostream>
