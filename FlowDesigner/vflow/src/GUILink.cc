@@ -13,7 +13,7 @@ static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 }
 
 GUILink::GUILink(UITerminal *_from, UITerminal *_to, char *points_str)
-  : UILink (_from, _to, points_str), MIN_POINT_DISTANCE(25.0), MAX_POINT_DISTANCE(200) {
+  : UILink (_from, _to, points_str), MIN_POINT_DISTANCE(10.0) {
 
 
    GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
@@ -167,7 +167,7 @@ gint GUILink::event(GdkEvent *event)
 	     list<GUILinkPoint*>::iterator iter_end = m_points.end();
 	     iter_end--;
 
-
+	     //This loop makes us find where the click is
 	     for (list<GUILinkPoint*>::iterator iter = m_points.begin();
 		  iter != iter_end; iter++) {
 	      	       
@@ -182,19 +182,6 @@ gint GUILink::event(GdkEvent *event)
 	       double dist1 = p1.dist(pfirst);
 	       double dist2 = p1.dist(psecond);
 
-	      
-	       if ((dist1 < dist2) && iter != m_points.begin() &&
-		   dist1 <= MIN_POINT_DISTANCE) {
-		 my_point = *iter;
-		 break;
-	       }
-
-	       if ((dist2 < dist1) && iter1 != iter_end &&
-		   dist2 <= MIN_POINT_DISTANCE) {
-		 my_point = *iter1;
-		 break;
-	       }
-
 	       if (p1.between(pfirst,psecond)) {
 		 
 		 if (dist1 > MIN_POINT_DISTANCE &&
@@ -208,7 +195,19 @@ gint GUILink::event(GdkEvent *event)
 
 		   break;
 		   		   
-		 } 
+		 } else {
+		    //We're moving a point instead of creating one
+		    if (dist1 < dist2)
+		    {
+		       if (iter != m_points.begin())
+			  my_point = *iter;
+		       break;
+		    } else {
+		       if (iter1 != iter_end)
+			  my_point = *iter1;
+		       break;
+		    }
+		 }
 	       }//between
 	       
 	     }//for

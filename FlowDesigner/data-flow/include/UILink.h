@@ -46,34 +46,35 @@ class GUILinkPoint {
   }
   
   bool between (const GUILinkPoint &p1, const GUILinkPoint &p2) {
-
-    //cout<<"p1 x "<<p1.x<<" y "<<p1.y<<endl;
-    //cout<<"p2 x "<<p2.x<<" y "<<p2.y<<endl;
-    
-    double dx1 = x - p1.x;
-    double dy1 = y - p1.y;
-    double m1 = dx1 / dy1;
-    double b1 = y - m1 * x;
-
-
-    double dx2 = p2.x - x;
-    double dy2 = p2.y - y;
-    double m2 = dx2 / dy2;
-    double b2 = y - m2 * x;
-
-    //cout<<"delta1 : "<<delta1<<endl;
-    //cout<<"delta2 : "<<delta2<<endl;
-
-    //accepting 10% deviation
-    if ( max(m1,m2) / min(m1,m2) > 0.90 &&
-	 max(b1,b2) / min(b1,b2) > 0.90) {
-      return true;
-    }
-    else {
-      return false;
-    }
-
-
+     //Maximum offset allowed
+     const float moff=2;
+     //If x is between p1.x and p2.x, within a margin of moff
+     if ( ! ((x-moff < p1.x && x+moff > p2.x) || (x+moff > p1.x && x-moff < p2.x)))
+	return false;
+     
+     //If y is between p1.y and p2.y, within a margin of moff
+     if ( ! ((y-moff < p1.y && y+moff > p2.y) || (y+moff > p1.y && y-moff < p2.y)))
+	return false;
+     
+     //Just some geometry
+     double dx, dy, rx, ry;
+     dx=x-p1.x; dy=y-p1.y;
+     rx=p2.x-p1.x; ry=p2.y-p1.y;
+     //cerr << "(" << dx << ", " << dy << ") vs. (" << rx << ", " << ry << ")" << endl;
+     //d*r
+     double prod = dx*rx + dy*ry;
+     //cerr << "prod = " << prod << endl;
+     // 1/(norm)2 of R
+     double normR_2=1/(.001+rx*rx+ry*ry);
+     //cerr << "norm = " << 1/normR_2 << endl;
+     //projection of d on r
+     double px,py;
+     px=rx*prod*normR_2; py=ry*prod*normR_2;
+     
+     //distance:
+     double dist = sqrt(sqr(px-dx) + sqr(py-dy));
+     //cerr << "dist = " << dist << endl << endl;
+     return (dist < moff);
   }
 
 
