@@ -658,13 +658,13 @@ void GUIDocument::createParamDialog()
   gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow2);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
-  text1 = gtk_text_new (NULL, NULL);
+  text1 = gtk_text_view_new ();
   gtk_widget_ref (text1);
   gtk_object_set_data_full (GTK_OBJECT (docproperty), "text1", text1,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (text1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), text1);
-  gtk_text_set_editable(GTK_TEXT(text1),TRUE);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(text1),TRUE);
 
   label13 = gtk_label_new (_("Comments"));
   gtk_widget_ref (label13);

@@ -1070,7 +1070,7 @@ static GnomeUIInfo menubar1_uiinfo[] =
 
   button1 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-new",
-                                "gtk-new",
+                                _("New"),
                                 NULL, NULL, NULL, -1);
 gtk_widget_show (button1);
 gtk_signal_connect (GTK_OBJECT (button1), "clicked",
@@ -1079,7 +1079,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button2 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-open",
-                                "gtk-open",
+                                _("Open"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button2);
   gtk_signal_connect (GTK_OBJECT (button2), "clicked",
@@ -1088,7 +1088,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button3 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-save",
-                                "gtk-save",
+                                _("Save"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button3);
   gtk_widget_show (button2);
@@ -1102,7 +1102,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button4 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-properties",
-                                "gtk-properties",
+                                _("Properties"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button4);
   gtk_signal_connect (GTK_OBJECT (button4), "clicked",
@@ -1111,7 +1111,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button5 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-execute",
-                                "gtk-execute",
+                                _("Run"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button5);
   gtk_signal_connect (GTK_OBJECT (button5), "clicked",
@@ -1120,7 +1120,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button6 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-stop",
-                                "gtk-stop",
+                                _("Stop"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button6);
   gtk_signal_connect (GTK_OBJECT (button6), "clicked",
@@ -1129,7 +1129,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button7 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-convert",
-                                "gtk-convert",
+                                _("Build"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button7);
   gtk_signal_connect (GTK_OBJECT (button7), "clicked",
@@ -1142,7 +1142,7 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
 
   button9 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-quit",
-                                "gtk-quit",
+                                _("Quit"),
                                 NULL, NULL, NULL, -1);
   gtk_widget_show (button9);
   gtk_signal_connect (GTK_OBJECT (button9), "clicked",

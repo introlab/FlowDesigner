@@ -30,7 +30,7 @@ static void type_changed (GnomePropertyBox *propertybox, GUINodeParameters* user
    user_data->changed();
 }
 
-static void comments_changed (GtkText *entry, GUINodeParameters* user_data)
+static void comments_changed (GtkTextView *entry, GUINodeParameters* user_data)
 {
    user_data->changed();
 }
@@ -361,13 +361,13 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    gtk_container_add (GTK_CONTAINER (notebook2), scrolledwindow2);
    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
-   text_comments = gtk_text_new (NULL, NULL);
+   text_comments = gtk_text_view_new ();
    gtk_widget_ref (text_comments);
    gtk_object_set_data_full (GTK_OBJECT (nodeproperty), "text_comments", text_comments,
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (text_comments);
    gtk_container_add (GTK_CONTAINER (scrolledwindow2), text_comments);
-   gtk_text_set_editable(GTK_TEXT(text_comments),TRUE);
+   gtk_text_view_set_editable(GTK_TEXT_VIEW(text_comments),TRUE);
 
 
 
@@ -380,9 +380,12 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    {
       int a=0;
       const char *str = nodeParams->getComments().c_str();
-      gtk_editable_insert_text (GTK_EDITABLE(text_comments), str, nodeParams->getComments().size(), &a);
+     gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments)),
+                              str, -1);
+
+     //gtk_editable_insert_text (GTK_EDITABLE(text_comments), str, nodeParams->getComments().size(), &a);
    }
-   gtk_signal_connect (GTK_OBJECT ( text_comments  ), "changed",
+   g_signal_connect (G_OBJECT ( gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments))  ), "changed",
 		       GTK_SIGNAL_FUNC(comments_changed), this);
   
   
@@ -654,7 +657,14 @@ void GUINodeParameters::apply()
       textParams[i]->type = newType;
       textParams[i]->value = newValue;
    }
-   nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
+   //nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
+   GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments));
+   GtkTextIter start;
+   GtkTextIter end;
+   gtk_text_buffer_get_start_iter (buffer, &start);
+   gtk_text_buffer_get_start_iter (buffer, &end);
+   
+   nodeParams->setComments(string(gtk_text_buffer_get_text(buffer, &start, &end, true)));
    node->getNetwork()->setModified();
    node->getNetwork()->interfaceChangeNotify();
 }
