@@ -5,14 +5,7 @@ AC_INIT(HMM/include/covariance.h)
 dnl Stolen from gtk+:
 
 AC_CONFIG_SUBDIRS(vflow)
-# Making releases:
-#   HMM_MICRO_VERSION += 1;
-#   HMM_INTERFACE_AGE += 1;
-#   HMM_BINARY_AGE += 1;
-# if any functions have been added, set SF_INTERFACE_AGE to 0.
-# if backwards compatibility has been broken,
-# set SF_BINARY_AGE and SF_INTERFACE_AGE to 0.
-#
+
 FREESPEECH_MAJOR_VERSION=0
 FREESPEECH_MINOR_VERSION=0
 FREESPEECH_MICRO_VERSION=1
@@ -42,22 +35,15 @@ AC_SUBST(LT_AGE)
 VERSION=$FREESPEECH_VERSION
 PACKAGE=FreeSpeech
 
-AC_MODULE_OPT(video_blocks)
 AC_MODULE_OPT(audio_blocks)
 AC_MODULE_OPT(HMM)
 AC_MODULE_OPT(VQ)
 AC_MODULE_OPT(NNet)
-
 AC_MODULE_OPT(video_blocks)
-dnl AC_ARG_ENABLE(video_blocks, [  --enable-video_blocks   enable image processing module], [video_blocks=video_blocks; if test "$enableval" = no; then video_blocks=; fi], [if test -d video_blocks; then video_blocks=video_blocks; else video_blocks=; fi ])
 
 modules="$audio_blocks $VQ $HMM $NNet $video_blocks"
-dnl modules="audio_blocks VQ HMM NNet $video_blocks"
-
 AC_SUBST(modules)
 
-
-#AM_INIT_AUTOMAKE(FreeSpeech, 0.0.0)
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
 
 dnl Put configuration information in config.h.
@@ -123,7 +109,8 @@ dnl Checks for library functions.
 
 dnl Output the makefiles and version.h.
 
-AC_OUTPUT([Makefile HMM/Makefile HMM/src/Makefile HMM/include/Makefile \
+AC_OUTPUT([Makefile \
+	HMM/Makefile HMM/src/Makefile HMM/include/Makefile \
 	HMM/doc/Makefile HMM/doc/html/Makefile \
 	VQ/Makefile VQ/src/Makefile VQ/include/Makefile \
 	NNet/Makefile NNet/src/Makefile NNet/include/Makefile \
