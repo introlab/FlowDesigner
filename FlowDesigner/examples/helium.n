@@ -1,13 +1,21 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
-    <Node name="node1" type="InputStream" x="-331.000000" y="100.000000"/>
+    <Node name="node1" type="InputStream" x="-331.000000" y="100.000000">
+      <Parameter name="TYPE" type="String" value=""/>
+      <Parameter name="RETRY" type="int" value=""/>
+    </Node>
     <Node name="node2" type="Constant" x="-477.000000" y="102.000000">
       <Parameter name="VALUE" type="string" value="jm.wav"/>
     </Node>
     <Node name="node3" type="Sound" x="-392.000000" y="177.000000">
       <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
       <Parameter name="RATE" type="int" value="44100"/>
+      <Parameter name="STEREO" type="int" value=""/>
+      <Parameter name="MODE" type="string" value="W"/>
+      <Parameter name="BUFFER" type="int" value=""/>
+      <Parameter name="DUMMY" type="int" value=""/>
     </Node>
     <Node name="node4" type="MAIN_LOOP" x="-104.000000" y="139.000000"/>
     <Link from="node2" output="VALUE" to="node1" input="INPUT"/>
@@ -16,17 +24,17 @@
     <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
   </Network>
   <Network type="iterator" name="MAIN_LOOP">
-    <Node name="node1" type="AudioStream" x="-470.000000" y="146.000000">
+    <Node name="node1" type="AudioStream" x="-572.000000" y="151.000000">
       <Parameter name="LENGTH" type="int" value="256"/>
+      <Parameter name="ADVANCE" type="int" value=""/>
       <Parameter name="ENCODING" type="string" value="LIN16"/>
+      <Parameter name="STREAM_TYPE" type="string" value=""/>
+      <Parameter name="REWIND" type="bool" value=""/>
     </Node>
-    <Node name="node2" type="NotDone" x="-194.000000" y="104.000000"/>
-    <Node name="node3" type="FDSaveFrame" x="611.000000" y="145.000000"/>
     <Node name="node4" type="LPC_DECOMP" x="-209.000000" y="152.000000">
-      <Parameter name="FRAME_SIZE2" type="int" value="512"/>
       <Parameter name="LPC_SIZE" type="int" value="75"/>
       <Parameter name="LAG_THETA" type="float" value=".0000001"/>
-      <Parameter name="FRAME_SIZE" type="int" value="256"/>
+      <Parameter name="FRAME_SIZE2" type="int" value="512"/>
     </Node>
     <Node name="node5" type="CAllPole" x="409.000000" y="137.000000"/>
     <Node name="node8" type="DownSample" x="118.000000" y="209.000000">
@@ -50,20 +58,22 @@
       <Parameter name="CONTINUOUS" type="int" value="1"/>
       <Parameter name="NONCAUSAL" type="int" value="44"/>
     </Node>
+    <Node name="node_WriteAudio_1" type="WriteAudio" x="602.000000" y="143.000000">
+      <Parameter name="LEAD_IN" type="int" value=""/>
+    </Node>
     <Link from="node8" output="OUTPUT" to="node7" input="INPUT"/>
     <Link from="node7" output="OUTPUT" to="node5" input="INPUT">237 209 284 209 285 130 335 129.5 </Link>
     <Link from="node4" output="LPC" to="node5" input="FILTER"/>
-    <Link from="node5" output="OUTPUT" to="node3" input="OBJECT"/>
     <Link from="node4" output="EXC" to="node6" input="INPUT">-148 159.5 -117 159 -116 208 -84 208 </Link>
     <Link from="node6" output="OUTPUT" to="node9" input="INPUT"/>
     <Link from="node9" output="OUTPUT" to="node8" input="INPUT"/>
     <Link from="node10" output="OUTPUT" to="node11" input="FILTER">-442 216 -402 215 -402 161 -369 159.5 </Link>
-    <Link from="node11" output="OUTPUT" to="node2" input="INPUT">-297 152 -272 152 -272 105 -220 104 </Link>
     <Link from="node11" output="OUTPUT" to="node4" input="INPUT"/>
-    <Link from="node1" output="OUTPUT" to="node11" input="INPUT"/>
+    <Link from="node1" output="AUDIO" to="node11" input="INPUT"/>
+    <Link from="node5" output="OUTPUT" to="node_WriteAudio_1" input="OBJECT"/>
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
-    <NetCondition name="CONDITION" node="node2" terminal="OUTPUT"/>
-    <NetInput name="SOUND" node="node3" terminal="FD"/>
-    <NetOutput name="OUTPUT" node="node3" terminal="OUTPUT"/>
+    <NetCondition name="CONDITION" node="node1" terminal="NOT_EOF"/>
+    <NetInput name="SOUND" node="node_WriteAudio_1" terminal="DEVICE"/>
+    <NetOutput name="OUTPUT" node="node_WriteAudio_1" terminal="OUTPUT"/>
   </Network>
 </Document>

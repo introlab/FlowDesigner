@@ -1,16 +1,19 @@
+#!/usr/bin/env batchflow
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN">
-    <Node name="node1" type="Sound" x="-142.000000" y="-36.000000">
+    <Node name="node1" type="Sound" x="-151.000000" y="96.000000">
       <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
       <Parameter name="RATE" type="int" value="44100"/>
       <Parameter name="STEREO" type="int" value="1"/>
+      <Parameter name="MODE" type="string" value="W"/>
       <Parameter name="BUFFER" type="int" value="40000"/>
+      <Parameter name="DUMMY" type="int" value=""/>
     </Node>
     <Node name="node2" type="Constant" x="-373.000000" y="36.000000">
       <Parameter name="VALUE" type="subnet_param" value="ARG1"/>
     </Node>
-    <Node name="node4" type="MAIN_LOOP" x="112.000000" y="29.000000">
+    <Node name="node4" type="MAIN_LOOP" x="98.000000" y="46.000000">
       <Parameter name="FRAME_SIZE" type="int" value="256"/>
     </Node>
     <Node name="node3" type="ExecStream" x="-147.000000" y="37.000000">
@@ -22,35 +25,39 @@
     <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
   </Network>
   <Network type="iterator" name="MAIN_LOOP">
-    <Node name="node2" type="FDSaveFrame" x="860.000000" y="125.000000"/>
-    <Node name="node3" type="NotDone" x="114.000000" y="54.000000"/>
-    <Node name="node1" type="AudioStream" x="-295.000000" y="120.000000">
+    <Node name="node1" type="AudioStream" x="-347.000000" y="126.000000">
       <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE"/>
+      <Parameter name="ADVANCE" type="int" value=""/>
       <Parameter name="ENCODING" type="string" value="LIN16"/>
       <Parameter name="STREAM_TYPE" type="string" value="FILE"/>
+      <Parameter name="REWIND" type="bool" value=""/>
     </Node>
     <Node name="node4" type="SeparChannels" x="-140.000000" y="120.000000"/>
     <Node name="node5" type="MergeChannels" x="458.000000" y="121.000000"/>
     <Node name="node6" type="Reverb" x="148.000000" y="120.000000">
       <Parameter name="ROOMSIZE" type="float" value=".3"/>
+      <Parameter name="DAMP" type="float" value=".5"/>
+      <Parameter name="WET" type="float" value=".33"/>
       <Parameter name="DRY" type="float" value=".4"/>
       <Parameter name="WIDTH" type="float" value="1"/>
     </Node>
-    <Node name="node7" type="Gain" x="596.000000" y="118.000000">
+    <Node name="node7" type="Gain" x="613.000000" y="121.000000">
       <Parameter name="GAIN" type="float" value="1"/>
     </Node>
-    <Link from="node1" output="OUTPUT" to="node3" input="INPUT">-258 120 -169 54 88 54 </Link>
-    <Link from="node1" output="OUTPUT" to="node4" input="INPUT"/>
+    <Node name="node_WriteAudio_1" type="WriteAudio" x="835.000000" y="129.000000">
+      <Parameter name="LEAD_IN" type="int" value=""/>
+    </Node>
     <Link from="node4" output="RIGHT" to="node6" input="RIGHT"/>
     <Link from="node6" output="LEFT" to="node5" input="LEFT"/>
     <Link from="node6" output="RIGHT" to="node5" input="RIGHT"/>
     <Link from="node5" output="OUTPUT" to="node7" input="INPUT"/>
-    <Link from="node7" output="OUTPUT" to="node2" input="OBJECT"/>
     <Link from="node4" output="LEFT" to="node6" input="LEFT"/>
-    <NetInput name="OUT_FILE" node="node2" terminal="FD"/>
-    <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
-    <NetCondition name="CONDITION" node="node3" terminal="OUTPUT"/>
+    <Link from="node1" output="AUDIO" to="node4" input="INPUT"/>
+    <Link from="node7" output="OUTPUT" to="node_WriteAudio_1" input="OBJECT"/>
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
+    <NetCondition name="CONDITION" node="node1" terminal="NOT_EOF"/>
+    <NetInput name="OUT_FILE" node="node_WriteAudio_1" terminal="DEVICE"/>
+    <NetOutput name="OUTPUT" node="node_WriteAudio_1" terminal="OUTPUT"/>
   </Network>
   <Parameter name="ARG1" type="string" value="/path/to/your.mp3"/>
 </Document>
