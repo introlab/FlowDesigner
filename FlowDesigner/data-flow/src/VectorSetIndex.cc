@@ -5,8 +5,6 @@
 #include "Vector.h"
 #include "Exception.h"
 
-#warning "VectorSetIndex should use BaseVector->clone() (not yet implemented) to avoid modifying the vector"
-
 class VectorSetIndex;
 
 DECLARE_NODE(VectorSetIndex)
@@ -62,10 +60,11 @@ public:
    void calculate(int output_id, int count, Buffer &out) {
 
      try {
-       RCPtr<Int> index = getInput(m_indexID,count);
+       RCPtr<Int> index = getInput(m_indexID,count);       
+       RCPtr<BaseVector> input_vect = getInput(m_vectorID,count);
 
        //should clone the vector before modifying it
-       RCPtr<BaseVector> vect = getInput(m_vectorID,count);
+       RCPtr<BaseVector> vect = input_vect->clone();
 
        ObjectRef value = getInput(m_valueID,count);
        

@@ -53,7 +53,13 @@ class BaseVector  : public Object {
    	\param val The value to put at the desired position
    */
    virtual void setIndex(int pos, ObjectRef val) = 0;
-               
+
+
+   /**
+      Clone the vector and return an identical copy (deep copy)
+   */
+   virtual ObjectRef clone() = 0;
+   
 };
 
 /**The (template) Overflow Vector type, it adds functionnality to the 
@@ -195,9 +201,38 @@ public:
    	\param val The value to put at the desired position
    */
    virtual void setIndex(int pos, ObjectRef val);
-      
+
+
+   /**
+      Clone the vector and return an identical copy (deep copy) 
+   */
+   virtual ObjectRef clone();
 };
 
+///clone implementation with Vector<ObjectRef>
+template <>
+ObjectRef Vector<ObjectRef>::clone() {
+  
+  Vector<ObjectRef> *cpy = new Vector<ObjectRef>(this->size());
+  
+  for (int i = 0; i < this->size(); i++) {
+    //cloning every Object in the vector
+    (*cpy)[i] = (*this)[i]->clone();
+  }
+
+  return ObjectRef(cpy);
+}
+
+///clone default implementation
+template <class T>
+ObjectRef Vector<T>::clone() {
+  Vector<T> *cpy = Vector<T>::alloc(this->size());
+  
+  for (int i = 0; i < this->size(); i++) {
+    (*cpy)[i] = (*this)[i];
+  }
+  return ObjectRef(cpy);
+}
 
 
 /*template <class T>
