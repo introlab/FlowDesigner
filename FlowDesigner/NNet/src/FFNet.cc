@@ -129,8 +129,9 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
          double d=delta[i];
          double *end=w+layerInputs;
 
-	 while (w<end-2)
+	 while (w<end-3)
 	 {
+	    *w++ += *p++ * d;
 	    *w++ += *p++ * d;
 	    *w++ += *p++ * d;
 	    *w++ += *p++ * d;

@@ -56,8 +56,9 @@ inline void tansig(double *x, double *y, int len)
       else if (xx<-9.9)
 	 xx=-9.9;
       
-      double n = xx*100+1000;
-      int n1 = int(floor(n));
+      double n = xx*100.0+1000.0;
+      //int n1 = int(floor(n));
+      int n1 = int(n);
       double f = n - n1;
       *y++ = (1-f)*tansig_table[n1] + f*tansig_table[n1+1];
       //*y++ = 2/(1+exp(-2*xx)) - 1;
@@ -66,11 +67,31 @@ inline void tansig(double *x, double *y, int len)
 
 inline void deriv_tansig(double *x, double *y, int len)
 {
-   for (int i=0;i<len;i++)
+   /*for (int i=0;i<len;i++)
+   {
+      *y++ = (1- (*x)*(*x));
+      x++;
+      }*/
+
+   //This is just an unrolled version of the previous section
+   double *end = x+len;
+   while (x<end-3)
+   {
+      *y++ = (1- (*x)*(*x));
+      x++;
+      *y++ = (1- (*x)*(*x));
+      x++;
+      *y++ = (1- (*x)*(*x));
+      x++;
+      *y++ = (1- (*x)*(*x));
+      x++;
+   }
+   while (x<end)
    {
       *y++ = (1- (*x)*(*x));
       x++;
    }
+
 }
 
 /*inline double deriv_tanh(double *x, double *y, int len)
@@ -146,14 +167,15 @@ class FFLayer : public Object {
 	    const double *end=p+nbInputs;
 	    value[i]=0;
 
-	    double sum1=0,sum2=0,sum3=0;
-	    while (p < end-2)
+	    double sum1=0,sum2=0,sum3=0,sum4=0;
+	    while (p < end-3)
 	    {
 	       sum1 += *w++ * *p++;
 	       sum2 += *w++ * *p++;
 	       sum3 += *w++ * *p++;
+	       sum4 += *w++ * *p++;
 	    }
-	    value[i] = sum1+sum2+sum3;
+	    value[i] = sum1+sum2+sum3+sum4;
 	    while (p<end)
 	       value[i] += *w++ * *p++;
 	    value[i] += *w;
