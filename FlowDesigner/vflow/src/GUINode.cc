@@ -751,3 +751,17 @@ void GUINode::getBounds(double &x1, double &y1, double &x2, double &y2) {
 */
 
 }
+
+void GUINode::rename(const string &newName) {
+
+  UINode::rename(newName);
+
+  //change the type text
+
+  
+  gnome_canvas_item_set(nodeText,"text",type.c_str(),NULL);
+                             
+
+  redraw();
+
+}

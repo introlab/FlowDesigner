@@ -84,6 +84,10 @@ public:
    /**Returns the corresponding network*/
    UINetwork * getNetwork() {return net;}
 
+
+   /**Rename a node (when network included as a subnet)*/
+   virtual void rename (const string &newName);
+
    /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
 

@@ -302,3 +302,11 @@ string UINode::getComments() const
 {
    return parameters->getComments();
 }
+
+void UINode::rename (const string &newName) {
+
+  //FIXME : should do something about the node name?
+
+  type = newName;
+
+}

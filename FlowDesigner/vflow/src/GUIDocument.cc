@@ -349,14 +349,11 @@ void GUIDocument::removeCurrentNet()
 void rename_net(gchar * str, UINetwork *net)
 {
    
-  cerr<<"rename_net called with str"<<str<<endl;
-
-   if (str)
-      net->rename(str);
-
-   
-
-
+  if (str)
+    net->rename(str);
+  
+  //update tab
+  
 }
 
 void GUIDocument::renameCurrentNet()

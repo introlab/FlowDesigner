@@ -52,6 +52,8 @@ public:
   
    void paramClose() {guiParams=NULL;}
 
+   virtual void rename(const string &newName);
+
    gint event(GdkEvent *event);
   
    void doGrab();
