@@ -256,8 +256,8 @@ while (<>)
       }
       # line spill over from the previous comment. Need to add this
       # info to the previous value
-      elsif (/\* ([a-zA-Z:_0-9 .]+)/) {
-	$new_info = $last_info . " " . $1;
+      elsif (/\* ([\<\>a-zA-Z:_0-9 .,;\"\'\/\*\!\+=\-\(\)\[\]\{\}]+)/) {
+	$new_info = $last_info . "\n" . $1;
 	# if it is input info add it to the current_input
 	if (substr($last_name, 0, 5) eq 'input') {
 	  $$current_input{$last_name} = $new_info;
@@ -275,7 +275,7 @@ while (<>)
 	  $node_info{$last_name} = $new_info;
 	}
 	# keep expanding last_info for multiple carryovers
-	$last_value = $new_info;
+	$last_info = $new_info;
       }
       elsif (/\*/) {
 	# print "blank line \n";
