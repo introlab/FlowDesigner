@@ -25,50 +25,84 @@
 #include <hash_map>
 #endif
 
+#define MAX_SMALL 512
+
 template <class T>
 class VectorPool {
   protected:
    int max_stored;
 
+   vector<vector <Vector<T> *> > smallList;
 #ifdef NO_HASH_MAP
    map<int, vector <Vector<T> *> > stackList;
 #else
+   //hash_map<int, vector <Vector<T> *>, hash<int> > stackList;
    hash_map<int, vector <Vector<T> *>, hash<int> > stackList;
 #endif
 
   public:
    VectorPool(int _max_stored=50) 
       : max_stored(_max_stored)
+      , smallList (MAX_SMALL+1)
    {}
 
    //vector <Vector<T> *> &operator [] 
    Vector<T> *newVector (int size)
    {
-      vector <Vector<T> *> &stack = stackList[size];
-      if (stack.size() == 0)
+      if (size <= MAX_SMALL)
       {
-	 //cerr << "alloc new\n";
-	 return new Vector<T> (size);
+	 vector <Vector<T> *> &stack = smallList[size];
+	 if (stack.empty())
+	 {
+	    return new Vector<T> (size);
+	 } else {
+	    Vector<T> *ret = stack.back();
+	    stack.pop_back();
+	    ret->ref();
+	    
+	    return ret;
+	 }
       } else {
-	 //cerr << "return old\n";
-	 int sz = stack.size();
-	 Vector<T> *ret = stack[sz-1];
-	 stack.resize(sz-1);
-	 ret->ref();
-	 return ret;
-	 
+	 vector <Vector<T> *> &stack = stackList[size];
+	 if (stack.empty())
+	 {
+	    return new Vector<T> (size);
+	 } else {
+	    Vector<T> *ret = stack.back();
+	    stack.pop_back();
+	    ret->ref();
+	    
+	    return ret;
+	    
+	 }
       }
    }
    void release(Vector<T> *vec)
    {
-      //cerr << "send on stack\n";
-      vector <Vector<T> *> &stack = stackList[vec->size()];
-      if (stack.size() > max_stored)
+      int sz = vec->size();
+      if (sz <= MAX_SMALL)
       {
-	 delete vec;
+	 vector <Vector<T> *> &stack = smallList[sz];
+	 if (stack.size() > max_stored)
+	 {
+	    delete vec;
+	 } else {
+	    vec->status = Object::valid;
+	    stack.push_back(vec);
+	 }
+	 
       } else {
-	 vec->status = Object::valid;
-	 stack.insert(stack.end(), vec);
+	 //cerr << "send on stack\n";
+	 vector <Vector<T> *> &stack = stackList[sz];
+	 //deque <Vector<T> *> &stack = stackList[vec->size()];
+	 if (stack.size() > max_stored)
+	 {
+	    delete vec;
+	 } else {
+	    vec->status = Object::valid;
+	    stack.push_back(vec);
+	    //stack.insert(stack.end(), vec);
+	 }
       }
    }
 };

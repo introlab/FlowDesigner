@@ -100,7 +100,8 @@ void BufferedNode::request(int outputID, const ParameterSet &req)
 
 ObjectRef BufferedNode::getOutput(int output_id, int count)
 {
-   try {
+   try 
+   {
       //Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
       Buffer &outBuffer = *(outputs[output_id].buffer);
       
