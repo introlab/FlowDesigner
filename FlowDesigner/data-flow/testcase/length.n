@@ -1,0 +1,22 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node_Constant_1" type="Constant" x="-261.000000" y="106.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;ObjectRef&gt; &lt;Int 34&gt; &lt;Float 1.9&gt; &lt;String allo&gt;&gt;"/>
+    </Node>
+    <Node name="node_Constant_2" type="Constant" x="-262.000000" y="162.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;float&gt; 1 2 5 6 7&gt;"/>
+    </Node>
+    <Node name="node_Add_1" type="Add" x="-39.000000" y="133.000000"/>
+    <Node name="node_Length_1" type="Length" x="-169.000000" y="105.000000"/>
+    <Node name="node_Length_2" type="Length" x="-170.000000" y="162.000000"/>
+    <Node name="node_Print_1" type="Print" x="37.000000" y="132.000000"/>
+    <Link from="node_Constant_2" output="VALUE" to="node_Length_2" input="INPUT"/>
+    <Link from="node_Constant_1" output="VALUE" to="node_Length_1" input="INPUT"/>
+    <Link from="node_Length_1" output="OUTPUT" to="node_Add_1" input="INPUT1"/>
+    <Link from="node_Length_2" output="OUTPUT" to="node_Add_1" input="INPUT2"/>
+    <Link from="node_Add_1" output="OUTPUT" to="node_Print_1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node_Print_1" terminal="OUTPUT"/>
+  </Network>
+</Document>

@@ -39,24 +39,8 @@ public:
    void calculate(int output_id, int count, Buffer &out)
    {
       ObjectRef inputValue = getInput(inputID, count);
-
-
-      int sz;
-      if (typeid(*inputValue) == typeid(Vector<ObjectRef>))
-      {
-	 //cerr << "Vector<ObjectRef>\n";
-	 sz = object_cast<Vector<ObjectRef> > (inputValue).size();
-      } else if (typeid(*inputValue) == typeid(Vector<float>))
-      {
-	 //cerr << "Vector<float>\n";
-	 sz = object_cast<Vector<float> > (inputValue).size();
-      } else {
-	 //cerr << "error!!!\n";
-	 throw new NodeException(this, "Unknown input type", __FILE__, __LINE__);
-      }
-
-      out[count] = Int::alloc(sz);
-
+      BaseVector &in = object_cast<BaseVector> (inputValue);
+      out[count] = Int::alloc(in.size());
    }
 
       

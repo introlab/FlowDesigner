@@ -13,13 +13,35 @@
 
 using namespace std;
 
+/**Base class for all vector types, it holds the size and handles some 
+   common operations for all vector types
+   @author Jean-Marc Valin
+*/
+class BaseVector  : public Object {
+  protected:
+   size_t obj_size;
+   size_t obj_capacity;
+  public:
+   BaseVector(size_t _obj_size, size_t _obj_capacity)
+      : obj_size(_obj_size)
+      , obj_capacity(_obj_capacity)
+      {}
+
+   size_t size() const {return obj_size;}
+
+   bool empty() const {return size()==0;}
+
+   size_t capacity() {return obj_capacity;}
+   
+   virtual ObjectRef range(size_t startInd, size_t endInd)=0;
+};
+
 /**The (template) Overflow Vector type, it adds functionnality to the 
    basic vector<T> type, including serialisation and unserialisation
    @author Jean-Marc Valin
 */
 template<class T>
-class Vector : public Object
-{
+class Vector : public BaseVector {
 public:
    typedef T& reference;
    typedef const T& const_reference;
@@ -27,18 +49,14 @@ public:
    typedef const T* const_iterator;
 protected:
    T *data;
-   size_t obj_size;
-   size_t obj_capacity;
 public:
    Vector()
-      : data(NULL)
-      , obj_size(0)
-      , obj_capacity(0)
+      : BaseVector(0,0)
+      , data(NULL)
    {}
 
    Vector(const Vector<T> &v)
-      : obj_size(v.obj_size)
-      , obj_capacity(v.obj_size)
+      : BaseVector(v.obj_size,v.obj_size)
    {
       if (obj_size)
 	 data=(T*)new char [obj_size*sizeof(T)];
@@ -52,9 +70,8 @@ public:
 
 
    explicit Vector(size_t n, const T &x = T())
-      : data(NULL)
-      , obj_size(0)
-      , obj_capacity(0)
+      : BaseVector(0,0)
+      , data(NULL)
    {resize(n,x);}
 
    ~Vector()
@@ -112,12 +129,6 @@ public:
 
    const_iterator end() const {return data+obj_size;}
 
-   size_t size() const {return obj_size;}
-
-   bool empty() const {return size()==0;}
-
-   size_t capacity() {return obj_capacity;}
-   
    T &operator[] (size_t i) {return data[i];}
 
    const T &operator[] (size_t i) const {return data[i];}
@@ -125,8 +136,6 @@ public:
    void push_back(const T &x) {insert(end(),x);}
 
    void push_front(const T &x) {insert(begin(),x);}
-
-   
    
    inline void insert(iterator after, const T &x);
 
@@ -144,7 +153,7 @@ public:
 
    static Vector<T> *alloc(size_t size);
 
-   static string GetClassName() 
+   static string GetClassName()
    {
       string name = ObjectGetClassName<Vector<T> >();
       if (name == "unknown")
@@ -160,6 +169,16 @@ public:
    
    const T *ptr() const {return data;}
    
+   ObjectRef range(size_t startInd, size_t endInd)
+   {
+      Vector<T> *v = Vector<T>::alloc(endInd-startInd+1);
+      for (size_t i=startInd;i<=endInd;i++)
+      {
+	 (*v)[i-startInd]=(*this)[i];
+      }
+      return ObjectRef(v);
+   }
+
   protected:
    void constr(T* ptr, const T& val) { new(ptr) T(val);}
    void destr(T* ptr) { ptr->~T(); }
