@@ -50,7 +50,7 @@ public:
          val+=in[i];
       }
       
-      out[count] = new Float (val);
+      out[count] = Float::alloc(val);
 
       
    }

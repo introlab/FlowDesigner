@@ -48,7 +48,7 @@ public:
    {
       this->Node::specificInitialize();
       ParameterSet req;
-      req.add("LOOKBACK", ObjectRef(new Int(down)));
+      req.add("LOOKBACK", ObjectRef(Int::alloc(down)));
       inputs[inputID].node->request(inputs[inputID].outputID, req);
 
    }
@@ -76,7 +76,7 @@ public:
 	 int look = dereference_cast<int> (req.get("LOOKBACK")) + down;
 
 	 ParameterSet p;
-	 p.add("LOOKBACK", ObjectRef(new Int (look)));
+	 p.add("LOOKBACK", ObjectRef(Int::alloc(look)));
 	 inputs[inputID].node->request(inputs[inputID].outputID,p);
       }
    

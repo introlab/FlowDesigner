@@ -530,7 +530,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
   }//keypadID
   else if (output_id == keypadIdID) {
     if (is_active) {
-      return ObjectRef(new Int(selected_pad));
+      return ObjectRef(Int::alloc(selected_pad));
     }
     else {
       return nilObject;

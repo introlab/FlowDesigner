@@ -66,7 +66,7 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
 
          int cellID = mmi.belongs(&inputFrame[0]);
          //cerr << "Cell: " << cellID << endl;
-         currentScore = ObjectRef(new Int(cellID));
+         currentScore = ObjectRef(Int::alloc(cellID));
          processCount=count;
       }
       //cerr << "MMIScore returning: " << currentScore << " (" << typeid(currentScore).name() << ")" << endl;

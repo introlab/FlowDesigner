@@ -101,7 +101,7 @@ public:
       
       float dist = cos_dist(&in1[0], &in2[0], in1.size());
       
-      out[count] = ObjectRef (new Float (dist));
+      out[count] = ObjectRef (Float::alloc(dist));
 
    }
 

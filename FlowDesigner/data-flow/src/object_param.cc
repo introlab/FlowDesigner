@@ -44,7 +44,7 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
    if (type == "int")
    {
       int val = atoi (value.c_str());
-      return ObjectRef(new Int(val));
+      return ObjectRef(Int::alloc(val));
    }
    else if (type == "bool")
    {
@@ -62,7 +62,7 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
    else if (type == "float")
    {
       float val = atof (value.c_str());
-      return ObjectRef(new Float(val)); 
+      return ObjectRef(Float::alloc(val)); 
    } 
    else if (type == "string")
    {

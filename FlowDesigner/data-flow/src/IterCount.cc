@@ -36,7 +36,7 @@ public:
 
    virtual ObjectRef getOutput(int output_id, int count) 
    {
-      return ObjectRef(new Int(count));
+      return ObjectRef(Int::alloc(count));
    }
    
 };

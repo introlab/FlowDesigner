@@ -50,7 +50,7 @@ public:
 
       int i;
       stream >> i;
-      out[count] = new Int(i);
+      out[count] = Int::alloc(i);
 
       if (stream.eof())
       {

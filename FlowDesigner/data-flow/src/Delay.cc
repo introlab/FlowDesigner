@@ -49,9 +49,9 @@ public:
       this->Node::specificInitialize();
       ParameterSet req;
       if (delay > 0)
-	 req.add("LOOKBACK", ObjectRef(new Int(delay)));
+	 req.add("LOOKBACK", ObjectRef(Int::alloc(delay)));
       else
-	 req.add("LOOKAHEAD", ObjectRef(new Int(-delay)));
+	 req.add("LOOKAHEAD", ObjectRef(Int::alloc(-delay)));
       inputs[inputID].node->request(inputs[inputID].outputID, req);
 
    }
@@ -75,7 +75,7 @@ public:
 	 if (look > 0)
 	 {
 	    ParameterSet p;
-	    p.add("LOOKAHEAD", ObjectRef(new Int (look)));
+	    p.add("LOOKAHEAD", ObjectRef(Int::alloc(look)));
 	    inputs[inputID].node->request(inputs[inputID].outputID,p);
 	 }
       }
@@ -87,7 +87,7 @@ public:
 	 {
 
 	    ParameterSet p;
-	    p.add("LOOKBACK", ObjectRef(new Int (look)));
+	    p.add("LOOKBACK", ObjectRef(Int::alloc(look)));
 	    inputs[inputID].node->request(inputs[inputID].outputID,p);
 	 }
       }

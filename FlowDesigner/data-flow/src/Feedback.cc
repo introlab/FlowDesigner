@@ -81,7 +81,7 @@ public:
    {
       Node::specificInitialize();
       ParameterSet req;
-      req.add("LOOKBACK", ObjectRef(new Int(delay)));
+      req.add("LOOKBACK", ObjectRef(Int::alloc(delay)));
       req.add("INORDER", nilObject);
       inputs[inputID].node->request(inputs[inputID].outputID,req);
 

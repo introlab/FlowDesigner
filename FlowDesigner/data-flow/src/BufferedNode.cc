@@ -50,8 +50,8 @@ void BufferedNode::performRequests ()
    {
       ParameterSet req;
       //cerr << inputsCache[i].lookAhead+outputLookAhead << endl;
-      req.add("LOOKAHEAD", ObjectRef(new Int(inputsCache[i].lookAhead+outputLookAhead)));
-      req.add("LOOKBACK", ObjectRef(new Int(inputsCache[i].lookBack+outputLookBack)));
+      req.add("LOOKAHEAD", ObjectRef(Int::alloc(inputsCache[i].lookAhead+outputLookAhead)));
+      req.add("LOOKBACK", ObjectRef(Int::alloc(inputsCache[i].lookBack+outputLookBack)));
       inputs[i].node->request(inputs[i].outputID, req);
    }
 }

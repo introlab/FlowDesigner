@@ -23,14 +23,14 @@ echo "  ]"
 
 for file in *.n non-existant.n
 	do
-	echo -n "$file... "
+	echo -ne "$file  \t"
 	if test -f $file.out
 		then
 		if batchflow $file | grep -qf $file.out
 			then
 			echo_success
 		else
-			echo -n "$file... "
+			echo -ne "$file  \t"
 			echo_failure
 			echo
 		fi

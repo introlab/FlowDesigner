@@ -48,7 +48,7 @@ public:
       this->Node::specificInitialize();
       
       ParameterSet req;
-      req.add("LOOKAHEAD", ObjectRef(new Int(int(floor (ratio)))));
+      req.add("LOOKAHEAD", ObjectRef(Int::alloc(int(floor (ratio)))));
       inputs[inputID].node->request(inputs[inputID].outputID, req);
 
    }
@@ -68,13 +68,13 @@ public:
       if (req.exist("LOOKAHEAD"))
       {
 	 ParameterSet p;
-	 p.add("LOOKAHEAD", ObjectRef(new Int (int(1+ratio*dereference_cast<int> (req.get("LOOKAHEAD"))))));
+	 p.add("LOOKAHEAD", ObjectRef(Int::alloc(int(1+ratio*dereference_cast<int> (req.get("LOOKAHEAD"))))));
 	 inputs[inputID].node->request(inputs[inputID].outputID,p);
       }
       if (req.exist("LOOKBACK"))
       {
 	 ParameterSet p;
-	 p.add("LOOKBACK", ObjectRef(new Int (int(1+ratio*dereference_cast<int> (req.get("LOOKBACK"))))));
+	 p.add("LOOKBACK", ObjectRef(Int::alloc(int(1+ratio*dereference_cast<int> (req.get("LOOKBACK"))))));
 	 inputs[inputID].node->request(inputs[inputID].outputID,p);
       }
       //if (req.exist("CACHEALL"))

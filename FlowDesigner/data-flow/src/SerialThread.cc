@@ -115,8 +115,8 @@ public:
       initThread();
       buff = RCPtr<Buffer>(new Buffer (lookAhead + reqLookAhead + reqLookBack + 1));
       ParameterSet req;
-      req.add("LOOKAHEAD", ObjectRef(new Int(lookAhead+reqLookAhead)));
-      req.add("LOOKBACK", ObjectRef(new Int(reqLookBack)));
+      req.add("LOOKAHEAD", ObjectRef(Int::alloc(lookAhead+reqLookAhead)));
+      req.add("LOOKBACK", ObjectRef(Int::alloc(reqLookBack)));
       inputs[inputID].node->request(inputs[inputID].outputID, req);
       Node::specificInitialize();
    }

@@ -56,7 +56,7 @@ public:
 	 throw new NodeException(this, "Unknown input type", __FILE__, __LINE__);
       }
 
-      out[count] = new Int (sz);
+      out[count] = Int::alloc(sz);
 
    }
 
