@@ -43,7 +43,7 @@ public:
 		
 	virtual void printOn(ostream &out=cout) const;
 
-
+	virtual void readFrom(istream &in=cin);
 
 private:
 

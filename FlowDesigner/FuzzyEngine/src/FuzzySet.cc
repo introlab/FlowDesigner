@@ -273,3 +273,8 @@ void FuzzySet::printOn(ostream &out) {
   }
   out <<" >\n";
 }
+
+void FuzzySet::readFrom(istream &in) {
+
+
+}

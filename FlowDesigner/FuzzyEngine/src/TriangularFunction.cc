@@ -134,3 +134,9 @@ void TriangularFunction::printOn(ostream &out) const {
   out << "<C "<<m_c<<" >"<<endl;
   out<<" >\n";
 }
+
+
+void TriangularFunction::readFrom(istream &in) {
+
+
+}

@@ -158,3 +158,8 @@ void TrapezoidalFunction::printOn(ostream &out) const {
   out << "<D "<<m_d<<" >"<<endl;
   out<<" >\n";
 }
+
+void TrapezoidalFunction::readFrom(istream &in) {
+
+
+}

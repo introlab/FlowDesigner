@@ -197,3 +197,7 @@ void GenericModel::printOn(ostream &out) const {
   out <<" >\n";
 }
 	
+void GenericModel::readFrom(istream &in) {
+
+
+}

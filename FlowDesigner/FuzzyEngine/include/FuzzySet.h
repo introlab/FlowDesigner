@@ -67,8 +67,9 @@ public:
 
 	FuzzySet* clone();
 	
-
 	virtual void printOn(ostream &out);
+
+	virtual void readFrom(istream &in=cin);
 
 private:
 

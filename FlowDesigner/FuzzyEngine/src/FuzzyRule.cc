@@ -201,3 +201,7 @@ void FuzzyRule::printOn(ostream &out) const {
 
   out <<" >\n";
 }
+
+void FuzzyRule::readFrom(istream &in) {
+
+}
