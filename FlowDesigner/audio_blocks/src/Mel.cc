@@ -77,7 +77,6 @@ public:
    virtual void specificInitialize()
    {
       this->BufferedNode::specificInitialize();
-
       float niquist = dereference_cast<int> (parameters.get("SAMPLING")) / 2.0;
       float high = dereference_cast<int> (parameters.get("HIGH"));
       float low = dereference_cast<int> (parameters.get("LOW"));
@@ -90,16 +89,17 @@ public:
          float melCenter = lowMel + i*(highMel-lowMel)/(outputLength+1);
          centers[i] = int (floor(.5 + inputLength*700*(exp(melCenter*log(1+1000.0/700.0)/1000)-1)/niquist));
       }
+      
       for (i=0;i<outputLength;i++)
       {
          filterStart[i] = centers[i]+1;
-         filters[i].resize(centers[i+2]-centers[i]-1);
+         filters[i].resize(centers[i+2]-centers[i]);
          int freq, j;
-         for (freq=centers[i]+1, j=0 ; freq<=centers[i+1]; freq++, j++)
+         for (freq=centers[i]+1, j=0 ; freq<centers[i+1]; freq++, j++)
          {
             filters[i][j] = (freq-centers[i])/float(centers[i+1]-centers[i]);
          }
-         for (freq=centers[i+1]+1 ; freq < centers[i+2] ; freq++, j++)
+         for (freq=centers[i+1] ; freq < centers[i+2] ; freq++, j++)
          {
             filters[i][j] = (centers[i+2]-freq)/float(centers[i+2]-centers[i+1]);
          }

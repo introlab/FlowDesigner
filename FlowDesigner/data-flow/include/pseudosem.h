@@ -39,15 +39,30 @@ inline void pseudosem_wait(pseudosem_t *sem)
 {
    pthread_mutex_lock(&sem->mutex);
    if (!sem->val)
+   {
+      cerr << "waiting\n";
       pthread_cond_wait(&sem->cond, &sem->mutex);
+      cerr << "end waiting\n";
+   }
    sem->val--;
    pthread_mutex_unlock(&sem->mutex);
 }
 
 inline void pseudosem_post(pseudosem_t *sem)
 {
+   cerr << "locking for post\n";
    pthread_mutex_lock(&sem->mutex);
+   cerr << "locked for post\n";
    pthread_cond_signal(&sem->cond);
    sem->val++;
    pthread_mutex_unlock(&sem->mutex);
 }
+
+#ifdef HAVE_SEMAPHORE_H
+#include <semaphore.h>
+#define pseudosem_t sem_t
+#define pseudosem_post sem_post
+#define pseudosem_wait sem_wait
+#define pseudosem_init sem_init
+#define pseudosem_destroy sem_destroy
+#endif

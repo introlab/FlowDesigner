@@ -20,14 +20,7 @@
 #include <pthread.h>
 #include "pseudosem.h"
 
-/*
-#include <semaphore.h>
-#define pseudosem_t sem_t
-#define pseudosem_post sem_post
-#define pseudosem_wait sem_wait
-#define pseudosem_init sem_init
-#define pseudosem_destroy sem_destroy
-*/
+
 
 class SerialThread;
 
@@ -172,10 +165,14 @@ public:
       while (1)
       {
 	 //Wait for permission to compute
+	 //cerr << "waiting\n";
 	 pseudosem_wait(&sendSem);
+	 //cerr << "posted\n";
 	 if (resetState)
+	 {
+	    //cerr << "break\n";
 	    break;
-
+	 }
 	 //ObjectRef inputValue;
 	 //Compute
 	 bool inside_lock=false;
@@ -206,8 +203,9 @@ public:
 	 
 
 	 //Notify that the result is ready
+	 //cerr << "pseudosem_post(&recSem);\n";
 	 pseudosem_post(&recSem);
-	 
+	 //cerr << "pseudosem_post done\n";
 	 threadCount++;
       }
    }
