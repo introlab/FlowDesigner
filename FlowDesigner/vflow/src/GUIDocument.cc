@@ -258,7 +258,7 @@ void GUIDocument::setFullPath(const string &fullpath)
 //Run with a GUI
 void GUIDocument::run()
 {
-   cerr << "GUIDocument::run\n";
+   //cerr << "GUIDocument::run\n";
    try{
       ParameterSet params;
       Network *net = build("MAIN", params);
