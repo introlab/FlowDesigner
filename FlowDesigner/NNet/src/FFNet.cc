@@ -121,7 +121,7 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
    if (err)
    {
       for (int i=0;i<topo[topo.size()-1];i++)
-	 *err += sqr( (calc_out[i]-output[i]) * (calc_out[i]-output[i]) );
+	 *err += sqr(calc_out[i]-output[i]);
    }
    //start with the output layer, towards the input
    for (int k=outputLayer;k>=0;k--)
@@ -152,7 +152,8 @@ void FFNet::learn(double *input, double *output, double *err, double *calc_outpu
 	    delta[i]=output[i]-currentValue[i];
 
 
-	    delta[i] = delta[i]*delta[i]*delta[i];
+	    //This minimizes the fourth power of the error
+	    //delta[i] = delta[i]*delta[i]*delta[i];
 
 
 	    //error += delta[i]*delta[i];
