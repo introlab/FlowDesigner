@@ -26,18 +26,11 @@ float DiagGMM::score(const float *vec)
    float *mean=base;
    float *cov=base+augDim;
    float maxScore=0;
-   vec_prefetchnta(mean, augDim);
-   vec_prefetchnta(cov, augDim);
    for (int k=0;k<nbGauss;k++)
    {
       score = 0;
       //for (int i=0;i<augDim;i++)
       // score += sqr(data[i]-mean[i])*cov[i];
-      if (k<nbGauss-1)
-      {
-	 vec_prefetchnta(mean+inc, augDim);
-	 vec_prefetchnta(cov+inc, augDim);
-      }
       score = vec_mahalanobis2(data, mean, cov, augDim);
       //cerr << score << endl;
       if (k==0 || score > maxScore)

@@ -82,12 +82,13 @@ inline void fflogv(const float *fin, float *fout, int len)
    FloatManip m;
    for (int i=0;i<len;i++)
    {
-      m.f = fin[i] + FLT_MIN;
-      //The exponent in id1
-      unsigned int id1 = m.i>>23;
-      //The first bits of the mantissa in id2
-      unsigned int id2 = (m.i & 0x007fffff)>>FLOGLOOKUP2SHIFT;
-      fout[i] = (int(id1)-127)*M_LN2 + logtable2[id2];
+      m.f = fin[i];
+      //Extract the mantissa and perform lookup for log(mantissa)
+      float tb = logtable2[(m.i & 0x007fffff)>>FLOGLOOKUP2SHIFT];
+      //Extract the exponent
+      int id = (m.i>>23)-127;
+      //log(mantissa*2^exponent) = exponent*log(2) + log(mantissa)
+      fout[i] = id*M_LN2 + tb;
    }
 }
 
