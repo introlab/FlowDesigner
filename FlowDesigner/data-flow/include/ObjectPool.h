@@ -41,10 +41,15 @@ class ObjectPool {
 
    static T *alloc()
    {
-      T *ret = stack.back();
-      stack.pop_back();
-      ret->ref();
-      return ret;
+      if (stack.size())
+      {
+	 T *ret = stack.back();
+	 stack.pop_back();
+	 ret->ref();
+	 return ret;
+      } else {
+	 return new T;
+      }
    }
 
    static void release(T *obj)

@@ -78,7 +78,6 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
          Vector<float> &inputFrame = object_cast<Vector<float> > (inputValue);
          
          GMM &gmm = object_cast<GMM> (gmmInput.node->getOutput(gmmInput.outputID,count));
-
          float score = gmm.score(&inputFrame[0]).score;
          //for (i=0; i<mat.ncols(); i++)
          //   cerr << mat[count][i] << " ";
@@ -87,7 +86,6 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
          
 	 //currentScore = ObjectRef(new Float(score));
 	 currentScore = Float::alloc(score);
-
          processCount=count;
       }
       //cerr << "GMMScore returning: " << currentScore << " (" << typeid(currentScore).name() << ")" << endl;
