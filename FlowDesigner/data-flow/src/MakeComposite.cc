@@ -19,7 +19,7 @@ END*/
 
 class MakeComposite : public BufferedNode {
    
-   vector<int> inputID;
+   //vector<int> inputID;
    int outputID;
 
 public:
@@ -29,10 +29,26 @@ public:
       outputID = addOutput("OUTPUT");
    }
 
+   int translateInput (string inputName)
+   {
+      for (unsigned int i=0; i< inputs.size(); i++) {
+         if (inputs[i].name == inputName) {
+            return i;
+         }
+      }  
+      return addInput(inputName);
+   }
+
    void calculate(int output_id, int count, Buffer &out)
    {
       CompositeType &output = *new CompositeType;
       out[count] = &output;
+      
+      for (unsigned int i=0; i< inputs.size(); i++)
+      {
+         ObjectRef in = getInput(i, count);
+         output.addField(inputs[i].name, in);
+      }
    }
 
    NO_ORDER_NODE_SPEEDUP(MakeComposite)
