@@ -18,8 +18,10 @@
 
 #include <vector>
 
+///Frame definition
 typedef vector<float> Frame;
 
+///Square function
 template <class T>
 inline T sqr(T x) {return x*x;}
 

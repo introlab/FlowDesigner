@@ -18,27 +18,55 @@
 #include "gaussian.h"
 #include "covariance.h"
 
-//typedef int(*tata)(int);
+
 
 class GMM;
 
+///The result of scoring a frame against a GMM
 class Score {
 public:
+   ///The log score
    float score;
-   int gaussian_id;
-   Frame *frame;
-   const GMM *gmm;
-public:
-   friend class GMM;
-};
 
-class GMM {
-   vector<Gaussian *>  gaussians;
-   vector<float>       apriori;
-   int                 nb_gaussians;
-   bool                trained;
-   int                 nb_frames_aligned;
+   ///The ID of the nearest gaussian in the GMM used
+   int gaussian_id;
+
+   ///Pointer to the frame scored
+   Frame *frame;
+
+   ///Pointer to the GMM used when scoring
+   const GMM *gmm;
+
 public:
+
+   ///Friend of GMM class
+   friend class GMM;
+}
+;
+
+///Gaussian Mixture Model (GMM) class
+class GMM {
+protected:
+
+   ///STL vector containing all the gaussians in the GMM
+   vector<Gaussian *>  gaussians;
+
+   ///STL vector containing all the apriori weights of the gaussians
+   vector<float>       apriori;
+
+   ///Number of gaussians in the GMM
+   int                 nb_gaussians;
+
+   ///Whether of not the GMM trained (like real/accum mode)
+   bool                trained;
+
+   ///Number of frames aligned to (used to train) the GMM
+   int                 nb_frames_aligned;
+
+public:
+
+   /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
+      covariance pseudo-factory*/
    GMM(int nb_gauss, int dim, Covariance *(*cov_new)(int)) 
       : gaussians(vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
       , apriori (vector<float>(nb_gauss,0.0)) 
@@ -49,24 +77,47 @@ public:
       for (int i=0;i<nb_gauss;i++)
          gaussians[i] = new Gaussian (dim, cov_new);
    }
+
+   ///Returns the number of gaussians in the GMM
    int get_nb_gaussians() const {return nb_gaussians;}
+
+   ///Returns the i'th gaussian
    Gaussian &gaussian (int i) const {return *(gaussians[i]);}
+
+   ///Accumulates (adds) the frame the the i'th gaussian
    void accum_to_gaussian(int i, const Frame &fr)
    {
       gaussians[i]->accum_frame(fr);
       apriori[i]+=1.0;
       nb_frames_aligned++;
    }
+
+   ///Randomly init the GMM with a list (STL vector) of frames
    void init(vector<Frame *> frames);
+
+   ///Performs k-means training
    void kmeans1(vector<Frame *> frames);
+
+   ///Performs k-means training (using another GMM to score)
    void kmeans2(vector<Frame *> frames, GMM *gmm);
+
+   ///Converts the GMM from accum mode to real mode
    void to_real();
+
+   ///Converts the GMM from real mode to accum mode and set everything to zero
    void reset_to_accum_mode();
+
+   ///Score a frame against the GMM
    Score score(Frame * fr) const;
+
+   ///Double the number of gaussians
    void binary_split();
+
+   ///Score a list (STL vector) of frames against the GMM
    vector<Score> score(vector <Frame *> fr) const;
 
-};
+}
+;
 
 
 

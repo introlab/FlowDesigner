@@ -19,7 +19,9 @@
 
 #include "gmm.h"
 
+///State class
 class State {
+   ///Corresponding GMM
    GMM *mixture;
 };
 

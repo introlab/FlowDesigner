@@ -21,42 +21,69 @@
 #include <string>
 #include "covariance.h"
 
+///Gaussian class
 class Gaussian 
 {
-private:
+protected:
+   ///The mean of the gaussian stored as an STL vector of float
    vector<float> *mean;
+
+   ///The covariance of the gaussian is a pointer to abstract class Covariance
    Covariance    *covariance;
+
+   ///number of frames aligned (accumulated) to the covariance
    int            accum_count;
+
+   ///Dimension (same as the mean and covariance dimension)
    int            dimension;
+
 public:
+
+   /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
+    *(allows to create gaussians with either diagonal or full covariance*/
    Gaussian(int dim, Covariance *(*cov_new)(int)) 
       : mean(new vector<float> (dim))
       , covariance(cov_new (dim)) , dimension(dim)
    {}
+
+   ///Copy constructor
    Gaussian(const Gaussian &g) 
       : mean(new vector<float> (*g.mean))
       , covariance(g.covariance->copy())
       , accum_count (g.accum_count)
       , dimension (g.dimension)
    {}
+
+   ///Destructor
    ~Gaussian();
       
+   ///Returns the dimension of the gaussian
    int         getDimension() const  { return dimension; }
+
+   ///Returns the mean of the gaussian
    vector<float>      &getMean()      const  { return *mean; }
+
+   ///Returns the covriance of the gaussian
    Covariance &getCovariance() const { return *covariance; }
+
+   ///Convert from accumulate to real mode
    void to_real();
+
+   ///Returns the number of frames aligned to the gaussian
    int get_accum_count() const {return accum_count;} 
 
+   ///Returns the mahalanobis distance between the gaussian and a frame
    float mahalanobis(const Frame *fr) const
    {
       float dist=0;
       for (unsigned int i=0;i<fr->size();i++)
       {
-         dist+=sqr((*fr)[i]-(*mean)[i]);///(*covariance)[i];
+         dist+=sqr((*fr)[i]-(*mean)[i]);// /(*covariance)[i];
       }
       return dist;//*covariance->getDeterminant();
    }
 
+   ///Adds (accumulates) a frame to the gaussian
    void accum_frame(const Frame &fr)
    {
       accum_count++;
@@ -67,6 +94,7 @@ public:
       }
    }
 
+   ///Set everything to zero and come back to accumulate mode
    void reset_to_accum_mode()
    {
       accum_count=0;
@@ -75,9 +103,12 @@ public:
       for (unsigned int i=0;i<mean->size();i++)
          (*mean)[i]=0.0;
    }
+
+   ///Prints the gaussian mean
    void print_mean(ostream &out = cout, string separ = " ") const;
+
+   ///Prints the gaussian covariance
    void print_covar(ostream &out = cout, string separ = " ") const;
-   
-   //void print() const;
+
 };
 #endif

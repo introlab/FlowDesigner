@@ -20,74 +20,109 @@
 #include <vector>
 #include "hmm.h"
 
-//class Frame;
+
 class ifstream;
 class ofstream;
 
-enum covariance_type {diagonal, radial, full};
-
+///Abstract covariance class
 class Covariance 
 {
 protected:
-   unsigned int   dimension;     // *** dimension of the covariance matrix
-   mutable float determinant;   // *** log of the determinant
+   ///Size of the covariance matrix
+   unsigned int   dimension;
+   ///Log of the determinant
+   mutable float determinant;
+   //Whether or not the determinant has been computed
    mutable bool  determinant_is_valid;
 public:
+   ///Create a Covariance with dim dimensions
    Covariance(int dim) : dimension(dim) , determinant(-10000) , determinant_is_valid(false)
    {
       
    }
+   ///Copy constructor
    Covariance(const Covariance &cov) 
       : dimension(cov.dimension) 
       , determinant(0)
       , determinant_is_valid(false)
    {}
+   ///Virtual Destructor
    virtual ~Covariance() {}
    
    
+   ///Returns the covariance size (dimension)
    unsigned int   size() const { return dimension; }
+   ///Returns (and compute if necessary) the covariance log determinant
    float getDeterminant() const 
    { 
       if (!determinant_is_valid) compute_determinant(); 
       return determinant; 
    }
+   ///Computes the determinant
    virtual void compute_determinant() const =0;
+   ///Prints the covariance
    void print() const;
    
+   ///Virtual indexing operator 1D (for diagonal covariance)
    virtual float&      operator[](int )=0;
+   ///Virtual indexing operator 2D
    virtual float&      operator()(int,int)=0;
+   ///Resets accumulation to zero
    virtual void reset()=0;
+   ///Returns a copy of the covariance
    virtual Covariance * copy()=0;
+   ///Converts from accumulate mode to real
    virtual void to_real(const float accum_1, const vector<float> *mean)=0;
-   //virtual Covariance& operator=(const Covariance&)=0;
 };
 
 
 
+///Diagonal Covariance class
 class DiagonalCovariance : public Covariance  {
+   ///The covariance data as the diagonal vector
    vector<float> data;
 public:
+   ///Constructs a Diagonal Covariance with dimension dim
    DiagonalCovariance(int dim) 
       : Covariance(dim) 
       , data(vector<float>(dim,0.0)) 
    {}
 
+   ///Copy Constructor
    DiagonalCovariance (const DiagonalCovariance &cov) 
       : Covariance(cov)
       , data(cov.data)
    {}
 
-   //Dangerous for performance: these are virtual functions and should not
-   //be used in loops
+   /**@name Indexing 
+   *Warning: These virtual indexing function are dangerous for performance
+    *and should not be used in loops*/
+   //@{
+   ///1D indexing
    float&      operator[](int i) {return data[i];}
-   float&      operator()(int i) {return data[i];}
-   float&      operator()(int i,int) {return data[i];}
-   void compute_determinant() const;
-   void reset();
-   DiagonalCovariance *copy () {  return new DiagonalCovariance (*this); }
-   void to_real(const float accum_1, const vector<float> *mean);
-};
 
+   ///1D indexing
+   float&      operator()(int i) {return data[i];}
+
+   ///2D indexing (second operator is ignored)
+   float&      operator()(int i,int) {return data[i];}
+   //@}
+
+   ///Computes the determinant
+   void compute_determinant() const;
+
+   ///Reset accumulation to zero
+   void reset();
+
+   ///Returns a copy of the covariance
+   DiagonalCovariance *copy () {  return new DiagonalCovariance (*this); }
+
+   ///Converts from accumulate mode to real
+   void to_real(const float accum_1, const vector<float> *mean);
+}
+;
+
+///Function that acts as a factory for diagonal covariance
 inline Covariance *NewDiagonalCovariance(int dim) {return new DiagonalCovariance (dim);}
 
 
