@@ -663,7 +663,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) {
 
    GtkWidget *about;
    
-   about = gnome_about_new ("vflow", VERSION,
+   about = gnome_about_new ("vflow", OVERFLOW_VERSION,
                             _("(C) 1999-2001 Jean-Marc Valin & Dominic Letourneau"),
                             authors,
                             _("Overflow (http://freespeech.sourceforge.net/overflow.html) is a free (LGPL) ""data flow oriented"" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a ""clone"" of any of them.\n\nThis software is part of the Open Mind Speech project (http://freespeech.sourceforge.net/).\nOther contributors: Brad Chapman, Luc Lussier, Andre Charbonneau"),
@@ -835,7 +835,7 @@ int main (int argc, char *argv[])
 
       g_thread_init(NULL); 
       
-      gnome_init ("vflow", VERSION, argc, argv);
+      gnome_init ("vflow", OVERFLOW_VERSION, argc, argv);
       setlocale (LC_NUMERIC, "C");
 
       //setting segfault callback

@@ -57,7 +57,8 @@ include_HEADERS = Array.h \
 	UINodeRepository.h \
 	vec_3dnow.h \
 	vec_sse.h \
-	flow_pref.h
+	flow_pref.h \
+	flow_version.h
 	
 noinst_HEADERS = \
 	NetExec.h \
