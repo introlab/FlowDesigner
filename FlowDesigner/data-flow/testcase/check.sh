@@ -20,3 +20,17 @@ echo vect.n passed
 else
 echo vect.n failed
 fi
+
+if batchflow saveload.n | grep -q '<Vector<ObjectRef> <String HelloWorld! > <Vector<float> 5 7 9 >  <Vector<float> 3 9 5 >  >';
+then
+echo saveload.n passed
+else
+echo saveload.n failed
+fi
+
+if batchflow serial.n | grep -q '<Vector<ObjectRef> <String HelloWorld! > <Vector<float> 5 7 9 >  <Vector<float> 3 9 5 >  >';
+then
+echo serial.n passed
+else
+echo serial.n failed
+fi

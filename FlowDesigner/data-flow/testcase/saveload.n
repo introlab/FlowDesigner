@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="NewAccumulator" x="-339.000000" y="192.000000"/>
+    <Node name="node2" type="Accumulate" x="-152.000000" y="113.000000"/>
+    <Node name="node3" type="Accumulate" x="64.000000" y="113.000000"/>
+    <Node name="node4" type="Accumulate" x="297.000000" y="114.000000"/>
+    <Node name="node7" type="Constant" x="-433.000000" y="33.000000">
+      <Parameter name="VALUE" type="string" value="Hello"/>
+    </Node>
+    <Node name="node8" type="Concat" x="-289.000000" y="53.000000"/>
+    <Node name="node9" type="Constant" x="-432.000000" y="69.000000">
+      <Parameter name="VALUE" type="string" value="World!"/>
+    </Node>
+    <Node name="node6" type="Add" x="-64.000000" y="60.000000"/>
+    <Node name="node10" type="Constant" x="-195.000000" y="67.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector 1 2 3&gt;"/>
+    </Node>
+    <Node name="node11" type="Constant" x="-195.000000" y="26.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;float&gt; 4 5 6&gt;"/>
+    </Node>
+    <Node name="node12" type="Max" x="170.000000" y="51.000000"/>
+    <Node name="node5" type="Constant" x="19.000000" y="32.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;float&gt; 1 9 4&gt;"/>
+    </Node>
+    <Node name="node13" type="Constant" x="20.000000" y="66.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Vector&lt;float&gt; 3 6 5&gt;"/>
+    </Node>
+    <Node name="node14" type="Action" x="635.000000" y="138.000000"/>
+    <Node name="node15" type="Action" x="460.000000" y="179.000000"/>
+    <Node name="node17" type="Action" x="885.000000" y="172.000000"/>
+    <Node name="node16" type="LoadFile" x="757.000000" y="107.000000">
+      <Parameter name="FILENAME" type="string" value="tmp"/>
+    </Node>
+    <Node name="node18" type="SaveAs" x="732.000000" y="159.000000">
+      <Parameter name="FILENAME" type="string" value="tmp"/>
+    </Node>
+    <Node name="node19" type="Print" x="983.000000" y="173.000000"/>
+    <Link from="node1" output="OUTPUT" to="node2" input="ACCUM"/>
+    <Link from="node8" output="OUTPUT" to="node2" input="INPUT"/>
+    <Link from="node9" output="VALUE" to="node8" input="INPUT2"/>
+    <Link from="node7" output="VALUE" to="node8" input="INPUT1"/>
+    <Link from="node6" output="OUTPUT" to="node3" input="INPUT"/>
+    <Link from="node10" output="VALUE" to="node6" input="INPUT2"/>
+    <Link from="node11" output="VALUE" to="node6" input="INPUT1"/>
+    <Link from="node12" output="OUTPUT" to="node4" input="INPUT"/>
+    <Link from="node5" output="VALUE" to="node12" input="INPUT1"/>
+    <Link from="node13" output="VALUE" to="node12" input="INPUT2"/>
+    <Link from="node1" output="OUTPUT" to="node3" input="ACCUM"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="ACCUM"/>
+    <Link from="node1" output="OUTPUT" to="node14" input="INPUT"/>
+    <Link from="node15" output="OUTPUT" to="node14" input="BEFORE"/>
+    <Link from="node2" output="OUTPUT" to="node15" input="BEFORE"/>
+    <Link from="node3" output="OUTPUT" to="node15" input="INPUT"/>
+    <Link from="node4" output="OUTPUT" to="node15" input="AFTER"/>
+    <Link from="node16" output="OUTPUT" to="node17" input="INPUT"/>
+    <Link from="node18" output="OUTPUT" to="node17" input="BEFORE"/>
+    <Link from="node14" output="OUTPUT" to="node18" input="INPUT"/>
+    <Link from="node17" output="OUTPUT" to="node19" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node19" terminal="OUTPUT"/>
+  </Network>
+</Document>
