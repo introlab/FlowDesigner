@@ -56,7 +56,7 @@ class Complex : public complex<T>, public Object {
   }
   
   void prettyPrint(ostream &out) const { 
-    out<<*this<<endl;
+    out << *((complex<T>*) this);
   }
   
 
