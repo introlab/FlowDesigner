@@ -14,9 +14,13 @@ AUTOMAKE_OPTIONS = no-dependencies
 
 INCLUDES = -I$(top_srcdir)/data-flow/include 
 
-bin_PROGRAMS = AudioNetwork
+bin_PROGRAMS = AudioNetwork dist matdist
 
 AudioNetwork_SOURCES = AudioNetwork.cc 
+
+dist_SOURCES = dist.cc 
+
+matdist_SOURCES = matdist.cc 
 
 LDFLAGS=$(FFTW_LDFLAGS)
 
