@@ -579,6 +579,10 @@ void saveas_doc_event(GtkWidget *widget, vflowGUI *vflow) {
    gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->cancel_button),
                       "clicked", (GtkSignalFunc)file_saveas_destroy, 
                       ssel);
+
+   //set filename
+   gtk_file_selection_set_filename (GTK_FILE_SELECTION(ssel),(gchar*)doc->getName().c_str());
+
    
    gtk_widget_show(ssel);
    
