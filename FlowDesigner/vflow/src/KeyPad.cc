@@ -63,7 +63,8 @@ const int KeyPad::pad_C_number = 14;
 const int KeyPad::pad_D_number =15;
 
 KeyPad::KeyPad(string nodeName, ParameterSet params) 
-  : Node(nodeName,params), active(false), selected_line(-1), selected_column(-1), selected_pad(-1) {
+  : Node(nodeName,params), active(false), selected_line(-1), 
+  selected_column(-1), selected_pad(-1), key_stroke(0) {
 
   //adding outputs
   keypadID = addOutput("KEYPAD");
@@ -94,6 +95,10 @@ void KeyPad::specificInitialize() {
    NO_CANCEL;
    gdk_threads_enter(); 
 
+   //creating accelerator
+   accel = gtk_accel_group_new();
+   
+
    //creating window
    window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
    gtk_object_set_data (GTK_OBJECT (window1), "window1", window1);
@@ -121,19 +126,23 @@ void KeyPad::specificInitialize() {
    gtk_object_set_data_full (GTK_OBJECT (window1), "table_1", table_1,
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (table_1);
+   
 
    //creating button1
    button_1 = gtk_button_new_with_label ("1");
-   key_map.insert(make_pair(button_1,pad_1_number));
+   button_map.insert(make_pair(button_1,pad_1_number));
+   key_map.insert(make_pair('1',pad_1_number));
    gtk_widget_ref (button_1);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_1", button_1,
 			     (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (button_1);
    gtk_table_attach_defaults (GTK_TABLE(table_1),button_1,0,1,0,1);
+  
    
    //creating button2
    button_2 = gtk_button_new_with_label ("2");
-   key_map.insert(make_pair(button_2,pad_2_number));
+   button_map.insert(make_pair(button_2,pad_2_number));
+   key_map.insert(make_pair('2',pad_2_number));
    gtk_widget_ref (button_2);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_2", button_2,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -142,7 +151,8 @@ void KeyPad::specificInitialize() {
 
    //creating button3
    button_3 = gtk_button_new_with_label ("3");
-   key_map.insert(make_pair(button_3,pad_3_number));
+   button_map.insert(make_pair(button_3,pad_3_number));
+   key_map.insert(make_pair('3',pad_3_number));
    gtk_widget_ref (button_3);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_3", button_3,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -152,7 +162,8 @@ void KeyPad::specificInitialize() {
 
    //creating button4
    button_4 = gtk_button_new_with_label ("4");
-   key_map.insert(make_pair(button_4,pad_4_number));
+   button_map.insert(make_pair(button_4,pad_4_number));
+   key_map.insert(make_pair('4',pad_4_number));
    gtk_widget_ref (button_4);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_4", button_4,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -162,7 +173,8 @@ void KeyPad::specificInitialize() {
 
    //creating button5
    button_5 = gtk_button_new_with_label ("5");
-   key_map.insert(make_pair(button_5,pad_5_number));
+   button_map.insert(make_pair(button_5,pad_5_number));
+   key_map.insert(make_pair('5',pad_5_number));
    gtk_widget_ref (button_5);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_5", button_5,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -172,7 +184,8 @@ void KeyPad::specificInitialize() {
 
    //creating button6
    button_6 = gtk_button_new_with_label ("6");
-   key_map.insert(make_pair(button_6,pad_6_number));
+   button_map.insert(make_pair(button_6,pad_6_number));
+   key_map.insert(make_pair('6',pad_6_number));
    gtk_widget_ref (button_6);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_6", button_6,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -182,7 +195,8 @@ void KeyPad::specificInitialize() {
 
    //creating button7
    button_7 = gtk_button_new_with_label ("7");
-   key_map.insert(make_pair(button_7,pad_7_number));
+   button_map.insert(make_pair(button_7,pad_7_number));
+   key_map.insert(make_pair('7',pad_7_number));
    gtk_widget_ref (button_7);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_7", button_7,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -192,7 +206,8 @@ void KeyPad::specificInitialize() {
 
    //creating button8
    button_8 = gtk_button_new_with_label ("8");
-   key_map.insert(make_pair(button_8,pad_8_number));
+   button_map.insert(make_pair(button_8,pad_8_number));
+   key_map.insert(make_pair('8',pad_8_number));
    gtk_widget_ref (button_8);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_8", button_8,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -202,7 +217,8 @@ void KeyPad::specificInitialize() {
 
    //creating button9
    button_9 = gtk_button_new_with_label ("9");
-   key_map.insert(make_pair(button_9,pad_9_number));
+   button_map.insert(make_pair(button_9,pad_9_number));
+   key_map.insert(make_pair('9',pad_9_number));
    gtk_widget_ref (button_9);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_9", button_9,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -212,7 +228,8 @@ void KeyPad::specificInitialize() {
 
    //creating button0
    button_0 = gtk_button_new_with_label ("0");
-   key_map.insert(make_pair(button_0,pad_0_number));
+   button_map.insert(make_pair(button_0,pad_0_number));
+   key_map.insert(make_pair('0',pad_0_number));
    gtk_widget_ref (button_0);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_0", button_0,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -222,7 +239,8 @@ void KeyPad::specificInitialize() {
 
    //creating button_hash
    button_hash = gtk_button_new_with_label ("#");
-   key_map.insert(make_pair(button_hash,pad_hash_number));
+   button_map.insert(make_pair(button_hash,pad_hash_number));
+   key_map.insert(make_pair('#',pad_hash_number));
    gtk_widget_ref (button_hash);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_hash", button_hash,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -232,7 +250,8 @@ void KeyPad::specificInitialize() {
 
    //creating button_star
    button_star = gtk_button_new_with_label ("*");
-   key_map.insert(make_pair(button_star,pad_star_number));
+   button_map.insert(make_pair(button_star,pad_star_number));
+   key_map.insert(make_pair('*',pad_star_number));
    gtk_widget_ref (button_star);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_star", button_star,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -242,7 +261,8 @@ void KeyPad::specificInitialize() {
 
    //creating button_A
    button_A = gtk_button_new_with_label ("A");
-   key_map.insert(make_pair(button_A,pad_A_number));
+   button_map.insert(make_pair(button_A,pad_A_number));
+   key_map.insert(make_pair('A',pad_A_number));
    gtk_widget_ref (button_A);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_A", button_A,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -251,7 +271,8 @@ void KeyPad::specificInitialize() {
 
    //creating button_B
    button_B = gtk_button_new_with_label ("B");
-   key_map.insert(make_pair(button_B,pad_B_number));
+   button_map.insert(make_pair(button_B,pad_B_number));
+   key_map.insert(make_pair('B',pad_B_number));
    gtk_widget_ref (button_B);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_B", button_B,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -260,7 +281,8 @@ void KeyPad::specificInitialize() {
    
    //creating button_C
    button_C = gtk_button_new_with_label ("C");
-   key_map.insert(make_pair(button_C,pad_C_number));
+   button_map.insert(make_pair(button_C,pad_C_number));
+   key_map.insert(make_pair('C',pad_C_number));
    gtk_widget_ref (button_C);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_C", button_C,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -269,7 +291,8 @@ void KeyPad::specificInitialize() {
 
    //creating button_D
    button_D = gtk_button_new_with_label ("D");
-   key_map.insert(make_pair(button_D,pad_D_number));
+   button_map.insert(make_pair(button_D,pad_D_number));
+   key_map.insert(make_pair('D',pad_D_number));
    gtk_widget_ref (button_D);
    gtk_object_set_data_full (GTK_OBJECT (window1), "button_D", button_D,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -458,7 +481,11 @@ void KeyPad::specificInitialize() {
 
 
 
+   gtk_signal_connect(GTK_OBJECT(window1), "event",
+		      GTK_SIGNAL_FUNC (keypad_event_function),this);
+
    //let's show window
+   gtk_accel_group_attach(accel,GTK_OBJECT(window1));
    gtk_widget_show(window1);
 
    gdk_threads_leave(); 
@@ -474,15 +501,25 @@ void KeyPad::reset() {
 
 ObjectRef KeyPad::getOutput(int output_id, int count) {
 
+  bool is_active;
+
+  if (key_stroke > 0 || active) {
+    is_active = true;
+  }
+  else {
+    is_active = false;
+  }
+
+  key_stroke = max(0,key_stroke - 1);
+
   if (output_id == keypadID) {
     
     
-    if (active) {
+    if (is_active) {
       Vector<int> *my_output = new Vector<int>(2);
       
       (*my_output)[0] = selected_line;
       (*my_output)[1] = selected_column;
-	
       return ObjectRef(my_output);
       
     }
@@ -492,7 +529,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
     
   }//keypadID
   else if (output_id == keypadIdID) {
-    if (active) {
+    if (is_active) {
       return ObjectRef(new Int(selected_pad));
     }
     else {
@@ -501,7 +538,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
 
   }
   else if (output_id == keypadNameID) {
-    if (active) {
+    if (is_active) {
       return ObjectRef(new Char(pad_description));
     }
     else {
@@ -513,7 +550,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
   }
 }
 
-void KeyPad::update_values(int pad_number) {
+void KeyPad::update_values(int pad_number, bool activate) {
 
   //updating pad, line and column
   selected_pad = pad_number;
@@ -606,7 +643,29 @@ void KeyPad::update_values(int pad_number) {
 
   }
 
-  active = true;
+  
+  active = activate;
+
+
+}
+
+void KeyPad::add_accelerator(char key, GtkWidget *button) {
+
+  gtk_widget_add_accelerator (button, "pressed", accel,
+                              GDK_A, 0,
+                              GTK_ACCEL_VISIBLE);
+}
+
+void KeyPad::keyboard_action(unsigned int key) {
+  cerr<<"keyboard_action key : "<<key<<endl;
+  cerr<<"keyboard_action char : "<<(char)key<<endl;
+  char my_key = (char) key;
+  
+  if (key_map.find(my_key) != key_map.end()) {
+    //we found this key
+    update_values(key_map[my_key],false);
+    key_stroke+= 5;
+  }
 
 
 }
@@ -615,8 +674,8 @@ void keypad_button_pressed(GtkButton  *button, KeyPad *keypad) {
 
   try {
   
-    int pad_number = keypad->key_map[GTK_WIDGET(button)];
-    keypad->update_values(pad_number);
+    int pad_number = keypad->button_map[GTK_WIDGET(button)];
+    keypad->update_values(pad_number,true);
     
   }
   catch (BaseException *e) {
@@ -641,3 +700,12 @@ gboolean ignore_delete(GtkWidget *widget, GdkEvent *event, KeyPad *keypad) {
    return TRUE;
 }
 
+gboolean keypad_event_function  (GtkWidget *window, GdkEvent *event, KeyPad *keypad) {
+  
+  switch (event->type) {
+  case GDK_KEY_PRESS:
+    keypad->keyboard_action(event->key.keyval);
+    break;
+  }
+
+}
