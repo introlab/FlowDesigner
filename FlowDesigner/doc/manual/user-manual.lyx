@@ -351,13 +351,6 @@ vflow
 main()
 \emph default 
  function in a C program.
- You can add more sub-networks (equivalent of sub-routines) from the menu
- 
-\emph on 
-Networks->Add Network
-\emph default 
-.
- 
 \layout Standard
 
 
@@ -369,11 +362,15 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 199
-file vflow
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename vflow
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 199pt
 \end_inset 
 
 
@@ -427,21 +424,19 @@ Right-clicking on a node brings up the node menu.
 
 All networks must have at least one output.
  Any network that is not a top-level network (MAIN) may also have inputs.
- Inputs and outputs can be added by left clicking on a terminal with the
- SHIFT modifier on.
+ Inputs and outputs names are added by left clicking on a terminal with
+ the SHIFT modifier on.
  You will be asked to provide the input/output name.
 \layout Standard
 \align center 
 
-\emph on 
-
 \begin_inset  Tabular
-<lyxtabular version="3" rows="6" columns="2">
-<features rotate="false" islongtable="false" firstHeadTopDL="false" firstHeadBottomDL="false" firstHeadEmpty="false" headTopDL="false" headBottomDL="false" footTopDL="false" footBottomDL="false" lastFootTopDL="false" lastFootBottomDL="false" lastFootEmpty="false">
-<column alignment="center" valignment="top" leftline="true" rightline="false" width="0pt" special="">
-<column alignment="center" valignment="top" leftline="true" rightline="true" width="0pt" special="">
-<row topline="true" bottomline="true" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+<lyxtabular version="3" rows="7" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0pt">
+<column alignment="left" valignment="center" leftline="true" rightline="true" width="2.4in">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
@@ -449,17 +444,17 @@ All networks must have at least one output.
 GUI Controls
 \end_inset 
 </cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
-
+\align center 
 Actions to do
 \end_inset 
 </cell>
 </row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
@@ -467,18 +462,21 @@ Actions to do
 Add nodes to the network
 \end_inset 
 </cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
 
-Click on the right button on the background and select the node you want
- to add.
+Right-click on the background and select 
+\emph on 
+New Node 
+\emph default 
+to add the node you want.
 \end_inset 
 </cell>
 </row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
@@ -486,7 +484,7 @@ Click on the right button on the background and select the node you want
 Connect two nodes
 \end_inset 
 </cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
@@ -495,26 +493,26 @@ Click on the terminal and drag the mouse the other terminal.
 \end_inset 
 </cell>
 </row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
 
-Delete links
+Delete links between nodes
 \end_inset 
 </cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
 
-Click on them with the SHIFT modifier on.
+Click on the link with the SHIFT modifier on.
 \end_inset 
 </cell>
 </row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
@@ -522,30 +520,52 @@ Click on them with the SHIFT modifier on.
 Set a node parameters
 \end_inset 
 </cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
 
-Right-click on the node.
+Double-click on the node OR right-click on it and select 
+\emph on 
+Properties
+\emph default 
+.
 \end_inset 
 </cell>
 </row>
-<row topline="true" bottomline="true" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
 
-Add an output/input name to a node
+Add output/input name to a node
 \end_inset 
 </cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \layout Standard
 
-Left-click on the terminal with the SHIFT modifier on.
+Click on the terminal with the SHIFT modifier on.
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+Get information about the node
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+Middle-click on it
 \end_inset 
 </cell>
 </row>
@@ -561,43 +581,61 @@ Left-click on the terminal with the SHIFT modifier on.
 Basic GUI Controls
 \layout Section
 
-Using Sub-networks (subnets) and Iterators
+Using Sub-networks (subnets), Iterators and Threaded Iterators
+\layout Subsection
+
+Sub-Networks
 \layout Standard
 
-In order to simplify programming, you can create sub-networks (main menu
- Network->Add network) that can contain several nodes connected together.
- That way, you can reuse those networks as subnets in a higher level network.
+As mentionned earlier, every "program" contain a network called "MAIN",
+ which is equivalent to the 
+\emph on 
+main()
+\emph default 
+ function in a C program.
+ However, you can add more sub-networks (equivalent of sub-routines) from
+ the main menu 
+\emph on 
+(Networks->Add Network
+\emph default 
+) that can contain several nodes connected together.
+ That way, You simplify programming and you can reuse those networks as
+ subnets in a higher level network.
  It is very important to name the newly created network a different name
  than "MAIN" for obvious reasons.
  Those networks must absolutely have "named" inputs and outputs in order
  to be used in higher level networks as explained in the previous section.
  To add sub-networks into a network of higher level, right-click on the
- background and select the sub-network you want from the menu (New Node->
- Subnet
+ background and select the sub-network you want to add from the menu (New
+ Node-> Subnet
 \emph on 
 ).
 \layout Standard
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 201
-file overflow_main
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_main
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 201pt
 \end_inset 
 
 
 \layout Caption
 
-Including a subnet with Overflow
+Including a subnet with Overflow 
 \begin_inset LatexCommand \label{cap:sample_main}
 
 \end_inset 
@@ -610,18 +648,22 @@ Including a subnet with Overflow
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 201
-file overflow_subnet
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_subnet
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 201pt
 \end_inset 
 
 
@@ -638,8 +680,23 @@ Subnet with Overflow
 
 \layout Standard
 
-Another useful type of network you can create is the Iterator (main menu
- Network->Add iterator).
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/subnet.n .
+\layout Subsection
+
+Iterators
+\layout Standard
+
+Another useful type of network you can create is the Iterator 
+\emph on 
+(main menu Network->Add iterator)
+\emph default 
+.
  An iterator, is a control structure that performs a loop.
  It stops looping when a certain "control condition" is met.
  The condition is a boolean value the iterator gets from a node.
@@ -651,18 +708,22 @@ Another useful type of network you can create is the Iterator (main menu
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 201
-file overflow_main3
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_main3
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 201pt
 \end_inset 
 
 
@@ -681,18 +742,22 @@ Including an iterator with Overflow
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 201
-file overflow_iterator2
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_iterator2
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 201pt
 \end_inset 
 
 
@@ -709,7 +774,21 @@ Iterator with Overflow
 
 \layout Standard
 
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/demo_feedback.n .
+\layout Subsection
+
+Threaded Iterators
+\layout Standard
+
 For now, Threaded Iterators are experimental.
+ They are a special kind of subnets that provide a different level of multi-thre
+ading.
  You should not use them, unless you REALLY know what you are doing.
 \layout Section
 
@@ -728,14 +807,38 @@ When your program is complete, you can execute it by clicking "Run" in the
 Using nodes
 \layout Standard
 
-This section presents the different Overflow node categories.
- For every category, one or more nodes are presented and given in example.
+This section presents different Overflow nodes categories.
+ The nodes categories are divided in two by level of diffiuclty: the 
+\emph on 
+Basic Nodes
+\emph default 
+ and the 
+\emph on 
+Advanced Features
+\emph default 
+.
+ For every category (no matter its level of difficulty), at least one of
+ his node is explained and given in example.
+ For every example, you can find the corresponding program in the directorie:
+ 
+\emph on 
+FreeSpeech/examples
+\emph default 
+ .
 \layout Section
 
 Basics nodes
+\layout Standard
+
+Lets get started with the nodes that are the most popular for new users,
+ that is, the most important to understand.
 \layout Subsection
 
 Category: General
+\layout Standard
+
+As the name mentions, this category contains nodes that you find frequently
+ in programs.
 \layout Subsubsection
 
 Constant
@@ -774,18 +877,22 @@ Constant
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 199
-file overflow_hello
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_hello
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 199pt
 \end_inset 
 
 
@@ -800,6 +907,15 @@ Hello World!
 \end_inset 
 
 
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/hello.n .
 \layout Standard
 
 In the previous example, the node 
@@ -979,53 +1095,52 @@ hello
 \layout Subsection
 
 Category: IO
+\layout Standard
+
+This category concerns mainly the use of streams for reading, loading and
+ saving data of any kind.
 \layout Subsubsection
 
 Save
 \layout Standard
 
-This section gives an example on the node 
-\emph on 
-save
-\emph default 
- .
- As the name mentions, it is used to save an object in a file or a network
- stream.
-\layout Standard
-
-Figure 
+This example is used to save an object in a file or a network stream.
+ Figure 
 \begin_inset LatexCommand \ref{cap:sample_IO}
 
 \end_inset 
 
- shows how it works.
- The 
+ shows that the nod
 \emph on 
-Save
+ Save
 \emph default 
- node takes two inputs: an object to save and an Overflow write stream where
+ takes two inputs: an object to save and an Overflow write stream where
  to save the object.
  The write stream is opened using the 
 \emph on 
 OutputStream
 \emph default 
- node which takes a file name as input.
+ node which takes a file name as input (allo.sdw).
 \layout Standard
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 198
-file overflow_IO
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_IO
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 198pt
 \end_inset 
 
 
@@ -1040,36 +1155,63 @@ I/O with Overflow
 \end_inset 
 
 
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/save.n .
 \layout Subsection
 
 Category: Logic
+\layout Standard
+
+This categroy contains nodes that proceed logical operations such as: AND,
+ OR, NOT, IF etc...
+ 
 \layout Subsubsection
 
 IF
 \layout Standard
 
-The most important control structure in a language is conditional branching.
+On of the most important control structure in a language is conditional
+ branching.
  Figure 
 \begin_inset LatexCommand \ref{cap:sample_if}
 
 \end_inset 
 
  shows an 
-\begin_inset Quotes eld
-\end_inset 
-
-if
-\begin_inset Quotes erd
-\end_inset 
-
- statement in Overflow.
- The 
 \emph on 
 IF
 \emph default 
- node pulls from the COND input and depending on whether the condition is
- true or false, either pulls on the TRUE of the FALSE input, which is returned
- as the output of the 
+ statement in Overflow.
+ The node
+\emph on 
+ IF
+\emph default 
+ pulls his input from the terminal 
+\emph on 
+then
+\emph default 
+ or 
+\emph on 
+else
+\emph default 
+ depending on whether the condition is true or false.
+ When the condition is true, it pulls the terminal 
+\emph on 
+then
+\emph default 
+ and when the condition is false, it pulls the terminal 
+\emph on 
+else
+\emph default 
+.
+ In both cases, the terminal pulled is returned as the output of the 
 \emph on 
 IF
 \emph default 
@@ -1078,18 +1220,22 @@ IF
 
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 188
-file overflow_if
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_if
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 188pt
 \end_inset 
 
 
@@ -1104,58 +1250,63 @@ If/then/else with Overflow
 \end_inset 
 
 
-\layout Subsection
-
-Category: Matrix
 \layout Standard
 
-
-\begin_inset Float figure
-placement htbp
-wide false
-collapsed false
-
-\layout Standard
-\align center 
-
-\begin_inset Figure size 267 204
-file overflow_matrix
-width 4 90
-flags 9
-
-\end_inset 
-
-
-\layout Caption
-
-If/then/else with Overflow
-\begin_inset LatexCommand \label{cap:sample_matrix}
-
-\end_inset 
-
-
-\end_inset 
-
-
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/demo_if.n .
 \layout Subsection
 
 Category: Operator
 \layout Standard
 
+This categroy contains nodes that proceed arithmetic operations such as:
+ ADD, DIV, EQUAL, MIN, etc...
+ 
+\layout Subsubsection
+
+MIN
+\layout Standard
+
+Figure 
+\begin_inset LatexCommand \ref{cap:overflow_min}
+
+\end_inset 
+
+ shows a 
+\emph on 
+MIN
+\emph default 
+ statement in Overflow.
+ The node
+\emph on 
+ MIN
+\emph default 
+ compares its two inputs and return the minimum between the two values.
+\layout Standard
+
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 204
-file overflow_min
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_min
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 204pt
 \end_inset 
 
 
@@ -1170,25 +1321,77 @@ Min with Overflow
 \end_inset 
 
 
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/min.n .
 \layout Subsection
 
 Category: Probes
 \layout Standard
 
+This categroy contains nodes that proceeds data plotting and printing.
+ It also helps for debugging by allowing to 
+\begin_inset Quotes eld
+\end_inset 
+
+trace
+\begin_inset Quotes erd
+\end_inset 
+
+ programs initializations, requests, inputs and exceptions.
+\layout Subsubsection
+
+textProbe
+\layout Standard
+
+Figure 
+\begin_inset LatexCommand \ref{cap:overflow_textProbe}
+
+\end_inset 
+
+ shows an Overflow program that uses 
+\emph on 
+textProbe
+\emph default 
+.
+ That way, 
+\emph on 
+textProbe
+\emph default 
+ shows the program results as text in a box.
+ In iterators, textProbe allows to show the program result for every new
+ iteration by clicking on the icon 
+\emph on 
+Next
+\emph default 
+.
+ 
+\layout Standard
+
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 204
-file overflow_textProbe
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_textProbe
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 204pt
 \end_inset 
 
 
@@ -1203,32 +1406,76 @@ textProbe with Overflow
 \end_inset 
 
 
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/textProbe.n .
 \layout Subsection
 
 Category: Vector
 \layout Standard
 
+This categroy contains nodes that proceed operations on vectors such as:
+ SUM, CONCATENATE, LENGTH, DCVECTOR, etc...
+ 
+\layout Subsubsection
+
+DCVector and SUM
+\layout Standard
+
+Figure 
+\begin_inset LatexCommand \ref{cap:overflow_vector}
+
+\end_inset 
+
+ shows an Overflow program that creates a vector and make the summation
+ of all its objects.
+ For creating a 
+\emph on 
+DCVector 
+\emph default 
+you must specify the number of objects you want it to contain (the length)
+ and the value you want all the objects to take (the value).
+ The node 
+\emph on 
+SUM, 
+\emph default 
+add all of the objects given by the vector at his input and return the result.
+
+\emph on 
+ 
+\layout Standard
+
 
 \begin_inset Float figure
-placement htbp
+placement H
 wide false
 collapsed false
 
 \layout Standard
 \align center 
 
-\begin_inset Figure size 267 204
-file overflow_vector
-width 4 90
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename overflow_vector
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 204pt
 \end_inset 
 
 
 \layout Caption
 
-If/then/else with Overflow
-\begin_inset LatexCommand \label{cap:sample_if}
+Using a vector with Overflow
+\begin_inset LatexCommand \label{cap:overflow_vector}
 
 \end_inset 
 
@@ -1236,16 +1483,34 @@ If/then/else with Overflow
 \end_inset 
 
 
-\layout Subsection
+\layout Standard
 
-Loops
-\layout Subsection
-
-Subnets
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/vector.n .
 \layout Section
 
 Advanced features
+\layout Standard
+
+The following categories of nodes presented are more complex than the others
+ and not necesserely useful for every user.
+ That's the reason why they are placed in this section.
 \layout Subsection
+
+Category: DSP
+\layout Standard
+
+This category was created for Speech recognition and voice treatment.
+ 
+\layout Subsection
+
+Category: Flow
+\layout Subsubsection
 
 Feed-back Loops
 \layout Standard
@@ -1258,38 +1523,86 @@ In some circumstances, it is desirable to insert feed-back loops into a
 Feedback
 \emph default 
  node.
-\layout Subsection
+ Figure 
+\begin_inset LatexCommand \ref{cap:overflow_feedback}
 
-Exceptions
+\end_inset 
+
+ shows an Overflow program that uses a 
+\emph on 
+Feedback
+\emph default 
+ node.
+ At the beginning, the constant 
+\begin_inset Quotes eld
+\end_inset 
+
+1
+\begin_inset Quotes erd
+\end_inset 
+
+ is added to 
+\begin_inset Quotes eld
+\end_inset 
+
+0
+\begin_inset Quotes erd
+\end_inset 
+
+ and then, at every iteration, the result of the addition is added to the
+ same constant 
+\begin_inset Quotes eld
+\end_inset 
+
+1
+\begin_inset Quotes erd
+\end_inset 
+
+.
+\layout Standard
+
+
+\begin_inset Float figure
+placement H
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Graphics FormatVersion 1
+	filename overflow_feedback
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 204pt
+\end_inset 
+
+
+\layout Caption
+
+Feed-back Loop with Overflow
+\begin_inset LatexCommand \label{cap:overflow_feedback}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/demo_feedback.n .
 \layout Subsubsection
-
-Run-time Exceptions
-\layout Standard
-
-First, it is important to note that there are two types of exceptions that
- can happen.
- The first type, which we'll call run-time exceptions, is thrown (usually
- by a node) when an error happens during processing by Overflow.
- Such type of exception can be thrown when a node receives an object of
- an unexpected type, but there can be many other causes.
- Run-time exceptions usually terminate the current Overflow program with
- an error message indicating where the error happened.
- They are analogous to run-time errors in most interpreted languages.
- 
-\layout Standard
-
-It is possible to prevent a run-time exception from stopping a program.
- This can be done with the Recover node, that catches all run-time exceptions.
-\layout Subsubsection
-
-User Exceptions
-\layout Standard
-
-The second type of exceptions, user exceptions, can be thrown and caught
- by a user program using the Throw and Catch nodes.
- They are serve the same function as the throw and catch statements in a
- C++ program.
-\layout Subsection
 
 Multi-threading
 \layout Standard
@@ -1309,7 +1622,7 @@ ParallelThread
 ThreadJoin
 \emph default 
 .
-\layout Subsection
+\layout Subsubsection
 
 SerialThread
 \layout Standard
@@ -1321,7 +1634,7 @@ SerialThread
  node provides pipeline-type multi-threading.
  A thread is started and computes inputs before they are needed by the output
  node.
-\layout Subsection
+\layout Subsubsection
 
 ParallelThread
 \layout Standard
@@ -1333,7 +1646,7 @@ ParallelThread
  node provides parallelism-type multi-threading.
  When asked for an input, it computes both inputs at the same time and caches
  the other.
-\layout Subsection
+\layout Subsubsection
 
 ThreadJoin
 \layout Standard
@@ -1344,14 +1657,167 @@ ThreadJoin
 \emph default 
  node acts like a mutex and prevents two Overflow threads from accessing
  the same (input) node at the same time.
-\layout Subsection
-
-Threaded Iterators
 \layout Standard
 
-Threaded iterators are a special kind of subnets that provide a different
- level of multi-threading.
- These too should be considered experimental for now.
+Figure 
+\begin_inset LatexCommand \ref{cap:overflow_thread}
+
+\end_inset 
+
+ shows an example of Overflow program that uses multi-threading.
+\layout Standard
+
+
+\begin_inset Float figure
+placement H
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Graphics FormatVersion 1
+	filename overflow_thread
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 204pt
+\end_inset 
+
+
+\layout Caption
+
+Feed-back Loop with Overflow
+\begin_inset LatexCommand \label{cap:overflow_thread}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/mixedthread.n .
+\layout Subsection
+
+Category: Fuzzy
+\layout Subsection
+
+Category: HMM
+\layout Subsection
+
+Category: Matrix
+\layout Standard
+
+As the name mentions, this category is about matrix, that is, two dimensions
+ vector.
+ Figure 
+\begin_inset LatexCommand \ref{cap:sample_matrix}
+
+\end_inset 
+
+ shows an example of Overflow program that create matrix and use it with
+ the node 
+\emph on 
+MProduct
+\emph default 
+.
+\layout Standard
+
+
+\begin_inset Float figure
+placement H
+wide false
+collapsed false
+
+\layout Standard
+\align center 
+
+\begin_inset Graphics FormatVersion 1
+	filename overflow_matrix
+	display color
+	size_type 1
+	width 90col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 267pt
+	lyxheight 204pt
+\end_inset 
+
+
+\layout Caption
+
+Matrix with Overflow
+\begin_inset LatexCommand \label{cap:sample_matrix}
+
+\end_inset 
+
+
+\end_inset 
+
+
+\layout Standard
+
+Note that you can try out this program by clicking on the 
+\emph on 
+open
+\emph default 
+ icon and select: 
+\emph on 
+FreeSpeech/examples/matrix.n .
+\layout Subsection
+
+Category: NNet
+\layout Subsection
+
+Category: Network
+\layout Subsection
+
+Category: RobotFlow
+\layout Subsection
+
+Category: VQ
+\layout Chapter
+
+Exceptions
+\layout Section
+
+Run-time Exceptions
+\layout Standard
+
+First, it is important to note that there are two types of exceptions that
+ can happen.
+ The first type, which we'll call run-time exceptions, is thrown (usually
+ by a node) when an error happens during processing by Overflow.
+ Such type of exception can be thrown when a node receives an object of
+ an unexpected type, but there can be many other causes.
+ Run-time exceptions usually terminate the current Overflow program with
+ an error message indicating where the error happened.
+ They are analogous to run-time errors in most interpreted languages.
+ 
+\layout Standard
+
+It is possible to prevent a run-time exception from stopping a program.
+ This can be done with the Recover node, that catches all run-time exceptions.
+\layout Section
+
+User Exceptions
+\layout Standard
+
+The second type of exceptions, user exceptions, can be thrown and caught
+ by a user program using the Throw and Catch nodes.
+ They are serve the same function as the throw and catch statements in a
+ C++ program.
 \layout Chapter
 
 Automatic Code Generation
@@ -1377,11 +1843,15 @@ collapsed false
 \layout Standard
 \align center 
 
-\begin_inset Figure size 178 112
-file codegen
-width 4 60
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename codegen
+	display color
+	size_type 1
+	width 60col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 178pt
+	lyxheight 112pt
 \end_inset 
 
 
@@ -1531,11 +2001,15 @@ collapsed false
 \layout Standard
 
 
-\begin_inset Figure size 297 133
-file classes
-width 4 100
-flags 9
-
+\begin_inset Graphics FormatVersion 1
+	filename classes
+	display color
+	size_type 1
+	width 100col%
+	rotateOrigin center
+	lyxsize_type 1
+	lyxwidth 297pt
+	lyxheight 133pt
 \end_inset 
 
 
@@ -1551,90 +2025,12 @@ Data Types
 \layout List
 \labelwidthstring 00.00.0000
 
-int: This data type has a representation that can take the value of -2 147
- 483 648 to 2 147 483 647.
+stream: Fd (fd), fptr (FILE) or cpp (stream)
 \layout List
 \labelwidthstring 00.00.0000
 
-float: Floats have the same size as 
-\begin_inset Quotes eld
-\end_inset 
-
-int
-\begin_inset Quotes erd
-\end_inset 
-
-, but are read as floating point numbers.
- They range from the value -1.4013e-45 to 1.4013e-45 and from -3.4e38 to 3.4e38.
-\layout List
-\labelwidthstring 00.00.0000
-
-bool: Object that can take the values: 
-\begin_inset Quotes eld
-\end_inset 
-
-true
-\begin_inset Quotes erd
-\end_inset 
-
- or 
-\begin_inset Quotes eld
-\end_inset 
-
-false
-\begin_inset Quotes erd
-\end_inset 
-
-.
- This data type is often used for condition input.
- For example, in a node IF, the input 
-\begin_inset Quotes eld
-\end_inset 
-
-COND
-\begin_inset Quotes erd
-\end_inset 
-
- is set by a constant of type bool.
- When the constant is 
-\begin_inset Quotes eld
-\end_inset 
-
-true
-\begin_inset Quotes erd
-\end_inset 
-
-, the input THEN is pulled and when the constant is 
-\begin_inset Quotes eld
-\end_inset 
-
-false
-\begin_inset Quotes erd
-\end_inset 
-
-, the input ELSE is pulled.
-\layout List
-\labelwidthstring 00.00.0000
-
-object: An object is a data type defined by developpers.
- However, you can create an exiting object by typing its corresponding command.
- For instance, you can create a string 
-\begin_inset Quotes eld
-\end_inset 
-
-hello world
-\begin_inset Quotes erd
-\end_inset 
-
- by typing 
-\begin_inset Quotes eld
-\end_inset 
-
-<String hello world>
-\begin_inset Quotes erd
-\end_inset 
-
- ( 
+vector: Series of object references.
+ For instance: 
 \begin_inset Quotes eld
 \end_inset 
 
@@ -1642,71 +2038,11 @@ hello world
 \begin_inset Quotes erd
 \end_inset 
 
- , 
-\begin_inset Quotes eld
-\end_inset 
-
-<Int 23>
-\begin_inset Quotes erd
-\end_inset 
-
- and  
-\begin_inset Quotes eld
-\end_inset 
-
-<Float 23.67>
-\begin_inset Quotes erd
-\end_inset 
-
- are some other examples ).
-\layout List
-\labelwidthstring 00.00.0000
-
-stream: 
-\layout List
-\labelwidthstring 00.00.0000
-
-string: Strings are series of characters ('a'-'z', '0'-'9','A'-'Z', or some
- other symbol)
-\layout List
-\labelwidthstring 00.00.0000
-
-subnet_param: Subnet_param set parameter's name of higher level.
- For example, create a network SUBNET0 in a file.
- In SUBNET0 add and set a subnet_param to 
-\begin_inset Quotes eld
-\end_inset 
-
-hello
-\begin_inset Quotes erd
-\end_inset 
-
-.
- Add the node SUBNET0 to the main network and double-click on it.
- Then, you will see in the tab 
-\begin_inset Quotes eld
-\end_inset 
-
-Parameters
-\begin_inset Quotes erd
-\end_inset 
-
- a parameter to set named 
-\begin_inset Quotes eld
-\end_inset 
-
-hello
-\begin_inset Quotes erd
-\end_inset 
-
 .
 \layout List
 \labelwidthstring 00.00.0000
 
-vector: 
-\layout Section
-
-Operators
+matrix: Two dimensions vector.
 \layout Chapter
 
 Extending Overflow
@@ -2550,4 +2886,12 @@ Node Documentation
 
 This documentation is generated automatically from the comments included
  in the Overflow C++ source code.
+\layout Standard
+
+
+\begin_inset Include \input{nodes.tex}
+
+\end_inset 
+
+
 \the_end

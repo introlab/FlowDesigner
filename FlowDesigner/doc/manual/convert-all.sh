@@ -13,4 +13,6 @@ convert overflow_main.png overflow_main.ps
 convert overflow_subnet.png overflow_subnet.ps
 convert overflow_iterator2.png overflow_iterator2.ps
 convert overflow_main3.png overflow_main3.ps
+convert overflow_thread.png overflow_thread.ps
+convert overflow_feedback.png overflow_feedback.ps
 texflow | sed 's/_/\\_/g' > nodes.tex
