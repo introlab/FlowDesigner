@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.113 2003/12/11 03:12:20 vico_27 Exp $
+# $Id: Makefile.am,v 1.114 2004/01/13 22:12:42 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -9,8 +9,9 @@ override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/share/flowdesigner
 
 install-data-local:
-	mkdir -p $(datadir)/toolbox/data-flow
-	(cd $(top_srcdir); perl tools/src/info2def.pl data-flow/src/*.cc data-flow/include/*.h > $(datadir)/toolbox/data-flow/data-flow.def)
+	mkdir -p $(libdir)/toolbox/data-flow/n-files
+	mkdir -p $(libdir)/toolbox/data-flow/def
+	(cd $(top_srcdir); perl tools/src/info2def.pl data-flow/src/*.cc data-flow/include/*.h > $(libdir)/toolbox/data-flow/def/data-flow.def)
 
 lib_LTLIBRARIES = libflow.la
 
@@ -23,18 +24,18 @@ libflow_la_SOURCES = Node.cc \
 	Constant.cc \
 	Network.cc \
 	DLManager.cc \
-        Collector.cc \
+	Collector.cc \
 	Iterator.cc \
-        InputStream.cc \
-        OutputStream.cc \
-        Save.cc \
+	InputStream.cc \
+	OutputStream.cc \
+    Save.cc \
 	Sum.cc \
 	OR.cc \
 	AND.cc \
 	NOT.cc \
-        List.cc \
-        Pack.cc \
-        UnPack.cc \
+	List.cc \
+	Pack.cc \
+	UnPack.cc \
 	ConstantVector.cc \
 	Discard.cc \
 	ExecStream.cc \

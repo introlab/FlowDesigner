@@ -2,9 +2,9 @@
 
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override libdir=${prefix}/lib
 
-toolboxdir = $(datadir)/toolbox/data-flow
+toolboxdir = $(libdir)/toolbox/data-flow/n-files
 
 toolbox_DATA = LoadFile.n \
 	       SaveAs.n \

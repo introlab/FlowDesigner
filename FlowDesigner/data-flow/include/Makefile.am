@@ -1,7 +1,7 @@
 
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/share/flowdesigner
-override libdir=${prefix}/share/flowdesigner/lib
+override libdir=${prefix}/lib/flowdesigner/lib
 
 include_HEADERS = Array.h \
 	Node.h \
