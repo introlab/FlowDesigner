@@ -23,20 +23,23 @@ class Pow;
 
 DECLARE_NODE(Pow)
 /*Node
-
+ *
  * @name Pow
  * @category Signal:Base
- * @description No description available
-
+ * @description Raises the input vector to a certain power
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Input vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Result: INPUT.^EXP
+ *
  * @parameter_name EXP
- * @parameter_description No description available
-
+ * @parameter_type float
+ * @parameter_description Exponent
+ *
 END*/
 
 

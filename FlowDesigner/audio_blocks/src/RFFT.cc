@@ -25,17 +25,19 @@ class RFFT;
 
 DECLARE_NODE(RFFT)
 /*Node
-
+ *
  * @name RFFT
  * @category Signal:DSP
- * @description No description available
-
+ * @description Computes the FFT of a real input vector and output a complex result
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Real vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Complex FFT output
+ *
 END*/
 
 

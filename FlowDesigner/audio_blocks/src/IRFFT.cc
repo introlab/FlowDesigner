@@ -25,17 +25,19 @@ class IRFFT;
 
 DECLARE_NODE(IRFFT)
 /*Node
-
+ *
  * @name IRFFT
  * @category Signal:DSP
- * @description No description available
-
+ * @description Inverse FFT, half complex to real vector
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description Half complex vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description Real inverse FFT output
+ *
 END*/
 
 
