@@ -1,6 +1,7 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-include_HEADERS = Node.h \
+include_HEADERS = Array.h \
+	Node.h \
 	Buffer.h \
 	BufferedNode.h \
 	Collector.h \
