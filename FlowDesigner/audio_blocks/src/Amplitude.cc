@@ -23,17 +23,17 @@ class Amplitude;
 
 DECLARE_NODE(Amplitude)
 /*Node
-
+ *
  * @name Amplitude
- * @category Signal:DSP
- * @description No description available
-
+ * @category Deprecated
+ * @description Deprecated, use RMS instead
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
 END*/
 
 

@@ -25,16 +25,19 @@ DECLARE_NODE(BWExpan)
  *
  * @name BWExpan
  * @category Signal:DSP
- * @description No description available
+ * @description Performs bandwidth expansion on an LPC filter, that is, multiplying the radius of the poles by GAMMA
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Original LPC filter
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description New "bandwidth expanded" LPC filter
  *
  * @parameter_name GAMMA
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Pole radius factor
  *
 END*/
 
