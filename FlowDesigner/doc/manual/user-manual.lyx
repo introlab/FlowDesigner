@@ -105,8 +105,8 @@ interpreted language
  
 \layout Standard
 
-It is written in C++ and features a plugin mechanism that allows new nodes/toolb
-oxes to be easiliy added.
+It is written in C++ and features a plug-in mechanism that allows new nodes/tool
+boxes to be easily added.
  Overflow currently includes the following toolboxes: 
 \layout Itemize
 
@@ -159,14 +159,14 @@ Speed
 Flexibility
 \layout Itemize
 
-Extendability
+Extendibility
 \layout Itemize
 
 Modularity
 \layout Standard
 
 One thing to note with respect to speed is that we tried the same approach
- as for the C++ language which can be sumerized by 
+ as for the C++ language which can be summarized by 
 \begin_inset Quotes eld
 \end_inset 
 
@@ -237,7 +237,7 @@ The inputs of an Overflow nodes are equivalent to the arguments to a Matlab/C
  function.
  The same for outputs, but while C is restricted to one return value, Overflow
  and Matlab can have several outputs.
- Node inputs and outputs are sometimes refered to as 
+ Node inputs and outputs are sometimes referred to as 
 \begin_inset Quotes eld
 \end_inset 
 
@@ -300,7 +300,7 @@ Some Overflow Nodes expect a certain type of data as input/parameter and
  wrong data type is used (e.g..
  a Load node expects a Stream as input and nothing else).
  Some nodes, like the NOP (no-op) node, can take any type as input.
- Some node have more complex behaviour, like the Add node that can add two
+ Some node have more complex behavior, like the Add node that can add two
  floats, two Vectors of the same dimension, but cannot add a Bool and a
  Vector.
  
@@ -364,7 +364,7 @@ Networks->Add Network
 \begin_inset Float figure
 placement htbp
 wide false
-collapsed true
+collapsed false
 
 \layout Standard
 \align center 
@@ -426,7 +426,7 @@ Right-clicking on a node brings up the node menu.
 \layout Standard
 
 All networks must have at least one output.
- Any network that is not a toplevel network (MAIN) may also have inputs.
+ Any network that is not a top-level network (MAIN) may also have inputs.
  Inputs and outputs can be added by left clicking on a terminal with the
  SHIFT modifier on.
  You will be asked to provide the input/output name.
@@ -472,7 +472,7 @@ When your program is complete, you can execute it by clicking "Run" in the
  is in the path.
 \layout Chapter
 
-Using basic nodes and types
+Using basic nodes
 \layout Section
 
 Hello World!
@@ -673,7 +673,7 @@ Feed-back Loops
 
 In some circumstances, it is desirable to insert feed-back loops into a
  program.
- Normaly, Overflow only supports acyclic graphs, but feed-back loops can
+ Normally, Overflow only supports acyclic graphs, but feed-back loops can
  be made using the special 
 \emph on 
 Feedback
@@ -695,7 +695,7 @@ First, it is important to note that there are two types of exceptions that
  an unexpected type, but there can be many other causes.
  Run-time exceptions usually terminate the current Overflow program with
  an error message indicating where the error happened.
- They are analoguous to run-time errors in most interpreted languages.
+ They are analogous to run-time errors in most interpreted languages.
  
 \layout Standard
 
@@ -847,7 +847,7 @@ Static linkage: This will copy all the required Overflow files in the same
  
 \layout Itemize
 
-Generate makefile: Un-implemented yet 
+Generate makefile: Unimplemented yet 
 \layout Standard
 
 Note: the VFLOW_SOURCE environment variable must be set to your Overflow
@@ -857,8 +857,8 @@ Note: the VFLOW_SOURCE environment variable must be set to your Overflow
 Software Architecture
 \layout Standard
 
-This chapter explains the sofware architecture used for the Overflow base
- library and the mecanisms used for blocks initialization.
+This chapter explains the software architecture used for the Overflow base
+ library and the mechanisms used for blocks initialization.
 \layout Section
 
 Overflow Internals
@@ -919,10 +919,10 @@ A network is a graph containing nodes that are linked together in order
  the Node class.
  This means that any network can be used just as if it were a single Node.
  This makes it possible to include networks in other networks.
- The included network is often refered to as sub-network, or subnet.
+ The included network is often referred to as sub-network, or subnet.
 \layout Standard
 
-In order for a network to ba valid, it must meet the following criteria
+In order for a network to be valid, it must meet the following criteria
 \layout Itemize
 
 It must have at least one output 
@@ -1806,7 +1806,7 @@ First, make sure you have the latest release version.
 This can be due to the fact that you installed an earlier version (0.5.0 and
  earlier) in a path like /usr or /usr/local.
  The problem is that the old Overflow includes ended up somewhere like /usr/incl
-ude and when you try compiling a newer version, g++ sees the old includes
+ude so when you try compiling a newer version, g++ sees the old includes
  (because they are in the include path) instead of the new ones.
 \layout Chapter
 
