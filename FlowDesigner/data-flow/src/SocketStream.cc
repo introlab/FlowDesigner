@@ -460,24 +460,25 @@ void network_socket::socket_connect(const char *host) {
     throw new GeneralException("network_socket::connect(): connect() failed",__FILE__,__LINE__);
   }
 
-  /*
-   * read the banner from the server
-   */
-  if((numread = recv_packet(&banner[0],OVERFLOW_IDENT_STRLEN)) != OVERFLOW_IDENT_STRLEN) {
-    perror("network_socket::connect(): read() failed");
-    shutdown();
-    throw new GeneralException("network_socket::connect(): read() failed",__FILE__,__LINE__);
-  }
-
-  /*
-   * verify the banner (if it contains "OVERFLOW")
-   */
-  
-  if (banner[0] != 'O' || banner[1] != 'V' || banner[2] != 'E' || banner[3] != 'R' ||
-      banner[4] != 'F' || banner[5] != 'L' || banner[6] != 'O' || banner[7] != 'W') {
-    shutdown(); 
-    throw new GeneralException("network_socket::connect() does not contain the banner",__FILE__,__LINE__); 
-  } 
+// CC- Disable banner features. 01/12/2003
+//  /*
+//   * read the banner from the server
+//   */
+//  if((numread = recv_packet(&banner[0],OVERFLOW_IDENT_STRLEN)) != OVERFLOW_IDENT_STRLEN) {
+//    perror("network_socket::connect(): read() failed");
+//    shutdown();
+//    throw new GeneralException("network_socket::connect(): read() failed",__FILE__,__LINE__);
+//  }
+//
+//  /*
+//   * verify the banner (if it contains "OVERFLOW")
+//   */
+//  
+//  if (banner[0] != 'O' || banner[1] != 'V' || banner[2] != 'E' || banner[3] != 'R' ||
+//      banner[4] != 'F' || banner[5] != 'L' || banner[6] != 'O' || banner[7] != 'W') {
+//    shutdown(); 
+//    throw new GeneralException("network_socket::connect() does not contain the banner",__FILE__,__LINE__); 
+//  } 
 
 
 }
