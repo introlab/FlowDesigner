@@ -10,7 +10,8 @@
 
 inline bool isValidType (istream &in, string expectedType, bool binary=false);
 
-inline ostream &operator << (ostream &out, const ObjectRef &ref)
+template <class T>
+inline ostream &operator << (ostream &out, const RCPtr<T> &ref)
 {
    out << *ref;
    return out;

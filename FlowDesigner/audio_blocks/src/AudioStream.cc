@@ -32,7 +32,7 @@ DECLARE_NODE(AudioStream)
  *
  * @parameter_name ENCODING
  * @parameter_type string
- * @parameter_description Type of encoding (LIN16, ULAW, ALAW, LIN8)
+ * @parameter_description Type of encoding (LIN16, ULAW, ALAW, LIN8, SPHERE)
  *
  * @parameter_name STREAM_TYPE
  * @parameter_type string
@@ -120,7 +120,7 @@ static short alaw2linear[256] =
 
 class AudioStream : public BufferedNode {
    
-   typedef enum {ulaw, alaw, lin8, lin16} EncodeType;
+   typedef enum {ulaw, alaw, lin8, lin16, sphere} EncodeType;
    typedef enum {fd, fptr, cpp} StreamType;
    
    int inputID;
@@ -186,6 +186,8 @@ public:
       encoding = lin8;
       else if (enc == "LIN16")
 	 encoding = lin16;
+      else if (enc == "SPHERE")
+	 encoding = sphere;
       else 
 	 throw new NodeException(this, string("Invalid encoding: ") + enc,__FILE__, __LINE__);
       itemSize = encoding == lin16 ? 2 : 1;
@@ -211,9 +213,34 @@ public:
 	 return;
       }
       
-
+      //Done only the first time
       if (count == 0)
       {
+	 //If encoding is sphere, skip header
+	 if (encoding == sphere)
+	 {
+	    char head[16];
+	    if (!readStream(head, 16, inputValue))
+	    {
+	       throw new NodeException(this, "Looks like an empty file", __FILE__, __LINE__);
+	    }
+	    head[15]=0;
+	    int len = atoi(head+11);
+	    len -= 16;
+	    // Skip rest of header
+	    while (len > 0)
+	    {
+	       char dummy[1024];
+	       int skip = min (len, 1024);
+	       if (!readStream(dummy, skip, inputValue))
+	       {
+		  throw new NodeException(this, "Truncated SPHERE file", __FILE__, __LINE__);
+	       }
+	       len -= skip;
+	    }
+	 }
+
+	 // Read whole frame for the first time
 	 char buff[itemSize*outputLength];
 	 if (!readStream(buff, outputLength, inputValue))
 	 {
@@ -221,7 +248,8 @@ public:
 	    return;
 	 }
 	 raw2Float (buff, &output[0], outputLength, encoding);
-      } else {
+
+      } else { // Normal case (not at start of file)
       
 	 if (count>0 && out[count-1]->status == Object::valid 
 	     && advance < outputLength)
@@ -248,7 +276,8 @@ public:
       
    }
 
-   protected:
+protected:
+   /*Converts raw samples into float*/
    void raw2Float (void *in, float *out, int length, EncodeType encoding)
    {
       int i;
@@ -258,6 +287,7 @@ public:
 	    for (i=0;i<length;i++)
 	       out[i]=(float) (((short *)in)[i]);
 	    break;
+	 case sphere:
 	 case ulaw:
 	    for (i=0;i<length;i++)
 	       out[i]=(float) ulaw2linear[((unsigned char *)in)[i]];
@@ -283,6 +313,7 @@ public:
 	 file.read(buffer,itemSize*length);
 	 if (file.eof())
 	 {
+	    //FIXME: Should be implemented for other streams and should check for SPHERE header
 	    if (rewind)
 	    {
 	       file.seekg(0, ios::beg);
