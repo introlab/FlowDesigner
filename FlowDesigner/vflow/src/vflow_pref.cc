@@ -7,13 +7,44 @@
 #include <locale.h>
 #include <gnome.h>
 #include <iostream>
-
+#include <stdlib.h>
 #include "vflow_pref.h"
+#include <fstream>
 
 VFlowPref VFlowPref::pref;
 
 VFlowPref::VFlowPref()
 {
+   params["ShowAllInOut"] = "no";
+   params["ShowTooltips"] = "yes";
+   params["PrintOutput"]  = "yes";
+   params["RunProcess"]   = "no";
+
+
+   string filename = getenv("HOME");
+   filename += "/.vflowrc";
+   ifstream prefFile(filename.c_str());
+   if (prefFile.fail())
+      return;
+   while (1)
+   {
+      string key;
+      string value;
+      char ch;
+      while(1)
+      {
+	 prefFile >> ch;
+	 if (!prefFile)
+	    return;
+	 if (ch=='=')
+	    break;
+	 if (ch!=' ')
+	    key += ch;
+      }
+      prefFile >> value;
+      params[key]   = value;
+      cerr << key << "->" << value << endl;
+   }
 }
 
 VFlowPref::~VFlowPref()
@@ -21,8 +52,29 @@ VFlowPref::~VFlowPref()
    save();
 }
 
+bool VFlowPref::getBool(const string &str)
+{
+   string val = pref.params[str];
+   if (val=="yes" || val=="YES" || val=="true" || val=="TRUE")
+      return true;
+   else
+      return false;
+}
+
 void VFlowPref::save()
 {
+   string filename = getenv("HOME");
+   filename += "/.vflowrc";
+   //cerr << "save " << filename << endl;
+   ofstream prefFile(filename.c_str());
+   if (prefFile.fail())
+      return;
+   map<string,string>::iterator p = params.begin();
+   while (p != params.end())
+   {
+      prefFile << p->first << "=" << p->second << endl;
+      p++;
+   }
    //cerr << "pref save\n";
 }
 
