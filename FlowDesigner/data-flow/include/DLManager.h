@@ -50,7 +50,7 @@ inline void _DL_CLOSE(DL_HANDLE_TYPE lib)
 #endif
 
 
-#if defined (LINUX) || defined(SOLARIS) || defined(FREEBSD)
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
 
 /**The pointer to library type (OS dependent)*/

@@ -66,12 +66,11 @@ public:
 	 if (parameters.exist("BEFORE_LIMIT"))
 	    beforeLimit = dereference_cast<int> (parameters.get ("BEFORE_LIMIT"));
 	 else
-	    beforeLimit = -1;
+	    beforeLimit = 0;
 
 
       } catch (BaseException *e)
       {
-         //e->print();
          throw e->add(new NodeException (NULL, "Exception caught in Feedback constructor", __FILE__, __LINE__));
       }
       delayRecurs=-1;
