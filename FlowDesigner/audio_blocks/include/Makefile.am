@@ -19,4 +19,5 @@ noinst_HEADERS = AudioFile.h \
 	psy.h \
 	codebook.h \
 	internal.h \
-	codec.h
+	codec.h \
+	scales.h

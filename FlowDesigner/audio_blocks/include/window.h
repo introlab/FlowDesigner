@@ -12,14 +12,24 @@
  ********************************************************************
 
  function: window functions
- last mod: $Id: window.h,v 1.3 2000/01/22 13:28:37 xiphmont Exp $
+ last mod: $Id: window.h,v 1.1 2000/07/06 04:01:19 jmvalin Exp $
 
  ********************************************************************/
 
 #ifndef _V_WINDOW_
 #define _V_WINDOW_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
+
 #define VI_WINDOWB 1
 extern double *_vorbis_window(int type,int window,int left,int right);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif

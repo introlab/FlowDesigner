@@ -84,7 +84,7 @@ public:
       for (int i=0;i<inputLength;i++)
 	 buffer[i+inputLength] = in[i];
 
-      for (int i=0;i<inputLength;i++)
+      for (int i=0;i<inputLength*2;i++)
 	 pcm[i]=buffer[i]*window[i];
 
       mdct_forward(&m_look,pcm.begin(),pcm.begin());

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.47 2000/07/06 04:01:19 jmvalin Exp $
+# $Id: Makefile.am,v 1.48 2000/07/06 04:55:07 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -72,7 +72,8 @@ libablocks_la_SOURCES =	\
 	mdct.c \
 	window.c \
 	psy.c \
-	MDCT.cc
+	MDCT.cc \
+	VorbisPsycho.cc
 
 libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
