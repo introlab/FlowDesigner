@@ -1,0 +1,10 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document category="General">
+  <Network type="subnet" name="MAIN">
+    <Node name="node_Constant_1" type="Constant" x="-251.000000" y="-115.000000">
+      <Parameter name="VALUE" type="object" value="&lt;NilObject &gt;"/>
+    </Node>
+    <NetOutput name="VALUE" node="node_Constant_1" terminal="VALUE"/>
+  </Network>
+</Document>
