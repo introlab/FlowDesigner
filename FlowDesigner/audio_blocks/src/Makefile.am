@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.34 2000/03/01 21:30:59 jmvalin Exp $
+# $Id: Makefile.am,v 1.35 2000/03/15 01:06:50 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -55,7 +55,10 @@ libablocks_la_SOURCES =	\
 	NormalizeAutocorr.cc \
 	Max.cc \
 	IDCT.cc \
-	CMS.cc
+	CMS.cc \
+	LTP.cc \
+	LTF.cc \
+	ILTF.cc
 
 libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
