@@ -675,23 +675,21 @@ extern void set_run_mode (bool isRuning);
 
 static void disposeFunct(void *dummy)
 {
+   gdk_threads_enter();
+   set_run_mode(false);
+   gdk_threads_leave();
    //cerr << "disposeFunct called\n";
-   if (dummy != NULL) {
-     GUIDocument *doc = (GUIDocument*) dummy;
-     GUIDocument::isRunning = false;
-     //cerr <<  "Deleting the running network.\n"; 
-     GUIDocument::runningNet->cleanupNotify();
-     delete GUIDocument::runningNet;
-     //gdk_threads_leave();
-     GUIDocument::runningNet=NULL;
-
-     gdk_threads_enter();
-     set_run_mode(false);
-     //doc->less_print("Cancelled");
-     gdk_threads_leave();
-    
+   
+   //GUIDocument *doc = (GUIDocument*) dummy;
+   GUIDocument::isRunning = false;
+   //cerr <<  "Deleting the running network.\n"; 
+   
+   if (GUIDocument::runningNet)
+   {
+      GUIDocument::runningNet->cleanupNotify();
+      delete GUIDocument::runningNet;
+      GUIDocument::runningNet=NULL;
    }
-  
 }
 
 static void threadFunct(GUIDocument *doc)
@@ -792,7 +790,7 @@ void GUIDocument::run()
       bool buildError = false;
 
       runningNet = NULL;
-      Network *net;
+      Network *net=NULL;
       //try {
 	 net = build("MAIN", parameters);
 

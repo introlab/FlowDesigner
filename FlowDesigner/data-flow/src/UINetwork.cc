@@ -457,20 +457,23 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
      break;
    }
 
-      try {
+   try {
 
-   for (int i=0;i<nodes.size();i++)
+   try 
    {
-      //cerr << "building node " << nodes[i]->getName() << endl;
 
+      for (int i=0;i<nodes.size();i++)
+      {
+	 //cerr << "building node " << nodes[i]->getName() << endl;
+	 
 	 Node *aNode = nodes[i]->build(params);
 	 net->addNode(*aNode);
-      
-   }
-      } catch (BaseException *e)
-      {
-	 throw e->add (new GeneralException(string("Exception caught while building network ") + name, __FILE__, __LINE__));
+	 
       }
+   } catch (BaseException *e)
+   {
+      throw e->add (new GeneralException(string("Exception caught while building network ") + name, __FILE__, __LINE__));
+   }
    
    //cerr << "nodes built\n";
    
@@ -560,6 +563,12 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    if (type!=subnet && !found_condition)
       throw new GeneralException("No condition defined for iterator", __FILE__,__LINE__);
    //insert netTerminals
+   } catch (...)
+   {
+      net->cleanupNotify();
+      delete net;
+      throw;
+   }
    
    return net;
 }

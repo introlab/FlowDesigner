@@ -20,8 +20,9 @@ int main(int argc, char **argv)
     doc->load();
     doc->run(param);
   }
-  catch (BaseException *e) {  
-    e->print();
+  catch (BaseException *e) 
+  {
+     e->print();
   }  
   catch (...) {
     cerr<<"Unhandled exception in "<<argv[0]<<endl;

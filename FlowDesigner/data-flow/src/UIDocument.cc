@@ -790,15 +790,26 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
 
 Network *UIDocument::build(const string &_name, const ParameterSet &params)
 {
-   Network *net = getNetworkNamed("MAIN")->build(_name, params);
-   net->verifyConnect();
-   return net;
+   Network *net = NULL;
+   try {
+      net = getNetworkNamed("MAIN")->build(_name, params);
+      net->verifyConnect();
+      return net;
+   } catch (...)
+   {
+      if (net)
+      {
+	 net->cleanupNotify();
+	 delete net;
+      }
+      throw;
+   }
 }
 
 //Run without a GUI
 void UIDocument::run()
 {
-   Network *net;
+   Network *net = NULL;
    try {
       ParameterSet params;
       //cerr << "building net...\n";
@@ -813,21 +824,24 @@ void UIDocument::run()
 	 if (!net->hasOutput(i)) break;
 	 cout << *net->getOutput(i,0);
       }
-   }
-   catch (BaseException &e) {
-      e.print();
-   }
-   catch (BaseException *e) {
+   } catch (BaseException *e) 
+   {
       e->print();
+   } catch (...) 
+   {
+      cerr << "unknown exception caught" << endl;
    }
-   net->cleanupNotify();
-   delete net;
-   
+
+   if (net)
+   {
+      net->cleanupNotify();
+      delete net;
+   }
 }
 
 void UIDocument::run(ParameterSet &p)
 {
-   Network *net;
+   Network *net=NULL;
    try {
       //cerr << "building net...\n";
       net = build("MAIN", p);
@@ -846,11 +860,15 @@ void UIDocument::run(ParameterSet &p)
    catch (BaseException &e) {
       e.print();
    }
-   catch (BaseException *e) {
+   catch (BaseException *e) 
+   {
       e->print();
    }
-   net->cleanupNotify();
-   delete net;
+   if (net)
+   {
+      net->cleanupNotify();
+      delete net;
+   }
 }
 
 void UIDocument::setFullPath(const string &fullpath)

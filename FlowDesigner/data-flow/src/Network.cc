@@ -42,7 +42,7 @@ Network::Network (string nodeName, ParameterSet params)
 void Network::cleanupNotify()
 {
    map<string,Node*>::iterator nodeIter;
-
+   
    for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++)
    {
       Node *node = (*nodeIter).second;
