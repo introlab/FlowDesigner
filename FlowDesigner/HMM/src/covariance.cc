@@ -45,7 +45,7 @@ void DiagonalCovariance::reset()
       data[i]=0.0;
 }
 
-void DiagonalCovariance::print(ostream &out) const
+void DiagonalCovariance::printOn(ostream &out) const
 {
    out << "<DiagonalCovariance" << endl;
    out << "<dimension " << dimension << ">" << endl;
@@ -54,11 +54,11 @@ void DiagonalCovariance::print(ostream &out) const
    return;
 }
 
-ostream &operator << (ostream &out, const Covariance &covar)
+/*ostream &operator << (ostream &out, const Covariance &covar)
 {
    covar.print(out);
    return out;
-}
+   }*/
 
 istream &operator >> (istream &in, DiagonalCovariance &cov)
 {

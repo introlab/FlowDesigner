@@ -17,7 +17,7 @@
 #define GMM_H
 #include "gaussian.h"
 #include "covariance.h"
-
+#include "Object.h"
 
 
 class GMM;
@@ -45,7 +45,7 @@ public:
 ;
 
 ///Gaussian Mixture Model (GMM) class
-class GMM {
+class GMM : public Object{
 public:
 
    typedef enum {real, accum} GMM_Mode;
@@ -60,8 +60,8 @@ protected:
    ///Number of gaussians in the GMM
    int                 nb_gaussians;
 
-   ///Whether of not the GMM trained (like real/accum mode)
-   GMM_Mode            mode;
+   ///Whether of not the GMM trained (like real/accum mode) (GMM_Mode)
+   int                 mode;
 
    ///Number of frames aligned to (used to train) the GMM
    int                 nb_frames_aligned;
@@ -125,12 +125,15 @@ public:
    ///Score a list (STL vector) of frames against the GMM
    vector<Score> score(vector <Frame> fr) const;
 
-   friend ostream &operator << (ostream &out, const GMM &gmm);
+   ///
+   virtual void printOn(ostream &out=cout) const;
+
+   //friend ostream &operator << (ostream &out, const GMM &gmm);
    friend istream &operator >> (istream &in, GMM &gmm);
 }
 ;
 
-ostream &operator << (ostream &out, const GMM &gmm);
+//ostream &operator << (ostream &out, const GMM &gmm);
 istream &operator >> (istream &in, GMM &gmm);
 
 #endif

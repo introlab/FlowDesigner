@@ -104,7 +104,7 @@ void GMM::binary_split()
       gaussians[i+old_size]=new Gaussian(*(gaussians[i]));
       vector <float> &mean = gaussians[i+old_size]->getMean();
       for (unsigned int j=0;j<mean.size();j++)
-         mean[j]+=.1;
+         mean[j]+=.001;
    }
 }
 
@@ -154,14 +154,15 @@ Score GMM::score(Frame fr) const
 }
 
 
-ostream &operator << (ostream &out, const GMM &gmm)
+void GMM::printOn(ostream &out) const
 {
    out << "<GMM " << endl;
-   out << "<nb_gaussians " << gmm.nb_gaussians << ">" << endl;
-   out << "<apriori " << gmm.apriori << ">" << endl;
-   out << "<gaussians " << gmm.gaussians << ">" << endl;
+   out << "<nb_gaussians " << nb_gaussians << ">" << endl;
+   out << "<mode " << mode << ">" << endl;
+   out << "<nb_frames_aligned " << nb_frames_aligned << ">" << endl;
+   out << "<apriori " << apriori << ">" << endl;
+   out << "<gaussians " << gaussians << ">" << endl;
    out << ">\n";
-   return out;
 }
 
 istream &operator >> (istream &in, GMM &gmm)
@@ -173,6 +174,8 @@ istream &operator >> (istream &in, GMM &gmm)
       char ch;
       in >> ch;
       if (ch == '>') break;
+      else if (ch != '<') 
+       throw ParsingException ("Parse error: '<' expected");
       in >> tag;
 
       if (tag == "nb_gaussians")
@@ -181,6 +184,10 @@ istream &operator >> (istream &in, GMM &gmm)
          in >> gmm.apriori;
       else if (tag == "gaussians")
          in >> gmm.gaussians;
+      else if (tag == "mode")
+         in >> gmm.mode;
+      else if (tag == "nb_frames_aligned")
+         in >> gmm.nb_frames_aligned;
       else
          throw ParsingException ("unknown argument: " + tag);
 

@@ -22,7 +22,7 @@
 #include "covariance.h"
 
 ///Gaussian class
-class Gaussian 
+class Gaussian : public Object
 {
 protected:
    ///The mean of the gaussian stored as an STL vector of float
@@ -129,10 +129,11 @@ public:
    ///Prints the gaussian covariance
    void print_covar(ostream &out = cout, string separ = " ") const;
 
-   friend ostream &operator << (ostream &out, const Gaussian &gauss);
+   ///
+   void printOn(ostream &out = cout) const;
+
    friend istream &operator >> (istream &in, Gaussian &gauss);
 };
 
-ostream &operator << (ostream &out, const Gaussian &gauss);
 istream &operator >> (istream &in, Gaussian &gauss);
 #endif

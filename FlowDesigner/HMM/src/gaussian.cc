@@ -72,15 +72,14 @@ Gaussian::~Gaussian()
 }
 
 
-ostream &operator << (ostream &out, const Gaussian &gauss)
+void Gaussian::printOn (ostream &out) const
 {
    out << "<Gaussian " << endl;
-   out << "<dimension " << gauss.dimension << "> ";
-   out << "<accum_count " << gauss.accum_count << "> " << endl;
-   out << "<mean " << *gauss.mean << ">" << endl; 
-   out << "<covariance " << *gauss.covariance << ">" << endl;
+   out << "<dimension " << dimension << "> ";
+   out << "<accum_count " << accum_count << "> " << endl;
+   out << "<mean " << *mean << ">" << endl; 
+   out << "<covariance " << *covariance << ">" << endl;
    out << ">\n";
-   return out;
 }
 
 
