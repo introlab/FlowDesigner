@@ -47,10 +47,10 @@ class IDCT : public BufferedNode {
    int outputID;
    int length;
 
-   fft_complex *inputCopy;
-   fft_complex *outputCopy;
-   float *rNormalize;
-   float *iNormalize;
+   vector<complex<float> > inputCopy;
+   vector<complex<float> > outputCopy;
+   vector<float> rNormalize;
+   vector<float> iNormalize;
 
 public:
    IDCT(string nodeName, ParameterSet params)
@@ -66,10 +66,10 @@ public:
 	 throw new NodeException(NULL, "IDCT only implemented for even sizes", __FILE__, __LINE__);
       }
 
-      inputCopy = new fft_complex [length];
-      outputCopy =new fft_complex [length];
-      rNormalize =new float [length];
-      iNormalize =new float [length];
+      inputCopy.resize(length);
+      outputCopy.resize(length);
+      rNormalize.resize(length);
+      iNormalize.resize(length);
       float sqrt2n=sqrt(2.0/length);
       for (int i=0;i<length;i++)
       {
@@ -78,15 +78,8 @@ public:
       }
       rNormalize[0] /= sqrt(2);
 
-}
-
-   ~IDCT() 
-   {
-      delete [] inputCopy;
-      delete [] outputCopy;
-      delete [] rNormalize;
-      delete [] iNormalize;
    }
+
 
    void calculate(int output_id, int count, Buffer &out)
    {
@@ -107,17 +100,16 @@ public:
 
       for (i=0;i<length;i++)
       {
-	 inputCopy[i].re = rNormalize[i]*in[i];
-	 inputCopy[i].im = iNormalize[i]*in[i];
+	 inputCopy[i] = complex<float> (rNormalize[i]*in[i], iNormalize[i]*in[i]);
       }
 
-      FFTWrap.ifft(inputCopy, outputCopy, length);
+      FFTWrap.ifft(&inputCopy[0], &outputCopy[0], length);
 
       for (i=0, j=0 ;i<length ; i+=2, j++)
-         output[i]=outputCopy[j].re;
+         output[i]=outputCopy[j].real();
 
       for (i = length-1; i>=0 ; i-=2, j++)
-         output[i]=outputCopy[j].re;
+         output[i]=outputCopy[j].real();
    }
 
 };
