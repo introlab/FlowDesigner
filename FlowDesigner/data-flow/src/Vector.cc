@@ -94,6 +94,8 @@ void Vector<String>::prettyPrint(ostream &out) const {
     out<<(*this)[i]<<endl;
   }
 }
+/*
+//MOVED to Vector.h
 
 template <>
 inline void _vector_printOn(const Vector<string> &v, ostream &out)
@@ -174,27 +176,6 @@ inline void _vector_readFrom(Vector<string> &v, istream &in)
       if (done)
 	 break;
 
-/*
-      char ch=' ';
-      while (ch == ' ')
-      {
-	 in >> ch;
-	 if (ch == '>')
-	 {
-	    return;
-	 } else if (ch != ' ') {
-	    in.putback(ch);
-	 }
-	 if (in.fail()) 
-	    throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
-      }
-      string tmp;
-      in >> tmp;
-      if (in.fail()) 
-	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
-      v.push_back(tmp);
-*/
-
    }
-
 }
+*/
