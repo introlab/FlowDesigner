@@ -488,8 +488,9 @@ void UINodeRepository::loadAllSubnetInfo(xmlNodePtr net)
 
 void UINodeRepository::loadNetInfo(xmlNodePtr net)
 {
-   string netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
-   
+   char *str_netName = (char *)xmlGetProp(net, (CHAR *)"name");
+   string netName = string(str_netName);
+   free(str_netName);
    CHAR *category = xmlGetProp(net, (CHAR *)"category");
    
    

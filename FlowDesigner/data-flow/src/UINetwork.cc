@@ -47,7 +47,7 @@ void UINetwork::load (xmlNodePtr net)
    if (!netName)
       throw new GeneralException("No network name", __FILE__, __LINE__);
    name = string(netName);
-
+   free(netName);
    char *netType = (char *)xmlGetProp(net, (CHAR *)"type");
    
    if (!netType)
@@ -60,6 +60,7 @@ void UINetwork::load (xmlNodePtr net)
       else if (netType == string("threaded"))
      type=threaded;
    }
+   free(netType);
    //name(_name)
    //create();
    //cerr << "parsing nodes\n";
@@ -73,7 +74,6 @@ void UINetwork::load (xmlNodePtr net)
       }
       node = node->next;
    }
-
    //cerr << "parsing links\n";
    node = net->childs;
    while (node != NULL)

@@ -170,7 +170,8 @@ void UIDocument::loadXML(xmlNodePtr root)
       net = net->next;
    }
 
-    
+     return;
+  
    vector<ItemInfo *> tmp = getNetParams("MAIN");
    //cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
    //textParams.resize(tmp.size());
@@ -185,14 +186,17 @@ void UIDocument::loadXML(xmlNodePtr root)
    //cerr << "--\n";
    xmlNodePtr par = root->childs;
    //cerr << "par = " << par << endl;
-   
    while (par)
    {
       if (string((char*)par->name) == "Parameter")
       {
-         string name = string ((char *) xmlGetProp(par, (CHAR *)"name"));
-         string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
-         string value = string ((char *) xmlGetProp(par, (CHAR *)"value"));
+	 char *str_name = (char *) xmlGetProp(par, (CHAR *)"name");
+	 char *str_type = (char *) xmlGetProp(par, (CHAR *)"type");
+	 char *str_value = (char *) xmlGetProp(par, (CHAR *)"value");
+         string name = string (str_name);
+         string type = string (str_type);
+         string value = string (str_value);
+	 free(str_name); free(str_type); free(str_value);
          
          for (unsigned int i=0;i<textParams.size();i++)
      {
