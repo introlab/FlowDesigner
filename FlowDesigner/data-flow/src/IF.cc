@@ -64,7 +64,12 @@ public:
    }
 
 /**Standard request-passing method between nodes during initialization*/
-      virtual void request(int outputID, const ParameterSet &req) {inputs[inputID].node->request(inputs[inputID].outputID,req);}
+   virtual void request(int outputID, const ParameterSet &req) 
+   {
+      inputs[inputID].node->request(inputs[inputID].outputID,req);
+      inputs[thenID].node->request(inputs[thenID].outputID,req);
+      inputs[elseID].node->request(inputs[elseID].outputID,req);
+   }
 
    ObjectRef getOutput(int output_id, int count)
    {

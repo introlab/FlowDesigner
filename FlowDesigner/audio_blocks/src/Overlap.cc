@@ -54,6 +54,8 @@ public:
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");
       outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
+      inputsCache[inputID].lookAhead=1;
+      inputsCache[inputID].lookBack=1;
    }
 
    virtual void specificInitialize()
