@@ -586,3 +586,23 @@ void UIDocument::setFullPath(const string &fullpath)
    untitled=false; 
 }
 
+void UIDocument::updateAllNetworks() {
+
+  //update network information
+  for (int i=0;i<networks.size();i++) 
+    subnetInfo.updateNetInfo(networks[i]);
+  
+  //update node information (category changed (subnet name))
+  //best way to do that?
+  
+  for (int i = 0; i < networks.size(); i++) {
+
+    vector<UINode *> my_nodes = networks[i]->getNodes();
+
+    for (int j = 0; j < my_nodes.size(); j++) {
+
+      
+
+    }
+  }
+}

@@ -760,7 +760,29 @@ void UINetwork::rename(string newName)
 {
    //FIXME: We should update the subnet list and rename the node that 
    //correspond to this subnet
-   name = newName;
-   doc->updateAllNetworks();
-   //cerr << "Network renaming does not work yet, sorrry :-(\n";
+  string oldName = name;
+
+  name = newName;
+  doc->updateAllNetworks();
+  
+   
+  //update node information (type changed (subnet name))
+  //best way to do that?
+  
+  vector<UINetwork*> my_nets = doc->get_networks();
+  
+  for (int i = 0; i < my_nets.size(); i++) {
+    
+    vector<UINode *> my_nodes = my_nets[i]->getNodes();
+    
+    for (int j = 0; j < my_nodes.size(); j++) {
+   
+      if (my_nodes[j]->getType() == oldName) {
+
+	my_nodes[j]->rename(newName);
+	
+      }
+    }
+  }
+
 }

@@ -150,7 +150,7 @@ public:
 
    void updateNetInfo(UINetwork *net) {subnetInfo.updateNetInfo(net);}
 
-   void updateAllNetworks() {for (int i=0;i<networks.size();i++) subnetInfo.updateNetInfo(networks[i]);}
+   void updateAllNetworks();
    
    static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true, bool fullPathOutput=true);
 
