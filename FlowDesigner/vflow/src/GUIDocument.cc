@@ -140,8 +140,25 @@ Dominic Letourneau (13/09/2003)
 **********************************************************************************************************/
 void GUIDocument::add_notebook_network(GUINetwork *net, GtkWidget *child) {
 
+
+  string tabName = net->getName();
+
+  switch(net->getType()) {
+  case UINetwork::subnet:
+    tabName = tabName + " (subnet)";
+    break;
+  case UINetwork::iterator:
+    tabName = tabName + " (iterator)";
+    break;
+  case UINetwork::threaded:
+    tabName = tabName + " (threaded iterator)";
+    break;
+  default:
+    tabName = tabName + " (unknown)";
+  }
+
   //creating label for the notebook page
-  GtkWidget *label1 = gtk_label_new ((gchar *)net->getName().c_str());
+  GtkWidget *label1 = gtk_label_new ((gchar *)tabName.c_str());
   gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
   gtk_widget_show (label1);
   

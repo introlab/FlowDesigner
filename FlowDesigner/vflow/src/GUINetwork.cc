@@ -145,37 +145,8 @@ void GUINetwork::create()
    gtk_container_add (GTK_CONTAINER (scrolledwindow1), canvas1);
    gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas1), -400, -400, 400, 400);
 
-   string tabName=name;
-   switch (type)
-   {
-      case subnet:
-	 tabName = tabName + " (subnet)";
-	 break;
-      case iterator:
-	 tabName = tabName + " (iterator)";
-	 break;
-      case threaded:
-	 tabName = tabName + " (threaded iterator)";
-	 break;
-      default:
-	 tabName = tabName + " (unknown)";
-
-	 
-   }
-
-
-   //add network to document notebook
-
-   //GtkWidget *document_notebook = dynamic_cast<GUIDocument *>(doc)->getNotebook();
-   //GtkWidget *label1 = gtk_label_new ((gchar*)tabName.c_str());
-   //gtk_widget_ref (label1);
-   //gtk_object_set_data_full (GTK_OBJECT (scrolledwindow1), "label1", label1,
-   //                          (GtkDestroyNotify) gtk_widget_unref);
-   //gtk_widget_show (label1);
-   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label1);
-   //gtk_notebook_append_page(GTK_NOTEBOOK(document_notebook), scrolledwindow1, label1);
-   //gtk_notebook_set_current_page (GTK_NOTEBOOK(document_notebook), -1);
    
+   //add this network to the document
    dynamic_cast<GUIDocument*>(doc)->add_notebook_network(this,scrolledwindow1);
 
 
