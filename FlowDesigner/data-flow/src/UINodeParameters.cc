@@ -52,13 +52,18 @@ void UINodeParameters::load(xmlNodePtr node)
    //cerr << "node = " << node << endl;
    xmlNodePtr par = node->childs;
    //cerr << "par = " << par << endl;
+   
    while (par)
    {
       if (string((char*)par->name) == "Parameter")
       {
-         string name = string ((char *) xmlGetProp(par, (CHAR *)"name"));
-         string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
-         string value = string ((char *) xmlGetProp(par, (CHAR *)"value"));
+	 char *str_name = (char *) xmlGetProp(par, (CHAR *)"name");
+	 char *str_type = (char *) xmlGetProp(par, (CHAR *)"type");
+	 char *str_value = (char *) xmlGetProp(par, (CHAR *)"value");
+         string name = string (str_name);
+         string type = string (str_type);
+         string value = string (str_value);
+	 free(str_name); free(str_type); free(str_value);
          
          ParameterText *param = getParamNamed(name);
 	 if (param)
@@ -75,6 +80,7 @@ void UINodeParameters::load(xmlNodePtr node)
 	 char *str = (char *)xmlNodeGetContent(par);
 	 if (str)
 	    setComments(string(str));
+	 free(str);
       } else {
 	 cerr << "unknown param tag\n";
       }

@@ -80,14 +80,15 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    type = string(str_type);
    x = atof(str_x);
    y = atof(str_y);
+
+   free (str_name); free (str_type); free(str_x); free(str_y);
+
    xtmp = x;
    ytmp = y;
    //draw();
-
    parameters = newNodeParameters(this, type);
    //cerr << "ici\n";
    parameters->load(def);
-
    if (doInit)
    {
       
@@ -128,9 +129,9 @@ UINode::~UINode()
    if (!destroyed)
    {
       for (int i=0;i<inputs.size();i++)
-     delete inputs[i];
+	 delete inputs[i];
       for (int i=0;i<outputs.size();i++)
-     delete outputs[i];
+	 delete outputs[i];
       delete parameters;
       net->removeNode(this);
    }

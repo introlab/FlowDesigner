@@ -6,6 +6,7 @@
 #include <tree.h>
 #include <parser.h>
 #include "BaseException.h"
+#include "UINetwork.h"
 
 /*This bunch of includes is for searching directories, maybe there's a better way...*/
 #include <sys/stat.h>
@@ -109,6 +110,23 @@ NodeInfo *UINodeRepository::findNode(const string &name)
    return NULL;
 }
 
+UINodeRepository::~UINodeRepository()
+{
+   clean();
+}
+
+void UINodeRepository::clean()
+{
+   iterator it = info.begin();
+   while (it != info.end()) {
+      delete it->second;
+      info.erase(it);
+      it++;
+   }
+   //info = map<string, NodeInfo *>();
+}
+
+
 void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 {
 
@@ -129,13 +147,20 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       if (string((char*)node->name) == "NodeClass")
       {
 	 NodeInfo *info = new NodeInfo;
-	 info->category = string((char *)xmlGetProp(node, (CHAR *)"category"));
+	 char *str_category = (char *)xmlGetProp(node, (CHAR *)"category");
+	 if (str_category)
+	    info->category = string(str_category);
+	 else
+	    info->category = "Unknown";
+	 free(str_category);
 	 char *sfile = (char *)xmlGetProp(node, (CHAR *)"source");
 	 if (sfile)
 	    info->sourceFile= string(sfile);
+	 free(sfile);
 	 char *req = (char *)xmlGetProp(node, (CHAR *)"require");
 	 if (req)
 	    info->requireList = string(req);
+	 free(req);
 	 //cerr << info->sourceFile << ":" << info->requireList << endl;
 	 nodeName = string((char *)xmlGetProp(node, (CHAR *)"name"));
 	 GlobalRepository().info[nodeName] = info;
@@ -147,9 +172,12 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    {
 	       xmlChar *tmp;
 	       ItemInfo *newInfo = new ItemInfo;
-	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-	       
+	       char *str_name = (char *)xmlGetProp(data, (CHAR *)"name");
+	       char *str_type = (char *)xmlGetProp(data, (CHAR *)"type");
+	       //FIXME: Check for NULL
+	       newInfo->name = string(str_name);
+	       newInfo->type = string(str_type);
+	       free(str_name); free(str_type);
 	       tmp = xmlGetProp(data, (CHAR *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
@@ -167,8 +195,12 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    {
 	       xmlChar *tmp;
 	       ItemInfo *newInfo = new ItemInfo;
-	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
+	       char *str_name = (char *)xmlGetProp(data, (CHAR *)"name");
+	       char *str_type = (char *)xmlGetProp(data, (CHAR *)"type");
+	       //FIXME: Check for NULL
+	       newInfo->name = string(str_name);
+	       newInfo->type = string(str_type);
+	       free(str_name); free(str_type);
 	       
 	       tmp = xmlGetProp(data, (CHAR *)"value");
 	       if (tmp == NULL)
@@ -187,20 +219,24 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    {
 	       xmlChar *tmp;
 	       ItemInfo *newInfo = new ItemInfo;
-	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
+	       char *str_name = (char *)xmlGetProp(data, (CHAR *)"name");
+	       char *str_type = (char *)xmlGetProp(data, (CHAR *)"type");
+	       //FIXME: Check for NULL
+	       newInfo->name = string(str_name);
+	       newInfo->type = string(str_type);
+	       free(str_name); free(str_type);
 	       tmp = xmlGetProp(data, (CHAR *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
 	       else
 		  newInfo->value = string((char *)tmp);
-	       
+	       free(tmp);
 	       tmp = xmlNodeListGetString(doc, data->childs, 1);
 	       if (tmp == NULL)
 		  newInfo->description = "No Description Available.";
 	       else
 		  newInfo->description = string((char *)tmp);
-	       
+	       free(tmp);
 	       info->params.insert(info->params.end(), newInfo);
 	    } else if (kind == "Description")
 	    {
@@ -210,7 +246,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 		  info->description = "No description available";
 	       else
 		  info->description = string((char *)tmp);
-	       
+	       free(tmp);
 	    } else 
 	    {
 	       cerr << "other\n";
@@ -483,8 +519,11 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 	 {
 	    if (string((char*)par->name) == "Parameter")
 	    {
-	       string paramName = string ((char *) xmlGetProp(par, (CHAR *)"value"));
-	       string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
+	       char *str_paramName = (char *) xmlGetProp(par, (CHAR *)"value");
+	       char *str_type = (char *) xmlGetProp(par, (CHAR *)"type");
+	       string paramName = string (str_paramName);
+	       string type = string (str_type);
+	       free(str_paramName); free(str_type);
 	       if (type == "subnet_param")
 	       {
 		  bool alreadyPresent = false;
@@ -518,14 +557,18 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    {
       if (string((char*)node->name) == "NetInput")
       {
-	 string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 char *str_name = (char *)xmlGetProp(node, (CHAR *)"name");
+	 string termName = string(str_name);
+	 free(str_name);
 	 ItemInfo *newInfo = new ItemInfo;
 	 newInfo->name = termName;
 	 ninfo->inputs.insert (ninfo->inputs.end(), newInfo);
 	 
       } else if (string((char*)node->name) == "NetOutput")
       {
-	 string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 char *str_name = (char *)xmlGetProp(node, (CHAR *)"name");
+	 string termName = string(str_name);
+	 free(str_name);
 	 ItemInfo *newInfo = new ItemInfo;
 	 newInfo->name = termName;
 	 ninfo->outputs.insert (ninfo->outputs.end(), newInfo);
@@ -613,4 +656,35 @@ void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool topl
       }
    } while (nbDepends != initial_files.size());
 
+}
+
+
+void UINodeRepository::updateNetInfo(UINetwork *net)
+{
+   iterator inet = info.find(net->getName());
+   if (inet!=info.end())
+   {
+      delete inet->second;
+   }
+   NodeInfo *ninfo = new NodeInfo;
+   vector<string> tmp = net->getTerminals(UINetTerminal::INPUT);
+   for (unsigned int i = 0; i < tmp.size(); i++)
+   {
+      ItemInfo *newInfo = new ItemInfo;
+      newInfo->name = tmp[i];
+      ninfo->inputs.push_back(newInfo);
+   }
+   tmp = net->getTerminals(UINetTerminal::OUTPUT);
+   for (unsigned int i = 0; i < tmp.size(); i++)
+   {
+      ItemInfo *newInfo = new ItemInfo;
+      newInfo->name = tmp[i];
+      ninfo->outputs.push_back(newInfo);
+   }
+   net->insertNetParams(ninfo->params);
+
+   ninfo->category = "Subnet";
+   ninfo->description = "subnet";
+   
+   info[net->getName()] = ninfo;
 }

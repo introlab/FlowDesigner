@@ -127,11 +127,8 @@ public:
    /**A UIDocument can print itself*/
    void printOn(ostream &out=cout) const;
 
-   //static void loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, string netName = "");
-
-   //void loadAllSubnetInfo(xmlNodePtr net);
-
    vector<UINetwork *> get_networks() {return networks;}
+
    vector<DocParameterDataText *> get_textParams() {return textParams;}
 
    virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
@@ -150,9 +147,11 @@ public:
    virtual void run(ParameterSet &p);
 
    virtual void setFullPath(const string &fullpath);
-   
-   //vector<string> getAvailableNodes();
 
+   void updateNetInfo(UINetwork *net) {subnetInfo.updateNetInfo(net);}
+
+   void updateAllNetworks() {for (int i=0;i<networks.size();i++) subnetInfo.updateNetInfo(networks[i]);}
+   
    static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true, bool fullPathOutput=true);
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);

@@ -64,6 +64,12 @@ UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
 
 UILink::~UILink()
 {
+   list<GUILinkPoint*>::iterator it = m_points.begin();
+   while (it != m_points.end())
+   {
+      delete *it;
+      it++;
+   }
    if (to) 
       to->disconnect(this);
    if (from) 

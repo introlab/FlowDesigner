@@ -9,6 +9,8 @@
 #include <set>
 #include <tree.h>
 
+class UINetwork;
+
 class ItemInfo {
   public:
 	string name;
@@ -30,6 +32,12 @@ class NodeInfo {
    string requireList;
   public:
    NodeInfo() : category("Unknown"), description("No description available") {}
+   ~NodeInfo() {for (int i=0;i<inputs.size();i++) delete inputs[i];
+                  for (int i=0;i<outputs.size();i++) delete outputs[i];
+                  for (int i=0;i<params.size();i++) delete params[i];}
+  private:
+   NodeInfo(const NodeInfo&) {}
+
 };
 
 class UINodeRepository {
@@ -60,6 +68,8 @@ class UINodeRepository {
 
    UINodeRepository(const UINodeRepository &);
 
+   ~UINodeRepository();
+
    iterator begin() {return info.begin();}
    iterator end() {return info.end();}
 
@@ -71,7 +81,12 @@ class UINodeRepository {
       
    void loadNetInfo(xmlNodePtr net);
 
+   void updateNetInfo(UINetwork *net);
+
+   void clean();
+
    static iterator Begin() {return GlobalRepository().info.begin();}
+
    static iterator End() {return GlobalRepository().info.end();}
 
    static void Scan();
@@ -87,7 +102,6 @@ class UINodeRepository {
    static vector<string> Available();
 
    static void ProcessDependencies(set<string> &initial_files, bool toplevel=true);
-
 };
 
 #endif
