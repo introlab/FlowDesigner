@@ -4,9 +4,10 @@
 
 #include "Network.h"
 #include "Collector.h"
+#include "BufferedNode.h"
 
 /** Input translator node used only for the Iterator class */
-class InputTranslator : public Collector {
+class InputTranslator : public BufferedNode {
 
 protected:
 
@@ -16,7 +17,7 @@ public:
    
    /** The constructor with a nodeName and parameters */
    InputTranslator (string nodeName, ParameterSet params) 
-      :Collector(nodeName, params) {
+      :BufferedNode(nodeName, params) {
       //nothing to do
       ;
    }
@@ -27,21 +28,50 @@ public:
    /** Returns the current processCount of this node */
    int  getProcessCount() {return processCount;}
    
-   /** The getOutput method overloaded from Collector */
-   virtual ObjectRef getOutput (int output_id, int count) {
-      //changed count for processCount
-      return Collector::getOutput(output_id,processCount);
-   }
-
+   /*
    virtual void request(int outputID, const ParameterSet &req) 
    {
+     //handled by BufferedNode
+   }
+   */
+
+   virtual void calculate(int output_id, int count, Buffer &out) {
+
+     int outputID = inputs[output_id].outputID;
+     
+     //same as the collector's job!
+     out[count] = (inputs[output_id].node)->getOutput(outputID,processCount);
    }
 
-   virtual void requestForIterator(const ParameterSet &req) 
-   {
-      for (int i=0;i<inputs.size();i++)
-         inputs[i].node->request(inputs[i].outputID,req);
+   virtual int translateInput (string inputName) {
+     for (unsigned int i=0; i< inputs.size(); i++) {
+       if (inputs[i].name == inputName) {
+         return i;
+       }
+     }    
+     return addInput(inputName);
    }
+
+   virtual int translateOutput (string outputName) {
+     // Simply call translateInput because it should return
+     // the same integer...
+     return translateInput(outputName);
+   }
+
+   virtual bool hasOutput(int output_id) const {
+     return(int(inputs.size()) > output_id);
+   }
+   
+   
+   virtual void requestForIterator(const ParameterSet &req) {
+     //request propagation to nodes before the iterator
+     for (int i=0;i<inputs.size();i++) {
+       inputs[i].node->request(inputs[i].outputID,req);
+     }
+   }
+   
+
+
 
 private:
    
