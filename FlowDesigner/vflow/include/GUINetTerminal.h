@@ -5,7 +5,7 @@
 
 #include <gnome.h>
 #include <string>
-#include <gnome-xml/tree.h>
+#include <tree.h>
 #include "UINetTerminal.h"
 
 class UINode;
