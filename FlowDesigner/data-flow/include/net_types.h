@@ -61,7 +61,7 @@ public:
       \param out the output stream
    */
    virtual void printOn(std::ostream &out=std::cout) const {
-      out << "<Generic Type: " << typeid(T).name() << ">" << endl;
+      out << "<Generic Type: " << typeid(T).name() << ">" << std::endl;
    }
 
 };
