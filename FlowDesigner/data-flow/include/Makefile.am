@@ -36,7 +36,8 @@ include_HEADERS = Array.h \
 	UINetwork.h \
 	UINodeParameters.h \
 	vec.h \
-	fmath.h
+	fmath.h \
+	ExceptionObject.h
 	
 noinst_HEADERS = \
 	Iterator.h \

@@ -15,15 +15,16 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Node.h"
+#include "pthread.h"
 
-class NOP;
+class ThreadJoin;
 
-DECLARE_NODE(NOP)
+DECLARE_NODE(ThreadJoin)
 /*Node
  *
- * @name NOP
+ * @name ThreadJoin
  * @category General
- * @description Pass Through
+ * @description Joining thread so there's no race at the input nodes
  *
  * @input_name INPUT
  * @input_description The input
@@ -34,13 +35,15 @@ DECLARE_NODE(NOP)
 END*/
 
 
-class NOP : public Node {
+class ThreadJoin : public Node {
 protected:
    int inputID;
    int outputID;
 
+   pthread_mutex_t lock;
+
 public:
-   NOP(string nodeName, ParameterSet params)
+   ThreadJoin(string nodeName, ParameterSet params)
       : Node(nodeName, params)
    {
       try {
@@ -49,9 +52,23 @@ public:
       } catch (BaseException *e)
       {
          //e->print();
-         throw e->add(new NodeException (NULL, "Exception caught in NOP constructor", __FILE__, __LINE__));
+         throw e->add(new NodeException (NULL, "Exception caught in ThreadJoin constructor", __FILE__, __LINE__));
       }
-      
+      pthread_mutex_init(&lock, NULL);
+
+   }
+
+   ~ThreadJoin()
+   {
+      pthread_mutex_destroy(&lock);
+   }
+
+   void reset()
+   {
+
+      pthread_mutex_destroy(&lock);
+      pthread_mutex_init(&lock, NULL);
+      Node::reset();
    }
 
    /**Standard request-passing method between nodes during initialization*/
@@ -62,7 +79,9 @@ public:
 
    ObjectRef getOutput(int output_id, int count)
    {
+      pthread_mutex_lock(&lock);
       ObjectRef inputValue = getInput(inputID,count);
+      pthread_mutex_unlock(&lock);  
       return inputValue;
    }
 

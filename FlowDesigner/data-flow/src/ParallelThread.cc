@@ -1,16 +1,16 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 2001 Jean-Marc Valin
 //
 // This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
+// it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation; either version 2, or (at your option)
 // any later version.
 //
 // This program is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// General Public License for more details.
+// Lesser General Public License for more details.
 //
-// You should have received a copy of the GNU General Public License
+// You should have received a copy of the GNU Lesser General Public License
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
@@ -18,6 +18,7 @@
 #include "Buffer.h"
 #include <pthread.h>
 #include <semaphore.h>
+#include "ExceptionObject.h"
 
 class ParallelThread;
 
@@ -114,7 +115,7 @@ public:
 
    static void *runThread(void *node)
    {
-      cerr << "In runThread\n";
+      //cerr << "In runThread\n";
       ((ParallelThread*) node)->threadLoop();
    }
 
@@ -134,10 +135,37 @@ public:
 
    void calc()
    {
-      ObjectRef input1Value = getInput(input1ID, calcCount);
-      ObjectRef input2Value = getInput(input2ID, calcCount);
-      (*outputs[output1ID].buffer)[calcCount] = input1Value;
-      (*outputs[output2ID].buffer)[calcCount] = input2Value;      
+      try {
+	 ObjectRef input1Value = getInput(input1ID, calcCount);
+	 (*outputs[output1ID].buffer)[calcCount] = input1Value;
+      } catch (BaseException *e)
+      {
+	 (*outputs[output1ID].buffer)[calcCount] = 
+	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
+      } catch (...)
+      {
+	 //cerr << "caught\n";
+	 (*outputs[output1ID].buffer)[calcCount] = 
+	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
+      }
+
+      try {
+	 ObjectRef input2Value = getInput(input2ID, calcCount);
+	 (*outputs[output2ID].buffer)[calcCount] = input2Value;
+      } catch (BaseException *e)
+      {
+	 //cerr << "caught\n";
+	 (*outputs[output2ID].buffer)[calcCount] = 
+	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
+      } catch (...)
+      {
+	 (*outputs[output2ID].buffer)[calcCount] = 
+	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
+      }
+
+      
+      //ObjectRef input2Value = getInput(input2ID, calcCount);
+      //(*outputs[output2ID].buffer)[calcCount] = input2Value;      
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -147,6 +175,17 @@ public:
 	 perror("sem_post(&sendSem) ");
       if (sem_wait(&recSem))
 	 perror("sem_wait(&recSem) ");
+      //cerr << "calculate\n";
+      if (typeid(*(*outputs[output2ID].buffer)[calcCount]) == typeid(ExceptionObject))
+      {
+	 //cerr << "throwing2\n";
+	 object_cast<ExceptionObject> ((*outputs[output2ID].buffer)[calcCount]).doThrow();
+      }
+      if (typeid(*(*outputs[output1ID].buffer)[calcCount]) == typeid(ExceptionObject))
+      {
+	 //cerr << "throwing1\n";
+	 object_cast<ExceptionObject> ((*outputs[output1ID].buffer)[calcCount]).doThrow();
+      }
    }
 
       

@@ -18,22 +18,9 @@
 #include "pthread.h"
 #include "Buffer.h"
 #include <semaphore.h>
+#include "ExceptionObject.h"
 
-class ExceptionObject : public Object {
 
-   BaseException *e;
-public:
-
-   ExceptionObject(BaseException *_e)
-      : e(_e)
-   {
-      
-   }
-   void doThrow()
-   {
-      throw e;
-   }
-};
 
 class SerialThread;
 
