@@ -114,14 +114,27 @@ void String::readFrom(istream &in)
 }
 void String::serialize(ostream &out) const
 {
-   out << "{String |";
-   writeString(out, *this);
+   out << "{" << className() << endl;
+   out << "|";
+   int my_size = this->size();
+   BinIO::write(out,&my_size, 1);      
+   BinIO::write(out,this->c_str(),my_size);   
    out.put('}');
-   //out << "{String |" << *(string*) (this) << " }";
 }
 void String::unserialize(istream &in)
-{
-   readFrom(in);
+{   
+	int my_size;
+	BinIO::read(in, &my_size, 1);	
+	this->resize(my_size);
+	//FIXME reading one character at at time to avoid network problems
+	//This is slow...
+	for (int i = 0; i < my_size; i++) {
+	    char *data_ptr = const_cast<char*>(this->c_str());
+		BinIO::read(in, &data_ptr[i],1);
+	}
+	//reading last "}"
+	char ch;
+	in >> ch;	
 }
 
 void String::prettyPrint(ostream &out) const
