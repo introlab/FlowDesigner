@@ -4,3 +4,7 @@
 #AUTOMAKE_OPTIONS = no-dependencies
 
 SUBDIRS = src include n-files
+
+check:
+	(cd testcase; ./check.sh)
+
