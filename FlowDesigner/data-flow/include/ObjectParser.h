@@ -132,7 +132,7 @@ inline bool isValidType (istream &in, string expectedType, bool binary)
       string type;
       in >> type;
       if (type != expectedType)
-         throw new ParsingException ("Parser expected type " + expectedType + " and got " + type);
+         throw new ParsingException ("ObjectParser::isValidType : Parser expected type " + expectedType + " and got " + type);
    } else {
       in.putback(ch);
       in.clear(ios::failbit);
