@@ -92,21 +92,22 @@ while (<>)
 
       # look for a '* @something info', then we need to process the item.
       if (/\* (@[a-zA-Z:_0-9]+) ([\<\>a-zA-Z:_0-9 .,;\/\*\+\-\(\)\[\]\{\}]+)/) {
-	#$pname = $1;
-	#$pval = $2;
-	#$pval =~ s/</&lt;/g;
-	if ($1 eq '@name') {
-	  #print '@name : ', $1, "\n";
-	  $node_info{substr($1, 1)} = $2;
+	$pname = $1;
+	$pval = $2;
+	$pval =~ s/</&lt;/g;
+	$pval =~ s/>/&gt;/g;
+	if ($pname eq '@name') {
+	  #print '@name : ', $pname, "\n";
+	  $node_info{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@category') {
-	  $node_info{substr($1, 1)} = $2;
+	elsif ($pname eq '@category') {
+	  $node_info{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@description') {
-	  $node_info{substr($1, 1)} = $2;
+	elsif ($pname eq '@description') {
+	  $node_info{substr($pname, 1)} = $pval;
 	}
 	# start of a new input
-	elsif ($1 eq '@input_name') {
+	elsif ($pname eq '@input_name') {
 	  # check if we have an old input we need to append
 	  if ($$current_input{input_name} ne 'No Name') {
 	    # add the current input to the inputs
@@ -114,16 +115,16 @@ while (<>)
 	    # clear the input
 	    $current_input = hash_copy($default_input);
 	  }
-	  $$current_input{substr($1, 1)} = $2;
+	  $$current_input{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@input_type') {
-	  $$current_input{substr($1, 1)} = $2;
+	elsif ($pname eq '@input_type') {
+	  $$current_input{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@input_description') {
-	  $$current_input{substr($1, 1)} = $2;
+	elsif ($pname eq '@input_description') {
+	  $$current_input{substr($pname, 1)} = $pval;
 	}
 	# start of a new output
-	elsif ($1 eq '@output_name') {
+	elsif ($pname eq '@output_name') {
 	  # check if we have an old output we need to append
 	  if ($$current_output{output_name} ne 'No Name') {
 	    # add the current output to the outputs
@@ -132,16 +133,16 @@ while (<>)
 	    $current_output = hash_copy($default_output);
 	  }
 	  
-	  $$current_output{substr($1, 1)} = $2;
+	  $$current_output{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@output_type') {
-	  $$current_output{substr($1, 1)} = $2;
+	elsif ($pname eq '@output_type') {
+	  $$current_output{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@output_description') {
-	  $$current_output{substr($1, 1)} = $2;
+	elsif ($pname eq '@output_description') {
+	  $$current_output{substr($pname, 1)} = $pval;
 	}
 	# start of a new parameter
-	elsif ($1 eq '@parameter_name') {
+	elsif ($pname eq '@parameter_name') {
 	  # check if we have an old parameter to append to the info
 	  if ($$current_param{parameter_name} ne 'No Name') {
 	    # add the current parameter to the parameter list
@@ -149,23 +150,23 @@ while (<>)
 	    # clear the parameter info
 	    $current_param = hash_copy($default_param);
 	  }
-	  $$current_param{substr($1, 1)} = $2;
+	  $$current_param{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@parameter_type') {
-	  $$current_param{substr($1, 1)} = $2;
+	elsif ($pname eq '@parameter_type') {
+	  $$current_param{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@parameter_value') {
-	  $$current_param{substr($1, 1)} = $2;
+	elsif ($pname eq '@parameter_value') {
+	  $$current_param{substr($pname, 1)} = $pval;
 	}
-	elsif ($1 eq '@parameter_description') {
-	  $$current_param{substr($1, 1)} = $2;
+	elsif ($pname eq '@parameter_description') {
+	  $$current_param{substr($pname, 1)} = $pval;
 	}
 	else {
-	  die 'Unrecognized "@" tag: ', $1, "\n";
+	  die 'Unrecognized "@" tag: ', $pname, "\n";
 	}
 	# set the added information as the last info added
-	$last_name = substr($1, 1);
-	$last_info = $2;
+	$last_name = substr($pname, 1);
+	$last_info = $pval;
       }
 
       elsif (/END\*\// ) { # look for the trailing '*/' 

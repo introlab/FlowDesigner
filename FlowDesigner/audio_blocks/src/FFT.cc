@@ -25,17 +25,19 @@ class FFT;
 
 DECLARE_NODE(FFT)
 /*Node
-
+ *
  * @name FFT
  * @category Signal:DSP
- * @description No description available
-
+ * @description Computes the real FFT of a float vector
+ *
  * @input_name INPUT
- * @input_description No description available
-
+ * @input_type Vector
+ * @input_description The input vector
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type Vector
+ * @output_description The FFT resuls as [r(0), r(1),..., r(N/2), i(N/2-1), ..., i(2), i(1)]
+ *
 END*/
 
 
