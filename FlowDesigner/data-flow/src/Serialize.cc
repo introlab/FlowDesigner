@@ -4,6 +4,7 @@
 #include "net_types.h"
 #include "Object.h"
 #include <iostream>
+#include <sstream>
 #include "Stream.h"
 
 using namespace std;
@@ -61,9 +62,16 @@ public:
       
       ObjectRef streamValue = getInput(streamInputID,count);
       OStream &stream = object_cast<OStream> (streamValue);
-      
-      object.serialize(stream);
-      stream.flush();
+
+      //writing to a temp stream
+      ostringstream temp_stream;
+      object.serialize(temp_stream);
+      temp_stream.flush();
+
+      //write everything at once in the stream
+      stream.write(temp_stream.str().c_str(), temp_stream.str().size());
+
+
       out[count] = objectValue;
    }
 
