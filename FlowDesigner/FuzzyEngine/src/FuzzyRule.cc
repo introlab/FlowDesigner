@@ -46,9 +46,27 @@ END*/
 //////////////////////////////////////////////////////////////////////
 // Construction
 //////////////////////////////////////////////////////////////////////
+  
+FuzzyRule::FuzzyRule() 
+  :m_rule_number(-1) {
+  
+}
 
 FuzzyRule::FuzzyRule(int rule_number)
-: m_rule_number(rule_number) {
+  : m_rule_number(rule_number) {
+
+}
+
+FuzzyRule::FuzzyRule(const FuzzyRule& cpy) 
+  :m_rule_number(cpy.m_rule_number) {
+
+  for (int i = 0; i < cpy.m_antecedant.size(); i++) {
+    m_antecedant.push_back(cpy.m_antecedant[i]);
+  }
+
+  for (int i = 0; i < cpy.m_consequent.size(); i++) {
+    m_consequent.push_back(cpy.m_consequent[i]);
+  }
 
 }
 
@@ -176,3 +194,4 @@ FuzzyRule* FuzzyRule::clone() {
 
   return my_clone;
 }
+

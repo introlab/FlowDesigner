@@ -30,7 +30,7 @@
 
 using namespace std;
 
-class FuzzySet : public BufferedNode {
+class FuzzySet : public BufferedNode, public Object {
 
 public:
 	
@@ -80,6 +80,8 @@ public:
 	}
 
 	virtual void calculate(int output_id, int count, Buffer &out);
+
+	FuzzySet* clone();
 	
 private:
 
@@ -94,6 +96,9 @@ private:
 
 	//the string/value ptr map
 	map<string,float> m_string_value_map;
+
+	//the inputID
+	int m_functionID;
 
 };
 

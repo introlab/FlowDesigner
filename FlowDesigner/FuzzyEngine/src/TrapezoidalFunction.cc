@@ -29,6 +29,7 @@ DECLARE_NODE(TrapezoidalFunction)
  *
  * @output_name Function
  * @output_description The FuzzyFunction object
+ * @output_type FuzzyFunction
  *
  * @parameter_name A
  * @parameter_type float
@@ -45,6 +46,10 @@ DECLARE_NODE(TrapezoidalFunction)
  * @parameter_name D
  * @parameter_type float
  * @parameter_description D value
+ *
+ * @parameter_name NAME
+ * @parameter_type string
+ * @parameter_description The name of the function
  *
 END*/
 
@@ -69,7 +74,7 @@ TrapezoidalFunction::TrapezoidalFunction(string nodeName, ParameterSet params)
   m_b  = dereference_cast<float>(parameters.get("B"));
   m_c  = dereference_cast<float>(parameters.get("C"));
   m_d  = dereference_cast<float>(parameters.get("D"));
-
+  m_name = dereference_cast<string>(parameters.get("NAME"));
 
 }
 //////////////////////////////////////////////////////////////////////

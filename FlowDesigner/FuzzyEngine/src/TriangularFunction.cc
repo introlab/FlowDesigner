@@ -42,6 +42,10 @@ DECLARE_NODE(TriangularFunction)
  * @output_description The FuzzyFunction object
  * @output_type FuzzyFunction
  *
+ * @parameter_name NAME
+ * @parameter_type string
+ * @parameter_description The name of the function
+ *
 END*/
 
 
@@ -66,6 +70,7 @@ TriangularFunction::TriangularFunction(string nodeName, ParameterSet params)
   m_a  = dereference_cast<float>(parameters.get("A"));
   m_b  = dereference_cast<float>(parameters.get("B"));
   m_c  = dereference_cast<float>(parameters.get("C"));
+  m_name = dereference_cast<string>(parameters.get("NAME"));
   
 }
 

@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
+#include "Vector.h"
 
 
 DECLARE_NODE(FuzzySet)
@@ -31,16 +32,19 @@ DECLARE_NODE(FuzzySet)
  *
  * @name FuzzySet
  * @category Fuzzy
- * @description No description available
+ * @description A FuzzySet containing functions associated with names
  *
- * @input_name TRAIN_IN
- * @input_description No description available
+ * @input_name FUNCTIONS
+ * @input_description The Fuzzy Functions
+ * @input_type Vector<ObjectRef>
  *
- * @output_name OUTPUT
- * @output_description No description available
+ * @output_name SET
+ * @output_description The FuzzySet with multiple Fuzzy Functions
+ * @output_type FuzzySet
  *
- * @parameter_name BATCH_SETS
- * @parameter_description No description available
+ * @parameter_name NAME
+ * @parameter_description The name of the set
+ * @parameter_type string
  *
 END*/
 
@@ -53,10 +57,15 @@ FuzzySet::FuzzySet(const string &name)
 :m_name(name) {
 
 }
-FuzzySet::FuzzySet(string nodeName, ParameterSet params) 
-: BufferedNode(nodeName,params),m_name(nodeName) {
-  
 
+FuzzySet::FuzzySet(string nodeName, ParameterSet params) 
+  : BufferedNode(nodeName,params) {
+  
+  
+  m_name = dereference_cast<string>(parameters.get("NAME"));
+  
+  //the inputID
+  m_functionID = addInput("FUNCTIONS");
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -230,5 +239,34 @@ void FuzzySet::print_functions(ostream &out) {
 void FuzzySet::calculate(int output_id, int count, Buffer &out) {
 
 
+  for (int i = 0 ; i < m_functions.size(); i++) {
+    delete m_functions[i];
+  }
+  
+  m_functions.resize(0);
+
+
+  //getting functions 
+  ObjectRef Functions = getInput(m_functionID, count);
+  Vector<FuzzyFunction*> &funct_vect = object_cast<Vector<FuzzyFunction*> >(Functions);
+
+  
+  for (int i = 0 ; i < funct_vect.size(); i++) {
+    m_functions.push_back(funct_vect[i]);
+  }
+
+  out[count] = ObjectRef(clone());
 
 }
+
+FuzzySet* FuzzySet::clone() {
+
+  FuzzySet* my_set = new FuzzySet(m_name);
+
+  for (int i = 0; i < m_functions.size(); i++) {
+    my_set->m_functions.push_back(m_functions[i]->clone());
+  }
+
+  return my_set;
+}
+

@@ -36,7 +36,7 @@ FuzzyFunction::FuzzyFunction(const string &name)
 }
 
 FuzzyFunction::FuzzyFunction(string nodeName, ParameterSet params)
- : BufferedNode(nodeName,params), m_name(nodeName) {
+ : BufferedNode(nodeName,params) {
 
 }
 //////////////////////////////////////////////////////////////////////

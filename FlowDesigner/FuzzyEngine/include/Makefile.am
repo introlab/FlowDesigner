@@ -6,4 +6,5 @@ include_HEADERS = FuzzyFunction.h \
 	FuzzySet.h \
 	GenericModel.h \
 	TrapezoidalFunction.h \
-	TriangularFunction.h 
+	TriangularFunction.h \
+	FuzzyOperators.h
