@@ -13,11 +13,12 @@ ostream &operator << (ostream &out, const NNetSet &cell);
 class NNetSet : public Object {
 protected:
    vector<FFNet *> nets;
+   float *value;
 public:
    //NNetSet() 
    //{}
 
-   NNetSet(){}
+   NNetSet(){value = NULL;}
    
    NNetSet (const NNetSet &) {cerr << "don't call the NNetSet copy constructor\n"; exit(1);}
 
@@ -27,19 +28,20 @@ public:
 
    ~NNetSet() 
    {
+      delete [] value;
    }
 
-   double *calc(int id, const double *input);
+   float *calc(int id, const float *input);
 
-   void train(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
-	      double learnRate, double mom, double increase, double decrease, double errRatio, int nbSets);
+   //void train(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
+//	      double learnRate, double mom, double increase, double decrease, double errRatio, int nbSets);
 
    void trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *> tout, 
 		      int iter, double learnRate, double mom, double increase, 
 		      double decrease, int nbSets);
 
-   void trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, 
-		      int iter, double sigma = .03, double lambda = .2);
+   //void trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, 
+   //	      int iter, double sigma = .03, double lambda = .2);
 
    void printOn(ostream &out) const;
 

@@ -108,6 +108,47 @@ inline void vec_mul_vec(const T *a, const T *b, T *c, int len)
 }
 
 template <class T>
+inline void vec_mul_and_add(const T *a, const T *b, T *c, int len)
+{
+  const T *end = a+len;
+  while (a<end-3)
+    {
+      c[0]+=a[0]*b[0];
+      c[1]+=a[1]*b[1];
+      c[2]+=a[2]*b[2];
+      c[3]+=a[3]*b[3];
+      a+=4;
+      b+=4;
+      c+=4;
+    }
+  while (a<end)
+    {
+      c[0]+=a[0]*b[0];
+      a++; b++; c++;
+    }
+}
+
+template <class T>
+inline void vec_mul_and_add(const T a, const T *b, T *c, int len)
+{
+  const T *end = b+len;
+  while (b<end-3)
+    {
+      c[0]+=a*b[0];
+      c[1]+=a*b[1];
+      c[2]+=a*b[2];
+      c[3]+=a*b[3];
+      b+=4;
+      c+=4;
+    }
+  while (b<end)
+    {
+      c[0]+=a*b[0];
+      b++; c++;
+    }
+}
+
+template <class T>
 inline void vec_div_vec(const T *a, const T *b, T *c, int len)
 {
   const T *end = a+len;
@@ -295,7 +336,7 @@ inline void vec_sqrt(const T *a, T *b, int len)
 
 #ifdef _USE_3DNOW
 
-#define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)"
+#define FP_DIRTY   : "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
 
 
 template <>
