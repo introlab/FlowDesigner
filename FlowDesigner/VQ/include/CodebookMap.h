@@ -19,7 +19,7 @@
 
 #include <math.h>
 #include <vector>
-#include <stream.h>
+#include <iostream>
 #include "Object.h"
 #include "vq.h"
 #include "Vector.h"

@@ -18,8 +18,8 @@
 #include "Node.h"
 #include "Vector.h"
 #include "ObjectParser.h"
-#include <stream.h>
-#include <strstream.h>
+#include <iostream>
+#include <strstream>
 
 #include <stdio.h>
 #include <sys/stat.h>

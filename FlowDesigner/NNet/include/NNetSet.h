@@ -1,6 +1,6 @@
 #include <math.h>
 #include <vector>
-#include <stream.h>
+#include <iostream>
 #include "Object.h"
 #include "FFNet.h"
 

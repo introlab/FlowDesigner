@@ -18,8 +18,7 @@
 #include "Node.h"
 #include "Vector.h"
 #include "ObjectParser.h"
-#include <stream.h>
-#include <strstream.h>
+#include <strstream>
 #include <math.h>
 
 class LPFilter;

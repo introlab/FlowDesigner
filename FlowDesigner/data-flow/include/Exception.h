@@ -18,7 +18,7 @@
 #define _NETWORKEXCEPTION_H_
 
 //#include "Node.h"
-#include <iostream.h>
+#include <iostream>
 #include <string>
 #include "rc_ptrs.h"
 #include "BaseException.h"

@@ -18,9 +18,9 @@
 
 #include <vector>
 #include <typeinfo>
-#include <stream.h>
+#include <stream>
 #include <string>
-#include <strstream.h>
+#include <strstream>
 
 
 #endif

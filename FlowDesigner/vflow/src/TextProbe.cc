@@ -18,7 +18,7 @@
 #include "net_types.h"
 #include "Object.h"
 #include <gnome.h>
-#include <sstream.h>
+#include <sstream>
 
 DECLARE_NODE(TextProbe)
 /*Node

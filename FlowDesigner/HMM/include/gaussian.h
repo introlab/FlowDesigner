@@ -16,7 +16,7 @@
 #ifndef GAUSSIAN_H
 #define GAUSSIAN_H
 
-#include <stream.h>
+#include <iostream>
 #include <string>
 #include "covariance.h"
 #include "ObjectParser.h"

@@ -18,9 +18,8 @@
 #include "covariance.h"
 #include "gaussian.h"
 #include <assert.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <iostream.h>
+#include <fstream>
+#include <iostream>
 
 DECLARE_TYPE(Gaussian)
 

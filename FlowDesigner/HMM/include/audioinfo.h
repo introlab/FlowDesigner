@@ -17,8 +17,7 @@
 #define AUDIO_INFO_H
 
 #include <string>
-#include <stream.h>
-#include <iostream.h>
+#include <iostream>
 #include "Object.h"
 #include "Vector.h"
 

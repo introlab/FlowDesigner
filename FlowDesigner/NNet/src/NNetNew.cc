@@ -19,7 +19,7 @@
 #include "ObjectRef.h"
 #include "FFNet.h"
 #include "Buffer.h"
-#include <strstream.h>
+#include <strstream>
 #include "Vector.h"
 
 class NNetNew;

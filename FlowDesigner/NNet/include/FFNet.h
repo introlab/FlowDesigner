@@ -2,7 +2,7 @@
 #define FFNET_H
 
 #include <vector>
-#include <stream.h>
+#include <iostream>
 
 #include "FFLayer.h"
 #include "Object.h"

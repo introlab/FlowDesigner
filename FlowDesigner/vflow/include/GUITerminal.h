@@ -4,7 +4,7 @@
 #include <gnome.h>
 #include <vector>
 #include <string>
-#include <fstream.h>
+#include <fstream>
 #include "UITerminal.h"
 #include "GUILink.h"
 

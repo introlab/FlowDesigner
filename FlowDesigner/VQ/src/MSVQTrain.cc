@@ -19,7 +19,7 @@
 #include "msvq.h"
 #include "Vector.h"
 #include "Node.h"
-#include <strstream.h>
+#include <strstream>
 //#include "multithread.h"
 
 class MSVQTrain;

@@ -14,11 +14,10 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <stream.h>
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <strstream.h>
+#include <strstream>
 #include <values.h>
 
 #ifdef HAVE_FLOAT_H

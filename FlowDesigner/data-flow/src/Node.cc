@@ -19,7 +19,7 @@
 #include <typeinfo>
 #include "Object.h"
 
-//using namespace std;
+using namespace std;
 
 //using namespace DataFlow;
 //namespace DataFlow {

@@ -22,8 +22,7 @@
 #include "gaussian.h"
 #include "covariance.h"
 #include "Object.h"
-#include <stream.h>
-#include <iostream.h>
+#include <iostream>
 #include "covariance_set.h"
 #include "mean_set.h"
 #include "gaussian_set.h"

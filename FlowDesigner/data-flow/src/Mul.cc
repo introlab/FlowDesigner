@@ -14,7 +14,6 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <stream.h>
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "operators.h"

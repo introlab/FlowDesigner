@@ -18,7 +18,6 @@
 #include "Node.h"
 #include "Vector.h"
 #include "ObjectParser.h"
-#include <stream.h>
 
 #include "variables.h"
 

@@ -2,7 +2,7 @@
 #define FFLAYER_H
 
 #include <math.h>
-#include <stream.h>
+#include <iostream>
 #include "Object.h"
 #include <stdlib.h>
 

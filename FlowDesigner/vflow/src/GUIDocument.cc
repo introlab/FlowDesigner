@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include "rc_ptrs.h"
 //#include <strstream>
-#include <sstream.h>
+#include <sstream>
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>

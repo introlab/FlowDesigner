@@ -18,7 +18,7 @@
 #define KMEANS_H
 
 #include <vector>
-#include <stream.h>
+#include <iostream>
 #include "Object.h"
 #include "vq.h"
 

@@ -17,8 +17,7 @@
 #ifndef OBJECTPARSER_H
 #define OBJECTPARSER_H
 
-#include <stream.h>
-#include <iostream.h>
+#include <iostream>
 #include <vector>
 #include "Object.h"
 #include <map>

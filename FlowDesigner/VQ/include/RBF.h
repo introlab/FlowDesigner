@@ -18,7 +18,7 @@
 #define RBF_H
 
 #include <vector>
-#include <stream.h>
+#include <iostream>
 #include "Object.h"
 #include "kmeans.h"
 

@@ -19,7 +19,7 @@
 #include "ObjectRef.h"
 #include "NNetSet.h"
 #include "Buffer.h"
-#include <sstream.h>
+#include <sstream>
 #include "ObjectParser.h"
 #include "Vector.h"
 

@@ -24,7 +24,7 @@
 */
 
 #include <stddef.h>
-#include <stream.h>
+#include <iostream>
 #include <typeinfo>
 #include "BaseException.h"
 #include <string>

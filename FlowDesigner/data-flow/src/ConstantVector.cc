@@ -18,8 +18,8 @@
 #include "Node.h"
 #include "Vector.h"
 #include "ObjectParser.h"
-#include <stream.h>
-#include <sstream.h>
+#include <iostream>
+#include <sstream>
 
 class ConstantVector;
 

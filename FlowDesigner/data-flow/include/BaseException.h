@@ -17,8 +17,10 @@
 #ifndef _BASEEXCEPTION_H_
 #define _BASEEXCEPTION_H_
 
+using namespace std;
+
 //#include "Node.h"
-#include <iostream.h>
+#include <iostream>
 #include <string>
 //#include "rc_ptrs.h"
 
