@@ -789,13 +789,57 @@ static void add_note_event(GtkMenuItem *menuitem, gpointer user_data)
   doc->setModified();
 
 }
+
+
+
+/**********************************************************************************************************
+
+**********************************************************************************************************/
+void network_export_fsel_ok_sel(GtkWidget *w, UINetwork *net) {
+    
+  GtkWidget *ssel = GTK_WIDGET(gtk_object_get_user_data(GTK_OBJECT(w)));
+  gchar *fname = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION(ssel)));
+  
+  if (fname && net) {
+    
+    GUIDocument *doc = dynamic_cast<GUIDocument*>(net->getDocument());
+    
+    if (doc) {
+      try {    
+	doc->exportNetwork(net->getName(),fname);
+      }
+      catch (BaseException *e) {
+	stringstream tmp_stream;
+	doc->less_print(tmp_stream.str());	
+	delete e;
+      } 
+
+
+      doc->less_print(string("Network (") + net->getName() + string(") exported to : ") + string(fname));
+    }
+  }
+  g_free (fname);
+  gtk_widget_destroy (GTK_WIDGET (ssel));
+  ssel = NULL;
+} 
+
+
+/**********************************************************************************************************
+
+**********************************************************************************************************/
+gint network_export_fsel_destroy(GtkWidget *button, GtkWidget *sel) {
+
+  gtk_widget_destroy(sel);
+
+  return TRUE; 
+}
+
 /**********************************************************************************************************
 
 **********************************************************************************************************/
 static void export_network_event(GtkMenuItem *menuitem, gpointer user_data) 
 {
-  cerr<<"Export Network (prototype) is not fully functionnal. Should display a GUI asking for fileName"<<endl;
-
+ 
   try {
   
     GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
@@ -806,8 +850,22 @@ static void export_network_event(GtkMenuItem *menuitem, gpointer user_data)
     
     if (!net) return;
     
+  
+    GtkWidget *ssel = gtk_file_selection_new("Export Network...");
     
-    doc->exportNetwork(net->getName(),"EXPORT.n");
+    gtk_object_set_user_data(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),ssel);
+    
+    gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),
+		       "clicked", (GtkSignalFunc) network_export_fsel_ok_sel, 
+		       net);
+    
+    gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->cancel_button),
+		       "clicked", (GtkSignalFunc) network_export_fsel_destroy, 
+		       ssel);
+  
+    gtk_widget_show(ssel);
+
+
   }
   catch (BaseException *e) {
     stringstream tmp_stream;
@@ -828,17 +886,68 @@ static void export_network_event(GtkMenuItem *menuitem, gpointer user_data)
 /**********************************************************************************************************
 
 **********************************************************************************************************/
+void network_import_fsel_ok_sel(GtkWidget *w, GUIDocument *doc) {
+    
+  GtkWidget *ssel = GTK_WIDGET(gtk_object_get_user_data(GTK_OBJECT(w)));
+  gchar *fname = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION(ssel)));
+  
+  if (fname && doc) {
+
+    try {
+
+      doc->importNetwork(string(fname));
+
+    }
+    catch (BaseException *e) {
+	stringstream tmp_stream;	
+	doc->less_print(tmp_stream.str());	
+	delete e;
+    }
+    
+    doc->less_print(string("Network file imported : ") + string(fname));
+  }
+  g_free (fname);
+  gtk_widget_destroy (GTK_WIDGET (ssel));
+  ssel = NULL;
+} 
+
+
+/**********************************************************************************************************
+
+**********************************************************************************************************/
+gint network_import_fsel_destroy(GtkWidget *button, GtkWidget *sel) {
+
+  gtk_widget_destroy(sel);
+
+  return TRUE; 
+}
+
+
+/**********************************************************************************************************
+
+**********************************************************************************************************/
 static void import_network_event(GtkMenuItem *menuitem, gpointer user_data) 
 {
-  cerr<<"Import Network (prototype) is not fully functionnal. Should display a GUI asking for fileName"<<endl;
-
   try {
     GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
     
     if (!doc) return;
+ 
+  
+    GtkWidget *ssel = gtk_file_selection_new("Import Network...");
     
-    cerr<<"Importing : "<<"EXPORT.n"<<endl;
-    doc->importNetwork("EXPORT.n");
+    gtk_object_set_user_data(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),ssel);
+    
+    gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),
+		       "clicked", (GtkSignalFunc) network_import_fsel_ok_sel, 
+		       doc);
+    
+    gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->cancel_button),
+		       "clicked", (GtkSignalFunc) network_import_fsel_destroy, 
+		       ssel);
+  
+    gtk_widget_show(ssel);
+
   }
   catch (BaseException *e) {
     stringstream tmp_stream;
