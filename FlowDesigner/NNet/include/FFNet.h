@@ -6,7 +6,7 @@
 
 #include "FFLayer.h"
 
-#define alpha .01
+#define alpha 1
 
 class FFNet {
   protected:
@@ -31,63 +31,62 @@ class FFNet {
 	 //start with the output layer, towards the input
 	 for (int k=outputLayer;k>=0;k--)
 	 {
-	    float *previous, *current;
+	    FFLayer *currentLayer = layers[k];
+	    float *previousValue, *currentValue;
 	    if (k==0)
-	       previous = input;
+	       previousValue = input;
 	    else 
-	       previous = layers[k-1]->getValue();
+	       previousValue = layers[k-1]->getValue();
 
-	    current = layers[k]->getValue();
+	    currentValue = currentLayer->getValue();
 
 	    int layerSize = topo[k+1];
 	    int layerInputs = topo[k];
-	    float *err = layers[k]->getError();
+	    float *delta = currentLayer->getError();
 	    for (int i=0;i<layerSize;i++)
 	    {
-	       float *w = layers[k]->getTmpWeights(i);
+	       float *w = currentLayer->getTmpWeights(i);
+	       //cerr << k << endl;
 	       if (k==outputLayer)
 	       {
 		  //cerr << "output layer\n";
-		  err[i]=output[i]-current[i];
-		  cout << "error = " << err[i] << endl;
+		  delta[i]=output[i]-currentValue[i];
+		  cout << "error = " << delta[i] << endl;
+		  delta[i] = currentLayer->deriv[i]*delta[i];
 	       }
 	       else
 	       {
-		  err[i] = 0;
-		  float *prevErr = layers[k+1]->getError();
-		  //cerr << "topo: " << topo[k+2] << endl;
+		  delta[i] = 0;
+		  float *outErr = layers[k+1]->getError();
 		  for (int j=0;j<topo[k+2];j++)
 		  {
-		     float *prevW = layers[k+1]->getWeights(j);
-		     err[i]+= prevErr[j]*prevW[i];
+		     float *outW = layers[k+1]->getWeights(j);
+		     delta[i]+= outErr[j]*outW[i];
 		  }
+		  delta[i] = currentLayer->deriv[i]*delta[i];
 	       }
 	       for (int j=0;j<layerInputs;j++)
 	       {
-		  //cout << w[j] << " -> ";
-		  w[j] += alpha * previous[j] * err[i] * deriv(current[i]);
+		  w[j] += alpha * previousValue[j] * delta[i];
 	       }
-	       w[layerInputs] += alpha * err[i] * deriv(current[i]);
-	       //cout << w[i] << endl;
+	       w[layerInputs] += alpha * delta[i];
 	    }
-	 }
-
-	 //cout << layers[1]->getError()[0] << " " 
-	 //     << layers[0]->getError()[0] << endl;
-	 
+	 }	 
       }
 
    void train(vector<float *> in, vector<float *> out, int iter)
       {
 	 while (iter)
 	 {
-	    for (int i=0;i<layers.size();i++)
+	    int i;
+	    //cerr << "iter...\n";
+	    for (i=0;i<layers.size();i++)
 	    {
 	       layers[i]->copyToTmp();
 	    }
-	    for (int i=0;i<in.size();i++)
+	    for (i=0;i<in.size();i++)
 	       learn (in[i], out[i]);
-	    for (int i=0;i<layers.size();i++)
+	    for (i=0;i<layers.size();i++)
 	    {
 	       layers[i]->copyFromTmp();
 	    }
