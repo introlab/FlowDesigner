@@ -20,7 +20,7 @@
 #include <stream.h>
 #include <iostream.h>
 #include <vector>
-#include <Object.h>
+#include "Object.h"
 #include <map>
 
 inline bool isValidType (istream &in, string expectedType);
