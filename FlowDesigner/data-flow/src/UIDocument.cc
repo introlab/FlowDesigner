@@ -559,13 +559,13 @@ void UIDocument::loadAllInfoRecursive(const string &path) {
        
       //loading network
       if (strstr(current_entry->d_name, ".n") && !strstr(current_entry->d_name, ".nn")){
-	cout<<"Loading network : "<<fullpath<<endl;
+	 //cout<<"Loading network : "<<fullpath<<endl;
         loadExtDocInfo(path, name);
       }
       
       //loading toolbox
       if (strstr(current_entry->d_name, ".def")) {
-	cout<<"Loading toolbox : "<<fullpath<<endl;
+	 //cout<<"Loading toolbox : "<<fullpath<<endl;
         loadNodeDefInfo(path, name);
       }
 
@@ -771,25 +771,25 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
       //it is a directory, let's doing it recursively
       if (name != string("..") && name != string(".")) {
 	 Network *ret = buildExternalRecursive(fullpath,type, _name, params);
-	 if (net) {
+	 if (ret) {
 	   closedir(my_directory);
 	   return ret;
 	 }
       }
     }
     else {
-       cerr << "is it " << name << " in " << path << endl;
+       //cerr << "is it " << name << " in " << path << endl;
       if (name == (type + string(".n"))) {
 	//found the network
 	UIDocument doc(fullpath);
 	
-	cout<<"loading : "<<fullpath<<endl;
+	//cout<<"loading : "<<fullpath<<endl;
 	doc.load();
 	
 	net = doc.getNetworkNamed("MAIN")->build(_name, params);
 	
 	closedir(my_directory);
-
+	//cerr << "found net = " << net << endl;
 	return net;
       }
     }
@@ -797,7 +797,8 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
 
   closedir(my_directory);
 
-  cerr << "returning " << net << " for " << type << endl;
+  
+  //cerr << "returning " << net << " for " << type << endl;
   return net;
 
 }
