@@ -737,22 +737,23 @@ void UIDocument::export2net()
    
 }
 
-string UIDocument::findExternal(const string &filename, char *searchPath, bool include_home)
+string UIDocument::findExternal(const string &filename, char *searchPath, bool include_home, bool fullPathOutput)
 {
    vector<string> pathlist = envList(searchPath, include_home);
    string fullname;
    for (unsigned int i=0;i<pathlist.size();i++)
    {
-      if (findExternalRecursive(pathlist[i],filename,fullname))
+      if (findExternalRecursive(pathlist[i],"", filename,fullname, fullPathOutput))
 	  return fullname;
    }
    return "";
 }
 
-bool UIDocument::findExternalRecursive(const string &path, const string &filename, string &fullname)
+bool UIDocument::findExternalRecursive(const string &basePath, const string &path, const string &filename, string &fullname, bool fullPathOutput)
 {
    struct stat my_stat;
-   DIR *my_directory = opendir (path.c_str());
+   string dirPath = basePath + "/" + path;
+   DIR *my_directory = opendir (dirPath.c_str());
 
    if (!my_directory) return false;
 
@@ -762,7 +763,7 @@ bool UIDocument::findExternalRecursive(const string &path, const string &filenam
 	current_entry != NULL; current_entry = readdir(my_directory)) {
     
       string name = current_entry->d_name;
-      string fullpath = path + string("/") + name;
+      string fullpath = basePath + "/" + path + string("/") + name;
 
       if (stat(fullpath.c_str(), &my_stat) < 0) {
 	 cerr<<"stat error"<<endl;
@@ -772,7 +773,7 @@ bool UIDocument::findExternalRecursive(const string &path, const string &filenam
       if (S_ISDIR(my_stat.st_mode)) {
 	 //it is a directory, let's doing it recursively
 	 if (name != string("..") && name != string(".")) {
-	    if (findExternalRecursive(fullpath,filename,fullname))
+	    if (findExternalRecursive(basePath, path + "/" + name,filename,fullname, fullPathOutput))
 	    {
 	       closedir(my_directory);
 	       return true;
@@ -782,7 +783,10 @@ bool UIDocument::findExternalRecursive(const string &path, const string &filenam
       else {
 	 //it's a file, check if it's the right one
 	 if (name == filename) {
-	    fullname = fullpath;
+	    if (fullPathOutput)
+	       fullname = fullpath;
+	    else
+	       fullname = path + string("/") + name;
 	    closedir(my_directory);
 	    return true;
 	 }
@@ -843,6 +847,8 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
    do {
       nbDepends = initial_files.size();
       set<string> addMod;
+      //Core is always necessary and we'll save a bunch of @require core
+      addMod.insert(addMod.begin(), "core");
 
       //Scan all files in required list to find all required modules
       set<string>::iterator file=initial_files.begin();
@@ -898,11 +904,7 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
 	       set<string>::iterator header = headerDep.begin();
 	       while (header != headerDep.end())
 	       {
-		  string fullHeader = findExternal(*header, "VFLOW_SOURCE", false);
-		  if (fullHeader == "")
-		     cerr << "Header file not found: " << *header << endl;
-		  else
-		     initial_files.insert(initial_files.end(), fullHeader);
+		  initial_files.insert(initial_files.end(), *header);
 		  header++;
 	       }
 	    }
@@ -912,19 +914,20 @@ void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
       }
    } while (nbDepends != initial_files.size());
 
-
-   /*set<string>::iterator file=initial_files.begin();
+   set<string> newDep;
+   set<string>::iterator file=initial_files.begin();
    while (file != initial_files.end())
    {
       string fullPath = findExternal(*file, "VFLOW_SOURCE", false);
       if (fullPath != "")
       {
-	 
-	 //*file = fullPath;
+	 newDep.insert(newDep.end(), fullPath);
+      } else {
+	 cerr << "file not found: " << *file << endl;
       }
       file++;
    }
-   */
+   initial_files=newDep;
 }
 
 void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)

@@ -185,7 +185,7 @@ public:
    
    vector<string> getAvailableNodes();
 
-   static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true);
+   static string findExternal(const string &filename, char *searchPath="VFLOW_PATH", bool include_home=true, bool fullPathOutput=true);
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 
@@ -199,7 +199,7 @@ public:
    
    static void loadAllInfoRecursive(const string &path);
    
-   static bool findExternalRecursive(const string &path, const string &type, string &fullname);
+   static bool findExternalRecursive(const string &basePath, const string &path, const string &type, string &fullname, bool fullPathOutput);
 
 };
 

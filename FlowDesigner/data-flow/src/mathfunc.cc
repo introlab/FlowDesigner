@@ -6,8 +6,6 @@
 #include "ObjectRef.h"
 #include "Vector.h"
 
-//@implements core
-
 /*This doesn't compile with MSVC++ broken templates*/
 #ifndef BROKEN_TEMPLATES
 

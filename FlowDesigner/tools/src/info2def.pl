@@ -89,6 +89,8 @@ $current_param = hash_copy($default_param);
 
 $curr_filename=$ARGV[0];
 $next_filename=$ARGV[1];
+$base_filename = $curr_filename;
+$base_filename =~ s/.*\///;
 # read through the file
 while (<>)
   {
@@ -96,6 +98,8 @@ while (<>)
       {
 	$curr_filename = $next_filename;
 	$next_filename = $ARGV[0];
+	$base_filename = $curr_filename;
+	$base_filename =~ s/.*\///;
       }
     # if we are in a comment, look for the information to parse.
     if ($in_comment == 1) {
@@ -114,7 +118,7 @@ while (<>)
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@require') {
-	  push @{$filedep{$curr_filename}}, $pval;
+	  push @{$filedep{$base_filename}}, $pval;
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@description') {
@@ -199,7 +203,7 @@ while (<>)
 	"category=\"$node_info{category}\"";
 	#$curr_filename=$ARGV[$curr_file];
 	#print $tata;
-	print " source=\"$curr_filename\"";
+	print " source=\"$base_filename\"";
 	if ($node_info{require} ne "") {
 	  print " require=\"$node_info{require}\"";
 	}
@@ -285,12 +289,12 @@ while (<>)
     } 
     #Added by JMV 2001/07/31
     elsif (/\/\/\@implements ([a-zA-Z0-9_]*)/) {
-      push @{$dep{$1}}, $curr_filename;
+      push @{$dep{$1}}, $base_filename;
     } 
     elsif (/\/\/\@require ([a-zA-Z0-9_]*)/) {
-      push @{$filedep{$curr_filename}}, $1;
+      push @{$filedep{$base_filename}}, $1;
     } elsif (/^\#include \"([a-zA-Z_0-9\.]*)\"/) {
-      push @{$headerdep{$curr_filename}}, $1;
+      push @{$headerdep{$base_filename}}, $1;
     }
 
     
