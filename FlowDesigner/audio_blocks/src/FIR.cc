@@ -81,11 +81,22 @@ public:
       ObjectRef filterValue = filterInput.node->getOutput(filterInput.outputID, count);
 
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
+
+      for (int i=0;i<outputLength;i++)
+         output[i]=0;
+
       if (inputValue->status != Object::valid)
       {
          output.status = inputValue->status;
          return;
       }
+
+      if (filterValue->status != Object::valid)
+      {
+	 output.status = Object::valid;
+	 return;
+      }
+
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const Vector<float> &filter = object_cast<Vector<float> > (filterValue);
       const Vector<float> *past;
@@ -114,8 +125,6 @@ public:
 
       int size = filter.size();
       
-      for (int i=0;i<outputLength;i++)
-         output[i]=0;
 
       if (can_look_back)
       {
