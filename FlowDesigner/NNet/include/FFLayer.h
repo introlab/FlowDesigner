@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <stream.h>
+#include "Object.h"
 
 inline double sigmoid(double x)
 {
@@ -43,7 +44,7 @@ inline double deriv_lin(double x)
 //#define func(x) (x)
 //#define deriv(x) (1)
 
-class FFLayer {
+class FFLayer : public Object {
   public:
    double (*func) (double);
    double (*deriv_func) (double);
@@ -55,9 +56,10 @@ class FFLayer {
    float *weights;
    float *value;
    float *error;
+   string funcType;
   public:
-   FFLayer(int _nbNeurons, int _nbInputs, double (*_func) (double) = sigmoid, 
-	   double (*_deriv_func) (double) = deriv_sigmoid);
+   FFLayer() {};
+   FFLayer(int _nbNeurons, int _nbInputs, string type = "sigmoid");
    ~FFLayer() {delete tmp_weights; delete value; delete weights; delete error; delete deriv;}
    void update(float *previous)
       {
@@ -90,7 +92,10 @@ class FFLayer {
    float *getWeights(int i) {return weights + i*(nbInputs+1);}
    float *getTmpWeights(int i) {return tmp_weights + i*(nbInputs+1);}
    float *getError() {return error;}
-
+   void printOn(ostream &out) const;
+   void readFrom (istream &in);
 };
+
+istream &operator >> (istream &in, FFLayer &layer);
 
 #endif;

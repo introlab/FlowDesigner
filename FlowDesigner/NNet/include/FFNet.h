@@ -5,16 +5,18 @@
 #include <stream.h>
 
 #include "FFLayer.h"
+#include "Object.h"
+#include "Vector.h"
 
 #define alpha 1
 
-class FFNet {
+class FFNet : public Object {
   protected:
-   vector<int> topo;
-   vector<FFLayer *> layers;
+   Vector<int> topo;
+   Vector<FFLayer *> layers;
   public:
-   FFNet(const vector<int> &_topo);
-
+   FFNet(const Vector<int> &_topo);
+   FFNet() {}
    float *calc(float *input)
       {
 	 layers[0]->update(input);
@@ -94,6 +96,11 @@ class FFNet {
 	    
 	 }
       }
+
+   void printOn(ostream &out) const;
+   void readFrom (istream &in);
 };
+
+istream &operator >> (istream &in, FFNet &net);
 
 #endif
