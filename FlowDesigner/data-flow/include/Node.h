@@ -23,7 +23,7 @@
 #include <vector>
 #include "ObjectRef.h"
 //#include "net_types.h"
-#include "NetworkException.h"
+#include "Exception.h"
 #include <typeinfo>
 
 
@@ -94,7 +94,7 @@ public:
     @author Jean-Marc Valin
     @version 1.0
 */
-class MissingParameterException : public NetworkBaseException {
+class MissingParameterException : public BaseException {
 
 public:
    ///The constructor with the parameters
@@ -239,7 +239,7 @@ protected:
     @author Dominic Letourneau
     @version 1.0
  */
-class NotInitializedException : public NetworkBaseException {
+class NotInitializedException : public BaseException {
 
 public:
    ///The constructor that takes a map of nodes not properly initialized
@@ -267,7 +267,7 @@ public:
     @author Jean-Marc Valin
     @version 1.0
 */
-class NodeException : public NetworkBaseException {
+class NodeException : public BaseException {
 
 public:
 

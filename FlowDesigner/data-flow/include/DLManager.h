@@ -22,7 +22,7 @@
 
 
 #include <errno.h>
-#include "NetworkException.h"
+#include "Exception.h"
 //#include "rc_ptrs.h"
 
 #define LINUX

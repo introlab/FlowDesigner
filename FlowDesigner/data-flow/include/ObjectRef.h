@@ -4,7 +4,7 @@
 
 #include "Object.h"
 #include "net_types.h"
-#include "NetworkException.h"
+#include "Exception.h"
 #include <typeinfo>
 
 /** Smart pointer to Object called ObjectRef
@@ -19,7 +19,7 @@ typedef counted_ptr<Object> ObjectRef;
     @version 1.0
  */
 template <class T>
-class CastException : public NetworkBaseException {
+class CastException : public BaseException {
 public:
    ///The constructur that takes an error message
    CastException(string _type) : type(_type) 

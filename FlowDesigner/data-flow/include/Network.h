@@ -22,7 +22,7 @@
 #include <string>
 #include "NodeFactory.h"
 #include "NodeHeaders.h"
-#include "NetworkException.h"
+#include "Exception.h"
 #include "Node.h"
 
 
