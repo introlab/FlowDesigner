@@ -266,7 +266,7 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 	 gtk_object_destroy(GTK_OBJECT(item));
        }
 
-       item = gnome_canvas_item_new (gnome_canvas_root(GNOME_CANVAS(canvas)),
+       item = gnome_canvas_item_new (group,
 				     gnome_canvas_rect_get_type(),
 				     "x1",item_x,
 				     "y1",item_y,
@@ -304,12 +304,112 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
        else {
 	 gnome_canvas_item_set (item, "y1",item_y,"y2",y,NULL);
        }
+
+       
+       double ibx1,iby1,ibx2,iby2;
+       gnome_canvas_item_get_bounds (item,
+				     &ibx1,
+				     &iby1,
+				     &ibx2,
+				     &iby2);
+
+       for (int i = 0; i < nodes.size(); i++) {
+
+	 GUINode *nodePtr = dynamic_cast<GUINode*>(nodes[i]);
+	 if (nodePtr) {
+
+	   double nx1,ny1,nx2,ny2;
+
+	   gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(nodePtr->group),
+					 &nx1,
+					 &ny1,
+					 &nx2,
+					 &ny2);
+
+	   //printf("rect (%f,%f) : (%f,%f)\n",ibx1,iby1,ibx2,iby2);
+	   //printf("node (%f,%f) : (%f,%f)\n",nx1,ny1,nx2,ny2);
+	   
+
+	   if (nx1 >= ibx1 && 
+	       nx2 <= ibx2 &&
+	       ny1 >= iby1 &&
+	       ny2 <= iby2) {
+
+
+	     //cerr<<"node inside"<<endl;
+
+	     //node inside rectangle
+	     gnome_canvas_item_set (nodePtr->nodeRect,
+				    "fill_color_rgba", 0x8ca0af20,
+				    NULL);
+
+	   }
+	   else {
+	     gnome_canvas_item_set (nodePtr->nodeRect,
+				    "fill_color_rgba", 0x8cd0af20,
+				    NULL);
+	   }
+
+
+	 }
+       }
+
+
+
+
+
      }
      break;
 
    case GDK_BUTTON_RELEASE:
      //destroying the rectangle
      if (item) {
+
+       double ibx1,iby1,ibx2,iby2;
+       gnome_canvas_item_get_bounds (item,
+				     &ibx1,
+				     &iby1,
+				     &ibx2,
+				     &iby2);
+
+       for (int i = 0; i < nodes.size(); i++) {
+	 
+	 GUINode *nodePtr = dynamic_cast<GUINode*>(nodes[i]);
+	 if (nodePtr) {
+
+	   double nx1,ny1,nx2,ny2;
+	   
+	   gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(nodePtr->group),
+					 &nx1,
+					 &ny1,
+					 &nx2,
+					 &ny2);
+	   
+	   //printf("rect (%f,%f) : (%f,%f)\n",ibx1,iby1,ibx2,iby2);
+	   //printf("node (%f,%f) : (%f,%f)\n",nx1,ny1,nx2,ny2);
+	   
+	   
+	   if (nx1 >= ibx1 && 
+	       nx2 <= ibx2 &&
+	       ny1 >= iby1 &&
+	       ny2 <= iby2) {
+
+
+	     //cerr<<"node inside"<<endl;
+
+	     //node inside rectangle restoring color
+	     gnome_canvas_item_set (nodePtr->nodeRect,
+				    "fill_color_rgba", 0x8cd0af20,
+				    NULL);
+
+	   }
+	 }
+       }
+
+
+
+
+
        gtk_object_destroy(GTK_OBJECT(item));
        item = NULL;
      }
