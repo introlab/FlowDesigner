@@ -29,6 +29,26 @@ ObjectRef concatCTypeFunction(ObjectRef op1, ObjectRef op2) {
 REGISTER_ALL_SCALAR_TO_VECTOR_VTABLE(concatVtable, concatCTypeFunction);
 
 
+template <class X, class Y, class Z>
+ObjectRef concatVectorFunction(ObjectRef op1, ObjectRef op2) {
+
+  RCPtr<X> op1Value = op1;
+  RCPtr<Y> op2Value = op2;
+
+  RCPtr<Z> resultValue(Z::alloc(op1Value->size() + op2Value->size()));
+  
+  //copy first part
+  for (int i =0; i < op1Value->size(); i++) {
+    (*resultValue)[i] = static_cast<typename Z::basicType>((*op1Value)[i]);
+  }
+  //copy last part
+  for (int i =0; i < op2Value->size(); i++) {
+    (*resultValue)[i + op1Value->size()] = static_cast<typename Z::basicType>((*op2Value)[i]);
+  }
+  return resultValue;
+}
+REGISTER_ALL_VECTOR_VTABLE(concatVtable, concatVectorFunction);
+
 template<class X, class Y, class Z>
 ObjectRef concatVectorScalarFunction(ObjectRef op1, ObjectRef op2) {
   RCPtr<X> op1Value = op1;
