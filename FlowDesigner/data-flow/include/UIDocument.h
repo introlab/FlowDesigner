@@ -37,8 +37,13 @@ class SubnetInfo {
    string requireList;
   public:
    SubnetInfo() : category("Unknown"), description("No description available") {}
+   //FIXME: Fixing this leak cleanly requires a good cleanup
+   /*~SubnetInfo() {for (int i=0;i<inputs.size();i++) delete inputs[i];
+                  for (int i=0;i<outputs.size();i++) delete outputs[i];
+		  for (int i=0;i<params.size();i++) delete params[i];}*/
 };
 
+//FIXME: Should replace with ItemInfo
 class DocParameterDataText {
   public:
    string name;

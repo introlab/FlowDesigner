@@ -14,6 +14,7 @@ class UINode;
 class ParameterSet;
 class ItemInfo;
 
+//FIXME: Should replace with ItemInfo
 class ParameterText {
 public:
    string name;

@@ -31,30 +31,33 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
    parameters = newNodeParameters(this,type);
    
    if (doInit)
-     {
+   {
+      vector<ItemInfo *> inputname;
+      vector<ItemInfo *> outputname;
+      inputname = net->getDocument()->getNetInputs(type); 
+      outputname = net->getDocument()->getNetOutputs(type); 
       
-       
-
-       vector<ItemInfo *> inputname;
-       vector<ItemInfo *> outputname;
-       inputname = net->getDocument()->getNetInputs(type); 
-       outputname = net->getDocument()->getNetOutputs(type); 
-       //cerr << "UINode::draw factory not found in simple nodes\n";
-       
-       for (int i=0;i<inputname.size();i++) {
+      for (int i=0;i<inputname.size();i++)
+      {
          inputs.insert(inputs.end(), new UITerminal (inputname[i], 
                                                      this, true, 0.0, 0.0));
-       }
-
-       for (int i=0;i<outputname.size();i++) {
+         //FIXME: Fixing this leak cleanly requires a good cleanup
+         //delete outputname[i];
+      }
+      
+      for (int i=0;i<outputname.size();i++) 
+      { 
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
-       }
-		 
-       description = net->getDocument()->getDescription(type);
-
-
-     }
+	 
+         //FIXME: Fixing this leak cleanly requires a good cleanup
+         //delete outputname[i];
+      }
+      
+      description = net->getDocument()->getDescription(type);
+      
+      
+   }
       
 }
 
@@ -77,28 +80,35 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    if (doInit)
    {
       
-
+      
       vector<ItemInfo *> inputname;
       vector<ItemInfo *> outputname;
       {
-     inputname = net->getDocument()->getNetInputs(type); 
-     outputname = net->getDocument()->getNetOutputs(type); 
-     //cerr << "UINode::draw factory not found in simple nodes\n";
+	 inputname = net->getDocument()->getNetInputs(type); 
+	 outputname = net->getDocument()->getNetOutputs(type); 
+	 //cerr << "UINode::draw factory not found in simple nodes\n";
       }
-
-      for (int i=0;i<inputname.size();i++) 
+      
+      for (int i=0;i<inputname.size();i++)
+      {
          inputs.insert(inputs.end(), new UITerminal (inputname[i],
                                                      this, true, 0.0, 0.0));
-
+         //FIXME: Fixing this leak cleanly requires a good cleanup
+         //delete outputname[i];
+      }
       
       for (int i=0;i<outputname.size();i++)
+      {
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
-      
+         //FIXME: Fixing this leak cleanly requires a good cleanup
+         //delete outputname[i];
+      }
+
       description = net->getDocument()->getDescription(type);
       
       
-
+      
    }
 }
 
@@ -203,31 +213,22 @@ Node *UINode::build(const ParameterSet &params)
 	    node = buildNet->build(name, *par);
 	 else
 	 { 
-	    //cerr << "building external\n";
 	    node = UIDocument::buildExternal(type, name, *par);
 	    if (!node)
 	    {
 	       throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
 	    }
-	    //cerr << "done\n";
 	 }
       }
-      } catch (BaseException *e)
+   } catch (BaseException *e)
    {
-      //e->print(cerr);
-      //cerr << "caught here\n";
-      throw e->add (new GeneralException(string("Exception caught while creating ")+name + " (type " + type + ")", __FILE__, __LINE__));
-      }
+      if (node)
+	 delete node;
+      throw e->add (new GeneralException(string("Exception caught while creating ")+name 
+					 + " (type " + type + ")", __FILE__, __LINE__));
+   }
+   
    node->setUINode(this);
-
-   //cerr << "done\n";
-   /*if (name == "node1")
-   {
-      cout << "params for node: " << name << " (" << net->getName() << ")\n";
-      par->print();
-      cout << endl;
-      }*/
-//cerr << "node created\n";
 
    delete par;
    return node;

@@ -40,7 +40,18 @@ UIDocument::~UIDocument()
    //cerr << "destroying UIDocument " << name << endl;
    for (unsigned int i=0;i<networks.size();i++)
       delete networks[i];
-   //child.name = "destroyed document";
+
+   for (unsigned int i=0;i<textParams.size();i++)
+      delete textParams[i];
+
+   for (unsigned int i=0;i<docInputs.size();i++)
+      delete docInputs[i];
+
+   for (unsigned int i=0;i<docOutputs.size();i++)
+      delete docOutputs[i];
+
+   for (unsigned int i=0;i<docParams.size();i++)
+      delete docParams[i];
 }
 
 
