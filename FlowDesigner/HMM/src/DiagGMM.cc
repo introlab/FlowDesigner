@@ -99,6 +99,13 @@ void DiagGMM::readFrom (istream &in)
 	       in >> mean[j];
 	    for (int j=0;j<dim+1;j++)
 	       in >> cov[j];
+
+	    for (int j=dim+1;j<augDim;j++)
+	    {
+	       mean[j] = 0;
+	       cov[j] = 0;
+	    }
+
 	    mean+=inc;
 	    cov += inc;
 	 }
@@ -150,6 +157,11 @@ void DiagGMM::unserialize(istream &in)
    {
       BinIO::read(in, mean, dim+1);
       BinIO::read(in, cov, dim+1);
+      for (int j=dim+1;j<augDim;j++)
+      {
+	 mean[j] = 0;
+	 cov[j] = 0;
+      }
       mean+=inc;
       cov += inc;
    }
