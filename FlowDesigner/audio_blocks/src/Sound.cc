@@ -31,7 +31,7 @@
 class Sound;
 
 //DECLARE_NODE(Sound)
-NODE_INFO(Sound,"Signal:Audio", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE:BUFFER")
+NODE_INFO(Sound,"Signal:Audio", "", "OUTPUT", "DEVICE:RATE:STEREO:MODE:BUFFER:DUMMY")
 
 /** A constant node contains a value that will never changes. */
 class Sound : public Node
@@ -68,8 +68,10 @@ public:
       if (parameters.exist("RATE"))
 	 speed = dereference_cast<int> (parameters.get("RATE"));
       if (parameters.exist("STEREO"))
-	 stereo = dereference_cast<int> (parameters.get("STEREO"));
+	 stereo = dereference_cast<int> (parameters.get("STEREO")); 
       int mode=O_WRONLY;
+      if (parameters.exist("DUMMY"))
+	 mode |= O_CREAT;
       if (parameters.exist("MODE"))
       {
 	 String modeStr = object_cast <String> (parameters.get("MODE"));
@@ -85,7 +87,8 @@ public:
 	 throw new NodeException(NULL, "Can't open sound device\n", __FILE__, __LINE__);
 	 //exit(1);
       }
-      
+      if (!parameters.exist("DUMMY"))
+      {
       //int arg=0x7fff0004;
       int arg=0x0004000a;
       if (parameters.exist("BUFFER"))
@@ -127,7 +130,7 @@ public:
 	 close(audio_fd);
 	 throw new NodeException(NULL, "Can't set sound device speed\n", __FILE__, __LINE__);
       }
-
+      }
 
       value = ObjectRef(new Int(audio_fd));
       //Vector<float> &val = object_cast<Vector<float> > (value);
