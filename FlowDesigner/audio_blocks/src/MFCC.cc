@@ -66,8 +66,8 @@ public:
          window.resize(inputLength);
       } catch (BaseException *e)
       {
-         e->print();
-         throw new NodeException (NULL, "Exception caught in MFCC constructor", __FILE__, __LINE__);
+         //e->print();
+         throw e->add(new NodeException (NULL, "Exception caught in MFCC constructor", __FILE__, __LINE__));
       }
       
    }

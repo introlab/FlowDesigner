@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Sound" x="-219.000000" y="-36.000000">
+      <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
+      <Parameter name="RATE" type="int" value="44100"/>
+      <Parameter name="STEREO" type="int" value="1"/>
+      <Parameter name="BUFFER" type="int" value="40000"/>
+    </Node>
+    <Node name="node2" type="Constant" x="-372.000000" y="39.000000">
+      <Parameter name="VALUE" type="subnet_param" value="IN"/>
+    </Node>
+    <Node name="node4" type="MAIN_LOOP" x="108.000000" y="26.000000">
+      <Parameter name="FRAME_SIZE" type="int" value="256"/>
+    </Node>
+    <Node name="node3" type="ExecStream" x="-146.000000" y="37.000000">
+      <Parameter name="COMMAND" type="string" value="mpg123 --stdout"/>
+    </Node>
+    <Link from="node1" output="OUTPUT" to="node4" input="OUT_FILE"/>
+    <Link from="node2" output="VALUE" to="node3" input="INPUT"/>
+    <Link from="node3" output="OUTPUT" to="node4" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
+  </Network>
+  <Network type="iterator" name="MAIN_LOOP">
+    <Node name="node2" type="FDSaveFrame" x="238.000000" y="213.000000"/>
+    <Node name="node3" type="NotDone" x="112.000000" y="52.000000"/>
+    <Node name="node1" type="AudioStream" x="-269.000000" y="77.000000">
+      <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE"/>
+      <Parameter name="ENCODING" type="string" value="LIN16"/>
+      <Parameter name="STREAM_TYPE" type="string" value="FILE"/>
+    </Node>
+    <Node name="node4" type="SpectrumProbe" x="-70.000000" y="141.000000">
+      <Parameter name="BREAK_AT" type="int" value="-1"/>
+      <Parameter name="SHOW" type="bool" value="true"/>
+      <Parameter name="SKIP" type="int" value="50"/>
+      <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE"/>
+      <Parameter name="SQUARE" type="bool" value="false"/>
+    </Node>
+    <Link from="node1" output="OUTPUT" to="node3" input="INPUT"/>
+    <Link from="node4" output="OUTPUT" to="node2" input="OBJECT"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="INPUT"/>
+    <NetInput name="OUT_FILE" node="node2" terminal="FD"/>
+    <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
+    <NetCondition name="CONDITION" node="node3" terminal="OUTPUT"/>
+    <NetInput name="INPUT" node="node1" terminal="INPUT"/>
+  </Network>
+  <Parameter name="IN" type="string" value="/path/to/your.mp3"/>
+</Document>

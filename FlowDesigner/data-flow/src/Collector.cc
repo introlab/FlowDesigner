@@ -78,8 +78,8 @@ ObjectRef Collector::getOutput(int output_id, int count)
 	 return (inputs[output_id].node)->getOutput(outputID,count);
       } catch (BaseException *e)
       {
-	 e->print();
-	 throw new NodeException (this, "Exception caught in Collector::getOutput", __FILE__, __LINE__);
+	 //e->print();
+	 throw e->add(new NodeException (this, "Exception caught in Collector::getOutput", __FILE__, __LINE__));
       }
    }
    else {

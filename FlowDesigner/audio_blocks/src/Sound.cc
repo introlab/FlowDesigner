@@ -101,7 +101,7 @@ public:
 	 if (arg < 4)
 	    arg=4;
 	 arg |= 0x00040000;
-	 cerr << "arg = " << arg << endl;
+	 //cerr << "arg = " << arg << endl;
       }      
       ioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &arg);
       
@@ -140,7 +140,7 @@ public:
       
    virtual ~Sound()
    {
-      cerr << "Sound destructor\n";
+      //cerr << "Sound destructor\n";
       close(audio_fd);
    }
    /**Ask for the node's output which ID (number) is output_id 

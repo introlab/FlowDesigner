@@ -5,6 +5,7 @@
 #include "Network.h"
 #include <pthread.h>
 #include "rc_ptrs.h"
+#include <strstream>
 
 //#include <gdk/gdk.h>
 
@@ -140,7 +141,7 @@ GtkWidget *GUIDocument::createView()
   
 
   notebook1 = gtk_notebook_new ();
-  gtk_widget_set_usize(notebook1, -1, 300);
+  gtk_widget_set_usize(notebook1, -1, 320);
   gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook1), TRUE);
   gtk_notebook_popup_enable (GTK_NOTEBOOK(notebook1));
 
@@ -156,7 +157,7 @@ GtkWidget *GUIDocument::createView()
   
 
   less2 = gnome_less_new ();
-  gtk_widget_set_usize(less2, -1, 100);
+  gtk_widget_set_usize(less2, -1, 110);
 
   gtk_widget_ref (less2);
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "less2", less2,
@@ -180,10 +181,9 @@ GtkWidget *GUIDocument::createView()
   gtk_widget_show(vbox2);
 
   //view = vbox2;
-
-  less_print("You can now use the GUIDocument::less_print (const char* message).");
-  less_print("The next step is to redirect stdout into the gnome_less textbox.");
-  less_print("Dominic Letourneau & Jean-Marc Valin (Jan 28 2000).");
+  less_print("VFlow by Jean-Marc Valin & Dominic Letourneau");
+  less_print("You can print here by using GUIDocument::less_print (const char* message).");
+  less_print("--\n");
   
 
 }
@@ -686,6 +686,7 @@ static void threadFunct(GUIDocument *doc)
 
 void GUIDocument::threadRun()
 {
+   less_print("Running " + docName + "...");
    if (!isRunning)
    {
       isRunning=true;
@@ -699,7 +700,7 @@ void GUIDocument::threadStop()
    //cerr << "threadStop\n";
    if (isRunning)
    {
-      cerr << "stopping...\n";
+      //cerr << "stopping...\n";
       isRunning=false;
       pthread_cancel(runThread);
    }
@@ -764,7 +765,16 @@ void GUIDocument::run()
       // Getting all the network outputs.
       for (int k=0; ;k++) {
 	if (runningNet->hasOutput(k)) {
-	  cout << *runningNet->getOutput(k,0) << endl;
+	   char str[1000];
+	   strstream execOut(str, 999);
+	   
+	   
+	   execOut << *runningNet->getOutput(k,0);
+
+	   gdk_threads_enter();
+	   less_print(str);
+	   gdk_threads_leave();
+
 	}
 	else {
 	  break;
@@ -777,7 +787,18 @@ void GUIDocument::run()
       //run in a window in a separated thread
    } catch (BaseException *e)
    {
-      e->print();
+      char str[3000];
+      strstream excOut(str, 2999);
+
+      e->print (excOut);
+      gdk_threads_enter();
+      less_print(str);
+      gdk_threads_leave();
+      //cerr << "exception caught\n";
+      //e->print();
+      //cerr << "---\n";
+
+      delete e;
       /* The net will be deleted in the dispose function. */
       //delete net;
       //runningNet=NULL;

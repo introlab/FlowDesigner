@@ -38,8 +38,8 @@ ThreadedIterator::ThreadedIterator (string nodeName, ParameterSet params)
   }      
   catch (BaseException *e) {
     //Something weird happened
-    e->print();
-    throw new NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__);
+    //e->print();
+    throw e->add(new NodeException (this,string("Error in ThreadedIterator constructor"), __FILE__,__LINE__));
   }
   
   
@@ -78,8 +78,8 @@ ObjectRef ThreadedIterator::getOutput (int output_id, int count) {
       }      
       catch (BaseException *e) {
          //Something weird happened
-         e->print();
-         throw new NodeException (this,string("Error in ThreadedIterator::getOutput"), __FILE__,__LINE__);
+         //e->print();
+         throw e->add(new NodeException (this,string("Error in ThreadedIterator::getOutput"), __FILE__,__LINE__));
       }
       processCount = count;
    }

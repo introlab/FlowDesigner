@@ -36,8 +36,8 @@ public:
 	 outputID=addOutput("OUTPUT");
       } catch (BaseException *e)
       {
-         e->print();
-         throw new NodeException (NULL, "Exception caught in Discard constructor", __FILE__, __LINE__);
+         //e->print();
+         throw e->add(new NodeException (NULL, "Exception caught in Discard constructor", __FILE__, __LINE__));
       }
       
    }

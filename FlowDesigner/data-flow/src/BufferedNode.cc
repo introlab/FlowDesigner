@@ -122,7 +122,7 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
       }
    } catch (BaseException *e)
    {
-      e->print();
-      throw new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__);
+      //e->print();
+      throw e->add(new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__));
    }
 }

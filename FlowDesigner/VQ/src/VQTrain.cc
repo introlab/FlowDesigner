@@ -35,8 +35,8 @@ VQTrain::VQTrain(string nodeName, ParameterSet params)
       nbMeans = dereference_cast<int> (parameters.get("MEANS"));
    } catch (BaseException *e)
    {
-      e->print(cerr);
-      throw new NodeException(NULL, "Exception caught in VQTrain constructor", __FILE__, __LINE__);
+      //e->print(cerr);
+      throw e->add(new NodeException(NULL, "Exception caught in VQTrain constructor", __FILE__, __LINE__));
    }
 }
 

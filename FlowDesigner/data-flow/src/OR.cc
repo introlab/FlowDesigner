@@ -60,10 +60,10 @@ ObjectRef OR::getOutput (int output_id, int count) {
          }         
          catch (BaseException *e) {
             //Something weird happened
-            e->print();
-            throw new NodeException (this,string("Cannot get BOOL value from") + 
+            //e->print();
+            throw e->add(new NodeException (this,string("Cannot get BOOL value from") + 
                                  inputs[i].node->getName()
-                                 , __FILE__,__LINE__);
+                                 , __FILE__,__LINE__));
          }      
       } //end of for
       
