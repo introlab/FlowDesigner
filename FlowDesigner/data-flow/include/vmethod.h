@@ -111,11 +111,14 @@ class VirtualMethods {
    ObjectRef call(int id, ObjectRef x)
    {
       const type_info *t1 = &typeid(*x);
-      vtableType0::iterator v1 = tables0[id].find(t1);
-      if (v1!=tables0[id].end())
+      vtableType0 &vtable=tables0[id];
+      vtableType0::iterator v1 = vtable.find(t1);
+      if (v1!=vtable.end())
       {
 	 return v1->second(x);
       } else {
+	 cerr << "doesnotunderstand...\n";
+	 cerr << "reverse = " << symbols->reverseLookup(id) << endl;
 	 x->doesNotUnderstand(symbols->reverseLookup(id));
 	 //throw new GeneralException("Virtual function error", __FILE__, __LINE__);
       }

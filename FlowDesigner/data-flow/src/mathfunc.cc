@@ -8,7 +8,7 @@ template<class T>
 ObjectRef logObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
-   BaseType f=dereference_cast<T> (in);
+   BaseType f=dereference_cast<BaseType> (in);
    return ObjectRef(new T(BaseType(log(f))));
 }
 
@@ -16,7 +16,7 @@ template<class T>
 ObjectRef expObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
-   BaseType f=dereference_cast<T> (in);
+   BaseType f=dereference_cast<BaseType> (in);
    return ObjectRef(new T(BaseType(exp(f))));
 }
 
@@ -24,7 +24,7 @@ template<class T>
 ObjectRef sinObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
-   BaseType f=dereference_cast<T> (in);
+   BaseType f=dereference_cast<BaseType> (in);
    return ObjectRef(new T(BaseType(sin(f))));
 }
 
@@ -32,7 +32,7 @@ template<class T>
 ObjectRef cosObj(ObjectRef in)
 {
    typedef typename T::basicType BaseType;
-   BaseType f=dereference_cast<T> (in);
+   BaseType f=dereference_cast<BaseType> (in);
    return ObjectRef(new T(BaseType(cos(f))));
 }
 
