@@ -672,11 +672,11 @@ extern void set_run_mode (bool isRuning);
 
 static void disposeFunct(void *dummy)
 {
-   //cerr << "disposeFunct called\n";
+   cerr << "disposeFunct called\n";
    if (dummy != NULL) {
      GUIDocument *doc = (GUIDocument*) dummy;
      GUIDocument::isRunning = false;
-     //cerr <<  "Deleting the running network.\n"; 
+     cerr <<  "Deleting the running network.\n"; 
      delete GUIDocument::runningNet;
      //gdk_threads_leave();
      GUIDocument::runningNet=NULL;
@@ -786,6 +786,7 @@ void GUIDocument::run()
       
       bool buildError = false;
 
+      runningNet = NULL;
       Network *net;
       //try {
 	 net = build("MAIN", parameters);
