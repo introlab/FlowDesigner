@@ -598,13 +598,23 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
    }
  
    CHAR *type = xmlGetProp(net, (CHAR *)"type");
-   if (type && string((char*)type)=="iterator")
-   {
-      ItemInfo *newInfo = new ItemInfo;
-      newInfo->name = "DOWHILE";
-      newInfo->type = "bool";
-      ninfo->params.insert (ninfo->params.end(), newInfo);
-      free(type);
+   if (type)
+   { 
+      if (string((char*)type)=="iterator")
+      {
+	 ItemInfo *newInfo = new ItemInfo;
+	 newInfo->name = "DOWHILE";
+	 newInfo->type = "bool";
+	 ninfo->params.insert (ninfo->params.end(), newInfo);
+	 free(type);
+      } else if (string((char*)type)=="threaded")
+      {
+	 ItemInfo *newInfo = new ItemInfo;
+	 newInfo->name = "RATE_PER_SECOND";
+	 newInfo->type = "int";
+	 ninfo->params.insert (ninfo->params.end(), newInfo);
+	 free(type);	 
+      }
    }
 
   

@@ -322,19 +322,20 @@ void UINetwork::insertNetParams(vector<ItemInfo *> &params)
    for (int i=0;i<nodes.size();i++)
       nodes[i]->insertNetParams(params);
    if (type == iterator) 
-      {
-       ItemInfo *newInfo = new ItemInfo;
-        newInfo->name = "DOWHILE";
-        params.insert(params.end(), newInfo);
-      }
-      // params.insert(params.end(), "DOWHILE");
+   {
+      ItemInfo *newInfo = new ItemInfo;
+      newInfo->name = "DOWHILE";
+      params.insert(params.end(), newInfo);
+   }
+   // params.insert(params.end(), "DOWHILE");
    if (type == threaded)
-      {
-            ItemInfo *newInfo = new ItemInfo;
-            newInfo->name = "RATE_PER_SECOND";
-            params.insert(params.end(), newInfo);   
-      }
-      // params.insert(params.end(), "RATE_PER_SECOND");
+   {
+      ItemInfo *newInfo = new ItemInfo;
+      newInfo->name = "RATE_PER_SECOND";
+      newInfo->type = "int";
+      params.insert(params.end(), newInfo);   
+   }
+   // params.insert(params.end(), "RATE_PER_SECOND");
 }
 
 UINode *UINetwork::newNode(UINetwork* _net, string _name, string _type, 
