@@ -234,24 +234,31 @@ Node *UINode::build(const ParameterSet &params)
    _NodeFactory *factory = NULL;
    factory = Node::getFactoryNamed(type);
    //cerr << "building " << type << endl;
-   if (factory) 
-   {
-      node = factory->Create(name, *par);
-   } else {
-      UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
-      if (buildNet)
-	 node = buildNet->build(name, *par);
-      else
-      { 
-	 //cerr << "building external\n";
-	 node = UIDocument::buildExternal(type, name, *par);
-	 if (!node)
-	 {
-	    throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
+   try {
+      if (factory) 
+      {
+	 node = factory->Create(name, *par);
+      } else {
+	 UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
+	 if (buildNet)
+	    node = buildNet->build(name, *par);
+	 else
+	 { 
+	    //cerr << "building external\n";
+	    node = UIDocument::buildExternal(type, name, *par);
+	    if (!node)
+	    {
+	       throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
+	    }
+	    //cerr << "done\n";
 	 }
-	 //cerr << "done\n";
       }
-   }
+      } catch (BaseException *e)
+   {
+      //e->print(cerr);
+      //cerr << "caught here\n";
+      throw e->add (new GeneralException(string("Exception caught while creating ")+name + " (type " + type + ")", __FILE__, __LINE__));
+      }
    node->setUINode(this);
 
    //cerr << "done\n";

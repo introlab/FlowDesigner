@@ -108,27 +108,6 @@ Node* Network::getNodeNamed (const string &name){
    return node;
 }
 
-/***************************************************************************/
-/*
-  void tryPluginNode(string name)
-  Jean-Marc Valin
- */
-/***************************************************************************/
-Node *tryPluginNode(const string &name, const string &nodeName, const ParameterSet &parameters)
-{
-   /*cerr << "Trying to load node " << name << " dynamically" << endl;
-   cerr << "Not supported" << endl;
-   void *handle = dlopen (name.c_str(), RTLD_LAZY);
-   cerr << "handle = " << handle << endl;
-   void *sym = dlsym (handle, "createNewNode");
-   cerr << "sym = " << sym << endl;*/
-   LoadedLibrary *library = (LoadedLibrary *) DLManager::get_lib(name);
-   void *sym = library->get_proc("createNewNode");
-   Node *(*new_funct)(string, ParameterSet) = (Node *(*)(string, ParameterSet)) (sym);
-
-   return new_funct(nodeName,parameters);
-   //return NULL;
-}
 
 /***************************************************************************/
 /*
@@ -141,20 +120,14 @@ void Network::addNode (const string &factoryName,const string &nodeName, const P
    Node *node = NULL;
 
    factory = getFactoryNamed(factoryName);
-   if (!factory) {
-      node = tryPluginNode(factoryName, nodeName, parameters);
-      //cerr << "node = " << node << endl;
-      if (!node)
-         throw new FactoryNotFoundException(factoryName);
-   } else {
-      //creating an instance of the specified node.
-      node = factory->Create(nodeName, parameters);
-   }
+   if (!factory)
+      throw new FactoryNotFoundException(factoryName);
+      
+   //creating an instance of the specified node.
+   node = factory->Create(nodeName, parameters);
 
    //inserting in the node dictionary
    //maybe we should look for duplicate entries...
-
-
    nodeDictionary.insert (nodeEntry (nodeName,node));
 
    numNodes++;

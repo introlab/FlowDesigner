@@ -457,22 +457,28 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
      break;
    }
 
+      try {
+
    for (int i=0;i<nodes.size();i++)
    {
       //cerr << "building node " << nodes[i]->getName() << endl;
-      Node *aNode = nodes[i]->build(params);
-      //cerr << "adding node " << nodes[i]->getName() << endl;
-      //cerr << aNode << endl;
-      net->addNode(*aNode);
+
+	 Node *aNode = nodes[i]->build(params);
+	 net->addNode(*aNode);
+      
    }
-
+      } catch (BaseException *e)
+      {
+	 throw e->add (new GeneralException(string("Exception caught while building network ") + name, __FILE__, __LINE__));
+      }
+   
    //cerr << "nodes built\n";
-
+   
    //insert links
    for (int i=0;i<links.size();i++)
    {
       //cerr << "linking...\n";
-      //This try/catch is a workaround (don't ask me to explain) for bug #212990
+      //This try/catch is a workaround (when using -fomit-frame-pointer) for bug #212990
       try {
       links[i]->build(net);
       } catch (BaseException *e) 
