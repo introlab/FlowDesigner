@@ -339,6 +339,9 @@ gint GUILink::event(GdkEvent *event)
       else {
 
 	my_point = NULL;
+
+	net->setModified();
+
       }
 
       break;
