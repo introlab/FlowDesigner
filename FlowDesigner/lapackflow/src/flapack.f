@@ -23,6 +23,8 @@
       RETURN
       END
 
+
+
       SUBROUTINE SOLVELS(M, N, NRHS, A, BX)
       INTEGER M
       INTEGER N
@@ -37,11 +39,12 @@
       INTEGER IWORK(10000)
       LWORK = 10000
 
-      call SGELSD(M, N, NRHS, A, M, BX, M, S, -1, RANK, LWORK, IWORK, 
-     *INFO)
+      call SGELSD(M, N, NRHS, A, M, BX, M, SV, -1, RANK, WORK, LWORK, 
+     *IWORK, INFO)
       RETURN
       END
       
+
 
       SUBROUTINE EIG(N, A, D, V)
       REAL D(N)
