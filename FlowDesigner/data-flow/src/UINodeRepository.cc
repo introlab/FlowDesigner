@@ -311,7 +311,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	 }	 
       } 
       else 
-	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + (char*)node->name, 
+	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + fullname, 
 				    __FILE__, __LINE__);
       
       node = node->next;
