@@ -1,7 +1,7 @@
 // Copyright (C) 1999 Jean-Marc Valin
 
 
-#include "Node.h"
+#include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "NNetSet.h"
 
@@ -44,7 +44,7 @@ DECLARE_NODE(NNetSetTrainDBD)
 END*/
 
 
-class NNetSetTrainDBD : public Node {
+class NNetSetTrainDBD : public BufferedNode {
 
 protected:
    
@@ -63,9 +63,6 @@ protected:
    /**The ID of the 'nnet' input*/
    int netInputID;
 
-   /**Reference to the current stream*/
-   ObjectRef currentNet;
-
    int maxEpoch;
       
    float learnRate;
@@ -74,12 +71,10 @@ protected:
 
    float increase;
 
-   int processCount;
-
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    NNetSetTrainDBD(string nodeName, ParameterSet params)
-      : Node(nodeName, params)
+      : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
       netInputID = addInput("NNET");
@@ -104,86 +99,51 @@ public:
       else decrease = .7;
 
    }
-      
-   /**Class specific initialization routine.
-      Each class will call its subclass specificInitialize() method*/
-   virtual void specificInitialize()
+
+   virtual void calculate(int output_id, int count, Buffer &out)
    {
-      processCount = -1;
+      cerr << "getOutput in NNetSetTrainDBD\n";
+      int i,j;
       NodeInput trainInInput = inputs[trainInID];
-      cerr << "in name = " << trainInInput.outputID << endl ;
-      
+      ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
+
       NodeInput trainOutInput = inputs[trainOutID];
-      cerr << "out name = " << trainOutInput.outputID << endl;
-	 this->Node::specificInitialize();
+      ObjectRef trainOutValue = trainOutInput.node->getOutput(trainOutInput.outputID,count);
+
+      NodeInput trainIDInput = inputs[trainIDID];
+      ObjectRef trainIDValue = trainIDInput.node->getOutput(trainIDInput.outputID,count);
+
+      NodeInput netInput = inputs[netInputID];
+      ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
+
+      cerr << "inputs calculated\n";
+      Vector<ObjectRef>  &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
+      Vector<ObjectRef>  &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
+      Vector<ObjectRef>  &idBuff = object_cast<Vector<ObjectRef> > (trainIDValue);
+
+      cerr << "inputs casted\n";
+      vector <float *> in(inBuff.size());
+      for (i=0;i<inBuff.size();i++)
+         in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
+
+      vector <float *> vout(outBuff.size());
+      for (i=0;i<outBuff.size();i++)
+         vout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
+
+      vector <int> id(idBuff.size());
+      for (i=0;i<idBuff.size();i++)
+         id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
+
+      cerr << "vectors filled\n";
+      //FFNet *net = new FFNet( topo ); 
+      NNetSet &net = object_cast<NNetSet> (netValue);
+      cerr << "training...\n";
+      net.trainDeltaBar(id, in, vout, maxEpoch, learnRate, increase, decrease);
+      //net->trainlm(in, out, maxEpoch);
+
+      out[count] = netValue;
+      //exit(1);
    }
-      
-   /**Class reset routine.
-      Each class will call its superclass reset() method*/
-   virtual void reset()
-   {
-      processCount = -1;
-      this->Node::reset();
-   }
 
-   /**Ask for the node's output which ID (number) is output_id 
-      and for the 'count' iteration */
-   virtual ObjectRef getOutput(int output_id, int count)
-      {
-	 if (output_id==outputID)
-	 {
-	    if (count != processCount)
-	    {
-	       cerr << "getOutput in NNetSetTrainDBD\n";
-	       int i,j;
-	       NodeInput trainInInput = inputs[trainInID];
-	       ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
-
-	       NodeInput trainOutInput = inputs[trainOutID];
-	       ObjectRef trainOutValue = trainOutInput.node->getOutput(trainOutInput.outputID,count);
-
-	       NodeInput trainIDInput = inputs[trainIDID];
-	       ObjectRef trainIDValue = trainIDInput.node->getOutput(trainIDInput.outputID,count);
-
-	       NodeInput netInput = inputs[netInputID];
-	       ObjectRef netValue = netInput.node->getOutput(netInput.outputID,count);
-
-	       cerr << "inputs calculated\n";
-	       Vector<ObjectRef>  &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
-	       Vector<ObjectRef>  &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
-	       Vector<ObjectRef>  &idBuff = object_cast<Vector<ObjectRef> > (trainIDValue);
-
-	       cerr << "inputs casted\n";
-	       vector <float *> in(inBuff.size());
-	       for (i=0;i<inBuff.size();i++)
-		  in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
-
-	       vector <float *> out(outBuff.size());
-	       for (i=0;i<outBuff.size();i++)
-		  out[i]=&object_cast <Vector<float> > (outBuff[i])[0];
-
-	       vector <int> id(idBuff.size());
-	       for (i=0;i<idBuff.size();i++)
-		  id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
-
-	       cerr << "vectors filled\n";
-	       //FFNet *net = new FFNet( topo ); 
-	       NNetSet &net = object_cast<NNetSet> (netValue);
-	       cerr << "training...\n";
-	       net.trainDeltaBar(id, in, out, maxEpoch, learnRate, increase, decrease);
-	       //net->trainlm(in, out, maxEpoch);
-
-	       currentNet = netValue;
-	       //exit(1);
-	    }
-	    return currentNet;
-	 }
-	 else 
-	    throw new NodeException (this, "NNetSetTrainDBD: Unknown output id", __FILE__, __LINE__);
-      }
-
-protected:
-   /**Default constructor, should not be used*/
-   NNetSetTrainDBD() {throw new GeneralException("NNetSetTrainDBD copy constructor should not be called",__FILE__,__LINE__);}
 
 };
