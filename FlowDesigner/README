@@ -2,7 +2,7 @@ To compile everything you need:
    automake (1.4)
    aclocal (1.4, comes with automake)
    autoconf (2.13)
-   libtool (included in cvs)
+   libtool 
    make (GNU)
    cvs (1.10)
    doc++ (3.3.11)

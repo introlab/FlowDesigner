@@ -252,6 +252,17 @@ int KMeans::getClassID (const float *v, float *dist_return = NULL) const
    return minID;
 }
 
+void KMeans::calcDist (const float *v, float *dist_return) const
+{
+   for (int i=0;i<means.size();i++)
+   {
+      if (dist==euclidian)
+	 dist_return[i] = euclidian(means[i].begin(), v, length);
+      else
+	 dist_return[i] = dist(means[i].begin(), v, length);
+   }
+}
+
 void KMeans::printOn(ostream &out) const
 {
    out << "<KMeans " << endl;

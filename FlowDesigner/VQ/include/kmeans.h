@@ -75,6 +75,7 @@ public:
    void train (int codeSize, const vector<float *> &data, int len, bool binary=false);
 
    int getClassID (const float *v, float *dist_return = NULL) const;
+   void calcDist (const float *v, float *dist_return) const;
 
    void printOn(ostream &out=cout) const;
    void readFrom (istream &in=cin);
