@@ -133,7 +133,7 @@ public:
 
    template <class Z>
    RCPtr& operator= (const RCPtr<Z> &r)
-   {
+      ;/*{
       if ((int) this != (int) (&r))
       {
          X *tmp=dynamic_cast<X*> (r.ptr);
@@ -145,7 +145,7 @@ public:
          acquire();
       }
       return *this;
-   }
+      }*/
 
    RCPtr& operator= (const RCPtr<X> &r)
    {
@@ -239,6 +239,32 @@ protected:
    friend class RCPtr;
 #endif
 };
+
+class Object;
+/** Smart pointer to Object called ObjectRef
+    @author Jean-Marc Valin
+    @version 1.0
+ */
+typedef RCPtr<Object> ObjectRef;
+
+
+#include "conversion.h"
+template <class X>
+template <class Z>
+RCPtr<X>& RCPtr<X>::operator= (const RCPtr<Z> &r)
+{
+   if ((int) this != (int) (&r))
+   {
+      X *tmp=dynamic_cast<X*> (r.ptr);
+      //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
+      if (!tmp) throw new PtrCastException<Z,X>(r.ptr);
+      release();
+      ptr=tmp;
+      //count = r.count;
+      acquire();
+   }
+   return *this;
+}
 
 
 #endif

@@ -12,12 +12,6 @@
 #include "multithread.h"
 
 
-class Object;
-/** Smart pointer to Object called ObjectRef
-    @author Jean-Marc Valin
-    @version 1.0
- */
-typedef RCPtr<Object> ObjectRef;
 
 class _ObjectFactory;
 
