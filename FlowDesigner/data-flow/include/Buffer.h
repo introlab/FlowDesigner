@@ -7,7 +7,6 @@
 #include "ObjectRef.h"
 #include "Exception.h"
 #include <typeinfo>
-//#include "Buffer.h"
 #include <vector>
 #include "misc.h"
 
@@ -98,7 +97,7 @@ inline ObjectRef & Buffer::operator[] (int ind)
 {
    if (ind < 0 || ind <= currentPos-bufferLength)
    {
-      throw new BufferException (this, "trying to access non-existing element",ind);
+      throw new BufferException (this, "trying to write to non-existing element",ind);
    }
    if (ind > currentPos)
    {
@@ -126,7 +125,7 @@ inline ObjectRef &Buffer::get(int ind) const
 {
    if (ind < 0 || ind <= currentPos-bufferLength || ind > currentPos)
    {
-      throw new BufferException (this, "trying to access non-existing element",ind);
+      throw new BufferException (this, "trying to read non-existing element",ind);
    }
    int tmp = bufferPos+ind-currentPos;
    if (tmp < 0)
@@ -134,7 +133,7 @@ inline ObjectRef &Buffer::get(int ind) const
    if (flags[tmp])
       return data[tmp];
    else 
-      throw new BufferException (this, "trying to access non-existing element",ind);
+      throw new BufferException (this, "trying to read not initialized element",ind);
 }
 
 
