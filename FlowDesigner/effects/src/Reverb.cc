@@ -26,7 +26,7 @@ DECLARE_NODE(Reverb)
  *
  * @name Reverb
  * @category Effects
- * @description Stereo Reverb
+ * @description Stereo reverb effect
  *
  * @input_name LEFT
  * @input_type Vector

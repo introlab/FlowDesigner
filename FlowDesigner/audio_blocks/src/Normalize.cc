@@ -25,13 +25,15 @@ DECLARE_NODE(Normalize)
  *
  * @name Normalize
  * @category Signal:Base
- * @description No description available
+ * @description Normalizes a vector by dividing each element by the sum of all components
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Normalized vector
 END*/
 
 

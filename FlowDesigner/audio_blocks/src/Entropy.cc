@@ -32,13 +32,15 @@ DECLARE_NODE(Entropy)
  *
  * @name Entropy
  * @category Signal:DSP
- * @description No description available
+ * @description Calculates the entropy of a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Entropy value (vector of 1)
  *
 END*/
 

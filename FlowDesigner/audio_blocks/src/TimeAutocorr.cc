@@ -93,7 +93,7 @@ public:
       vector <RCPtr<Vector<float> > > inVect;
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
       {
-         RCPtr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
+         ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
 
          if (inputValue->status != Object::valid)
          {
@@ -101,7 +101,7 @@ public:
             return;
          }
 	 
-	 inVect.insert(inVect.end(),inputValue);
+	 inVect.insert(inVect.end(),RCPtr<Vector<float> > (inputValue));
       }      
       
       for (int i=0;i<output.size();i++)

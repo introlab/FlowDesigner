@@ -33,22 +33,27 @@ DECLARE_NODE(LPC)
  *
  * @name LPC
  * @category Signal:DSP
- * @description No description available
+ * @description Performs LPC (Linear predictive coefficient) analysis
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input (audio) vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description LPC coefficients (including a[0]=1)
  *
  * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Number of LPC coefficients (order = OUTPUTLENGTH-1)
  *
  * @parameter_name RADIUS
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Maximum radius of the poles (used for bandwidth expansion)
  *
  * @parameter_name LAG_THETA
- * @parameter_description No description available
+ * @parameter_type float
+ * @parameter_description Minimum resonnance bandwidth allowed (with lag-windowing, approximative)
  *
 END*/
 
