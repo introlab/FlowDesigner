@@ -1,6 +1,6 @@
 AC_DEFUN(AC_MODULE_OPT,
 [
-AC_ARG_ENABLE($1, [  --enable-$1     enable module $1], [if test "$enableval" = no; then $1=; else $1=$1; fi], [if test -f $1/Makefile.am && $2 = yes; then $1=$1; else $1=; fi ])
+AC_ARG_ENABLE($1, [  --enable-$1     enable module $1], [if test "$enableval" = no; then $1=; else $1=$1; fi], [if test -f $1/Makefile.am && test $2 = yes; then $1=$1; else $1=; fi ])
 ])
 
 AC_DEFUN(AC_FIND_FILE,
