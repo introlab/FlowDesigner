@@ -166,9 +166,25 @@ typedef NetCType<unsigned long> U_long;
 typedef NetCType<bool> Bool;
 
 ///STL types
-typedef PrintableGenericType<string> String;
+//typedef PrintableGenericType<string> String;
 //typedef GenericType<ifstream> ISFtream;
 //typedef GenericType<ofstream> OFStream;
+
+class String : virtual public string, virtual public Object
+{
+public:
+   String() : string() {}
+   void printOn(ostream &out) const
+   {
+      out << *(string*) (this);
+   }
+   String(const char *str) : string(str)
+   {}
+   String(const string &str) : string(str)
+   {}
+   
+};
+
 
 class IStream : virtual public istream, virtual public Object
 {
@@ -185,7 +201,7 @@ class IFStream : virtual public ifstream, virtual public IStream
 public:
    IFStream() : ifstream()
    {}
-   IFStream(char * name) : ifstream(name)
+   IFStream(const char * name) : ifstream(name)
    {}
    void printOn(ostream &out=cout) const
    { 
@@ -208,7 +224,7 @@ class OFStream : virtual public ofstream, virtual public OStream
 public:
    OFStream() : ofstream()
    {}
-   OFStream(char * name) : ofstream(name)
+   OFStream(const char * name) : ofstream(name)
    {}
    void printOn(ostream &out=cout) const
    { 

@@ -27,7 +27,7 @@ class Object;
     @author Jean-Marc Valin
     @version 1.0
  */
-typedef counted_ptr<Object> ObjectRef; 
+typedef Ptr<Object> ObjectRef;
 
 class _ObjectFactory;
 

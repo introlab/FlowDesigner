@@ -29,7 +29,7 @@
 #include <typeinfo>
 
 template <class X>
-class counted_pod_ptr
+class Ptr
 {
 //
 // Public typedefs
@@ -45,28 +45,37 @@ protected:
 
    
 public:
-   explicit counted_pod_ptr(X* p=0) : ptr(p)
+   explicit Ptr(X* p=0) : ptr(p)
    {
       //cerr << "alloc " << typeid(X).name() << endl;
       count=new size_type(1);
    }
    
-
+   template <class Z>
+   Ptr(const Ptr<Z> &r)
+   {
+      cerr << "type-safe copy constructor" << endl;
+      ptr=dynamic_cast<X> (r.ptr);
+      if (!ptr) throw "Ptr<X>: Illegal pointer conversion in copy constructor";
+      count=r.count;
+      acquire();
+   }
+   
    //template <class Y>
    typedef X Y;
-   counted_pod_ptr(const counted_pod_ptr<Y> &r)
+   Ptr(const Ptr<Y> &r)
    {
       ptr=r.ptr;
       count=r.count;
       acquire();
    }
    
-   ~counted_pod_ptr() { release(); }
+   ~Ptr() { release(); }
    
 
    //template <class Y>
 
-   counted_pod_ptr& operator= (const counted_pod_ptr<Y> &r)
+   Ptr& operator= (const Ptr<Y> &r)
    {
       if (this != &r)
       {
@@ -87,6 +96,24 @@ public:
       return *count==1;
    }
 
+   X *detach () 
+   {
+      if (count)
+      {
+         if (*count==1) 
+         {
+            X *tmp = ptr;
+            delete count;
+            count = 0;
+            ptr = 0;
+            return tmp;
+         } else {
+            throw "Error: trying to detach a non-unique pointer in rc_ptrs.h";
+         }
+      } else {
+         throw "Error: trying to detach a NULL pointer in rc_ptrs.h";
+      }
+   }
 
 protected:
    void release()
@@ -109,156 +136,6 @@ protected:
    }
 };
 
-
-
-
-#define counted_ptr counted_pod_ptr
-/*
-template <class X>
-class counted_ptr : public counted_pod_ptr<X>
-{
-public:
-   explicit counted_ptr(X* p=0) : counted_pod_ptr<X>(p){}
-
-
-   template <class Y>
-
-   counted_ptr(const counted_ptr<Y> &r)
-      : counted_pod_ptr<X>(r) {}
-
-   ~counted_ptr()	{ }
-
-
-   template <class Y>
-
-   counted_ptr& operator= (const counted_ptr<Y> &r)
-   {
-      counted_pod_ptr<Y>::operator= (r);
-      return *this;
-   }
-
-   X* operator-> () const { return ptr; }
-};
-
-*/
-
-
-
-
-
-
-//
-// counted_pod_array_ptr
-//
-
-template <class X>
-class counted_pod_array_ptr
-{
-   //
-   // Public typedefs
-   //
-public:
-   typedef X element_type;
-   typedef X* pointer_type;
-   typedef size_t size_type;
-
-protected:
-   X* ptr;
-   size_type *count;
-
-public:
-   explicit counted_pod_array_ptr(X* p=0) : ptr(p)
-   {
-      count=new size_type; *count=1;
-   }
-
-#if defined(__XC_SUPPORTS_MEMBER_TEMPLATES)
-   template <class Y>
-#else
-   typedef X Y;
-#endif
-   counted_pod_array_ptr(const counted_pod_array_ptr<Y> &r)
-   {
-      ptr=r.ptr;
-      count=r.count;
-      (*count)++;
-   }
-
-   ~counted_pod_array_ptr() {	release(); }
-
-#if defined(__XC_SUPPORTS_MEMBER_TEMPLATES)
-   template <class Y>
-#endif
-   counted_pod_array_ptr& operator= (const counted_pod_array_ptr<Y> &r)
-   {
-      if (this != &r)
-      {
-         release();
-         ptr = r.ptr;
-         count = r.count;
-         acquire();
-      }
-      return *this;
-   }
-
-   X& operator* () const {	return *ptr; }
-   X* get () const {	return ptr;	}
-   bool unique () const	{ return *count==1; }
-
-protected:
-
-   void release()
-   {
-      if (count && --(*count)==0)
-      {
-         delete [] ptr;
-         delete count;
-      }
-      ptr = 0;
-      count = 0;
-   }
-#if defined(__XC_SUPPORTS_MEMBER_TEMPLATES)
-   template <class Y>
-#endif
-   void acquire()
-   {
-      ++(*count);
-   }
-};
-
-
-/*
-template <class X>
-class counted_array_ptr : public counted_pod_array_ptr<X>
-{
-public:
-   explicit counted_array_ptr(X* p=0) : counted_pod_array_ptr<X>(p){}
-
-#if defined(__XC_SUPPORTS_MEMBER_TEMPLATES)
-   template <class Y>
-#else
-   typedef X Y;
-#endif
-   counted_array_ptr(const counted_array_ptr<Y> &r)
-      : counted_pod_array_ptr<X>(r) {}
-
-   ~counted_array_ptr()	{ }
-
-#if defined(__XC_SUPPORTS_MEMBER_TEMPLATES)
-   template <class Y>
-#endif
-   counted_array_ptr& operator= (const counted_array_ptr<Y> &r)
-   {
-      counted_pod_array_ptr<Y>::operator= (r);
-      return *this;
-   }
-
-   X& operator* () const {	return *ptr; }
-
-   X* operator-> () const { return ptr; }
-
-};
-*/
 
 #endif
 

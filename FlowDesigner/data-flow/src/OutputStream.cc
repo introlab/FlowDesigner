@@ -43,7 +43,7 @@ ObjectRef OutputStream::getOutput(int output_id, int count)
       if (count != processCount)
       {
          NodeInput input = inputs[inputID];
-         string fileName = dereference_cast<string> (input.node->getOutput(input.outputID,count));
+         String fileName = object_cast<String> (input.node->getOutput(input.outputID,count));
          openedFile = ObjectRef (new OFStream());
          OFStream &tmp = object_cast<OFStream> (openedFile);
          tmp.open(fileName.c_str());

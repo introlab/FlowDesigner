@@ -127,15 +127,18 @@ protected:
    virtual void connectToNode(unsigned int in, Node *inputNode, unsigned int out);
 
    /**Adding an output to a node*/
-   int addOutput (const string &outputName);
+   virtual int addOutput (const string &outputName);
  
    /**Adding an input to a node*/
-   int addInput (const string &inputName);
+   virtual int addInput (const string &inputName);
    
 #ifdef MULTITHREAD
    /**pthread mutex*/
    pthread_mutex_t mutex;
 #endif
+
+   /**Returns the inputs vector */
+   virtual vector<NodeInput>& getInputs () {return inputs;}
 
 public:
 
@@ -167,9 +170,6 @@ public:
 
    /**Checks whether node really has a certain output*/
    virtual bool hasOutput(int output_id) const;
-
-   /**Returns the inputs vector */
-   virtual vector<NodeInput>& getInputs () {return inputs;}
 
    /**Has the node been initialized?*/
    bool isInitialized() {return initialized;}
