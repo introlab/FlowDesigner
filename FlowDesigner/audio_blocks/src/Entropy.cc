@@ -20,6 +20,7 @@
 #include "Vector.h"
 #include <strstream.h>
 #include <values.h>
+#include <math.h>
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>
@@ -35,10 +36,6 @@ class Entropy : public FrameOperation {
    int inputID;
    int inputLength;
 
-   int numberFrames;
-   vector<Vector<float> *> frames;
-   vector<float> min;
-
 public:
    Entropy(string nodeName, ParameterSet params)
       : FrameOperation(nodeName, params)
@@ -48,15 +45,6 @@ public:
       if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-      
-      //if (parameters.exist("LOOKAHEAD"))
-         inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
-      //if (parameters.exist("LOOKBACK"))
-         inputsCache[inputID].lookBack = dereference_cast<int> (parameters.get("LOOKBACK"));
-      
-      numberFrames=inputsCache[inputID].lookBack+inputsCache[inputID].lookAhead+1;
-      frames.resize(numberFrames);
-      min.resize(numberFrames);
    }
 
    ~Entropy() {}
@@ -67,64 +55,34 @@ public:
       
    }
 
-   static inline float dist (float *in1, float *in2, int length)
-   {
-      int i;
-      float sum=0;
-      for (i=0;i<length;i++)
-      {
-         float tmp;
-         tmp=in1[i]-in2[i];
-         sum += tmp*tmp;
-      }
-      return sum;
-   }
-
    void calculate(int output_id, int count, Buffer &out)
    {
+      NodeInput input = inputs[inputID];
+      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
-      if (count < inputsCache[inputID].lookBack)
+      if (inputValue->status != Object::valid)
       {
-         output.status = Object::before_beginning;
+         output.status = inputValue->status;
          return;
       }
-      NodeInput input = inputs[inputID];
-
-      int i,j;
-
-      for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
-      {
-         Ptr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
-         //ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
-         if (inputValue->status != Object::valid)
-         {
-            output.status = inputValue->status;
-            return;
-         }
-         frames[j] = inputValue.get();
-         //frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
-      }      
+      const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
-      //cerr << numberFrames << " " << (*(frames[0]))[0] << " " ; 
-
-      for (i=0;i<numberFrames;i++)
-         min[i]=FLT_MAX;
-      for (i=0;i<numberFrames;i++)
-            for (j=i+1;j<numberFrames;j++)
-            {
-               float tmp=dist(frames[i]->begin(), frames[j]->begin(), inputLength);
-               if (tmp < min[i]) min[i]=tmp;
-               if (tmp < min[j]) min[j]=tmp;
-            }
-      float accum=0;
-      for (i=0;i<numberFrames;i++)
+      float s2=0;
+      float entr=0;
+      for (int i=0;i<inputLength;i++)
       {
-         //cerr <<  min[i] << " ";
-         accum += min[i];
+         s2+=in[i]*in[i];
       }
-      output[0] = accum/numberFrames;
-      //cerr << output[0] << endl;
+      s2 = 1/s2;
 
+      for (int i=0;i<inputLength;i++)
+      {
+	 if (in[i] != 0)
+	    entr -= s2*in[i]*in[i] * log(s2*in[i]*in[i]);
+      }
+      cout << entr << endl;
+      output[0] = entr;
 
       output.status = Object::valid;
    }
