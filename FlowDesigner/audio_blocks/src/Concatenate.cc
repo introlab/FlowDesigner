@@ -1,4 +1,4 @@
-// Copyright (C) 1998-1999 Jean-Marc Valin & Dominic Letourneau
+// Copyright (C) 1999 Jean-Marc Valin
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 
 #include "Concatenate.h"
 #include "FrameBinaryOperation.h"
-#include "Matrix.h"
+#include "Buffer.h"
 #include <typeinfo>
 #include "net_types.h"
 #include <string>
@@ -47,17 +47,17 @@ Concatenate::~Concatenate()
 void Concatenate::computeFrame(ObjectRef input1, ObjectRef input2, int count)
 {
    //cerr << "In Concatenate::computeFrame...\n";
-   const Matrix<float> &in1 = object_cast<Matrix<float> > (input1);
-   const Matrix<float> &in2 = object_cast<Matrix<float> > (input2);
-   Matrix<float> &out = object_cast<Matrix<float> > (output);
+   const Buffer &in1 = object_cast<Buffer> (input1);
+   const Buffer &in2 = object_cast<Buffer> (input2);
+   Buffer &out = object_cast<Buffer> (output);
 
    int i;
-   const float *input1Frame = in1[count];
-   const float *input2Frame = in2[count];
-   float *outputFrame = out[count];
-   if (input1Length != in1.ncols())
+   const Vector<float> &input1Frame = object_cast<Vector<float> > (in1[count]);
+   const Vector<float> &input2Frame = object_cast<Vector<float> > (in2[count]);
+   Vector<float> &outputFrame = object_cast<Vector<float> > (out[count]);
+   if (input1Length != input1Frame.size())
       throw NodeException (this, "input1Length != in1.ncols()" , __FILE__, __LINE__);
-   if (input2Length != in2.ncols())
+   if (input2Length != input2Frame.size())
       throw NodeException (this, "input2Length != in2.ncols()" , __FILE__, __LINE__);
    if (input1Length+input2Length != outputLength)
       throw NodeException (this, "input1Length+input2Length != outputLength" , __FILE__, __LINE__);

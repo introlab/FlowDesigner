@@ -1,5 +1,4 @@
-// Copyright (C) 1998-1999 Jean-Marc Valin,
-// Dominic Letourneau and Andre Charbonneau
+// Copyright (C) 1999 Jean-Marc Valin, Dominic Letourneau and Andre Charbonneau
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
