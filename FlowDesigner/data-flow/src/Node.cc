@@ -6,6 +6,8 @@
 #include "Object.h"
 #include <sstream>
 
+//@implements core
+
 using namespace std;
 
 //using namespace DataFlow;

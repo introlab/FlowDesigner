@@ -3,6 +3,8 @@
 #include "binio.h"
 #include "misc.h"
 
+//@implements core
+
 void BinIO::_read(istream &in, void* data, size_t typeSize, size_t length)
 {
 #ifdef WORDS_BIGENDIAN

@@ -2,4 +2,6 @@
 
 #include "variables.h"
 
+//@implements core
+
 map<string, ObjectRef> Variable::all;

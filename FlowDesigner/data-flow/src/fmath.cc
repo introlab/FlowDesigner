@@ -2,7 +2,7 @@
 
 #include "fmath.h"
 
-
+//@implements core
 
 float logtable2[FLOGLOOKUP2SIZE];
 float exptable[FEXPSIZE];

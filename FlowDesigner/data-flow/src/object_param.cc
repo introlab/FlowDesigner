@@ -7,6 +7,8 @@
 #include <sstream>
 #include "ObjectParser.h"
 
+//@implements core
+
 const vector<string> &ObjectParam::allTypes(bool allowSubnetParam)
 {
    static vector<string> types;

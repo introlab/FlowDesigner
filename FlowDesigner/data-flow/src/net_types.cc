@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+//@implements core
+
 DECLARE_TYPE2(Int, 0)
 DECLARE_TYPE2(Bool, 1)
 DECLARE_TYPE2(Float, 2)

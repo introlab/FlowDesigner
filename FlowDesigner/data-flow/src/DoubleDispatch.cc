@@ -2,6 +2,8 @@
 
 #include "DoubleDispatch.h"
 
+//@implements core
+
 DoubleDispatchException::DoubleDispatchException(DoubleDispatch *_table, string _type1, string _type2)
    : table(_table)
    , type1(_type1)

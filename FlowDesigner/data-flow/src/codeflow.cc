@@ -26,9 +26,14 @@ int main(int argc, char **argv)
       ofstream out(argv[2]);
       set<string> nodeList = doc->genCode(out, argv[3]);
 
-      cerr << "dependencies:\n";
+      set<string> fileList;
       for (set<string>::iterator it=nodeList.begin();it!=nodeList.end();it++)
-	 cerr << UIDocument::externalDocInfo[*it]->sourceFile << endl;
+	 fileList.insert(fileList.begin(), UIDocument::externalDocInfo[*it]->sourceFile);
+      UIDocument::processDependencies(fileList);
+
+      cerr << "dependencies:\n";
+      for (set<string>::iterator it=fileList.begin();it!=fileList.end();it++)
+	 cerr << *it << endl;
    }
    catch (BaseException *e) 
    {

@@ -1,10 +1,9 @@
 // Copyright (C) 1999 Jean-Marc Valin & Dominic Letourneau
 
-/*
-** Includes
-*/
 #include "Collector.h"
 DECLARE_NODE(Collector)
+//@implements core
+
 /*Node
 
  * @name Collector

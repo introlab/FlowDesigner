@@ -835,6 +835,51 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
    }
 }
 
+void UIDocument::processDependencies(set<string> &initial_files)
+{
+   int nbDepends = initial_files.size();
+
+   set<string> addMod;
+
+   //Scan all files in required list to find all required modules
+   set<string>::iterator file=initial_files.begin();
+   while (file != initial_files.end())
+   {
+      if (fileDepend.find(*file) != fileDepend.end())
+      {
+	 set<string> &moduleDep = fileDepend[*file];
+	 set<string>::iterator mod = moduleDep.begin();
+	 while (mod != moduleDep.end())
+	 {
+	    addMod.insert(addMod.end(), *mod);
+	    mod++;
+	 }
+      }
+      file++;
+   }
+
+   //Scan all modules in required list to find all required files
+   set<string>::iterator mod=addMod.begin();
+   while (mod != addMod.end())
+   {
+      if (moduleDepend.find(*mod) != moduleDepend.end())
+      {
+	 set<string> &fileDep = moduleDepend[*mod];
+	 set<string>::iterator file = fileDep.begin();
+	 while (file != fileDep.end())
+	 {
+	    initial_files.insert(initial_files.end(), *file);
+	    file++;
+	 }
+      }
+      mod++;
+   }
+
+   //Repeat recursivly until there's nothing else to add
+   if (nbDepends != initial_files.size())
+      processDependencies(initial_files);
+}
+
 void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
 {
    string fullname = findExternal(type);

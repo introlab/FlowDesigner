@@ -4,6 +4,8 @@
 #include "ObjectParser.h"
 #include "Exception.h"
 
+//@implements core
+
 const ObjectRef Object::nilObject = ObjectRef (new Object(Object::nil));
 const ObjectRef Object::before_beginningObject = ObjectRef (new Object(Object::before_beginning));
 const ObjectRef Object::past_endObject = ObjectRef (new Object(Object::past_end));

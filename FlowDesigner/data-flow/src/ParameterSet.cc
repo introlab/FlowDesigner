@@ -3,6 +3,8 @@
 #include "Node.h"
 #include "ParameterSet.h"
 
+//@implements core
+
 bool ParameterSet::exist(const string &param) const
 {
    if (find(param)!=end())

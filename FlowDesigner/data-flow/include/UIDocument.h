@@ -189,6 +189,8 @@ public:
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 
+   static void processDependencies(set<string> &initial_files);
+
  protected:
    
    virtual void error(char *err);

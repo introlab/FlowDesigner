@@ -5,6 +5,8 @@
 #include "Node.h"
 #include "ObjectRef.h"
 
+//@implements core
+
 /***************************************************************************/
 /*
   Iterator::Iterator(...)

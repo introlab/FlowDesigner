@@ -3,6 +3,7 @@
 #include "operators.h"
 #include "net_types.h"
 
+//@implements core
 
 //Operators for Float and Float
 ObjectRef addFloatFloat(ObjectRef x, ObjectRef y)

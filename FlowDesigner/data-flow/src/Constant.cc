@@ -2,6 +2,8 @@
 
 #include "Constant.h"
 
+//@require core
+
 DECLARE_NODE(Constant)
 /*Node
  *
