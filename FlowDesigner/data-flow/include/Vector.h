@@ -113,6 +113,18 @@ template<class T, int I>
 struct VecBinary {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
+      throw new GeneralException("VecBinary default serialize should never be called", __FILE__, __LINE__);
+   }
+   static inline void unserialize(Vector<T> &v, istream &in)
+   {
+      throw new GeneralException("VecBinary default unserialize should never be called", __FILE__, __LINE__);
+   }
+};
+
+template<class T>
+struct VecBinary<T,TTraits::Object> {
+   static inline void serialize(const Vector<T> &v, ostream &out)
+   {
       out << "{" << v.className() << endl;
       out << "|";
       int tmp=v.size();
@@ -131,7 +143,7 @@ struct VecBinary {
 };
 
 template<class T>
-struct VecBinary<T,1> {
+struct VecBinary<T,TTraits::Basic> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       out << "{" << v.className() << endl;
@@ -147,7 +159,7 @@ struct VecBinary<T,1> {
 };
 
 template<class T>
-struct VecBinary<T,2> {
+struct VecBinary<T,TTraits::Unknown> {
    static inline void serialize(const Vector<T> &v, ostream &out)
    {
       throw new GeneralException(string("Sorry, can't serialize this kind of object (") + typeid(T).name()
@@ -164,13 +176,13 @@ struct VecBinary<T,2> {
 template <class T>
 inline void Vector<T>::serialize(ostream &out) const
 {
-   VecBinary<T, TypeTraits<T>::isBasic>::serialize(*this, out);
+   VecBinary<T, TypeTraits<T>::kind>::serialize(*this, out);
 }
 
 template <class T>
 inline void Vector<T>::unserialize(istream &in)
 {
-   VecBinary<T, TypeTraits<T>::isBasic>::unserialize(*this, in);
+   VecBinary<T, TypeTraits<T>::kind>::unserialize(*this, in);
 }
 
 
