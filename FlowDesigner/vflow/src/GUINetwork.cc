@@ -273,6 +273,9 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 				     "x2",item_x,
 				     "y2",item_y,
 				     "outline_color","blue",NULL);
+
+       selectedNodes.resize(0);
+
        x = item_x;
        y = item_y;
        
@@ -368,51 +371,24 @@ gboolean GUINetwork::buttonEvent(GdkEvent *event) {
 
      if (item) {
 
-       /*
-       double ibx1,iby1,ibx2,iby2;
-       gnome_canvas_item_get_bounds (item,
-				     &ibx1,
-				     &iby1,
-				     &ibx2,
-				     &iby2);
+       for(int i = 0; i < nodes.size(); i++) {
 
-       for (int i = 0; i < nodes.size(); i++) {
-	 
 	 GUINode *nodePtr = dynamic_cast<GUINode*>(nodes[i]);
-	 if (nodePtr) {
+	 
 
-	   double nx1,ny1,nx2,ny2;
-	   
-	   gnome_canvas_item_get_bounds (GNOME_CANVAS_ITEM(nodePtr->group),
-					 &nx1,
-					 &ny1,
-					 &nx2,
-					 &ny2);
-	   
-	   //printf("rect (%f,%f) : (%f,%f)\n",ibx1,iby1,ibx2,iby2);
-	   //printf("node (%f,%f) : (%f,%f)\n",nx1,ny1,nx2,ny2);
-	   
-	   
-	   if (nx1 >= ibx1 && 
-	       nx2 <= ibx2 &&
-	       ny1 >= iby1 &&
-	       ny2 <= iby2) {
-
-
-	     //cerr<<"node inside"<<endl;
-
-	     //node inside rectangle restoring color
-	     gnome_canvas_item_set (nodePtr->nodeRect,
-				    "fill_color_rgba", 0x8cd0af20,
-				    NULL);
-
-	   }
+	 if (isNodeSelected(nodePtr)) {
+	   gnome_canvas_item_set (nodePtr->nodeRect,
+				  "fill_color_rgba", 0x8ca0af20,
+				  NULL);
 	 }
+	 else {
+	   gnome_canvas_item_set (nodePtr->nodeRect,
+				  "fill_color_rgba", 0x8cd0af20,
+				  NULL);
+	 }
+	 
+
        }
-       */
-
-
-
 
        gtk_object_destroy(GTK_OBJECT(item));
        item = NULL;
