@@ -67,7 +67,15 @@ status Collapsed
 href{http://freespeech.sourceforge.net/overflow.html}{Overflow}
 \end_inset 
 
- is a free (GPL/LGPL) "data-flow oriented" development environment.
+ is a free (GPL/LGPL) 
+\begin_inset Quotes eld
+\end_inset 
+
+data-flow oriented
+\begin_inset Quotes erd
+\end_inset 
+
+ development environment.
  It can be used to build complex applications by combining small, reusable
  building blocks.
  In some way, it has similarities with Simulink and LabView, although it
@@ -78,8 +86,15 @@ Overflow features a GUI that allows rapid application development and features
  a visual debugger.
  Although Overflow can be used as a rapid prototyping tool, it can still
  be used for building real-time applications, such as audio effects processing.
- Since overflow is not really an "interpreted language", it can be quite
- fast.
+ Since overflow is not really an 
+\begin_inset Quotes eld
+\end_inset 
+
+interpreted language
+\begin_inset Quotes erd
+\end_inset 
+
+, it can be quite fast.
  
 \layout Standard
 
@@ -117,28 +132,18 @@ Linear algebra using LAPACK (early stage)
 \layout Itemize
 
 Image processing (early stage)
-\layout Standard
-
-Future enhancements could provide toolkits for the following applications
- : 
-\layout Itemize
-
-Artificial Intelligence
-\layout Itemize
-
-Audio Synthesis
-\layout Itemize
-
-Robotics (In progres)
 \layout Section
 
-The idea behind Overflow
+The Idea Behind Overflow
 \layout Standard
 
-Design goals:
+Overflow was designed with the following goals in mind:
 \layout Itemize
 
 Ease of use
+\layout Itemize
+
+Speed
 \layout Itemize
 
 Flexibility
@@ -147,7 +152,19 @@ Flexibility
 Extendability
 \layout Itemize
 
-Speed
+Modularity
+\layout Standard
+
+One thing to note with respect to speed is that we tried the same approach
+ as for the C++ language which can be sumerized by 
+\begin_inset Quotes eld
+\end_inset 
+
+you don't pay for the features you don't use
+\begin_inset Quotes erd
+\end_inset 
+
+.
 \layout Section
 
 Terminology
@@ -300,7 +317,9 @@ Now, why going backwards like that? That's a bit long to explain.
  buffer management and things like that.
 \layout Chapter
 
-Getting started
+Getting Started with 
+\emph on 
+vflow
 \layout Standard
 
 If called with no argument, the 
@@ -358,6 +377,9 @@ vflow main window
 \end_inset 
 
 
+\layout Section
+
+Basic GUI Controls
 \layout Standard
 
 You can then add nodes to your network by clicking on the right button in
@@ -366,7 +388,7 @@ You can then add nodes to your network by clicking on the right button in
 New Node
 \emph default 
  and the type of node you want.
- The node inputs are displayed as a dot on the left side of each node, while
+ The node inputs are displayed as dots on the left side of each node, while
  the outputs are displayed on the right side.
  Inputs and outputs are called terminals.
  You can connect two nodes by clicking on a terminal and dragging the mouse
@@ -377,7 +399,8 @@ New Node
 \emph on 
 Feedback
 \emph default 
- node ("advanced" feature), you should not have feedback loops in your network.
+ node (see the "advanced" features section), you should not have feedback
+ loops in your network.
  Links can be deleted by clicking on them with the SHIFT modifier on.
  
 \layout Standard
@@ -398,7 +421,7 @@ All networks must have at least one output.
  You will be asked to provide the input/output name.
 \layout Section
 
-Using sub-networks (subnets) and iterators
+Using Sub-networks (subnets) and Iterators
 \layout Standard
 
 In order to simplify programming, you can create sub-networks (main menu
@@ -426,7 +449,7 @@ For now, Threaded Iterators are experimental.
  You should not use them, unless you REALLY know what you are doing.
 \layout Section
 
-Executing an Overflow program
+Executing an Overflow Program
 \layout Standard
 
 When your program is complete, you can execute it by clicking "Run" in the
@@ -441,19 +464,23 @@ When your program is complete, you can execute it by clicking "Run" in the
 Advanced features
 \layout Section
 
-Feed-back loops
+Feed-back Loops
 \layout Standard
 
 In some circumstances, it is desirable to insert feed-back loops into a
  program.
  Normaly, Overflow only supports acyclic graphs, but feed-back loops can
- be made using the special Feedback node.
+ be made using the special 
+\emph on 
+Feedback
+\emph default 
+ node.
 \layout Section
 
 Exceptions
 \layout Subsection
 
-Run-time exceptions
+Run-time Exceptions
 \layout Standard
 
 First, it is important to note that there are two types of exceptions that
@@ -472,7 +499,7 @@ It is possible to prevent a run-time exception from stopping a program.
  This can be done with the Recover node, that catches all run-time exceptions.
 \layout Subsection
 
-User exceptions
+User Exceptions
 \layout Standard
 
 The second type of exceptions, user exceptions, can be thrown and caught
@@ -486,29 +513,57 @@ Multi-threading
 
 It must first be noted that multi-threading in Overflow is still an experimental
  feature and not all structures are fully MT-safe.
- Overflow multi-threading is provided through three special nodes: SerialThread,
- ParallelThread and ThreadJoin.
+ Overflow multi-threading is provided through three special nodes: 
+\emph on 
+SerialThread
+\emph default 
+, 
+\emph on 
+ParallelThread
+\emph default 
+ and 
+\emph on 
+ThreadJoin
+\emph default 
+.
 \layout Subsection
 
 SerialThread
 \layout Standard
 
-The SerialThread node provides the type of multi-threading known as pipelining.
+The 
+\emph on 
+SerialThread
+\emph default 
+ node provides pipeline-type multi-threading.
+ A thread is started and computes inputs before they are needed by the output
+ node.
 \layout Subsection
 
 ParallelThread
 \layout Standard
 
-The ParallelThread node provides parallelism-type multi-threading.
+The 
+\emph on 
+ParallelThread
+\emph default 
+ node provides parallelism-type multi-threading.
+ When asked for an input, it computes both inputs at the same time and caches
+ the other.
 \layout Subsection
 
 ThreadJoin
 \layout Standard
 
-The ThreadJoin node acts like a mutex and prevents
+The 
+\emph on 
+ThreadJoin
+\emph default 
+ node acts like a mutex and prevents two Overflow threads from accessing
+ the same (input) node at the same time.
 \layout Section
 
-Threaded iterators
+Threaded Iterators
 \layout Standard
 
 Threaded iterators are a special kind of subnets that provide a different
@@ -516,7 +571,7 @@ Threaded iterators are a special kind of subnets that provide a different
  These too should be considered experimental for now.
 \layout Chapter
 
-Automatic code generation
+Automatic Code Generation
 \layout Standard
 
 Is is now possible to generate C++ code from an Overflow .n file.
@@ -697,7 +752,7 @@ Overflow is designed to be extendible in many areas, so that it is possible
  to create new: node types, operators and data types.
 \layout Section
 
-Creating New Nodes
+Writing New Nodes
 \layout Standard
 
 Most of the new nodes will derive from either the Node abstract class or
@@ -763,7 +818,7 @@ Here's a list of the methods than you may implement in your new node class:
 
 
 \begin_inset  Tabular
-<lyxtabular version="3" rows="10" columns="3">
+<lyxtabular version="3" rows="9" columns="3">
 <features rotate="false" islongtable="false" firstHeadTopDL="false" firstHeadBottomDL="false" firstHeadEmpty="false" headTopDL="false" headBottomDL="false" footTopDL="false" footBottomDL="false" lastFootTopDL="false" lastFootBottomDL="false" lastFootEmpty="false">
 <column alignment="left" valignment="top" leftline="true" rightline="false" width="0pt" special="">
 <column alignment="left" valignment="top" leftline="true" rightline="false" width="0pt" special="">
@@ -800,7 +855,7 @@ Comment(s)
 
 \layout Standard
 
-virtual ObjectRef getOutputNamed (const string &outputName, int count)
+void connectToNode (...)
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -808,35 +863,7 @@ virtual ObjectRef getOutputNamed (const string &outputName, int count)
 
 \layout Standard
 
-DEPRECATED
-\end_inset 
-</cell>
-<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-We are using output names only for convenience.
- The already defined getOutputNamed from Node will work if you did add inputs
- and outputs with the addOutput(...) and addInput(...) methods.
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-virtual void connectToNode (string in, Node *inputNode, string out);
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-REALLY NOT RECOMMENDED
+NOT RECOMMENDED
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -857,7 +884,7 @@ This is very dangerous to change this method.
 
 \layout Standard
 
-virtual void initialize ();
+void initialize ()
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -865,7 +892,7 @@ virtual void initialize ();
 
 \layout Standard
 
-REALLY NOT RECOMMENDED
+NOT RECOMMENDED
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -885,7 +912,7 @@ This is very dangerous to change this method.
 
 \layout Standard
 
-virtual void specificInitialize ();
+void specificInitialize ()
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -893,7 +920,7 @@ virtual void specificInitialize ();
 
 \layout Standard
 
-RECOMMENDED
+Recommended
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -915,7 +942,7 @@ This is the specific Node initialization.
 
 \layout Standard
 
-virtual bool hasOutput (int output_id) const;
+bool hasOutput (...) 
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -923,7 +950,7 @@ virtual bool hasOutput (int output_id) const;
 
 \layout Standard
 
-NOT RECOMMENDED
+Not Recommended
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -944,7 +971,7 @@ If you have added outputs with the addOutput method, you shooed never need
 
 \layout Standard
 
-virtual void reset ();
+void reset ()
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -952,7 +979,7 @@ virtual void reset ();
 
 \layout Standard
 
-RECOMMENDED
+Recommended
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -971,7 +998,7 @@ unt to -1.
 
 \layout Standard
 
-virtual void request (const ParameterSet &req);
+void request (...)
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -979,7 +1006,7 @@ virtual void request (const ParameterSet &req);
 
 \layout Standard
 
-OPTIONAL
+Optional
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -1000,7 +1027,7 @@ This is a way to request something to our inputs node at initialization
 
 \layout Standard
 
-virtual int translateInput (string inputName);
+int translateInput (...)
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -1008,7 +1035,7 @@ virtual int translateInput (string inputName);
 
 \layout Standard
 
-NOT RECOMMENDED
+Not Recommended
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -1028,7 +1055,7 @@ Be careful with that.
 
 \layout Standard
 
-virtual int translateOutput (string inputName);
+int translateOutput (...)
 \end_inset 
 </cell>
 <cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
@@ -1036,7 +1063,7 @@ virtual int translateOutput (string inputName);
 
 \layout Standard
 
-NOT RECOMMENDED
+Not Recommended
 \end_inset 
 </cell>
 <cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
@@ -1046,9 +1073,8 @@ NOT RECOMMENDED
 
 Be careful with that.
  It translates output strings to integer that represent the output number.
- You do not need to take care of this method if you are using addOutput.
-\layout Standard
-
+ You do not need to take care of this method if you are using addOutput
+ .
 \end_inset 
 </cell>
 </row>
@@ -1207,7 +1233,7 @@ Double Dispatched Operators
 
 It is possible to define binary operators that can act on different kinds
  of input.
- One example is the "add" operator, which can we used to add two ints, two
+ One example is the "add" operator, which can be used to add two ints, two
  floats, two vectors, or an int and a float, ...
  See data-flow/include/operators.h 
 \layout Section
