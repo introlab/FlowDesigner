@@ -44,7 +44,7 @@ class ParallelThread : public BufferedNode {
    int output2ID;
 
    //True when the calculation thread is asked to terminate
-   bool resetState;
+   volatile bool resetState;
 
    //True when the calculation thread is started
    bool threadStarted;
@@ -70,7 +70,8 @@ class ParallelThread : public BufferedNode {
       pseudosem_post(&sendSem);
       //cerr << "done\n";
       pthread_join (thread, NULL);
-      resetState = false;      
+      pseudosem_post(&recSem);
+      //resetState = false;      
    }
 
    //Destroy thread data
@@ -154,7 +155,6 @@ public:
       } catch (RCPtr<FlowException> e)
       {
          (*outputs[output1ID].buffer)[calcCount] = e;
-         //FIXME: Should catch FlowException and handle transparently
       } catch (...)
       {
 	 //cerr << "caught\n";
@@ -210,14 +210,17 @@ public:
       } catch (RCPtr<FlowException> e)
       {
          out2[count] = e;
-         //FIXME: Should catch FlowException and handle transparently
       } catch (...)
       {
 	 out2[count] = 
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
       }
 
+      if (resetState)
+         return nilObject;
       pseudosem_wait(&recSem);
+      if (resetState)
+         return nilObject;
       
 
       if (output_id == output1ID)

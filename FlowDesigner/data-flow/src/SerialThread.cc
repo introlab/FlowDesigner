@@ -45,7 +45,7 @@ class SerialThread : public Node {
    RCPtr<Buffer> buff;
 
    //True when the calculation thread is asked to terminate
-   bool resetState;
+   volatile bool resetState;
 
    //True when a calculation thread is running
    bool threadStarted;

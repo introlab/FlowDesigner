@@ -272,6 +272,8 @@ AC_ARG_ENABLE(multithread, [  --enable-multithread           enable multi-thread
 
 AC_ARG_ENABLE(x86-asm, [  --enable-x86-asm           enable x86-specific assembly language (recommended for multi-thread)], [if test "$enableval" = yes; then AC_DEFINE(_ENABLE_X86_ASM)fi])
 
+AC_ARG_ENABLE(smp, [  --enable-smp           enable smp-specific locking (for multi-thread)], [if test "$enableval" = yes; then AC_DEFINE(SMP)fi])
+
 
 dnl Checks for libraries.
 AC_CHECK_HEADERS(dlfcn.h dl.h float.h values.h semaphore.h machine/soundcard.h sys/soundcard.h linux/rtc.h linux/mc146818rtc.h)
