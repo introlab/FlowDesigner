@@ -8,9 +8,9 @@
 
 
 UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, string _name)
-   : terminal(_terminal)
+   : name(_name)
+   , terminal(_terminal)
    , type(_type)
-   , name(_name)
 {
 
 

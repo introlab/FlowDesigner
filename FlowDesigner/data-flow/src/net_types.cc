@@ -31,7 +31,7 @@ ObjectRef FalseObject(new Bool(false));
 
 static void writeString(ostream &out, const String &str)
 {
-   for (int i=0;i<str.size();i++)
+   for (unsigned int i=0;i<str.size();i++)
    {
       if (str[i] == '>')
       {

@@ -86,7 +86,7 @@ public:
    virtual void reset();
 
    /**Notify the node that is will be destroyed shortly*/
-   virtual void cleanupNotify();
+   virtual void stop();
 
 protected:
    

@@ -80,7 +80,7 @@ class VirtualMethods {
 
    int registerFunct0(funct_ptr0 ptr, const type_info *x, string name)
    {
-      int id = symbols->get(name);
+      unsigned int id = symbols->get(name);
       if (id >= tables0.size())
 	 tables0.resize(id+1);
       tables0[id][x] = ptr;
@@ -88,7 +88,7 @@ class VirtualMethods {
 
    int registerFunct1(funct_ptr1 ptr, const type_info *x, string name)
    {
-      int id = symbols->get(name);
+      unsigned int id = symbols->get(name);
       if (id >= tables1.size())
 	 tables1.resize(id+1);
       tables1[id][x] = ptr;
@@ -96,7 +96,7 @@ class VirtualMethods {
 
    int registerFunct2(funct_ptr2 ptr, const type_info *x, string name)
    {
-      int id = symbols->get(name);
+      unsigned int id = symbols->get(name);
       if (id >= tables2.size())
 	 tables2.resize(id+1);
       tables2[id][x] = ptr;
@@ -104,7 +104,7 @@ class VirtualMethods {
 
    int registerFunct3(funct_ptr3 ptr, const type_info *x, string name)
    {
-      int id = symbols->get(name);
+      unsigned int id = symbols->get(name);
       if (id >= tables3.size())
 	 tables3.resize(id+1);
       tables3[id][x] = ptr;

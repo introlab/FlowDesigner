@@ -650,7 +650,7 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 
 void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool toplevel)
 {
-   int nbDepends = initial_files.size();
+   unsigned int nbDepends = initial_files.size();
 
    //Process module/file dependencies, loop until there's nothing else to add
    do {

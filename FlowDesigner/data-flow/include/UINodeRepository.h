@@ -36,9 +36,9 @@ class NodeInfo {
    NodeKind kind;
   public:
    NodeInfo() : category("Unknown"), description("No description available") {}
-   ~NodeInfo() {for (int i=0;i<inputs.size();i++) delete inputs[i];
-                  for (int i=0;i<outputs.size();i++) delete outputs[i];
-                  for (int i=0;i<params.size();i++) delete params[i];}
+   ~NodeInfo() {for (unsigned int i=0;i<inputs.size();i++) delete inputs[i];
+                  for (unsigned int i=0;i<outputs.size();i++) delete outputs[i];
+                  for (unsigned int i=0;i<params.size();i++) delete params[i];}
   private:
    NodeInfo(const NodeInfo&) {}
 

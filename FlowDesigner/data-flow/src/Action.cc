@@ -53,7 +53,7 @@ public:
    int translateInput (string inputName)
    {
       
-      for (int i=0; i< inputs.size(); i++) {
+      for (unsigned int i=0; i< inputs.size(); i++) {
 	 if (inputs[i].name == inputName) {
 	    return i;
 	 }

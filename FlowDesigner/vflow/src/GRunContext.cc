@@ -20,7 +20,7 @@ gboolean delete_window (GtkWidget *widget, GdkEvent *event, GRunContext *my_cont
     if (my_context->running_thread) {
       //cerr<<"Stopping processing thread"<<endl;
       //pthread_cancel(*(my_context->running_thread));
-      my_context->net->cleanupNotify();
+      my_context->net->stop();
       //cerr << "joining thread\n";
     } else {
       cerr << "On a un crisse de gros probleme\n";
@@ -101,7 +101,7 @@ void GRunContext::less_print(const char *message)
 
 void GRunContext::run()
 {
-  net = NULL;
+   net = NULL;
    try {
       gdk_threads_enter();
       less_print("Running network...");
@@ -156,6 +156,7 @@ void GRunContext::run()
       gdk_threads_leave();
    }
    pthread_mutex_lock(&del_lock);
+   net->cleanupNotify();
    delete net;
    net=NULL;
    pthread_mutex_unlock(&del_lock);

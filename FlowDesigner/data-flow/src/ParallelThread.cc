@@ -93,8 +93,8 @@ public:
    ParallelThread(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
       , resetState(false)
-      , calcCount(-1)
       , threadStarted(false)
+      , calcCount(-1)
    {
       input1ID = addInput("INPUT1");
       input2ID = addInput("INPUT2");

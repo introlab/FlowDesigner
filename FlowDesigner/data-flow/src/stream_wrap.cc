@@ -100,6 +100,7 @@ int fd_streambuf::overflow(int c = EOF)
    unsigned char _c = c;
    //FIXME: How about EOF?
    write(fd, &_c, 1);
+   return c;
 }
 
 

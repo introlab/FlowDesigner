@@ -28,16 +28,31 @@ Network::Network (string nodeName, ParameterSet params)
 /***************************************************************************/
 void Network::cleanupNotify()
 {
+   //Propagate the cleanupNotify request
    map<string,Node*>::iterator nodeIter;
-   
    for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++)
    {
       Node *node = (*nodeIter).second;
       node->cleanupNotify();
    }
-
 }
 
+/***************************************************************************/
+/*
+  stop(...)
+  Jean-Marc Valin
+ */
+/***************************************************************************/
+void Network::stop()
+{
+   //Propagate the stop request
+   map<string,Node*>::iterator nodeIter;
+   for (nodeIter = nodeDictionary.begin(); nodeIter != nodeDictionary.end(); nodeIter++)
+   {
+      Node *node = (*nodeIter).second;
+      node->stop();
+   }
+}
 
 
 

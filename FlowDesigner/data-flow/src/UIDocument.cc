@@ -646,7 +646,7 @@ void UIDocument::setFullPath(const string &fullpath)
 void UIDocument::updateAllNetworks() {
 
   //update network information
-  for (int i=0;i<networks.size();i++) 
+  for (unsigned int i=0;i<networks.size();i++) 
     subnetInfo.updateNetInfo(networks[i]);
   
 }
@@ -655,7 +655,7 @@ void UIDocument::updateAllNetworks() {
 void UIDocument::updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
 					  UINetTerminal::NetTermType _terminaltype, bool _remove) {
 
-  for (int i = 0; i < networks.size(); i++) {
+  for (unsigned int i = 0; i < networks.size(); i++) {
     networks[i]->updateAllSubnetTerminals(_nettype, _terminalname, _terminaltype, _remove);
   }
 

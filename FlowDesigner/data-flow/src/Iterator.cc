@@ -26,10 +26,10 @@ Iterator::Iterator (string nodeName, ParameterSet params)
    output.resize(30);
 }
 
-void Iterator::cleanupNotify() {
+void Iterator::stop() {
   //cerr << "Setting exit_status" << endl;
    exit_status = true;
-   Network::cleanupNotify();
+   Network::stop();
 }
 
 

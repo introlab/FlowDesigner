@@ -95,7 +95,7 @@ class Probe : public Node {
 
    virtual void show_hide();
 
-   virtual void cleanupNotify();
+   virtual void stop();
 protected:
    /**Default constructor, should not be used*/
    Probe() {throw new GeneralException("Probe copy constructor should not be called",__FILE__,__LINE__);}

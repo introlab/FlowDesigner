@@ -773,27 +773,6 @@ void GUIDocument::createParamDialog()
 
 }
 
-static void disposeFunct(void *dummy)
-{
-   gdk_threads_enter();
-
-   
-   vflowGUI::instance()->set_run_mode(false);
-
-   gdk_threads_leave();
-   //cerr << "disposeFunct called\n";
-   
-   //GUIDocument *doc = (GUIDocument*) dummy;
-   GUIDocument::isRunning = false;
-   //cerr <<  "Deleting the running network.\n"; 
-   
-   if (GUIDocument::runningNet)
-   {
-      GUIDocument::runningNet->cleanupNotify();
-      delete GUIDocument::runningNet;
-      GUIDocument::runningNet=NULL;
-   }
-}
 
 static void threadFunct(GUIDocument *doc)
 {
@@ -821,32 +800,23 @@ void GUIDocument::threadRun()
 //extern void set_run_mode (bool isRuning);
 
 void GUIDocument::threadStop()
-{
-   static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-   
-   pthread_mutex_lock (&mutex);
-     
+{   
+   gdk_threads_leave();
    if (isRunning) {
-      //cerr << "stopping...\n";
+      pthread_mutex_lock(&del_lock);
       isRunning=false;
-      runningNet->cleanupNotify();
+      gdk_threads_enter();
+      runningNet->stop();
+      gdk_threads_leave();
+      pthread_mutex_unlock(&del_lock);
       pthread_join(runThread, NULL);
-#ifdef HAVE_PTHREAD_CANCEL
-      //pthread_cancel(runThread);
-#endif
-      //less_print("Stopping " + docName);
    }
-
-   pthread_mutex_unlock (&mutex);
-   
-
+   gdk_threads_enter();
 }
 
 //Run with a GUI
 void GUIDocument::run()
 {
-   //cerr << "GUIDocument::run\n";
-   //pthread_cleanup_push(disposeFunct, this);
    //Network *net;
    try{
       ParameterSet parameters;
@@ -907,7 +877,6 @@ void GUIDocument::run()
       //run in a window in a separated thread
    } catch (BaseException *e)
    {
-      cerr << "Exception caught" << endl;
       stringstream excOut;
 
       e->print (excOut);
@@ -921,6 +890,7 @@ void GUIDocument::run()
       delete e;
    } catch (UserException *e)
    {
+      less_print("User stop");
       delete e;
    }
    catch (...)
@@ -935,12 +905,11 @@ void GUIDocument::run()
    gdk_threads_leave();
 
    pthread_mutex_lock(&del_lock);
+   runningNet->cleanupNotify();
    delete runningNet;
    runningNet=NULL;
    isRunning=false;
    pthread_mutex_unlock(&del_lock);
-
-   //pthread_cleanup_pop(1);
 
 }
 

@@ -296,7 +296,7 @@ void Probe::reset()
    this->Node::reset();
 }
 
-void Probe::cleanupNotify() 
+void Probe::stop() 
 {
   //cerr << "Setting exit_status" << endl;
    exit_status = true;

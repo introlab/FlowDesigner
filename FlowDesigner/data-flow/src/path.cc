@@ -24,7 +24,7 @@ vector<string> envList(char *envName, bool include_home)
       return list;
    string path = strPath; 
    int start = 0;
-   int pos = 0;
+   unsigned int pos = 0;
    while (pos < path.length())
    {
       if (path[pos] == ':')
@@ -59,7 +59,7 @@ void scanDL(bool debug)
       cerr << "Cannot find any toolbox. Exiting\n";
       exit(1);
    }
-   for (int i = 0; i<dirs.size();i++)
+   for (unsigned int i = 0; i<dirs.size();i++)
    {
       if (debug)
 	 cerr << "scanDL: Looking in directory " << dirs[i] << endl;
@@ -89,7 +89,7 @@ void scanDL(bool debug)
    if (errors.size())
    {
       cerr << "There were errors loading the toolboxes:\n";
-      for (int i=0;i<errors.size();i++)
+      for (unsigned int i=0;i<errors.size();i++)
 	 cerr << errors[i] << endl;
    }
    if (debug)

@@ -19,14 +19,14 @@ extern "C" {
 
 
 UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit)
-   : net(_net)
+   : destroyed(false)
    , name(_name)
+   , net(_net)
    , type(_type)
    , x(_x)
-   , xtmp(_x)
    , y(_y)
+   , xtmp(_x)
    , ytmp(_y)
-   , destroyed(false)
 {
 
    parameters = newNodeParameters(this,type);
@@ -38,13 +38,13 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
       inputname = net->getDocument()->getNetInputs(type); 
       outputname = net->getDocument()->getNetOutputs(type); 
       
-      for (int i=0;i<inputname.size();i++)
+      for (unsigned int i=0;i<inputname.size();i++)
       {
          inputs.insert(inputs.end(), new UITerminal (inputname[i], 
                                                      this, true, 0.0, 0.0));
       }
       
-      for (int i=0;i<outputname.size();i++) 
+      for (unsigned int i=0;i<outputname.size();i++) 
       { 
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
@@ -58,8 +58,8 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
 }
 
 UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
-   : net(_net)
-   , destroyed(false)
+   : destroyed(false)
+   , net(_net)
 {
    char *str_name = (char *)xmlGetProp(def, (CHAR *)"name");
    char *str_type = (char *)xmlGetProp(def, (CHAR *)"type");
@@ -93,13 +93,13 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
 	 outputname = net->getDocument()->getNetOutputs(type); 
       }
       
-      for (int i=0;i<inputname.size();i++)
+      for (unsigned int i=0;i<inputname.size();i++)
       {
          inputs.insert(inputs.end(), new UITerminal (inputname[i],
                                                      this, true, 0.0, 0.0));
       }
       
-      for (int i=0;i<outputname.size();i++)
+      for (unsigned int i=0;i<outputname.size();i++)
       {
          outputs.insert(outputs.end(), new UITerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
@@ -116,9 +116,9 @@ UINode::~UINode()
 {
    if (!destroyed)
    {
-      for (int i=0;i<inputs.size();i++)
+      for (unsigned int i=0;i<inputs.size();i++)
 	 delete inputs[i];
-      for (int i=0;i<outputs.size();i++)
+      for (unsigned int i=0;i<outputs.size();i++)
 	 delete outputs[i];
       delete parameters;
       net->removeNode(this);
@@ -141,7 +141,7 @@ void UINode::saveXML(xmlNode *root)
 
 UITerminal *UINode::getInputNamed(string n)
 {
-   for (int i=0;i<inputs.size();i++)
+   for (unsigned int i=0;i<inputs.size();i++)
       if (inputs[i]->getName() == n)
          return inputs[i];
    return NULL;
@@ -149,7 +149,7 @@ UITerminal *UINode::getInputNamed(string n)
 
 UITerminal *UINode::getOutputNamed(string n)
 {
-   for (int i=0;i<outputs.size();i++)
+   for (unsigned int i=0;i<outputs.size();i++)
       if (outputs[i]->getName() == n)
          return outputs[i];
    return NULL;
@@ -185,12 +185,13 @@ UINodeParameters *UINode::newNodeParameters (UINode *_node, string type)
 Node *UINode::build(const ParameterSet &params)
 {
    //for all params, it will perform substitution in parameters (process subnet_params)
-   ParameterSet *par = parameters->build(params);
 
    Node *node=NULL;
    _NodeFactory *factory = NULL;
+   ParameterSet *par=NULL;
    factory = Node::getFactoryNamed(type);
    try {
+      par = parameters->build(params);
       //This is only true if type is in the dictionary
       if (factory) 
       {
@@ -210,6 +211,8 @@ Node *UINode::build(const ParameterSet &params)
       }
    } catch (BaseException *e)
    {
+      if (par)
+         delete par;
       if (node)
 	 delete node;
       throw e->add (new GeneralException(string("Exception caught while creating ")+name 
@@ -297,7 +300,6 @@ void UINode::genCode(ostream &out, int &id, set<string> &nodeList)
    int bakID2=id;
 
    bool builtin=false;
-   Node *node=NULL;
    _NodeFactory *factory = NULL;
    factory = Node::getFactoryNamed(type);
    if (factory)

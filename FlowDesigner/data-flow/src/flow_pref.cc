@@ -151,8 +151,6 @@ void FlowPref::save()
    doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Preferences", NULL);
    xmlSetProp(doc->root, (CHAR *)"version", (CHAR *)OVERFLOW_VERSION);
 
-   xmlNodePtr tree;
-
    map<string, map<string,string> >::iterator cat = params.begin();
    while (cat != params.end())
    {

@@ -82,6 +82,9 @@ public:
 
    /** resets the Network and all the internal nodes */
    virtual void reset();
+
+   /**Asks the node to stop what it is doing to allow processing termination*/
+   virtual void stop();
    
    /**Notify the node that is will be destroyed shortly*/
    virtual void cleanupNotify();

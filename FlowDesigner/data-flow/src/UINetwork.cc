@@ -19,21 +19,19 @@
 
 
 UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
-   //: canvas(doc->getCanvas())
-   : doc(_doc)
+   : destroyed(false)
+   , doc(_doc)
    , name(_name)
    , type (_type)
-   , destroyed(false)
    , buildRecurs(false)
-   //, conditionNode(NULL)
 {
    
    //create();
 }
 
 UINetwork::UINetwork(UIDocument *_doc, xmlNodePtr net, bool init)
-   : doc(_doc)
-   , destroyed(false)
+   : destroyed(false)
+   , doc(_doc)
    , buildRecurs(false)
    //, conditionNode(NULL)
 {
@@ -187,9 +185,9 @@ UINetwork::~UINetwork()
    {
       destroyed=true;
       //Links are deleted through the nodes destructor
-      for (int i=0;i<nodes.size();i++)
+      for (unsigned int i=0;i<nodes.size();i++)
 	 delete nodes[i];
-      for (int i=0;i<terminals.size();i++)
+      for (unsigned int i=0;i<terminals.size();i++)
 	 delete terminals[i];
    }
 }
@@ -206,7 +204,7 @@ UINode *UINetwork::loadNode (xmlNodePtr node)
 
 UINode *UINetwork::getNodeNamed(string n)
 {
-   for (int i=0;i<nodes.size();i++)
+   for (unsigned int i=0;i<nodes.size();i++)
       if (nodes[i]->getName() == n)
          return nodes[i];
    return NULL;
@@ -287,15 +285,15 @@ void UINetwork::saveXML(xmlNode *root)
    xmlSetProp(tree, (CHAR *)"name", (CHAR *)name.c_str());
    /*if (isIterator && conditionNode)
      xmlSetProp(tree, (CHAR *)"condition", (CHAR *)conditionNode->getName().c_str());*/
-   for (int i=0;i<nodes.size();i++)
+   for (unsigned int i=0;i<nodes.size();i++)
    {
       nodes[i]->saveXML(tree);
    }
-   for (int i=0;i<links.size();i++)
+   for (unsigned int i=0;i<links.size();i++)
    {
       links[i]->saveXML(tree);
    }
-   for (int i=0;i<terminals.size();i++)
+   for (unsigned int i=0;i<terminals.size();i++)
    {
       terminals[i]->saveXML(tree);
    }
@@ -313,7 +311,7 @@ void UINetwork::setModified()
 vector<string> UINetwork::getTerminals(UINetTerminal::NetTermType termType)
 {
    vector<string> term;
-   for (int i=0;i<terminals.size();i++)
+   for (unsigned int i=0;i<terminals.size();i++)
    {
       UINetTerminal::NetTermType type = terminals[i]->getType();
       if (type == termType)
@@ -330,7 +328,7 @@ void UINetwork::newNetNotify(const string &cat, const string &type)
 
 void UINetwork::insertNetParams(vector<ItemInfo *> &params)
 {
-   for (int i=0;i<nodes.size();i++)
+   for (unsigned int i=0;i<nodes.size();i++)
       nodes[i]->insertNetParams(params);
    if (type == iterator) 
    {
@@ -393,22 +391,25 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    Network *net;
    switch (type)
    {
-      case iterator:
-	 net = new Iterator(netName, params);
-	 break;
-      case subnet:
-	 net = new Network(netName, params);
-	 break;
-      case threaded:
-	 net = new ThreadedIterator(netName, params);
-	 break;
+   case iterator:
+      net = new Iterator(netName, params);
+      break;
+   case subnet:
+      net = new Network(netName, params);
+      break;
+   case threaded:
+      net = new ThreadedIterator(netName, params);
+      break;
+   default:
+      throw new GeneralException("Subnet of unknown type", __FILE__, __LINE__);
+      break;
    }
 
 
    try 
    {
 
-      for (int i=0;i<nodes.size();i++)
+      for (unsigned int i=0;i<nodes.size();i++)
       {
 	 //cerr << "building node " << nodes[i]->getName() << endl;
 	 
@@ -432,7 +433,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    //cerr << "nodes built\n";
    
    //insert links
-   for (int i=0;i<links.size();i++)
+   for (unsigned int i=0;i<links.size();i++)
    {
       //cerr << "linking...\n";
       //This try/catch is a workaround (when using -fomit-frame-pointer) for bug #212990
@@ -449,7 +450,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    //cerr << "links built\n";
    
    bool inputExist=false;
-   for (int i=0;i<terminals.size();i++)
+   for (unsigned int i=0;i<terminals.size();i++)
    {
       UINetTerminal::NetTermType type = terminals[i]->getType();
       if (type == UINetTerminal::INPUT)
@@ -492,7 +493,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
 
    bool found_output=false;
    bool found_condition=false;
-   for (int i=0;i<terminals.size();i++)
+   for (unsigned int i=0;i<terminals.size();i++)
    {
       UINetTerminal::NetTermType type = terminals[i]->getType();
       if (type == UINetTerminal::INPUT)
@@ -539,7 +540,7 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
    vector<int> ids;
 
    try {
-   for (int i=0;i<nodes.size();i++)
+   for (unsigned int i=0;i<nodes.size();i++)
    {
       ids.push_back(id);
       nodes[i]->genCode(out, id, nodeList);
@@ -568,14 +569,14 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 
 
    out << "\n   Node *aNode;\n";
-   for (int i=0;i<ids.size();i++)
+   for (unsigned int i=0;i<ids.size();i++)
    {
       out << "   aNode = genNode" << ids[i] << "(params);\n";
       out << "   net->addNode(*aNode);\n\n";
    }
 
 
-   for (int i=0;i<links.size();i++)
+   for (unsigned int i=0;i<links.size();i++)
    {
       links[i]->genCode(out);
    }
@@ -583,7 +584,7 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 
 
    bool inputExist=false;
-   for (int i=0;i<terminals.size();i++)
+   for (unsigned int i=0;i<terminals.size();i++)
    {
       UINetTerminal::NetTermType type = terminals[i]->getType();
       if (type == UINetTerminal::INPUT)
@@ -631,7 +632,7 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 
    bool found_output=false;
    bool found_condition=false;
-   for (int i=0;i<terminals.size();i++)
+   for (unsigned int i=0;i<terminals.size();i++)
    {
       UINetTerminal::NetTermType type = terminals[i]->getType();
       if (type == UINetTerminal::INPUT)
@@ -724,11 +725,11 @@ void UINetwork::rename(string newName)
   
   vector<UINetwork*> my_nets = doc->get_networks();
   
-  for (int i = 0; i < my_nets.size(); i++) {
+  for (unsigned int i = 0; i < my_nets.size(); i++) {
     
     vector<UINode *> my_nodes = my_nets[i]->getNodes();
     
-    for (int j = 0; j < my_nodes.size(); j++) {
+    for (unsigned int j = 0; j < my_nodes.size(); j++) {
    
       if (my_nodes[j]->getType() == oldName) {
 
@@ -746,7 +747,7 @@ void UINetwork::updateAllSubnetTerminals(const string _nettype, const string _te
 
   if (!destroyed) {
 
-    for (int i = 0; i < nodes.size(); i++) {
+    for (unsigned int i = 0; i < nodes.size(); i++) {
       
       if (nodes[i]->getType() == _nettype) {
 	if (_remove) {

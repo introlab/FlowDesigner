@@ -22,7 +22,7 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
    : node(_node)
 {
    vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
-   for (int i=0;i<tmp.size();i++)
+   for (unsigned int i=0;i<tmp.size();i++)
    {
       ParameterText *newText = new ParameterText;
       newText->name = tmp[i]->name;
@@ -39,7 +39,7 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
 
 UINodeParameters::~UINodeParameters()
 {
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
       delete textParams[i];
 }
 
@@ -96,7 +96,7 @@ void UINodeParameters::saveXML(xmlNode *root)
    // First add all of the ParameterData Nodes to the xml Node
    if (comments != "")
       xmlNewChild(root, NULL, (CHAR *)"Comments", (xmlChar*)comments.c_str());
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
    {
       //if (textParams[i]->value != "")
       {
@@ -110,7 +110,7 @@ void UINodeParameters::saveXML(xmlNode *root)
 
 void UINodeParameters::export2net(ostream &out)
 {
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
    {
       if (textParams[i]->value != "")
       {
@@ -126,7 +126,7 @@ void UINodeParameters::export2net(ostream &out)
 
 ParameterText *UINodeParameters::getParamNamed(string n)
 {
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
       if (textParams[i]->name == n)
          return (textParams[i]);
    return NULL;
@@ -134,12 +134,12 @@ ParameterText *UINodeParameters::getParamNamed(string n)
 
 void UINodeParameters::insertNetParams(vector<ItemInfo *> &par)
 {
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
    {
       if (textParams[i]->value != "" && textParams[i]->type == "subnet_param")
       {
      bool alreadyPresent = false;
-     for (int j=0;j<par.size();j++)
+     for (unsigned int j=0;j<par.size();j++)
         if (par[j]->name == textParams[i]->value)
            alreadyPresent=true;
      if (!alreadyPresent) 
@@ -189,7 +189,7 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
 {
    ParameterSet *parameters = new ParameterSet;
 
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
    {
       ParameterText *curr = textParams[i];
 
@@ -209,7 +209,7 @@ void UINodeParameters::genCode(ostream &out)
 {
    out << "   ParameterSet parameters;\n";
    out << "   ObjectRef value;\n";
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
    {
       ParameterText *curr = textParams[i];
       if (curr->value != "")
@@ -227,7 +227,7 @@ void UINodeParameters::genCode(ostream &out)
 void UINodeParameters::copyParameterText(UINodeParameters *cpy) {
 
   //deleting already entered parameter text
-  for (int i = 0; i < textParams.size(); i++) {
+  for (unsigned int i = 0; i < textParams.size(); i++) {
     delete textParams[i];
   }
   textParams.resize(0);
@@ -235,7 +235,7 @@ void UINodeParameters::copyParameterText(UINodeParameters *cpy) {
   //copying all textParameters
   vector<ParameterText *> &text_params = cpy->get_textParams();
   
-  for (int i = 0; i < text_params.size(); i++) {
+  for (unsigned int i = 0; i < text_params.size(); i++) {
     
     //copying parameters
     string my_name = text_params[i]->name;

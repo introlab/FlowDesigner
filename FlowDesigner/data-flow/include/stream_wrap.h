@@ -53,8 +53,8 @@ class fileptr_ostream : public ostream {
    fileptr_streambuf _streambuffer;
   public:
    fileptr_ostream(FILE *_file, bool _owner=true, bool _isPipe=false)
-      : _streambuffer (_file, _owner, _isPipe)
-      , ostream(&_streambuffer)
+      : ostream(&_streambuffer)
+      , _streambuffer (_file, _owner, _isPipe)
       {clear();}
 };
 
@@ -62,8 +62,8 @@ class fileptr_istream : public istream {
    fileptr_streambuf _streambuffer;
   public:
    fileptr_istream(FILE *_file, bool _owner=true, bool _isPipe=false)
-      : _streambuffer (_file, _owner, _isPipe)
-      , istream(&_streambuffer)
+      : istream(&_streambuffer)
+      , _streambuffer (_file, _owner, _isPipe)
       {clear();}
 };
 
@@ -71,8 +71,8 @@ class fileptr_iostream : public iostream {
    fileptr_streambuf _streambuffer;
   public:
    fileptr_iostream(FILE *_file, bool _owner=true, bool _isPipe=false)
-      : _streambuffer (_file, _owner, _isPipe)
-      , iostream(&_streambuffer)
+      : iostream(&_streambuffer)
+      , _streambuffer (_file, _owner, _isPipe)
       {clear();}
 };
 
@@ -106,8 +106,8 @@ class fd_ostream : public ostream {
    fd_streambuf _streambuffer;
   public:
    fd_ostream(int _fd, bool _owner=true)
-      : _streambuffer (_fd, _owner)
-      , ostream(&_streambuffer)
+      : ostream(&_streambuffer)
+      , _streambuffer (_fd, _owner)
       {clear();}
 };
 
@@ -116,8 +116,8 @@ class fd_istream : public istream {
    fd_streambuf _streambuffer;
   public:
    fd_istream(int _fd, bool _owner=true)
-      : _streambuffer (_fd, _owner)
-      , istream(&_streambuffer)
+      : istream(&_streambuffer)
+      , _streambuffer (_fd, _owner)
       {clear();}
 };
 
@@ -125,8 +125,8 @@ class fd_iostream : public iostream {
    fd_streambuf _streambuffer;
   public:
    fd_iostream(int _fd, bool _owner=true)
-      : _streambuffer (_fd, _owner)
-      , iostream(&_streambuffer)
+      : iostream(&_streambuffer)
+      , _streambuffer (_fd, _owner)
       {clear();}
 };
 
@@ -166,8 +166,8 @@ class pipe_istream : public istream {
    pipe_streambuf _streambuffer;
   public:
    pipe_istream(const string &command, bool waitOnClose=false)
-      : _streambuffer (command, waitOnClose)
-      , istream(&_streambuffer)
+      : istream(&_streambuffer)
+      , _streambuffer (command, waitOnClose)
       {clear();}
 };
 
@@ -175,8 +175,8 @@ class pipe_iostream : public iostream {
    pipe_streambuf _streambuffer;
   public:
    pipe_iostream(const string &command, bool waitOnClose=false)
-      : _streambuffer (command, waitOnClose)
-      , iostream(&_streambuffer)
+      : iostream(&_streambuffer)
+      , _streambuffer (command, waitOnClose)
       {clear();}
    void pipeString(const string &in, string &out) {_streambuffer.pipeString(in,out);}
 };

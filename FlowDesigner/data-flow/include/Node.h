@@ -151,7 +151,10 @@ public:
       NodeInput &input = inputs[inputID];
       return input.node->getOutput(input.outputID, count);
    }
-   
+
+   /**Asks the node to stop what it is doing to allow processing termination*/
+   virtual void stop() {}
+
    /**Notify the node that is will be destroyed shortly*/
    virtual void cleanupNotify() {}
 

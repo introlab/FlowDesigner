@@ -351,6 +351,7 @@ void Vector<T>::prettyPrint(ostream &out) const
 template <class T>
 inline void _vector_readFrom(Vector<T> &v, istream &in)
 {
+   //cerr << "Reading vector" << endl;
    v.resize(0);
    while (1)
    {
@@ -365,12 +366,19 @@ inline void _vector_readFrom(Vector<T> &v, istream &in)
 	    in.putback(ch);
 	 }
 	 if (in.fail()) 
+         {
+            //cerr << "Error here!" << endl;
 	    throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
+       
+         }
       }
       T tmp;
       in >> tmp;
       if (in.fail()) 
+      {
+         //cerr << "Error there" << endl;
 	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
+      }
       v.push_back(tmp);
    }
 }
