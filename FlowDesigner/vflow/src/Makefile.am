@@ -37,7 +37,8 @@ gflow_SOURCES = \
 	Probe.cc \
 	TextProbe.cc \
 	PlotProbe.cc \
-	SpectrumProbe.cc
+	SpectrumProbe.cc \
+	GRunContext.cc
 
 LDFLAGS = $(FFTW_LDFLAGS)
 

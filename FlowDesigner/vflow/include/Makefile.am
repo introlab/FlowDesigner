@@ -11,4 +11,5 @@ include_HEADERS = GUIDocument.h \
 	PlotProbe.h \
 	Probe.h \
 	TextProbe.h \
-	canvas-background.h
+	canvas-background.h \
+	GRunContext.h
