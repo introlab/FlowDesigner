@@ -339,12 +339,12 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<doub
 void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
 {
    int i,j;
-   double *in = new double [topo[0]];
-   double *out = new double [topo[topo.size()-1]];
+   //double *in = new double [topo[0]];
+   //double *out = new double [topo[topo.size()-1]];
    double SSE;
    int k=1;
-   double sigma = .1;
-   double lambda = 1;
+   double sigma = .03;
+   double lambda = .2;
    double lambdaBar = 0;
    double sigmak;
    bool success = true;
@@ -374,13 +374,6 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    rk=-dEk;
    while (k < iter)
    {
-
-      /*wk += pk*-.000000001;
-      calcGradient(tin, tout, wk, nextdE, nextE);
-      pk = nextdE;
-      cerr << nextE << endl;
-      k++;
-      continue;*/
 
       double norm2 = pk.norm2();
       double norm = sqrt(norm2);
@@ -434,10 +427,10 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
 	 if (k%nbWeights == 0)
 	 {
 	    pk = rk;
-	    k = 1;
+	    k++;
 	    continue;
 	 } else {
-	    double bk = rk.norm2() - rk*oldR;
+	    double bk = (rk.norm2() - rk*oldR)/uk;
 	    pk = rk + pk * bk;
 	 }
 	 if (DK >= .75)
@@ -451,13 +444,14 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       if (DK < .25)
 	 lambda *= 4;
       
-      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << deltak << "\t" << uk << "\t" << ak << endl;
+      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << "\t" << norm << "\t" << ak << "\t" << endl;
 
       //9. Have we found the minimum
       if (rk.norm() == 0)
 	 break;
       k++;
    }
+   setWeights(wk.begin());
 }
 
 

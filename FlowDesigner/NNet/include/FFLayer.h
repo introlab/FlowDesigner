@@ -57,10 +57,10 @@ inline void tansig(double *x, double *y, int len)
 	 xx=-9.9;
       
       double n = xx*100.0+1000.0;
-      //int n1 = int(floor(n));
       int n1 = int(n);
       double f = n - n1;
       *y++ = (1-f)*tansig_table[n1] + f*tansig_table[n1+1];
+      
       //*y++ = 2/(1+exp(-2*xx)) - 1;
    }
 }

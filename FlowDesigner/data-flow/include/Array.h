@@ -113,7 +113,7 @@ public:
    }
 
 
-   T operator/ (T scal) 
+   Array<T> operator/ (T scal) 
    {
       Array<T> v(*this);
       v /= scal;
