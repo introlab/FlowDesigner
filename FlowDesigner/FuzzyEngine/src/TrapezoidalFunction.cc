@@ -25,16 +25,26 @@ DECLARE_NODE(TrapezoidalFunction)
  *
  * @name TrapezoidalFunction
  * @category Fuzzy
- * @description No description available
+ * @description A Fuzzy Function to be included in a FuzzySet
  *
- * @input_name TRAIN_IN
- * @input_description No description available
+ * @output_name Function
+ * @output_description The FuzzyFunction object
  *
- * @output_name OUTPUT
- * @output_description No description available
+ * @parameter_name A
+ * @parameter_type float
+ * @parameter_description A value
  *
- * @parameter_name BATCH_SETS
- * @parameter_description No description available
+ * @parameter_name B
+ * @parameter_type float
+ * @parameter_description B value
+ *
+ * @parameter_name C
+ * @parameter_type float
+ * @parameter_description C value
+ *
+ * @parameter_name D
+ * @parameter_type float
+ * @parameter_description D value
  *
 END*/
 
@@ -47,9 +57,19 @@ TrapezoidalFunction::TrapezoidalFunction(const string &name, float a,
 
 }
 
+FuzzyFunction* TrapezoidalFunction::clone() {
+  return new TrapezoidalFunction(m_name,m_a,m_b,m_c,m_d);
+}
+
+
 TrapezoidalFunction::TrapezoidalFunction(string nodeName, ParameterSet params)
    : FuzzyFunction(nodeName,params) {
    
+  m_a  = dereference_cast<float>(parameters.get("A"));
+  m_b  = dereference_cast<float>(parameters.get("B"));
+  m_c  = dereference_cast<float>(parameters.get("C"));
+  m_d  = dereference_cast<float>(parameters.get("D"));
+
 
 }
 //////////////////////////////////////////////////////////////////////
@@ -141,6 +161,6 @@ float TrapezoidalFunction::get_center_of_gravity() {
 
 void TrapezoidalFunction::calculate(int output_id, int count, Buffer &out) {
 
-
+  out[count] = ObjectRef(clone());
 
 }

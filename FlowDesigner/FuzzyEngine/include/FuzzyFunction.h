@@ -26,7 +26,7 @@
 
 using namespace std;
 
-class FuzzyFunction : public BufferedNode{
+class FuzzyFunction : public BufferedNode, public Object{
 
 public:
 
@@ -65,6 +65,9 @@ public:
 
 	//higher limit of the functions
 	virtual float get_lower_bound() = 0;
+
+	//cloning capability
+	virtual FuzzyFunction* clone() = 0;
 
 
 

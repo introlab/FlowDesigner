@@ -27,7 +27,7 @@ DECLARE_NODE(FuzzyRule)
  *
  * @name FuzzyRule
  * @category Fuzzy
- * @description No description available
+ * @description A Rule containing ANTECEDANTS (IF) and CONSEQUENTS(THEN)
  *
  * @parameter_name IF
  * @parameter_description Antecedant of the rule seperated by spaces

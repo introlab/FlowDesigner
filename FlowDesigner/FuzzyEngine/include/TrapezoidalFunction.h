@@ -53,6 +53,9 @@ public:
 	virtual float get_lower_bound() {return m_a;}
 
 	virtual void calculate(int output_id, int count, Buffer &out);
+
+	//cloning capability
+	virtual FuzzyFunction* clone();
 	
 private:
 

@@ -26,14 +26,21 @@ DECLARE_NODE(TriangularFunction)
  * @category Fuzzy
  * @description No description available
  *
- * @input_name TRAIN_IN
- * @input_description No description available
+ * @parameter_name A
+ * @parameter_type float
+ * @parameter_description A value
  *
- * @output_name OUTPUT
- * @output_description No description available
+ * @parameter_name B
+ * @parameter_type float
+ * @parameter_description B value
  *
- * @parameter_name BATCH_SETS
- * @parameter_description No description available
+ * @parameter_name C
+ * @parameter_type float
+ * @parameter_description C value
+ *
+ * @output_name Function
+ * @output_description The FuzzyFunction object
+ * @output_type FuzzyFunction
  *
 END*/
 
@@ -47,9 +54,19 @@ TriangularFunction::TriangularFunction(const string &name, float a, float b, flo
 
 
 }
+
+FuzzyFunction* TriangularFunction::clone() {
+  return new TriangularFunction(m_name,m_a,m_b,m_c);
+}
+
+
 TriangularFunction::TriangularFunction(string nodeName, ParameterSet params)
  : FuzzyFunction(nodeName,params) {
 
+  m_a  = dereference_cast<float>(parameters.get("A"));
+  m_b  = dereference_cast<float>(parameters.get("B"));
+  m_c  = dereference_cast<float>(parameters.get("C"));
+  
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -123,6 +140,6 @@ float TriangularFunction::get_center_of_gravity() {
 //////////////////////////////////////////////////////////////////////
 void TriangularFunction::calculate(int output_id, int count, Buffer &out) {
 
-
+  out[count] = ObjectRef(clone());
 
 }

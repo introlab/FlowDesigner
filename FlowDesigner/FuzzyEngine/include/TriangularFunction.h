@@ -53,6 +53,9 @@ public:
 
 	virtual void calculate(int output_id, int count, Buffer &out);
 
+	
+	//cloning capability
+	virtual FuzzyFunction* clone();
 private:
 
 	//function limits
