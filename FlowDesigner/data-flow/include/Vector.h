@@ -7,6 +7,7 @@
 #include <vector>
 #include "ObjectParser.h"
 #include "ObjectRef.h"
+#include "binio.h"
 
 using namespace std;
 
@@ -23,13 +24,9 @@ public:
    
    void readFrom(istream &in=cin);
 
-   virtual void serialize(ostream &out) const
-   {
-   }
+   virtual void serialize(ostream &out) const;
 
-   virtual void unserialize(istream &in)
-   {
-   }
+   virtual void unserialize(istream &in);
 
    virtual void destroy();
 
@@ -38,11 +35,8 @@ public:
 };
 
 
-
-
-
 template <class T>
-inline void Vector<T>::readFrom(istream &in)
+inline void _vector_readFrom(Vector<T> &v, istream &in)
 {
    while (1)
    {
@@ -63,43 +57,73 @@ inline void Vector<T>::readFrom(istream &in)
       in >> tmp;
       if (in.fail()) 
 	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
-      push_back(tmp);
+      v.push_back(tmp);
    }
 }
 
-/*template <>
-inline void Vector<FFLayer *>::readFrom(istream &in)
+
+template <class T>
+inline void _vector_readFrom(Vector<T*> &v, istream &in)
 {
-   int items_found=0;
-   
-   while (!in.eof())
+   while (1)
    {
-      FFLayer *tmp = new FFLayer;
+      char ch=' ';
+      while (ch == ' ')
+      {
+	 in >> ch;
+	 if (ch == '>')
+	 {
+	    return;
+	 } else if (ch != ' ') {
+	    in.putback(ch);
+	 }
+	 if (in.fail()) 
+	    throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
+      }
+      T *tmp = new T;
       in >> *tmp;
-      if (in.fail()) break;
-      items_found++;
-      resize(items_found);
-      operator[] (items_found-1)=tmp;
+      if (in.fail()) 
+	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
+      v.push_back(tmp);
    }
-   in.clear();
-   char ch;
-   in >> ch;       
-   }*/
-
-//This thing's pissing me off!
-class FFLayer;
-template <>
-inline void Vector<FFLayer*>::readFrom(istream &in)
-{
-   cerr << "fuck off!\n";
 }
+
+
+template <class T>
+inline void Vector<T>::readFrom(istream &in)
+{
+   _vector_readFrom(*this, in);
+}
+
+
+
+template <class T>
+inline void Vector<T>::serialize(ostream &out) const
+{
+   Object::serialize(out);
+}
+
+template <class T>
+inline void Vector<T>::unserialize(istream &in)
+{
+   Object::unserialize(in);
+}
+
+template <>
+inline void Vector<float>::serialize(ostream &out) const
+{
+   out << "{Vector<float>" << endl;
+   out << "|";
+   BinIO::write(out, &this->operator[](0), size());
+   out << "}";
+}
+
 
 template <class T>
 inline void Vector<T>::destroy()
 {
    delete this;
 }
-
 
 
 #include "VectorPool.h"
@@ -137,54 +161,36 @@ inline Vector<double> *Vector<double>::alloc(int size)
    return doubleVectorPool.newVector(size);
 }
 
-
-/*Temporarly commented out because it causes some problems with Vector<T*>
-template<class T>
-istream &operator >> (istream &in, Vector<T> &vec)
-{
-   if (!isValidType(in, "Vector")) return in;
-   vec.readFrom(in);
-   return in;
-}
-*/
-
-/**The object cast from ObjectRef*/
-template <>
-inline Vector<float> &object_cast<Vector<float> > (const ObjectRef &ref)
-{
-   Vector<float> *tmp = dynamic_cast<Vector<float> *>(&(*ref));
-   if (!tmp)
-      throw new CastException<Vector<float> > (typeid ((*ref)).name());
-   return *tmp;
-}
-
-template <>
-inline Vector<double> &object_cast<Vector<double> > (const ObjectRef &ref)
-{
-   Vector<double> *tmp = dynamic_cast<Vector<double> *>(&(*ref));
-   if (!tmp)
-      throw new CastException<Vector<double> > (typeid ((*ref)).name());
-   return *tmp;
-}
-
-
-
-/*template <class T>
-inline istream &operator >> (istream &in, Vector<T> &o)
+//FIXME: We're not checking for the vector type
+inline bool isValidVectorType (istream &in, bool binary=false)
 {
    char ch;
    in >> ch;
-   if (ch != '<'){
+   if ((ch == '<' && !binary) || (ch == '{' && binary))
+   {
+      string type;
+      in >> type;
+      //if (type != expectedType)
+      if (!strstr(type.c_str(), "Vector"))
+         throw new ParsingException ("Parser expected type Vector<Type> and got " + type);
+   } else {
       in.putback(ch);
-      //in.clear(ios::failbit);
-      return in;
+      in.clear(ios::failbit);
+      return false;
    }
+   return true;
+}
 
-   string type;
-   in >> type;
-   o.readFrom(in);
 
-   return in;  
-   }*/
+
+template<class T>
+istream &operator >> (istream &in, Vector<T> &vec)
+{
+   if (!isValidVectorType(in)) return in;
+   vec.readFrom(in);
+   return in;
+}
+
+
 
 #endif

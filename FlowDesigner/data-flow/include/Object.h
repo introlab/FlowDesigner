@@ -43,11 +43,13 @@ public:
    /**The current status*/
    ObjectStatus status;
 
+   /**Notify the object we're adding a reference*/
    void ref() 
    {
       ref_count++;
    }
 
+   /**Notify the object we're removing a reference (might destroy the object)*/
    void unref()
    {
       if (--ref_count==0)
@@ -56,17 +58,22 @@ public:
       }
    }
 
+   /**Returns the number of references*/
    int getCount () {return ref_count;}
 
+   /**Causes the object to be destroyed, it might be redefined for an object pool*/
    virtual void destroy()
    {
       delete this;
    }
 
+   /**Serialize (binary) the object to a stream*/
    virtual void serialize(ostream &out) const;
 
+   /**Unserialize (binary) the object from a stream*/
    virtual void unserialize(istream &in);
    
+   /**How to handle an ununderstood method (VMethod)*/
    virtual void doesNotUnderstand(string method);
 
    /**Generic print function*/
@@ -100,6 +107,19 @@ public:
 private:
    static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
 };
+
+class _ObjectFactory
+{
+public:
+   virtual ObjectRef create() = 0;
+};
+
+template <class T>
+class ObjectFactory : public _ObjectFactory {
+public:
+   virtual ObjectRef create() {return ObjectRef(new T);}
+};
+
 
 #define DECLARE_TYPE(type) static int dummy_init_for ## type = \
                Object::addObjectType (# type, new ObjectFactory<type>);

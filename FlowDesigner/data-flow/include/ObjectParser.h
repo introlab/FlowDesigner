@@ -132,17 +132,7 @@ inline bool isValidType (istream &in, string expectedType, bool binary=false)
 }
 
 
-class _ObjectFactory
-{
-public:
-   virtual ObjectRef create() = 0;
-};
 
-template <class T>
-class ObjectFactory : public _ObjectFactory {
-public:
-   virtual ObjectRef create() {return ObjectRef(new T);}
-};
 
 template <class T>
 inline istream &operator >> (istream &in, RCPtr<T> &o)

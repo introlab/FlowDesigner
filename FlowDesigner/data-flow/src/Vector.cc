@@ -14,6 +14,9 @@
 static int dummy = Object::addObjectType ("Vector", new ObjectFactory<Vector<float> >);
 DECLARE_TYPE2(Vector<float>, 0)
 DECLARE_TYPE2(Vector<double>, 1)
+DECLARE_TYPE2(Vector<int>, 2)
+DECLARE_TYPE2(Vector<bool>, 3)
+DECLARE_TYPE2(Vector<ObjectRef>, 4)
 
 VectorPool<float> floatVectorPool;
 
