@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="InputStream" x="-331.000000" y="100.000000"/>
+    <Node name="node2" type="Constant" x="-477.000000" y="102.000000">
+      <Parameter name="VALUE" type="string" value="jm.wav"/>
+    </Node>
+    <Node name="node3" type="Sound" x="-392.000000" y="177.000000">
+      <Parameter name="DEVICE" type="string" value="/dev/dsp"/>
+      <Parameter name="RATE" type="int" value="44100"/>
+    </Node>
+    <Node name="node4" type="MAIN_LOOP" x="-104.000000" y="139.000000"/>
+    <Link from="node2" output="VALUE" to="node1" input="INPUT"/>
+    <Link from="node1" output="OUTPUT" to="node4" input="INPUT"/>
+    <Link from="node3" output="OUTPUT" to="node4" input="SOUND"/>
+    <NetOutput name="OUTPUT" node="node4" terminal="OUTPUT"/>
+  </Network>
+  <Network type="iterator" name="MAIN_LOOP">
+    <Node name="node1" type="AudioStream" x="-533.000000" y="144.000000">
+      <Parameter name="LENGTH" type="int" value="256"/>
+      <Parameter name="ENCODING" type="string" value="LIN16"/>
+    </Node>
+    <Node name="node2" type="NotDone" x="-194.000000" y="104.000000"/>
+    <Node name="node3" type="FDSaveFrame" x="1120.000000" y="147.000000"/>
+    <Node name="node5" type="CAllPole" x="800.000000" y="138.000000"/>
+    <Node name="node8" type="DownSample" x="118.000000" y="209.000000">
+      <Parameter name="FACTOR" type="int" value="2"/>
+    </Node>
+    <Node name="node9" type="LP" x="24.000000" y="209.000000">
+      <Parameter name="DELAY" type="int" value="50"/>
+      <Parameter name="FILTER_LENGTH" type="int" value="101"/>
+      <Parameter name="FREQ" type="float" value=".2"/>
+    </Node>
+    <Node name="node6" type="UpSample" x="-55.000000" y="208.000000">
+      <Parameter name="FACTOR" type="int" value="5"/>
+    </Node>
+    <Node name="node7" type="Gain" x="221.000000" y="209.000000">
+      <Parameter name="GAIN" type="float" value="2.5"/>
+    </Node>
+    <Node name="node10" type="ConstantVector" x="-539.000000" y="216.000000">
+      <Parameter name="VALUE" type="string" value="&lt;Vector 1&gt;"/>
+    </Node>
+    <Node name="node11" type="FIR" x="-388.000000" y="151.000000">
+      <Parameter name="CONTINUOUS" type="int" value="1"/>
+      <Parameter name="NONCAUSAL" type="int" value="44"/>
+    </Node>
+    <Node name="node12" type="ParallelThread" x="604.000000" y="139.000000"/>
+    <Node name="node13" type="SerialThread" x="400.000000" y="120.000000">
+      <Parameter name="LOOKAHEAD" type="int" value="5"/>
+    </Node>
+    <Node name="node14" type="SerialThread" x="405.000000" y="148.000000">
+      <Parameter name="LOOKAHEAD" type="int" value="5"/>
+    </Node>
+    <Node name="node15" type="LPC" x="10.000000" y="152.000000">
+      <Parameter name="OUTPUTLENGTH" type="int" value="75"/>
+      <Parameter name="LAG_THETA" type="float" value=".0000001"/>
+    </Node>
+    <Node name="node16" type="FIR" x="-133.000000" y="209.000000">
+      <Parameter name="CONTINUOUS" type="bool" value="true"/>
+    </Node>
+    <Node name="node17" type="Window" x="-63.000000" y="151.000000">
+      <Parameter name="LENGTH" type="int" value="512"/>
+      <Parameter name="WINDOW" type="string" value="HANNING"/>
+      <Parameter name="SYMETRIC" type="bool" value="true"/>
+    </Node>
+    <Node name="node18" type="Overlap" x="-155.000000" y="152.000000">
+      <Parameter name="OUTPUTLENGTH" type="int" value="512"/>
+    </Node>
+    <Node name="node4" type="ThreadJoin" x="86.000000" y="152.000000"/>
+    <Node name="node19" type="ThreadJoin" x="-306.000000" y="151.000000"/>
+    <Node name="node20" type="SerialThread" x="929.000000" y="140.000000">
+      <Parameter name="LOOKAHEAD" type="int" value="6"/>
+    </Node>
+    <Link from="node8" output="OUTPUT" to="node7" input="INPUT"/>
+    <Link from="node6" output="OUTPUT" to="node9" input="INPUT"/>
+    <Link from="node9" output="OUTPUT" to="node8" input="INPUT"/>
+    <Link from="node10" output="OUTPUT" to="node11" input="FILTER"/>
+    <Link from="node1" output="OUTPUT" to="node11" input="INPUT"/>
+    <Link from="node12" output="OUTPUT1" to="node5" input="INPUT"/>
+    <Link from="node12" output="OUTPUT2" to="node5" input="FILTER"/>
+    <Link from="node14" output="OUTPUT" to="node12" input="INPUT2"/>
+    <Link from="node13" output="OUTPUT" to="node12" input="INPUT1"/>
+    <Link from="node7" output="OUTPUT" to="node13" input="INPUT"/>
+    <Link from="node18" output="OUTPUT" to="node17" input="INPUT"/>
+    <Link from="node17" output="OUTPUT" to="node15" input="INPUT"/>
+    <Link from="node16" output="OUTPUT" to="node6" input="INPUT"/>
+    <Link from="node15" output="OUTPUT" to="node4" input="INPUT"/>
+    <Link from="node4" output="OUTPUT" to="node14" input="INPUT"/>
+    <Link from="node4" output="OUTPUT" to="node16" input="FILTER"/>
+    <Link from="node11" output="OUTPUT" to="node19" input="INPUT"/>
+    <Link from="node19" output="OUTPUT" to="node2" input="INPUT"/>
+    <Link from="node19" output="OUTPUT" to="node18" input="INPUT"/>
+    <Link from="node19" output="OUTPUT" to="node16" input="INPUT"/>
+    <Link from="node5" output="OUTPUT" to="node20" input="INPUT"/>
+    <Link from="node20" output="OUTPUT" to="node3" input="OBJECT"/>
+    <NetInput name="INPUT" node="node1" terminal="INPUT"/>
+    <NetCondition name="CONDITION" node="node2" terminal="OUTPUT"/>
+    <NetInput name="SOUND" node="node3" terminal="FD"/>
+    <NetOutput name="OUTPUT" node="node3" terminal="OUTPUT"/>
+  </Network>
+</Document>

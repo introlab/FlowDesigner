@@ -1,9 +1,13 @@
-There are 4 examples here:
+There are 8 examples here:
 
 hello.n     (displays "Hello World" as the output)
 tone.n      (plays a "pseudo-sinewave" to the soundcard)
 play_mp3.n  (plays an MP3 file to the soundcard)
 find_beat.n (uses autocorrelation to find out the tempo in an MP3 song)
+demo_feedback.n (demonstrates the use of feedback loops)
+demo_if.n   (demonstrates the use of the "if" node)
+helium.n    (plays a "helium-effect" of my (Jean-Marc) voice)
+mixedthread.n (demonstrates the new thread capabilities - still a bit buggy)
 
-note that for the last two ones, you will need to click on "Parameters" to set
-the name of your MP3 file
+NOTE: For play_mp3.n find_beat.n and mixedthread.n, you will need to click on 
+"Parameters" to set the name of your MP3 file
