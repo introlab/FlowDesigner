@@ -87,7 +87,7 @@ public:
       }
       
       //int arg=0x7fff0004;
-      int arg=0x0002000a;
+      int arg=0x0004000a;
       if (parameters.exist("BUFFER"))
       {
 	 unsigned int buffLen = dereference_cast<int> (parameters.get("BUFFER"));

@@ -632,7 +632,7 @@ void GUIDocument::createParamDialog()
 
 static void disposeFunct(void *dummy)
 {
-   cerr << "disposeFunct called\n";
+   //cerr << "disposeFunct called\n";
    GUIDocument::isRunning=false;
    if (GUIDocument::runningNet != NULL) {
      //delete net;
@@ -668,7 +668,7 @@ void GUIDocument::threadRun()
 
 void GUIDocument::threadStop()
 {
-   cerr << "threadStop\n";
+   //cerr << "threadStop\n";
    if (isRunning)
    {
       cerr << "stopping...\n";
@@ -714,7 +714,7 @@ void GUIDocument::run()
 	    } 
 	    else if (curr.type == "string")
 	    {
-	       cerr << "string\n";
+	       //cerr << "string\n";
 	       value = ObjectRef(new String(curr.value));	 	 
 	    }
 	    else {
@@ -725,8 +725,8 @@ void GUIDocument::run()
 	 }
 
       }
-      cerr << "building net...\n";
-      parameters.print();
+      //cerr << "building net...\n";
+      //parameters.print();
       runningNet = build("MAIN", parameters);
       //Ptr<Network> net(build("MAIN", parameters));
       cerr << "initializing...\n";
