@@ -14,7 +14,7 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FrameOperation.h"
+#include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
 #include <strstream>
@@ -24,91 +24,68 @@ class TimeAutocorr;
 
 DECLARE_NODE(TimeAutocorr)
 /*Node
-
+ *
  * @name TimeAutocorr
  * @category Signal:DSP
  * @description No description available
-
+ *
  * @input_name INPUT
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
  * @parameter_name INPUTLENGTH
  * @parameter_description No description available
-
- * @parameter_name OUTPUTLENGTH
- * @parameter_description No description available
-
+ *
  * @parameter_name LOOKAHEAD
  * @parameter_description No description available
-
+ *
  * @parameter_name LOOKBACK
  * @parameter_description No description available
-
+ *
 END*/
 
 
-class TimeAutocorr : public FrameOperation {
+class TimeAutocorr : public BufferedNode {
    
    int inputID;
+   int outputID;
+
    int inputLength;
+   int outputLength;
 
    int numberFrames;
    vector<Vector<float> *> frames;
-   vector<float> min;
 
 public:
    TimeAutocorr(string nodeName, ParameterSet params)
-      : FrameOperation(nodeName, params)
+      : BufferedNode(nodeName, params)
 
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
-         inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
+      outputID = addOutput("OUTPUT");
+
+      inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       
-      //if (parameters.exist("LOOKAHEAD"))
-         inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
-      //if (parameters.exist("LOOKBACK"))
-         inputsCache[inputID].lookBack = dereference_cast<int> (parameters.get("LOOKBACK"));
-      
+      inputsCache[inputID].lookAhead = dereference_cast<int> (parameters.get("LOOKAHEAD"));
+      inputsCache[inputID].lookBack = dereference_cast<int> (parameters.get("LOOKBACK"));
+
       numberFrames=inputsCache[inputID].lookBack+inputsCache[inputID].lookAhead+1;
       frames.resize(numberFrames);
-      min.resize(numberFrames);
-   }
-
-   ~TimeAutocorr() {}
-
-   virtual void specificInitialize()
-   {
-      this->FrameOperation::specificInitialize();
-      
-   }
-
-   static inline float dist (float *in1, float *in2, int length)
-   {
-      int i;
-      float sum=0;
-      for (i=0;i<length;i++)
-      {
-         float tmp;
-         tmp=in1[i]-in2[i];
-         sum += tmp*tmp;
-      }
-      return sum;
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      NodeInput input = inputs[inputID];
+
       if (count < inputsCache[inputID].lookBack)
       {
-         output.status = Object::before_beginning;
+         out[count] = Object::before_beginningObject;
          return;
       }
-      NodeInput input = inputs[inputID];
+      Vector<float> &output = *Vector<float>::alloc(numberFrames);
+      out[count] = &output;
 
       int i,j;
 
@@ -116,36 +93,23 @@ public:
       for (i = -inputsCache[inputID].lookBack, j=0; i <= inputsCache[inputID].lookAhead ; i++, j++)
       {
          RCPtr<Vector<float> > inputValue = input.node->getOutput(input.outputID, count + i);
-         //ObjectRef inputValue = input.node->getOutput(input.outputID, count + i);
+
          if (inputValue->status != Object::valid)
          {
-            output.status = inputValue->status;
+	    out[count] = inputValue;
             return;
          }
 	 
 	 inVect.insert(inVect.end(),inputValue);
-         //frames[j] = inputValue.get();
-
-         //frames[j] = object_ptr_cast<Vector<float> *> (inputValue);
       }      
       
-      //cerr << numberFrames << " " << (*(frames[0]))[0] << " " ; 
-
       for (int i=0;i<output.size();i++)
       {
 	 output[i]=0;
 	 int j=0;
-	 //for (int j=0;j<inVect.size()-output.size();j++)
-	 {
-	    for (int k=0;k<inputLength;k++)
-	       output[i] += (*inVect[j])[k]*(*inVect[j+i])[k];
-	 }
+	 for (int k=0;k<inputLength;k++)
+	    output[i] += (*inVect[j])[k]*(*inVect[j+i])[k];
       }
-      //output[0] = accum/numberFrames;
-      //cerr << output[0] << endl;
-
-
-      output.status = Object::valid;
    }
 
 };

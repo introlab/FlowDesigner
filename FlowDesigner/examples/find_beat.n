@@ -2,13 +2,11 @@
 <Document>
   <Network type="subnet" name="MAIN">
     <Node name="node2" type="Constant" x="-372.000000" y="39.000000">
-      <Parameter name="VALUE" type="subnet_param" value="IN"/>
+      <Parameter name="VALUE" type="subnet_param" value="ARG1"/>
     </Node>
-    <Node name="node4" type="MAIN_LOOP" x="108.000000" y="26.000000">
-      <Parameter name="FRAME_SIZE" type="int" value="256"/>
-    </Node>
+    <Node name="node4" type="MAIN_LOOP" x="108.000000" y="26.000000"/>
     <Node name="node3" type="ExecStream" x="-146.000000" y="37.000000">
-      <Parameter name="COMMAND" type="string" value="mpg123 --stdout"/>
+      <Parameter name="COMMAND" type="string" value="mpg123 --stdout --mono"/>
     </Node>
     <Link from="node2" output="VALUE" to="node3" input="INPUT"/>
     <Link from="node3" output="OUTPUT" to="node4" input="INPUT"/>
@@ -22,14 +20,11 @@
       <Parameter name="STREAM_TYPE" type="string" value="FILE"/>
     </Node>
     <Node name="node4" type="DownSample" x="-158.000000" y="112.000000">
-      <Parameter name="INPUTLENGTH" type="int" value="512"/>
-      <Parameter name="OUTPUTLENGTH" type="subnet_param" value="FRAME_SIZE"/>
       <Parameter name="FACTOR" type="int" value="2"/>
     </Node>
     <Node name="node6" type="TimeAutocorr" x="307.000000" y="109.000000">
       <Parameter name="INPUTLENGTH" type="int" value="5"/>
-      <Parameter name="OUTPUTLENGTH" type="int" value="200"/>
-      <Parameter name="LOOKAHEAD" type="int" value="200"/>
+      <Parameter name="LOOKAHEAD" type="int" value="100"/>
       <Parameter name="LOOKBACK" type="int" value="0"/>
     </Node>
     <Node name="node8" type="TimeFilter" x="206.000000" y="109.000000">
@@ -46,13 +41,8 @@
       <Parameter name="LENGTH" type="int" value="256"/>
       <Parameter name="WINDOW" type="string" value="HAMMING"/>
     </Node>
-    <Node name="node9" type="FFT" x="-5.000000" y="111.000000">
-      <Parameter name="LENGTH" type="int" value="256"/>
-    </Node>
-    <Node name="node10" type="PS" x="66.000000" y="110.000000">
-      <Parameter name="INPUTLENGTH" type="int" value="256"/>
-      <Parameter name="OUTPUTLENGTH" type="int" value="128"/>
-    </Node>
+    <Node name="node9" type="FFT" x="-5.000000" y="111.000000"/>
+    <Node name="node10" type="PS" x="66.000000" y="110.000000"/>
     <Node name="node11" type="Mel" x="127.000000" y="110.000000">
       <Parameter name="INPUTLENGTH" type="int" value="128"/>
       <Parameter name="OUTPUTLENGTH" type="int" value="5"/>
@@ -61,7 +51,7 @@
       <Parameter name="HIGH" type="int" value="2000"/>
     </Node>
     <Node name="node12" type="TimeFilter" x="419.000000" y="113.000000">
-      <Parameter name="LENGTH" type="int" value="200"/>
+      <Parameter name="LENGTH" type="int" value="101"/>
       <Parameter name="FIR" type="string" value="&lt;Vector 1 &gt;"/>
       <Parameter name="IIR" type="string" value="&lt;Vector 1 -.997 &gt;"/>
     </Node>
@@ -81,5 +71,5 @@
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
     <NetOutput name="OUTPUT" node="node2" terminal="OUTPUT"/>
   </Network>
-  <Parameter name="IN" type="string" value="/path/to/your.mp3"/>
+  <Parameter name="ARG1" type="string" value="/path/to/your.mp3"/>
 </Document>
