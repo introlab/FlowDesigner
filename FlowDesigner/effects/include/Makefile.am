@@ -1,3 +1,3 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-noinst_HEADERS = 
+noinst_HEADERS = reverb.h
