@@ -177,6 +177,11 @@ GUINode::~GUINode()
    destroyed=true;
 }
 
+static void node_help (GtkMenuItem *menuitem, gpointer user_data)
+{
+   ((GUINode *)(user_data))->help();
+}
+
 static void node_prop (GtkMenuItem *menuitem, gpointer user_data)
 {
    ((GUINode *)(user_data))->propertiesShow();
@@ -194,6 +199,12 @@ void GUINode::propertiesShow()
       guiParams = new GUINodeParameters (this, type, parameters);
 }
 
+void GUINode::help()
+{
+   string fullPath = UIDocument::findExternal(type + ".cc", "VFLOW_SOURCE", false);
+   gnome_help_goto(NULL, const_cast<char *>(fullPath.c_str()));
+}
+
 void GUINode::createPopup()
 {
    popupMenu = gtk_menu_new();
@@ -208,20 +219,7 @@ void GUINode::createPopup()
                       (GtkSignalFunc) node_delete,
                       this);
 
-   /* if (net->isIter())
-   {
-      label = gtk_menu_item_new_with_label("Set as condition");
-      gtk_menu_append(GTK_MENU(popupMenu),label);
-      gtk_widget_show(label);
-      gtk_widget_ref (label);
-      gtk_object_set_data_full (GTK_OBJECT (popupMenu), "label",
-                                label,
-                                (GtkDestroyNotify) gtk_widget_unref);
-      gtk_signal_connect(GTK_OBJECT(label), "activate",
-                         (GtkSignalFunc) node_set_cond,
-                         this);
-   }
-   */
+
    label = gtk_menu_item_new_with_label("Properties");
    gtk_menu_append(GTK_MENU(popupMenu),label);
    gtk_widget_show(label);
@@ -232,6 +230,19 @@ void GUINode::createPopup()
    gtk_signal_connect(GTK_OBJECT(label), "activate",
                       (GtkSignalFunc) node_prop,
                       this);
+
+
+   label = gtk_menu_item_new_with_label("Help");
+   gtk_menu_append(GTK_MENU(popupMenu),label);
+   gtk_widget_show(label);
+   gtk_widget_ref (label);
+   gtk_object_set_data_full (GTK_OBJECT (popupMenu), "label",
+                             label,
+                             (GtkDestroyNotify) gtk_widget_unref);
+   gtk_signal_connect(GTK_OBJECT(label), "activate",
+                      (GtkSignalFunc) node_help,
+                      this);
+
 }
 
 void GUINode::doGrab()

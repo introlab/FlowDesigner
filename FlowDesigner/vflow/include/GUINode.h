@@ -67,6 +67,8 @@ public:
    void getBounds(double &x1, double &y1, double &x2, double &y2);
 
    void propertiesShow();
+
+   void help();
   
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
   
