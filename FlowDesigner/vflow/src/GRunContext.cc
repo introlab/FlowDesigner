@@ -65,10 +65,16 @@ GRunContext::GRunContext(UIDocument *_doc, ParameterSet &_params)
 
 
    GtkWidget *scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+
+
+   //request size
+   gtk_widget_set_size_request(GTK_WIDGET(scrolledwindow1),320,240);
+
+
    gtk_widget_show (scrolledwindow1);
    gtk_container_add (GTK_CONTAINER (vbox), scrolledwindow1);
-   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS)
-   ;
+   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+
 
    
    less = gtk_text_view_new ();
