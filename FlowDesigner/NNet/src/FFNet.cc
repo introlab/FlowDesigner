@@ -52,23 +52,26 @@ FFNet::FFNet(const Vector<int> &_topo, const vector<string> &functions, vector<f
    init(functions);
 
    //cerr << tin.size() << endl;
-   vector<float> inputMeans(topo[0], 0);
-   vector<float> outputMeans(topo[topo.size()-1], 0);
-   vector<float> inputStd(topo[0], 0);
-   vector<float> outputStd(topo[topo.size()-1], 0);
+   vector<double> inputMeans(topo[0], 0);
+   vector<double> outputMeans(topo[topo.size()-1], 0);
+   vector<double> inputStd(topo[0], 0);
+   vector<double> outputStd(topo[topo.size()-1], 0);
    
    for (int i=0;i<tin.size();i++)
-   {
       for (int j=0;j<topo[0];j++)
-      {
 	 inputMeans[j] += tin[i][j];
-	 inputStd[j] += tin[i][j]*tin[i][j];
-      }
-   }
+
+
    for (int j=0;j<topo[0];j++)
       inputMeans[j] /= tin.size();
+
+   for (int i=0;i<tin.size();i++)
+      for (int j=0;j<topo[0];j++)
+	 inputStd[j] += sqr(tin[i][j]-inputMeans[j]);
+
+
    for (int j=0;j<topo[0];j++)
-       inputStd[j] = sqrt(inputStd[j]/tin.size() - inputMeans[j]*inputMeans[j]);
+       inputStd[j] = sqrt(inputStd[j]/tin.size());
    
    for (int i=0;i<tout.size();i++)
       for (int j=0;j<topo[topo.size()-1];j++)

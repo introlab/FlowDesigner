@@ -87,7 +87,7 @@ void FFLayer::init(float minmax)
    }
 }
 
-void FFLayer::init(float *mean, float *std)
+void FFLayer::init(double *mean, double *std)
 {
    float meanSum = 0;
    for (int j=0;j<nbInputs;j++)
@@ -97,14 +97,16 @@ void FFLayer::init(float *mean, float *std)
       float meanSum = 0;
       for (int j=0;j<nbInputs;j++)
       {
+	 cerr << std[j] << " ";
 	 weights[i*(nbInputs+1) + j] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/(1e-5+std[j]);
 	 meanSum += weights[i*(nbInputs+1) + j]*mean[j];
       }
       weights[i*(nbInputs+1) + nbInputs] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1) - meanSum;
    }
+   cerr << endl;
 }
 
-void FFLayer::setBias(float *minmax)
+void FFLayer::setBias(double *minmax)
 {
    for (int i=0;i<nbNeurons;i++)
    {

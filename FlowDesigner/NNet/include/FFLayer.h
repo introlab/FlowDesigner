@@ -118,10 +118,10 @@ class FFLayer : public Object {
 
    /**Initializes the layer values given the means and standard deviations of each 
       of the inputs*/
-   void init(float *mean, float *std);
+   void init(double *mean, double *std);
 
    /**Sets the bias vector*/
-   void setBias(float *minmax);
+   void setBias(double *minmax);
 
    float *getWeights(int i) {return weights + i*(nbInputs+1);}
 
