@@ -78,8 +78,17 @@ Network * GUIDocument::runningNet=NULL;
 
 void create_net(gchar * str, GUIDocument *doc)
 {
-   if (str)
+
+  try {
+    if (str) {
       doc->addNetwork(string(str), UINetwork::subnet);
+    }
+  }
+  catch (BaseException *e) {
+    e->print(cerr);
+    delete e;
+  }
+
 }
 static void add_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
@@ -97,8 +106,16 @@ static void add_net_event  (GtkMenuItem     *menuitem,
 
 void create_threaded(gchar * str, GUIDocument *doc)
 {
-   if (str)
-      doc->addNetwork(string(str), UINetwork::threaded);
+  try {
+    if (str) {
+      doc->addNetwork(string(str), UINetwork::threaded);     
+    }
+  }
+  catch (BaseException *e) {
+    e->print(cerr);
+    delete e;
+  }
+
 }
 static void add_threaded_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
@@ -116,8 +133,17 @@ static void add_threaded_event  (GtkMenuItem     *menuitem,
 
 void create_iter(gchar * str, GUIDocument *doc)
 {
-   if (str)
-      doc->addNetwork(string(str), UINetwork::iterator);
+
+  try {
+    if (str) {
+      doc->addNetwork(string(str), UINetwork::iterator);     
+    }
+  }
+  catch (BaseException *e) {
+    e->print(cerr);
+    delete e;
+  }
+
 }
 static void add_iter_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)

@@ -277,6 +277,20 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
    //cerr << "UIDocument::addNetwork (type = " << typeid(this).name() << ")" << endl;
    
    //UINetwork *newNet = new GUINetwork(this, name, iter);
+
+  bool found = false;
+  
+  for (unsigned int i = 0; i < networks.size(); i++) {
+    if (networks[i]->getName() == name) {
+      found = true;
+      break;
+    }
+  }
+  
+  if (found) {
+    throw new GeneralException(string("Network already exist : ") + string(name), __FILE__, __LINE__);
+  }
+
    UINetwork *newNet = newNetwork(name, type);
    for (unsigned int i=0;i<networks.size();i++)
    {

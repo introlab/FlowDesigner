@@ -23,7 +23,11 @@ public:
 
 class GUIDocument : public UIDocument {
 protected:
-   
+  
+  friend void create_threaded(gchar * str, GUIDocument *doc);
+  friend void create_net(gchar * str, GUIDocument *doc);
+  friend void create_iter(gchar * str, GUIDocument *doc);
+
    GnomeMDIGenericChild *mdiChild;
 
    //GtkWidget *view;
