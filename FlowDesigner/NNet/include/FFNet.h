@@ -28,7 +28,7 @@ class FFNet : public Object {
 
    double calcError(const vector<float *> &tin, const vector<float *> &tout);
 
-   void learn(double *input, double *output, double *err=NULL);
+   void learn(double *input, double *output, double *err=NULL, double *calc_output=NULL);
    //void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
 
    void train(vector<float *> in, vector<float *> out, int iter, double learnRate=.00001, double mom=.9, 
@@ -38,7 +38,8 @@ class FFNet : public Object {
 
    void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
 		      double mom, double increase, double decrease, int nbSets);
-
+   void trainRecurrent(vector<float *> tin, vector<float *> tout, int iter, double learnRate, 
+		       double mom, double increase, double decrease);
    //void trainlm(vector<float *> in, vector<float *> out, int maxIter);
    
    void printOn(ostream &out) const;
