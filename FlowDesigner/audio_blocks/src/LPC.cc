@@ -20,6 +20,7 @@
 #include "Vector.h"
 #include <lpc.h>
 #include <stdlib.h>
+#include <math.h>
 
 class LPC;
 
@@ -66,8 +67,11 @@ public:
       autocorr(in.begin(), r, outputLength-1, in.size());
 
       float er=0;
+      r[0] *= 1.001;
       wld(output.begin(), r, &er, outputLength-1);
 
+      for (int i=0;i<outputLength;i++)
+         output[i] *= pow(.99,i);
       output.status = Object::valid;
    }
 
