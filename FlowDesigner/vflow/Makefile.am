@@ -1,4 +1,4 @@
-SUBDIRS = macros po intl src pixmaps 
+SUBDIRS = macros po intl src pixmaps include
 
 EXTRA_DIST = 
 

@@ -5,47 +5,48 @@ INCLUDES = \
 	$(GNOME_INCLUDEDIR) \
 	$(GNOME_XML_INCLUDE) \
 	$(GNOME_GTHR_INCLUDE) \
-	-I$(top_srcdir)/../data-flow/include
+	-I$(top_srcdir)/../data-flow/include \
+	-I$(top_srcdir)/include
 
 lib_LTLIBRARIES = libflowgui.la libflowui.la 
 
 libflowui_la_SOURCES = \
-	UINode.h UINode.cc \
-	UINetwork.h UINetwork.cc \
-	UIDocument.h UIDocument.cc \
-	UITerminal.h UITerminal.cc \
-	UILink.h UILink.cc \
-	UINodeParameters.h UINodeParameters.cc \
-	UINetTerminal.h UINetTerminal.cc
+	UINode.cc \
+	UINetwork.cc \
+	UIDocument.cc \
+	UITerminal.cc \
+	UILink.cc \
+	UINodeParameters.cc \
+	UINetTerminal.cc
 
 libflowgui_la_SOURCES = \
-	GUINode.h GUINode.cc \
-	GUINetwork.h GUINetwork.cc \
-	GUIDocument.h GUIDocument.cc \
-	GUITerminal.h GUITerminal.cc \
-	GUILink.h GUILink.cc \
-	GUINodeParameters.h GUINodeParameters.cc \
-	GUINetTerminal.h GUINetTerminal.cc \
-	GUINetPopup.h GUINetPopup.cc
+	GUINode.cc \
+	GUINetwork.cc \
+	GUIDocument.cc \
+	GUITerminal.cc \
+	GUILink.cc \
+	GUINodeParameters.cc \
+	GUINetTerminal.cc \
+	GUINetPopup.cc
 
 
 bin_PROGRAMS = vflow batchflow
 
 vflow_SOURCES = \
 	main.cc \
-	Probe.cc Probe.h \
-	TextProbe.cc TextProbe.h \
-	PlotProbe.cc PlotProbe.h \
+	Probe.cc \
+	TextProbe.cc \
+	PlotProbe.cc \
 	SpectrumProbe.cc \
-	canvas-background.c canvas-background.h \
-	GUINode.h GUINode.cc \
-	GUINetwork.h GUINetwork.cc \
-	GUIDocument.h GUIDocument.cc \
-	GUITerminal.h GUITerminal.cc \
-	GUILink.h GUILink.cc \
-	GUINodeParameters.h GUINodeParameters.cc \
-	GUINetTerminal.h GUINetTerminal.cc \
-	GUINetPopup.h GUINetPopup.cc
+	canvas-background.c \
+	GUINode.cc \
+	GUINetwork.cc \
+	GUIDocument.cc \
+	GUITerminal.cc \
+	GUILink.cc \
+	GUINodeParameters.cc \
+	GUINetTerminal.cc \
+	GUINetPopup.cc
 
 batchflow_SOURCES = \
 	batchflow.cc
