@@ -25,6 +25,7 @@ protected:
    GnomeCanvasGroup *group;
    
    const double MIN_POINT_DISTANCE;
+   const double MAX_POINT_DISTANCE;
 
 
 

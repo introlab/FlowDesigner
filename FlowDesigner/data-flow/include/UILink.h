@@ -52,18 +52,21 @@ class GUILinkPoint {
     
     double dx1 = x - p1.x;
     double dy1 = y - p1.y;
-    double delta1 = dx1 / dy1;
+    double m1 = dx1 / dy1;
+    double b1 = y - m1 * x;
+
 
     double dx2 = p2.x - x;
     double dy2 = p2.y - y;
-    double delta2 = dx2 / dy2;
+    double m2 = dx2 / dy2;
+    double b2 = y - m2 * x;
 
     //cout<<"delta1 : "<<delta1<<endl;
     //cout<<"delta2 : "<<delta2<<endl;
 
     //accepting 10% deviation
-    if (delta1 / delta2 > 0.90 &&
-	delta1 / delta2 < 1.10) {
+    if ( max(m1,m2) / min(m1,m2) > 0.90 &&
+	 max(b1,b2) / min(b1,b2) > 0.90) {
       return true;
     }
     else {

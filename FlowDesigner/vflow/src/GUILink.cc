@@ -13,7 +13,7 @@ static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 }
 
 GUILink::GUILink(UITerminal *_from, UITerminal *_to, char *points_str)
-  : UILink (_from, _to, points_str), MIN_POINT_DISTANCE(25.0) {
+  : UILink (_from, _to, points_str), MIN_POINT_DISTANCE(25.0), MAX_POINT_DISTANCE(200) {
 
 
    GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
@@ -167,6 +167,7 @@ gint GUILink::event(GdkEvent *event)
 	     list<GUILinkPoint*>::iterator iter_end = m_points.end();
 	     iter_end--;
 
+
 	     for (list<GUILinkPoint*>::iterator iter = m_points.begin();
 		  iter != iter_end; iter++) {
 	      	       
@@ -175,21 +176,21 @@ gint GUILink::event(GdkEvent *event)
 	       GUILinkPoint pfirst ((*iter1)->x,(*iter1)->y);
 	       
 	       iter1++;
-	       
+
 	       GUILinkPoint psecond ((*iter1)->x,(*iter1)->y);
 	      
 	       double dist1 = p1.dist(pfirst);
 	       double dist2 = p1.dist(psecond);
-	       
 
+	      
 	       if ((dist1 < dist2) && iter != m_points.begin() &&
-		   dist1 < MIN_POINT_DISTANCE) {
+		   dist1 <= MIN_POINT_DISTANCE) {
 		 my_point = *iter;
 		 break;
 	       }
 
 	       if ((dist2 < dist1) && iter1 != iter_end &&
-		   dist2 < MIN_POINT_DISTANCE) {
+		   dist2 <= MIN_POINT_DISTANCE) {
 		 my_point = *iter1;
 		 break;
 	       }
@@ -204,11 +205,12 @@ gint GUILink::event(GdkEvent *event)
 		   
 		   //inserting in the list
 		   m_points.insert(iter1,my_point);		 
+
 		   break;
+		   		   
 		 } 
 	       }//between
 	       
-
 	     }//for
 	   }//else
 	 }//complete
