@@ -20,12 +20,19 @@
 #include "covariance.h"
 #include "Object.h"
 
-class CovarianceSet {
+class CovarianceSet : public Object {
 protected:
+   int nb_covariances;
    Vector<Ptr<Covariance> > covariances;
 public:
    /**Default Constructor*/
    CovarianceSet() {};
+
+   /**Returns the id corresponding to the pointer (or add if absent)*/
+   int getIDFor(Ptr<Covariance>);
+
+   /**Returns the pointer corresponding to the id*/
+   Ptr<Covariance> getPtrFor(int id);
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
@@ -34,7 +41,7 @@ public:
    void readFrom (istream &in=cin);
 
    /**extractor operator*/
-   friend istream &operator >> (istream &in, DiagonalCovariance &cov);
+   friend istream &operator >> (istream &in, CovarianceSet &cov);
 
 };
 

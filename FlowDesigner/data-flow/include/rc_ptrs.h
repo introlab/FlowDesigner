@@ -18,16 +18,63 @@
  *
  */
 
-// Implemented are four classes:
-// counted_ptr, counted_pod_ptr, counted_array_ptr, and counted_pod_array_ptr
-// These classes implement reference-counted smart pointers that automatically
-// deletes the pointer it contains when no longer needed
-// i.e. (reference count drops to zero)
+/*
+   Since then, heavily modified by Jean-Marc Valin (1999)
+   valj01@gel.usherb.ca
+*/
 
 #include <stddef.h>
 #include <stream.h>
 #include <typeinfo>
+#include "BaseException.h"
+#include <string>
 
+/** 
+    The PtrCastException occurs when we are unable to cast a Ptr<T>
+    to a Ptr<U>
+    @author Jean-Marc Valin.
+    @version 1.0
+ */
+template <class T, class U>
+class PtrCastException : public GenericCastException {
+protected:
+   string type;
+public:
+   /**The constructur that takes an error message*/
+   PtrCastException(const T *obj)
+      : type(typeid(*obj).name())
+   {}
+  
+   /**The print method*/
+   virtual void print(ostream &out = cerr) 
+   {
+      out << "Cast error: Trying to cast Ptr <" << typeid(T).name() << "> (" 
+          << type << ") into Ptr<" << typeid(U).name() << ">" << endl;
+   }
+};
+
+class PtrException : public BaseException {
+protected:
+   string message;
+public:
+   /**The constructur that takes an error message*/
+   PtrException(const string &_message)
+      : message(_message)
+   {}
+  
+   /**The print method*/
+   virtual void print(ostream &out = cerr) 
+   {
+      out << message << endl;
+   }
+};
+
+
+/** 
+    The counted pointer class
+    @author Jean-Marc Valin.
+    @version 1.0
+ */
 template <class X>
 class Ptr
 {
@@ -50,7 +97,11 @@ public:
    Ptr(const Ptr<Z> &r)
    {
       ptr=dynamic_cast<X*> (r.ptr);
-      if (!ptr) throw "Ptr<X>: Illegal pointer conversion in copy constructor";
+      if (!ptr) 
+         {
+            //throw "Ptr<X>: Illegal pointer conversion in copy constructor";
+            if (!ptr) throw PtrCastException<Z,X>(r.ptr);
+         }
       count=r.count;
       acquire();
    }
@@ -70,9 +121,11 @@ public:
    {
       if ((int) this != (int) (&r))
       {
+         X *tmp=dynamic_cast<X*> (r.ptr);
+         //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
+         if (!tmp) throw PtrCastException<Z,X>(r.ptr);
          release();
-         ptr=dynamic_cast<X*> (r.ptr);
-         if (!ptr) throw "Ptr<X>: Illegal pointer conversion in operator =";
+         ptr=tmp;
          count = r.count;
          acquire();
       }
@@ -91,9 +144,35 @@ public:
       return *this;
    }
 
+   template <class Z>
+   Ptr& operator= (const Z *r)
+   {
+      if ((int) this != (int) (r))
+      {
+         X *tmp=dynamic_cast<X*> (r);
+         //if (!tmp) throw "Ptr<X>: Illegal pointer conversion in operator =";
+         if (!tmp) throw PtrCastException<Z,X>(r.ptr);
+         release();
+         ptr=tmp;
+         count=new size_type(1);
+      }
+      return *this;
+   }
+
+   Ptr& operator= (const X *r)
+   {
+      if (this != &r)
+      {
+         release();
+         ptr = r;
+         count=new size_type(1);
+      }
+      return *this;
+   }
+
 #ifdef RT_DEBUG
-   X& operator* () const {if (ptr) return *ptr; else throw "dereferencing NULL pointer in *";}
-   X* operator->() const {if (ptr) return  ptr; else throw "dereferencing NULL pointer in ->";}
+   X& operator* () const {if (ptr) return *ptr; else throw PtrException("dereferencing NULL pointer in *");}
+   X* operator->() const {if (ptr) return  ptr; else throw PtrException("dereferencing NULL pointer in ->");}
 #else
    X& operator* () const {	return *ptr; }
    X* operator->() const {	return  ptr; }
@@ -117,10 +196,10 @@ public:
             ptr = 0;
             return tmp;
          } else {
-            throw "Error: trying to detach a non-unique pointer in rc_ptrs.h";
+            throw PtrException("Error: trying to detach a non-unique pointer in rc_ptrs.h");
          }
       } else {
-         throw "Error: trying to detach a NULL pointer in rc_ptrs.h";
+         throw PtrException("Error: trying to detach a NULL pointer in rc_ptrs.h");
       }
    }
 

@@ -20,10 +20,10 @@
 #include "state.h"
 
 
-///Base model class, can be used for phonemes, allophones, ...
+/**Base model class, can be used for phonemes, allophones, ...*/
 class Model {
-   ///Set of states for the model
-   vector<State *> states;
+   /**Set of states for the model*/
+   vector<Ptr<State> > states;
 
 };
 

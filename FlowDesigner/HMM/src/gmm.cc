@@ -255,12 +255,12 @@ void GMM::readFrom (istream &in)
          in >> dimensions;
       else if (tag == "gaussians")
       {
-         vector<ObjectRef > tmp;
+         /*vector<ObjectRef > tmp;
          in >> tmp;
          gaussians.resize(tmp.size());
          for (int i = 0; i<tmp.size();i++)
-            gaussians[i] = tmp[i];
-         //in >> gaussians;
+         gaussians[i] = tmp[i];*/
+         in >> gaussians;
       }
       else if (tag == "mode")
          in >> mode;

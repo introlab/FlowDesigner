@@ -130,7 +130,8 @@ public:
    virtual ObjectRef create() {return ObjectRef(new T);}
 };
 
-inline istream &operator >> (istream &in, ObjectRef &o)
+template <class T>
+inline istream &operator >> (istream &in, Ptr<T> &o)
 {
    char ch;
    in >> ch;

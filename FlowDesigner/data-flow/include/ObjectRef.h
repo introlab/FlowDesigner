@@ -24,10 +24,6 @@
 #include <typeinfo>
 
 
-class GenericCastException : public BaseException{
-public:
-   virtual void print(ostream &out = cerr)=0;
-};
 
 /** 
     The CastException occurs when we are unable to cast an ObjectRef.

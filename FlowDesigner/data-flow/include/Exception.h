@@ -21,30 +21,8 @@
 #include <iostream.h>
 #include <string>
 #include "rc_ptrs.h"
+#include "BaseException.h"
 
-/***************************************************************************/
-/*
-  BaseException
-  Dominic Letourneau
- */
-/***************************************************************************/
-/** This is the base class of all exceptions in the network. You should 
-    always derive from this class if you want to make a new exception 
-    handler.
-    @author Dominic Letourneau
-    @version 1.0
-*/
-class BaseException {
-public:
-
-   /** This pure virtual function is intended for debug purposes.
-       Every exception should be able to print a message. */
-   virtual void print (ostream &out = cerr) = 0;
-
-   ///Destructor
-   virtual ~BaseException(){;}
-
-};
 
 
 /***************************************************************************/
