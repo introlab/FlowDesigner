@@ -27,11 +27,11 @@ vflow_SOURCES = \
 	GUILink.h GUILink.cc \
 	GUINodeParameters.h GUINodeParameters.cc \
 	GUINetTerminal.h GUINetTerminal.cc \
-	Probe.cc \
-	TextProbe.cc \
-	PlotProbe.cc \
+	Probe.cc Probe.h \
+	TextProbe.cc TextProbe.h \
+	PlotProbe.cc PlotProbe.h \
 	SpectrumProbe.cc \
-	canvas-background.c
+	canvas-background.c canvas-background.h
 
 
 batchflow_SOURCES = \
