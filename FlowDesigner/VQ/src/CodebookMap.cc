@@ -1,21 +1,37 @@
+// Copyright (C) 1999 Jean-Marc Valin
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, write to the Free Software Foundation,
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
 #include "CodebookMap.h"
 
 DECLARE_TYPE(CodebookMap)
 
 
-CodebookMap::CodebookMap(const KMeans &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length)
+CodebookMap::CodebookMap(const Ptr<VQ> &_mapIn, const vector<float *> dataIn, const vector<float *> dataOut, int length)
    : mapIn(_mapIn)
-   , mapOut(_mapIn.nbClasses(),Vector<float> (length,0))
+   , mapOut(_mapIn->nbClasses(),Vector<float> (length,0))
 {
    //for (int i=0;i<_mapIn.nbClasses();i++)
    //   mapOut[i].resize(length);
    
-   int mapSize = mapIn.nbClasses();
+   int mapSize = mapIn->nbClasses();
    vector<int> counts(mapSize,0);
    
    for (int i=0;i<dataIn.size();i++)
    {
-      int id = mapIn.getClassID(dataIn[i]);
+      int id = mapIn->getClassID(dataIn[i]);
       for (int j=0;j<length;j++)
 	 mapOut[id][j] += dataOut[i][j];
       counts[id]++;
@@ -30,7 +46,7 @@ CodebookMap::CodebookMap(const KMeans &_mapIn, const vector<float *> dataIn, con
    double dist=0;
    for (int i=0;i<dataIn.size();i++)
    {
-      int id = mapIn.getClassID(dataIn[i]);
+      int id = mapIn->getClassID(dataIn[i]);
       for (int j=0;j<length;j++)
 	 dist += (mapOut[id][j] - dataOut[i][j]) * (mapOut[id][j] - dataOut[i][j]);
    }
@@ -41,7 +57,7 @@ CodebookMap::CodebookMap(const KMeans &_mapIn, const vector<float *> dataIn, con
 const float * CodebookMap::calcOutput(const float *in) const
 {
    //looks up the input vector, uses the ID to find the corresponding output
-   return mapOut[mapIn.getClassID(in)].begin();
+   return mapOut[mapIn->getClassID(in)].begin();
 }
 
 void CodebookMap::printOn(ostream &out) const

@@ -17,7 +17,7 @@
 #ifndef VQ_H
 #define VQ_H
 
-#include "kmeans.h"
+//#include "kmeans.h"
 #include "Object.h"
 #include <vector>
 

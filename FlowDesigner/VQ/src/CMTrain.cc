@@ -113,7 +113,7 @@ public:
 
 
 	       //FFNet *net = new FFNet( topo ); 
-	       KMeans &vq = object_cast<KMeans> (netValue);
+	       Ptr<VQ> vq = netValue;
 	       
 	       currentNet = ObjectRef(new CodebookMap(vq,in,out,object_cast <Vector<float> > (outBuff[0]).size()));
                //vq.traincg(in, out, maxEpoch);
