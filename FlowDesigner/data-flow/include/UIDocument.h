@@ -62,6 +62,9 @@ protected:
    /**True if document has no real name yet*/
    bool untitled;
 
+   /**True if the object has already been destroyed (by superclass destructor)*/
+   bool destroyed;
+
 public:
 
    /**Document constructor with name, DOES NOT load the document (document created as untitled)*/

@@ -24,26 +24,31 @@ UIDocument::UIDocument(string _name)
    : modified(false)
    , docName(_name)
    , untitled(true)
+   , destroyed(false)
 {
 }
 
 UIDocument::~UIDocument()
 {
-   //cerr << "destroying UIDocument " << name << endl;
-   for (unsigned int i=0;i<networks.size();i++)
-      delete networks[i];
-
-   for (unsigned int i=0;i<textParams.size();i++)
-      delete textParams[i];
-
-   for (unsigned int i=0;i<docInputs.size();i++)
-      delete docInputs[i];
-
-   for (unsigned int i=0;i<docOutputs.size();i++)
-      delete docOutputs[i];
-
-   for (unsigned int i=0;i<docParams.size();i++)
-      delete docParams[i];
+   if (!destroyed)
+   {
+      //cerr << "destroying UIDocument " << name << endl;
+      for (unsigned int i=0;i<networks.size();i++)
+         delete networks[i];
+      
+      for (unsigned int i=0;i<textParams.size();i++)
+         delete textParams[i];
+      
+      for (unsigned int i=0;i<docInputs.size();i++)
+         delete docInputs[i];
+      
+      for (unsigned int i=0;i<docOutputs.size();i++)
+         delete docOutputs[i];
+      
+      for (unsigned int i=0;i<docParams.size();i++)
+         delete docParams[i];
+      destroyed=true;
+   }
 }
 
 

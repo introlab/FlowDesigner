@@ -118,6 +118,7 @@ gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
 
 GUIDocument::~GUIDocument()
 {
+   this->UIDocument::~UIDocument();
    gtk_widget_destroy(vbox2);
    
 }
