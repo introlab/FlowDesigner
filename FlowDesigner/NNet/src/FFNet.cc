@@ -898,7 +898,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, d
       cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
       SSE=nextE;
       dEk = nextdE;
-
+      wk = nextW;
 
    }
    setWeights(wk.begin());
