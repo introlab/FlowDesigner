@@ -2,8 +2,7 @@ AUTOMAKE_OPTIONS = no-dependencies
 
 include_HEADERS = 
 
-noinst_HEADERS = AudioFile.h \
-	GCMS.h \
+noinst_HEADERS = GCMS.h \
 	Label.h \
 	LabelSet.h \
 	Matrix.h \

@@ -28,25 +28,29 @@ DECLARE_NODE(AudioStream)
  *
  * @name AudioStream
  * @category Signal:Base
- * @description No description available
+ * @description Reads an audio stream and outputs frames
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description An audio Stream (stream, fd or FILE *)
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description Frames read
  *
  * @parameter_name LENGTH
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Length of the frames (in samples)
  *
  * @parameter_name ADVANCE
- * @parameter_description No description available
+ * @parameter_type int
+ * @parameter_description Offset beween frames (in samples)
  *
  * @parameter_name ENCODING
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_description Type of encoding (LIN16, ULAW, ALAW, LIN8)
  *
  * @parameter_name STREAM_TYPE
- * @parameter_description No description available
+ * @parameter_type string
+ * @parameter_description Type of stream (stream, fd, FILE)
  *
 END*/
 
