@@ -4,6 +4,7 @@
 #define BINIO_H
 
 #include <iostream>
+#include <stdlib.h>
 
 class BinIO {
 public:
