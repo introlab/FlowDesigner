@@ -45,7 +45,7 @@ protected:
    int inputID;
    int accumID;
    int outputID;
-   int processCount;
+   //int processCount;
 public:
    Accumulate (string nodeName, const ParameterSet &params)
       : Node(nodeName, params)
@@ -57,21 +57,21 @@ public:
 
    void specificInitialize()
    {
-      processCount = -1;
+      //processCount = -1;
       Node::specificInitialize();
    }
 
    void reset()
    {
-      processCount = -1;
+      //processCount = -1;
       Node::reset();
    }
 
    ObjectRef getOutput(int output_id, int count)
    {
       int i,j;
-      for (i=processCount+1;i<=count;i++)
-      {
+      //for (i=processCount+1;i<=count;i++)
+      //{
 	 ObjectRef inputValue = getInput(inputID,i);
 	 if (inputValue->status == Object::valid)
 	 {
@@ -81,8 +81,8 @@ public:
 	    accum.push_back(inputValue);
 	 }
 	 
-      }
-      processCount = count;
+      //}
+      //processCount = count;
       return getInput(accumID,count);
    }
 

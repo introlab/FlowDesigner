@@ -24,15 +24,21 @@ DECLARE_NODE(GMMTrain)
 /*Node
  *
  * @name GMMTrain
- * @category VQ
- * @description No description available
+ * @category HMM
+ * @description Trains a GMM using an accumulator of frames
  *
  * @input_name FRAMES
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Frame accumulator
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type GMM
+ * @output_description The trained GMM
  *
+ * @parameter_name SPLIT_LEVELS
+ * @parameter_type int
+ * @parameter_description Number of times to perform the split = log2 (number of gaussians)
+ * 
 END*/
 
 
@@ -42,6 +48,7 @@ GMMTrain::GMMTrain(string nodeName, ParameterSet params)
    //cerr << "GMMTrain initialize\n";
    outputID = addOutput("OUTPUT");
    framesInputID = addInput("FRAMES");
+   splitLevels = dereference_cast<int> (parameters.get("SPLIT_LEVELS"));
 }
 
 void GMMTrain::specificInitialize()
@@ -77,12 +84,12 @@ ObjectRef GMMTrain::getOutput(int output_id, int count)
             data[i]=&object_cast <Vector<float> > (mat[i])[0];
          gmm->init(data);
          gmm->to_real();
-         for (i=0;i<8;i++)
+         for (i=0;i<splitLevels;i++)
          {
             //gmm->split1();
             gmm->binary_split();
             gmm->kmeans1(data,10);
-            //cerr << "*******  " << i << "  *******"<<endl;
+            cerr << "*******  " << i << "  *******"<<endl;
          }
          //cerr << endl;
          gmm->kmeans1(data,10);
