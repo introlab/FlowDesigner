@@ -203,7 +203,7 @@ mul4_skip:
 #endif /*WIN32*/
 
 #else
-inline float mahalanobis4_SSE<float>(const float *a, const float *b, const float *c, int len)
+inline float mahalanobis4_SSE(const float *a, const float *b, const float *c, int len)
 {
    throw new generalException("Trying to use SSE routine, but code not compiled for SSE support", __FILE__,
 			      __LINE__);
