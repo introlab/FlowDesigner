@@ -266,94 +266,180 @@ void KeyPad::specificInitialize() {
 
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_1), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_1), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_2), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_2), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
    
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_3), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_3), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_4), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_4), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
    
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_5), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_5), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_6), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_6), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
    
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_7), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_7), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_8), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_8), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_9), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_9), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_0), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_0), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
    
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_hash), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_hash), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_star), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_star), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_A), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_A), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_B), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_B), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
    
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_C), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_C), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
 
    //connecting signals
-   gtk_signal_connect (GTK_OBJECT (button_D), "clicked",
-		       GTK_SIGNAL_FUNC (keypad_button_clicked),
+   gtk_signal_connect (GTK_OBJECT (button_D), "pressed",
+		       GTK_SIGNAL_FUNC (keypad_button_pressed),
 		       this);
    
 
 
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_1), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_2), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_3), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_4), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_5), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_6), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_7), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_8), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_9), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_0), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_hash), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_star), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_A), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_B), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+   
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_C), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
+
+   //connecting signals
+   gtk_signal_connect (GTK_OBJECT (button_D), "released",
+		       GTK_SIGNAL_FUNC (keypad_button_released),
+		       this);
 
    gdk_threads_leave(); 
    SET_CANCEL;
@@ -409,7 +495,7 @@ ObjectRef KeyPad::getOutput(int output_id, int count) {
       if (traceEnable && (count % skip == 0) && count >= breakAt)
 	trace();
       
-      if (changed && (hold_value == 0 || (count < last_update + hold_value))) {
+      if (changed) {
 	Vector<int> *my_output = new Vector<int>(2);
 	
 	(*my_output)[0] = selected_line;
@@ -510,15 +596,15 @@ void KeyPad::update_values(int pad_number) {
   }
 
   changed = true;
-  last_update = current_count;
+
 
 }
 
-void keypad_button_clicked(GtkObject  *object, KeyPad *keypad) {
+void keypad_button_pressed(GtkButton  *button, KeyPad *keypad) {
 
   try {
   
-    int pad_number = keypad->key_map[GTK_WIDGET(object)];
+    int pad_number = keypad->key_map[GTK_WIDGET(button)];
     keypad->update_values(pad_number);
     
   }
@@ -530,6 +616,13 @@ void keypad_button_clicked(GtkObject  *object, KeyPad *keypad) {
     cerr<<"Unknown exception occured in KeyPad.cc"<<endl;
     exit(-1);
   }
+}
+
+
+void keypad_button_released(GtkButton  *button, KeyPad *keypad) {
+
+  keypad->changed = false;
+
 }
 
 

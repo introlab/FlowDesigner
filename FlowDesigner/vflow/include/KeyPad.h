@@ -9,8 +9,9 @@ using namespace std;
 class KeyPad : public Probe {
 
   //callbacks
-  friend void keypad_button_clicked(GtkObject  *object, KeyPad* keypad);
- 
+  friend void keypad_button_pressed(GtkButton  *object, KeyPad* keypad);
+  friend void keypad_button_released(GtkButton  *button, KeyPad *keypad);
+  
   protected:
 
 
