@@ -67,7 +67,6 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
 		 
        description = net->getDocument()->getDescription(type);
 
-       parameters = newNodeParameters(this,type);
 
      }
       
