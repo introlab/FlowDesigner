@@ -23,7 +23,7 @@ DECLARE_NODE(Throw)
 /*Node
  *
  * @name Throw
- * @category General
+ * @category Flow
  * @description No description available
  *
  * @input_name INPUT

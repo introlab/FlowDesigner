@@ -23,7 +23,7 @@ DECLARE_NODE(Catch)
 /*Node
  *
  * @name Catch
- * @category General
+ * @category Flow
  * @description Catches an exception
  *
  * @input_name INPUT
