@@ -34,18 +34,13 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    , dragging(false)
    , grab(false)
 {
-   cerr << "creating params...\n";
    parameters = newNodeParameters(this, type);
 
-   cerr << "loading params...\n";
    parameters->load(def);
    
-   cerr << "drawing node...\n";
    draw();
 
-   cerr << "creating node popup...\n";
    createPopup();
-   cerr << "done\n";
 }
 
 void GUINode::draw()
@@ -53,9 +48,9 @@ void GUINode::draw()
       GnomeCanvasItem *item1, *item2;
    double x1,y1,x2,y2;
    gint ix,iy;
-   cerr << "finding group...\n";
+   //cerr << "finding group...\n";
    GnomeCanvasGroup* netGroup = dynamic_cast<GUINetwork *> (net)->getGroup();
-   cerr << "..found\n";
+   //cerr << "..found\n";
    group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (netGroup,
                                                       gnome_canvas_group_get_type(),
                                                       "x", x,
@@ -75,7 +70,7 @@ void GUINode::draw()
       
    gnome_canvas_item_raise_to_top(item1);
 
-   cerr << "processing inputs/outputs\n";
+   //cerr << "processing inputs/outputs\n";
    {
       double xx1=x1-15.0;
       double xx2=x2+15.0;
@@ -89,7 +84,7 @@ void GUINode::draw()
       } else {
 	 inputname = net->getDocument()->getNetInputs(type); 
 	 outputname = net->getDocument()->getNetOutputs(type); 
-	 cerr << "UINode::draw factory not found in simple nodes\n";
+	 //cerr << "UINode::draw factory not found in simple nodes\n";
       }
       if (inputname.size() > 1)
       for (int i=0;i<inputname.size();i++)
@@ -141,7 +136,7 @@ void GUINode::draw()
                                  NULL);
     nodeRect=item2;  
     //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
-    cerr << "creating terminals\n";
+    //cerr << "creating terminals\n";
       for (int i=0;i<inputname.size();i++)
          inputs.insert(inputs.end(), new GUITerminal (inputname[i], this, true, x1-5.0, 
                                                      -15.0*(.5*(inputname.size()-1)-i)));

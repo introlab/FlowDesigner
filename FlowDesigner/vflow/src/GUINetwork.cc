@@ -31,6 +31,7 @@ GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net, bool iter)
    : UINetwork(_doc, net, iter, false)
 {
    //cerr << "GUINetwork::GUINetwork\n";
+   name = string((char *)xmlGetProp(net, (CHAR *)"name"));
    create();
    load(net);
 }
