@@ -97,8 +97,9 @@ fd_streambuf::fd_streambuf(int _fd, bool _owner)
 
 int fd_streambuf::overflow(int c = EOF)
 {
-   write(fd, &c, 1);
-   //FIXME: Find EOF?
+   unsigned char _c = c;
+   //FIXME: How about EOF?
+   write(fd, &_c, 1);
 }
 
 
@@ -261,9 +262,10 @@ int pipe_streambuf::ll_write(const void *buf, size_t count)
 
 int pipe_streambuf::overflow(int c = EOF)
 {
-   //FIXME: How to handle ELF, also we're writing an int with size=1. That's not right
+   unsigned char _c = c;
+   //FIXME: How to handle EOF?
    if (ofd!=-1)
-      return ll_write(&c, 1);
+      return ll_write(&_c, 1);
    else
       throw new GeneralException("Cannot write to read-only pipe", __FILE__, __LINE__);
 }
