@@ -154,7 +154,7 @@ void GMM::binary_split()
       Vector <double> &mean = gaussians[i+old_size]->getMean();
       for (unsigned int j=0;j<mean.size();j++)
       {
-         mean[j]+=.000001*(rand()%100-49.5);
+         mean[j]*=1+.0002*(rand()%100-49.5);
          //mean[j]+=.0001;
       }
    }
