@@ -25,7 +25,7 @@ AC_ARG_WITH(libtool-ld,
     [  --with-libtool-acc-kludge    tell libtool to use g++ instead of ld to link shared libraries],
     [mv libtool libtool-bak  
 export withval
-cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$ENV{"ldval"}\"/; print' > libtool
+cat libtool-bak | perl -ne 's/\+h /\\\${wl}\+h/; s/ \+b / \\\${wl}\+b/; s/\"\/.*\/ld\"/\"$ENV{"withval"}\"/; print' > libtool
     ])
 ])
 
