@@ -28,7 +28,7 @@
 class Pow;
 
 //DECLARE_NODE(Pow)
-NODE_INFO(Pow,"Signal:Base", "INPUT", "OUTPUT", "LENGTH")
+NODE_INFO(Pow,"Signal:Base", "INPUT", "OUTPUT", "LENGTH:EXP")
 
 class Pow : public FrameOperation {
    
