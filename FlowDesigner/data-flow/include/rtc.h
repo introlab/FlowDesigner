@@ -31,6 +31,7 @@ class RTCTimer {
    pthread_t thread;
    pthread_mutex_t lock;
    list<RTCUser *> users;
+   bool exit_status;
 public:
    static RTCUser *create(int delay);
    static void destroy(RTCUser *u);
