@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.48 2000/07/06 04:55:07 jmvalin Exp $
+# $Id: Makefile.am,v 1.49 2000/07/06 05:55:37 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -11,7 +11,7 @@ install:
 	(cd $(prefix)/lib; rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
 
 libablocks_la_SOURCES =	\
-        GCMS.cc \
+	GCMS.cc \
 	MMIAccumulator.cc \
 	Histogram.cc \
 	PitchDecision.cc \
@@ -73,7 +73,8 @@ libablocks_la_SOURCES =	\
 	window.c \
 	psy.c \
 	MDCT.cc \
-	VorbisPsycho.cc
+	VorbisPsycho.cc \
+	Pow.cc
 
 libablocks_la_LDFLAGS = -release $(LT_RELEASE)
 
