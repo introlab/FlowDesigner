@@ -21,9 +21,20 @@ protected:
 
    GnomeCanvasItem *item_text;
 
+   bool hidden;
 
 
 public:
+
+   void showName() {
+     gnome_canvas_item_show(item_text);
+     hidden = false;
+   }
+
+   void hideName() {
+     gnome_canvas_item_hide(item_text);
+     hidden = true;
+   }
 
    GnomeCanvasItem * getItem() {return item;}
    
@@ -91,8 +102,7 @@ public:
      }
 			 
 
-     for (int i=0;i<connections.size();i++)
-       dynamic_cast<GUILink *>(connections[i])->move(isInput, dx, dy);
+     move(dx,dy);
 
 
    }
@@ -102,9 +112,14 @@ public:
 
      double x1,y1,x2,y2;
 
-     gnome_canvas_item_get_bounds(item_text,&x1,&y1,&x2,&y2);
-
-     return x2 - x1 + 2;
+     if (!hidden) {
+       gnome_canvas_item_get_bounds(item_text,&x1,&y1,&x2,&y2);
+       
+       return x2 - x1 + 2;
+     }
+     else {
+       return 2.0;
+     }
    }
    
 

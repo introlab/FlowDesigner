@@ -575,7 +575,15 @@ void GUINode::redraw() {
 
 
   //let's position the inputs
-  for (int i = 0; i < inputs.size(); i++) {   
+  for (int i = 0; i < inputs.size(); i++) { 
+
+    if (inputs.size() > 1) {
+      dynamic_cast<GUITerminal*>(inputs[i])->showName();
+    }
+    else {
+      dynamic_cast<GUITerminal*>(inputs[i])->hideName();
+    }
+  
     //position text & terminal
     dynamic_cast<GUITerminal*>(inputs[i])->setAbsPos(tx1 - max_inputs, start_y1 + 15 * (i));
   }//inputs
@@ -583,8 +591,17 @@ void GUINode::redraw() {
 
   //let's find the maximum width of the output
   for (int i = 0; i < outputs.size(); i++) {
+
+    if (outputs.size() > 1) {
+      dynamic_cast<GUITerminal*>(outputs[i])->showName();
+    }
+    else {
+      dynamic_cast<GUITerminal*>(outputs[i])->hideName();
+    }
     //position text & terminal
     dynamic_cast<GUITerminal*>(outputs[i])->setAbsPos(tx2 + max_outputs, start_y2 + 15 * (i));
+
+
   }//outputs
 
 
