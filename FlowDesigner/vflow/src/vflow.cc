@@ -853,6 +853,9 @@ static void export_network_event(GtkMenuItem *menuitem, gpointer user_data)
   
     GtkWidget *ssel = gtk_file_selection_new("Export Network...");
     
+
+
+
     gtk_object_set_user_data(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),ssel);
     
     gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),
@@ -863,6 +866,13 @@ static void export_network_event(GtkMenuItem *menuitem, gpointer user_data)
 		       "clicked", (GtkSignalFunc) network_export_fsel_destroy, 
 		       ssel);
   
+
+    string defaultName = net->getName() + string(".n");
+
+    gtk_file_selection_set_filename (GTK_FILE_SELECTION(ssel), 
+				     defaultName.c_str());
+
+
     gtk_widget_show(ssel);
 
 
