@@ -12,8 +12,8 @@ DECLARE_NODE(LinSolve)
 /*Node
  *
  * @name LinSolve
- * @category Vector
- * @description Solves the Ax=b linear system
+ * @category Matrix
+ * @description Solves the A*x=b linear system
  *
  * @input_name A
  * @input_description The A matrix

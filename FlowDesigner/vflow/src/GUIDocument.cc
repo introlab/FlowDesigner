@@ -14,6 +14,34 @@
 #  include <config.h>
 #endif
 
+extern GnomeMDI *mdi;
+
+static void on_cut_activate (GtkMenuItem *menuitem, gpointer user_data) {
+  cerr<<"on_cut_activate not yet implemented"<<endl;
+}
+
+
+static void on_copy_activate (GtkMenuItem *menuitem, gpointer user_data) {
+  cerr<<"on_copy_activate not yet implemented"<<endl;
+}
+
+static void on_paste_activate (GtkMenuItem *menuitem, gpointer user_data) {
+  cerr<<"on_paste_activate not yet implemented"<<endl;
+}
+
+static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
+
+  //getting the active document
+  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+  GUINetwork *net = dynamic_cast<GUINetwork*>(doc->getCurrentNet());
+
+  if (net) {
+    net->clearSelectedNodes();
+  }
+
+}
+
+
 //#include <gdk/gdk.h>
 
 //UIDocument *UIDocument::currentDocument;
@@ -94,6 +122,18 @@ static void remove_net_event  (GtkMenuItem     *menuitem,
  //cerr << "remove net\n";
 }
 
+static GnomeUIInfo edit_menu[] =
+{
+  GNOMEUIINFO_MENU_CUT_ITEM (on_cut_activate, NULL),
+  GNOMEUIINFO_MENU_COPY_ITEM (on_copy_activate, NULL),
+  GNOMEUIINFO_MENU_PASTE_ITEM (on_paste_activate, NULL),
+  GNOMEUIINFO_MENU_CLEAR_ITEM (on_clear_activate, NULL),
+  /* GNOMEUIINFO_SEPARATOR,
+  GNOMEUIINFO_MENU_PROPERTIES_ITEM (on_properties1_activate, NULL),*/
+  GNOMEUIINFO_END
+};
+
+
 static GnomeUIInfo view_menu[] = {
    
    GNOMEUIINFO_ITEM_NONE (N_("Add _Network"),
@@ -114,6 +154,8 @@ static GnomeUIInfo view_menu[] = {
 
 static GnomeUIInfo doc_menu[] = {
 
+   { GNOME_APP_UI_SUBTREE, N_("_Edit"), NULL, edit_menu, NULL, NULL,
+     GNOME_APP_PIXMAP_NONE, NULL, 0, (GdkModifierType)0, NULL },
    { GNOME_APP_UI_SUBTREE, N_("_Networks"), NULL, view_menu, NULL, NULL,
      GNOME_APP_PIXMAP_NONE, NULL, 0, (GdkModifierType)0, NULL },
    GNOMEUIINFO_END
@@ -661,9 +703,9 @@ void GUIDocument::threadStop()
       //cerr << "stopping...\n";
       isRunning=false;
       //runningNet->cleanupNotify();
-      #ifdef HAVE_PTHREAD_CANCEL
+#ifdef HAVE_PTHREAD_CANCEL
       pthread_cancel(runThread);
-      #endif
+#endif
       //less_print("Stopping " + docName);
    }
 
