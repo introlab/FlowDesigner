@@ -279,8 +279,8 @@ void Probe::next()
    
    pthread_mutex_lock(&mutex);
    nbClick++;
-   pthread_mutex_unlock(&mutex);
    pthread_cond_signal(&cond);
+   pthread_mutex_unlock(&mutex);
 }
 
 void Probe::cont()
