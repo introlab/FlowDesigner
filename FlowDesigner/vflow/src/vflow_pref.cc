@@ -6,9 +6,12 @@
 
 #include <locale.h>
 #include <gnome.h>
+#include <iostream>
 
 GtkWidget *create_propertybox1 ()
 {
+   cerr << "For the moment, this preference dialog box is nothing more than decoration, sorry:-(" << endl;
+
   GtkWidget *propertybox1;
   GtkWidget *notebook1;
   GtkWidget *vbox3;
