@@ -189,7 +189,7 @@ public:
 	 }
 	 return out2[count];
       } else
-	 if (output_id != output1ID && output_id != output1ID)
+	 if (output_id != output1ID && output_id != output2ID)
 	    throw new NodeException (this, "Wrong output ID", __FILE__, __LINE__);
             
       calcCount = count;
