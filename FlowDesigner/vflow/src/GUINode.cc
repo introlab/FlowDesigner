@@ -348,6 +348,22 @@ gint GUINode::event(GdkEvent *event)
                                       //GDK_ALL_EVENTS_MASK,
                                       fleur,
                                       event->button.time);
+
+	       //if not already selected
+	       if (!dynamic_cast<GUINetwork *>(net)->isNodeSelected(this)) {
+
+		 //selecting node
+		 select();
+		 
+		 //unselect other nodes
+		 dynamic_cast<GUINetwork *>(net)->emptySelectedNodes();
+		 
+		 //adding this one to the selected list
+		 dynamic_cast<GUINetwork *>(net)->addSelectedNode(this);
+		 
+	       }
+
+
                gdk_cursor_destroy(fleur);
                dragging = TRUE;
             }
