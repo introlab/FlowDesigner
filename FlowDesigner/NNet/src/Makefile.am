@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.12 2000/05/27 05:39:09 jmvalin Exp $
+# $Id: Makefile.am,v 1.13 2000/05/27 22:31:15 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -13,7 +13,8 @@ install:
 # Sources for compilation in the library
 libnnet_la_SOURCES = FFLayer.cc FFNet.cc NNetTrain.cc \
 	NNetExec.cc NNetNew.cc NNetTrainCG.cc NNetTrainDBD.cc \
-	NNetTrainRecurrent.cc NNetExecRecurrent.cc
+	NNetTrainRecurrent.cc NNetExecRecurrent.cc \
+	NNetSet.cc NNetSetCalc.cc NNetSetTrain.cc NNetSetTrainDBD.cc
 
 #libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libnnet_la_LDFLAGS = -release $(LT_RELEASE)
