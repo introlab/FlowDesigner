@@ -68,7 +68,7 @@ void GUINode::draw()
                                  "font", "fixed",
                                  NULL);
    gnome_canvas_item_get_bounds(item1, &x1,&y1, &x2, &y2);
-   
+   //x2 *= .5;
       
    gnome_canvas_item_raise_to_top(item1);
 
@@ -144,6 +144,7 @@ void GUINode::draw()
 				    "outline_color", "black",
 				    "width_units", 2.0,
 				    NULL);
+      gnome_canvas_item_lower_to_bottom(item2);
       nodeRect=item2;  
       //gnome_canvas_item_set(item2, "fill_color_rgba", 0xff000040, NULL);
       //cerr << "creating terminals\n";

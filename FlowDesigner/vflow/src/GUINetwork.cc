@@ -105,7 +105,7 @@ void GUINetwork::create()
    gdk_rgb_init ();
    gtk_widget_push_visual (gdk_rgb_get_visual ());
    gtk_widget_push_colormap (gdk_rgb_get_cmap ());
-   GtkWidget *canvas1 = gnome_canvas_new_aa ();
+   GtkWidget *canvas1 = gnome_canvas_new ();
    gtk_widget_pop_colormap ();
    gtk_widget_pop_visual ();
 
