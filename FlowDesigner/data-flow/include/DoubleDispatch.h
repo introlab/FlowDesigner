@@ -93,6 +93,12 @@ class DoubleDispatch {
         int dummy_vtable_init_for ## klass ## _ ## func =\
         klass::reg(func, &typeid(type1), &typeid(type2));
 
+
+#define REGISTER_DOUBLE_VTABLE_TEMPLATE(klass, func, type1, type2, type3, id) \
+        int dummy_vtable_init_for ## klass ## _ ## id =\
+	  klass::reg(func<type1,type2,type3>, &typeid(type1), &typeid(type2));
+
+
 //
 //Maybe it should be called something else and moved somewhere else
 //(DL)

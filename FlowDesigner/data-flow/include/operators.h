@@ -72,31 +72,4 @@ inline ObjectRef concat(ObjectRef x, ObjectRef y)
    return concatVtable::perform(x,y);
 }
 
-//let's try that (DL 22/07/2003)
-/*
-DEFINE_SINGLE_VTABLE(convertToIntVtable);
-inline ObjectRef convertToInt(ObjectRef x)
-{
-   return convertToIntVtable::perform(x);
-}
-
-DEFINE_SINGLE_VTABLE(convertToFloatVtable);
-inline ObjectRef convertToFloat(ObjectRef x)
-{
-   return convertToFloatVtable::perform(x);
-}
-
-DEFINE_SINGLE_VTABLE(convertToVectorIntVtable);
-inline ObjectRef convertToVectorInt(ObjectRef x)
-{
-   return convertToVectorIntVtable::perform(x);
-}
-
-DEFINE_SINGLE_VTABLE(convertToVectorFloatVtable);
-inline ObjectRef convertToVectorFloat(ObjectRef x)
-{
-   return convertToVectorFloatVtable::perform(x);
-}
-*/
-
 
