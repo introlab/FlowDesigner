@@ -252,6 +252,18 @@ REGISTER_VTABLE0(toInt, Double, IntCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toInt, String, IntStringConversion, 5);
 REGISTER_VTABLE0(toInt, NilObject, ReturnNilObject, 6);
 
+//DL 09/06/2004
+//Convenient way to transform a Vector<T> to Vector<int> with the toInt subnet
+static int dummy_template_vtable_init_for_vector_int_to_vector_int = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<int>,Vector<int> >,&typeid(Vector<int>),"toInt");
+
+static int dummy_template_vtable_init_for_vector_float_to_vector_int = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<float>,Vector<int> >,&typeid(Vector<float>),"toInt");
+
+static int dummy_template_vtable_init_for_vector_double_to_vector_int = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<double>,Vector<int> >,&typeid(Vector<double>),"toInt");
+
+
 //Bool conversion
 template<class T>
 ObjectRef BoolCTypeConversion(ObjectRef in)
@@ -296,6 +308,17 @@ REGISTER_VTABLE0(toFloat, Double, FloatCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toFloat, String, FloatStringConversion, 5);
 REGISTER_VTABLE0(toFloat, NilObject, ReturnNilObject, 6);
 
+//DL 09/06/2004
+//Convenient way to transform a Vector<T> to Vector<float> with the toFloat subnet
+static int dummy_template_vtable_init_for_vector_int_to_vector_float = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<int>,Vector<float> >,&typeid(Vector<int>),"toFloat");
+
+static int dummy_template_vtable_init_for_vector_float_to_vector_float = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<float>,Vector<float> >,&typeid(Vector<float>),"toFloat");
+
+static int dummy_template_vtable_init_for_vector_double_to_vector_float = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<double>,Vector<float> >,&typeid(Vector<double>),"toFloat");
+
 //Double conversion
 template<class T>
 ObjectRef DoubleCTypeConversion(ObjectRef in)
@@ -317,6 +340,18 @@ REGISTER_VTABLE0(toDouble, Float, DoubleCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toDouble, Double, DoubleCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toDouble, String, DoubleStringConversion, 5);
 REGISTER_VTABLE0(toDouble, NilObject, ReturnNilObject, 6);
+
+
+//DL 09/06/2004
+//Convenient way to transform a Vector<T> to Vector<double> with the toDouble subnet
+static int dummy_template_vtable_init_for_vector_int_to_vector_double = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<int>,Vector<double> >,&typeid(Vector<int>),"toDouble");
+
+static int dummy_template_vtable_init_for_vector_float_to_vector_double = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<float>,Vector<double> >,&typeid(Vector<float>),"toDouble");
+
+static int dummy_template_vtable_init_for_vector_double_to_vector_double = \
+  vmethod()->registerFunct0(VectorVectorConversion<Vector<double>,Vector<double> >,&typeid(Vector<double>),"toDouble");
 
 
 //String conversion
