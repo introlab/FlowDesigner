@@ -33,6 +33,7 @@ GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
    : UINetwork(_doc, _name, _type)
    , zoom(1)
    , tooltip(NULL)
+   , networkProperties(NULL)
 {
    create();
 }
@@ -41,6 +42,7 @@ GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
    : UINetwork(_doc, net, false)
    , zoom(1)
    , tooltip(NULL)
+   , networkProperties(NULL)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    name = string((char *)xmlGetProp(net, (xmlChar *)"name"));
@@ -91,6 +93,10 @@ GUINetwork::~GUINetwork()
     gtk_object_destroy(GTK_OBJECT(group));
     gtk_widget_destroy(GTK_WIDGET(scrolledwindow1));
 
+    if (networkProperties) {
+      gtk_widget_destroy(GTK_WIDGET(networkProperties));
+      networkProperties = NULL;
+    }
 
     destroyed=true;
   }
@@ -617,4 +623,98 @@ void GUINetwork::rename(string newName) {
     delete e;
   }
   
+}
+
+
+static void network_properties_apply (GnomePropertyBox *propertybox, gint arg1, GUINetwork *net) {
+  if (net) {
+    net->applyNetworkProperties();
+  }
+}
+
+
+
+void GUINetwork::showProperties() {
+
+  if (networkProperties) {
+    //destroy old network properties dialog
+    gtk_widget_destroy(networkProperties);
+  }
+  
+  networkProperties = gnome_property_box_new();  
+  gtk_widget_ref (networkProperties);  
+
+
+  GtkWidget *scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_ref (scrolled_window);
+  gtk_object_set_data_full (GTK_OBJECT (networkProperties), "scrolled_window", scrolled_window,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (scrolled_window);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+
+
+  GtkWidget *text_view = gtk_text_view_new ();
+  gtk_widget_ref (text_view);
+
+  //text view properties
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), TRUE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_view), GTK_WRAP_WORD);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_view), TRUE);	 
+
+  //set the description		   
+  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view)),
+			    getDescription().c_str(), -1);
+
+  gtk_object_set_data_full (GTK_OBJECT (networkProperties), "text_view", text_view,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (text_view);
+  gtk_container_add (GTK_CONTAINER (scrolled_window), text_view);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(text_view),TRUE);
+
+
+  //description text signal handler
+  g_object_connect (G_OBJECT (gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view))), "signal::changed",
+		    GTK_SIGNAL_FUNC(network_description_changed_event), this,NULL);
+
+
+
+  GtkWidget *description_label = gtk_label_new (_("Description"));
+  gtk_widget_ref (description_label);
+
+  gtk_object_set_data_full (GTK_OBJECT (networkProperties), "description_label", description_label,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (description_label);
+   
+  //append "Description page"
+  gnome_property_box_append_page  (GNOME_PROPERTY_BOX(networkProperties),scrolled_window, description_label);
+  
+  gtk_signal_connect (GTK_OBJECT (networkProperties), "apply", GTK_SIGNAL_FUNC(network_properties_apply), this);
+
+
+  //default = nothing has changed
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(networkProperties),FALSE);
+
+  //show properties dialog
+  gtk_widget_show(networkProperties);
+
+}
+
+
+
+void network_description_changed_event (GtkTextBuffer *textbuffer, GUINetwork *network) {  
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(network->networkProperties),TRUE);
+}
+
+
+void GUINetwork::applyNetworkProperties() {
+
+  if (networkProperties) {
+    //updating description
+    GtkTextView *text_view = GTK_TEXT_VIEW(gtk_object_get_data(GTK_OBJECT(networkProperties), "text_view"));
+    GtkTextBuffer* buffer = gtk_text_view_get_buffer(text_view);
+    GtkTextIter start, end;
+    gtk_text_buffer_get_bounds(buffer, &start, &end);       
+    setDescription(gtk_text_buffer_get_text (buffer, &start, &end, TRUE));    
+    setModified();
+  }
 }

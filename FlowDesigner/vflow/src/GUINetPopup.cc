@@ -46,6 +46,17 @@ static void zoomout(GtkMenuItem     *menuitem,
    dynamic_cast<GUINetwork *> (net)->zoomOut();
 }
 
+
+static void network_properties_activate(GtkMenuItem *menuitem, UINetwork *net) {
+ 
+  GUINetwork *my_network = dynamic_cast<GUINetwork*>(net);
+
+  if (my_network) {
+    my_network->showProperties();
+  }
+}
+
+
 GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
    : doc(_doc)
    , net(_net)
@@ -194,6 +205,10 @@ GUINetPopup::GUINetPopup(UIDocument *_doc, UINetwork *_net)
                              (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show(label);
    gtk_menu_append(GTK_MENU(menu),label);
+   gtk_signal_connect (GTK_OBJECT (label), "activate",
+                       GTK_SIGNAL_FUNC (network_properties_activate),
+		       net);
+   
 
 }
 

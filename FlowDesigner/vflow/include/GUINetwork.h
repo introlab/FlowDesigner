@@ -12,9 +12,13 @@ class GUINetPopup;
 class GUINodeTooltip;
 
 class GUINetwork : public UINetwork {
+
+  friend void network_description_changed_event (GtkTextBuffer *textbuffer, GUINetwork *network);
+
 protected:
    GnomeCanvas *canvas;
    GtkWidget *scrolledwindow1;
+   GtkWidget *networkProperties;
    GnomeCanvasGroup *group;
    GUINetPopup *popup;
    double zoom;
@@ -101,6 +105,9 @@ public:
    virtual void rename(string newName);
    
 
+   void showProperties();
+
+   void applyNetworkProperties();
 };
 
 #endif

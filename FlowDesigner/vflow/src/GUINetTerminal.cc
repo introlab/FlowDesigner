@@ -67,14 +67,13 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    }
    
    if (name == "") {
-     /*name = defaultName;
-       
-     if (type == INPUT || type == OUTPUT)
-     {
-     GtkWidget *dialog = gnome_request_dialog (FALSE, prompt.c_str(), defaultName.c_str(), 
-     20, (GnomeStringCallback)create_net_terminal, this, NULL);
-     gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
-     }*/
+
+     //set the default object_type and description
+     setObjectType(terminal->getType());
+     setDescription(terminal->getDescription());
+
+
+     //prompting user for input
      name = ask_string_dialog(prompt.c_str(), defaultName.c_str());
    }
    
@@ -125,6 +124,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
       return;
       
    }
+
    if (type ==OUTPUT || type == INPUT) {
      terminal->getNode()->getNetwork()->interfaceChangeNotify();
      UIDocument *doc = terminal->getNode()->getNetwork()->getDocument();
