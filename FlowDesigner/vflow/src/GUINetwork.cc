@@ -21,9 +21,10 @@
 
 static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, GUINetwork      *net)
 {
-   //cerr << "caught button\n";
-   return net->buttonEvent(event);
-   //return ((GUINetTerminal *)(data))->event(event);
+
+   
+  return net->buttonEvent(event);
+
 }
 
 GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
@@ -244,24 +245,81 @@ UINode * GUINetwork::addNode (string type, double xx, double yy)
 }
 
 
-gboolean GUINetwork::buttonEvent(GdkEvent *event)
-{
+gboolean GUINetwork::buttonEvent(GdkEvent *event) {
+  
+  static GnomeCanvasItem *item = NULL;
+  static double x,y;
+  double item_x, item_y;
+  
+  item_x = event->button.x;
+  item_y = event->button.y;
 
-   switch (event->type) 
-   {
-      case GDK_BUTTON_PRESS:
-	 switch(event->button.button) 
-	 {
-	    case 3:
-	       popup->popup(event);
-	       return TRUE;
-	       break;
-	       
-	    default:
-	       break;
-	 }
-	 break;
-   }
+
+   switch (event->type) {
+
+   case GDK_BUTTON_PRESS:
+     switch(event->button.button) {
+       
+     case 1:
+    
+       if (item) {
+	 gtk_object_destroy(GTK_OBJECT(item));
+       }
+
+       item = gnome_canvas_item_new (gnome_canvas_root(GNOME_CANVAS(canvas)),
+				     gnome_canvas_rect_get_type(),
+				     "x1",item_x,
+				     "y1",item_y,
+				     "x2",item_x,
+				     "y2",item_y,
+				     "outline_color","blue",NULL);
+       x = item_x;
+       y = item_y;
+       
+       break;
+       
+     case 3:
+       popup->popup(event);
+       return TRUE;
+       break;
+       
+     default:
+       break;
+     }
+     break;
+
+   case GDK_MOTION_NOTIFY:
+     
+     //resizing rectangle
+     if (event->motion.state & GDK_BUTTON1_MASK) {
+       if (item_x > x) {
+	 gnome_canvas_item_set (item, "x2",item_x,NULL);
+       }
+       else {
+	 gnome_canvas_item_set (item, "x1",item_x,"x2",x,NULL);  
+       }
+       if (item_y > y) {
+	 gnome_canvas_item_set (item, "y2",item_y,NULL);
+       }
+       else {
+	 gnome_canvas_item_set (item, "y1",item_y,"y2",y,NULL);
+       }
+     }
+     break;
+
+   case GDK_BUTTON_RELEASE:
+     //destroying the rectangle
+     if (item) {
+       gtk_object_destroy(GTK_OBJECT(item));
+       item = NULL;
+     }
+
+     break;
+
+   case GDK_LEAVE_NOTIFY:      
+     break;
+
+   }//switch event
    /*
    switch (event->button) {
     case 1:
