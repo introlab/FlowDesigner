@@ -76,7 +76,7 @@ public:
 
       
       for (int i=gains.size();i<inputLength;i++)
-	 gains.push_back(gamma*gains[i-1]);
+	 gains.push_back(float(gamma*gains[i-1]));
       
       for (int i=0;i<inputLength;i++)
       {
