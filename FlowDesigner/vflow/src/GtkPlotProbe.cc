@@ -24,11 +24,11 @@ DECLARE_NODE(GtkPlotProbe)
  * @description Plots a vector using GtkPlot
  *
  * @input_name INPUT
- * @input_type Vector
+ * @input_type Vector<float>
  * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_type Vector
+ * @output_type Vector<float>
  * @output_description Same as input
  *
  * @parameter_name BREAK_AT
@@ -202,7 +202,7 @@ void GtkPlotProbe::specificInitialize()
    gdk_threads_leave();
    SET_CANCEL
 
-      }
+}
 
 void GtkPlotProbe::reset()
 {
@@ -214,8 +214,7 @@ void GtkPlotProbe::display()
 {
    GnomeCanvasPoints *points;
    NO_CANCEL;
-   gdk_threads_enter();
-   
+
    Vector<float> &data = object_cast<Vector<float> > (inputValue);
    int inputLength = data.size();
    if (inputLength>x.size())
@@ -237,18 +236,18 @@ void GtkPlotProbe::display()
       dx[i]=1;
       dy[i]=1;
    }
+
+   gdk_threads_enter();
    //gtk_plot_axis_set_ticks(GTK_PLOT(active_plot), GTK_PLOT_AXIS_X, float(inputLength)/5.0, 1);
    //gtk_plot_axis_set_ticks(GTK_PLOT(active_plot), GTK_PLOT_AXIS_Y, (dmax-dmin)/5, 1);
-
-   gtk_plot_axis_set_ticks(GTK_PLOT(active_plot), GTK_PLOT_AXIS_X, tick_size(inputLength), 1);
-   gtk_plot_axis_set_ticks(GTK_PLOT(active_plot), GTK_PLOT_AXIS_Y, tick_size(dmax-dmin), 1);
-
+   gtk_plot_axis_set_ticks(GTK_PLOT(active_plot), GTK_PLOT_AXIS_X, tick_size(inputLength), 0);
+   gtk_plot_axis_set_ticks(GTK_PLOT(active_plot), GTK_PLOT_AXIS_Y, tick_size(dmax-dmin), 0);
    gtk_plot_set_range(GTK_PLOT(active_plot), 0, inputLength-1, dmin, dmax);
    gtk_plot_data_set_points(dataset, &x[0], &y[0], &dx[0], &dy[0], inputLength);
-
    gtk_widget_queue_draw (canvas);
 
    gdk_threads_leave();
+
    SET_CANCEL;
    
 }

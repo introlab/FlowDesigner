@@ -24,7 +24,8 @@ VFlowPref::VFlowPref()
    //params["SelectedColor"]= "0x8ca0af20";
    //params["SelectedColor"]= "0x8087c020";
    params["SelectedColor"]= "0xa8b2fcff";
-   params["ErrorColor"]   = "0xc02020ff";
+   //params["ErrorColor"]   = "0xc02020ff";
+   params["ErrorColor"]   = "0xfc9595ff";
 
    string filename = getenv("HOME");
    filename += "/.vflowrc";
