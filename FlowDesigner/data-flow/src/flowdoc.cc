@@ -4,6 +4,10 @@
 #include <string>
 #include "ParameterSet.h"
 #include "ObjectRef.h"
+#include <vector>
+
+
+
 
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
@@ -16,12 +20,12 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
       out << "<i>(require: " << info->requireList << ")</i><br>";
    out << info->description
        << "<br>&nbsp;\n"
-       << "<table BORDER WIDTH=\"100%\" NOSAVE >\n"
+       << "<table BORDER COLS=4 WIDTH=\"75%\" NOSAVE >\n"
        << "<tr>\n"
-       << "<td></td>\n"
-       << "<td>NAME</td>\n"
-       << "<td>TYPE</td>\n"
-       << "<td>MEANING</td>\n"
+       << "<td WIDTH=\"10%\"></td>\n"
+       << "<th WIDTH=\"15%\">NAME</th>\n"
+       << "<th WIDTH=\"10%\">TYPE</th>\n"
+       << "<th WIDTH=\"40%\">MEANING</th>\n"
        << "</tr>\n";
 
    for (int field = 0;field<3;field++)
@@ -44,11 +48,11 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
       }
       vector<ItemInfo *> &fieldInfo= *fieldInfoPtr;
       out << "<tr NOSAVE>\n"
-	  << "<td>" << fieldName << "</td>\n";
+	  << "<th WIDTH=\"10%\">" << fieldName << "</th>\n";
       nb = fieldInfo.size();
       if (nb > 0)
       {
-	 out << "<td>";
+	 out << "<td WIDTH=\"15%\">";
 	 for (int i=0;i<nb;i++)
 	 {
 	    if (i>0)
@@ -57,7 +61,7 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
 	 }
 	 out << "</td>";
 	 
-	 out << "<td>";
+	 out << "<td WIDTH=\"10%\">";
 	 for (int i=0;i<nb;i++)
 	 {
 	    if (i>0)
@@ -66,7 +70,7 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
 	 }
 	 out << "</td>";
 	 
-	 out << "<td>";
+	 out << "<td WIDTH=\"40%\">";
 	 for (int i=0;i<nb;i++)
 	 {
 	    if (i>0)
@@ -83,11 +87,155 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
    out << "</table>\n";
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+void categContent( string categName, ostream &out, UINodeRepository::iterator i )
+{
+
+// Initialisation des variables
+
+  vector<string> listnodes(200);
+
+  int j = 0;
+  int nbnodes = 0;
+
+
+// On cree une liste des noeuds de la categorie
+
+   i = UINodeRepository::Begin();
+
+
+   while (i != UINodeRepository::End())
+   {
+     if(i->second->category == categName)
+       {
+	 listnodes[j] = i->first;
+	 nbnodes++;
+	 j++;
+       }
+     i++;
+   }
+
+
+  out << "<p><a NAME=\"" << categName << "\"></a>"
+      << "<h2>" << "<br><br><br><br><br><br><hr><br>* "  << categName << " (" << nbnodes << ")"
+      <<"</h2>"  
+      << "<h3>List of available Overflow Nodes "<< "</h3>\n\n";
+
+
+// Affichage du tableau : noeuds de la categorie
+
+   out << "<table BORDER COLS=3 WIDTH=\"60% \" NOSAVE >\n\n";
+   int nbcol = 3;
+
+   switch (nbnodes % nbcol)
+     {
+
+     case 0:
+       for(int k=0; k < (nbnodes / nbcol); k++)
+	 {
+	   out << "<tr><td>" <<"* " <<"<a href=\"#" << listnodes[k] << "\">" << listnodes[k] <<"</a></td>\n";
+	   
+	   out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k ] << "\">" << listnodes[(nbnodes / nbcol ) + k ] <<"</a></td>\n";
+	   
+	   out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(2 * nbnodes / nbcol ) + k + 1] <<"</a></td></tr>\n";
+	 }   
+       break;
+
+     case 1:
+     case 2:
+       for(int k=0; k <= (nbnodes / nbcol); k++)
+	 {
+	   out << "<tr><td>" <<"* " <<"<a href=\"#" << listnodes[k] << "\">" << listnodes[k] <<"</a></td>\n";
+	   
+	   out   << "<td>" <<"* " <<"<a href=\"#" << listnodes[(nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(nbnodes / nbcol) + k + 1] <<"</a></td>\n";
+	   
+	   out << "<td>" <<"* " <<"<a href=\"#" << listnodes[(2 * nbnodes / nbcol ) + k + 1] << "\">" << listnodes[(2 * nbnodes / nbcol) + k + 1] <<"</a></td></tr>\n";
+	 }
+       break;
+
+     default:
+       out << "\nProblems occured while getting the data\n";
+     }
+
+   out << "</table>\n<br><hr><br><br>";
+
+
+// Affichage des informations sur les noeuds
+
+
+   for(int l=0; l < nbnodes; l++)
+     {
+       i = UINodeRepository::Begin();
+
+       while (i != UINodeRepository::End())
+	 {
+	   if(i->first == listnodes[l])
+	     {
+	       out <<"<br>";
+	       node2html(listnodes[l], i->second, out);
+
+	       out << "<br>Return to: "
+		   << "<a href=\"#" << categName << "\">" 
+		   << categName <<"</a><br>";
+
+	       out << "<br>Return to: "
+		   << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">"
+		   << "Categories of available Overflow Nodes</a><br>";
+	     }
+	   i++;
+	 }
+     }
+
+/////////////////////////////////////////////////////////////////////////////////
+//   out << "<br><br>Return to: "
+//       << "<a href=\"#" << "Categories of available Overflow Nodes" << "\">" 
+//       << "Categories of available Overflow Nodes <\a>";
+
+//   out << "<br><br>Return to: "
+//       << "<a href=\"#" << categName << "\">" 
+//       << categName <<"<\a>";
+//////////////////////////////////////////////////////////////////////////////////
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 int main(int argc, char **argv)
 {
-   //UIDocument::loadAllInfo();
+
+
+// Initialisation des variables
+
    UINodeRepository::Scan();
    
+   int nbcateg = 0;
+   vector<string> listcateg(100);
+   int newcateg = 1;
+
+   int nbnodes = 0;
+
+   string stock = "";
+
    ostream &out = cout;
 
    out << "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n"
@@ -99,38 +247,142 @@ int main(int argc, char **argv)
        << "<title>Overflow node documentation</title>\n"
        << "<!-- This page was created by the Overflow documentation generator -->\n"
        << "</head>\n"
-       << "<body>\n";
+       << "<body>";
    
    UINodeRepository::iterator i;
 
-   out << "<h1>List of available Overflow Nodes</h1>\n\n";
-   out << "<center><table BORDER COLS=3 WIDTH=\"100%\" NOSAVE >\n\n";
-   int count=0;
+
+// On receuille les categories differentes dans une liste
+
    i = UINodeRepository::Begin();
+   listcateg[0]= i->second->category;
+   i++;
+   nbcateg++;
+   nbnodes++;
+
+
    while (i != UINodeRepository::End())
    {
-      if (count %3==0)
-	 out << "<tr>\n";
-      out << "<td><a href=\"#" << i->first << "\">" << i->first << "</a></td>\n";
-      if (count %3==2)
-	 out << "</tr>\n";
-      count++;
-      i++;
+     newcateg = 1;
+     int count = 0;
+
+
+     for(int j = 0; j < nbcateg ; j++)
+       if( listcateg[j] == i->second->category )
+	 newcateg = 0;
+
+
+     if(newcateg == 1)
+       {
+	 listcateg[nbcateg] = i->second->category;
+	 nbcateg++;
+       }
+
+     nbnodes++;
+     i++;
    }   
-   if (count %3!=0)
-      out << "</tr>\n";
-   out << "</table></center>\n";
 
 
-   out << "\n<h1>Nodes Documentation</h1>\n\n";
-   i = UINodeRepository::Begin();
-   while (i != UINodeRepository::End())
-   {
-      node2html(i->first, i->second, out);
-      i++;
-   }
+
+// Tri des categories en ordre alphabetique dans la liste
+
+   for (int passage=0; passage < (nbcateg - 1) ; passage++)
+       for (int k=0; k < (nbcateg - 1); k++)
+	   if (listcateg[k] > listcateg[k +1])
+	     {
+	       stock = listcateg[k];
+	       listcateg[k] = listcateg[k + 1];
+	       listcateg[k + 1] = stock;
+	     }
+
+
+// Affichage du tableau : categories de noeuds
+
+   out << "<a NAME=\"" << "Categories of available Overflow Nodes" << "\"></a>"; 
+   out << "<p><br><center><h1>" << "Categories of available Overflow Nodes"
+       << "</h1>\n<br><br><br>";
+   out << "<table BORDER COLS=2 WIDTH=\"40% \" NOSAVE >\n\n";
+
+   int nbcol = 2;
+
+   for(int j = 0; j <= ( nbcateg / nbcol) ; j++)
+    {
+       out << "<tr><td>" <<"* " <<"<a href=\"#" << listcateg[j] << "\">" << listcateg[j] <<"</a></td>\n"
+	     << "<td>" <<"* " <<"<a href=\"#" << listcateg[(nbcateg / nbcol ) + j + 1] << "\">" << listcateg[(nbcateg / nbcol) + j + 1] <<"</a></td></tr>\n";
+     }
+
+
+   out << "</table></center>\n"
+       << "<br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
+       << "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
+       << "<hr><br>"
+       << "<h1>Categories:</h1>";
+
+
+   for(int a=0; a < nbcateg; a++)
+     categContent( listcateg[a], out, i);
+
    out << "\n</body>\n"
+       << "</frameset>"
        << "</html>\n";
-
-
 }
+
+
+
+
+//int main(int argc, char **argv)
+//{
+//     UIDocument::loadAllInfo();
+//   UINodeRepository::Scan();
+   
+//   ostream &out = cout;
+
+//   out << "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n"
+//       << "<html>\n"
+//       << "<head>\n"
+//       << "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n"
+//       << "<meta name=\"GENERATOR\" content=\"Overflow\">\n"
+//       << "<meta name=\"Author\" content=\"Jean-Marc Valin\">\n"
+//       << "<title>Overflow node documentation</title>\n"
+//       << "<!-- This page was created by the Overflow documentation generator -->\n"
+//       << "</head>\n"
+//       << "<body>\n";
+   
+//   UINodeRepository::iterator i;
+
+//Parcours la banque de donnees et affiche le grand tableau
+
+
+//   out << "<h1>List of available Overflow Nodes Category</h1>\n\n";
+//   out << "<center><table BORDER COLS=3 WIDTH=\"100%\" NOSAVE >\n\n";
+//   int count=0;
+//   i = UINodeRepository::Begin();
+//   while (i != UINodeRepository::End())
+//   {
+//      if (count %3==0)
+//	 out << "<tr>\n";
+//      out << "<td><a href=\"#" << i->first << " (" << i->second->category << ")" << "\">" << i->first << " (" << i->second->category << ")" << "</a></td>\n";
+//      if (count %3==2)
+//	 out << "</tr>\n";
+//      count++;
+//      i++;
+//   }   
+//   if (count %3!=0)
+//      out << "</tr>\n";
+//   out << "</table></center>\n";
+
+
+//Affiche les informations sur les noeuds
+
+//   out << "\n<h1>Nodes Documentation</h1>\n\n";
+//   i = UINodeRepository::Begin();
+//   while (i != UINodeRepository::End())
+//   {
+//      node2html(i->first, i->second, out);
+//      i++;
+//   }
+//   out << "\n</body>\n"
+//       << "</html>\n";
+
+
+//}
