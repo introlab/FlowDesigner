@@ -65,7 +65,7 @@ GUINetwork::~GUINetwork()
 void GUINetwork::create()
 {
    //cerr << "GUINetwork::create()\n";
-   GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getView();
+   GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getNotebook();
    //cerr << "GUINetwork::create()\n";
    gtk_widget_show (notebook1);
 
@@ -115,7 +115,7 @@ void GUINetwork::create()
    //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label1);
    canvas=GNOME_CANVAS(canvas1);
 
-   gtk_notebook_append_page(GTK_NOTEBOOK(dynamic_cast<GUIDocument *>(doc)->getView()), scrolledwindow1, label1);
+   gtk_notebook_append_page(GTK_NOTEBOOK(dynamic_cast<GUIDocument *>(doc)->getNotebook()), scrolledwindow1, label1);
 
    //group = gnome_canvas_root(canvas);
    group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (gnome_canvas_root(canvas),

@@ -87,7 +87,9 @@ static GnomeUIInfo doc_menu[] = {
 GUIDocument::GUIDocument(string _name)
    : UIDocument(_name)
    , docproperty(NULL)
-
+   , vbox2(NULL)
+   , notebook1(NULL)
+   , less2(NULL)
 //   , untitled(true)
 //   , modified(false)
 {
@@ -110,12 +112,59 @@ void GUIDocument::create()
 GtkWidget *GUIDocument::createView()
 {
    
-   view = gtk_notebook_new();
-   gtk_widget_show (view);
-   //gtk_notebook_popup_enable(GTK_NOTEBOOK(view));
-   /*gtk_signal_connect (GTK_OBJECT (view), "switch-page",
-                       GTK_SIGNAL_FUNC (page_switch),
-                       this);*/
+  /*
+    window2 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_object_set_data (GTK_OBJECT (window2), "window2", window2);
+    gtk_window_set_title (GTK_WINDOW (window2), _("window2"));
+  */
+
+  
+  vbox2 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_ref (vbox2);
+  //gtk_object_set_data_full (GTK_OBJECT (mdi), "vbox2", vbox2,
+  //                          (GtkDestroyNotify) gtk_widget_unref);
+
+  gtk_widget_show (vbox2);
+  
+  
+  //gtk_container_add (GTK_CONTAINER (vbox2), vbox2);
+  
+  
+
+  notebook1 = gtk_notebook_new ();
+  gtk_widget_ref (notebook1);
+  //gtk_object_set_data_full (GTK_OBJECT (mdi), "notebook1", notebook1,
+  //                          (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (notebook1);
+  gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
+
+  
+
+  less2 = gnome_less_new ();
+  gtk_widget_ref (less2);
+  //gtk_object_set_data_full (GTK_OBJECT (mdi), "less2", less2,
+  //                          (GtkDestroyNotify) gtk_widget_unref);
+  
+  gtk_widget_show (less2);
+  gtk_box_pack_start (GTK_BOX (vbox2), less2, TRUE, TRUE, 0);
+
+  
+  /*
+    
+    view = gtk_notebook_new();
+    gtk_widget_show (view);
+   
+  */
+   
+  
+  gtk_widget_show(vbox2);
+
+  //view = vbox2;
+
+  less_print("You can now use the GUIDocument::less_print (const char* message).");
+  less_print("The next step is to redirect stdout into the gnome_less textbox.");
+  less_print("Dominic Letourneau (Jan 28 2000).");
+  
 
 }
 
@@ -705,4 +754,32 @@ void GUIDocument::run()
    
    pthread_cleanup_pop(1);
 
+}
+
+
+void GUIDocument::less_print(const string &message) {
+
+  less_text += message + string("\n");
+
+  if (less2) {
+    gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
+  }
+  
+}
+
+void GUIDocument::less_print(const char *message) {
+
+  less_text += string(message) + string("\n");
+
+  if (less2) {
+    gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
+  }
+  
+}
+
+void GUIDocument::less_clear() {
+  if (less2) {
+    less_text = string();
+    gnome_less_show_string(GNOME_LESS(less2),less_text.c_str());
+  }
 }
