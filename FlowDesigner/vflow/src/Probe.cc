@@ -20,7 +20,7 @@
 #include <gnome.h>
 
 //DECLARE_NODE(Probe)
-NODE_INFO(Probe, "IO", "INPUT", "OUTPUT", "")
+NODE_INFO(Probe, "Probe", "INPUT", "OUTPUT", "")
 
    static void next_click (GtkButton *button, Probe *pr)
 {
