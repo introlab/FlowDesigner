@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.9 2001/04/23 15:26:59 jmvalin Exp $
+# $Id: Makefile.am,v 1.10 2001/07/07 07:53:13 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -33,5 +33,5 @@ noinst_PROGRAMS = FuzzyTest
 FuzzyTest_SOURCES = FuzzyTest.cc
 
 LDADD = $(top_srcdir)/src/libfuzzy.la \
-        $(top_srcdir)/../data-flow/src/libflow.la $(GNOME_XML_LIB)
+        $(top_srcdir)/../data-flow/src/libflow.la
 

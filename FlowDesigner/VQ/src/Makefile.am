@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.24 2001/05/04 01:38:00 jmvalin Exp $
+# $Id: Makefile.am,v 1.25 2001/07/07 07:53:13 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -37,14 +37,9 @@ libvq_la_SOURCES = kmeans.cc \
 #libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libvq_la_LDFLAGS = -release $(LT_RELEASE)
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include \
-	$(GNOME_XML_INCLUDE)
-
-noinst_PROGRAMS = test testmmi
-test_SOURCES = test.cc
-testmmi_SOURCES = testmmi.cc
+INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include
 
 LDADD = $(top_srcdir)/src/libvq.la \
-        $(top_srcdir)/../data-flow/src/libflow.la $(GNOME_XML_LIB)
+	$(top_srcdir)/../data-flow/src/libflow.la
 
 
