@@ -263,7 +263,7 @@ void UINetwork::load (xmlNodePtr net)
 	noteVisibleStream>>visible;
 	
 	//Creating / Adding new note
-	m_notes.push_back(new UINote(noteText,x,y,visible));
+	m_notes.push_back(newNote(noteText,x,y,visible));
       }
       node = node->next;
    }
