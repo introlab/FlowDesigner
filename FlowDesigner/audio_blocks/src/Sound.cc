@@ -12,6 +12,7 @@
 #include <sys/ioctl.h>
 
 #include "stream_wrap.h"
+#include "Stream.h"
 
 #ifdef HAVE_MACHINE_SOUNDCARD_H
 #define HAVE_OSS_AUDIO
@@ -177,9 +178,9 @@ public:
 #endif
 
       //FIXME: Theoretically, we should choose the type of stream according to "MODE"
-      value = ObjectRef(new IOStream(new fd_iostream(audio_fd, true)));      
+      value = ObjectRef(new IOStream(new fd_iostream(audio_fd, true)));
    }
-      
+
    virtual ~Sound()
    {
       //cerr << "Sound destructor\n";
