@@ -65,7 +65,7 @@ void IExtensions::detectSSE()
    __asm__ __volatile__ (
       "
       xorps %%xmm0, %%xmm0 "
-      ::
+      : :
       : "memory"
       );
    signal (SIGILL, SIG_DFL);
@@ -88,7 +88,7 @@ void IExtensions::detect3DNow()
    __asm__ __volatile__ ("
         pfadd %%mm7, %%mm7
         femms
-        ":: 
+        ": : 
 	: "st", "st(1)", "st(2)", "st(3)", "st(4)", "st(5)", "st(6)", "st(7)", "memory"
         );
    signal (SIGILL, SIG_DFL);
