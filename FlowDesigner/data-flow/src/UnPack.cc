@@ -24,13 +24,13 @@ DECLARE_NODE(UnPack)
 
  * @name UnPack
  * @category Flow
- * @description No description available
+ * @description Unpack data already packed
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The packed vector
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The single unpacked Object
 
 END*/
 

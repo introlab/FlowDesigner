@@ -28,13 +28,14 @@ DECLARE_NODE(VarLoad)
 
  * @name VarLoad
  * @category General
- * @description No description available
+ * @description Load a variable
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The variable value
 
  * @parameter_name VARIABLE
- * @parameter_description No description available
+ * @parameter_description The name of the variable
+ * @parameter_type string
 
 END*/
 

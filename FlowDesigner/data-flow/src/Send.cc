@@ -31,13 +31,14 @@ DECLARE_NODE(Send)
 
  * @name Send
  * @category General
- * @description No description available
+ * @description Send data through network (Not Working Yet)
 
  * @output_name OUTPUT
  * @output_description No description available
 
  * @parameter_name VALUE
  * @parameter_description No description available
+ * @parameter_type string
 
 END*/
 

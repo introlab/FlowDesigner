@@ -33,6 +33,7 @@ DECLARE_NODE(Save)
  *
  * @input_name STREAM
  * @input_description The output stream where to save
+ * @input_type Stream
  *
  * @output_name OUTPUT
  * @output_description The input object

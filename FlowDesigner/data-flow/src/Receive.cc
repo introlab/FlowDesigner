@@ -33,7 +33,7 @@ DECLARE_NODE(Receive)
 
  * @name Receive
  * @category IO
- * @description No description available
+ * @description Receive data from a TCP/IP network (Not working yet)
 
  * @output_name OUTPUT
  * @output_description No description available

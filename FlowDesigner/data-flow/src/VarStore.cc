@@ -28,16 +28,17 @@ DECLARE_NODE(VarStore)
 
  * @name VarStore
  * @category General
- * @description No description available
+ * @description Store a variable (named)
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The value of the variable 
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The value of the variable
 
  * @parameter_name VARIABLE
- * @parameter_description No description available
+ * @parameter_description The variable name
+ * @parameter_type string
 
 END*/
 

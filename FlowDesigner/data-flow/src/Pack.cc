@@ -24,13 +24,14 @@ DECLARE_NODE(Pack)
 
  * @name Pack
  * @category Flow
- * @description No description available
+ * @description Pack Data into a vector
 
  * @input_name INPUT
- * @input_description No description available
+ * @input_description Inputs to be packed (until processCount reached)
 
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description A vector of ObjectRef(s)
+ * @output_type Vector
 
 END*/
 

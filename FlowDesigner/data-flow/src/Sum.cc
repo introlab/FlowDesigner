@@ -25,13 +25,15 @@ DECLARE_NODE(Sum)
  *
  * @name Sum
  * @category Math
- * @description No description available
+ * @description Sum of all the elements of a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input vector 
+ * @input_type Vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The sum
+ * @output_type float
  *
 END*/
 
