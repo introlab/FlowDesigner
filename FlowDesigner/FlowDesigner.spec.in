@@ -1,0 +1,63 @@
+%define name     @PACKAGE@
+%define ver      @VERSION@
+%define rel      1
+
+Summary: A visual data-flow language
+Name: %name
+Version: %ver
+Release: %rel
+Copyright: GPL/LGPL
+Group: Application/Devel
+Source: http://download.sourceforge.net/flowdesigner/%{name}-%{ver}.tar.gz
+URL: http://flowdesigner.sourceforge.net/
+Vendor: Laborius
+Packager: Jean-Marc Valin (jean-marc.valin@usherbrooke.ca)
+
+BuildRoot: %{_tmppath}/root-%{name}-%{version}
+Prefix: %{_prefix}
+
+%description
+FlowDesigner is a free (GPL) "data flow oriented" development environment. It
+works by visually connecting basic nodes into a network in order to create
+complex applications.  It can be used as a rapid development tool, but also in 
+real-time applications. The design has been done in C++ and allows toolkits 
+to be easily added. 
+
+%prep
+%setup
+
+%build
+export CXXFLAGS='-O3 -march=pentium'
+export CFLAGS='-O3 -march=pentium'
+./configure --prefix=/usr --disable-static
+%{__make}
+
+%install
+%makeinstall
+
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
+%files
+%defattr(-, root, root, 0755)
+/usr/lib/libflow*
+/usr/bin/texflow
+/usr/bin/batchflow
+/usr/bin/codeflow
+/usr/bin/flowdoc
+/usr/bin/gflow
+/usr/bin/info2def.pl
+/usr/bin/flowdesigner-config
+/usr/bin/vflow
+/usr/share/flowdesigner/toolbox/data-flow/*
+/usr/share/flowdesigner/toolbox/audio_blocks/*
+/usr/share/flowdesigner/toolbox/vq/*
+/usr/share/flowdesigner/toolbox/hmm/*
+/usr/share/flowdesigner/toolbox/nnet/*
+/usr/share/flowdesigner/toolbox/vflow/*
+/usr/share/flowdesigner/toolbox/fuzzy/*
+/usr/share/flowdesigner/toolbox/effects/*
+/usr/include/flowdesigner/*
+/usr/share/flowdesigner/examples/*
+/usr/share/flowdesigner/m/*
+/usr/share/flowdesigner/lib/*

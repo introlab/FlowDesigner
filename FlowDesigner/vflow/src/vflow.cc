@@ -979,7 +979,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
     translators = NULL;
   about2 = gnome_about_new ("VFlow", VERSION,
                         _("(C) 1999-2003 Jean-Marc Valin & Dominic Letourneau"),
-                        _("Overflow (http://freespeech.sourceforge.net/overflow.html) is a free (LGPL) \"data flow oriented\" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a \"clone\" of any of them. This software is part of the Open Mind Speech project (http://freespeech.sourceforge.net/)."),
+                        _("FlowDesigner (http://flowdesigner.sourceforge.net/) is a free (LGPL) \"data flow oriented\" development environment. It can be use to build complex applications by combining small, reusable building blocks. In some way, it has similarities with Simulink and LabView, although it is not designed (and far) to be a \"clone\" of any of them."),
                         authors,
                         documenters,
                         translators,
@@ -1019,13 +1019,13 @@ void on_segfault(int sig) {
       last = GUIDocument::runThread;
       cerr << "segfault caught in user program\n";
       gdk_threads_enter();
-      gnome_error_dialog("The user program caused a segmentation violation.\nMemory corruption might have occured, so it is recommended\nto restart Overflow (unless you know what you're doing).");
+      gnome_error_dialog("The user program caused a segmentation violation.\nMemory corruption might have occured, so it is recommended\nto restart FlowDesigner (unless you know what you're doing).");
       gdk_threads_leave();
       in_segfault=false;
       pthread_exit(NULL);
    } else {
-      cerr << "Overflow just crashed... you should have saved :-(\n";
-      gnome_error_dialog("Overflow just crashed... you should have saved :-(");
+      cerr << "FlowDesigner just crashed... you should have saved :-(\n";
+      gnome_error_dialog("FlowDesigner just crashed... you should have saved :-(");
       abort();
    }
    in_segfault=false;

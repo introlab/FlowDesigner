@@ -186,7 +186,7 @@ void CodeGenState::ok()
       {
 	 out.flush();
 	 string source_name = string(filename) + ".cc";
-	 string cmd = string("g++ -O3 -o ") + filename + " " + source_name + " `overflow-config config libflow --cflags --libs` `gnome-config xml --cflags --libs` -lrfftw -lfftw &";
+	 string cmd = string("g++ -O3 -o ") + filename + " " + source_name + " `flowdesigner-config config libflow --cflags --libs` `gnome-config xml --cflags --libs` -lrfftw -lfftw &";
 	 cerr << cmd << endl;
 	 system(cmd.c_str());
 	 }*/

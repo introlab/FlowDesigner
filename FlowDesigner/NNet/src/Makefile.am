@@ -1,13 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.40 2003/10/01 23:25:37 maestro Exp $
+# $Id: Makefile.am,v 1.41 2003/11/13 02:54:27 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
-override includedir=${prefix}/include/overflow
-override datadir=${prefix}/share/overflow
-override libdir=${prefix}/share/overflow/lib
+override includedir=${prefix}/include/flowdesigner
+override datadir=${prefix}/share/flowdesigner
+override libdir=${prefix}/share/flowdesigner/lib
 
 lib_LTLIBRARIES = libnnet.la
 

@@ -1,12 +1,12 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.112 2003/12/08 21:24:36 mlemay Exp $
+# $Id: Makefile.am,v 1.113 2003/12/11 03:12:20 vico_27 Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
-override includedir=${prefix}/include/overflow
-override datadir=${prefix}/share/overflow
+override includedir=${prefix}/include/flowdesigner
+override datadir=${prefix}/share/flowdesigner
 
 install-data-local:
 	mkdir -p $(datadir)/toolbox/data-flow

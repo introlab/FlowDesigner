@@ -6,9 +6,9 @@
 #EXTRA_DIST = BUGS INSTALL.generic
 #SUBDIRS = data-flow audio_blocks VQ HMM NNet tools vflow video_blocks
 
-bin_SCRIPTS = overflow-config
+bin_SCRIPTS = flowdesigner-config
 
-EXTRA_DIST = Overflow.spec nflow.dtd
+EXTRA_DIST = FlowDesigner.spec nflow.dtd
 
 SUBDIRS = data-flow @modules@ tools examples
 

@@ -16,8 +16,8 @@ vector<string> envList(char *envName, bool include_home)
       char *home = getenv("VFLOW_HOME");
       if (home && strcmp(home, "")!=0)
 	 prefix=home;
-      list.insert(list.end(), prefix+ "/share/overflow/toolbox");
-      list.insert(list.end(), prefix+ "/share/overflow/lib");
+      list.insert(list.end(), prefix+ "/share/flowdesigner/toolbox");
+      list.insert(list.end(), prefix+ "/share/flowdesigner/lib");
    }
    char *strPath = getenv(envName);
    if (!strPath)

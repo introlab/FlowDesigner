@@ -1,10 +1,10 @@
-override includedir=${prefix}/include/overflow
-override datadir=${prefix}/share/overflow
-override libdir=${prefix}/share/overflow/lib
+override includedir=${prefix}/include/flowdesigner
+override datadir=${prefix}/share/flowdesigner
+override libdir=${prefix}/share/flowdesigner/lib
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.98 2002/08/07 16:56:48 jmvalin Exp $
+# $Id: Makefile.am,v 1.99 2003/11/13 02:54:27 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
