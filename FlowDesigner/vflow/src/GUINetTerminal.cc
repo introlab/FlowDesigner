@@ -32,6 +32,8 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    , item(NULL)
 {
 
+  //cerr<<"NetTerminal constructor type : "<<_type<<endl;
+
    string defaultName;
    string prompt;
    gint anchor;
@@ -58,8 +60,8 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
        x += 10;
        color="blue";
      }   
-   else
-   {
+   else if (type == CONDITION) {
+
       defaultName = "CONDITION";
       anchor = GTK_ANCHOR_WEST;
       x += 10;

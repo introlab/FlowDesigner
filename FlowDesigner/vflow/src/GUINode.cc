@@ -228,12 +228,19 @@ gint GUINode::event(GdkEvent *event)
    item_y = event->button.y;
    gnome_canvas_item_w2i(item->parent, &item_x, &item_y);
    //cerr << "+";
+
+  
+
    switch (event->type) 
    {
    case GDK_BUTTON_PRESS:
+
+     //cerr<<"GUINode button event"<<endl;
+
       switch(event->button.button) 
       {
       case 1:
+	
          if (event->button.state & GDK_SHIFT_MASK)
          {
             //dynamic_cast<GUINodeParameters *> (parameters)->show();
@@ -256,8 +263,11 @@ gint GUINode::event(GdkEvent *event)
 
 	   return true;
          }
-         else 
-         {
+	 else if (event->button.state & GDK_CONTROL_MASK) {
+
+
+	 } else 
+	   {
             if (dragging && grab)
             {
                //cerr << "stop drag\n";
@@ -348,6 +358,8 @@ gint GUINode::event(GdkEvent *event)
       dynamic_cast<GUINetwork *>(net)->popTooltip(NULL);
       break;
    case GDK_BUTTON_RELEASE:
+
+
       if (!grab)
       {
          //printf ("button release on node\n");

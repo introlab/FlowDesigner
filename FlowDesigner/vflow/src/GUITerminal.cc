@@ -102,12 +102,14 @@ gint GUITerminal::event(GdkEvent *event)
         {
         case 1:
 	   try {
-           if (event->button.state & GDK_CONTROL_MASK || event->button.state & GDK_MOD1_MASK)
+           if (event->button.state & GDK_CONTROL_MASK /*|| event->button.state & GDK_MOD1_MASK*/)
 	   {
-	      if (!isInput && !netTerminal)
-		 new GUINetTerminal(this,UINetTerminal::CONDITION,"");
+	     if (!isInput && !netTerminal){
+		 new GUINetTerminal(this,UINetTerminal::CONDITION,"CONDITION");
+	     }
+	     return TRUE;
 	   }	      
-           if (event->button.state & GDK_SHIFT_MASK)
+           else if (event->button.state & GDK_SHIFT_MASK)
            {
               if (isInput)
               {
@@ -124,7 +126,8 @@ gint GUITerminal::event(GdkEvent *event)
               return TRUE;
               
            } else {
-              //printf("terminal click\n");
+
+              printf("terminal click\n");
 
 	      static int last_time = 0;
 

@@ -686,9 +686,12 @@ void run_doc_event(GtkWidget *widget, vflowGUI *vflow) {
    {
       int size;
       char *mem = doc->saveToMemory(size);
-      FILE *pipe = popen("gflow /dev/stdin", "w");
+      FILE *pipe = popen("cat | gflow /dev/stdin", "w");
       fwrite(mem, 1, size, pipe);
+      fprintf(pipe,"\n");
+      fflush(pipe);
       pclose(pipe);
+      //FIXME: delete mem
    } else {
       vflow->set_run_mode(true);
       doc->threadRun();
