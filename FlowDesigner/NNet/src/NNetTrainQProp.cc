@@ -19,14 +19,14 @@
 #include "ObjectRef.h"
 #include "FFNet.h"
 
-class NNetTrainDBD;
+class NNetTrainQProp;
 
-DECLARE_NODE(NNetTrainDBD)
+DECLARE_NODE(NNetTrainQProp)
 /*Node
  *
- * @name NNetTrainDBD
+ * @name NNetTrainQProp
  * @category NNet
- * @description Neural network (MLP) training unsing the Delta-bar-delta algorithm
+ * @description Neural network (MLP) training unsing the Quickprop algorithm
  *
  * @input_name TRAIN_IN
  * @input_type Vector
@@ -63,7 +63,7 @@ DECLARE_NODE(NNetTrainDBD)
 END*/
 
 
-class NNetTrainDBD : public BufferedNode {
+class NNetTrainQProp : public BufferedNode {
 
 protected:
    
@@ -89,7 +89,7 @@ protected:
 
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
-   NNetTrainDBD(string nodeName, ParameterSet params)
+   NNetTrainQProp(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
@@ -120,7 +120,7 @@ public:
       and for the 'count' iteration */
    virtual void calculate(int output_id, int count, Buffer &out)
    {
-      cerr << "getOutput in NNetTrainDBD\n";
+      cerr << "getOutput in NNetTrainQProp\n";
       int i,j;
 
       ObjectRef trainInValue = getInput(trainInID, count);
@@ -144,7 +144,7 @@ public:
       
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
-      net.trainDeltaBar(tin, tout, maxEpoch, learnRate, increase, decrease);
+      net.trainQProp(tin, tout, maxEpoch, learnRate);
       
       out[count] = netValue;
 
@@ -152,6 +152,6 @@ public:
 
 protected:
    /**Default constructor, should not be used*/
-   NNetTrainDBD() {throw new GeneralException("NNetTrainDBD copy constructor should not be called",__FILE__,__LINE__);}
+   NNetTrainQProp() {throw new GeneralException("NNetTrainQProp copy constructor should not be called",__FILE__,__LINE__);}
 
 };

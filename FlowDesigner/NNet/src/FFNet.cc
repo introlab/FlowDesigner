@@ -470,7 +470,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, f
       
       if (nextE > SSE)
       {
-	 alpha *= decrease;
+	 learnRate *= decrease;
 	 //So that the "bad" iteration doesn't count
 	 iter++;
 	 cerr << "backing off\n";
@@ -486,6 +486,7 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, f
 	 if (alpha[i] < 1e-58)
 	    alpha[i] = 1e-58;
       }
+
       //if (SSE/tin.size()/topo[topo.size()-1]<.08) break;
       cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
       SSE=nextE;
@@ -497,6 +498,89 @@ void FFNet::trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, f
    vec_copy(&wk[0], weights, nbWeights);
 }
 
+void FFNet::trainQProp(vector<float *> tin, vector<float *> tout, int iter, float learnRate)
+{
+
+   int i,j;
+   double SSE;
+   int k=1;
+
+   float increase=1.04;
+   float decrease = .6;
+
+   int nbWeights = 0;
+   for (i=0;i<layers.size();i++)
+   {
+      nbWeights += layers[i]->getNbWeights();
+   }
+   cerr << "WARNING: This implementation of Quickprop doesn't work ywt!" << endl;
+   cerr << "found " << nbWeights << " weights\n";
+
+   //Array<float> alpha(nbWeights);
+   Array<float> wk(nbWeights);
+   Array<float> nextW(nbWeights);
+
+   Array<double> dW(nbWeights,0);
+   // Array<double> dWq(nbWeights,0);
+   Array<double> prevdW(nbWeights,0);
+   Array<double> dE(nbWeights,0);
+   Array<double> nextdE(nbWeights,0);
+   Array<double> prevdE(nbWeights,0);
+
+   //Array<double> nextdE(nbWeights);
+   double nextE;
+
+   vec_copy(weights, &wk[0], nbWeights);
+
+   //for (i=0;i<nbWeights;i++)
+   //   alpha[i] = learnRate;
+
+   calcGradient(tin, tout, wk, dE, SSE);
+   while (iter--)
+   {
+
+      for (i=0;i<nbWeights;i++)
+      {
+	 double norm = dE[i]-prevdE[i];
+	 if (fabs(norm) > 1e-8)
+	    dW[i] = -(dE[i]*prevdW[i])/norm;
+	 else
+	    dW[i] = 0;
+
+	 if ((dE[i]*prevdE[i]) <= 0)
+	    dW[i]-= learnRate*dE[i];
+      }
+      
+
+      for (i=0;i<nbWeights;i++)
+	 nextW[i] = wk[i] + dW[i];
+
+      calcGradient(tin, tout, nextW, nextdE, nextE);
+
+      while(nextE > SSE)
+      {
+	 float alpha = learnRate;
+	 for (i=0;i<nbWeights;i++)
+	    nextW[i] = wk[i] - alpha*dE[i];
+	 calcGradient(tin, tout, nextW, nextdE, nextE);
+	 alpha *= .5;
+      }
+
+
+      //if (SSE/tin.size()/topo[topo.size()-1]<.08) break;
+      cout << (SSE/tin.size()/topo[topo.size()-1]) << "\t" << tin.size() << endl;
+      prevdW=dW;
+      prevdE=dE;
+      SSE=nextE;
+      dE = nextdE;
+      wk = nextW;
+      //nextdE = dE;
+   }
+
+   vec_copy(&wk[0], weights, nbWeights);
+
+
+}
 
 void FFNet::setDerivOffset(float d)
 {

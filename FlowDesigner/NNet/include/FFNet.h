@@ -8,6 +8,9 @@
 #include "Object.h"
 #include "Array.h"
 
+/**Feed-forward neural network (MLP) class
+   @author: Jean-Marc Valin
+ */
 class FFNet : public Object {
   protected:
    Vector<int> topo;
@@ -20,7 +23,8 @@ class FFNet : public Object {
    FFNet() {}
 
    void init(const vector<string> &functions);
-   void FFNet::setupLayersAfterRead();
+
+   void setupLayersAfterRead();
 
    float *calc(const float *input, float *value, float *deriv=NULL)
    {
@@ -66,9 +70,11 @@ class FFNet : public Object {
 
    void trainDeltaBar(vector<float *> tin, vector<float *> tout, int iter, float learnRate, 
 		      float increase, float decrease);
+
+   void trainQProp(vector<float *> tin, vector<float *> tout, int iter, float learnRate);
    
-   void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, float Ti, 
-		       float Tf, float increase, float decrease);
+   //void FFNet::trainSA(vector<float *> tin, vector<float *> tout, int iter, float Ti, 
+   //	       float Tf, float increase, float decrease);
 
    void printOn(ostream &out) const;
 
