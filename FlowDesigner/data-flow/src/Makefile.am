@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.106 2003/07/23 02:11:19 maestro Exp $
+# $Id: Makefile.am,v 1.107 2003/07/30 14:52:30 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -124,12 +124,7 @@ libflow_la_SOURCES = Node.cc \
 	rtc.cc \
 	BroadcastLoad.cc \
 	BroadcastSave.cc \
-	conversion.cc \
-	toInt.cc \
-	toBool.cc \
-	toFloat.cc \
-	toDouble.cc \
-	toString.cc
+	conversion.cc 
 
 
 
