@@ -72,13 +72,6 @@ static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 
-//#include <gdk/gdk.h>
-
-//UIDocument *UIDocument::currentDocument;
-//extern GnomeMDI *mdi;
-
-//static GnomeMDIChildClass *parent_class = NULL;
-
 bool GUIDocument::isRunning=false;
 pthread_t GUIDocument::runThread;
 Network * GUIDocument::runningNet=NULL;

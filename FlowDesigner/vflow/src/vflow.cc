@@ -474,6 +474,8 @@ void vflowGUI::set_run_mode (bool isRuning) {
 /**********************************************************************************************************
 
 **********************************************************************************************************/
+#include <stdio.h>
+
 void run_doc_event(GtkWidget *widget, vflowGUI *vflow) {
 
   //until user_data (2nd arg works)
@@ -485,9 +487,19 @@ void run_doc_event(GtkWidget *widget, vflowGUI *vflow) {
 
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(vflow->mdi->active_child), "doc");
 
+#if 0
+   int size;
+   char *mem = doc->saveToMemory(size);
+   FILE *pipe = popen("gflow /dev/stdin", "w");
+   fwrite(mem, 1, size, pipe);
+   pclose(pipe);
+
+#else
    vflow->set_run_mode(true);
 
    doc->threadRun();
+#endif
+
 }
 
 /**********************************************************************************************************

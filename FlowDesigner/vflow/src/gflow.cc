@@ -11,6 +11,10 @@
 #include <sstream>
 #include "GRunContext.h"
 #include "path.h"
+#include <string>
+#include <fstream>
+#include "iextensions.h"
+#include <unistd.h>
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -34,6 +38,11 @@ void run2(GRunContext *ctx)
 
 int main(int argc, char **argv)
 {
+   if (string(argv[1]) == "/dev/stdin")
+   {
+      if (fork())
+	 _exit(0);
+   }
    try {
       scanDL();
    } catch (BaseException *e)
@@ -43,7 +52,7 @@ int main(int argc, char **argv)
       exit(1);
    }
    UINodeRepository::Scan();
-   //UIDocument::loadAllInfo();
+   IExtensions::detect();
 
    g_thread_init(NULL);
    gnome_init ("vflow", VERSION, argc, argv);
@@ -56,8 +65,29 @@ int main(int argc, char **argv)
       sprintf (arg_name, "ARG%d", arg-1);
       params.add(arg_name, ObjectRef (new String (argv[arg])));
    }
-   UIDocument *doc = new UIDocument(argv[1]);
-   doc->load();
+   UIDocument *doc;
+   /*if (string(argv[1]) == "/dev/stdin")
+   {
+      string docStr;
+      doc = new UIDocument("/dev/stdin");
+      while(1)
+      {
+	 char buff[1025];
+	 cin.read(buff, 1024);
+	 buff[1024]=0;
+	 if (cin.fail())
+	 {
+	    docStr.append(buff, cin.gcount());
+	    break; 
+	 }
+	 docStr.append(buff, 1024);
+      }
+      doc->loadFromMemory(docStr.c_str(), docStr.size());
+      
+      } else*/ {
+      doc = new UIDocument(argv[1]);
+      doc->load();
+   }
 
    GRunContext *ctx = new GRunContext(doc, params);
    
