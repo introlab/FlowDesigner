@@ -128,8 +128,10 @@ public:
       {
 	 insideRequest=true;
 	 ParameterSet req2(req);
+	 cerr << "Got request\n";
 	 req2.add("INORDER", Object::nilObject);
 	 inputs[inputID].node->request(inputs[inputID].outputID,req2);
+	 cerr << "Sent request\n";
 	 insideRequest=false;
       }
    }
