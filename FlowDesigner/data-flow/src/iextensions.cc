@@ -23,6 +23,8 @@
 #include "iextensions.h"
 #include <iostream>
 
+using namespace std;
+
 //@implements core
 
 bool IExtensions::isse=false;
