@@ -75,14 +75,18 @@ public:
       inputs[inputID].node->request(inputs[inputID].outputID,req);
    }
 
-   ~Feedback() 
+   void registerOutput (int out) 
    {
+      if (out == outputID)
+      {
+	 incrementOutputInitialize();
+      }
    }
 
    /*Warning: Do not try this at home. Overriding the initialize function should not be 
               done unless you REALLY know what you're doing... and I'm not even sure 
               I know what I'm doing here*/
-   void Feedback::initialize ()
+      /*void Feedback::initialize ()
    {
       if (initialized) return;
       //FIXME: This is a big kludge, it won't work if more than 1 link is connected to "OUTPUT"
@@ -113,7 +117,7 @@ public:
 	 
       }
    }      
-
+      */
    /**Modified the request passing method in order to avoid strange behaviours*/
       virtual void request(int output_id, const ParameterSet &req) 
    {

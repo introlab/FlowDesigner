@@ -246,12 +246,12 @@ public:
    /**The factory lookup function*/
    static _NodeFactory* getFactoryNamed (const string &name);
 
-private:
+protected:
    /**Tell the node we will be using output 'out'*/
-   void registerOutput (int out) {outputInitializeCount++;}
+   virtual void registerOutput (int out) {incrementOutputInitialize();}
 
    /**Increment outputInitializeCount when performing a reset()*/
-   void incrementOutputInitialize() {outputInitializeCount++;}
+   virtual void incrementOutputInitialize() {outputInitializeCount++;}
 
 
 protected:
