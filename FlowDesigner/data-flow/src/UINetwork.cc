@@ -125,8 +125,10 @@ void UINetwork::load (xmlNodePtr net)
 	 string termNode = string(str_termNode);
 	 free(str_termName); free(str_termTerm); free(str_termNode);
 
-	 if (getNodeNamed(termNode) && getNodeNamed(termNode)->getInputNamed(termTerm))
+	 if (getNodeNamed(termNode))
 	 {
+            if (!getNodeNamed(termNode)->getInputNamed(termTerm))
+               getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::INPUT);
 	    newNetTerminal(getNodeNamed(termNode)->getInputNamed(termTerm),
 			   UINetTerminal::INPUT, termName);
 	 } else {
@@ -142,8 +144,10 @@ void UINetwork::load (xmlNodePtr net)
 	 string termNode = string(str_termNode);
 	 free(str_termName); free(str_termTerm); free(str_termNode);
 	 
-	 if (getNodeNamed(termNode) && getNodeNamed(termNode)->getOutputNamed(termTerm))
+	 if (getNodeNamed(termNode))
 	 {
+            if (!getNodeNamed(termNode)->getOutputNamed(termTerm))
+               getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::OUTPUT);
 	    newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
 			   UINetTerminal::OUTPUT, termName);
 	 } else {
@@ -159,8 +163,10 @@ void UINetwork::load (xmlNodePtr net)
 	 string termNode = string(str_termNode);
 	 free(str_termName); free(str_termTerm); free(str_termNode);
 
-	 if (getNodeNamed(termNode) && getNodeNamed(termNode)->getOutputNamed(termTerm))
+	 if (getNodeNamed(termNode))
 	 {
+            if (!getNodeNamed(termNode)->getOutputNamed(termTerm))
+               getNodeNamed(termNode)->addTerminal(termTerm, UINetTerminal::OUTPUT);
 	    newNetTerminal(getNodeNamed(termNode)->getOutputNamed(termTerm),
 			   UINetTerminal::CONDITION, termName);
 	 } else {
