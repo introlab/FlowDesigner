@@ -56,7 +56,7 @@ void TextProbe::reset()
 }
 
 
-void TextProbe::trace()
+void TextProbe::display()
 {
    char probeOut[1000];
    ostrstream out(probeOut, 999);
@@ -67,7 +67,10 @@ void TextProbe::trace()
    gnome_less_clear (GNOME_LESS(less1));
    gnome_less_show_string(GNOME_LESS(less1), probeOut);
    gdk_threads_leave(); 
-   
+}
+
+void TextProbe::trace()
+{
    Probe::trace();
 }
 
