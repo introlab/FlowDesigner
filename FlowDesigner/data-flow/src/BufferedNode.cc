@@ -20,6 +20,7 @@
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)
+   , inOrder(false)
 {}
 
 int BufferedNode::addInput (const string &inputName)
@@ -115,7 +116,16 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
          return result;
       else
       {
-         calculate (output_id, count, outBuffer);
+	 if (inOrder)
+	 {
+	    cerr << "in order\n";
+	    for (int i=processCount;i<=count;i++)
+	       calculate (output_id, i, outBuffer);
+	 } else
+	 {
+	    
+	    calculate (output_id, count, outBuffer);
+	 }
          if (count > processCount)
             processCount = count;
          return outBuffer[count];

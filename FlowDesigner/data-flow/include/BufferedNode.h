@@ -52,7 +52,9 @@ protected:
    vector<OutputCacheInfo> outputs;
 
    vector<InputCacheInfo> inputsCache;
- 
+   
+   /**true if the calculations must be made in order of process count*/
+   bool inOrder;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
    BufferedNode(string nodeName, const ParameterSet &params);
