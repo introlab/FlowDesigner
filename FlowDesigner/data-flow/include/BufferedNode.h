@@ -83,4 +83,16 @@ protected:
    BufferedNode() {throw new GeneralException("BufferedNode copy constructor should not be called",__FILE__,__LINE__);}
 };
 
+#ifdef ENABLE_SPEED_HACKS
+#define NO_ORDER_NODE_SPEEDUP(nodeClass)                    \
+ObjectRef getOutput(int output_id, int count)               \
+{                                                           \
+      Buffer &outBuffer = *(outputs[output_id].buffer);     \
+      if (!outBuffer.isValid(count))                        \
+	 nodeClass::calculate (output_id, count, outBuffer);\
+      return outBuffer.get(count);}
+#else
+#define NO_ORDER_NODE_SPEEDUP(nodeClass)
+#endif
+
 #endif
