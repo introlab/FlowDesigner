@@ -22,6 +22,10 @@ protected:
 
 public:
 
+   void emptySelectedNodes();
+
+   void addSelectedNode(GUINode *node);
+
    list<GUINode*>& getSelectedNodes(){return selectedNodes;}
 
    void moveSelectedNodes(double dx, double dy);

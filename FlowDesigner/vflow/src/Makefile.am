@@ -17,7 +17,7 @@ INCLUDES = \
 bin_PROGRAMS = vflow gflow
 
 vflow_SOURCES = \
-	main.cc \
+	vflow.cc \
 	Probe.cc \
 	TextProbe.cc \
 	PlotProbe.cc \

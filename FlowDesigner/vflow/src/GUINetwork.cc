@@ -483,3 +483,16 @@ void GUINetwork::clearSelectedNodes() {
   }
 
 }
+
+void GUINetwork::emptySelectedNodes() { 
+
+  while (!selectedNodes.empty()) {
+    GUINode *my_node = selectedNodes.front();
+    my_node->unselect();
+    selectedNodes.pop_front();
+  }
+}
+
+void GUINetwork::addSelectedNode(GUINode *node) {
+  selectedNodes.push_back(node);
+}

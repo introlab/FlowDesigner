@@ -10,29 +10,59 @@
 #include <sstream>
 #include "object_param.h"
 
+#include "vflow.h"
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
 
-extern GnomeMDI *mdi;
+
 
 static void on_cut_activate (GtkMenuItem *menuitem, gpointer user_data) {
-  cerr<<"on_cut_activate not yet implemented"<<endl;
+
+  //getting mdi
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
+  //getting doc
+  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+
+  //calling application cut
+  vflowGUI::instance()->cut(doc);
 }
 
 
 static void on_copy_activate (GtkMenuItem *menuitem, gpointer user_data) {
-  cerr<<"on_copy_activate not yet implemented"<<endl;
+
+  //getting mdi
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
+  //getting doc
+  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+
+  //calling application cut
+  vflowGUI::instance()->copy(doc);
 }
 
 static void on_paste_activate (GtkMenuItem *menuitem, gpointer user_data) {
-  cerr<<"on_paste_activate not yet implemented"<<endl;
+
+  //getting mdi
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
+  //getting doc
+  GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+
+  //calling application cut
+  vflowGUI::instance()->paste(doc);
+
 }
 
 static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
 
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
   //getting the active document
   GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
+
   GUINetwork *net = dynamic_cast<GUINetwork*>(doc->getCurrentNet());
 
   if (net) {
@@ -45,7 +75,7 @@ static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) {
 //#include <gdk/gdk.h>
 
 //UIDocument *UIDocument::currentDocument;
-extern GnomeMDI *mdi;
+//extern GnomeMDI *mdi;
 
 //static GnomeMDIChildClass *parent_class = NULL;
 
@@ -62,6 +92,9 @@ void create_net(gchar * str, GUIDocument *doc)
 static void add_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
+
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
    GtkWidget *dialog = 
       gnome_request_dialog (FALSE, "What's the network name?", 
@@ -78,6 +111,9 @@ void create_threaded(gchar * str, GUIDocument *doc)
 static void add_threaded_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
+
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
    GtkWidget *dialog = 
       gnome_request_dialog (FALSE, "What's the threaded iterator name?", 
@@ -94,6 +130,8 @@ void create_iter(gchar * str, GUIDocument *doc)
 static void add_iter_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
    GtkWidget *dialog = 
       gnome_request_dialog (FALSE, "What's the iterator's name?", 
@@ -105,6 +143,9 @@ static void add_iter_event  (GtkMenuItem     *menuitem,
 static void rename_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
+
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
    doc->renameCurrentNet();
    //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
@@ -115,6 +156,9 @@ static void rename_net_event  (GtkMenuItem     *menuitem,
 static void remove_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
+
+  GnomeMDI *mdi = vflowGUI::instance()->get_mdi();
+
    GUIDocument *doc = (GUIDocument*)gtk_object_get_data(GTK_OBJECT(mdi->active_child), "doc");
    doc->removeCurrentNet();
    //gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
@@ -646,13 +690,13 @@ void GUIDocument::createParamDialog()
 
 }
 
-
-extern void set_run_mode (bool isRuning);
-
 static void disposeFunct(void *dummy)
 {
    gdk_threads_enter();
-   set_run_mode(false);
+
+   
+   vflowGUI::instance()->set_run_mode(false);
+
    gdk_threads_leave();
    //cerr << "disposeFunct called\n";
    
