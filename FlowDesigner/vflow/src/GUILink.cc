@@ -11,30 +11,39 @@ static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 }
 
 GUILink::GUILink(UITerminal *_from, UITerminal *_to)
-   : UILink (_from, _to)
-{
-   GnomeCanvasPoints *points = gnome_canvas_points_new(2);
-   points->coords[0]=x1;
-   points->coords[1]=y1;
-   points->coords[2]=x2;
-   points->coords[3]=y2;
+  : UILink (_from, _to), MIN_POINT_DISTANCE(25.0) {
+
+
+  m_points.push_back(new GUILinkPoint(x1,y1));
+  m_points.push_back(new GUILinkPoint(x2,y2));
+
+
+  GnomeCanvasPoints *points = gnome_canvas_points_new(2);
+
+  points->coords[0] = x1;
+  points->coords[1] = y1;
+  points->coords[2] = x2;
+  points->coords[3] = y2;
+    
    
-   group = GNOME_CANVAS_GROUP (
-      gnome_canvas_item_new (dynamic_cast<GUINetwork *> (net)->getGroup(),
-			     gnome_canvas_group_get_type(),
-			     "x", 0,
-			     "y", 0,
-			     NULL));
+  group = GNOME_CANVAS_GROUP (gnome_canvas_item_new (dynamic_cast<GUINetwork *> (net)->getGroup(),
+						     gnome_canvas_group_get_type(),
+						     "x", 0,
+						     "y", 0,
+						     NULL));
+  
    item = gnome_canvas_item_new(group,
                                 gnome_canvas_line_get_type(),
                                 "points" , points,
                                 "fill_color", "black",
                                 "width_units", 2.0,
+				"cap_style",GDK_CAP_ROUND,
                                 "last_arrowhead", TRUE,
                                 "arrow_shape_a", 9.0,
                                 "arrow_shape_b", 15.0,
                                 "arrow_shape_c", 5.0,
                                 NULL);
+  
    gnome_canvas_points_unref(points);
    
    gtk_signal_connect(GTK_OBJECT(item), "event",
@@ -47,6 +56,13 @@ GUILink::~GUILink()
 {
    gtk_object_destroy(GTK_OBJECT(item));
    gtk_object_destroy(GTK_OBJECT(group));
+
+   while (!m_points.empty()) {
+     delete m_points.front();
+     m_points.pop_front();
+   }
+
+
 }
 
 
@@ -69,7 +85,8 @@ void GUILink::grab(guint32 etime)
 gint GUILink::event(GdkEvent *event)
 {
    //return TRUE;
-  static double new_px, new_py;
+
+  static GUILinkPoint *my_point = NULL;
    double new_x, new_y;
    GdkCursor *fleur;
    double item_x, item_y;
@@ -93,9 +110,85 @@ gint GUILink::event(GdkEvent *event)
             delete this;
             return TRUE;
          }
-	 
-	 new_px = item_x;
-	 new_py = item_y;
+
+	 if (complete) {
+
+	   int pos = 0;
+
+	   GUILinkPoint p1(item_x,item_y);
+	   
+	   if (m_points.size() == 2) {
+	     
+	     if (p1.dist(*m_points.front()) > MIN_POINT_DISTANCE &&
+		 p1.dist(*m_points.back()) > MIN_POINT_DISTANCE) {
+	       
+	       //creating new point
+	       my_point = new GUILinkPoint(item_x,item_y);
+
+	       list<GUILinkPoint*>::iterator iter_end = m_points.end();
+
+	       //inserting in the list
+	       m_points.insert(--iter_end,my_point);
+	     }
+	     else {
+	       //nothing to do
+	       my_point = NULL;
+	     }
+	     
+	   }//m_points size == 2
+	   else {
+
+	     //adding to the list if far enough
+	     my_point = NULL;
+
+	     list<GUILinkPoint*>::iterator iter_end = m_points.end();
+	     iter_end--;
+
+	     for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+		  iter != iter_end; iter++) {
+	      	       
+	       list<GUILinkPoint*>::iterator iter1 = iter;
+	       
+	       GUILinkPoint pfirst ((*iter1)->x,(*iter1)->y);
+	       
+	       iter1++;
+	       
+	       GUILinkPoint psecond ((*iter1)->x,(*iter1)->y);
+	      
+	       double dist1 = p1.dist(pfirst);
+	       double dist2 = p1.dist(psecond);
+	       
+
+	       if ((dist1 < dist2) && iter != m_points.begin() &&
+		   dist1 < MIN_POINT_DISTANCE) {
+		 my_point = *iter;
+		 break;
+	       }
+
+	       if ((dist2 < dist1) && iter1 != iter_end &&
+		   dist2 < MIN_POINT_DISTANCE) {
+		 my_point = *iter1;
+		 break;
+	       }
+
+	       if (p1.between(pfirst,psecond)) {
+		 
+		 if (dist1 > MIN_POINT_DISTANCE &&
+		     dist2 > MIN_POINT_DISTANCE) { 
+
+		   //creating new point
+		   my_point = new GUILinkPoint(item_x,item_y);
+		   
+		   //inserting in the list
+		   m_points.insert(iter1,my_point);		 
+		   break;
+		 } 
+	       }//between
+	       
+
+	     }//for
+	   }//else
+	 }//complete
 
 
          break;
@@ -114,11 +207,13 @@ gint GUILink::event(GdkEvent *event)
       if (!complete && (event->motion.state & GDK_BUTTON1_MASK)) 
       {
          //gtk_object_get(new_line, "points", points, NULL);
+
          points = gnome_canvas_points_new(2);
          points->coords[0]=x1;
          points->coords[1]=y1;
          points->coords[2]=x2;
          points->coords[3]=y2;
+
          if (!from)
          {
             x1=item_x;
@@ -131,30 +226,46 @@ gint GUILink::event(GdkEvent *event)
             points->coords[2]=item_x;
             points->coords[3]=item_y;
          }
+	 
+	 //updating our list
+	 m_points.front()->x = points->coords[0];
+	 m_points.front()->y = points->coords[1];
+	 m_points.back()->x = points->coords[2];
+	 m_points.back()->y = points->coords[3];
+
+
          gnome_canvas_item_set(item, "points", points, NULL);
+
+	 
+	 gnome_canvas_points_unref(points);
+
       }
       else {
 	
 	if (event->motion.state & GDK_BUTTON1_MASK) {
 
-	  cout<<"should redraw distorted line"<<endl;
+	  //updating
 
-	  points = gnome_canvas_points_new(3);
-	  points->coords[0]=x1;
-	  points->coords[1]=y1;
-	  
-	  points->coords[2]=item_x;
-	  points->coords[3]=item_y;
-	  
-	  points->coords[4]=x2;
-	  points->coords[5]=y2;
-	  
+	  if (my_point) {
+	    my_point->x = item_x;
+	    my_point->y = item_y;
+	  }
+
+	  points = gnome_canvas_points_new(m_points.size());
+		  
+	  int pos = 0;
+
+	  for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+	       iter != m_points.end(); iter++) {
+
+	    points->coords[pos++] = (*iter)->x;
+	    points->coords[pos++] = (*iter)->y;
+
+	  }
+
 	  gnome_canvas_item_set(item, "points", points, NULL);
 
-	  new_px = item_x;
-	  new_py = item_y;
-
-
+	  gnome_canvas_points_unref(points);
 	}
       }
 
@@ -204,10 +315,8 @@ gint GUILink::event(GdkEvent *event)
          complete = true;
       }
       else {
-	cout<<"should insert new point "<<endl;
-	cout<<"item_x "<<item_x<<endl;
-	cout<<"item_y "<<item_y<<endl;
 
+	my_point = NULL;
       }
 
       break;
