@@ -339,7 +339,7 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
    double *out = new double [topo[topo.size()-1]];
    double SSE;
    int k=1;
-   double sigma = 1;
+   double sigma = .01;
    double lambda = .5;
    double lambdaBar = 0;
    double sigmak;
@@ -428,6 +428,8 @@ void FFNet::trainCGB(vector<float *> tin, vector<float *> tout, int iter)
       if (DK < .25)
 	 lambda *= 4;
       
+      cout << SSE/tin.size()/topo[topo.size()-1] << "\t" << DK << "\t" << lambda << endl;
+
       //9. Have we found the minimum
       if (rk.norm() == 0)
       {
