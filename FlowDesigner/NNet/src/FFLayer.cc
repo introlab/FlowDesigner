@@ -37,7 +37,8 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       momentum[i]=0;
 
-   tmp_weights = new double [nbNeurons*(nbInputs+1)];
+   gradient = new double [nbNeurons*(nbInputs+1)];
+   saved_weights = new double [nbNeurons*(nbInputs+1)];
 
    deriv = new double [nbNeurons];
    value = new double [nbNeurons];
@@ -114,7 +115,8 @@ void FFLayer::readFrom (istream &in)
 	    in >> weights[i];
 	 }
 	 
-	 tmp_weights = new double [nbNeurons*(nbInputs+1)];
+	 gradient = new double [nbNeurons*(nbInputs+1)];
+	 saved_weights = new double [nbNeurons*(nbInputs+1)];
 	 
 	 deriv = new double [nbNeurons];
 	 value = new double [nbNeurons];

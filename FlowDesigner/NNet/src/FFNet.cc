@@ -44,7 +44,7 @@ double *FFNet::calc(const double *input)
    return layers[layers.size()-1]->getValue();
 }
 
-void FFNet::learn(double *input, double *output, double alpha)
+void FFNet::learn(double *input, double *output)
 {
    int outputLayer = topo.size()-2;
    calc(input);
@@ -66,7 +66,7 @@ void FFNet::learn(double *input, double *output, double alpha)
       double *delta = currentLayer->getError();
       for (int i=0;i<layerSize;i++)
       {
-	 double *w = currentLayer->getTmpWeights(i);
+	 double *w = currentLayer->getGradient(i);
 	 //cerr << k << endl;
 	 if (k==outputLayer)
 	 {
@@ -89,9 +89,9 @@ void FFNet::learn(double *input, double *output, double alpha)
 	 }
 	 for (int j=0;j<layerInputs;j++)
 	 {
-	    w[j] += alpha * previousValue[j] * delta[i];
+	    w[j] += previousValue[j] * delta[i];
 	 }
-	 w[layerInputs] += alpha * delta[i];
+	 w[layerInputs] += delta[i];
       }
    }	 
 }
@@ -140,7 +140,7 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
       {
 	 for (i=0;i<layers.size();i++)
 	 {
-	    layers[i]->copyToTmp();
+	    layers[i]->resetGradient();
 	 }
 	 for (i=batchSet;i<tin.size();i+=nbSets)
 	 {
@@ -150,12 +150,12 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
 	       in[j]=tin[i][j];
 	    for (j=0;j<topo[topo.size()-1];j++)
 	       out[j]=tout[i][j];
-	    learn (in, out, alpha);
+	    learn (in, out);
 	    
 	 }
 	 for (i=0;i<layers.size();i++)
 	 {
-	    layers[i]->copyFromTmp(momentum);
+	    layers[i]->updateGradient(alpha,momentum);
 	 }
       }
 
@@ -214,6 +214,123 @@ void FFNet::train(vector<float *> tin, vector<float *> tout, int iter, double le
    }
 }
 
+double FFNet::calcError(const vector<float *> &tin, const vector<float *> &tout)
+{
+   int i,j;
+   double error=0;
+   for (i=0;i<tin.size();i++)
+   {
+      double in[topo[0]];
+      double out[topo[topo.size()-1]];
+      for (j=0;j<topo[0];j++)
+	 in[j]=tin[i][j];
+      for (j=0;j<topo[topo.size()-1];j++)
+	 out[j]=tout[i][j];
+      
+      double *netOut = calc (in);
+      for (j=0;j<topo[topo.size()-1];j++)
+	 error += (netOut[j]-out[j])*(netOut[j]-out[j]);
+   }
+   return error;
+}
+
+void FFNet::traincg(vector<float *> tin, vector<float *> tout, int iter)
+{
+
+   int i,j;
+
+
+   while (iter)
+   {
+
+
+
+      for (i=0;i<layers.size();i++)
+      {
+	 layers[i]->resetGradient();
+      }
+      for (i=0;i<tin.size();i++)
+      {
+	 double in[topo[0]];
+	 double out[topo[topo.size()-1]];
+	 for (j=0;j<topo[0];j++)
+	    in[j]=tin[i][j];
+	 for (j=0;j<topo[topo.size()-1];j++)
+	    out[j]=tout[i][j];
+	 learn (in, out);
+	 
+      }
+
+      double min_error = FLT_MAX;
+      double min_alpha = 0;
+      for (double alpha = .00000000001; alpha < .0001 ; alpha *= 3)
+      {
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->saveWeights();
+	 
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->updateGradient(alpha,0.0);
+
+	 double sse = calcError(tin, tout);
+	 if (sse < min_error)
+	 {
+	    min_error=sse;
+	    min_alpha=alpha;
+	 }
+	 
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->loadWeights();
+	 
+
+      }
+
+      /*for (i=0;i<layers.size();i++)
+	 layers[i]->updateGradient(min_alpha,0.0);
+      */
+
+      double A=min_alpha/3;
+      double B=min_alpha*3;
+      double sseA, sseB;
+      double middle;
+      for (j=0;j<15;j++)
+      {
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->saveWeights();
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->updateGradient(A,0.0);
+	 sseA = calcError(tin, tout);
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->loadWeights();
+
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->saveWeights();
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->updateGradient(B,0.0);
+	 sseB = calcError(tin, tout);
+	 for (i=0;i<layers.size();i++)
+	    layers[i]->loadWeights();
+	 middle = sqrt(A*B);
+	 //cerr << A << ": " << sseA << "\t" << B << ": " << sseB << "\t" << middle << endl;
+	 if (sseA > sseB)
+	    A=middle;
+	 else
+	    B=middle;
+      }
+      for (i=0;i<layers.size();i++)
+	 layers[i]->updateGradient(middle,0.0);
+      min_error = calcError(tin, tout);
+
+      iter--;
+
+
+      cout << (min_error/tin.size()/topo[topo.size()-1]) << "\t" << middle << "\t" << tin.size() << endl;
+
+
+   }
+}
+
+
+/*
 void FFNet::learnlm(double *input, double *output, double **jacob, double *err, double &sse)
 {
    int outputLayer = topo.size()-2;
@@ -323,10 +440,10 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
       for (int i=0;i<tin.size();i++)
 	 //for (int i=0;i<tin.size();i+=100)
       {
-	 /*for (int j=0;j<nb_outputs;j++)
+	 for (int j=0;j<nb_outputs;j++)
 	    for (int k=0;k<nb_weights;k++)
 	       jacob[j][k]=0;
-	 */
+	 
 
 	 double in[topo[0]];
 	 double out[topo[topo.size()-1]];
@@ -341,24 +458,24 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
 	    grad[j]+=jacob[k][j]*err[k];
 	 
       }
-/*
+
       for (int i=0;i<nb_outputs;i++)
       {
 	 for (int j=0;j<nb_weights;j++)
 	    cerr << jacob[i][j] << " ";
 	 cerr << endl;
 	 }
-*/
+
       //calculate gradient
-      /*for (int i=0;i<nb_weights;i++)
+      for (int i=0;i<nb_weights;i++)
 	 for (int j=0;j<nb_outputs;j++)
 	    grad[i] += jacob[j][i]*err[j];
-      */
+      
 
       double delta[nb_weights];
       for (int i=0;i<nb_weights;i++)
 	 delta[i] = -.0000001*grad[i];
-/*
+
       for (int i=0;i<nb_outputs;i++)
 	 cerr << err[i] << " ";
       cerr << endl;
@@ -368,7 +485,7 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
       for (int i=0;i<nb_weights;i++)
 	 cerr << delta[i] << " ";
       cerr << endl;
-*/
+
       int offset=0;
       int outputLayer = topo.size()-2;
       for (int k=outputLayer;k>=0;k--)
@@ -402,7 +519,7 @@ void FFNet::trainlm(vector<float *> tin, vector<float *> tout, int maxIter)
    delete [] jacob2;
 
 }
-
+*/
 void FFNet::printOn(ostream &out) const
 {
    out << "<FFNet " << endl;
