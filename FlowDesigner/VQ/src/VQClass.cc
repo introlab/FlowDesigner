@@ -18,88 +18,70 @@
 #include "FrameOperation.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include "lpc.h"
-#include <stdlib.h>
-#include <fftw.h>
-#include <rfftw.h>
-#include <math.h>
+#include "kmeans.h"
 
-class PS2LPC;
+class VQClass;
 
-//DECLARE_NODE(PS2LPC)
-NODE_INFO(PS2LPC,"Signal:DSP", "INPUT", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
+//DECLARE_NODE(VQClass)
+NODE_INFO(VQClass,"VQ", "INPUT:VQ", "OUTPUT", "INPUTLENGTH:OUTPUTLENGTH")
 
-class PS2LPC : public FrameOperation {
+class VQClass : public FrameOperation {
    
    int inputID;
+   int VQinputID;
    int inputLength;
-   rfftw_plan plan1;
-   rfftw_plan plan2;
-   float *hamming;
-   int SAMP_SIZE;
-   int SAMP_SIZE_2;
 
 public:
-   PS2LPC(string nodeName, ParameterSet params)
+   VQClass(string nodeName, ParameterSet params)
    : FrameOperation(nodeName, params)
    {
       inputID = addInput("INPUT");
-      if (parameters.exist("INPUTLENGTH"))
+      VQinputID = addInput("VQ");
+      /*if (parameters.exist("INPUTLENGTH"))
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
-      else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
-
-      SAMP_SIZE_2 = inputLength;
-      SAMP_SIZE   = 2 * SAMP_SIZE_2;
-
+         else inputLength = dereference_cast<int> (parameters.get("LENGTH"));*/
    }
 
-   ~PS2LPC() {rfftw_destroy_plan(plan1); rfftw_destroy_plan(plan2); delete hamming;}
+   ~VQClass() {}
 
    virtual void specificInitialize()
    {
-      plan1 = rfftw_create_plan (SAMP_SIZE, FFTW_FORWARD, FFTW_ESTIMATE);
-      plan2 = rfftw_create_plan (SAMP_SIZE, FFTW_BACKWARD, FFTW_ESTIMATE);
       this->FrameOperation::specificInitialize();
-      hamming = new float[SAMP_SIZE];
-      for (int i=0;i<SAMP_SIZE;i++)
-         hamming[i]= 0.54 - 0.46*cos(2*M_PI*i/float(SAMP_SIZE));
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
       NodeInput input = inputs[inputID];
-      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+      NodeInput VQInput = inputs[VQinputID];
+
+      ObjectRef VQValue = VQInput.node->getOutput(VQInput.outputID, count);
 
       Vector<float> &output = object_cast<Vector<float> > (out[count]);
+      if (VQValue->status != Object::valid)
+      {
+         output.status = VQValue->status;
+         return;
+      }
+
+      ObjectRef inputValue = input.node->getOutput(input.outputID, count);
+
       if (inputValue->status != Object::valid)
       {
          output.status = inputValue->status;
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
+      const KMeans &vq = object_cast<KMeans> (VQValue);
       
-      float response[SAMP_SIZE];
-      float ps[SAMP_SIZE];
+      int classID = vq.getClassID(in.begin());
+      //const vector<float> &mean = vq[classID];
 
-
-      for (int i=0;i<SAMP_SIZE_2;i++)
-         ps[i]=in[i];
-      for (int i=SAMP_SIZE_2;i<SAMP_SIZE;i++)
-         ps[i]=0.0;
-
-
-      rfftw_one(plan2, ps, response);
-
-      
-      float er=0;
-      float rc[outputLength];
-      response[0] *= 1.00001;
-      wld(output.begin(), response, rc, outputLength-1);
-      for (int i=0;i<outputLength;i++)
-        output[i] *= pow(.999,i);
+      //for (int i=0;i<outputLength;i++)
+      //   output[i]=mean[i];
+       
+      output[0] = classID;
 
       output.status = Object::valid;
-
    }
 
 };
