@@ -4,8 +4,12 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <strstream>
-#include <values.h>
 #include "vec.h"
+
+#ifdef HAVE_VALUES_H
+#include <values.h>
+#endif
+
 
 class TimeAutocorr;
 

@@ -4,8 +4,11 @@
 #include "Buffer.h"
 #include "Vector.h"
 #include <strstream>
-#include <values.h>
 #include <math.h>
+
+#ifdef HAVE_VALUES_H
+#include <values.h>
+#endif
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>

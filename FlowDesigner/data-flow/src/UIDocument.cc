@@ -935,9 +935,11 @@ set<string> UIDocument::genCode(ostream &out, const string &functName, bool loca
    if (localIncludes)
    {
       out << "#include \"Network.h\"\n";
+      out << "#include \"Iterator.h\"\n";
       out << "#include \"object_param.h\"\n\n\n";
    } else {
       out << "#include <Network.h>\n";
+      out << "#include <Iterator.h>\n";
       out << "#include <object_param.h>\n\n\n";
    }
    int id=0;

@@ -3,7 +3,10 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
+
+#ifdef HAVE_VALUES_H
 #include <values.h>
+#endif
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>

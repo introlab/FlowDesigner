@@ -82,10 +82,10 @@ void CodeGenState::ok()
 	 if (!copyDepend)
 	    out << "      scanDL();\n";
 	 out << "      ParameterSet param;\n";
-	 out << "      for (int arg = 2; arg<argc; arg++)\n";
+	 out << "      for (int arg = 1; arg<argc; arg++)\n";
 	 out << "      {\n";
 	 out << "         char arg_name[100];\n";
-	 out << "         sprintf (arg_name, \"ARG%d\", arg-1);\n";
+	 out << "         sprintf (arg_name, \"ARG%d\", arg);\n";
 	 out << "         param.add(arg_name, ObjectRef (new String (argv[arg])));\n";
 	 out << "      }\n";
 	 out << "      Network *net = " << funcname << "(\"MAIN\", param);\n";

@@ -1,9 +1,12 @@
 // Copyright (C) 1998-1999 Jean-Marc Valin
 #include "gmm.h"
-#include <values.h>
 #include <typeinfo>
 #include <vector>
 #include "vec.h"
+
+#ifdef HAVE_VALUES_H
+#include <values.h>
+#endif
 
 #ifdef HAVE_FLOAT_H
 #include <float.h>
