@@ -13,6 +13,9 @@ protected:
    /**The ID of the 'output' output*/
    int outputID;
 
+   /**The ID of the 'NOT_END' output*/
+   int endID;
+
    /**The ID of the 'stream' input*/
    int inputID;
 

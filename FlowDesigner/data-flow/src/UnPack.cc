@@ -17,6 +17,9 @@ DECLARE_NODE(UnPack)
  * @output_name OUTPUT
  * @output_description The single unpacked Object
  *
+ * @output_name NOT_END
+ * @output_description True if there's still data
+ *
 END*/
 
 
@@ -24,6 +27,7 @@ UnPack::UnPack(string nodeName, ParameterSet params)
    : Node(nodeName, params)
 {
    outputID = addOutput("OUTPUT");
+   endID = addOutput("NOT_END");
    inputID = addInput("INPUT");
 }
 
@@ -42,7 +46,7 @@ void UnPack::reset()
 ObjectRef UnPack::getOutput(int output_id, int count)
 {
    //cerr << "Getting output in UnPack\n";
-   if (output_id==outputID)
+   if (output_id==outputID || output_id==endID)
    {
       processCount=count;
       
@@ -52,13 +56,17 @@ ObjectRef UnPack::getOutput(int output_id, int count)
       Vector<ObjectRef> &packed = object_cast <Vector<ObjectRef> > (inputValue);
       if (count < int(packed.size()))
       {
-         //cerr << packed[count] << endl;
-         return packed[count];
+         if (output_id==outputID)
+	    return packed[count];
+	 else
+	    return TrueObject;
       }
       else
       {
-         //cerr << "Past the end in Unpack\n";
-         return Object::past_endObject;
+         if (output_id==outputID)
+	    return Object::past_endObject;
+	 else
+	    return FalseObject;
       }
    }
    else 

@@ -23,9 +23,13 @@ DECLARE_NODE(AudioStream)
  * @input_type IStream
  * @input_description An audio input stream (IStream, fd or FILE *)
  *
- * @output_name OUTPUT
+ * @output_name AUDIO
  * @output_type Vector<float>
  * @output_description Frames read
+ *
+ * @output_name NOT_EOF
+ * @output_type bool
+ * @output_description True if we haven't reach the end of file yet
  *
  * @parameter_name LENGTH
  * @parameter_type int
@@ -129,7 +133,8 @@ class AudioStream : public BufferedNode {
    typedef enum {fd, fptr, cpp} StreamType;
    
    int inputID;
-   int outputID;
+   int audioID;
+   int eofID;
    int outputLength;
    int advance;
 
@@ -150,7 +155,8 @@ public:
       : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      outputID = addOutput("OUTPUT");
+      audioID = addOutput("AUDIO");
+      eofID = addOutput("NOT_EOF");
 
       if (parameters.exist("OUTPUTLENGTH"))
          outputLength = dereference_cast<int> (parameters.get("OUTPUTLENGTH"));
@@ -201,22 +207,22 @@ public:
    
    virtual void specificInitialize()
    {
-      outputs[outputID].lookBack += 1;
+      outputs[audioID].lookAhead = outputs[eofID].lookAhead = max(outputs[audioID].lookAhead, outputs[eofID].lookAhead);
+      //outputs[audioID].lookBack += 1;
       this->BufferedNode::specificInitialize();
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
+      Buffer &audioBuffer = *(outputs[audioID].buffer);
+      Buffer &eofBuffer = *(outputs[eofID].buffer);
+      eofBuffer[count] = TrueObject;
+
       ObjectRef inputValue = getInput(inputID, count);
 
       Vector<float> &output = *Vector<float>::alloc(outputLength);
-      out[count] = &output;
+      audioBuffer[count] = &output;
       
-      if (inputValue->status != Object::valid)
-      {
-	 out[count] = inputValue;
-	 return;
-      }
       
       //Done only the first time
       if (count == 0)
@@ -250,20 +256,23 @@ public:
 	 DYN_VEC(char, itemSize*outputLength, buff);
 	 if (!readStream(buff, outputLength, inputValue))
 	 {
-	    out[count] = Object::past_endObject;
-	    return;
+	    eofBuffer[count] = FalseObject;
+	    for (int i=0;i<outputLength;i++)
+	       output[i] = 0;
+	 } else {
+	    //FIXME: We should only replace unavailable data by zero, not the whole frame
+	    raw2Float (buff, &output[0], outputLength, encoding);
 	 }
-	 raw2Float (buff, &output[0], outputLength, encoding);
-
+	 
       } else { // Normal case (not at start of file)
       
-	 if (count>0 && out[count-1]->status == Object::valid 
-	     && advance < outputLength)
+	 if (advance < outputLength)
 	 {
 	    Vector<float> &previous = object_cast<Vector<float> > (out[count-1]);
 	    for (int i=0;i<outputLength-advance;i++)
 	       output[i]=previous[i+advance];
 	 } else {
+	    //FIXME: should skip data if (advance > outputLength)
 	    for (int i=0;i<outputLength-advance;i++)  
 	       output[i]=0;
 	 }
@@ -271,12 +280,15 @@ public:
 	 
 	 if (!readStream(&tmpBuffer[0], advance, inputValue))
 	 {
-	    out[count] = Object::past_endObject;
-	    return;	 
+	    eofBuffer[count] = FalseObject;
+	    //FIXME: We should only replace unavailable data by zero, not the whole frame
+	    for (int i=0;i<outputLength;i++)
+	       output[i] = 0;
+	 } else {
+	    int convert = min(advance, outputLength);
+	    int outSz = output.size();
+	    raw2Float (&tmpBuffer[0], &output[outSz] - convert, convert, encoding);
 	 }
-	 int convert = min(advance, outputLength);
-	 int outSz = output.size();
-	 raw2Float (&tmpBuffer[0], &output[outSz] - convert, convert, encoding);
       }
 
       
