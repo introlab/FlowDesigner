@@ -10,8 +10,6 @@ using namespace std;
 #endif
 
 
-#undef HAVE_FFTW
-
 #ifdef HAVE_FFTW
 #include <fftw.h>
 #include <rfftw.h>
