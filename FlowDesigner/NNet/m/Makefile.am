@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
-octavedir = $(datadir)/overflow/m
+octavedir = $(datadir)/m
 
 octave_DATA = exportlayer.m exportnet2.m exportnet3.m
 
