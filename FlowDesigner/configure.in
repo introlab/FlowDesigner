@@ -120,5 +120,6 @@ AC_OUTPUT([Makefile HMM/Makefile HMM/src/Makefile HMM/include/Makefile \
 	audio_blocks/doc/Makefile audio_blocks/doc/html/Makefile \
 	audio_blocks/config/Makefile \
 	tools/Makefile tools/src/Makefile tools/m/Makefile \
+	video_blocks/Makefile video_blocks/src/Makefile \
 	])
 
