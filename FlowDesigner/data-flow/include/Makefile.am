@@ -49,7 +49,8 @@ include_HEADERS = Array.h \
 	object_param.h \
 	typetraits.h \
 	binio.h \
-	typemap.h
+	typemap.h \
+	stream_io.h
 	
 noinst_HEADERS = \
 	NOT.h \
