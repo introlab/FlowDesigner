@@ -27,17 +27,17 @@ DECLARE_NODE(DCT)
  *
  * @name DCT
  * @category Signal:DSP
- * @description No description available
+ * @description Computes the Discrete Cosine Transform (DCT)
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_description The input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description The result of the DCT
  *
  * @parameter_name LENGTH
  * @parameter_type int
- * @parameter_description No description available
+ * @parameter_description Length of the DCT
  *
 END*/
 

@@ -43,34 +43,34 @@ DECLARE_NODE(Sound)
  *
  * @name Sound
  * @category Signal:Audio
- * @description No description available
+ * @description Opens a sound device
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description A file descriptor to the sound device
  *
  * @parameter_name DEVICE
  * @parameter_type string
- * @parameter_description No description available
+ * @parameter_description Path to the sound devide
  *
  * @parameter_name RATE
  * @parameter_type int
- * @parameter_description No description available
+ * @parameter_description Sampling rate
  *
  * @parameter_name STEREO
  * @parameter_type int
- * @parameter_description No description available
+ * @parameter_description 1 for stereo, 0 for mono
  *
  * @parameter_name MODE
  * @parameter_type string
- * @parameter_description No description available
+ * @parameter_description R for sound input, W for sound output, RW for full-duplex mode
  *
  * @parameter_name BUFFER
  * @parameter_type int
- * @parameter_description No description available
+ * @parameter_description Length of the audio buffer to allocate (nor reliable)
  *
  * @parameter_name DUMMY
  * @parameter_type any
- * @parameter_description No description available
+ * @parameter_description Put something here to output to a file
  *
 END*/
 
