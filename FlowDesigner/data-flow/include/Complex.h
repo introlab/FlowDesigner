@@ -12,23 +12,41 @@
 
 using namespace std;
 
+/**
+   Base class for Complex<T> numbers.
+   \author Dominic Letourneau
+   \date 18/02/2004
+*/
 template <class T>
 class Complex : public complex<T>, public Object {
 
  public:
 
+  ///You can always get the type of the Complex<T> by using typename Complex<T>::basicType.
   typedef complex<T> basicType;
   
+  ///Default constructor
   Complex() : complex<T>() {}
   
+  ///Constructor with a complex<T>
   Complex(const complex<T> &val) : complex<T>(val) {}
-		  
- void printOn(ostream &out) const {
+
+  /**
+     Formatted output in the FlowDesigner format<br>
+     <b>Format : </b> \<Complex\<T\> <i> complex<T> value</i> \>
+     \param out the output stream
+  */
+  void printOn(ostream &out) const {
     out << "<"<<className()<<" ";
     out << *((complex<T>*) this);
     out << ">"<<endl;
   }
   
+  /**
+     Formatted input in the FlowDesigner format<br>
+     <b>Format : </b> \<Complex\<T\> <i> complex<T> value</i> \>
+     \param in the input stream
+  */
   void readFrom(istream &in) {
     complex<T> value;
     in >> value;
@@ -40,12 +58,22 @@ class Complex : public complex<T>, public Object {
     }
   }
   
+  /**
+      Binary output in the FlowDesigner format<br>
+      <b>Format : </b> {Complex\<T\> |<i>complex<T> value</i> }
+      \param out the output stream
+  */
   void serialize(ostream &out) const {
     out << "{" << className() << " |";
     BinIO::write(out, (complex<T>*) this, 1);
     out << " }";
   }
   
+  /**
+      Binary input in the FlowDesigner format<br>
+      <b>Format : </b> {Complex\<T\> |<i>complex<T> value</i> }
+      \param in the input stream
+  */
   void unserialize(istream &in) { 
     complex<T> value;
     BinIO::read(in, &value, 1);
@@ -57,27 +85,52 @@ class Complex : public complex<T>, public Object {
     }    
   }
   
+  /**
+     Standard formatted output for Complex<T>
+     \param out the output stream
+  */
   void prettyPrint(ostream &out) const { 
     out << *((complex<T>*) this);
   }
   
+  /**
+     Returns the complex<T> wrapped value
+     \return complex<T> the complex<T> value wrapped
+  */
   complex<T>& val() const {return *((complex<T>*) this);}
+  
+  
+  /**
+     Allocate a Complex<T> value from the pool
+     \return Complex<T>* the value from the pool
+  */
+  static Complex<T> *alloc()  {return ObjectPool<Complex<T> >::alloc();}
+  
+  /**
+     Allocat a Complet<T> value from the pool, copying from another Complex<T> value
+     \param obj The value to be copied
+     \return Complex<T>* a copy of obj
+  */
+  static Complex<T> *alloc(const Complex<T> &obj)  
+  {
+    Complex<T> *ret = ObjectPool<Complex<T> >::alloc();
+    *ret = obj;
+    return ret;
+  }
 
-
-   static Complex<T> *alloc()  {return ObjectPool<Complex<T> >::alloc();}
-
-   static Complex<T> *alloc(const Complex<T> &obj)  
-   {
-      Complex<T> *ret = ObjectPool<Complex<T> >::alloc();
-      *ret = obj;
-      return ret;
-   }
-
-   void destroy() {ObjectPool<Complex<T> >::release(this);}
-
-
+  /**
+     Destroy any Complex<T> from memory. This function is used by the ObjectPool<Complex<T> > class.
+  */
+  void destroy() {ObjectPool<Complex<T> >::release(this);}
 };
 
+
+/**
+   operator >> for Complex<T>
+   \param in input stream
+   \param value the Complex<T> value to print
+   \return istream the input stream
+*/
 template <class T> 
 istream &operator >> (istream &in, Complex<T> &value) { 
   
