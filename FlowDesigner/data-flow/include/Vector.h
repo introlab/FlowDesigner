@@ -20,6 +20,8 @@
 #include "Object.h"
 #include <vector>
 #include "ObjectParser.h"
+#include <ObjectRef.h>
+
 using namespace std;
 
 template<class T>
@@ -44,6 +46,8 @@ public:
    static Vector<T> *alloc(int size);
 
 };
+
+
 
 
 
@@ -100,13 +104,21 @@ inline void Vector<T>::destroy()
 }
 
 
+
 #include "VectorPool.h"
 extern VectorPool<float> floatVectorPool;
+extern VectorPool<double> doubleVectorPool;
 
 template <>
 inline void Vector<float>::destroy()
 {
    floatVectorPool.release(this);
+}
+
+template <>
+inline void Vector<double>::destroy()
+{
+   doubleVectorPool.release(this);
 }
 
 template <class T>
@@ -115,11 +127,19 @@ inline Vector<T> *Vector<T>::alloc(int size)
    return new Vector<T> (size);
 }
 
+
 template <>
 inline Vector<float> *Vector<float>::alloc(int size)
 {
    return floatVectorPool.newVector(size);
 }
+
+template <>
+inline Vector<double> *Vector<double>::alloc(int size)
+{
+   return doubleVectorPool.newVector(size);
+}
+
 
 /*template<class T>
 istream &operator >> (istream &in, Vector<T> &vec)
@@ -129,5 +149,36 @@ istream &operator >> (istream &in, Vector<T> &vec)
    return in;
    }*/
 
+
+/**The object cast from ObjectRef*/
+template <>
+Vector<float> &object_cast<Vector<float> > (const ObjectRef &ref)
+{
+   Vector<float> *tmp = dynamic_cast<Vector<float> *>(&(*ref));
+   if (!tmp)
+   {
+      Float *tmp2 = dynamic_cast<Float *>(&(*ref));
+      if (!tmp2)
+	 throw new CastException<Vector<float> > (typeid ((*ref)).name());
+      Vector<float> *vec = Vector<float>::alloc(1);
+      (*vec)[0] = (*tmp2).val();
+   }
+   return *tmp;
+}
+
+template <>
+Vector<double> &object_cast<Vector<double> > (const ObjectRef &ref)
+{
+   Vector<double> *tmp = dynamic_cast<Vector<double> *>(&(*ref));
+   if (!tmp)
+   {
+      Double *tmp2 = dynamic_cast<Double *>(&(*ref));
+      if (!tmp2)
+	 throw new CastException<Vector<double> > (typeid ((*ref)).name());
+      Vector<double> *vec = Vector<double>::alloc(1);
+      (*vec)[0] = (*tmp2).val();
+   }
+   return *tmp;
+}
 
 #endif
