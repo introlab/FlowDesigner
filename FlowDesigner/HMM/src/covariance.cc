@@ -1,214 +1,45 @@
+// Copyright (C) 1998-1999 Jean-Marc Valin & Daniel Kiecza
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2, or (at your option)
+// any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, write to the Free Software Foundation,
+// 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #include "covariance.h"
 
-#include "frame.h"
 
-#include<iostream.h>
-#include<fstream.h>
-#include<assert.h>
-
-#define IMPLERR cerr << "NOT IMPLEMENTED!" << endl
-
-
-Covariance::Covariance()
+void DiagonalCovariance::to_real(const float accum_1, const vector<float> *mean)
 {
-  setCovariance(0, 0, 0, 1);
+#ifdef DEBUG
+   cerr << "accum_1 #2: " << accum_1 << endl;
+   cerr << "*tata* "<<endl;
+#endif
+   for(unsigned int i = 0; i < data.size(); i++ )
+   {
+      data[i] = data[i] * accum_1 - sqr( (*mean)[i] ) ;
+   }
 }
 
-Covariance::Covariance(int _dimension, float *_covariance, int _type) 
+
+void DiagonalCovariance::compute_determinant() const
 {
-  setCovariance(_dimension, _covariance, _type, 1);
+   determinant=1;
+   for (unsigned int i=0;i<dimension;i++)
+      determinant *= data[i];
+   determinant_is_valid = true;
 }
 
-Covariance::Covariance(const Covariance &_covariance)
+void DiagonalCovariance::reset()
 {
-  setCovariance(_covariance.getDimension(), _covariance.getCovariance(), _covariance.getType(), 1);
+   determinant_is_valid=false;
+   for (unsigned int i=0;i<dimension;i++)
+      data[i]=0.0;
 }
-
-
-Covariance::~Covariance()
-{
-  delete covariance;
-}
-
-
-void Covariance::setCovariance(int _dimension, float *_covariance, int _type, int _new=1)
-{
-  if (!_new)
-    delete covariance;
-
-  dimension  = _dimension;
-  type       = _type;
-
-  switch (type)
-  {
-  case diagonal:
-    covariance  = new float [dimension];
-    determinant = 1;
-    for (int i=0; i<dimension; i++)
-    {
-      covariance[i] = _covariance[i];
-      determinant *= covariance[i];
-    }
-    break;
-  case radial:
-    IMPLERR;
-    break;
-  case full:
-    covariance = new float [dimension*dimension];
-     for (int i=0; i<dimension*dimension; i++)
-      covariance[i] = _covariance[i];
-     // ***** calculate determinant!!
-    break;
-  default:
-    break;
-  }
-}
-
-
-
-float Covariance::calculateMetric(const Frame &frame)
-{
-  float result = 0.0;
-  int i,j;
-  
-  switch (type)
-  {
-  case diagonal:
-    for ( i=0; i<dimension; i++)
-      result += covariance[i] * frame[i] * frame[i];
-    break;
-  case radial:
-    break;
-  case full:
-    for (i=0; i<dimension; i++)
-      for (j=0; j<dimension; j++)
-        result += covariance[i*dimension+j] * frame[i] * frame[j];
-    break;
-  default:
-    break;
-  }
-
-  return result;  
-}
-
-
-void Covariance::print()
-{
-  if (covariance != 0)
-  {
-    switch (type)
-    {
-    case diagonal:
-      for (int i=0; i<dimension; i++)
-      {
-	for (int j=0; j<dimension; j++)
-	  if (i==j)
-	    cout << covariance[i] << ", ";
-	  else
-	    cout << "0.0, ";
-	cout << endl;
-      }
-      break;
-    case radial:
-      break;
-    case full:
-      for (int i=0; i<dimension; i++)
-      {
-	for (int j=0; j<dimension; j++)
-	  cout << covariance[i*dimension+j] << ", ";
-	cout << endl;
-      }
-      break;
-    default:
-      break;
-    }
-  }
-}
-
-
-
-void Covariance::save(ofstream &file)
-{
-  file.write((char*) &type,        sizeof(type));
-  file.write((char*) &dimension,   sizeof(dimension));
-  file.write((char*) &determinant, sizeof(determinant));
-
-  cout << "Wrote: " << type << ", " << dimension << ", " << determinant << endl;
-
-  switch (type)
-  {
-  case diagonal:
-    file.write((char*) covariance, sizeof(float)*dimension);
-    break;
-  case radial:
-    break;
-  case full:
-    file.write((char*) covariance, sizeof(float)*dimension*dimension);
-    break;
-  default:
-    break;
-  }
-}
-
-
-void Covariance::load(ifstream &file)
-{
-  file.read((char*) &type,        sizeof(type));
-  file.read((char*) &dimension,   sizeof(dimension));
-  file.read((char*) &determinant, sizeof(determinant));
-  
-  if (covariance != 0)
-  {
-    delete covariance;
-    covariance = 0;
-  }
-  
-  switch (type)
-  {
-  case diagonal:
-    covariance  = new float [dimension];
-    file.read((char*) covariance, sizeof(float)*dimension);
-    break;
-  case radial:
-    break;
-  case full:
-    covariance  = new float [dimension*dimension];
-    file.read((char*) covariance, sizeof(float)*dimension*dimension);
-    break;
-  default:
-    break;
-  }
-}
-
-
-float &Covariance::operator()(int i, int j)
-{
-  switch (type)
-  {
-  case diagonal:
-    assert (i==j && i >= 0 && i < dimension);
-    return covariance[i];
-    break;
-  case radial:
-    IMPLERR;
-    break;
-  case full:
-    assert (i*dimension+j >= 0 && i*dimension+j < dimension*dimension);
-    return covariance[i*dimension+j];
-    break;
-  default:
-    IMPLERR;
-    break;
-  }
-}
-
-
-Covariance &Covariance::operator=(const Covariance &_covariance)
-{  
-  if (this != &_covariance)
-  {
-    setCovariance(_covariance.getDimension(), _covariance.getCovariance(), _covariance.getType(), 0);
-  }
-  return *this;
-}
-
