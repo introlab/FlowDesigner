@@ -18,16 +18,6 @@
 
 //@implements UIClasses
 
-//map<string, set<string> > UIDocument::moduleDepend;
-
-//map<string, set<string> > UIDocument::fileDepend;
-
-//map<string, set<string> > UIDocument::headerDepend;
-
-
-//map<string, SubnetInfo *> UIDocument::externalDocInfo;
-
-
 UIDocument::UIDocument(string _name)
    : modified(false)
    , docName(_name)
@@ -91,9 +81,6 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
       if (UINodeRepository::Find(netName))
 	 return UINodeRepository::Find(netName)->inputs;
 
-/*      if (externalDocInfo.find(netName) != externalDocInfo.end()) {
-      inputs = externalDocInfo[netName]->inputs;
-      }*/
    return inputs;
 }
 
@@ -117,9 +104,6 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
       if (UINodeRepository::Find(netName))
 	 return UINodeRepository::Find(netName)->outputs;
 
-   /*if (externalDocInfo.find(netName) != externalDocInfo.end()) {
-      outputs = externalDocInfo[netName]->outputs;
-      }*/
    return outputs;
 }
 
@@ -137,23 +121,11 @@ vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
       if (UINodeRepository::Find(netName))
 	 return UINodeRepository::Find(netName)->params;
 
-   /*if (externalDocInfo.find(netName) != externalDocInfo.end()) 
-   {
-      params = externalDocInfo[netName]->params;
-      }*/
-   //FIXME: potential leak of ItemInfo here?
    return params;
 }
 
 string UIDocument::getDescription(const string &type)
 {
-   /*string descr;
-	if (externalDocInfo.find(type) != externalDocInfo.end()) 
-		descr = externalDocInfo[type]->description;
-	else
-		descr = "Description not available.";
-		
-		return descr;*/
    NodeInfo *info = UINodeRepository::Find(type);
    if (info)
       return info->description;
@@ -171,7 +143,7 @@ void UIDocument::addParameterText(string name, string value, string type)
     textParams.insert(textParams.end(), textInfo);
 }
     
-void UIDocument::loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap, string netName)
+void UIDocument::loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, string netName)
 {
    if (netName == "")
       netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
@@ -185,7 +157,7 @@ void UIDocument::loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap,
       return;
    }
    //cerr << "new subnet info with name: " << netName << "\n";
-   SubnetInfo *info = new SubnetInfo;
+   NodeInfo *info = new NodeInfo;
    infoMap[netName] = info;
    
    if (category)
@@ -374,355 +346,6 @@ void UIDocument::loadXML(xmlNodePtr root)
 }
 
 
-/***************************************************************************************************
- *                                                                                                 *
- * The code starting from this point is a big mess, it would need to be rewritten almost completly *
- *                                                                                                 *
- ***************************************************************************************************/
-
-#if 0
-
-void UIDocument::loadNodeDefInfo(const string &path, const string &name)
-{
-
-   string fullname = path + "/" + name;
-   xmlDocPtr doc = xmlParseFile(fullname.c_str());
-   
-   if (!doc || !doc->root || !doc->root->name)
-   {
-      cerr << "loadNodeDefInfo: error loading " << fullname << "\n";
-      xmlFreeDoc (doc);
-      return;
-   }
-   xmlNodePtr root=doc->root;
-   xmlNodePtr node = root->childs;
-   while (node != NULL)
-   {
-      string nodeName;
-      if (string((char*)node->name) == "NodeClass")
-      {
-	 SubnetInfo *info = new SubnetInfo;
-	 info->category = string((char *)xmlGetProp(node, (CHAR *)"category"));
-	 char *sfile = (char *)xmlGetProp(node, (CHAR *)"source");
-	 if (sfile)
-	    info->sourceFile= string(sfile);
-	 char *req = (char *)xmlGetProp(node, (CHAR *)"require");
-	 if (req)
-	    info->requireList = string(req);
-	 //cerr << info->sourceFile << ":" << info->requireList << endl;
-	 nodeName = string((char *)xmlGetProp(node, (CHAR *)"name"));
-	 externalDocInfo[nodeName] = info;
-	 xmlNodePtr data = node->childs;
-	 while (data != NULL)
-	 {
-	    string kind = string((char*)data->name);
-	    if (kind == "Input")
-	    {
-	       xmlChar *tmp;
-	       ItemInfo *newInfo = new ItemInfo;
-	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-	       
-	       tmp = xmlGetProp(data, (CHAR *)"value");
-	       if (tmp == NULL)
-		  newInfo->value = "";
-	       else
-		  newInfo->value = string((char *)tmp);
-	       
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
-	       if (tmp == NULL)
-		  newInfo->description = "No Description Available.";
-	       else
-		  newInfo->description = string((char *)tmp);
-	       
-	       info->inputs.insert(info->inputs.end(), newInfo);
-	    } else if (kind == "Output")
-	    {
-	       xmlChar *tmp;
-	       ItemInfo *newInfo = new ItemInfo;
-	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-	       
-	       tmp = xmlGetProp(data, (CHAR *)"value");
-	       if (tmp == NULL)
-		  newInfo->value = "";
-	       else
-		  newInfo->value = string((char *)tmp);
-	       
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
-	       if (tmp == NULL)
-		  newInfo->description = "No Description Available.";
-	       else
-		  newInfo->description = string((char *)tmp);
-	       
-	       info->outputs.insert(info->outputs.end(), newInfo);
-	    } else if (kind == "Parameter")
-	    {
-	       xmlChar *tmp;
-	       ItemInfo *newInfo = new ItemInfo;
-	       newInfo->name = string((char *)xmlGetProp(data, (CHAR *)"name"));
-	       newInfo->type = string((char *)xmlGetProp(data, (CHAR *)"type"));
-	       tmp = xmlGetProp(data, (CHAR *)"value");
-	       if (tmp == NULL)
-		  newInfo->value = "";
-	       else
-		  newInfo->value = string((char *)tmp);
-	       
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
-	       if (tmp == NULL)
-		  newInfo->description = "No Description Available.";
-	       else
-		  newInfo->description = string((char *)tmp);
-	       
-	       info->params.insert(info->params.end(), newInfo);
-	    } else if (kind == "Description")
-	    {
-	       xmlChar *tmp;
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
-	       if (tmp == NULL)
-		  info->description = "No description available";
-	       else
-		  info->description = string((char *)tmp);
-	       
-	    } else 
-	    {
-	       cerr << "other\n";
-	    }
-	    data = data->next;
-	 }
-      }
-      /*Dependencies for modules*/
-      else if (string((char*)node->name) == "ModuleDepend")
-      {
-	 char *dep_module = (char *)xmlGetProp(node, (CHAR *)"module");
-	 if (!dep_module)
-	    throw new GeneralException("Empty module dependency", __FILE__, __LINE__);
-	 xmlNodePtr depend = node->childs;
-	 while (depend != NULL)
-	 {
-	    if (string((char*)depend->name) != "Require")
-	       throw new GeneralException(string("Unknown section in module dependency: ") + (char*)node->name, 
-				    __FILE__, __LINE__);
-
-	    char *req_file = (char *)xmlGetProp(depend, (CHAR *)"file");
-	    if (!req_file)
-	       throw new GeneralException(string("Empty dependency for module: ") + dep_module, __FILE__, __LINE__);
-	    
-	    moduleDepend[dep_module].insert(moduleDepend[dep_module].end(), req_file);
-
-	    depend = depend->next;
-	 }
-      } 
-      /*Dependencies for files*/
-      else if (string((char*)node->name) == "FileDepend")
-      {
-	 char *dep_file = (char *)xmlGetProp(node, (CHAR *)"file");
-	 if (!dep_file)
-	    throw new GeneralException("Empty file dependency", __FILE__, __LINE__);
-	 xmlNodePtr depend = node->childs;
-	 while (depend != NULL)
-	 {
-	    if (string((char*)depend->name) == "RequireModule")
-	    {
-	       char *req_module = (char *)xmlGetProp(depend, (CHAR *)"module");
-	       if (!req_module)
-		  throw new GeneralException(string("Empty module dependency for file: ") + dep_file, 
-					     __FILE__, __LINE__);
-	       fileDepend[dep_file].insert(fileDepend[dep_file].end(), req_module);
-	    }
-	    else if (string((char*)depend->name) == "RequireHeader")
-	    {
-	       char *req_header = (char *)xmlGetProp(depend, (CHAR *)"header");
-	       if (!req_header)
-		  throw new GeneralException(string("Empty header dependency for file: ") + dep_file, 
-					     __FILE__, __LINE__);
-	       headerDepend[dep_file].insert(headerDepend[dep_file].end(), req_header);	       
-	    } else 
-	       throw new GeneralException(string("Unknown section in file dependency: ") + (char*)node->name, 
-				    __FILE__, __LINE__);
-
-	    depend = depend->next;
-	 }	 
-      } 
-      else 
-	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + (char*)node->name, 
-				    __FILE__, __LINE__);
-      
-      node = node->next;
-   }
-   xmlFreeDoc(doc);
-   
-}
-
-void UIDocument::loadExtDocInfo(const string &path, const string &name)
-{
-   string fullname = path + "/" + name;
-   xmlDocPtr doc = xmlParseFile(fullname.c_str());
-   string basename = string(name.begin(), name.end()-2);
-
-   if (!doc || !doc->root || !doc->root->name)
-   {
-      cerr << "ExtDoc: error loading " << fullname << "\n";
-      xmlFreeDoc (doc);
-      return;
-   }
-
-   if (externalDocInfo.find(basename) != externalDocInfo.end())
-   {
-      cerr << "error: net " << basename << " already existed\n";
-      return;
-   }
-   //cerr << "new subnet info with name: " << netName << "\n";
-   SubnetInfo *info = new SubnetInfo;
-   externalDocInfo[basename] = info;
-   
-
-   xmlNodePtr root=doc->root;
-   xmlNodePtr net = root->childs;
-   
-   while (net != NULL)
-   {
-      //cerr << "scanning networks...\n";
-      if (string((char*)net->name) == "Network")
-      {
-	 //cerr << "scanning a net\n";
-	 string netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
-	 if (netName == "MAIN")
-	 {
-	    
-	    CHAR *category = xmlGetProp(net, (CHAR *)"category");
-	    if (category)
-	       info->category = string((char *)category);
-
-	    //loadNetInfo(net, externalDocInfo, basename);
-	   
- 
-	    xmlNodePtr node = net->childs;
-	    while (node != NULL)
-	    {
-	       if (string((char*)node->name) == "NetInput")
-	       {
-		  string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
-		  ItemInfo *newInfo = new ItemInfo;
-		  newInfo->name = termName;
-		  info->inputs.insert (info->inputs.end(), newInfo);
-	 
-	       } else if (string((char*)node->name) == "NetOutput")
-	       {
-		  string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
-		  ItemInfo *newInfo = new ItemInfo;
-		  newInfo->name = termName;
-		  info->outputs.insert (info->outputs.end(), newInfo);
-	 
-	       }
-	       node = node->next;
-	    }
-
-
-	 }
-      } else if (string((char*)net->name) == "Parameter")
-      {
-	 char *param_name = (char *)xmlGetProp(net, (CHAR *)"name");
-	 char *param_type = (char *)xmlGetProp(net, (CHAR *)"type");
-	 char *param_value = (char *)xmlGetProp(net, (CHAR *)"value");
-	 if (param_name && param_type)
-	 {
-	    ItemInfo *newInfo = new ItemInfo;
-	    newInfo->name = param_name;
-	    if (string(param_type)=="")
-	       newInfo->type = "int";
-	    else
-	       newInfo->type = param_type;
-	    if (string(param_value)!="")
-	       newInfo->value = param_value;
-	    info->params.insert (info->params.end(), newInfo);
-	 }
-	 //cerr << "param\n";
-      }
-      net = net->next;
-   }
-   xmlFreeDoc(doc);
-
-}
-
-
-//
-//Fixed to load recursively all toolboxes starting with the directories included
-//In the VFLOW_PATH environment variable. 
-//Dominic Letourneau Feb. 20 2001
-//
-
-void UIDocument::loadAllInfo()
-{
-
-
-  vector<string> dirs = envList("VFLOW_PATH");
-
-
-  for (unsigned int i=0;i<dirs.size();i++) {
-    loadAllInfoRecursive(dirs[i]);
-  }
-
-
-}
-
-
-void UIDocument::loadAllInfoRecursive(const string &path) {
-
-  struct stat my_stat;
-  DIR *my_directory = opendir (path.c_str());
-
-  if (!my_directory) return;
-
-  struct dirent *current_entry;
-
-  for (current_entry = readdir(my_directory); 
-       current_entry != NULL; current_entry = readdir(my_directory)) {
-    
-    string name = current_entry->d_name;
-    string fullpath = path + string("/") + name;
-
-    if (stat(fullpath.c_str(), &my_stat) < 0) {
-       //cerr<<"stat error"<<endl;
-       perror(fullpath.c_str());
-      continue;
-    }
-    
-    if (S_ISDIR(my_stat.st_mode)) {
-      //it is a directory, let's doing it recursively
-      if (name != string("..") && name != string(".")) {
-	loadAllInfoRecursive(fullpath);
-      }
-    }
-    else {
-       
-      //loading network
-       int len = strlen(current_entry->d_name);
-       if (len > 2 && strcmp(".n", current_entry->d_name + len-2)==0)
-       {
-	  //cout<<"Loading network : "<<fullpath<<endl;
-	  loadExtDocInfo(path, name);
-       }
-       
-       //loading toolbox
-       if (len > 4 && strcmp(".def", current_entry->d_name + len-4)==0)
-       {
-	  //cout<<"Loading toolbox : "<<fullpath<<endl;
-	  loadNodeDefInfo(path, name);
-       }
-       
-    }
-  }
-
-  closedir(my_directory);
-}
-
-#endif
-
-/*END Big mess (well, almost)*/
-
-
-
 
 UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
@@ -772,23 +395,21 @@ UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
    return newNet;
 }
 
+//This function looks useless. Is it?
 void UIDocument::removeNetwork(UINetwork *toRemove)
 {
-   //ANSI C++ fix
    vector<UINetwork *>::iterator i=networks.begin();
       while (i != networks.end())
       {
          if (*i == toRemove)
 	 {
+	    delete (*i);
             networks.erase(i);
 	    break;
 	 }
 	 ++i;
       }
-   /*for (int i = 0; i < networks.size(); i++)
-       if (networks[i] == toRemove)
-           networks.erase(&networks[i]);
-   */      
+
    setModified();
 }
 
@@ -947,84 +568,7 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
       throw;
    }
 }
-/*
-void UIDocument::processDependencies(set<string> &initial_files, bool toplevel)
-{
-   int nbDepends = initial_files.size();
 
-   //Process module/file dependencies, loop until there's nothing else to add
-   do {
-      nbDepends = initial_files.size();
-      set<string> addMod;
-      //Core is always necessary and we'll save a bunch of @require core
-      addMod.insert(addMod.begin(), "core");
-
-      //Scan all files in required list to find all required modules
-      set<string>::iterator file=initial_files.begin();
-      while (file != initial_files.end())
-      {
-	 if (fileDepend.find(*file) != fileDepend.end())
-	 {
-	    set<string> &moduleDep = fileDepend[*file];
-	    set<string>::iterator mod = moduleDep.begin();
-	    while (mod != moduleDep.end())
-	    {
-	       addMod.insert(addMod.end(), *mod);
-	       mod++;
-	    }
-	 }
-	 file++;
-      }
-
-      //Scan all modules in required list to find all required files
-      set<string>::iterator mod=addMod.begin();
-      while (mod != addMod.end())
-      {
-	 if (moduleDepend.find(*mod) != moduleDepend.end())
-	 {
-	    set<string> &fileDep = moduleDepend[*mod];
-	    set<string>::iterator file = fileDep.begin();
-	    while (file != fileDep.end())
-	    {
-	       initial_files.insert(initial_files.end(), *file);
-	       file++;
-	    }
-	 }
-	 mod++;
-      }
-
-   } while (nbDepends != initial_files.size());
-
-   //Repeat recursivly until there's nothing else to add
-   //if (nbDepends != initial_files.size())
-   //   processDependencies(initial_files, false);
-
-   //Process header dependencies, loop until there's nothing else to add
-   do {
-      nbDepends = initial_files.size();
-      if (toplevel)
-      {
-	 set<string>::iterator file=initial_files.begin();
-	 while (file != initial_files.end())
-	 {
-	    if (headerDepend.find(*file) != headerDepend.end())
-	    {
-	       set<string> &headerDep = headerDepend[*file];
-	       set<string>::iterator header = headerDep.begin();
-	       while (header != headerDep.end())
-	       {
-		  initial_files.insert(initial_files.end(), *header);
-		  header++;
-	       }
-	    }
-	    file++;
-	 }
-      
-      }
-   } while (nbDepends != initial_files.size());
-
-}
-*/
 
 void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
 {
@@ -1179,7 +723,7 @@ vector<string> UIDocument::getAvailableNodes()
 	allNodes = UINodeRepository::Available();
 
 	// now look at the preloadInfo
-	map<string, SubnetInfo *>::iterator iter = preloadInfo.begin();
+	map<string, NodeInfo *>::iterator iter = preloadInfo.begin();
 	
 	while (iter != preloadInfo.end()) {
 		nextItem = string((*iter).second->category) + "***" + 

@@ -46,10 +46,14 @@ vector<string> envList(char *envName, bool include_home)
 void scanDL(bool debug)
 {
    vector<string> libList;
-
+   
    if (debug)
       cerr << "Overflow loading all toolbox code (DL)" << endl;
+#ifdef PIC
    vector<string> dirs=envList("VFLOW_PATH");
+#else
+   vector<string> dirs=envList("VFLOW_PATH", false);
+#endif
    if (dirs.size() == 0)
    {
       cerr << "Cannot find any toolbox. Exiting\n";

@@ -16,33 +16,6 @@
 class UINodeMenu;
 class Network;
 class ParameterSet;
-/*
-class ItemInfo {
-  public:
-	string name;
-	string type;
-	string value;
-	string description;
-	
-	ItemInfo() : type("any"), value(""), description("No description available") {}
-};
-*/
-class SubnetInfo {
-  public:
-   vector<ItemInfo *> inputs;
-   vector<ItemInfo *> outputs;
-   vector<ItemInfo *> params;
-   string category;
-   string description;
-   string sourceFile;
-   string requireList;
-  public:
-   SubnetInfo() : category("Unknown"), description("No description available") {}
-   //FIXME: Fixing this leak cleanly requires a good cleanup
-   /*~SubnetInfo() {for (int i=0;i<inputs.size();i++) delete inputs[i];
-                  for (int i=0;i<outputs.size();i++) delete outputs[i];
-		  for (int i=0;i<params.size();i++) delete params[i];}*/
-};
 
 //FIXME: Should replace with ItemInfo
 class DocParameterDataText {
@@ -65,7 +38,7 @@ protected:
    bool modified;
    
    /**Info about all internal networks that can be included as nodes - I think (should be cleaned up)*/
-   map<string, SubnetInfo *> preloadInfo;
+   map<string, NodeInfo *> preloadInfo;
 
    /**Document parameters (should be re-written)*/
    vector<DocParameterDataText *> textParams;
@@ -87,22 +60,8 @@ protected:
    
    /**True if document has no real name yet*/
    bool untitled;
-#if 0
-   /**List of all files required for each module*/
-   static map<string, set<string> > moduleDepend;
-   
-   /**List of all modules required for each file*/
-   static map<string, set<string> > fileDepend;
- 
-   /**List of all headers required for each file*/
-   static map<string, set<string> > headerDepend;
-#endif
 
 public:
-
-#if 0
-   static map<string, SubnetInfo *> externalDocInfo;
-#endif
 
    /**Document constructor with name, DOES NOT load the document (document created as untitled)*/
    UIDocument(string _name);
@@ -167,21 +126,12 @@ public:
    /**A UIDocument can print itself*/
    void printOn(ostream &out=cout) const;
 
-   static void loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap, string netName = "");
+   static void loadNetInfo(xmlNodePtr net, map<string, NodeInfo *> &infoMap, string netName = "");
 
    void loadAllSubnetInfo(xmlNodePtr net);
 
-#if 0
-   static void loadNodeDefInfo(const string &path, const string &name);
-
-   static void loadExtDocInfo(const string &path, const string &name);
-#endif
    vector<UINetwork *> get_networks() {return networks;}
    vector<DocParameterDataText *> get_textParams() {return textParams;}
-
-#if 0
-   static void loadAllInfo();
-#endif
 
    virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
    
@@ -206,19 +156,12 @@ public:
 
    static void genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList);
 
-#if 0
-   static void processDependencies(set<string> &initial_files, bool toplevel=true);
-#endif
-
  protected:
    
    virtual void error(char *err);
 
  private:
-#if 0
-   static void loadAllInfoRecursive(const string &path);
-#endif
-   
+
    static bool findExternalRecursive(const string &basePath, const string &path, const string &type, string &fullname, bool fullPathOutput);
 };
 
