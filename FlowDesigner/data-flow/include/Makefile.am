@@ -41,25 +41,23 @@ include_HEADERS = Array.h \
 	pseudosem.h \
 	path.h \
 	wrapper.h \
-	cwrapper.h
+	cwrapper.h \
+	vmethod.h  \
+	DoubleDispatch.h \
+	ObjectPool.h \
+	operators.h \
+	Iterator.h \
+	FlowException.h \
+	Matrix.h \
+	IntfNode.h
 	
 noinst_HEADERS = \
-	Iterator.h \
-	Mux.h \
 	NOT.h \
 	NetExec.h \
 	PathList.h \
 	OR.h \
 	Pack.h \
-	Switch.h \
 	UnPack.h \
 	AND.h \
-	Matrix.h \
-	DoubleDispatch.h \
-	operators.h \
-	FlowException.h \
-	vmethod.h  \
-	sstream.unused \
-	IntfNode.h \
-	ObjectPool.h
+	sstream.unused
 
