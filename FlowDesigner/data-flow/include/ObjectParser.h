@@ -74,6 +74,8 @@ inline istream &operator >> (istream &in, vector<T> &v)
 	 } else if (ch != ' ') {
 	    in.putback(ch);
 	 }
+	 if (in.fail()) 
+	    throw new GeneralException("Error reading vector: '>' expected", __FILE__, __LINE__);
       }
       T tmp;
       in >> tmp;
@@ -103,6 +105,8 @@ inline istream &operator >> (istream &in, vector<T*> &v)
 	 } else if (ch != ' ') {
 	    in.putback(ch);
 	 }
+	 if (in.fail()) 
+	    throw new GeneralException("Error reading vector: '>' expected", __FILE__, __LINE__);
       }
       T *tmp = new T;
       in >> *tmp;

@@ -66,11 +66,13 @@ inline void Vector<T>::readFrom(istream &in)
 	 } else if (ch != ' ') {
 	    in.putback(ch);
 	 }
+	 if (in.fail()) 
+	    throw new GeneralException("Error reading Vector: '>' expected", __FILE__, __LINE__);
       }
       T tmp;
       in >> tmp;
       if (in.fail()) 
-	 throw new GeneralException("Error reading vector", __FILE__, __LINE__);
+	 throw new GeneralException("Error reading Vector", __FILE__, __LINE__);
       push_back(tmp);
    }
 }

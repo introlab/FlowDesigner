@@ -14,8 +14,6 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef _NETWORK_CC_
-#define _NETWORK_CC_
 
 #include "Network.h"
 #include "DLManager.h"
@@ -342,4 +340,3 @@ void Network::reset() {
       (*iter).second->reset();
    }
 }
-#endif

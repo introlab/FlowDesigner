@@ -42,7 +42,11 @@ public:
       //changed count for processCount
       return Collector::getOutput(output_id,processCount);
    }
-   
+
+   virtual void request(int outputID, const ParameterSet &req) 
+      {//The iterator translator does not need to pass on the request
+      }
+
 private:
    
    /** The default constructor that should never be used */
