@@ -12,7 +12,8 @@ DECLARE_TYPE(DiagGMM)
 float DiagGMM::score(const float *vec)
 {
    float score;
-   char mem[augDim*sizeof(float)+CACHE_LINES];
+   DYN_VEC(char, augDim*sizeof(float)+CACHE_LINES, mem);
+   //char mem[augDim*sizeof(float)+CACHE_LINES];
    //cerr << augDim << endl;
    float *data = (float *) (((unsigned long)(mem) + (CACHE_LINES-1))&CACHE_MASK);
    for (int i=0;i<dim;i++)

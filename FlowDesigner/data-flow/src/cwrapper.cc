@@ -67,7 +67,7 @@ int overflowProcessAudioFile(void *vdoc, char **argv, int *length, int *nbFeatur
 	 {
 	    Vector<float> &curr = object_cast<Vector<float> > (buff[i]);
 	    if (curr.size() != *nbFeatures)
-	       throw GeneralException ("Locus front-end: different vector size in output buffer", __FILE__, __LINE__);
+	       throw GeneralException ("Different vector size in output buffer", __FILE__, __LINE__);
 	    for (int j=0;j<*nbFeatures;j++)
 	       (*data)[i**nbFeatures+j] = curr[j];
 	 }

@@ -143,10 +143,15 @@ void FFNet::learn(float *input, float *output, double *gradient, double *err, fl
 {
    int outputLayer = topo.size()-2;
 
-   float value[nbNeurons];
-   float deriv[nbNeurons];
-   float error[nbNeurons];
-   float fgradient[nbWeights];
+   //float value[nbNeurons];
+   //float deriv[nbNeurons];
+   //float error[nbNeurons];
+   //float fgradient[nbWeights];
+   DYN_VEC(float, nbNeurons, value);
+   DYN_VEC(float, nbNeurons, deriv);
+   DYN_VEC(float, nbNeurons, error);
+   DYN_VEC(float, nbWeights, fgradient);
+
    float *calc_out = calc(input, value, deriv);
 
    if (calc_output)
@@ -229,7 +234,9 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
 {
    int i,j;
 
-   float tmp[nbWeights];
+   //float tmp[nbWeights];
+   DYN_VEC(float, nbWeights, tmp);
+
    for (int i=0;i<nbWeights;i++)
    {
       tmp[i] = weights[i];
@@ -268,10 +275,15 @@ void FFNet::weightedLearn(float *input, float *output, float *learnWeights, doub
 {
    int outputLayer = topo.size()-2;
 
-   float value[nbNeurons];
-   float deriv[nbNeurons];
-   float error[nbNeurons];
-   float fgradient[nbWeights];
+   //float value[nbNeurons];
+   //float deriv[nbNeurons];
+   //float error[nbNeurons];
+   //float fgradient[nbWeights];
+   DYN_VEC(float, nbNeurons, value);
+   DYN_VEC(float, nbNeurons, deriv);
+   DYN_VEC(float, nbNeurons, error);
+   DYN_VEC(float, nbWeights, fgradient);
+   
    float *calc_out = calc(input, value, deriv);
 
    if (calc_output)
@@ -357,7 +369,9 @@ void FFNet::weightedCalcGradient(vector<float *> &tin, vector<float *> &tout, ve
 {
    int i,j;
 
-   float tmp[nbWeights];
+   //float tmp[nbWeights];
+   DYN_VEC(float, nbWeights, tmp);
+
    for (int i=0;i<nbWeights;i++)
    {
       tmp[i] = weights[i];

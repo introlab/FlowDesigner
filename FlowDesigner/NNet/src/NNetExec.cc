@@ -72,7 +72,9 @@ public:
 
       FFNet &net = object_cast<FFNet> (netValue);
       
-      float value[net.getNbNeurons()];
+      //float value[net.getNbNeurons()];
+      DYN_VEC(float, net.getNbNeurons(), value);
+      
       float *netOut = net.calc(&in[0], value);
 
       /*double tmp[in.size()];

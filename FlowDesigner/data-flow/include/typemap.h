@@ -5,6 +5,8 @@
 #include <map>
 #include <typeinfo>
 
+using namespace std;
+
 struct compare_const_type_info_ptr : public binary_function<const type_info *, const type_info *, bool>
 {
    bool operator()(const type_info *lhs, const type_info *rhs) const

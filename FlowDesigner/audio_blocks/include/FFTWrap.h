@@ -3,20 +3,25 @@
 #ifndef FFTWRAP_H
 #define FFTWRAP_H
 
-using namespace std;
+#ifdef WIN32 /*Work around bug in MSVC++ (for) variable scope*/
+#define for if(0);else for
+#endif
 
 #ifndef STUPID_COMPLEX_KLUDGE
 #include <complex>
 #endif
 
+#include "misc.h"
+#ifdef HAVE_FLOAT_H
+#include <float.h>
+#endif
 
 #ifdef HAVE_FFTW
+
 #include <fftw.h>
 #include <rfftw.h>
 
-
 //typedef fftw_complex fft_complex;
-
 
 #ifdef NO_HASH_MAP
 #include <map>
@@ -26,7 +31,10 @@ using namespace std;
 #elif defined (HAVE_EXT_HASH_MAP)
 #include <ext/hash_map>
 #endif
-#endif
+
+#endif /*ifdef HAVE_FFTW*/
+
+using namespace std;
 
 class _FFTWrap {
 #ifdef NO_HASH_MAP
@@ -154,7 +162,10 @@ class _FFTWrap {
 
 #else /* ifdef HAVE_FFTW */
 
+#ifndef WIN32
 #warning FFTW is not present. Overflow will use a (very, very) slow DFT implementation.
+#endif
+
 #include <iostream>
 #include <math.h>
 

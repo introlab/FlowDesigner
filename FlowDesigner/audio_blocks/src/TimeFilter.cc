@@ -108,7 +108,8 @@ public:
             output[j] += fir[i]*firRow[j];
       }
       //int iir_limit = min(iir.size() - 1, count + inputsCache[inputID].lookAhead + 1 - fir.size());
-      int iir_limit = min(int(iir.size()) - 1, count);
+      int dummy=iir.size()-1;
+      int iir_limit = min(dummy, count);
       //cerr << name << " " << iir_limit << endl;
       //cerr << count << " " << inputsCache[inputID].lookAhead << " " << 
       for (i = 1; i <= iir_limit ; i++)

@@ -6,10 +6,6 @@
 #include <strstream>
 #include "vec.h"
 
-#ifdef HAVE_VALUES_H
-#include <values.h>
-#endif
-
 
 class TimeAutocorr;
 

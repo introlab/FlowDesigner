@@ -31,6 +31,10 @@
 #include "BaseException.h"
 #include <string>
 
+#ifdef WIN32 /*Work around bug in MSVC++ (for) variable scope*/
+#define for if(0);else for
+#endif
+
 /** 
     The PtrCastException occurs when we are unable to cast a RCPtr<T>
     to a RCPtr<U>
