@@ -24,7 +24,7 @@ DECLARE_NODE(BinaryAND);
 /*Node
  *
  * @name BinaryAND
- * @category TAMFlow:Logic
+ * @category Logic
  * @description none
  *
  * @input_name MASK

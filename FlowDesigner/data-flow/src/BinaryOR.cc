@@ -24,7 +24,7 @@ DECLARE_NODE(BinaryOR);
 /*Node
  *
  * @name BinaryOR
- * @category TAMFlow:Logic
+ * @category Logic
  * @description none
  *
  * @input_name MASK
