@@ -131,4 +131,38 @@ REGISTER_VTABLE0(toString, Double, StringCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toString, String, StringStringConversion, 5);
 REGISTER_VTABLE0(toString, NilObject, ReturnNilObject, 6);
 
+
+//Conversion to vector from a basic C type
+template<class T>
+ObjectRef VectorCTypeConversion(ObjectRef in)
+{
+   typedef typename T::basicType BaseType;
+   BaseType value=dereference_cast<BaseType> (in);
+
+   //create vector
+   Vector<BaseType> *vect = new Vector<BaseType>(1,value);
+
+   //return vector
+   return ObjectRef(vect);
+}
+
+//Conversion to vector from a string
+ObjectRef VectorStringConversion(ObjectRef in) {
+
+  String &value = object_cast<String>(in);
+
+  //create vector
+  Vector<String> *vect = new Vector<String>(1,value);
+  
+  //return vector
+  return ObjectRef(vect);
+}
+
+REGISTER_VTABLE0(toVect, Int, VectorCTypeConversion<Int>, 1);
+REGISTER_VTABLE0(toVect, Bool, VectorCTypeConversion<Bool>, 2);
+REGISTER_VTABLE0(toVect, Float, VectorCTypeConversion<Float>, 3);
+REGISTER_VTABLE0(toVect, Double, VectorCTypeConversion<Double>, 4);
+REGISTER_VTABLE0(toVect, String, VectorStringConversion, 5);
+REGISTER_VTABLE0(toVect, NilObject, ReturnNilObject, 6);
+
 #endif
