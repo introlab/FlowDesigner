@@ -95,12 +95,12 @@ public:
       if (inputValue->status != Object::valid)
       {
 	 out[count] = inputValue;
+	 return;
       }
 
       //Vector<float> &cms = object_cast<Vector<float> > (out[count]);
       Vector<float> &output = *Vector<float>::alloc(length);
       out[count] = &output;
-
       Vector<float> &in = object_cast<Vector<float> > (inputValue);
       accumCount++;
       float inv_accum=1.0/accumCount;

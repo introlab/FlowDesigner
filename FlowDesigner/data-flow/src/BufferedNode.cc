@@ -117,35 +117,18 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
             processCount = count;
 	 return outBuffer[count];
       } else {
-	 if (count > outBuffer.getCurrentPos() || outBuffer[count]->status != Object::valid)
-	    calculate (output_id, count, outBuffer);
-         if (count > processCount)
-            processCount = count;
-	 return outBuffer[count];
-      }
-/*
-      //Buffer &outBuffer = object_cast<Buffer> (outputs[output_id].buffer);
-      Buffer &outBuffer = *(outputs[output_id].buffer);
-      
-      ObjectRef result = outBuffer[count];
-      if (result->status == Object::valid)
-         return result;
-      else
-      {
-	 if (inOrder)
+	 if (count > outBuffer.getCurrentPos())
 	 {
-	    //cerr << "in order\n";
-	    for (int i=processCount+1;i<=count;i++)
-	       calculate (output_id, i, outBuffer);
-	 } else
-	 {
-	    
 	    calculate (output_id, count, outBuffer);
+	    return outBuffer[count];
+	 } else {
+	    ObjectRef value = outBuffer[count];
+	    if (value->status != Object::valid)
+	       calculate (output_id, count, outBuffer);
+	    return value;
 	 }
-         if (count > processCount)
-            processCount = count;
-         return outBuffer[count];
-	 }*/
+      }
+
    } catch (BaseException *e)
    {
       //e->print();

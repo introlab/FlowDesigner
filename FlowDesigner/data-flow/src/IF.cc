@@ -38,6 +38,10 @@ DECLARE_NODE(IF)
  * @output_name OUTPUT
  * @output_description The object from THEN or ELSE depending on COND
  *
+ * @parameter_name PULL_ANYWAY
+ * @parameter_type bool
+ * @parameter_description If true, the IF statement pulls also on the branch not taken
+ *
 END*/
 
 
@@ -47,6 +51,7 @@ protected:
    int thenID;
    int elseID;
    int outputID;
+   bool pullAnyway;
 
 public:
    IF(string nodeName, ParameterSet params)
@@ -57,6 +62,10 @@ public:
          thenID = addInput("THEN");
          elseID = addInput("ELSE");
 	 outputID=addOutput("OUTPUT");
+	 if (parameters.exist("PULL_ANYWAY"))
+	    pullAnyway = dereference_cast<bool> (parameters.get("PULL_ANYWAY"));
+	 else
+	    pullAnyway = false;
       } catch (BaseException *e)
       {
          throw e->add(new NodeException (NULL, "Exception caught in IF constructor", __FILE__, __LINE__));
@@ -77,9 +86,15 @@ public:
       //NodeInput input = inputs[inputID];
       //ObjectRef inputValue = input.node->getOutput(input.outputID,count);
       if (dereference_cast<bool> (getInput(inputID,count)))
+      {
+	 if (pullAnyway)
+	    getInput(elseID,count);
 	 return getInput(thenID,count);
-      else 
+      } else {
+	 if (pullAnyway)
+	    getInput(thenID,count);
 	 return getInput(elseID,count);
+      }
    }
 
 };
