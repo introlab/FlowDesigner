@@ -39,22 +39,24 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
    char *color;
    if (type == INPUT)
    {
-      //defaultName = "INPUT";
-     defaultName = terminal->getName();
-      prompt = "Input name?";
-      anchor = GTK_ANCHOR_EAST;
-      x -= 10;
-      color="red";
+     //defaultName = "INPUT";
+     //defaultName = terminal->getName();
+     defaultName = find_unique_name(terminal->getName(), _type);
+     prompt = "Input name?";
+     anchor = GTK_ANCHOR_EAST;
+     x -= 10;
+     color="red";
    }   
    else if (type == OUTPUT)
-   {
-      //defaultName = "OUTPUT";
-     defaultName = terminal->getName();
-      prompt = "Output name";
-      anchor = GTK_ANCHOR_WEST;
-      x += 10;
-      color="blue";
-   }   
+     {
+       //defaultName = "OUTPUT";
+       //defaultName = terminal->getName();
+       defaultName = find_unique_name(terminal->getName(),_type);
+       prompt = "Output name";
+       anchor = GTK_ANCHOR_WEST;
+       x += 10;
+       color="blue";
+     }   
    else
    {
       defaultName = "CONDITION";
@@ -74,6 +76,26 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, string 
          gnome_dialog_run_and_close(GNOME_DIALOG(dialog));
       }
    }
+
+   //find network duplicate terminal names 
+   //Dominic Letourneau Feb 1 2002.
+   vector<string> my_terms = terminal->getNode()->getNetwork()->getTerminals(_type);
+   int count = 0;
+
+   for (unsigned int i = 0; i < my_terms.size(); i++) {
+     if (my_terms[i] == name) {
+       if (count++ > 0) {
+	 cerr<<"*ERROR* duplicate terminal name"<<endl;
+	 //cerr << "disconnecting\n";
+	 //terminal->disconnectNetTerminal();
+	 //delete this;
+	 //return;
+       }
+     }
+   }
+
+
+
 
    //FIXME: Is this dangerous? I don't know. But it's ugly at best
    if (name == "")
@@ -152,4 +174,35 @@ gint GUINetTerminal::event(GdkEvent *event)
    }
         
    return FALSE;
+}
+
+string GUINetTerminal::find_unique_name(const string &_name, NetTermType _type) {
+
+  //automatic creation of an unique name for net terminals
+  //could be better, but it works...
+  //Dominic Letourneau Feb 1 2002.
+  vector<string> my_terms = terminal->getNode()->getNetwork()->getTerminals(_type);
+  int duplicate_count = 0;
+ 
+  for (unsigned int i = 0; i < my_terms.size(); i++) {
+
+    bool found = false;
+
+    if (my_terms[i].size() >= _name.size()) {
+      found = true;
+      for (unsigned int j = 0; j < _name.size(); j++) {
+	if (my_terms[i][j] != _name[j]) {
+	  found = false;
+	  break;
+	}
+      } 
+    }
+    if (found) {
+      duplicate_count++;
+    } 
+  }
+
+  char name_id[10];
+  sprintf(&name_id[0],"_%i",duplicate_count);
+  return string(_name + string(name_id));
 }
