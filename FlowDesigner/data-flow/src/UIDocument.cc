@@ -765,6 +765,16 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
    }
 }
 
+void UIDocument::genCodeExternal(const string &type, ostream &out, int &id)
+{
+   string fullname = findExternal(type);
+   if (fullname == "")
+      throw new GeneralException(string("External node not found: ") + type, __FILE__, __LINE__);
+   UIDocument doc(fullname);
+   doc.load();
+   doc.getNetworkNamed("MAIN")->genCode(out, id);
+}
+
 void UIDocument::genCode(ostream &out, const string &functName)
 {
    out << "//This code has been generated automatically using codeflow\n";

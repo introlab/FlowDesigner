@@ -177,6 +177,8 @@ public:
 
    static string findExternal(const string &type);
 
+   static void genCodeExternal(const string &type, ostream &out, int &id);
+
  protected:
    
    virtual void error(char *err);

@@ -256,7 +256,8 @@ void UINode::genCode(ostream &out, int &id)
       if (buildNet)
 	 buildNet->genCode(out, id);
       else {
-	 throw new GeneralException("external nodes not supported yet\n", __FILE__, __LINE__);
+	 UIDocument::genCodeExternal(type, out, id);
+	 //throw new GeneralException("external nodes not supported yet\n", __FILE__, __LINE__);
       }
    }
    out << "static Node *genNode" << bakID << "(const ParameterSet &params)\n";
