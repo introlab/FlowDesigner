@@ -279,10 +279,10 @@ AC_CHECK_LIB(dl, dlopen)
 dnl AC_CHECK_LIB(pthread, pthread_create)
 AC_THREAD
 
-echo checking for libxml...
-if gnome-config xml --cflags | grep I;then echo libxml found;else echo libxml not found; exit 1; fi
-GNOME_XML_LIB=`gnome-config --libs xml`
-GNOME_XML_INCLUDE=`gnome-config --cflags xml`
+echo checking for libxml2...
+if xml2-config --cflags | grep I;then echo libxml2 found;else echo libxml2 not found; exit 1; fi
+GNOME_XML_LIB=`xml2-config --libs`
+GNOME_XML_INCLUDE=`xml2-config --cflags`
 AC_SUBST(GNOME_XML_LIB)
 AC_SUBST(GNOME_XML_INCLUDE)
 

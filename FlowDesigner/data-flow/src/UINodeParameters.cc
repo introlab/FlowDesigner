@@ -50,16 +50,16 @@ void UINodeParameters::insertLoadedParam(ParameterText *param, string type, stri
 void UINodeParameters::load(xmlNodePtr node)
 {
    //cerr << "node = " << node << endl;
-   xmlNodePtr par = node->childs;
+   xmlNodePtr par = node->children;
    //cerr << "par = " << par << endl;
    
    while (par)
    {
       if (string((char*)par->name) == "Parameter")
       {
-	 char *str_name = (char *) xmlGetProp(par, (CHAR *)"name");
-	 char *str_type = (char *) xmlGetProp(par, (CHAR *)"type");
-	 char *str_value = (char *) xmlGetProp(par, (CHAR *)"value");
+	 char *str_name = (char *) xmlGetProp(par, (xmlChar *)"name");
+	 char *str_type = (char *) xmlGetProp(par, (xmlChar *)"type");
+	 char *str_value = (char *) xmlGetProp(par, (xmlChar *)"value");
          string name = string (str_name);
          string type = string (str_type);
          string value = string (str_value);
@@ -95,15 +95,15 @@ void UINodeParameters::saveXML(xmlNode *root)
 {
    // First add all of the ParameterData Nodes to the xml Node
    if (comments != "")
-      xmlNewChild(root, NULL, (CHAR *)"Comments", (xmlChar*)comments.c_str());
+      xmlNewChild(root, NULL, (xmlChar *)"Comments", (xmlChar*)comments.c_str());
    for (unsigned int i=0;i<textParams.size();i++)
    {
       //if (textParams[i]->value != "")
       {
-         xmlNodePtr tree = xmlNewChild(root, NULL, (CHAR *)"Parameter", NULL);
-         xmlSetProp(tree, (CHAR *)"name", (CHAR *)textParams[i]->name.c_str());
-         xmlSetProp(tree, (CHAR *)"type", (CHAR *)textParams[i]->type.c_str());
-         xmlSetProp(tree, (CHAR *)"value", (CHAR *)textParams[i]->value.c_str());
+         xmlNodePtr tree = xmlNewChild(root, NULL, (xmlChar *)"Parameter", NULL);
+         xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)textParams[i]->name.c_str());
+         xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)textParams[i]->type.c_str());
+         xmlSetProp(tree, (xmlChar *)"value", (xmlChar *)textParams[i]->value.c_str());
       }
    }
 }

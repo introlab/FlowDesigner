@@ -6,7 +6,7 @@ extern "C" {
 #include "UINetwork.h"
 #include "UITerminal.h"
 #include "UINodeParameters.h"
-#include <tree.h>
+#include <libxml/tree.h>
 #include "Node.h"
 #include "UIDocument.h"
 #include "UILink.h"
@@ -61,10 +61,10 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    : destroyed(false)
    , net(_net)
 {
-   char *str_name = (char *)xmlGetProp(def, (CHAR *)"name");
-   char *str_type = (char *)xmlGetProp(def, (CHAR *)"type");
-   char *str_x = (char *)xmlGetProp(def, (CHAR *)"x");
-   char *str_y = (char *)xmlGetProp(def, (CHAR *)"y");
+   char *str_name = (char *)xmlGetProp(def, (xmlChar *)"name");
+   char *str_type = (char *)xmlGetProp(def, (xmlChar *)"type");
+   char *str_x = (char *)xmlGetProp(def, (xmlChar *)"x");
+   char *str_y = (char *)xmlGetProp(def, (xmlChar *)"y");
 
    if (!str_name || !str_type || !str_x || !str_y)
    {
@@ -127,14 +127,14 @@ UINode::~UINode()
 
 void UINode::saveXML(xmlNode *root)
 {
-   xmlNodePtr tree = xmlNewChild(root, NULL, (CHAR *)"Node", NULL);
-   xmlSetProp(tree, (CHAR *)"name", (CHAR *)name.c_str());
-   xmlSetProp(tree, (CHAR *)"type", (CHAR *)type.c_str());
+   xmlNodePtr tree = xmlNewChild(root, NULL, (xmlChar *)"Node", NULL);
+   xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)name.c_str());
+   xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)type.c_str());
    char tmp[15];
    sprintf (tmp, "%f", float(x));
-   xmlSetProp(tree, (CHAR *)"x", (CHAR *)tmp);
+   xmlSetProp(tree, (xmlChar *)"x", (xmlChar *)tmp);
    sprintf (tmp, "%f", float(y));
-   xmlSetProp(tree, (CHAR *)"y", (CHAR *)tmp);
+   xmlSetProp(tree, (xmlChar *)"y", (xmlChar *)tmp);
    parameters->saveXML(tree);
 }
 

@@ -6,6 +6,7 @@
 #include <sstream>
 #include "vflow_pref.h"
 #include "flow_version.h"
+#include <libxml/parser.h>
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -861,6 +862,7 @@ void vflowGUI::create_mdi () {
 **********************************************************************************************************/
 int main (int argc, char *argv[]) 
 {
+   xmlKeepBlanksDefault(0);
    try {
       IExtensions::detect();
       scanDL();

@@ -7,7 +7,7 @@
 #include <string>
 #include <map>
 #include <set>
-#include <tree.h>
+#include <libxml/tree.h>
 
 class UINetwork;
 

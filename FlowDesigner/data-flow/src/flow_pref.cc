@@ -9,8 +9,8 @@
 #include "flow_pref.h"
 #include <fstream>
 #include <sstream>
-#include <tree.h>
-#include <parser.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 
 FlowPref FlowPref::pref;
 
@@ -28,28 +28,28 @@ FlowPref::FlowPref()
    filename += "/.flowrc";
 
    xmlDocPtr doc = xmlParseFile (filename.c_str());
-   if (!doc || !doc->root || !doc->root->name)
+   if (!doc || !doc->children || !doc->children->name)
    {
       cerr << "No (valid) preference file found, one will be created in ~/.flowrc" << endl;
       modified=true;
       return;
    }
-   xmlNodePtr root=doc->root;
-   xmlNodePtr cat = root->childs;
+   xmlNodePtr root=doc->children;
+   xmlNodePtr cat = root->children;
    while(cat)
    {
       if (string((char*)cat->name) == "Category")
       {
-	 xmlNodePtr par=cat->childs;
-	 char *str_catname = (char *) xmlGetProp(cat, (CHAR *)"name");
+	 xmlNodePtr par=cat->children;
+	 char *str_catname = (char *) xmlGetProp(cat, (xmlChar *)"name");
 	 if (str_catname)
 	 {
 	    while (par)
 	    {
 	       if (string((char*)par->name) == "Parameter")
 	       {
-		  char *str_name = (char *) xmlGetProp(par, (CHAR *)"name");
-		  char *str_value = (char *) xmlGetProp(par, (CHAR *)"value");
+		  char *str_name = (char *) xmlGetProp(par, (xmlChar *)"name");
+		  char *str_value = (char *) xmlGetProp(par, (xmlChar *)"value");
 		  if (str_name && str_value)
 		  {
 		     params[str_catname][str_name] = str_value;
@@ -147,21 +147,21 @@ void FlowPref::save()
    string filename = getenv("HOME");
    filename += "/.flowrc";
    xmlDocPtr doc;
-   doc = xmlNewDoc((CHAR *)"1.0");
-   doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Preferences", NULL);
-   xmlSetProp(doc->root, (CHAR *)"version", (CHAR *)OVERFLOW_VERSION);
+   doc = xmlNewDoc((xmlChar *)"1.0");
+   doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Preferences", NULL);
+   xmlSetProp(doc->children, (xmlChar *)"version", (xmlChar *)OVERFLOW_VERSION);
 
    map<string, map<string,string> >::iterator cat = params.begin();
    while (cat != params.end())
    {
-      xmlNodePtr catNode = xmlNewChild(doc->root, NULL, (CHAR *)"Category", NULL);
-	 xmlSetProp(catNode, (CHAR *)"name", (CHAR *)cat->first.c_str());
+      xmlNodePtr catNode = xmlNewChild(doc->children, NULL, (xmlChar *)"Category", NULL);
+	 xmlSetProp(catNode, (xmlChar *)"name", (xmlChar *)cat->first.c_str());
 	 map<string,string>::iterator it = cat->second.begin();
       while (it!=cat->second.end())
       {
-	 xmlNodePtr paramNode = xmlNewChild(catNode, NULL, (CHAR *)"Parameter", NULL);
-	 xmlSetProp(paramNode, (CHAR *)"name", (CHAR *)it->first.c_str());
-	 xmlSetProp(paramNode, (CHAR *)"value", (CHAR *)it->second.c_str());	 
+	 xmlNodePtr paramNode = xmlNewChild(catNode, NULL, (xmlChar *)"Parameter", NULL);
+	 xmlSetProp(paramNode, (xmlChar *)"name", (xmlChar *)it->first.c_str());
+	 xmlSetProp(paramNode, (xmlChar *)"value", (xmlChar *)it->second.c_str());	 
 	 it++;
       }
       cat++;

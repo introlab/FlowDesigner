@@ -4,7 +4,7 @@
 #include "UINode.h"
 #include "UINetwork.h"
 #include "UITerminal.h"
-#include <tree.h>
+#include <libxml/tree.h>
 
 #include "Network.h"
 #include <sstream>
@@ -84,7 +84,7 @@ void UILink::saveXML(xmlNode *root)
 {
    xmlNodePtr tree;
    if (m_points.size()<=2)
-      tree = xmlNewChild(root, NULL, (CHAR *)"Link", NULL);
+      tree = xmlNewChild(root, NULL, (xmlChar *)"Link", NULL);
    else {
       stringstream str;
       list<GUILinkPoint*>::iterator it = m_points.begin();
@@ -93,13 +93,13 @@ void UILink::saveXML(xmlNode *root)
 	 str << (*it)->x << " " << (*it)->y << " ";
 	 it++;
       }
-      tree = xmlNewChild(root, NULL, (CHAR *)"Link", (xmlChar*)str.str().c_str());
+      tree = xmlNewChild(root, NULL, (xmlChar *)"Link", (xmlChar*)str.str().c_str());
    }
        
-   xmlSetProp(tree, (CHAR *)"from", (CHAR *)from->getNode()->getName().c_str());
-   xmlSetProp(tree, (CHAR *)"output", (CHAR *)from->getName().c_str());
-   xmlSetProp(tree, (CHAR *)"to", (CHAR *)to->getNode()->getName().c_str());
-   xmlSetProp(tree, (CHAR *)"input", (CHAR *)to->getName().c_str());
+   xmlSetProp(tree, (xmlChar *)"from", (xmlChar *)from->getNode()->getName().c_str());
+   xmlSetProp(tree, (xmlChar *)"output", (xmlChar *)from->getName().c_str());
+   xmlSetProp(tree, (xmlChar *)"to", (xmlChar *)to->getNode()->getName().c_str());
+   xmlSetProp(tree, (xmlChar *)"input", (xmlChar *)to->getName().c_str());
 }
 
 void UILink::build(Network *net)

@@ -10,7 +10,7 @@ using namespace std;
 #include <math.h>
 
 //#include <gnome.h>
-#include <tree.h>
+#include <libxml/tree.h>
 
 class UINode;
 class UINetwork;

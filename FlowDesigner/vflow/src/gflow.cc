@@ -16,6 +16,7 @@
 #include "iextensions.h"
 #include <unistd.h>
 #include <signal.h>
+#include <libxml/parser.h>
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -41,6 +42,7 @@ void run2(GRunContext *ctx)
 
 int main(int argc, char **argv)
 {
+   xmlKeepBlanksDefault(0);
    if (string(argv[1]) == "/dev/stdin")
    {
       if (fork())

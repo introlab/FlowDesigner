@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <string>
-#include <tree.h>
+#include <libxml/tree.h>
 #include <fstream>
 
 #include "UINetTerminal.h"

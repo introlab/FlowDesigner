@@ -34,14 +34,14 @@ void UINetTerminal::saveXML(xmlNode *root)
    xmlNodePtr tree;
 
    if (type == INPUT)
-      tree = xmlNewChild(root, NULL, (CHAR *)"NetInput", NULL);
+      tree = xmlNewChild(root, NULL, (xmlChar *)"NetInput", NULL);
    else if (type == OUTPUT)
-      tree = xmlNewChild(root, NULL, (CHAR *)"NetOutput", NULL);
+      tree = xmlNewChild(root, NULL, (xmlChar *)"NetOutput", NULL);
    else
-      tree = xmlNewChild(root, NULL, (CHAR *)"NetCondition", NULL);
+      tree = xmlNewChild(root, NULL, (xmlChar *)"NetCondition", NULL);
 
-   xmlSetProp(tree, (CHAR *)"name", (CHAR *)name.c_str());
-   xmlSetProp(tree, (CHAR *)"node", (CHAR *)terminal->getNode()->getName().c_str());
-   xmlSetProp(tree, (CHAR *)"terminal", (CHAR *)terminal->getName().c_str());
+   xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)name.c_str());
+   xmlSetProp(tree, (xmlChar *)"node", (xmlChar *)terminal->getNode()->getName().c_str());
+   xmlSetProp(tree, (xmlChar *)"terminal", (xmlChar *)terminal->getName().c_str());
 
 }

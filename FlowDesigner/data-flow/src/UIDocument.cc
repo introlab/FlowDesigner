@@ -1,8 +1,8 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
 #include "path.h"
-#include <tree.h>
-#include <parser.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 #include "UIDocument.h"
 #include "UINetwork.h"
 #include "Node.h"
@@ -182,14 +182,14 @@ void UIDocument::load()
 void UIDocument::loadFromMemory(const char *mem, int size)
 {
    xmlDocPtr doc = xmlParseMemory (const_cast<char *> (mem), size);
-   if (!doc || !doc->root || !doc->root->name)
+   if (!doc || !doc->children || !doc->children->name)
    {
       error("Error: corrupted XML in file");
       addNetwork("MAIN", UINetwork::subnet);
       resetModified();      
       return;
    }
-   xmlNodePtr root=doc->root;
+   xmlNodePtr root=doc->children;
    loadXML(root);
    xmlFreeDoc(doc);
 
@@ -197,11 +197,11 @@ void UIDocument::loadFromMemory(const char *mem, int size)
 
 void UIDocument::loadXML(xmlNodePtr root)
 {
-   //loadAllSubnetInfo(root->childs);
+   //loadAllSubnetInfo(root->children);
    subnetInfo.clean();
-   subnetInfo.loadAllSubnetInfo(root->childs);
+   subnetInfo.loadAllSubnetInfo(root->children);
 
-   xmlNodePtr net = root->childs;
+   xmlNodePtr net = root->children;
    //cerr << "parsing...\n";
    while (net != NULL)
    {
@@ -223,15 +223,15 @@ void UIDocument::loadXML(xmlNodePtr root)
         //textParams[i]->name=tmp[i];
      }
    //cerr << "--\n";
-   xmlNodePtr par = root->childs;
+   xmlNodePtr par = root->children;
    //cerr << "par = " << par << endl;
    while (par)
    {
       if (string((char*)par->name) == "Parameter")
       {
-	 char *str_name = (char *) xmlGetProp(par, (CHAR *)"name");
-	 char *str_type = (char *) xmlGetProp(par, (CHAR *)"type");
-	 char *str_value = (char *) xmlGetProp(par, (CHAR *)"value");
+	 char *str_name = (char *) xmlGetProp(par, (xmlChar *)"name");
+	 char *str_type = (char *) xmlGetProp(par, (xmlChar *)"type");
+	 char *str_value = (char *) xmlGetProp(par, (xmlChar *)"value");
          string name = string (str_name);
          string type = string (str_type);
          string value = string (str_value);
@@ -381,24 +381,24 @@ void UIDocument::save()
 char *UIDocument::saveToMemory(int &size)
 {
    xmlDocPtr doc;
-   doc = xmlNewDoc((CHAR *)"1.0");
-   doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Document", NULL);
+   doc = xmlNewDoc((xmlChar *)"1.0");
+   doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
    for (unsigned int i=0;i<networks.size();i++)
    {
-      networks[i]->saveXML(doc->root);
+      networks[i]->saveXML(doc->children);
    }
 
    for (unsigned int i=0;i<textParams.size();i++)
    {
       xmlNodePtr tree;
-      tree = xmlNewChild(doc->root, NULL, (CHAR *)"Parameter", NULL);
-      xmlSetProp(tree, (CHAR *)"name", (CHAR *)textParams[i]->name.c_str());
-      xmlSetProp(tree, (CHAR *)"type", (CHAR *)textParams[i]->type.c_str());
-      xmlSetProp(tree, (CHAR *)"value", (CHAR *)textParams[i]->value.c_str());
+      tree = xmlNewChild(doc->children, NULL, (xmlChar *)"Parameter", NULL);
+      xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)textParams[i]->name.c_str());
+      xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)textParams[i]->type.c_str());
+      xmlSetProp(tree, (xmlChar *)"value", (xmlChar *)textParams[i]->value.c_str());
    }
    
    char *mem;
-   xmlDocDumpMemory(doc,(CHAR **)&mem,&size);
+   xmlDocDumpMemory(doc,(xmlChar **)&mem,&size);
 
    xmlFreeDoc(doc);
    return mem;

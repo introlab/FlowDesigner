@@ -4,7 +4,7 @@
 #include "UIDocument.h"
 #include "UINode.h"
 #include "UITerminal.h"
-#include <tree.h>
+#include <libxml/tree.h>
 #include "UILink.h"
 #include "Node.h"
 #include "UINetTerminal.h"
@@ -41,12 +41,12 @@ UINetwork::UINetwork(UIDocument *_doc, xmlNodePtr net, bool init)
 
 void UINetwork::load (xmlNodePtr net)
 {
-   char *netName = (char *)xmlGetProp(net, (CHAR *)"name");
+   char *netName = (char *)xmlGetProp(net, (xmlChar *)"name");
    if (!netName)
       throw new GeneralException("No network name", __FILE__, __LINE__);
    name = string(netName);
    free(netName);
-   char *netType = (char *)xmlGetProp(net, (CHAR *)"type");
+   char *netType = (char *)xmlGetProp(net, (xmlChar *)"type");
    
    if (!netType)
       type=subnet;
@@ -62,7 +62,7 @@ void UINetwork::load (xmlNodePtr net)
    //name(_name)
    //create();
    //cerr << "parsing nodes\n";
-   xmlNodePtr node = net->childs;
+   xmlNodePtr node = net->children;
    while (node != NULL)
    {
       if (string((char*)node->name) == "Node")
@@ -73,15 +73,15 @@ void UINetwork::load (xmlNodePtr net)
       node = node->next;
    }
    //cerr << "parsing links\n";
-   node = net->childs;
+   node = net->children;
    while (node != NULL)
    {
       if (string((char*)node->name) == "Link")
       {
-	 char *str_fromnode = (char *)xmlGetProp(node, (CHAR *)"from");
-	 char *str_out = (char *)xmlGetProp(node, (CHAR *)"output");
-	 char *str_tonode = (char *)xmlGetProp(node, (CHAR *)"to");
-	 char *str_in = (char *)xmlGetProp(node, (CHAR *)"input");
+	 char *str_fromnode = (char *)xmlGetProp(node, (xmlChar *)"from");
+	 char *str_out = (char *)xmlGetProp(node, (xmlChar *)"output");
+	 char *str_tonode = (char *)xmlGetProp(node, (xmlChar *)"to");
+	 char *str_in = (char *)xmlGetProp(node, (xmlChar *)"input");
          string fromnode = string(str_fromnode);
          string out = string(str_out);
          string tonode = string(str_tonode);
@@ -92,8 +92,8 @@ void UINetwork::load (xmlNodePtr net)
          << getNodeNamed(tonode)->getInputNamed(in) << endl;*/
 	 free(str_fromnode); free(str_out); free(str_tonode); free(str_in);
 	 char *points=NULL;
-	 if (node->childs)
-	    points = (char *)node->childs->content;
+	 if (node->children)
+	    points = (char *)node->children->content;
 	 if (getNodeNamed(fromnode) && getNodeNamed(tonode))
 	 {
             if (!getNodeNamed(tonode)->getInputNamed(in))
@@ -110,14 +110,14 @@ void UINetwork::load (xmlNodePtr net)
       }
       node = node->next;
    }
-   node = net->childs;
+   node = net->children;
    while (node != NULL)
    {
       if (string((char*)node->name) == "NetInput")
       {
-	 char *str_termName = (char *)xmlGetProp(node, (CHAR *)"name");
-	 char *str_termTerm = (char *)xmlGetProp(node, (CHAR *)"terminal");
-	 char *str_termNode = (char *)xmlGetProp(node, (CHAR *)"node");
+	 char *str_termName = (char *)xmlGetProp(node, (xmlChar *)"name");
+	 char *str_termTerm = (char *)xmlGetProp(node, (xmlChar *)"terminal");
+	 char *str_termNode = (char *)xmlGetProp(node, (xmlChar *)"node");
 	 string termName = string(str_termName);
 	 string termTerm = string(str_termTerm);
 	 string termNode = string(str_termNode);
@@ -134,9 +134,9 @@ void UINetwork::load (xmlNodePtr net)
 	 }
       } else if (string((char*)node->name) == "NetOutput")
       {
-	 char *str_termName = (char *)xmlGetProp(node, (CHAR *)"name");
-	 char *str_termTerm = (char *)xmlGetProp(node, (CHAR *)"terminal");
-	 char *str_termNode = (char *)xmlGetProp(node, (CHAR *)"node");
+	 char *str_termName = (char *)xmlGetProp(node, (xmlChar *)"name");
+	 char *str_termTerm = (char *)xmlGetProp(node, (xmlChar *)"terminal");
+	 char *str_termNode = (char *)xmlGetProp(node, (xmlChar *)"node");
 	 string termName = string(str_termName);
 	 string termTerm = string(str_termTerm);
 	 string termNode = string(str_termNode);
@@ -153,9 +153,9 @@ void UINetwork::load (xmlNodePtr net)
 	 }
       } else if (string((char*)node->name) == "NetCondition")
       {
-	 char *str_termName = (char *)xmlGetProp(node, (CHAR *)"name");
-	 char *str_termTerm = (char *)xmlGetProp(node, (CHAR *)"terminal");
-	 char *str_termNode = (char *)xmlGetProp(node, (CHAR *)"node");
+	 char *str_termName = (char *)xmlGetProp(node, (xmlChar *)"name");
+	 char *str_termTerm = (char *)xmlGetProp(node, (xmlChar *)"terminal");
+	 char *str_termNode = (char *)xmlGetProp(node, (xmlChar *)"node");
 	 string termName = string(str_termName);
 	 string termTerm = string(str_termTerm);
 	 string termNode = string(str_termNode);
@@ -269,22 +269,22 @@ void UINetwork::removeLink(UILink *link)
 void UINetwork::saveXML(xmlNode *root)
 {
    xmlNodePtr tree;
-   tree = xmlNewChild(root, NULL, (CHAR *)"Network", NULL);
+   tree = xmlNewChild(root, NULL, (xmlChar *)"Network", NULL);
    switch (type)
    {
       case subnet:
-     xmlSetProp(tree, (CHAR *)"type", (CHAR *)"subnet");
+     xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)"subnet");
      break;
       case iterator:
-     xmlSetProp(tree, (CHAR *)"type", (CHAR *)"iterator");
+     xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)"iterator");
      break;
       case threaded:
-     xmlSetProp(tree, (CHAR *)"type", (CHAR *)"threaded");
+     xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)"threaded");
      break;
    }
-   xmlSetProp(tree, (CHAR *)"name", (CHAR *)name.c_str());
+   xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)name.c_str());
    /*if (isIterator && conditionNode)
-     xmlSetProp(tree, (CHAR *)"condition", (CHAR *)conditionNode->getName().c_str());*/
+     xmlSetProp(tree, (xmlChar *)"condition", (xmlChar *)conditionNode->getName().c_str());*/
    for (unsigned int i=0;i<nodes.size();i++)
    {
       nodes[i]->saveXML(tree);

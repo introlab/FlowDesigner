@@ -4,7 +4,7 @@
 #include "GUIDocument.h"
 #include "GUINode.h"
 #include "GUITerminal.h"
-#include <tree.h>
+#include <libxml/tree.h>
 #include "GUILink.h"
 #include "GUINetPopup.h"
 #include "Node.h"
@@ -44,8 +44,8 @@ GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
    , tooltip(NULL)
 {
    //cerr << "GUINetwork::GUINetwork\n";
-   name = string((char *)xmlGetProp(net, (CHAR *)"name"));
-   char *netType = (char *)xmlGetProp(net, (CHAR *)"type");
+   name = string((char *)xmlGetProp(net, (xmlChar *)"name"));
+   char *netType = (char *)xmlGetProp(net, (xmlChar *)"type");
    
    if (!netType)
    {

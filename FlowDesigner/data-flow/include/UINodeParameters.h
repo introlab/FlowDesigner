@@ -8,7 +8,7 @@ using namespace std;
 //#include <gnome.h>
 #include <string>
 #include <vector>
-#include <tree.h>
+#include <libxml/tree.h>
 
 class UINode;
 class ParameterSet;

@@ -3,8 +3,8 @@
 
 #include "UINodeRepository.h"
 #include "path.h"
-#include <tree.h>
-#include <parser.h>
+#include <libxml/tree.h>
+#include <libxml/parser.h>
 #include "BaseException.h"
 #include "UINetwork.h"
 
@@ -135,14 +135,14 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
    string fullname = path + "/" + name;
    xmlDocPtr doc = xmlParseFile(fullname.c_str());
    
-   if (!doc || !doc->root || !doc->root->name)
+   if (!doc || !doc->children || !doc->children->name)
    {
       cerr << "LoadNodeDefInfo: error loading " << fullname << "\n";
       xmlFreeDoc (doc);
       return;
    }
-   xmlNodePtr root=doc->root;
-   xmlNodePtr node = root->childs;
+   xmlNodePtr root=doc->children;
+   xmlNodePtr node = root->children;
    while (node != NULL)
    {
       string nodeName;
@@ -150,24 +150,24 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       {
 	 NodeInfo *info = new NodeInfo;
 	 info->kind=NodeInfo::builtin;
-	 char *str_category = (char *)xmlGetProp(node, (CHAR *)"category");
+	 char *str_category = (char *)xmlGetProp(node, (xmlChar *)"category");
 	 if (str_category)
 	    info->category = string(str_category);
 	 else
 	    info->category = "Unknown";
 	 free(str_category);
-	 char *sfile = (char *)xmlGetProp(node, (CHAR *)"source");
+	 char *sfile = (char *)xmlGetProp(node, (xmlChar *)"source");
 	 if (sfile)
 	    info->sourceFile= string(sfile);
 	 free(sfile);
-	 char *req = (char *)xmlGetProp(node, (CHAR *)"require");
+	 char *req = (char *)xmlGetProp(node, (xmlChar *)"require");
 	 if (req)
 	    info->requireList = string(req);
 	 free(req);
 	 //cerr << info->sourceFile << ":" << info->requireList << endl;
-	 nodeName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+	 nodeName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
 	 GlobalRepository().info[nodeName] = info;
-	 xmlNodePtr data = node->childs;
+	 xmlNodePtr data = node->children;
 	 while (data != NULL)
 	 {
 	    string kind = string((char*)data->name);
@@ -175,19 +175,19 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    {
 	       xmlChar *tmp;
 	       ItemInfo *newInfo = new ItemInfo;
-	       char *str_name = (char *)xmlGetProp(data, (CHAR *)"name");
-	       char *str_type = (char *)xmlGetProp(data, (CHAR *)"type");
+	       char *str_name = (char *)xmlGetProp(data, (xmlChar *)"name");
+	       char *str_type = (char *)xmlGetProp(data, (xmlChar *)"type");
 	       //FIXME: Check for NULL
 	       newInfo->name = string(str_name);
 	       newInfo->type = string(str_type);
 	       free(str_name); free(str_type);
-	       tmp = xmlGetProp(data, (CHAR *)"value");
+	       tmp = xmlGetProp(data, (xmlChar *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
 	       else
 		  newInfo->value = string((char *)tmp);
 	       
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       tmp = xmlNodeListGetString(doc, data->children, 1);
 	       if (tmp == NULL)
 		  newInfo->description = "No Description Available.";
 	       else
@@ -198,20 +198,20 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    {
 	       xmlChar *tmp;
 	       ItemInfo *newInfo = new ItemInfo;
-	       char *str_name = (char *)xmlGetProp(data, (CHAR *)"name");
-	       char *str_type = (char *)xmlGetProp(data, (CHAR *)"type");
+	       char *str_name = (char *)xmlGetProp(data, (xmlChar *)"name");
+	       char *str_type = (char *)xmlGetProp(data, (xmlChar *)"type");
 	       //FIXME: Check for NULL
 	       newInfo->name = string(str_name);
 	       newInfo->type = string(str_type);
 	       free(str_name); free(str_type);
 	       
-	       tmp = xmlGetProp(data, (CHAR *)"value");
+	       tmp = xmlGetProp(data, (xmlChar *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
 	       else
 		  newInfo->value = string((char *)tmp);
 	       
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       tmp = xmlNodeListGetString(doc, data->children, 1);
 	       if (tmp == NULL)
 		  newInfo->description = "No Description Available.";
 	       else
@@ -222,19 +222,19 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    {
 	       xmlChar *tmp;
 	       ItemInfo *newInfo = new ItemInfo;
-	       char *str_name = (char *)xmlGetProp(data, (CHAR *)"name");
-	       char *str_type = (char *)xmlGetProp(data, (CHAR *)"type");
+	       char *str_name = (char *)xmlGetProp(data, (xmlChar *)"name");
+	       char *str_type = (char *)xmlGetProp(data, (xmlChar *)"type");
 	       //FIXME: Check for NULL
 	       newInfo->name = string(str_name);
 	       newInfo->type = string(str_type);
 	       free(str_name); free(str_type);
-	       tmp = xmlGetProp(data, (CHAR *)"value");
+	       tmp = xmlGetProp(data, (xmlChar *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
 	       else
 		  newInfo->value = string((char *)tmp);
 	       free(tmp);
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       tmp = xmlNodeListGetString(doc, data->children, 1);
 	       if (tmp == NULL)
 		  newInfo->description = "No Description Available.";
 	       else
@@ -244,7 +244,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    } else if (kind == "Description")
 	    {
 	       xmlChar *tmp;
-	       tmp = xmlNodeListGetString(doc, data->childs, 1);
+	       tmp = xmlNodeListGetString(doc, data->children, 1);
 	       if (tmp == NULL)
 		  info->description = "No description available";
 	       else
@@ -260,17 +260,17 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       /*Dependencies for modules*/
       else if (string((char*)node->name) == "ModuleDepend")
       {
-	 char *dep_module = (char *)xmlGetProp(node, (CHAR *)"module");
+	 char *dep_module = (char *)xmlGetProp(node, (xmlChar *)"module");
 	 if (!dep_module)
 	    throw new GeneralException("Empty module dependency", __FILE__, __LINE__);
-	 xmlNodePtr depend = node->childs;
+	 xmlNodePtr depend = node->children;
 	 while (depend != NULL)
 	 {
 	    if (string((char*)depend->name) != "Require")
 	       throw new GeneralException(string("Unknown section in module dependency: ") + (char*)node->name, 
 				    __FILE__, __LINE__);
 
-	    char *req_file = (char *)xmlGetProp(depend, (CHAR *)"file");
+	    char *req_file = (char *)xmlGetProp(depend, (xmlChar *)"file");
 	    if (!req_file)
 	       throw new GeneralException(string("Empty dependency for module: ") + dep_module, __FILE__, __LINE__);
 	    
@@ -282,15 +282,15 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       /*Dependencies for files*/
       else if (string((char*)node->name) == "FileDepend")
       {
-	 char *dep_file = (char *)xmlGetProp(node, (CHAR *)"file");
+	 char *dep_file = (char *)xmlGetProp(node, (xmlChar *)"file");
 	 if (!dep_file)
 	    throw new GeneralException("Empty file dependency", __FILE__, __LINE__);
-	 xmlNodePtr depend = node->childs;
+	 xmlNodePtr depend = node->children;
 	 while (depend != NULL)
 	 {
 	    if (string((char*)depend->name) == "RequireModule")
 	    {
-	       char *req_module = (char *)xmlGetProp(depend, (CHAR *)"module");
+	       char *req_module = (char *)xmlGetProp(depend, (xmlChar *)"module");
 	       if (!req_module)
 		  throw new GeneralException(string("Empty module dependency for file: ") + dep_file, 
 					     __FILE__, __LINE__);
@@ -298,7 +298,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	    }
 	    else if (string((char*)depend->name) == "RequireHeader")
 	    {
-	       char *req_header = (char *)xmlGetProp(depend, (CHAR *)"header");
+	       char *req_header = (char *)xmlGetProp(depend, (xmlChar *)"header");
 	       if (!req_header)
 		  throw new GeneralException(string("Empty header dependency for file: ") + dep_file, 
 					     __FILE__, __LINE__);
@@ -311,7 +311,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	 }	 
       } 
       else 
-	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + fullname, 
+	 throw new GeneralException(string("Unknown section in toolbox definition file: ") + string((char*)node->name) + " in " + fullname, 
 				    __FILE__, __LINE__);
       
       node = node->next;
@@ -364,7 +364,7 @@ void UINodeRepository::LoadExtDocInfo(const string &path, const string &name)
    xmlDocPtr doc = xmlParseMemory (const_cast<char *> (docStr.c_str()), docStr.size());
    //xmlDocPtr doc = xmlParseFile(fullname.c_str());
 
-   if (!doc || !doc->root || !doc->root->name)
+   if (!doc || !doc->children || !doc->children->name)
    {
       cerr << "ExtDoc: error loading " << fullpath << "\n";
       xmlFreeDoc (doc);
@@ -389,8 +389,8 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
    externalDocInfo[basename] = info;
    
 
-   xmlNodePtr root=doc->root;
-   xmlNodePtr net = root->childs;
+   xmlNodePtr root=doc->children;
+   xmlNodePtr net = root->children;
    
    while (net != NULL)
    {
@@ -398,30 +398,30 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
       if (string((char*)net->name) == "Network")
       {
 	 //cerr << "scanning a net\n";
-	 string netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
+	 string netName = string((char *)xmlGetProp(net, (xmlChar *)"name"));
 	 if (netName == "MAIN")
 	 {
 	    
-	    CHAR *category = xmlGetProp(net, (CHAR *)"category");
+	    xmlChar *category = xmlGetProp(net, (xmlChar *)"category");
 	    if (category)
 	       info->category = string((char *)category);
 
 	    //loadNetInfo(net, externalDocInfo, basename);
 	   
  
-	    xmlNodePtr node = net->childs;
+	    xmlNodePtr node = net->children;
 	    while (node != NULL)
 	    {
 	       if (string((char*)node->name) == "NetInput")
 	       {
-		  string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+		  string termName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
 		  ItemInfo *newInfo = new ItemInfo;
 		  newInfo->name = termName;
 		  info->inputs.insert (info->inputs.end(), newInfo);
 	 
 	       } else if (string((char*)node->name) == "NetOutput")
 	       {
-		  string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+		  string termName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
 		  ItemInfo *newInfo = new ItemInfo;
 		  newInfo->name = termName;
 		  info->outputs.insert (info->outputs.end(), newInfo);
@@ -434,9 +434,9 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
 	 }
       } else if (string((char*)net->name) == "Parameter")
       {
-	 char *param_name = (char *)xmlGetProp(net, (CHAR *)"name");
-	 char *param_type = (char *)xmlGetProp(net, (CHAR *)"type");
-	 char *param_value = (char *)xmlGetProp(net, (CHAR *)"value");
+	 char *param_name = (char *)xmlGetProp(net, (xmlChar *)"name");
+	 char *param_type = (char *)xmlGetProp(net, (xmlChar *)"type");
+	 char *param_value = (char *)xmlGetProp(net, (xmlChar *)"value");
 	 if (param_name && param_type)
 	 {
 	    ItemInfo *newInfo = new ItemInfo;
@@ -530,10 +530,10 @@ void UINodeRepository::loadAllSubnetInfo(xmlNodePtr net)
 
 void UINodeRepository::loadNetInfo(xmlNodePtr net)
 {
-   char *str_netName = (char *)xmlGetProp(net, (CHAR *)"name");
+   char *str_netName = (char *)xmlGetProp(net, (xmlChar *)"name");
    string netName = string(str_netName);
    free(str_netName);
-   CHAR *category = xmlGetProp(net, (CHAR *)"category");
+   xmlChar *category = xmlGetProp(net, (xmlChar *)"category");
    
    if (info.find(netName) != info.end())
    {
@@ -552,21 +552,21 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
       free(category);
    }
    //cerr << "scan all nodes\n";
-   xmlNodePtr node = net->childs;
+   xmlNodePtr node = net->children;
    while (node != NULL)
    {
       if (string((char*)node->name) == "Node")
       {
 	 
 	 
-	 xmlNodePtr par = node->childs;
+	 xmlNodePtr par = node->children;
 	 //cerr << "par = " << par << endl;
 	 while (par)
 	 {
 	    if (string((char*)par->name) == "Parameter")
 	    {
-	       char *str_paramName = (char *) xmlGetProp(par, (CHAR *)"value");
-	       char *str_type = (char *) xmlGetProp(par, (CHAR *)"type");
+	       char *str_paramName = (char *) xmlGetProp(par, (xmlChar *)"value");
+	       char *str_type = (char *) xmlGetProp(par, (xmlChar *)"type");
 	       string paramName = string (str_paramName);
 	       string type = string (str_type);
 	       free(str_paramName); free(str_type);
@@ -597,7 +597,7 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
       node = node->next;
    }
  
-   CHAR *type = xmlGetProp(net, (CHAR *)"type");
+   xmlChar *type = xmlGetProp(net, (xmlChar *)"type");
    if (type)
    { 
       if (string((char*)type)=="iterator")
@@ -619,12 +619,12 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 
   
    //scan all net inputs/outputs
-   node = net->childs;
+   node = net->children;
    while (node != NULL)
    {
       if (string((char*)node->name) == "NetInput")
       {
-	 char *str_name = (char *)xmlGetProp(node, (CHAR *)"name");
+	 char *str_name = (char *)xmlGetProp(node, (xmlChar *)"name");
 	 string termName = string(str_name);
 	 free(str_name);
 	 ItemInfo *newInfo = new ItemInfo;
@@ -633,7 +633,7 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 	 
       } else if (string((char*)node->name) == "NetOutput")
       {
-	 char *str_name = (char *)xmlGetProp(node, (CHAR *)"name");
+	 char *str_name = (char *)xmlGetProp(node, (xmlChar *)"name");
 	 string termName = string(str_name);
 	 free(str_name);
 	 ItemInfo *newInfo = new ItemInfo;
