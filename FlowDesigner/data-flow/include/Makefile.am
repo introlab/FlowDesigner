@@ -49,5 +49,6 @@ noinst_HEADERS = \
 	VNSum.h \
 	VSum.h \
 	AND.h \
-	Matrix.h
+	Matrix.h \
+	DoubleDispatch.h
 
