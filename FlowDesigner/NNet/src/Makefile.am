@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.27 2001/02/28 04:42:56 jmvalin Exp $
+# $Id: Makefile.am,v 1.28 2001/02/28 18:29:37 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -13,17 +13,13 @@ install:
 	perl $(top_srcdir)/../tools/src/info2def.pl $(top_srcdir)/src/*.cc > $(prefix)/toolbox/nnet/nnet.def
 
 # Sources for compilation in the library
-libnnet_la_SOURCES = FFLayer.cc FFNet.cc NNetTrain.cc \
-	NNetExec.cc NNetNew.cc NNetTrainCG.cc NNetTrainDBD.cc \
-	NNetTrainRecurrent.cc NNetExecRecurrent.cc \
-	NNetSet.cc NNetSetCalc.cc NNetSetTrain.cc \
-	NNetSetTrainDBD.cc NNetTrainCGB.cc NNetSetTrainCGB.cc \
-	NNetTrainSCGBounds.cc \
-	NNetTrainSA.cc \
+libnnet_la_SOURCES = FFLayer.cc FFNet.cc \
+	NNetExec.cc NNetTrainDBD.cc \
+	NNetSet.cc NNetSetCalc.cc \
+	NNetSetTrainDBD.cc \
 	NNetInit.cc \
 	NNetSetInit.cc \
-	NNetSetChooseBest.cc \
-	NNetTrainRecurDBD.cc
+	NNetSetChooseBest.cc
 
 #libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
 libnnet_la_LDFLAGS = -release $(LT_RELEASE)

@@ -99,10 +99,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
-      double tmp[inputLength];
-      for (int i=0;i<inputLength;i++)
-	 tmp[i]=in[i];
-      double *netOut = net.calc(int(floor(id[0])), tmp);
+      float *netOut = net.calc(int(floor(id[0])), &in[0]);
       
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];

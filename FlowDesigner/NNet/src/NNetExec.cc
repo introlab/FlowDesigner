@@ -85,11 +85,15 @@ public:
 
       FFNet &net = object_cast<FFNet> (netValue);
       
-      double tmp[in.size()];
+      float value[net.getNbNeurons()];
+      float *netOut = net.calc(&in[0], value);
+
+      /*double tmp[in.size()];
       for (int i=0;i<in.size();i++)
 	 tmp[i]=in[i];
       double *netOut = net.calc(tmp);
-      
+      */
+
       for (int i=0;i<outputLength;i++)
          output[i]=netOut[i];
    }

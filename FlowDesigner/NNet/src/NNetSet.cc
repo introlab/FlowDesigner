@@ -18,7 +18,7 @@ NNetSet::NNetSet(int nbNets, const Vector<int> &topo, const vector<string> &func
    {
       nets[i] = new FFNet (topo, functions, in[i], out[i]);
    }
- 
+   value = new float [nets[0]->getNbWeights()];
 }
 
 NNetSet::NNetSet(vector<int> id, vector<float *> &tin, vector<float *> &tout, NNetSet *net1, NNetSet *net2)
@@ -39,21 +39,22 @@ NNetSet::NNetSet(vector<int> id, vector<float *> &tin, vector<float *> &tout, NN
    for (int i=0;i<nbNets;i++)
    {
       cerr << "net #" << i << endl;
-      double err1 = net1->nets[i]->totalError(in[i], out[i]);
-      double err2 = net2->nets[i]->totalError(in[i], out[i]);
+      float err1 = net1->nets[i]->totalError(in[i], out[i]);
+      float err2 = net2->nets[i]->totalError(in[i], out[i]);
       NNetSet *best = err1 < err2 ? net1 : net2;
       nets[i] = new FFNet (*best->nets[i]);
    }
+   value = new float [nets[0]->getNbWeights()];
 
 }
 
-double *NNetSet::calc(int id, const double *input)
+float *NNetSet::calc(int id, const float *input)
 {
    //cerr << "calc for id " << id << endl;
-   return nets[id]->calc(input);
+   return nets[id]->calc(input, value);
    //cerr << "done...\n";
 }
-
+/*
 void NNetSet::train(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
 		    double learnRate, double mom, double increase, double decrease, double errRatio, int nbSets)
 {
@@ -76,7 +77,7 @@ void NNetSet::train(vector<int> id, vector<float *> tin, vector<float *> tout, i
       nets[i]->train(in[i],out[i],iter,learnRate,mom,increase,decrease,errRatio,nbSets);
    }
    
-}
+   }*/
 
 void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
 		    double learnRate, double mom, double increase, double decrease, int nbSets)
@@ -102,7 +103,7 @@ void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *>
    }
    
 }
-
+/*
 void NNetSet::trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout, int iter, 
 		    double sigma, double lambda)
 {
@@ -126,6 +127,7 @@ void NNetSet::trainCGB(vector<int> id, vector<float *> tin, vector<float *> tout
    }
    
 }
+*/
 
 void NNetSet::printOn(ostream &out) const
 {
@@ -162,6 +164,7 @@ void NNetSet::readFrom (istream &in)
       if (tag != ">") 
          throw new ParsingException ("Parse error: '>' expected ");
    }
+   value = new float [nets[0]->getNbWeights()];
 }
 
 istream &operator >> (istream &in, NNetSet &net)

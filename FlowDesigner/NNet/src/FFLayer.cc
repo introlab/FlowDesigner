@@ -2,13 +2,18 @@
 #include <stdlib.h>
 #include "ObjectParser.h"
 
-DECLARE_TYPE(FFLayer)
+//DECLARE_TYPE(FFLayer)
 
-FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
+
+
+
+FFLayer::FFLayer (int _nbNeurons, int _nbInputs, float *_weights, int _weightOffset, int _neuronOffset, string type)
    : nbNeurons(_nbNeurons)
    , nbInputs (_nbInputs)
    , funcType(type)
-   , alloc(true)
+   , weights(_weights+_weightOffset)
+   , weightOffset (_weightOffset)
+   , neuronOffset (_neuronOffset)
 {
    if (funcType == "lin")
    {
@@ -22,30 +27,22 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs, string type)
    {
       func = tansig;
       deriv_func = deriv_tansig;
-   } /*else if (funcType == "tanh")
-   {
-      func = tanh;
-      deriv_func = deriv_tanh;
-      }*/
-   weights = new double [nbNeurons*(nbInputs+1)];
-   /*for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-   {
-      //weights[i]=1.0;
-      weights[i]=sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1);
-      }*/
-
-   momentum = new double [nbNeurons*(nbInputs+1)];
-   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-      momentum[i]=0;
-
-   gradient = new double [nbNeurons*(nbInputs+1)];
-   saved_weights = new double [nbNeurons*(nbInputs+1)];
-
-   deriv = new double [nbNeurons];
-   value = new double [nbNeurons];
-   error = new double [nbNeurons];
+   }
 }
 
+void FFLayer::setupAfterRead(float *_weights, int _weightOffset, int _neuronOffset)
+{
+   weightOffset=_weightOffset;
+   neuronOffset=_neuronOffset;
+   //cerr << "offsets: " << weightOffset << " " << neuronOffset << endl;
+   float *tmp = weights;
+   weights = _weights+_weightOffset;
+   for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+      weights[i] = tmp[i];
+   delete [] tmp;
+}
+
+/*
 FFLayer::FFLayer(const FFLayer &layer)
    : nbNeurons(layer.nbNeurons)
    , nbInputs(layer.nbInputs)
@@ -55,37 +52,28 @@ FFLayer::FFLayer(const FFLayer &layer)
    , alloc(true)
 {
 
-   weights = new double [nbNeurons*(nbInputs+1)];
+   weights = new float [nbNeurons*(nbInputs+1)];
 
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       weights[i] = layer.weights[i];
 
-   momentum = new double [nbNeurons*(nbInputs+1)];
+   momentum = new float [nbNeurons*(nbInputs+1)];
 
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
       momentum[i]=0;
    
-   gradient = new double [nbNeurons*(nbInputs+1)];
+   gradient = new float [nbNeurons*(nbInputs+1)];
 
-   saved_weights = new double [nbNeurons*(nbInputs+1)];
+   saved_weights = new float [nbNeurons*(nbInputs+1)];
    
-   deriv = new double [nbNeurons];
-   value = new double [nbNeurons];
-   error = new double [nbNeurons];
+   deriv = new float [nbNeurons];
+   value = new float [nbNeurons];
+   error = new float [nbNeurons];
 }
+*/
 
-/*FFLayer &FFLayer::operator=(const FFLayer &layer)
-{
-   if (this == &layer)
-   {
-      return this;
-   } else {
-      re
-   }
-   
-   }*/
 
-void FFLayer::init(double minmax)
+void FFLayer::init(float minmax)
 {
    for (int i=0;i<nbNeurons*(nbInputs+1);i++)
    {
@@ -94,14 +82,14 @@ void FFLayer::init(double minmax)
    }
 }
 
-void FFLayer::init(double *mean, double *std)
+void FFLayer::init(float *mean, float *std)
 {
-   double meanSum = 0;
+   float meanSum = 0;
    for (int j=0;j<nbInputs;j++)
       meanSum += mean[j];
    for (int i=0;i<nbNeurons;i++)
    {
-      double meanSum = 0;
+      float meanSum = 0;
       for (int j=0;j<nbInputs;j++)
       {
 	 weights[i*(nbInputs+1) + j] = sqrt(3.0/nbInputs)*((rand()%1000) * .002 - .1)/std[j];
@@ -111,7 +99,7 @@ void FFLayer::init(double *mean, double *std)
    }
 }
 
-void FFLayer::setBias(double *minmax)
+void FFLayer::setBias(float *minmax)
 {
    for (int i=0;i<nbNeurons;i++)
    {
@@ -175,32 +163,11 @@ void FFLayer::readFrom (istream &in)
 	    }*/
       } else if (tag == "weights")
       {
-	 //cerr << "weights\n";
-	 weights = new double [nbNeurons*(nbInputs+1)];
+	 weights = new float [nbNeurons*(nbInputs+1)];
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    //weights[i]=1.0;
 	    in >> weights[i];
-	    /* temporary workaround to gnome localisation "feature"
-	    string tata;
-	    in >> tata;
-	    weights[i] = atof (tata.c_str());
-	    cerr << tata << " ";*/
 	 }
-	 //cerr << "allocation...\n";
-	 gradient = new double [nbNeurons*(nbInputs+1)];
-	 saved_weights = new double [nbNeurons*(nbInputs+1)];
-	 
-	 deriv = new double [nbNeurons];
-	 value = new double [nbNeurons];
-	 error = new double [nbNeurons];
-	 momentum = new double [nbNeurons*(nbInputs+1)];
-	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
-	 {
-	    momentum[i]=0;
-	 }
-
-	 //cerr << "done with weights\n";
       }
       else
          throw new ParsingException ("unknown argument: " + tag);
