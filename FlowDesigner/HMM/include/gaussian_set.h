@@ -34,7 +34,7 @@ public:
    int getIDFor(Ptr<Gaussian>);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<Gaussian> getPtrFor(int id);
+   Ptr<Gaussian> getPtrFor(int id) const;
 
    /**convert all elements to using IDs (before saving)*/
    void toIDs(MeanSet & means, CovarianceSet & covariances);

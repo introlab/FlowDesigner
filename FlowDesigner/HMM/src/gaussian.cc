@@ -66,8 +66,15 @@ void Gaussian::printOn (ostream &out) const
    out << "<Gaussian " << endl;
    out << "<dimension " << dimension << "> ";
    out << "<accum_count " << accum_count << "> " << endl;
-   out << "<mean " << *mean << ">" << endl; 
-   out << "<covariance " << *covariance << ">" << endl;
+   if (using_meanID)
+      out << "<meanID " << meanID << ">" << endl;
+   else 
+      out << "<mean " << mean << ">" << endl;
+      
+   if (using_covarianceID)
+      out << "<covarianceID " << covarianceID << ">" << endl;
+   else
+      out << "<covariance " << covariance << ">" << endl;
    out << ">\n";
 }
 

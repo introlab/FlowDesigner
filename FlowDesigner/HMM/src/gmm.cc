@@ -222,6 +222,25 @@ Score GMM::score(float * fr) const
    return frame_score;
 }
 
+void GMM::toIDsUsing (GaussianSet &gauss)
+{
+   if (using_gaussianIDs)
+      return;
+   gaussianIDs.resize(nb_gaussians);
+   using_gaussianIDs=true;
+   for (int i=0;i<nb_gaussians;i++)
+      gaussianIDs[i]=gauss.getIDFor(gaussians[i]);
+
+}
+
+void GMM::toPtrsUsing (const GaussianSet &gauss)
+{
+   if (!using_gaussianIDs)
+      return;
+   using_gaussianIDs=false;
+   for (int i=0;i<nb_gaussians;i++)
+     gaussians[i]=gauss.getPtrFor(gaussianIDs[i]);
+}
 
 void GMM::printOn(ostream &out) const
 {
@@ -231,22 +250,13 @@ void GMM::printOn(ostream &out) const
    out << "<nb_frames_aligned " << nb_frames_aligned << ">" << endl;
    out << "<dimensions " << dimensions << ">" << endl;
    out << "<apriori " << apriori << ">" << endl;
-   out << "<gaussians " << gaussians << ">" << endl;
+   if (using_gaussianIDs)
+      out << "<gaussianIDs " << gaussianIDs << ">" << endl;
+   else
+      out << "<gaussians " << gaussians << ">" << endl;
    out << ">\n";
 }
 
-void GMM::toIDsUsing (GaussianSet &gauss)
-{
-   /*using_gaussiansID=true;
-     covarianceID=covariances.getIDFor(covariance);*/
-
-}
-
-void GMM::toPtrsUsing (const GaussianSet &gauss)
-{
-   /*using_covarianceID=false;
-     covariance=covariances.getPtrFor(covarianceID);*/
-}
 
 void GMM::readFrom (istream &in)
 {
@@ -268,12 +278,13 @@ void GMM::readFrom (istream &in)
          in >> dimensions;
       else if (tag == "gaussians")
       {
-         /*vector<ObjectRef > tmp;
-         in >> tmp;
-         gaussians.resize(tmp.size());
-         for (int i = 0; i<tmp.size();i++)
-         gaussians[i] = tmp[i];*/
          in >> gaussians;
+         using_gaussianIDs = false;
+      }
+      else if (tag == "gaussianIDs")
+      {
+         in >> gaussianIDs;
+         using_gaussianIDs = true;
       }
       else if (tag == "mode")
          in >> mode;

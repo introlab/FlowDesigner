@@ -70,6 +70,9 @@ protected:
    /**Number of dimensions*/
    int dimensions;
 
+   /**Was the gaussian loaded using indexes for mean*/
+   bool using_gaussianIDs;
+
    /**STL vector containing all the gaussian IDs in the GMM*/
    vector<int>  gaussianIDs;
 

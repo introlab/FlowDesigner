@@ -50,10 +50,10 @@ protected:
    /**Was the gaussian loaded using indexes for covariance*/
    bool using_covarianceID;
    
-   /***/
+   /**The ID of the gaussian's mean*/
    int meanID;
 
-   /***/
+   /**The ID of the gaussian's covariance*/
    int covarianceID;
 
 public:
