@@ -18,13 +18,13 @@
 #include "Buffer.h"
 #include "Vector.h"
 
-class Sum;
+class Length;
 
-DECLARE_NODE(Sum)
+DECLARE_NODE(Length)
 /*Node
  *
- * @name Sum
- * @category Math
+ * @name Length
+ * @category Vector
  * @description No description available
  *
  * @input_name INPUT
@@ -36,13 +36,13 @@ DECLARE_NODE(Sum)
 END*/
 
 
-class Sum : public BufferedNode {
+class Length : public BufferedNode {
    
    int inputID;
    int outputID;
 
 public:
-   Sum(string nodeName, ParameterSet params)
+   Length(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
@@ -59,15 +59,8 @@ public:
          return;
       }
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();      
 
-      float val = 0;
-      for (int i=0;i<inputLength;i++)
-      {
-         val+=in[i];
-      }
-      
-      out[count] = new Float (val);
+      out[count] = new Int (in.size());
 
    }
 

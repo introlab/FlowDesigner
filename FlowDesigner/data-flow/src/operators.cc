@@ -17,6 +17,8 @@
 #include "operators.h"
 #include "net_types.h"
 
+
+//Operators for Float and Float
 ObjectRef addFloatFloat(ObjectRef x, ObjectRef y)
 {
    return ObjectRef(new Float(dereference_cast<float> (x) + (dereference_cast<float> (y))));
@@ -42,7 +44,7 @@ ObjectRef divFloatFloat(ObjectRef x, ObjectRef y)
 REGISTER_DOUBLE_VTABLE(divVtable, divFloatFloat, Float, Float);
 
 
-
+//Operators for Int and Int
 ObjectRef addIntInt(ObjectRef x, ObjectRef y)
 {
    return ObjectRef(new Int(dereference_cast<int> (x) + (dereference_cast<int> (y))));
@@ -67,3 +69,55 @@ ObjectRef divIntInt(ObjectRef x, ObjectRef y)
 }
 REGISTER_DOUBLE_VTABLE(divVtable, divIntInt, Int, Int);
 
+
+//Operators for Int and Float
+ObjectRef addIntFloat(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<int> (x) + (dereference_cast<float> (y))));
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addIntFloat, Int, Float);
+
+ObjectRef mulIntFloat(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<int> (x) * (dereference_cast<float> (y))));
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulIntFloat, Int, Float);
+
+ObjectRef subIntFloat(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<int> (x) - (dereference_cast<float> (y))));
+}
+REGISTER_DOUBLE_VTABLE(subVtable, subIntFloat, Int, Float);
+
+ObjectRef divIntFloat(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<int> (x) / (dereference_cast<float> (y))));
+}
+REGISTER_DOUBLE_VTABLE(divVtable, divIntFloat, Int, Float);
+
+
+
+//Operators for Float and Int
+ObjectRef addFloatInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<float> (x) + (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(addVtable, addFloatInt, Float, Int);
+
+ObjectRef mulFloatInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<float> (x) * (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(mulVtable, mulFloatInt, Float, Int);
+
+ObjectRef subFloatInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<float> (x) - (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(subVtable, subFloatInt, Float, Int);
+
+ObjectRef divFloatInt(ObjectRef x, ObjectRef y)
+{
+   return ObjectRef(new Float(dereference_cast<float> (x) / (dereference_cast<int> (y))));
+}
+REGISTER_DOUBLE_VTABLE(divVtable, divFloatInt, Float, Int);
