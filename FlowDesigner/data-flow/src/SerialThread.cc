@@ -5,7 +5,7 @@
 #include "ExceptionObject.h"
 #include <pthread.h>
 #include "pseudosem.h"
-
+#include "FlowException.h"
 
 class SerialThread;
 
@@ -182,14 +182,22 @@ public:
 	    if (!inside_lock)
 	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = new ExceptionObject(e->add(new GeneralException ("Exception caught in SerialThread", __FILE__, __LINE__)));
+            //FIXME: should there be an if (!inside_lock)??
 	    pthread_mutex_unlock(&bufferLock);
-	 } 
-	 //FIXME: Should catch FlowException and handle transparently
+	 } catch (RCPtr<FlowException> e)
+         {
+            if (!inside_lock)
+	       pthread_mutex_lock(&bufferLock);
+	    (*buff)[threadCount] = e;
+            //FIXME: should there be an if (!inside_lock)??
+	    pthread_mutex_unlock(&bufferLock);
+         } 
 	 catch (...)
 	 {
 	    if (!inside_lock)
 	       pthread_mutex_lock(&bufferLock);
 	    (*buff)[threadCount] = new ExceptionObject(new GeneralException ("Unknown exception caught in SerialThread", __FILE__, __LINE__));
+            //FIXME: should there be an if (!inside_lock)??
 	    pthread_mutex_unlock(&bufferLock);
 	 }
 	 
@@ -237,6 +245,9 @@ public:
       if (typeid(*returnValue) == typeid(ExceptionObject))
       {
 	 object_cast<ExceptionObject> (returnValue).doThrow();
+      } else if (typeid(*returnValue) == typeid(FlowException))
+      {
+         throw RCPtr<FlowException> (returnValue);
       }
       return returnValue;
    }      

@@ -6,7 +6,7 @@
 #include "ExceptionObject.h"
 
 #include "pseudosem.h"
-
+#include "FlowException.h"
 
 class ParallelThread;
 
@@ -151,6 +151,10 @@ public:
       {
 	 (*outputs[output1ID].buffer)[calcCount] = 
 	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
+      } catch (RCPtr<FlowException> e)
+      {
+         (*outputs[output1ID].buffer)[calcCount] = e;
+         //FIXME: Should catch FlowException and handle transparently
       } catch (...)
       {
 	 //cerr << "caught\n";
@@ -203,9 +207,11 @@ public:
 	 //cerr << "caught\n";
 	 out2[count] = 
 	    new ExceptionObject(e->add(new GeneralException ("Exception caught in ParallelThread", __FILE__, __LINE__)));
-      } 
-      //FIXME: Should catch FlowException and handle transparently
-      catch (...)
+      } catch (RCPtr<FlowException> e)
+      {
+         out2[count] = e;
+         //FIXME: Should catch FlowException and handle transparently
+      } catch (...)
       {
 	 out2[count] = 
 	    new ExceptionObject(new GeneralException ("Unknown exception caught in ParallelThread", __FILE__, __LINE__));
@@ -219,14 +225,20 @@ public:
 	 if (typeid(*out1[count]) == typeid(ExceptionObject))
 	 {
 	    object_cast<ExceptionObject> (out1[count]).doThrow();
-	 }
+	 } else if (typeid(*out1[count]) == typeid(FlowException))
+         {
+            throw RCPtr<FlowException> (out1[count]);
+         }
 	 result = out1[count];
       } else if (output_id == output2ID)
       {
 	 if (typeid(*out2[count]) == typeid(ExceptionObject))
 	 {
 	    object_cast<ExceptionObject> (out2[count]).doThrow();
-	 }
+	 } else if (typeid(*out2[count]) == typeid(FlowException))
+         {
+            throw RCPtr<FlowException> (out2[count]);
+         }
 	 result = out2[count];
       } else 
 	 throw new NodeException (this, "Wrong output ID", __FILE__, __LINE__);
