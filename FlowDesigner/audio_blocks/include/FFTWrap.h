@@ -4,8 +4,10 @@
 #define FFTWRAP_H
 
 using namespace std;
-#include <complex>
 
+#ifndef STUPID_COMPLEX_KLUDGE
+#include <complex>
+#endif
 
 #ifdef HAVE_FFTW
 #include <fftw.h>
@@ -48,6 +50,7 @@ class _FFTWrap {
 	    fftw_destroy_plan(plan_pair->second);
    }
 
+#ifndef STUPID_COMPLEX_KLUDGE
    void fft (const complex<float> *fin, complex<float> *fout, int size)
    {
       FFTW_COMPLEX in[size];
@@ -97,6 +100,7 @@ class _FFTWrap {
       for (int i=0;i<size;i++)
 	 fout[i] = complex<float> (out[i].re, out[i].im);
    }
+#endif
 
    void rfft (const float *fin, float *fout, int size)
    {
@@ -161,6 +165,7 @@ static void FFTW_ERROR()
 
 class _FFTWrap {
   public:
+#ifndef STUPID_COMPLEX_KLUDGE
    void fft (const complex<float> *fin, complex<float> *fout, int size)
    {
       FFTW_ERROR();
@@ -170,6 +175,7 @@ class _FFTWrap {
    {
       FFTW_ERROR();
    }
+#endif
 
    void rfft (const float *fin, float *fout, int size)
    {
