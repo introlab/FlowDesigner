@@ -29,6 +29,7 @@ static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, GUINetwo
 
 GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
    : UINetwork(_doc, _name, _type)
+   , zoom(1)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    create();
@@ -36,6 +37,7 @@ GUINetwork::GUINetwork(UIDocument *_doc, string _name, Type _type)
 
 GUINetwork::GUINetwork(UIDocument *_doc, xmlNodePtr net)
    : UINetwork(_doc, net, false)
+   , zoom(1)
 {
    //cerr << "GUINetwork::GUINetwork\n";
    name = string((char *)xmlGetProp(net, (CHAR *)"name"));
@@ -107,6 +109,8 @@ void GUINetwork::create()
    gtk_widget_pop_colormap ();
    gtk_widget_pop_visual ();
 
+   
+
    //gtk_object_set_data_full (GTK_OBJECT (scrolledwindow1), "canvas1", canvas1,
    //                          (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show (canvas1);
@@ -165,7 +169,6 @@ void GUINetwork::create()
                        this);
    
    */
-
 
 }
 

@@ -27,7 +27,7 @@ GUILink::GUILink(UITerminal *_from, UITerminal *_to)
                                 gnome_canvas_line_get_type(),
                                 "points" , points,
                                 "fill_color", "black",
-                                "width_pixels", 2,
+                                "width_units", 2.0,
                                 "last_arrowhead", TRUE,
                                 "arrow_shape_a", 9.0,
                                 "arrow_shape_b", 15.0,
