@@ -21,20 +21,23 @@
 
 DECLARE_NODE(OR)
 /*Node
-
+ *
  * @name OR
  * @category Logic
- * @description No description available
-
+ * @description Logical OR between two inputs
+ *
  * @input_name INPUT1
- * @input_description No description available
-
+ * @input_type bool
+ * @input_description First boolean input
+ *
  * @input_name INPUT2
- * @input_description No description available
-
+ * @input_type bool
+ * @input_description Second boolean input
+ *
  * @output_name OUTPUT
- * @output_description No description available
-
+ * @output_type bool
+ * @output_description Boolean output
+ *
 END*/
 
 
