@@ -7,18 +7,31 @@
 #include <sstream>
 #include "ObjectParser.h"
 
-vector<string> ObjectParam::allTypes(bool allowSubnetParam)
+const vector<string> &ObjectParam::allTypes(bool allowSubnetParam)
 {
    static vector<string> types;
-   types.insert(types.end(), "int");
-   types.insert(types.end(), "float");
-   types.insert(types.end(), "string");
-   types.insert(types.end(), "bool");
-   types.insert(types.end(), "object");
-      //types.insert(types.end(), "object");
+   static vector<string> Stypes;
+   static bool init=false;
+   if (!init)
+   {
+      types.push_back("int");
+      types.push_back("float");
+      types.push_back("string");
+      types.push_back("bool");
+      types.push_back("object");
+
+      Stypes.push_back("int");
+      Stypes.push_back("float");
+      Stypes.push_back("string");
+      Stypes.push_back("bool");
+      Stypes.push_back("object");
+      Stypes.push_back("subnet_param");
+      init = true;
+   }
    if (allowSubnetParam)
-      types.insert(types.end(), "subnet_param");
-   return types;
+      return Stypes;
+   else
+      return types;
 }
 
 ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &param)

@@ -11,7 +11,7 @@
 class ObjectParam {
 public:
 
-   static vector<string> allTypes(bool allowSubnetParam=true);
+   static const vector<string> &allTypes(bool allowSubnetParam=true);
    
    static ObjectRef stringParam(string type, string value, ParameterSet &param);
    
