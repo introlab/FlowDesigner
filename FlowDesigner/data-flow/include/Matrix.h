@@ -135,7 +135,7 @@ template <class T>
 inline void Matrix<T>::readFrom(istream &in)
 {
    string tag;
-   cerr << "reading matrix\n";
+   //cerr << "reading matrix\n";
    int new_cols, new_rows;
    while (1)
    {
@@ -151,12 +151,12 @@ inline void Matrix<T>::readFrom(istream &in)
          in >> new_cols;
       else if (tag == "data")
       {
-	 cerr << "resizing\n";
+	 //cerr << "resizing\n";
 	 resize(new_rows,new_cols);
-	 cerr << "reading data...\n";
+	 //cerr << "reading data...\n";
          for (int i=0;i<rows*cols;i++)
 	    in >> data[i];
-	 cerr << "done\n";
+	 //cerr << "done\n";
       } else
          throw new ParsingException ("unknown argument: " + tag);
 

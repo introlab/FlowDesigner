@@ -175,6 +175,8 @@ public:
    
    vector<string> getAvailableNodes();
 
+   static string findExternal(const string &type);
+
  protected:
    
    virtual void error(char *err);
@@ -183,8 +185,8 @@ public:
    
    static void loadAllInfoRecursive(const string &path);
    
-   static Network * buildExternalRecursive(const string &path, const string &type, 
-					   const string &_name, const ParameterSet &params);
+   static bool findExternalRecursive(const string &path, const string &type, string &fullname);
+
 };
 
 

@@ -13,21 +13,23 @@
 #include <dlfcn.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 map<string, SubnetInfo *> UIDocument::externalDocInfo;
 
 
 UIDocument::UIDocument(string _name)
-   : docName(_name)
+   : modified(false)
+   , docName(_name)
    , untitled(true)
-   , modified(false)
 {
 }
 
 UIDocument::~UIDocument()
 {
    //cerr << "destroying UIDocument " << name << endl;
-   for (int i=0;i<networks.size();i++)
+   for (unsigned int i=0;i<networks.size();i++)
       delete networks[i];
    //child.name = "destroyed document";
 }
@@ -38,7 +40,7 @@ UINetwork *UIDocument::getNetworkNamed(const string &n)
    //cerr << "UIDocument::getNetworkNamed\n";
    //cerr << n << endl;
    //cerr << "size = " << networks.size() << endl;
-   for (int i=0;i<networks.size();i++)
+   for (unsigned int i=0;i<networks.size();i++)
    {
       //cerr << "ptr = " << &(networks[i]) << endl;
       //cerr << networks[i]->getName() << " == " << n << endl;
@@ -56,7 +58,7 @@ vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
    if (net)
    {
       vector<string> tmp = net->getTerminals(UINetTerminal::INPUT);
-      for (int i = 0; i < tmp.size(); i++)
+      for (unsigned int i = 0; i < tmp.size(); i++)
       {
             ItemInfo *newInfo = new ItemInfo;
             newInfo->name = tmp[i];
@@ -78,7 +80,7 @@ vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
    if (net)
    {
       vector<string> tmp = net->getTerminals(UINetTerminal::OUTPUT);
-      for (int i = 0; i < tmp.size(); i++)
+      for (unsigned int i = 0; i < tmp.size(); i++)
       {
             ItemInfo *newInfo = new ItemInfo;
             newInfo->name = tmp[i];
@@ -170,7 +172,7 @@ void UIDocument::loadNetInfo(xmlNodePtr net, map<string, SubnetInfo *> &infoMap,
 	       if (type == "subnet_param")
 	       {
 		  bool alreadyPresent = false;
-		  for (int j=0;j<info->params.size();j++)
+		  for (unsigned int j=0;j<info->params.size();j++)
 		     if (info->params[j]->name == paramName)
 			alreadyPresent=true;
 		  if (!alreadyPresent)
@@ -287,7 +289,7 @@ void UIDocument::loadXML(xmlNodePtr root)
    //cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
    //textParams.resize(tmp.size());
    
-   for (int i=0;i<tmp.size();i++)
+   for (unsigned int i=0;i<tmp.size();i++)
      {   
         DocParameterDataText *newParam = new DocParameterDataText;
         newParam->name = string (tmp[i]->name);
@@ -306,7 +308,7 @@ void UIDocument::loadXML(xmlNodePtr root)
          string type = string ((char *) xmlGetProp(par, (CHAR *)"type"));
          string value = string ((char *) xmlGetProp(par, (CHAR *)"value"));
          
-         for (int i=0;i<textParams.size();i++)
+         for (unsigned int i=0;i<textParams.size();i++)
      {
         if (textParams[i]->name == name)
         {
@@ -490,7 +492,7 @@ void UIDocument::loadAllInfo()
   vector<string> dirs = envList("VFLOW_PATH");
 
 
-  for (int i=0;i<dirs.size();i++) {
+  for (unsigned int i=0;i<dirs.size();i++) {
     loadAllInfoRecursive(dirs[i]);
   }
 
@@ -570,7 +572,7 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
    
    //UINetwork *newNet = new GUINetwork(this, name, iter);
    UINetwork *newNet = newNetwork(name, type);
-   for (int i=0;i<networks.size();i++)
+   for (unsigned int i=0;i<networks.size();i++)
    {
       networks[i]->newNetNotify("Subnet",name);
       newNet->newNetNotify("Subnet",networks[i]->getName());
@@ -587,7 +589,7 @@ UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
    //cerr << "created\n";
    //cerr << "newNet = " << newNet << endl;
    //cerr << "network created in UIDocument::addNetwork\n";
-   for (int i=0;i<networks.size();i++)
+   for (unsigned int i=0;i<networks.size();i++)
    {
       networks[i]->newNetNotify("Subnet",newNet->getName());
       newNet->newNetNotify("Subnet",networks[i]->getName());
@@ -629,12 +631,12 @@ void UIDocument::save()
    xmlDocPtr doc;
    doc = xmlNewDoc((CHAR *)"1.0");
    doc->root = xmlNewDocNode(doc, NULL, (CHAR *)"Document", NULL);
-   for (int i=0;i<networks.size();i++)
+   for (unsigned int i=0;i<networks.size();i++)
    {
       networks[i]->saveXML(doc->root);
    }
 
-   for (int i=0;i<textParams.size();i++)
+   for (unsigned int i=0;i<textParams.size();i++)
    {
       xmlNodePtr tree;
       tree = xmlNewChild(doc->root, NULL, (CHAR *)"Parameter", NULL);
@@ -658,90 +660,81 @@ void UIDocument::export2net()
 {
    string netName = path+docName+"et";
    ofstream out(netName.c_str());;
-   for (int i=0;i<networks.size();i++)
+   for (unsigned int i=0;i<networks.size();i++)
    {
       networks[i]->export2net(out);
    }
    
 }
 
-#include <sys/stat.h>
-#include <unistd.h>
+string UIDocument::findExternal(const string &type)
+{
+   vector<string> pathlist = envList("VFLOW_PATH");
+   string fullname;
+   for (unsigned int i=0;i<pathlist.size();i++)
+   {
+      if (findExternalRecursive(pathlist[i],type,fullname))
+	  return fullname;
+   }
+   return "";
+}
+
+bool UIDocument::findExternalRecursive(const string &path, const string &type, string &fullname)
+{
+   struct stat my_stat;
+   DIR *my_directory = opendir (path.c_str());
+
+   if (!my_directory) return false;
+
+   struct dirent *current_entry;
+
+   for (current_entry = readdir(my_directory); 
+	current_entry != NULL; current_entry = readdir(my_directory)) {
+    
+      string name = current_entry->d_name;
+      string fullpath = path + string("/") + name;
+
+      if (stat(fullpath.c_str(), &my_stat) < 0) {
+	 cerr<<"stat error"<<endl;
+	 continue;
+      }
+    
+      if (S_ISDIR(my_stat.st_mode)) {
+	 //it is a directory, let's doing it recursively
+	 if (name != string("..") && name != string(".")) {
+	    if (findExternalRecursive(fullpath,type,fullname))
+	    {
+	       closedir(my_directory);
+	       return true;
+	    }
+	 }
+      }
+      else {
+	 //it's a file, check if it's the right one
+	 if (name == (type + string(".n"))) {
+	    fullname = fullpath;
+	    closedir(my_directory);
+	    return true;
+	 }
+      }
+   }
+
+   closedir(my_directory);
+   return false;
+   
+}
 
 Network *UIDocument::buildExternal(const string &type, const string &_name, const ParameterSet &params)
 {
-
-   vector<string> pathlist = envList("VFLOW_PATH");
-   Network *net = NULL;
-
-   for (int i=0;i<pathlist.size();i++) {
-
-     net = buildExternalRecursive(pathlist[i],type,_name, params);
-
-     if (net) break;
-     
-   }
-
-   return net;
-
-}
-
-Network *UIDocument::buildExternalRecursive(const string &path, const string &type, 
-					    const string &_name, const ParameterSet &params) {
-
-  Network *net = NULL;
-  struct stat my_stat;
-  DIR *my_directory = opendir (path.c_str());
-
-  if (!my_directory) return NULL;
-
-  struct dirent *current_entry;
-
-  for (current_entry = readdir(my_directory); 
-       current_entry != NULL; current_entry = readdir(my_directory)) {
-    
-    string name = current_entry->d_name;
-    string fullpath = path + string("/") + name;
-
-    if (stat(fullpath.c_str(), &my_stat) < 0) {
-      cerr<<"stat error"<<endl;
-      continue;
-    }
-    
-    if (S_ISDIR(my_stat.st_mode)) {
-      //it is a directory, let's doing it recursively
-      if (name != string("..") && name != string(".")) {
-	 Network *ret = buildExternalRecursive(fullpath,type, _name, params);
-	 if (ret) {
-	   closedir(my_directory);
-	   return ret;
-	 }
-      }
-    }
-    else {
-       //cerr << "is it " << name << " in " << path << endl;
-      if (name == (type + string(".n"))) {
-	//found the network
-	UIDocument doc(fullpath);
-	
-	//cout<<"loading : "<<fullpath<<endl;
-	doc.load();
-	
-	net = doc.getNetworkNamed("MAIN")->build(_name, params);
-	
-	closedir(my_directory);
-	//cerr << "found net = " << net << endl;
-	return net;
-      }
-    }
-  }
-
-  closedir(my_directory);
-
-  
-  //cerr << "returning " << net << " for " << type << endl;
-  return net;
-
+   string fullname = findExternal(type);
+   if (fullname == "")
+      return NULL;
+   UIDocument doc(fullname);
+   
+   //cout<<"loading : "<<fullpath<<endl;
+   doc.load();
+   
+   return doc.getNetworkNamed("MAIN")->build(_name, params);
 }
 
 

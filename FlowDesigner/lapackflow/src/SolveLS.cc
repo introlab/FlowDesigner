@@ -76,9 +76,9 @@ public:
       float in_copy[in.size()];
       for (int i=0;i<in.size();i++)
 	 in_copy[i] = in[i];
-      cerr  << inputLength << " " << outputLength << endl;
+      //cerr  << inputLength << " " << outputLength << endl;
       solvels_(inputLength, outputLength, tmp, &mat_copy[0][0], in_copy);
-      cerr  << inputLength << " " << outputLength << endl;
+      //cerr  << inputLength << " " << outputLength << endl;
       for (int i=0;i<output.size();i++)
 	 output[i] = in_copy[i];
    }
