@@ -46,10 +46,10 @@ vflow           -a FlowDesigner/vflow
 vflow_dir	-d vflow FlowDesigner/vflow
 examples        -a FlowDesigner/examples
 examples_dir	-d examples FlowDesigner/examples
-root          	-d . -l FlowDesigner
+root          	-d ./ -l FlowDesigner
 FuzzyEngine     -a FlowDesigner/FuzzyEngine
 FuzzyEngine_dir	-d FuzzyEngine FlowDesigner/FuzzyEngine
 effects         -a FlowDesigner/effects
 effects_dir	-d effects FlowDesigner/effects
-FlowCore	-d FlowDesigner *.* &macros_dir &data-flow_dir &doc_dir &html_dir &vflow_dir &tools_dir &examples_dir
+FlowCore	-d FlowDesigner &root &macros_dir &data-flow_dir &doc_dir &html_dir &vflow_dir &tools_dir &examples_dir
 
