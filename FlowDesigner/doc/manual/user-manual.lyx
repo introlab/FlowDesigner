@@ -881,7 +881,7 @@ Writing New Nodes
 
 Most of the new nodes will derive from either the Node abstract class or
  the BufferedNode abstract class.
- You should use public inheritance when deriving you new class.
+ You should use public inheritance when deriving your new class.
  In all cases, you will need to define a constructor for your new node class.
  The parameters for this constructors are: 
 \family typewriter 
@@ -906,12 +906,12 @@ public:
 };
 \layout Standard
 
-Also, if you derive from BufferedNode, you need to override the 
+Also, if you derive from BufferedNode, you need to define the 
 \family typewriter 
-void calculate(int output_id, int count, Buffer &out)
+virtual void calculate(int output_id, int count, Buffer &out)
 \family default 
  method.
- The arguments are the ID ot the input requested (
+ The arguments are the ID of the input requested (
 \family typewriter 
 output_id
 \family default 
@@ -924,292 +924,114 @@ count
 out
 \family default 
 ).
- The method is expected to assign an object in 
+ The 
+\family typewriter 
+calculate
+\family default 
+ method is expected to assign an object to 
 \family typewriter 
 out[count]
 \family default 
 .
 \layout Standard
 
-If you derive directly from the Node class, you need to override the ObjectRef
- getOutput(int output_id, int count) method.
- The meaning of output_id and count is the same as for the BufferedNode
- equivalent, and the result should be returned as an ObjectRef.
+If you derive directly from the Node class, you will need to override the
+ 
+\family typewriter 
+ObjectRef getOutput(int output_id, int count)
+\family default 
+ method.
+ The meaning of 
+\family typewriter 
+output_id
+\family default 
+ and 
+\family typewriter 
+count
+\family default 
+ is the same as for the BufferedNode equivalent, and the result should be
+ returned as an ObjectRef.
 \layout Standard
 
-Here's a list of the methods than you may implement in your new node class:
+Here are some other methods you might want to define too:
+\layout Itemize
+
+
+\family typewriter 
+void initialize()
+\family default 
+: As the name implies, it is meant to perform some initialization that cannot
+ be done within the constructor.
+ This method is called only once, starting the processing, but after all
+ the 
+\family typewriter 
+request()
+\family default 
+ have been made.
+ In most (all) cases 
+\family typewriter 
+initialize()
+\family default 
+ should start by calling the base class implementation (e.g.
+ 
+\family typewriter 
+BufferedNode::initialize()
+\family default 
+).
+\layout Itemize
+
+
+\family typewriter 
+void reset()
+\family default 
+: This method should return the node to the same state it was after 
+\family typewriter 
+initialize()
+\family default 
+ was first called.
+ In most (all) cases reset() should start by calling the base class implementati
+on (e.g.
+ 
+\family typewriter 
+BufferedNode::reset()
+\family default 
+).
 \layout Standard
 
+In some rare cases, you will want to define the following method:
+\layout Itemize
 
-\begin_inset  Tabular
-<lyxtabular version="3" rows="9" columns="3">
-<features rotate="false" islongtable="false" firstHeadTopDL="false" firstHeadBottomDL="false" firstHeadEmpty="false" headTopDL="false" headBottomDL="false" footTopDL="false" footBottomDL="false" lastFootTopDL="false" lastFootBottomDL="false" lastFootEmpty="false">
-<column alignment="left" valignment="top" leftline="true" rightline="false" width="0pt" special="">
-<column alignment="left" valignment="top" leftline="true" rightline="false" width="0pt" special="">
-<column alignment="left" valignment="top" leftline="true" rightline="true" width="0pt" special="">
-<row topline="true" bottomline="true" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
 
+\family typewriter 
+void request(int outputID, const ParameterSet &req)
+\family default 
+: This method is meant to pass on 
+\emph on 
+special requests
+\emph default 
+ to input nodes.
+ For now, this is mainly used by the 
+\emph on 
+BufferedNode
+\emph default 
+ class to compute the size needed for the output buffers.
+ Remember that if you override this method, you 
+\series bold 
+must
+\series default 
+ make sure that it propagates the request to 
+\series bold 
+all
+\series default 
+ its input nodes.
+ Otherwise, the nodes that won't be reached will have incorrect buffer size.
 \layout Standard
 
-Method(s)
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Recommendation
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Comment(s)
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-void connectToNode (...)
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-NOT RECOMMENDED
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-This is very dangerous to change this method.
- It connects two Nodes with a predetermined protocol.
- We only had to redefine this method for sub-networks and the iterators.
- You should not need to redefine this method for standard nodes.
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="left" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-void initialize ()
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-NOT RECOMMENDED
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-This is very dangerous to change this method.
- The initialization of the nodes requires a special handling for proper
- initialization.
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-void specificInitialize ()
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Recommended
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-This is the specific Node initialization.
- If you have initialization to do when all the nodes are connected, you
- should redefine this method.
-\layout Standard
-
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-bool hasOutput (...) 
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Not Recommended
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-If you have added outputs with the addOutput method, you shooed never need
- to redefine this method.
-\layout Standard
-
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-void reset ()
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Recommended
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Needed if the node needs proper reinitialization else than setting the processCo
-unt to -1.
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-void request (...)
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Optional
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-This is a way to request something to our inputs node at initialization
- time.
-\layout Standard
-
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="false" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-int translateInput (...)
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Not Recommended
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Be careful with that.
- It translates input strings to integer that represent the input number.
- You do not need to take care of this method if you are using addInput.
-\end_inset 
-</cell>
-</row>
-<row topline="true" bottomline="true" endhead="false" endfirsthead="false" endfoot="false" endlastfoot="false" newpage="false">
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-int translateOutput (...)
-\end_inset 
-</cell>
-<cell multicolumn="0" alignment="center" valignment="top" topline="true" bottomline="false" leftline="true" rightline="false" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Not Recommended
-\end_inset 
-</cell>
-<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" rotate="false" usebox="none" width="0pt" special="">
-\begin_inset Text
-
-\layout Standard
-
-Be careful with that.
- It translates output strings to integer that represent the output number.
- You do not need to take care of this method if you are using addOutput
- .
-\end_inset 
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset 
-
-
-\layout Standard
-
-At last for a new node to be visible, a special header must be present.
+At last for a new node to be visible in 
+\emph on 
+vflow
+\emph default 
+, a special header must be present.
  An example of this is:
 \layout LyX-Code
 
@@ -1342,10 +1164,10 @@ The description of the parameter
  * END*/
 \layout Standard
 
-Although this header is mostly a C++ comment, it is parsed by a PERL script
+Although this header is only a C++ comment, it is parsed by a PERL script
  to produce an XML description of each toolbox.
  The DECLARE_NODE(MyNode) macro is used to register the node in a dictionary
- when the toolbox is loaded.
+ when the toolbox is dynamically loaded.
  
 \layout Section
 
@@ -1433,7 +1255,10 @@ DECLARE_NODE(VAdd)
 * @output_description Result vector  
 \layout LyX-Code
 
-* END*/
+* 
+\layout LyX-Code
+
+END*/
 \layout Standard
 
 
@@ -1515,10 +1340,15 @@ We cast the generic objects (received through ObjectRefs) into a reference
  If the cast fails, an exception will automatically be thrown.
 \layout LyX-Code
 
+      
+\layout LyX-Code
+
       const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
 \layout LyX-Code
 
       const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
+\layout LyX-Code
+
 \layout Standard
 
 
@@ -1529,13 +1359,16 @@ Check that the size of the two vectors match.
  file and line where this exception was thrown.
 \layout LyX-Code
 
-     if (in1.size() != in2.size())
+      if (in1.size() != in2.size())
 \layout LyX-Code
 
-         throw new NodeException(this, "Input vectors must be of same length"
+          throw new NodeException(this, 
 \layout LyX-Code
 
-                                 , __FILE__, __LINE__);
+                                  "Input vectors must be of same length",
+\layout LyX-Code
+
+                                   __FILE__, __LINE__);
 \layout LyX-Code
 
       int inputLength = in1.size();
@@ -1547,7 +1380,10 @@ Allocate a new Vector<float> from the pool of free vectors (that's why we
  don't use new).
 \layout LyX-Code
 
-      Vector<float> &output = *Vector<float>::alloc(inputLength);
+      Vector<float> = &output =
+\layout LyX-Code
+
+                      *Vector<float>::alloc(inputLength);
 \layout Standard
 
 
@@ -1644,24 +1480,32 @@ gcc 2.95.x is OK
 most of gcc 2.96 variants are OK 
 \layout Itemize
 
-gcc 3.0.x compile, but there are run-time glitches
+gcc 3.0.x compiles, but there are run-time glitches
 \layout Itemize
 
 egcs 1.1.2 is untested (probably doesn't work) 
 \layout Itemize
 
 MSVC++ is completely broken, but it possible build a subset of Overflow
- with it (see here) 
+ with it (see here
+\begin_inset Quotes erd
+\end_inset 
+
+Compiling on Win32
+\begin_inset Quotes erd
+\end_inset 
+
+) 
 \layout Itemize
 
-HP's aCC should work after some modifications 
+HP's aCC should work after some minor modifications
 \end_deeper 
 \layout Itemize
 
-autoconf, automake, libtool (which require perl and m4) 
+autoconf, automake, libtool (which require perl and m4)
 \layout Itemize
 
-GNU make 
+GNU make
 \layout Itemize
 
 FFTW (now optional, but recommended) compiled with --enable-float 
@@ -1678,7 +1522,7 @@ Compilation flags
 
 If you are using gcc, you can control optimization with the CFLAGS and CXXFLAGS
  environment variables.
- For building on a Pentium III or an Athlon XP, we suggest to set both CFLAGS
+ For use on a Pentium III or an Athlon XP, we suggest to set both CFLAGS
  and CXXFLAGS to: '-O3 -march=pentiumpro -D_ENABLE_SSE'.
  For T-bird Athlon, we suggest replacing -D_ENABLE_SSE by -D_ENABLE_3DNOW.
  This must be done 
@@ -1704,7 +1548,7 @@ Configure options
  tries to use ld to link the C++ libraries and executables.
  These need to be linked with the C++ compiler (e.g.
  g++) because of initializations that must be performed before the main()
- starts (On linux you most likely don't need that).
+ starts (On Linux you most likely don't need that).
 \layout Itemize
 
 --with-fftw-dir=<fftw path> If FFTW is not installed in a standard path,
@@ -1715,8 +1559,8 @@ Configure options
  Overflow does not work with static libraries (because it uses dlopen).
 \layout Itemize
 
---disable-package Doesn't build a certain package (e.g.
- HMM, VQ, ...) 
+--disable-<package> Doesn't build a certain package (<package> is HMM, VQ,
+ NNet, ...) 
 \layout Section*
 
 Compiling & Installing the software
@@ -1775,7 +1619,7 @@ One important thing to note with MSVC++ (version 6.0) is that it is a very
 \layout Standard
 
 So here are the settings you need for Overflow.
- First, you need to turn on RTTI (which is not enabled be default).
+ First, you need to turn on RTTI (which is not enabled by default).
  Also, I suggest you turn the warnings off.
  The preprocessor flags (define) you need to set are: BROKEN_TEMPLATES,
  HAVE_FLOAT_H, NO_HASH_MAP, STUPID_COMPLEX_KLUDGE and (if not already defined),
@@ -1832,7 +1676,14 @@ New Node
  menu is empty
 \layout Standard
 
-You probably moved the Overflow install directory, see 2).
+You probably moved the Overflow install directory, see 3).
+ Another possibility is if you compiled with 
+\family typewriter 
+--enable-static
+\family default 
+ flag.
+ Because Overflow toolboxes are dynamically loaded, everything must be compiled
+ as shared libraries (which is the default in configure).
 \layout Subsection*
 
 5) Overflow doesn't compile on my box
@@ -1847,8 +1698,8 @@ First, make sure you have the latest release version.
 6) I downloaded a more recent version and it doesn't even compile
 \layout Standard
 
-This can be due to the fact that you installed an earlier version in a path
- like /usr or /usr/local.
+This can be due to the fact that you installed an earlier version (0.5.0 and
+ earlier) in a path like /usr or /usr/local.
  The problem is that the old Overflow includes ended up somewhere like /usr/incl
 ude and when you try compiling a newer version, g++ sees the old includes
  (because they are in the include path) instead of the new ones.
