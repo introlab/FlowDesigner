@@ -769,6 +769,28 @@ static void remove_net_event  (GtkMenuItem     *menuitem,
  //cerr << "remove net\n";
 }
 
+/**********************************************************************************************************
+
+**********************************************************************************************************/
+static void add_note_event(GtkMenuItem *menuitem, gpointer user_data) 
+{
+  cerr<<"Add a note (prototype) is not fully functionnal. Should display a GUI asking for comments"<<endl;
+  cerr<<"Will display a sample note for testing purposes"<<endl;
+  
+  GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
+
+  if (!doc) return;
+
+  UINetwork *net = doc->getCurrentNet();
+
+  if (!net) return;
+
+  net->addNote(net->newNote("TESTING NEW NOTE CAPABILITIES",10.0,10.0,true));
+  
+  doc->setModified();
+
+}
+
 
 
 /**********************************************************************************************************
@@ -1108,6 +1130,17 @@ void vflowGUI::create_mdi ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, (GdkModifierType) 0, NULL
       },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM, N_("Add Note (prototype)"),
+	NULL,
+	(gpointer) add_note_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+
+
+
       
       GNOMEUIINFO_END
     };
@@ -1332,6 +1365,8 @@ GLADE_HOOKUP_OBJECT (app1, edit1_menu_uiinfo[5].widget, "properties1");
   GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[4].widget, "rename_network1");
   GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[5].widget, "separator5");
   GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[6].widget, "remove_network1");
+  GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[7].widget, "separator6");
+  GLADE_HOOKUP_OBJECT (app1, networks_menu_uiinfo[8].widget, "add_note1");
   GLADE_HOOKUP_OBJECT (app1, menubar1_uiinfo[3].widget, "view1");
   GLADE_HOOKUP_OBJECT (app1, menubar1_uiinfo[4].widget, "help1");
   GLADE_HOOKUP_OBJECT (app1, help1_menu_uiinfo[0].widget, "user_guide1");

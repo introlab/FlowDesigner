@@ -3,6 +3,7 @@
 #include "GUINetwork.h"
 #include "GUIDocument.h"
 #include "GUINode.h"
+#include "GUINote.h"
 #include "GUITerminal.h"
 #include <libxml/tree.h>
 #include "GUILink.h"
@@ -13,6 +14,7 @@
 #include "misc.h"
 #include "GUINodeTooltip.h"
 #include <sstream>
+#include "GUINote.h"
 
 /*static gboolean net_canvas_event   (GtkWidget       *widget,
                                      GdkEventButton  *event,
@@ -718,4 +720,9 @@ void GUINetwork::applyNetworkProperties() {
     setDescription(gtk_text_buffer_get_text (buffer, &start, &end, TRUE));    
     setModified();
   }
+}
+
+
+UINote* GUINetwork::newNote(const std::string &text, double x, double y, bool visible) {
+  return new GUINote(text,x,y,visible,this);
 }
