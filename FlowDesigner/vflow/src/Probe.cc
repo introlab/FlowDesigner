@@ -215,7 +215,8 @@ void Probe::specificInitialize()
 		       this);
 
 
-   GtkWidget *entry1 = gtk_entry_new ();
+   entry1 = gtk_entry_new_with_max_length (11);
+   gtk_entry_set_editable(GTK_ENTRY(entry1),false);
    gtk_widget_ref (entry1);
    gtk_object_set_data_full (GTK_OBJECT (window1), "entry1", entry1,
 			     (GtkDestroyNotify) gtk_widget_unref);
@@ -308,6 +309,13 @@ ObjectRef Probe::getOutput(int output_id, int count)
 
       NodeInput input = inputs[inputID];
       inputValue = input.node->getOutput(input.outputID,count);
+
+      gdk_threads_enter(); 
+      char tmp[16];
+      sprintf (tmp,"%d",count);
+      gtk_entry_set_text(GTK_ENTRY(entry1),tmp);
+      gdk_threads_leave(); 
+
       if (displayEnable && (count % skip == 0))
 	 display();
       if (count==breakAt)
