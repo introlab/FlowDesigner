@@ -19,6 +19,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sstream>
+#include <map>
 
 #include "ExternalApp.h"
 
@@ -43,6 +44,13 @@ class vflowGUI {
   friend void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow);
   friend void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow);
 
+  //notebook events
+  friend void vflow_change_current_page_event(GtkNotebook *notebook, gint arg1, vflowGUI *vflow);
+  friend gboolean vflow_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, vflowGUI *vflow);
+  friend gboolean vflow_select_page_event(GtkNotebook *notebook, gboolean arg1, vflowGUI *vflow);
+  
+
+
  public:
 
   //singleton
@@ -53,6 +61,10 @@ class vflowGUI {
   void load_document (const string fname);
 
   void create_empty_document();
+
+  void add_notebook_document(GUIDocument *doc, GtkWidget *child);
+  
+  void remove_notebook_document(GUIDocument *doc, GtkWidget *child);
 
   void copy(GUIDocument *doc);
 
@@ -65,8 +77,8 @@ class vflowGUI {
   ~vflowGUI();
 
   GtkWidget* get_mdi() {return mdi;}
-  GtkWidget* get_notebook() {return notebook1;}
-   GUIDocument *getCurrentDoc();
+ 
+  GUIDocument *getCurrentDoc();
 
   static const int CLIPBOARD_COPY_MODE;
   static const int CLIPBOARD_CUT_MODE;
@@ -90,6 +102,9 @@ class vflowGUI {
 
   int clipboardMode;
 
+  GtkWidget* get_notebook() {return notebook1;}
+
+  
 
 
 };

@@ -88,9 +88,21 @@ void vflowGUI::create_empty_document() {
 **********************************************************************************************************/
 void vflowGUI::load_document (const string fname) {
 
-  GUIDocument *doc = new GUIDocument(fname);
+  int pos = fname.rfind("/");
+
+  string doc_name;
+
+  if (pos != string::npos) {
+    doc_name = fname.substr(pos + 1,fname.size() - (pos  +1));
+  }
+  else {
+    doc_name = fname;
+  }
+
+  GUIDocument *doc = new GUIDocument(doc_name);
 
   doc->setFullPath(fname);
+
   try {
      doc->load();
   } catch (BaseException *e) {
@@ -98,9 +110,44 @@ void vflowGUI::load_document (const string fname) {
      e->print(except);
      doc->less_print (except.str());
   } catch (...) {
-     doc->less_print ("unknown exception caught while loading document");
+     doc->less_print ("Unknown exception caught while loading document");
   }
   doc->resetModified();
+}
+
+/**********************************************************************************************************
+This function is called when a GUIDocument is created and needs to add the VFlow notebook page
+Dominic Letourneau (13/09/2003)
+**********************************************************************************************************/
+void vflowGUI::add_notebook_document(GUIDocument *doc, GtkWidget *child) {
+
+  //creating label for the notebook page
+  GtkWidget *label1 = gtk_label_new ((gchar *)doc->getName().c_str());
+  gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
+  gtk_widget_show (label1);
+  
+  //append page to the notebook
+  gtk_notebook_append_page(GTK_NOTEBOOK(notebook1), child, label1);
+
+  //if negative, last page will be used.
+  gtk_notebook_set_current_page (GTK_NOTEBOOK(notebook1), -1);
+
+}
+
+/**********************************************************************************************************
+This function is called when a GUIDocument is deleted and needs to remove the VFLOW notebook page
+Dominic Letourneau (13/09/2003)
+**********************************************************************************************************/
+void vflowGUI::remove_notebook_document(GUIDocument *doc, GtkWidget *child) {
+
+  int page_num = gtk_notebook_page_num(GTK_NOTEBOOK(notebook1),child);
+
+  if (page_num != -1) {
+    gtk_notebook_remove_page(GTK_NOTEBOOK(notebook1),page_num);
+  }
+  else {
+    cerr<<"**ERROR** VFlow Widget not in notebook : "<<child<<" doc "<<doc->getName()<<endl;
+  }
 }
 
 /**********************************************************************************************************
@@ -320,8 +367,8 @@ void new_doc_event  (GtkMenuItem *menuitem, vflowGUI *vflow) {
    doc->addNetwork("MAIN", UINetwork::subnet);
    doc->resetModified();
    
-   
 }
+
 
 
 /**********************************************************************************************************
@@ -329,26 +376,14 @@ void new_doc_event  (GtkMenuItem *menuitem, vflowGUI *vflow) {
 **********************************************************************************************************/
 void file_open_ok_sel(GtkWidget *w, vflowGUI *vflow) {
 
-
   //until user_data (2nd arg works)
   vflow = vflowGUI::instance();
-
+  
    GtkWidget *ssel = GTK_WIDGET(gtk_object_get_user_data(GTK_OBJECT(w)));
    gchar *fname = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION(ssel)));
 	
    if (fname) {
-      GUIDocument *doc = new GUIDocument("Untitled");
-
-      doc->setFullPath(fname);
-      try {
-	 doc->load();
-      } catch (BaseException *e) {
-	 stringstream except;
-	 e->print(except);
-	 doc->less_print (except.str());
-      } catch (...) {
-	 doc->less_print ("unknown exception caught while loading document");
-      }
+     vflow->load_document(string(fname));
    }
    g_free (fname);
    gtk_widget_destroy (GTK_WIDGET (ssel));
@@ -373,21 +408,21 @@ void open_doc_event (GtkMenuItem *menuitem, vflowGUI *vflow) {
 
   //until user_data (2nd arg works)
   vflow = vflowGUI::instance();
-
+  
   GtkWidget *ssel = gtk_file_selection_new("Open file...");
   
   gtk_object_set_user_data(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),ssel);
-
-   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),
-                      "clicked", (GtkSignalFunc)file_open_ok_sel, 
-                      vflow);
-    
-   gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->cancel_button),
-                      "clicked", (GtkSignalFunc)file_open_destroy, 
-                      ssel);
-      
+  
+  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->ok_button),
+		     "clicked", (GtkSignalFunc)file_open_ok_sel, 
+		     vflow);
+  
+  gtk_signal_connect(GTK_OBJECT(GTK_FILE_SELECTION(ssel)->cancel_button),
+		     "clicked", (GtkSignalFunc)file_open_destroy, 
+		     ssel);
+  
    gtk_widget_show(ssel);
-
+   
 }
 
 /**********************************************************************************************************
@@ -445,10 +480,25 @@ void file_saveas_ok_sel(GtkWidget *w, vflowGUI *vflow) {
    gchar *fname = g_strdup(gtk_file_selection_get_filename (GTK_FILE_SELECTION(ssel)));
    
    if (fname) {
-
-      doc->setFullPath(fname);
-      doc->save();
-      doc->resetModified();
+ 
+     //update document label (notebook)
+    
+     string doc_name; 
+     
+     int pos = string(fname).rfind("/");
+     
+     if (pos != string::npos) {
+       doc_name = string(fname).substr(pos + 1,string(fname).size() - (pos  +1));
+     }
+     else {
+	 doc_name = string(fname);
+     }
+     
+     gtk_notebook_set_tab_label_text(GTK_NOTEBOOK(vflowGUI::instance()->notebook1), doc->getView(), doc_name.c_str());
+     
+     doc->setFullPath(fname);
+     doc->save();
+     doc->resetModified();
       
    }
    
@@ -955,118 +1005,118 @@ void on_gchld(int sig)
 **********************************************************************************************************/
 void vflowGUI::create_mdi () 
 {
-static GnomeUIInfo file1_menu_uiinfo[] =
-{
-  GNOMEUIINFO_MENU_NEW_ITEM (N_("_New"), NULL, new_doc_event, NULL),
-  GNOMEUIINFO_MENU_OPEN_ITEM (open_doc_event, NULL),
-  GNOMEUIINFO_MENU_SAVE_ITEM (save_doc_event, NULL),
-  GNOMEUIINFO_MENU_SAVE_AS_ITEM (saveas_doc_event, NULL),
-  GNOMEUIINFO_MENU_CLOSE_ITEM (close_doc_event, NULL),
-  GNOMEUIINFO_SEPARATOR,
-  GNOMEUIINFO_MENU_EXIT_ITEM (exit_event, NULL),
-  GNOMEUIINFO_END
-};
-
-static GnomeUIInfo edit1_menu_uiinfo[] =
-{
-  GNOMEUIINFO_MENU_CUT_ITEM (on_cut_activate, NULL),
-  GNOMEUIINFO_MENU_COPY_ITEM (on_copy_activate, NULL),
-  GNOMEUIINFO_MENU_PASTE_ITEM (on_paste_activate, NULL),
-  GNOMEUIINFO_MENU_CLEAR_ITEM (on_clear_activate, NULL),
-  GNOMEUIINFO_SEPARATOR,
-  GNOMEUIINFO_MENU_PROPERTIES_ITEM (doc_prop_event, NULL),
-  GNOMEUIINFO_SEPARATOR,
-  GNOMEUIINFO_MENU_PREFERENCES_ITEM (on_preferences1_activate, NULL),
-   
-  GNOMEUIINFO_END
-};
-
-static GnomeUIInfo networks_menu_uiinfo[] =
-{
-   
-  {
-    GNOME_APP_UI_ITEM, N_("Add _Network"),
-    NULL,
-    (gpointer) add_net_event, &net_create_id, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  {
-    GNOME_APP_UI_ITEM, N_("Add _Iterator"),
-    NULL,
-    (gpointer) add_net_event, &iter_create_id, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  {
-    GNOME_APP_UI_ITEM, N_("Add _Threaded Iterator"),
-    NULL,
-    (gpointer) add_net_event, &threaded_create_id, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  GNOMEUIINFO_SEPARATOR,
-  {
-    GNOME_APP_UI_ITEM, N_("Rename Network"),
-    NULL,
-    (gpointer) rename_net_event, NULL, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  GNOMEUIINFO_SEPARATOR,
-  {
-    GNOME_APP_UI_ITEM, N_("Remove Network"),
-    NULL,
-    (gpointer) remove_net_event, NULL, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-   
-  GNOMEUIINFO_END
-};
-
-static GnomeUIInfo view1_uiinfo[] =
-{
-  GNOMEUIINFO_END
-};
-
-static GnomeUIInfo help1_menu_uiinfo[] =
-{
-  {
-    GNOME_APP_UI_ITEM, N_("User Guide"),
-    NULL,
-    (gpointer) overflow_doc_event, NULL, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  {
-    GNOME_APP_UI_ITEM, N_("Node Reference"),
-    NULL,
-    (gpointer) overflow_noderef_event, NULL, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  GNOMEUIINFO_SEPARATOR,
-  GNOMEUIINFO_MENU_ABOUT_ITEM (about_event, NULL),
-  GNOMEUIINFO_END
-};
-
-static GnomeUIInfo menubar1_uiinfo[] =
-{
-  GNOMEUIINFO_MENU_FILE_TREE (file1_menu_uiinfo),
-  GNOMEUIINFO_MENU_EDIT_TREE (edit1_menu_uiinfo),
-  {
-    GNOME_APP_UI_SUBTREE, N_("_Networks"),
-    NULL,
-    networks_menu_uiinfo, NULL, NULL,
-    GNOME_APP_PIXMAP_NONE, NULL,
-    0, (GdkModifierType) 0, NULL
-  },
-  GNOMEUIINFO_MENU_VIEW_TREE (view1_uiinfo),
-  GNOMEUIINFO_MENU_HELP_TREE (help1_menu_uiinfo),
-  GNOMEUIINFO_END
-};
-
+  static GnomeUIInfo file1_menu_uiinfo[] =
+    {
+      GNOMEUIINFO_MENU_NEW_ITEM (N_("_New"), NULL, new_doc_event, NULL),
+      GNOMEUIINFO_MENU_OPEN_ITEM (open_doc_event, NULL),
+      GNOMEUIINFO_MENU_SAVE_ITEM (save_doc_event, NULL),
+      GNOMEUIINFO_MENU_SAVE_AS_ITEM (saveas_doc_event, NULL),
+      GNOMEUIINFO_MENU_CLOSE_ITEM (close_doc_event, NULL),
+      GNOMEUIINFO_SEPARATOR,
+      GNOMEUIINFO_MENU_EXIT_ITEM (exit_event, NULL),
+      GNOMEUIINFO_END
+    };
+  
+  static GnomeUIInfo edit1_menu_uiinfo[] =
+    {
+      GNOMEUIINFO_MENU_CUT_ITEM (on_cut_activate, NULL),
+      GNOMEUIINFO_MENU_COPY_ITEM (on_copy_activate, NULL),
+      GNOMEUIINFO_MENU_PASTE_ITEM (on_paste_activate, NULL),
+      GNOMEUIINFO_MENU_CLEAR_ITEM (on_clear_activate, NULL),
+      GNOMEUIINFO_SEPARATOR,
+      GNOMEUIINFO_MENU_PROPERTIES_ITEM (doc_prop_event, NULL),
+      GNOMEUIINFO_SEPARATOR,
+      GNOMEUIINFO_MENU_PREFERENCES_ITEM (on_preferences1_activate, NULL),
+      
+      GNOMEUIINFO_END
+    };
+  
+  static GnomeUIInfo networks_menu_uiinfo[] =
+    {
+      
+      {
+	GNOME_APP_UI_ITEM, N_("Add _Network"),
+	NULL,
+	(gpointer) add_net_event, &net_create_id, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM, N_("Add _Iterator"),
+	NULL,
+	(gpointer) add_net_event, &iter_create_id, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM, N_("Add _Threaded Iterator"),
+	NULL,
+	(gpointer) add_net_event, &threaded_create_id, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM, N_("Rename Network"),
+	NULL,
+	(gpointer) rename_net_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM, N_("Remove Network"),
+	NULL,
+	(gpointer) remove_net_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      
+      GNOMEUIINFO_END
+    };
+  
+  static GnomeUIInfo view1_uiinfo[] =
+    {
+      GNOMEUIINFO_END
+    };
+  
+  static GnomeUIInfo help1_menu_uiinfo[] =
+    {
+      {
+	GNOME_APP_UI_ITEM, N_("User Guide"),
+	NULL,
+	(gpointer) overflow_doc_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM, N_("Node Reference"),
+	NULL,
+	(gpointer) overflow_noderef_event, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      GNOMEUIINFO_MENU_ABOUT_ITEM (about_event, NULL),
+      GNOMEUIINFO_END
+    };
+  
+  static GnomeUIInfo menubar1_uiinfo[] =
+    {
+      GNOMEUIINFO_MENU_FILE_TREE (file1_menu_uiinfo),
+      GNOMEUIINFO_MENU_EDIT_TREE (edit1_menu_uiinfo),
+      {
+	GNOME_APP_UI_SUBTREE, N_("_Networks"),
+	NULL,
+	networks_menu_uiinfo, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, (GdkModifierType) 0, NULL
+      },
+      GNOMEUIINFO_MENU_VIEW_TREE (view1_uiinfo),
+      GNOMEUIINFO_MENU_HELP_TREE (help1_menu_uiinfo),
+      GNOMEUIINFO_END
+    };
+  
   GtkWidget *app1;
   GtkWidget *bonobodock1;
   GtkWidget *toolbar1;
@@ -1075,12 +1125,12 @@ static GnomeUIInfo menubar1_uiinfo[] =
   GtkWidget *button3;
   GtkWidget *vseparator1;
   GtkWidget *button4;
-//GtkWidget *button5;
-// GtkWidget *button6;
+  //GtkWidget *button5;
+  // GtkWidget *button6;
   GtkWidget *button7;
   GtkWidget *vseparator2;
   GtkWidget *button9;
-//GtkWidget *notebook1;
+  //GtkWidget *notebook1;
   GtkWidget *empty_notebook_page;
   GtkWidget *label1;
   GtkWidget *appbar1;
@@ -1110,20 +1160,20 @@ static GnomeUIInfo menubar1_uiinfo[] =
                                 _("New"),
                                 NULL, NULL, NULL, -1);
 
-gtk_widget_show (button1);
-gtk_signal_connect (GTK_OBJECT (button1), "clicked",
-                    GTK_SIGNAL_FUNC (new_doc_event),
-                       this);
-
+  gtk_widget_show (button1);
+  gtk_signal_connect (GTK_OBJECT (button1), "clicked",
+		      GTK_SIGNAL_FUNC (new_doc_event),
+		      this);
+  
   button2 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
-                                "gtk-open",
-                                _("Open"),
-                                NULL, NULL, NULL, -1);
+				      "gtk-open",
+				      _("Open"),
+				      NULL, NULL, NULL, -1);
   gtk_widget_show (button2);
   gtk_signal_connect (GTK_OBJECT (button2), "clicked",
                       GTK_SIGNAL_FUNC (open_doc_event),
                       this);
-
+  
   button3 = gtk_toolbar_insert_stock (GTK_TOOLBAR (toolbar1),
                                 "gtk-save",
                                 _("Save"),
@@ -1190,6 +1240,12 @@ gtk_signal_connect (GTK_OBJECT (button1), "clicked",
   notebook1 = gtk_notebook_new ();
   gtk_widget_show (notebook1);
   gnome_app_set_contents (GNOME_APP (app1), notebook1);
+
+  //signals 
+  gtk_signal_connect(GTK_OBJECT(notebook1),"change-current-page", GTK_SIGNAL_FUNC(vflow_change_current_page_event), this);
+  gtk_signal_connect(GTK_OBJECT(notebook1),"focus-tab",GTK_SIGNAL_FUNC(vflow_focus_tab_event),this);  
+  gtk_signal_connect(GTK_OBJECT(notebook1),"select-page",GTK_SIGNAL_FUNC(vflow_select_page_event),this);
+
 /*
   empty_notebook_page = gtk_vbox_new (FALSE, 0);
   gtk_widget_show (empty_notebook_page);
@@ -1262,6 +1318,34 @@ gtk_widget_show (app1);
 mdi=app1;
 
 set_run_mode(false);
+}
+
+
+/**********************************************************************************************************
+change-current-page signal
+**********************************************************************************************************/
+void vflow_change_current_page_event(GtkNotebook *notebook, gint arg1, vflowGUI *vflow) {
+
+  cerr<<"VFLOW change current page"<<endl;
+}
+
+
+/**********************************************************************************************************
+focus-tab signal
+**********************************************************************************************************/
+gboolean vflow_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, vflowGUI *vflow) {
+
+   cerr<<"VFLOW focus tab event"<<endl;
+   return true;
+}
+
+/**********************************************************************************************************
+select-page signal
+**********************************************************************************************************/
+gboolean vflow_select_page_event(GtkNotebook *notebook, gboolean arg1, vflowGUI *vflow) {
+  
+  cerr<<"VFLOW select page event"<<endl;
+  return true;
 }
 
 

@@ -93,6 +93,7 @@ void GUINetwork::create()
    //cerr << "GUINetwork::create()\n";
    GtkWidget *document_notebook = dynamic_cast<GUIDocument *>(doc)->getNotebook();
 
+   //last page will be used.
    //cerr << "GUINetwork::create() name : "<<name<<endl;
    //cerr << "GUINetwork::create() with notebook : "<<document_notebook<<endl;
 

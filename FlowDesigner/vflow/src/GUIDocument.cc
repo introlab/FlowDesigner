@@ -51,7 +51,7 @@ GUIDocument::GUIDocument(string _name)
 //   , modified(false)
 {
 
-  GtkWidget *vflow_notebook = vflowGUI::instance()->get_notebook();
+  //GtkWidget *vflow_notebook = vflowGUI::instance()->get_notebook();
   //cerr<<"GUIDocument getting notebook ptr (vflow app): "<<vflow_notebook<<endl;
 
   vbox2 = gtk_vpaned_new ();
@@ -110,28 +110,26 @@ GUIDocument::GUIDocument(string _name)
    
   
   gtk_widget_show(vbox2);
+
+  //add document to the vflow application notebook
+  vflowGUI::instance()->add_notebook_document(this, vbox2);
+
+
   //gtk_container_add (GTK_CONTAINER (notebook), vbox2);
-
-  label1 = gtk_label_new ((gchar *)docName.c_str());
-  gtk_widget_show (label1);
+  //label1 = gtk_label_new ((gchar *)docName.c_str());
+  //gtk_widget_show (label1);
   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0), label1);
-
-  gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
-  gtk_notebook_append_page(GTK_NOTEBOOK(vflow_notebook), vbox2, label1);
-
+  //gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
+  //gtk_notebook_append_page(GTK_NOTEBOOK(vflow_notebook), vbox2, label1);
   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), vbox2, label1);
+  //if negative, last page will be used.
+  //gtk_notebook_set_current_page (GTK_NOTEBOOK(vflow_notebook), -1);  
+
 
   less_print("VFlow " VERSION " by Jean-Marc Valin & Dominic Letourneau");
   less_print("--");
 
-  //if negative, last page will be used.
-  gtk_notebook_set_current_page (GTK_NOTEBOOK(vflow_notebook), -1);
 
-  //signals 
-  gtk_signal_connect(GTK_OBJECT(vflow_notebook),"change-current-page", GTK_SIGNAL_FUNC(document_change_current_page_event), this);
-  gtk_signal_connect(GTK_OBJECT(vflow_notebook),"focus-tab",GTK_SIGNAL_FUNC(document_focus_tab_event),this);  
-  gtk_signal_connect(GTK_OBJECT(vflow_notebook),"select-page",GTK_SIGNAL_FUNC(document_select_page_event),this);
-  
 }
 
 GUIDocument::~GUIDocument()
@@ -156,11 +154,14 @@ GUIDocument::~GUIDocument()
       
       for (unsigned int i=0;i<docParams.size();i++)
          delete docParams[i];
+      
+      vflowGUI::instance()->remove_notebook_document(this,vbox2);
+      
+      gtk_widget_destroy(vbox2);
+      
       destroyed=true;
    }
-   GtkNotebook *notebook = GTK_NOTEBOOK(vflowGUI::instance()->get_notebook());
-   gtk_notebook_remove_page (notebook, gtk_notebook_get_current_page (notebook));
-   gtk_widget_destroy(vbox2);
+
 }
 
 GtkWidget *create_close_dialog (const char *close_str)
@@ -341,14 +342,7 @@ void GUIDocument::setFullPath(const string &fullpath)
    // call the non-gui code in UIDocument
    UIDocument::setFullPath(fullpath);
 
-   int pos = fullpath.rfind("/");
 
-   if (pos != string::npos) {
-     gtk_label_set_text(GTK_LABEL(label1), (gchar*)(&fullpath.c_str()[pos + 1]));
-   }
-   else {
-      gtk_label_set_text(GTK_LABEL(label1), (gchar*)fullpath.c_str());
-   }
 
 }
 
@@ -933,27 +927,3 @@ void GUIDocument::updateSubnet() {
   }
 }
 
-/**********************************************************************************************************
-change-current-page signal
-**********************************************************************************************************/
-void document_change_current_page_event(GtkNotebook *notebook, gint arg1, GUIDocument *document) {
-
-  cerr<<"GUIDocument Notebook current_page_event : "<<document->getName()<<endl;
- 
-}
-
-
-/**********************************************************************************************************
-focus-tab signal
-**********************************************************************************************************/
-gboolean document_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, GUIDocument *document) {
-
-  cerr<<"GUIDocument Notebook focus_tab_event : "<<document->getName()<<endl;
-}
-
-/**********************************************************************************************************
-select-page signal
-**********************************************************************************************************/
-gboolean document_select_page_event(GtkNotebook *notebook, gboolean arg1, GUIDocument *document) {
-  cerr<<"GUIDocument Notebook select_page_event : "<<document->getName()<<endl;
-}
