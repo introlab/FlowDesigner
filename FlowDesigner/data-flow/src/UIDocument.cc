@@ -731,7 +731,7 @@ Network *UIDocument::buildExternal(const string &type, const string &_name, cons
 {
 
    vector<string> pathlist = envList("VFLOW_PATH");
-   Network *net;
+   Network *net = NULL;
 
    for (int i=0;i<pathlist.size();i++) {
 
@@ -771,8 +771,10 @@ Network *UIDocument::buildExternalRecursive(const string &path, const string &ty
       //it is a directory, let's doing it recursively
       if (name != string("..") && name != string(".")) {
 	 Network *ret = buildExternalRecursive(fullpath,type, _name, params);
-	 if (net) 
-	    return ret;
+	 if (net) {
+	   closedir(my_directory);
+	   return ret;
+	 }
       }
     }
     else {
