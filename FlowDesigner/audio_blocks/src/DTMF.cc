@@ -17,7 +17,6 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include "vec.h"
 #include <math.h>
 
 class DTMF;
