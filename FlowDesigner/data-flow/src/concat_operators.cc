@@ -97,10 +97,14 @@ REGISTER_ALL_SCALAR_VECTOR_VTABLE(concatVtable, concatScalarVectorFunction);
 ObjectRef concatVectorObjectRef(ObjectRef op1, ObjectRef op2) {
 
   RCPtr<Vector<ObjectRef> > op1Value = op1;
-  RCPtr<Vector<ObjectRef> > op2Value = op1;
+  RCPtr<Vector<ObjectRef> > op2Value = op2;
 
   //creating new vector
   RCPtr<Vector<ObjectRef> > resultValue(new Vector<ObjectRef>(op1Value->size() + op2Value->size()));
+
+  cerr<<"op1 size "<<op1Value->size()<<endl;
+  cerr<<"op2 size "<<op2Value->size()<<endl;
+  cerr<<"result size "<<resultValue->size()<<endl;
 
   //copying first part of the vector
   for (int i = 0; i < op1Value->size(); i++) {        
@@ -108,8 +112,8 @@ ObjectRef concatVectorObjectRef(ObjectRef op1, ObjectRef op2) {
   }
   
   //copying last part of the vector
-  for (int i = op1Value->size(); i < resultValue->size(); i++) {    
-    (*resultValue)[i] = (*op2Value)[i - op1Value->size()]->clone();
+  for (int i = 0; i < op2Value->size(); i++) {    
+    (*resultValue)[i + op1Value->size()] = (*op2Value)[i]->clone();
   }
 
   return resultValue;
