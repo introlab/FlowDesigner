@@ -35,56 +35,25 @@ static void comments_changed (GtkText *entry, GUINodeParameters* user_data)
    user_data->changed();
 }
 
-#if 0
-static void input_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
-
-  
-  //let's add the required UITerminal & GUITerminal
-  
-  GUINode *node = user_data->getGUINode();
-  
-  char input_name[9];
-  sprintf(input_name,"USER_%3.3i",user_count++);
-  
-  
-  cerr<<"creating input : "<<input_name<<endl;
-  
-  node->addTerminal(string(input_name), UINetTerminal::INPUT);
-  
-  
-  cerr<<"input adjustment callback"<<endl;
-  ((GUINodeParameters *)(user_data))->changed();
-  
-
-  cerr<<"Input & Output size adjustment not yet implemented!"<<endl;
-
+static void node_remove_input_select (GtkWidget *item, GUINodeParameters *node_param)
+{
+   node_param->setInputSelect(item);
 }
 
-static void output_adjustment_changed (GtkAdjustment *adjustment, GUINodeParameters* user_data) {
-
-  
-  //let's add the required UITerminal & GUITerminal
-
-  
-  GUINode *node = user_data->getGUINode();
-  
-  char input_name[9];
-  sprintf(input_name,"USER_%3.3i",user_count++);
-  
-  
-  cerr<<"creating input : "<<input_name<<endl;
-  node->addTerminal(string(input_name), UINetTerminal::OUTPUT);
-
-
-  //cout<<"output adjustment callback"<<endl;
-  ((GUINodeParameters *)(user_data))->changed();
-  
-  cerr<<"Input & Output size adjustment not yet implemented!"<<endl;
-  
-
+static void node_remove_input_unselect (GtkWidget *item, GUINodeParameters *node_param)
+{
+   node_param->unsetInputSelect(item);
 }
 
-#endif
+static void node_remove_output_select (GtkWidget *item, GUINodeParameters *node_param)
+{
+   node_param->setOutputSelect(item);
+}
+
+static void node_remove_output_unselect (GtkWidget *item, GUINodeParameters *node_param)
+{
+   node_param->unsetOutputSelect(item);
+}
 
 void GUINodeParameters::addInput()
 {
@@ -96,6 +65,13 @@ void GUINodeParameters::addInput()
 
    GtkWidget *inp1 = gtk_list_item_new_with_label(new_input);
    gtk_widget_ref (inp1);
+   gtk_object_set_data (GTK_OBJECT (inp1), "label", (gpointer)new_input);
+   gtk_signal_connect (GTK_OBJECT (inp1), "select",
+                       GTK_SIGNAL_FUNC (node_remove_input_select),
+                       this);
+   gtk_signal_connect (GTK_OBJECT (inp1), "deselect",
+                       GTK_SIGNAL_FUNC (node_remove_input_unselect),
+                       this);
    gtk_object_set_data_full (GTK_OBJECT (list1), "table1", inp1,
                              (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show(inp1);
@@ -115,6 +91,13 @@ void GUINodeParameters::addOutput()
 
    GtkWidget *outp1 = gtk_list_item_new_with_label(new_output);
    gtk_widget_ref (outp1);
+   gtk_object_set_data (GTK_OBJECT (outp1), "label", (gpointer)new_output);
+   gtk_signal_connect (GTK_OBJECT (outp1), "select",
+                       GTK_SIGNAL_FUNC (node_remove_output_select),
+                       this);
+   gtk_signal_connect (GTK_OBJECT (outp1), "deselect",
+                       GTK_SIGNAL_FUNC (node_remove_output_unselect),
+                       this);
    gtk_object_set_data_full (GTK_OBJECT (list1), "table1", outp1,
                              (GtkDestroyNotify) gtk_widget_unref);
    gtk_widget_show(outp1);
@@ -126,12 +109,30 @@ void GUINodeParameters::addOutput()
 
 void GUINodeParameters::removeInput()
 {
-   cerr << "removing an input\n";
+   if (!inputSelect)
+   {
+      //cerr << "no input selected\n";
+      return;
+   }
+   char *input_name = (char *)gtk_object_get_data(GTK_OBJECT(inputSelect),"label");
+   cerr << "removing input: " << input_name << endl;
+   GList *lis = g_list_append (NULL, inputSelect);
+   gtk_list_remove_items(GTK_LIST(list1), lis);
+   cerr << "not implemented...\n";
 }
 
 void GUINodeParameters::removeOutput()
 {
-   cerr << "removing an output\n";
+   if (!outputSelect)
+   {
+      //cerr << "no output selected\n";
+      return;
+   }
+   char *output_name = (char *)gtk_object_get_data(GTK_OBJECT(outputSelect),"label");
+   cerr << "removing output: " << output_name << endl;
+   GList *lis = g_list_append (NULL, outputSelect);
+   gtk_list_remove_items(GTK_LIST(list2), lis);
+   cerr << "not implemented...\n";
 }
 
 static void node_add_input (GtkButton *button, GUINodeParameters *node_param)
@@ -154,10 +155,14 @@ static void node_remove_output (GtkButton *button, GUINodeParameters *node_param
    node_param->removeOutput();
 }
 
+
+
 GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams)
    : node(_node)
    , nodeParams(_nodeParams)
    , textParams(_nodeParams->get_textParams())
+   , inputSelect(NULL)
+   , outputSelect(NULL)
 {
    params.resize(textParams.size());
    //cerr << "GUINodeParameters::GUINodeParameters" << textParams.size() << "\n";
@@ -396,8 +401,16 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    vector<UITerminal *> outputs = node->getOutputs();
    for (int i=0;i<inputs.size();i++)
    {
-      GtkWidget *inp1 = gtk_list_item_new_with_label(inputs[i]->getName().c_str());
+      const char *input_name = inputs[i]->getName().c_str();
+      GtkWidget *inp1 = gtk_list_item_new_with_label(input_name);
       gtk_widget_ref (inp1);
+      gtk_object_set_data (GTK_OBJECT (inp1), "label", (gpointer)input_name);
+      gtk_signal_connect (GTK_OBJECT (inp1), "select",
+                          GTK_SIGNAL_FUNC (node_remove_input_select),
+                          this);
+      gtk_signal_connect (GTK_OBJECT (inp1), "deselect",
+                          GTK_SIGNAL_FUNC (node_remove_input_unselect),
+                          this);
       gtk_object_set_data_full (GTK_OBJECT (notebook2), "table1", inp1,
                                 (GtkDestroyNotify) gtk_widget_unref);
       gtk_widget_show(inp1);
@@ -406,8 +419,16 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
 
    for (int i=0;i<outputs.size();i++)
    {
-      GtkWidget *outp1 = gtk_list_item_new_with_label(outputs[i]->getName().c_str());
+      const char *output_name = outputs[i]->getName().c_str();
+      GtkWidget *outp1 = gtk_list_item_new_with_label(output_name);
       gtk_widget_ref (outp1);
+      gtk_object_set_data (GTK_OBJECT (outp1), "label", (gpointer)output_name);
+      gtk_signal_connect (GTK_OBJECT (outp1), "select",
+                          GTK_SIGNAL_FUNC (node_remove_output_select),
+                          this);
+      gtk_signal_connect (GTK_OBJECT (outp1), "deselect",
+                          GTK_SIGNAL_FUNC (node_remove_output_unselect),
+                          this);
       gtk_object_set_data_full (GTK_OBJECT (notebook2), "table1", outp1,
                                 (GtkDestroyNotify) gtk_widget_unref);
       gtk_widget_show(outp1);

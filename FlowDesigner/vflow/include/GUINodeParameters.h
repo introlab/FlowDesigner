@@ -35,7 +35,7 @@ protected:
    GtkWidget *list1;
    GtkWidget *list2;
    GtkWidget *input_entry, *output_entry;
-
+   GtkWidget *inputSelect, *outputSelect;
 public:
    GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams);
    ~GUINodeParameters();
@@ -51,6 +51,10 @@ public:
    void addOutput();
    void removeInput();
    void removeOutput();
+   void setInputSelect(GtkWidget *w) {inputSelect=w;}
+   void setOutputSelect(GtkWidget *w) {outputSelect=w;}
+   void unsetInputSelect(GtkWidget *w) {if (inputSelect==w) inputSelect=NULL;}
+   void unsetOutputSelect(GtkWidget *w) {if (outputSelect==w) outputSelect=NULL;}
 };
 
 
