@@ -129,6 +129,9 @@
 /* Define if you have the <unistd.h> header file.  */
 #undef HAVE_UNISTD_H
 
+/* Define if you have the gtkextra library (-lgtkextra).  */
+#undef HAVE_LIBGTKEXTRA
+
 /* Define if you have the i library (-li).  */
 #undef HAVE_LIBI
 

@@ -339,6 +339,7 @@ gint GUINode::event(GdkEvent *event)
          return TRUE;
          break;
       case 2:
+	 dynamic_cast<GUINetwork *> (net)->popTooltip(this);
 	 //new GUINodeTooltip(this);
          //return TRUE;
          break;

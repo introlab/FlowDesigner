@@ -1,4 +1,10 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 2001 Jean-Marc Valin
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
+#ifdef HAVE_LIBGTKEXTRA
 
 #include "GtkPlotProbe.h"
 #include "net_types.h"
@@ -8,11 +14,8 @@
 
 #include "Vector.h"
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
 
-#include "gtkextra/gtkextra.h"
+#include <gtkextra/gtkextra.h>
 
 DECLARE_NODE(GtkPlotProbe)
 /*Node
@@ -228,3 +231,6 @@ void GtkPlotProbe::show_hide()
       gtk_widget_queue_draw (canvas);
    }
 }
+
+
+#endif

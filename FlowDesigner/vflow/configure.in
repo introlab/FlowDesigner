@@ -63,9 +63,13 @@ AC_PATH_FFTW
 
 ALL_LINGUAS=""
 
+dnl AC_CHECK_HEADERS(gtkextra/gtkextra.h)
+AC_CHECK_LIB(gtkextra, gtk_plot_canvas_new)
+
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
+
 
 #if test "x${prefix}" = "xNONE"; then
 #  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale")
