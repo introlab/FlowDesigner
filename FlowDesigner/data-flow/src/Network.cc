@@ -18,6 +18,7 @@ void Network::initializeFactories() {
       Network::addFactory ("CONST", new ConstantNodeFactory);
       Network::addFactory ("COLLECTOR", new CollectorNodeFactory);
       Network::addFactory ("MUX", new MuxNodeFactory);
+      Network::addFactory ("EXEC", new ExecNodeFactory);
    }
    catch (...) {
       cerr<<"Factories already initialized..."<<endl;

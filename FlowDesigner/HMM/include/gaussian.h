@@ -41,6 +41,8 @@ public:
    ///Empty gaussian constructor
    Gaussian() : dimension(0) {}
 
+   Gaussian(istream &in) {in >> *this;}
+
    /**Construct a Gaussian with dimension dim and a covariance pseudo-factory
     *(allows to create gaussians with either diagonal or full covariance*/
    Gaussian(int dim, Covariance *(*cov_new)(int)) 

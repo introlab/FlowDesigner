@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <iostream.h>
 #include <fstream.h>
+#include <iostream.h>
 
 void Gaussian::print_mean(ostream &out , string separ ) const
 {
@@ -70,29 +71,56 @@ Gaussian::~Gaussian()
   }
 }
 
+
 ostream &operator << (ostream &out, const Gaussian &gauss)
 {
-   out << "<GAUSSIAN " << endl;
-   out << gauss.dimension << " " << gauss.accum_count << endl;
-   out << *gauss.mean; 
-   out << *gauss.covariance;
+   out << "<Gaussian " << endl;
+   out << "<dimension " << gauss.dimension << "> ";
+   out << "<accum_count " << gauss.accum_count << "> " << endl;
+   out << "<mean " << *gauss.mean << ">" << endl; 
+   out << "<covariance " << *gauss.covariance << ">" << endl;
    out << ">\n";
    return out;
 }
 
+
 istream &operator >> (istream &in, Gaussian &gauss)
 {
-   string type;
-   in >> type;
-   cerr << "(type: " << type << ")" << endl;
-   in >> gauss.dimension;
-   in >> gauss.accum_count;
-   vector<float> *tmp = new vector<float>;
-   in >> *tmp;
-   gauss.mean = tmp;
+   if (!isValidType(in, "Gaussian")) return in;
+   string tag;
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+      in >> tag;
+      if (tag == "dimension") 
+         in >> gauss.dimension;
+      else if (tag == "accum_count")
+         in >> gauss.accum_count;
+      else if (tag == "mean")
+      {
+         vector<float> *tmp = new vector<float>;
+         in >> *tmp;
+         gauss.mean = tmp;
+      }
+      else if (tag == "covariance")
+      {
+         //DiagonalCovariance *cov = new DiagonalCovariance;
+         //in >> *cov;
+         //gauss.covariance = cov;
+         gauss.covariance = new DiagonalCovariance (in);
+      } else 
+         throw ParsingException ("unknown argument: " + tag);
+      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+      in >> tag;
+      if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
+   }
+   
+
    string end;
-   in >> end;
-   cerr << "terminator: " << end << endl;
+   //in >> end;
+   //cerr << "gauss terminator: " << end << endl;
    return in;
 }
 

@@ -48,8 +48,8 @@ void DiagonalCovariance::reset()
 void DiagonalCovariance::print(ostream &out) const
 {
    out << "<DiagonalCovariance" << endl;
-   out << dimension << endl;
-   out << data;
+   out << "<dimension " << dimension << ">" << endl;
+   out << "<data " << data << ">" << endl;
    out << ">\n";
    return;
 }
@@ -58,4 +58,32 @@ ostream &operator << (ostream &out, const Covariance &covar)
 {
    covar.print(out);
    return out;
+}
+
+istream &operator >> (istream &in, DiagonalCovariance &cov)
+{
+   if (!isValidType(in, "DiagonalCovariance")) return in;
+   string tag;
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+      in >> tag;
+      if (tag == "dimension") 
+         in >> cov.dimension;
+      else if (tag == "data")
+         in >> cov.data;
+      else 
+         throw ParsingException ("unknown argument: " + tag);
+      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+      in >> tag;
+      if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
+   }
+   
+   string end;
+   //in >> end;
+   //cerr << "covar terminator: " << end << endl;
+
+   return in;
 }

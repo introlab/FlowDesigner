@@ -84,6 +84,15 @@ class DiagonalCovariance : public Covariance  {
    ///The covariance data as the diagonal vector
    vector<float> data;
 public:
+   DiagonalCovariance(istream &in)
+      : Covariance(0)
+   {in >> *this;}
+   
+   DiagonalCovariance() 
+      : Covariance(0)
+      , data(vector<float>(0,0.0))
+   {}
+
    ///Constructs a Diagonal Covariance with dimension dim
    DiagonalCovariance(int dim) 
       : Covariance(dim) 
@@ -123,12 +132,14 @@ public:
    void to_real(const float accum_1, const vector<float> *mean);
 
    virtual void print(ostream &out) const;
+
+   friend istream &operator >> (istream &in, DiagonalCovariance &cov);
 }
 ;
 
 ///Function that acts as a factory for diagonal covariance
 inline Covariance *NewDiagonalCovariance(int dim) {return new DiagonalCovariance (dim);}
 
-
+istream &operator >> (istream &in, DiagonalCovariance &cov);
 
 #endif

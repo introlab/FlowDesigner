@@ -155,21 +155,43 @@ Score GMM::score(Frame * fr) const
 ostream &operator << (ostream &out, const GMM &gmm)
 {
    out << "<GMM " << endl;
-   out << gmm.nb_gaussians << endl;
-   out << gmm.apriori;
-   out << gmm.gaussians;
+   out << "<nb_gaussians " << gmm.nb_gaussians << ">" << endl;
+   out << "<apriori " << gmm.apriori << ">" << endl;
+   out << "<gaussians " << gmm.gaussians << ">" << endl;
    out << ">\n";
    return out;
 }
 
 istream &operator >> (istream &in, GMM &gmm)
 {
-   int items_found=0;
-   string type;
-   in >> type;
-   cerr << "(type: " << type << ")" <<endl;
-   in >> gmm.nb_gaussians;
-   in >> gmm.apriori;
-   in >> gmm.gaussians;
+   if (!isValidType(in, "GMM")) return in;
+   string tag;
+   while (1)
+   {
+      char ch;
+      in >> ch;
+      if (ch == '>') break;
+      in >> tag;
+
+      if (tag == "nb_gaussians")
+         in >> gmm.nb_gaussians;
+      else if (tag == "apriori")
+         in >> gmm.apriori;
+      else if (tag == "gaussians")
+         in >> gmm.gaussians;
+      else
+         throw ParsingException ("unknown argument: " + tag);
+
+      if (!in) throw ParsingException ("Parse error trying to build " + tag);
+
+      in >> tag;
+      if (tag != ">") 
+         throw ParsingException ("Parse error: '>' expected ");
+   }
+   
+   string end;
+   //in >> end;
+   //cerr << "terminator: " << end << endl;
+
    return in;
 }
