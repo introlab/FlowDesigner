@@ -15,6 +15,11 @@ void Sum::specificInitialize()
    sum = 0;
 }
 
+void Sum::reset()
+{
+   this->Node::reset();
+}
+
 ObjectRef Sum::getOutput(int output_id, int count)
 {
    if (output_id==outputID)

@@ -377,5 +377,21 @@ void Network::connectToNode(unsigned int in, Node *inNode, unsigned int out) {
    }
    inputNode->connectToNode(in,inNode,out);
 }
+/***************************************************************************/
+/*
+  Network::reset(...)
+  Dominic Letourneau
+ */
+/***************************************************************************/
+void Network::reset() {
 
+    map<string,Node*>::iterator iter;   
+
+   for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
+      if (debugMode) {
+         cout<<"DEBUG : Network is now resetting node "<<(*iter).second->getName()<<endl;
+      }
+      (*iter).second->reset();
+   }
+}
 #endif

@@ -15,26 +15,40 @@
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #include "covariance.h"
 #include "math.h"
+#include "misc.h"
+#include <string>
 
-void DiagonalCovariance::to_real(const float accum_1, const vector<float> *mean)
+void DiagonalCovariance::to_invert(const float accum_1, const vector<float> *mean)
 {
+   if (mode == inverted) return;
+   if (mode != accum) throw string("DiagonalCovariance::to_invert");
 #ifdef DEBUG
    cerr << "accum_1 #2: " << accum_1 << endl;
    cerr << "*tata* "<<endl;
 #endif
    for(unsigned int i = 0; i < data.size(); i++ )
    {
-      data[i] = .01 + data[i] * accum_1 - sqr( (*mean)[i] ) ;
+      data[i] = /*1.0 */ (.001 + data[i] * accum_1 - sqr( (*mean)[i] ) );
    }
+   mode = inverted;
 }
 
+float DiagonalCovariance::mahalanobisDistance(const float *x1, const float *x2) const
+{
+   if (mode != inverted) throw string ("DiagonalCovariance::mahalanobisDistance");
+   float dist=0;
+   for (int i=0;i<dimension;i++)
+      dist += sqr(x1[i]-x2[i]) / data[i];
+   return dist+getDeterminant();
+}
 
 void DiagonalCovariance::compute_determinant() const
 {
+   if (mode != inverted) throw string ("DiagonalCovariance::compute_determinant");
    determinant=1;
    for (unsigned int i=0;i<dimension;i++)
       determinant *= data[i];
-   //determinant = .5*log(determinant);
+   determinant = .5*log(determinant);
    determinant_is_valid = true;
 }
 
@@ -43,6 +57,7 @@ void DiagonalCovariance::reset()
    determinant_is_valid=false;
    for (unsigned int i=0;i<dimension;i++)
       data[i]=0.0;
+   mode = accum;
 }
 
 void DiagonalCovariance::printOn(ostream &out) const
@@ -53,12 +68,6 @@ void DiagonalCovariance::printOn(ostream &out) const
    out << ">\n";
    return;
 }
-
-/*ostream &operator << (ostream &out, const Covariance &covar)
-{
-   covar.print(out);
-   return out;
-   }*/
 
 istream &operator >> (istream &in, DiagonalCovariance &cov)
 {
@@ -81,9 +90,5 @@ istream &operator >> (istream &in, DiagonalCovariance &cov)
       if (tag != ">") throw ParsingException ("Parse error: '>' expected ");
    }
    
-   string end;
-   //in >> end;
-   //cerr << "covar terminator: " << end << endl;
-
    return in;
 }

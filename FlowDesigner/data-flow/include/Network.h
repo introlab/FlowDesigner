@@ -109,6 +109,9 @@ public:
    ///Exiting debug mode
    virtual void resetDebugMode();
 
+   /** resets the Network and all the internal nodes */
+   virtual void reset();
+
    /** 
        Network initialization. Must be done after all connections.
        The sink node must be set.

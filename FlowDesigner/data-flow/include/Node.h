@@ -175,7 +175,7 @@ public:
    virtual void resetDebugMode(){debugMode = false;}
 
    /**Resets the node internal values and buffers*/
-   void reset();
+   virtual void reset();
 
    /**Returns the node name*/
    string getName() {return name;}

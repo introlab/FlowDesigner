@@ -93,13 +93,13 @@ public:
    GMM (string file);
    void save(string file);
 
-   ///Returns the number of gaussians in the GMM
+   /**Returns the number of gaussians in the GMM*/
    int get_nb_gaussians() const {return nb_gaussians;}
 
-   ///Returns the i'th gaussian
+   /**Returns the i'th gaussian*/
    Gaussian &gaussian (int i) const {return *(gaussians[i]);}
 
-   ///Accumulates (adds) the frame to the i'th gaussian
+   /**Accumulates (adds) the frame to the i'th gaussian*/
    void accum_to_gaussian(int i, const float * fr)
    {
       gaussians[i]->accum_frame(fr);
@@ -107,40 +107,42 @@ public:
       nb_frames_aligned++;
    }
 
-   ///Randomly init the GMM with a list (STL vector) of frames
+   /**Randomly init the GMM with a list (STL vector) of frames*/
    void init(vector<float * > frames);
 
-   ///Performs k-means training
+   /**Performs k-means training*/
    void kmeans1(vector<float * > frames, int nb_iterations = 1);
    
-   ///splits the largest gaussian in two
+   /**splits the largest gaussian in two*/
    void split1();
 
-   ///Performs k-means training (using another GMM to score)
+   /**Performs k-means training (using another GMM to score)*/
    void kmeans2(vector<float * > frames, GMM *gmm);
 
-   ///Converts the GMM from accum mode to real mode
+   /**Converts the GMM from accum mode to real mode*/
    void to_real();
 
-   ///Converts the GMM from real mode to accum mode and set everything to zero
+   /**Converts the GMM from real mode to accum mode and set everything to zero*/
    void reset_to_accum_mode();
 
-   ///Score a frame against the GMM without using the covariances (nearest euclidian distance)
+   /**Score a frame against the GMM without using the covariances 
+      (nearest euclidian distance)*/
    Score minDistance(float * fr) const;
 
-   ///Score a frame against the GMM
+   /**Score a frame against the GMM*/
    Score score(float * fr) const;
 
-   ///Double the number of gaussians
+   /**Double the number of gaussians*/
    void binary_split();
 
-   ///Score a list (STL vector) of frames against the GMM without using the covariances (nearest euclidian distance)
+   /**Score a list (STL vector) of frames against the GMM 
+      without using the covariances (nearest euclidian distance)*/
    vector<Score> minDistance(vector <float *> fr) const;
 
-   ///Score a list (STL vector) of frames against the GMM
+   /**Score a list (STL vector) of frames against the GMM*/
    vector<Score> score(vector <float *> fr) const;
 
-   ///
+   /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
 
    //friend ostream &operator << (ostream &out, const GMM &gmm);

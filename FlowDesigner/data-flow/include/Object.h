@@ -12,22 +12,22 @@ class Object {
 
 public:
 
-   ///The status of an object
-   enum ObjectStatus {valid=0, before_beginning, erased, past_end, compute_error, rt_part_end, nil};
+   /**The status of an object*/
+   enum ObjectStatus {valid=0, before_beginning, erased, past_end, compute_error, wait, nil};
 
-   ///default constructor
+   /**default constructor*/
    Object() :status(valid){}
 
-   ///constructor with a status
+   /**constructor with a status*/
    Object(ObjectStatus st) :status(st){}
 
-   ///destructor
+   /**destructor*/
    virtual ~Object() { }
 
-   ///The current status
+   /**The current status*/
    ObjectStatus status;
 
-   ///Generic print function
+   /**Generic print function*/
    virtual void printOn(ostream &out=cout) const
    {
       if (typeid (*this) == typeid(Object))
@@ -36,7 +36,7 @@ public:
          out << "<" << typeid (*this).name() << " <status " << status << "> >" << endl;
    }
    
-   ///Prints the object to a stream
+   /**Prints the object to a stream*/
    friend ostream &operator << (ostream &out, const Object& obj) 
    {
       obj.printOn (out);

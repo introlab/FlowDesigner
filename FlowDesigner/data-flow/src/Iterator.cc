@@ -38,18 +38,35 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          //Reinitialization of all the processCount in our Network
          map<string,Node*>::iterator iter;         
  
-         for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
-            (*iter).second->specificInitialize();
-         }
+         if (processCount != -1 ) {
 
+            for (iter = nodeDictionary.begin(); iter != nodeDictionary.end(); iter++) {
+               if (debugMode) {
+                  cout<<"DEBUG : Iterator is now resetting node "<<(*iter).second->getName()<<endl;
+               }
+               (*iter).second->reset();
+            }
+
+         }
          //We are doing a little trick for the translator (real inputNode)
 
          translator->setProcessCount(count);
          int conditionID = conditionNode->translateOutput("OUTPUT");
 
-         for (int pc = 0;dereference_cast<bool>(conditionNode->getOutput(conditionID,pc)) == true; pc++) {
-            //we are doing the iterations here
-            output = sinkNode->getOutput(output_id,pc);
+         int pc = 0;
+         while(1)
+         {
+            if (doWhile)
+            {
+               output = sinkNode->getOutput(output_id,pc);
+            }
+            ObjectRef condition = conditionNode->getOutput(conditionID,pc);
+            if (dereference_cast<bool>(condition)==false) break;
+            if (!doWhile)
+            {
+               output = sinkNode->getOutput(output_id,pc);
+            }
+            pc++;
          }
       }
       catch (GenericCastException &e) {
@@ -61,7 +78,8 @@ ObjectRef Iterator::getOutput (int output_id, int count) {
          //Something weird happened
          e.print();
          throw NodeException (this,string("Error!!! "), __FILE__,__LINE__);
-      }      
+      }
+      processCount = count;
    }
 
    unlock();
@@ -106,7 +124,10 @@ void Iterator::specificInitialize() {
 
    this->Network::specificInitialize();
    
-   
+   if (parameters.exist("DOWHILE"))
+      doWhile = true;
+   else 
+      doWhile = false;
 }
 
 

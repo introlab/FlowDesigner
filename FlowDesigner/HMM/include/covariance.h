@@ -25,19 +25,27 @@
 class ifstream;
 class ofstream;
 
-///Abstract covariance class
+/**Abstract covariance class*/
 class Covariance : public Object
 {
 protected:
-   ///Size of the covariance matrix
+   enum Mode {accum, real, inverted, rotated};
+   
+   /**Size of the covariance matrix*/
    unsigned int   dimension;
-   ///Log of the determinant
+   
+   /**Log of the determinant*/
    mutable float determinant;
-   //Whether or not the determinant has been computed
+   
+   /**Whether or not the determinant has been computed*/
    mutable bool  determinant_is_valid;
+   
+   /**Mode*/
+   Mode mode;
+
 public:
    ///Create a Covariance with dim dimensions
-   Covariance(int dim) : dimension(dim) , determinant(-10000) , determinant_is_valid(false)
+   Covariance(int dim) : dimension(dim) , determinant(-10000) , determinant_is_valid(false), mode(accum)
    {
       
    }
@@ -46,6 +54,7 @@ public:
       : dimension(cov.dimension) 
       , determinant(0)
       , determinant_is_valid(false)
+      , mode (cov.mode)
    {}
    ///Virtual Destructor
    virtual ~Covariance() {}
@@ -64,16 +73,24 @@ public:
    ///Prints the covariance
    virtual void printOn(ostream &out=cout) const = 0;
    
+   /**Computed the mahalanobis distance between the vectors using the 
+      covariance*/
+   virtual float mahalanobisDistance(const float *x1, const float *x2) const =0;
+
    ///Virtual indexing operator 1D (for diagonal covariance)
    virtual float&      operator[](int )=0;
+
    ///Virtual indexing operator 2D
    virtual float&      operator()(int,int)=0;
+
    ///Resets accumulation to zero
    virtual void reset()=0;
+   
    ///Returns a copy of the covariance
    virtual Covariance * copy()=0;
+
    ///Converts from accumulate mode to real
-   virtual void to_real(const float accum_1, const vector<float> *mean)=0;
+   virtual void to_invert(const float accum_1, const vector<float> *mean)=0;
 
 };
 
@@ -104,6 +121,9 @@ public:
       , data(cov.data)
    {}
 
+   ///
+   float mahalanobisDistance(const float *x1, const float *x2) const;
+
    /**@name Indexing 
    *Warning: These virtual indexing function are dangerous for performance
     *and should not be used in loops*/
@@ -128,7 +148,7 @@ public:
    DiagonalCovariance *copy () {  return new DiagonalCovariance (*this); }
 
    ///Converts from accumulate mode to real
-   void to_real(const float accum_1, const vector<float> *mean);
+   void to_invert(const float accum_1, const vector<float> *mean);
 
    virtual void printOn(ostream &out=cout) const;
 

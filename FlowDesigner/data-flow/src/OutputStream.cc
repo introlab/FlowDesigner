@@ -13,6 +13,11 @@ void OutputStream::specificInitialize()
    this->Node::specificInitialize();
 }
 
+void OutputStream::reset()
+{
+   this->Node::reset();
+}
+
 ObjectRef OutputStream::getOutput(int output_id, int count)
 {
    if (output_id==outputID)

@@ -149,6 +149,7 @@ Score GMM::minDistance(float * fr) const
    for (int j=0;j<nb_gaussians;j++)
    {
       float dist = gaussians[j]->euclidian(fr);
+      //float dist = gaussians[j]->mahalanobis(fr);
       if (dist < min_dist)
       {
          min_dist=dist;

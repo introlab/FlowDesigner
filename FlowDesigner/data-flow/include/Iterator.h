@@ -78,26 +78,29 @@ public:
    /** returning the condition Node */
    Node* getConditionNode() {return conditionNode;}
 
-   ///Subnet : NetworkNode specific initialize
+   /**Subnet : NetworkNode specific initialize*/
    virtual void specificInitialize();
 
 protected:
    
-   /// Connect an input node using numeric (integer) input/output names
+   /** Connect an input node using numeric (integer) input/output names*/
    virtual void connectToNode(unsigned int in, Node *inNode, unsigned int out);
    
 private:
-   
-   /// Our special conditionNode
+
+   /** It true, the iterator is a do; while()  (the condition is tested last)*/
+   bool doWhile;
+
+   /** Our special conditionNode*/
    Node *conditionNode;
    
-   /// Our special translator node 
+   /** Our special translator node */
    InputTranslator *translator;
    
-   /// The output of the iterator
+   /** The output of the iterator*/
    ObjectRef output;
    
-   /// Default constructor that should not be used
+   /** Default constructor that should not be used*/
    Iterator() {
       throw NodeException (NULL,"The default constructor should not be called from Iterator",__FILE__,__LINE__);
    }

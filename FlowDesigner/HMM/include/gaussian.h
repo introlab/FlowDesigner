@@ -82,13 +82,15 @@ public:
    /**Returns the mahalanobis distance between the gaussian and a frame*/
    float mahalanobis(const float * fr) const
    {
-      float dist=0;
+      /*float dist=0;
       for (unsigned int i=0;i<dimension;i++)
       {
          dist+=sqr(fr[i]-(*mean)[i]);// /(*covariance)[i];
       }
       //cerr << "det: " << covariance->getDeterminant() << endl;
       return dist;// + covariance->getDeterminant();
+      */
+      return covariance->mahalanobisDistance(fr,mean->begin());
    }
 
    /**Returns the euclidian distance between the gaussian and a frame*/
@@ -123,12 +125,6 @@ public:
       for (unsigned int i=0;i<mean->size();i++)
          (*mean)[i]=0.0;
    }
-
-   /**Prints the gaussian mean*/
-   void print_mean(ostream &out = cout, string separ = " ") const;
-
-   /**Prints the gaussian covariance*/
-   void print_covar(ostream &out = cout, string separ = " ") const;
 
    /**print function for operator <<*/
    void printOn(ostream &out = cout) const;

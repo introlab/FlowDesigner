@@ -226,13 +226,5 @@ void Node::specificInitialize()
 /***************************************************************************/
 void Node::reset()
 {
-   if (initialized)
-   {
-      vector<NodeInput>::iterator in;
-      for (in = inputs.begin(); in < inputs.end(); in++)
-      {
-         in->node->incrementOutputInitialize();
-      }  
-   }
    processCount=-1;
 }

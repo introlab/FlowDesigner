@@ -26,21 +26,22 @@ public:
 template <class T>
 class CastException : public GenericCastException {
 public:
-   ///The constructur that takes an error message
+   /**The constructur that takes an error message*/
    CastException(string _type) : type(_type) 
-   {}   
-   ///The print method.
+   {} 
+  
+   /**The print method*/
    virtual void print(ostream &out = cerr) 
    {
       out << "Cast error: Trying to cast ObjectRef (" << type << ") into " << typeid(T).name() << endl;
    }
 
 protected:
-   ///The error message
+   /**The error message*/
    string type;
 };
 
-///The object pointer cast from ObjectRef
+/**The object pointer cast from ObjectRef*/
 template <class T>
 T object_ptr_cast (const ObjectRef &ref)
 {
@@ -50,7 +51,7 @@ T object_ptr_cast (const ObjectRef &ref)
    return tmp;
 }
 
-///The object cast from ObjectRef
+/**The object cast from ObjectRef*/
 template <class T>
 T &object_cast (const ObjectRef &ref)
 {
@@ -60,7 +61,7 @@ T &object_cast (const ObjectRef &ref)
    return *tmp;
 }
 
-///The type cast from ObjectRef
+/**The type cast from ObjectRef*/
 template <class T>
 T &dereference_cast (const ObjectRef &ref)
 {
@@ -69,11 +70,6 @@ T &dereference_cast (const ObjectRef &ref)
       throw CastException<T> (typeid ((*ref)).name());
    return tmp->val();
 }
-
-
-
-
-
 
 
 

@@ -15,6 +15,11 @@ void Save::specificInitialize()
    this->Node::specificInitialize();
 }
 
+void Save::reset()
+{
+   this->Node::reset();
+}
+
 ObjectRef Save::getOutput(int output_id, int count)
 {
    if (output_id==outputID)
@@ -28,7 +33,7 @@ ObjectRef Save::getOutput(int output_id, int count)
          stream << object;
          stream.flush();
       }
-      return ObjectRef();
+      return ObjectRef(new Object(Object::nil));
    }
    else 
       throw NodeException (this, "Save: Unknown output id", __FILE__, __LINE__);
