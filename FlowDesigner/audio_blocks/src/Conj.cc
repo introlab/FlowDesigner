@@ -27,13 +27,15 @@ DECLARE_NODE(Conj)
  *
  * @name Conj
  * @category Signal:Base
- * @description No description available
+ * @description Computes the complex conjugate of a vector
  *
  * @input_name INPUT
- * @input_description No description available
+ * @input_type Vector
+ * @input_description Input vector
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_type Vector
+ * @output_description Conjugate vector
  *
 END*/
 
