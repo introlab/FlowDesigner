@@ -23,6 +23,8 @@
 #include "iextensions.h"
 #include <iostream>
 
+//@implements core
+
 bool IExtensions::isse=false;
 bool IExtensions::i3dnow=false;
 
@@ -80,7 +82,7 @@ void IExtensions::detect3DNow()
 {
    if (setjmp(env))
    {
-      cerr << "3DNow not detected\n";
+      cerr << "3DNow! not detected\n";
       i3dnow=false;
       return;
    }
@@ -93,7 +95,7 @@ void IExtensions::detect3DNow()
         );
    signal (SIGILL, SIG_DFL);
    i3dnow=true;
-   cerr << "3DNow detected\n";
+   cerr << "3DNow! detected\n";
 }
 
 #endif
@@ -151,7 +153,7 @@ void IExtensions::detect3DNow()
 	    return
 	 }
       }
-   cerr << "3DNow! notdetected\n";
+   cerr << "3DNow! not detected\n";
    i3dnow=true;
 
 }

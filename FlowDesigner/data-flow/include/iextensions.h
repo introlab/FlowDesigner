@@ -11,8 +11,8 @@ class IExtensions {
    static void detect();
    static void detectSSE();
    static void detect3DNow();
-   static inline bool haveSSE() {return false;}
-   static inline bool have3DNow() {return false;}
+   static inline bool haveSSE() {return isse;}
+   static inline bool have3DNow() {return i3dnow;}
    
 };
 
