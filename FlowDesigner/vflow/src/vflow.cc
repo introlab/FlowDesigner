@@ -942,14 +942,14 @@ gint remove_doc_cb (GnomeMDI *mdi, GnomeMDIChild *child) {
 **********************************************************************************************************/
 void overflow_doc_event(GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
-   gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/user-guide.html", NULL);
+   gnome_url_show("http://flowdesigner.sourceforge.net/doc/user-manual/index.html", NULL);
 }
 /**********************************************************************************************************
 
 **********************************************************************************************************/
 void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
-   gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/nodes.html",NULL);
+   gnome_url_show("http://flowdesigner.sourceforge.net/doc/nodes.html",NULL);
 }
 
 /**********************************************************************************************************
