@@ -13,6 +13,11 @@ using namespace std;
 /*This doesn't compile with MSVC++ broken templates*/
 #ifndef BROKEN_TEMPLATES
 
+ObjectRef ReturnNilObject(ObjectRef in) 
+{
+  return nilObject;
+}
+
 //Int conversion
 template<class T>
 ObjectRef IntCTypeConversion(ObjectRef in)
@@ -33,6 +38,7 @@ REGISTER_VTABLE0(toInt, Bool, IntCTypeConversion<Bool>, 2);
 REGISTER_VTABLE0(toInt, Float, IntCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toInt, Double, IntCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toInt, String, IntStringConversion, 5);
+REGISTER_VTABLE0(toInt, NilObject, ReturnNilObject, 6);
 
 //Bool conversion
 template<class T>
@@ -54,7 +60,7 @@ REGISTER_VTABLE0(toBool, Bool, BoolCTypeConversion<Bool>, 2);
 REGISTER_VTABLE0(toBool, Float, BoolCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toBool, Double, BoolCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toBool, String, BoolStringConversion, 5);
-
+REGISTER_VTABLE0(toBool, NilObject, ReturnNilObject, 6);
 
 //Float conversion
 template<class T>
@@ -76,7 +82,7 @@ REGISTER_VTABLE0(toFloat, Bool, FloatCTypeConversion<Bool>, 2);
 REGISTER_VTABLE0(toFloat, Float, FloatCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toFloat, Double, FloatCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toFloat, String, FloatStringConversion, 5);
-
+REGISTER_VTABLE0(toFloat, NilObject, ReturnNilObject, 6);
 
 //Double conversion
 template<class T>
@@ -98,6 +104,7 @@ REGISTER_VTABLE0(toDouble, Bool, DoubleCTypeConversion<Bool>, 2);
 REGISTER_VTABLE0(toDouble, Float, DoubleCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toDouble, Double, DoubleCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toDouble, String, DoubleStringConversion, 5);
+REGISTER_VTABLE0(toDouble, NilObject, ReturnNilObject, 6);
 
 
 //String conversion
@@ -122,5 +129,6 @@ REGISTER_VTABLE0(toString, Bool, StringCTypeConversion<Bool>, 2);
 REGISTER_VTABLE0(toString, Float, StringCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toString, Double, StringCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toString, String, StringStringConversion, 5);
+REGISTER_VTABLE0(toString, NilObject, ReturnNilObject, 6);
 
 #endif

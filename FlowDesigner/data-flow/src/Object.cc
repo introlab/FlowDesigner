@@ -26,7 +26,7 @@ string Object::className() const
    if (found != m.end())
       return found->second->getName();
    else
-      return "unknown";
+      return "Object::className(): unknown";
 }
 
 ObjectRef Object::newObject(const string &objType)
@@ -34,7 +34,8 @@ ObjectRef Object::newObject(const string &objType)
    if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
    {
       return ObjectFactoryDictionary()[objType]->create();
-   } else
+   } 
+   else
    {
       throw new GeneralException ("ObjectRef error: unknown type " + objType, __FILE__, __LINE__);
    }

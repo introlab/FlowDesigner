@@ -19,6 +19,7 @@ DECLARE_TYPE(Bool)
 DECLARE_TYPE(Float)
 DECLARE_TYPE(Double)
 DECLARE_TYPE(String)
+DECLARE_TYPE(NilObject)
 
 vector<Int *> ObjectPool<Int>::stack;
 vector<Bool *> ObjectPool<Bool>::stack;

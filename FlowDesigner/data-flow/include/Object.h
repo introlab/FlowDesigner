@@ -11,6 +11,7 @@
 #include <typeinfo>
 #include "multithread.h"
 
+
 class Object;
 /** Smart pointer to Object called ObjectRef
     @author Jean-Marc Valin
@@ -24,110 +25,111 @@ class _ObjectFactory;
     base class.
     @author Dominic Letourneau & Jean-Marc Valin
 */
-class Object {
-  protected:
+class Object
+{
+   protected:
    
-   AtomicCounter ref_count;
+      AtomicCounter ref_count;
    
-public:
+   public:
 
-   /**default constructor*/
-   Object() : ref_count(1) {}
+      /**default constructor*/
+      Object() : ref_count(1) {}
 
-   /**destructor*/
-   virtual ~Object() { }
+      /**destructor*/
+      virtual ~Object() { }
 
-   /**Notify the object we're adding a reference*/
-   void ref() 
-   {
-      ref_count.inc();
-   }
-
-   /**Notify the object we're removing a reference (might destroy the object)*/
-   void unref()
-   {
-      if (ref_count.dec()==0)
+      /**Notify the object we're adding a reference*/
+      void ref() 
       {
-	 destroy();
+         ref_count.inc();
       }
-   }
 
-   /**Returns the number of references*/
-   int unique () {return ref_count.unique();}
+      /**Notify the object we're removing a reference (might destroy the object)*/
+      void unref()
+      {
+         if (ref_count.dec()==0)
+         {
+	    destroy();
+         }
+      }
 
-   /**Causes the object to be destroyed, it might be redefined for an object pool*/
-   virtual void destroy()
-   {
-      delete this;
-   }
+      /**Returns the number of references*/
+      int unique () {return ref_count.unique();}
 
-   /**Serialize (binary) the object to a stream*/
-   virtual void serialize(ostream &out) const;
+      /**Causes the object to be destroyed, it might be redefined for an object pool*/
+      virtual void destroy()
+      {
+         delete this;
+      }
 
-   /**Unserialize (binary) the object from a stream*/
-   virtual void unserialize(istream &in);
+      /**Serialize (binary) the object to a stream*/
+      virtual void serialize(ostream &out) const;
+
+      /**Unserialize (binary) the object from a stream*/
+      virtual void unserialize(istream &in);
    
-   /**How to handle an ununderstood method (VMethod)*/
-   virtual void doesNotUnderstand(string method);
+      /**How to handle an ununderstood method (VMethod)*/
+      virtual void doesNotUnderstand(string method);
 
-   /**Generic print function*/
-   virtual void printOn(ostream &out=cout) const = 0;
+      /**Generic print function*/
+      virtual void printOn(ostream &out=cout) const = 0;
 
-   /**Is it a nil Object*/
-   virtual bool isNil() const {return false;}
+      /**Is it a nil Object*/
+      virtual bool isNil() const {return false;}
    
-   /**Prints an object in a more "user-friendly" format*/
-   virtual void prettyPrint(ostream &out=cout) const
-   {
-      printOn(out);
-   }
+      /**Prints an object in a more "user-friendly" format*/
+      virtual void prettyPrint(ostream &out=cout) const
+      {
+         printOn(out);
+      }
 
-   /**Generic read function*/
-   virtual void readFrom(istream &in=cin)
-   {
-      throw new GeneralException("Trying to read undefined Object", __FILE__, __LINE__);
-   }
+      /**Generic read function*/
+      virtual void readFrom(istream &in=cin)
+      {
+         throw new GeneralException("Trying to read undefined Object", __FILE__, __LINE__);
+      }
 
-   /**Prints the object to a stream*/
-   friend ostream &operator << (ostream &out, const Object& obj) 
-   {
-      obj.printOn (out);
-      return out;
-   }
+      /**Prints the object to a stream*/
+      friend ostream &operator << (ostream &out, const Object& obj) 
+      {
+         obj.printOn (out);
+         return out;
+      }
 
-   /**Makes a (deep) copy of the object*/
-   virtual ObjectRef clone()
-   {
-     char message[256];
-     sprintf(message,"Method clone() not implemented for this object : %s",typeid(this).name());
-     throw new GeneralException(message, __FILE__, __LINE__);
-   }
+      /**Makes a (deep) copy of the object*/
+      virtual ObjectRef clone()
+      {
+         char message[256];
+         sprintf(message,"Method clone() not implemented for this object : %s",typeid(this).name());
+         throw new GeneralException(message, __FILE__, __LINE__);
+      }
 
-   /**Returns the name of the class of the Object*/
-   virtual string className() const;
+      /**Returns the name of the class of the Object*/
+      virtual string className() const;
       
-   /**Creates an instance of an object by class name*/
-   static ObjectRef newObject(const string &objType);
+      /**Creates an instance of an object by class name*/
+      static ObjectRef newObject(const string &objType);
 
 #ifndef BROKEN_TEMPLATES /*Workaround for a compiler crash */
 
-   /**Registers the object name*/
-   template<class T>
-   static int addObjectType(const string &objType, _ObjectFactory *factory)
-   {
-      ObjectFactoryDictionary()[objType] = factory;
-      TypeidDictionary()[&typeid(T)] = factory;
-      return 0;
-   }
+      /**Registers the object name*/
+      template<class T>
+      static int addObjectType(const string &objType, _ObjectFactory *factory)
+      {
+         ObjectFactoryDictionary()[objType] = factory;
+         TypeidDictionary()[&typeid(T)] = factory;
+         return 0;
+      }
 
 /*Because of f*ck*ng MSVC++*/
 //private:
 
 #endif
 
-   static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
-   static TypeMap<_ObjectFactory*>& TypeidDictionary();
-   //static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
+      static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
+      static TypeMap<_ObjectFactory*>& TypeidDictionary();
+      //static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
 };
 
 
@@ -145,22 +147,24 @@ static int ObjectaddObjectType(const string &objType, _ObjectFactory *factory)
 #endif
 
 
-class _ObjectFactory {
+class _ObjectFactory 
+{
    string typeName;
-public:
-   _ObjectFactory(const string &_name) : typeName(_name) {}
-   virtual ~_ObjectFactory() {}
-   virtual ObjectRef create() = 0;
-   const string &getName() {return typeName;}
+
+   public:
+      _ObjectFactory(const string &_name) : typeName(_name) {}
+      virtual ~_ObjectFactory() {}
+      virtual ObjectRef create() = 0;
+      const string &getName() {return typeName;}
 };
 
 template <class T>
-class ObjectFactory : public _ObjectFactory {
-public:
-   ObjectFactory(const string &_name) : _ObjectFactory(_name) {}
-   virtual ObjectRef create() {return ObjectRef(new T);}
+class ObjectFactory : public _ObjectFactory
+{
+   public:
+      ObjectFactory(const string &_name) : _ObjectFactory(_name) {}
+      virtual ObjectRef create() {return ObjectRef(new T);}
 };
-
 
 
 /* This used to be Object::GetClassName<T>() but it changed because of stupid MSVC++ bugs*/
@@ -207,17 +211,31 @@ string ObjectGetClassName()
 #define DECLARE_TYPE2(str, type) DECLARE_TYPE3A(str, type, __LINE__)
 
 
-class NilObject : public Object {
-public:
-   virtual void printOn(ostream &out=cout) const
-   {
-      out << "<NilObject >";
-   }
+class NilObject : public Object 
+{
+   public:
+      virtual void printOn(ostream &out=cout) const
+      {
+         out << "<NilObject >";
+      }
 
-   /**Is it a nil Object*/
-   virtual bool isNil() const {return true;}
+      /**Is it a nil Object*/
+      virtual bool isNil() const { return true; }
+
+      virtual void readFrom(istream &in=cin)
+      {
+         char ch;
+         in >> ch;
+         if (ch != '>')
+	    throw new GeneralException("Error reading NilObject: '>' expected", __FILE__, __LINE__); 
+      }
+
 };
 
 extern ObjectRef nilObject;
+
+
+//ObjectRef ObjectFactory<NilObject>::create() {return nilObject;}
+
 
 #endif
