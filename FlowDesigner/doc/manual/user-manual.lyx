@@ -615,4 +615,15 @@ VFLOW_SOURCE
 \family default 
  environment variable must be set to your Overflow source directory in order
  for the "static linkage" option to work.
+\layout Chapter
+\start_of_appendix 
+Node documentation
+\layout Standard
+
+
+\begin_inset Include \input{nodes.tex}
+
+\end_inset 
+
+
 \the_end
