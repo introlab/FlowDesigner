@@ -19,6 +19,7 @@
 #include "covariance.h"
 #include "Object.h"
 #include "ObjectParser.h"
+#include "gaussian_set.h"
 
 class GMM;
 
@@ -151,6 +152,10 @@ public:
 
    /**Score a list (STL vector) of frames against the GMM*/
    vector<Score> score(vector <float *> fr) const;
+
+   void toIDsUsing (GaussianSet & gauss);
+
+   void toPtrsUsing (const GaussianSet & gauss);
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;

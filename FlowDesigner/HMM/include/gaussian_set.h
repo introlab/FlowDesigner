@@ -14,25 +14,33 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef COVARIANCE_SET_H
-#define COVARIANCE_SET_H
+#ifndef GAUSSIAN_SET_H
+#define GAUSSIAN_SET_H
 
-#include "covariance.h"
+#include "gaussian.h"
+#include "mean_set.h"
+#include "covariance_set.h"
 #include "Object.h"
 
-class CovarianceSet : public Object {
+class GaussianSet : public Object {
 protected:
-   int nb_covariances;
-   Vector<Ptr<Covariance> > covariances;
+   int nb_gaussians;
+   Vector<Ptr<Gaussian> > gaussians;
 public:
    /**Default Constructor*/
-   CovarianceSet() {};
+   GaussianSet() {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
-   int getIDFor(Ptr<Covariance>);
+   int getIDFor(Ptr<Gaussian>);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<Covariance> getPtrFor(int id) const;
+   Ptr<Gaussian> getPtrFor(int id);
+
+   /**convert all elements to using IDs (before saving)*/
+   void toIDs(MeanSet & means, CovarianceSet & covariances);
+ 
+   /**convert all elements to using Ptrs (after loading)*/
+   void toPtrs(const MeanSet & means, const CovarianceSet & covariances) const;
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
@@ -41,7 +49,7 @@ public:
    void readFrom (istream &in=cin);
 
    /**extractor operator*/
-   friend istream &operator >> (istream &in, CovarianceSet &cov);
+   friend istream &operator >> (istream &in, GaussianSet &cov);
 
 };
 

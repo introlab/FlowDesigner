@@ -14,41 +14,56 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "covariance_set.h"
+#include "gmm_set.h"
 #include "ObjectParser.h"
 
-DECLARE_TYPE(CovarianceSet)
+DECLARE_TYPE(GMMSet)
 
-int CovarianceSet::getIDFor(Ptr<Covariance> cov)
+int GMMSet::getIDFor(Ptr<GMM> cov)
 {
-   for (int i=0;i<nb_covariances;i++)
+   for (int i=0;i<nb_gmms;i++)
    {
-      if (cov.get()==covariances[i].get())
+      if (cov.get()==gmms[i].get())
          return i;
    }
-   nb_covariances++;
-   covariances.resize(nb_covariances);
-   covariances[nb_covariances-1]=cov;
-   return nb_covariances-1;
+   nb_gmms++;
+   gmms.resize(nb_gmms);
+   gmms[nb_gmms-1]=cov;
+   return nb_gmms-1;
 }
 
-Ptr<Covariance> CovarianceSet::getPtrFor(int id) const
+Ptr<GMM> GMMSet::getPtrFor(int id)
 {
-   if (id>=nb_covariances)
-      throw GeneralException("Invalid covariance ID", __FILE__, __LINE__);
-   return covariances[id];
+   if (id>=nb_gmms)
+      throw GeneralException("Invalid gmm ID", __FILE__, __LINE__);
+   return gmms[id];
 }
 
-
-void CovarianceSet::printOn(ostream &out=cout) const
+void GMMSet::toIDs(GaussianSet & gauss)
 {
-   out << "<CovarianceSet " << endl;
-   out << "<covariances " << covariances << ">" << endl;
-   out << "<nb_covariances " << nb_covariances << ">" << endl;
+   for (int i=0;i<nb_gmms;i++)
+   {
+      gmms[i]->toIDsUsing(gauss);
+   }
+}
+
+void GMMSet::toPtrs(const GaussianSet & gauss) const
+{
+   for (int i=0;i<nb_gmms;i++)
+   {
+      gmms[i]->toPtrsUsing(gauss);
+   }
+}
+
+void GMMSet::printOn(ostream &out=cout) const
+{
+   out << "<GMMSet " << endl;
+   out << "<gmms " << gmms << ">" << endl;
+   out << "<nb_gmms " << nb_gmms << ">" << endl;
    out << ">\n";
 }
 
-void CovarianceSet::readFrom (istream &in=cin)
+void GMMSet::readFrom (istream &in=cin)
 {
    string tag;
 
@@ -60,10 +75,10 @@ void CovarianceSet::readFrom (istream &in=cin)
       else if (ch != '<') 
        throw ParsingException ("Parse error: '<' expected");
       in >> tag;
-      if (tag == "covariances")
-         in >> covariances;
-      else if (tag == "nb_covariances")
-         in >> nb_covariances;
+      if (tag == "gmms")
+         in >> gmms;
+      else if (tag == "nb_gmms")
+         in >> nb_gmms;
       else
          throw ParsingException ("unknown argument: " + tag);
 
@@ -75,9 +90,9 @@ void CovarianceSet::readFrom (istream &in=cin)
    }
 }
 
-istream &operator >> (istream &in, CovarianceSet &cov)
+istream &operator >> (istream &in, GMMSet &cov)
 {
-   if (!isValidType(in, "CovarianceSet")) return in;
+   if (!isValidType(in, "GMMSet")) return in;
    cov.readFrom(in);
    return in;
 }

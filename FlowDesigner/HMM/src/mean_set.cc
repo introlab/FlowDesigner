@@ -14,41 +14,41 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "covariance_set.h"
+#include "mean_set.h"
 #include "ObjectParser.h"
 
-DECLARE_TYPE(CovarianceSet)
+DECLARE_TYPE(MeanSet)
 
-int CovarianceSet::getIDFor(Ptr<Covariance> cov)
+int MeanSet::getIDFor(Ptr<Vector<float> > cov)
 {
-   for (int i=0;i<nb_covariances;i++)
+   for (int i=0;i<nb_means;i++)
    {
-      if (cov.get()==covariances[i].get())
+      if (cov.get()==means[i].get())
          return i;
    }
-   nb_covariances++;
-   covariances.resize(nb_covariances);
-   covariances[nb_covariances-1]=cov;
-   return nb_covariances-1;
+   nb_means++;
+   means.resize(nb_means);
+   means[nb_means-1]=cov;
+   return nb_means-1;
 }
 
-Ptr<Covariance> CovarianceSet::getPtrFor(int id) const
+Ptr<Vector<float> > MeanSet::getPtrFor(int id) const
 {
-   if (id>=nb_covariances)
-      throw GeneralException("Invalid covariance ID", __FILE__, __LINE__);
-   return covariances[id];
+   if (id>=nb_means)
+      throw GeneralException("Invalid mean ID", __FILE__, __LINE__);
+   return means[id];
 }
 
 
-void CovarianceSet::printOn(ostream &out=cout) const
+void MeanSet::printOn(ostream &out=cout) const
 {
-   out << "<CovarianceSet " << endl;
-   out << "<covariances " << covariances << ">" << endl;
-   out << "<nb_covariances " << nb_covariances << ">" << endl;
+   out << "<MeanSet " << endl;
+   out << "<means " << means << ">" << endl;
+   out << "<nb_means " << nb_means << ">" << endl;
    out << ">\n";
 }
 
-void CovarianceSet::readFrom (istream &in=cin)
+void MeanSet::readFrom (istream &in=cin)
 {
    string tag;
 
@@ -60,10 +60,10 @@ void CovarianceSet::readFrom (istream &in=cin)
       else if (ch != '<') 
        throw ParsingException ("Parse error: '<' expected");
       in >> tag;
-      if (tag == "covariances")
-         in >> covariances;
-      else if (tag == "nb_covariances")
-         in >> nb_covariances;
+      if (tag == "means")
+         in >> means;
+      else if (tag == "nb_means")
+         in >> nb_means;
       else
          throw ParsingException ("unknown argument: " + tag);
 
@@ -75,9 +75,9 @@ void CovarianceSet::readFrom (istream &in=cin)
    }
 }
 
-istream &operator >> (istream &in, CovarianceSet &cov)
+istream &operator >> (istream &in, MeanSet &cov)
 {
-   if (!isValidType(in, "CovarianceSet")) return in;
+   if (!isValidType(in, "MeanSet")) return in;
    cov.readFrom(in);
    return in;
 }

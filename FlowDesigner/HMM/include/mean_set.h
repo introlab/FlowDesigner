@@ -14,25 +14,25 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef COVARIANCE_SET_H
-#define COVARIANCE_SET_H
+#ifndef MEAN_SET_H
+#define MEAN_SET_H
 
-#include "covariance.h"
+#include "Vector.h"
 #include "Object.h"
 
-class CovarianceSet : public Object {
+class MeanSet : public Object {
 protected:
-   int nb_covariances;
-   Vector<Ptr<Covariance> > covariances;
+   int nb_means;
+   Vector<Ptr<Vector<float> > > means;
 public:
    /**Default Constructor*/
-   CovarianceSet() {};
+   MeanSet() {};
 
    /**Returns the id corresponding to the pointer (or add if absent)*/
-   int getIDFor(Ptr<Covariance>);
+   int getIDFor(Ptr<Vector<float> >);
 
    /**Returns the pointer corresponding to the id*/
-   Ptr<Covariance> getPtrFor(int id) const;
+   Ptr<Vector<float> > getPtrFor(int id) const;
 
    /** print function used for operator << */
    virtual void printOn(ostream &out=cout) const;
@@ -41,7 +41,7 @@ public:
    void readFrom (istream &in=cin);
 
    /**extractor operator*/
-   friend istream &operator >> (istream &in, CovarianceSet &cov);
+   friend istream &operator >> (istream &in, MeanSet &cov);
 
 };
 

@@ -14,41 +14,56 @@
 // along with this file.  If not, write to the Free Software Foundation,
 // 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "covariance_set.h"
+#include "gaussian_set.h"
 #include "ObjectParser.h"
 
-DECLARE_TYPE(CovarianceSet)
+DECLARE_TYPE(GaussianSet)
 
-int CovarianceSet::getIDFor(Ptr<Covariance> cov)
+int GaussianSet::getIDFor(Ptr<Gaussian> cov)
 {
-   for (int i=0;i<nb_covariances;i++)
+   for (int i=0;i<nb_gaussians;i++)
    {
-      if (cov.get()==covariances[i].get())
+      if (cov.get()==gaussians[i].get())
          return i;
    }
-   nb_covariances++;
-   covariances.resize(nb_covariances);
-   covariances[nb_covariances-1]=cov;
-   return nb_covariances-1;
+   nb_gaussians++;
+   gaussians.resize(nb_gaussians);
+   gaussians[nb_gaussians-1]=cov;
+   return nb_gaussians-1;
 }
 
-Ptr<Covariance> CovarianceSet::getPtrFor(int id) const
+Ptr<Gaussian> GaussianSet::getPtrFor(int id)
 {
-   if (id>=nb_covariances)
-      throw GeneralException("Invalid covariance ID", __FILE__, __LINE__);
-   return covariances[id];
+   if (id>=nb_gaussians)
+      throw GeneralException("Invalid gaussian ID", __FILE__, __LINE__);
+   return gaussians[id];
 }
 
-
-void CovarianceSet::printOn(ostream &out=cout) const
+void GaussianSet::toIDs(MeanSet & means, CovarianceSet & covariances)
 {
-   out << "<CovarianceSet " << endl;
-   out << "<covariances " << covariances << ">" << endl;
-   out << "<nb_covariances " << nb_covariances << ">" << endl;
+   for (int i=0;i<nb_gaussians;i++)
+   {
+      gaussians[i]->toIDsUsing(means, covariances);
+   }
+}
+
+void GaussianSet::toPtrs(const MeanSet & means, const CovarianceSet & covariances) const
+{
+   for (int i=0;i<nb_gaussians;i++)
+   {
+      gaussians[i]->toPtrsUsing(means, covariances);
+   }
+}
+
+void GaussianSet::printOn(ostream &out=cout) const
+{
+   out << "<GaussianSet " << endl;
+   out << "<gaussians " << gaussians << ">" << endl;
+   out << "<nb_gaussians " << nb_gaussians << ">" << endl;
    out << ">\n";
 }
 
-void CovarianceSet::readFrom (istream &in=cin)
+void GaussianSet::readFrom (istream &in=cin)
 {
    string tag;
 
@@ -60,10 +75,10 @@ void CovarianceSet::readFrom (istream &in=cin)
       else if (ch != '<') 
        throw ParsingException ("Parse error: '<' expected");
       in >> tag;
-      if (tag == "covariances")
-         in >> covariances;
-      else if (tag == "nb_covariances")
-         in >> nb_covariances;
+      if (tag == "gaussians")
+         in >> gaussians;
+      else if (tag == "nb_gaussians")
+         in >> nb_gaussians;
       else
          throw ParsingException ("unknown argument: " + tag);
 
@@ -75,9 +90,9 @@ void CovarianceSet::readFrom (istream &in=cin)
    }
 }
 
-istream &operator >> (istream &in, CovarianceSet &cov)
+istream &operator >> (istream &in, GaussianSet &cov)
 {
-   if (!isValidType(in, "CovarianceSet")) return in;
+   if (!isValidType(in, "GaussianSet")) return in;
    cov.readFrom(in);
    return in;
 }

@@ -44,6 +44,22 @@ Gaussian::~Gaussian()
 {
 }
 
+void Gaussian::toIDsUsing (MeanSet &means, CovarianceSet & covariances)
+{
+   using_covarianceID=true;
+   using_meanID=true;
+   covarianceID=covariances.getIDFor(covariance);
+   meanID=means.getIDFor(mean);
+}
+
+void Gaussian::toPtrsUsing (const MeanSet &means, const CovarianceSet & covariances)
+{
+   using_covarianceID=false;
+   using_meanID=false;
+   covariance=covariances.getPtrFor(covarianceID);
+   mean=means.getPtrFor(meanID);
+}
+
 
 void Gaussian::printOn (ostream &out) const
 {

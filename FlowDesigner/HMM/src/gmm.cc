@@ -235,6 +235,19 @@ void GMM::printOn(ostream &out) const
    out << ">\n";
 }
 
+void GMM::toIDsUsing (GaussianSet &gauss)
+{
+   /*using_gaussiansID=true;
+     covarianceID=covariances.getIDFor(covariance);*/
+
+}
+
+void GMM::toPtrsUsing (const GaussianSet &gauss)
+{
+   /*using_covarianceID=false;
+     covariance=covariances.getPtrFor(covarianceID);*/
+}
+
 void GMM::readFrom (istream &in)
 {
    string tag;

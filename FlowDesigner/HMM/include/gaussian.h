@@ -22,6 +22,8 @@
 #include "ObjectParser.h"
 #include "misc.h"
 #include "Vector.h"
+#include "covariance_set.h"
+#include "mean_set.h"
 
 class GMM;
 
@@ -150,6 +152,10 @@ public:
       for (unsigned int i=0;i<mean->size();i++)
          (*mean)[i]=0.0;
    }
+
+   void toIDsUsing (MeanSet &means, CovarianceSet & covariances);
+
+   void toPtrsUsing (const MeanSet &means, const CovarianceSet & covariances);
 
    /**print function for operator <<*/
    void printOn(ostream &out = cout) const;
