@@ -112,6 +112,8 @@ public:
    /**Creates an instance of an object by class name*/
    static ObjectRef newObject(const string &objType);
 
+#ifndef WIN32 /*Workaround for a compiler crash */
+
    /**Registers the object name*/
    template<class T>
    static int addObjectType(const string &objType, _ObjectFactory *factory)
@@ -121,12 +123,26 @@ public:
       return 0;
    }
 private:
+
+#endif
+
    static map<string, _ObjectFactory*>& ObjectFactoryDictionary();
    static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
 };
 
 
+#ifdef WIN32 /*Workaround for a compiler crash */
 
+/**Registers the object name*/
+template<class T>
+static int ObjectaddObjectType(const string &objType, _ObjectFactory *factory)
+{
+   ObjectFactoryDictionary()[objType] = factory;
+   TypeidDictionary()[&typeid(T)] = factory;
+   return 0;
+}
+
+#endif
 
 
 class _ObjectFactory {
@@ -165,6 +181,7 @@ string Object::GetClassName()
 
 
 
+#ifndef WIN32 /*Workaround for a compiler crash */
 
 #define DECLARE_TYPE(type) static int dummy_init_for ## type = \
                Object::addObjectType<type > (# type, new ObjectFactory<type> (#type));
@@ -174,5 +191,21 @@ string Object::GetClassName()
 
 #define DECLARE_TYPE3(str, type, dummyID) static int dummy_init_for ## dummyID = \
                Object::addObjectType<type > (str, new ObjectFactory<type> (str));
+
+#else
+
+
+#define DECLARE_TYPE(type) static int dummy_init_for ## type = \
+               ObjectaddObjectType<type > (# type, new ObjectFactory<type > (#type));
+
+#define DECLARE_TYPE2(type, dummyID) static int dummy_init_for ## dummyID = \
+               ObjectaddObjectType<type > (# type, new ObjectFactory<type > (#type));
+
+#define DECLARE_TYPE3(str, type, dummyID) static int dummy_init_for ## dummyID = \
+               ObjectaddObjectType<type > (str, new ObjectFactory<type > (str));
+
+
+#endif /*WIN32*/
+
 
 #endif
