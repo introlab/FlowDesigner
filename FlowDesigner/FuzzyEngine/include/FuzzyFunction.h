@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include "BufferedNode.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -73,5 +74,14 @@ private:
 	FuzzyFunction();
 
 };
+
+
+
+inline void Vector<FuzzyFunction*>::readFrom(istream &in)
+{
+
+}
+
+
 
 #endif

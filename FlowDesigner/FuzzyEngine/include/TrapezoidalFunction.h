@@ -21,6 +21,7 @@ public:
 
 	//constructor of the function
 	TrapezoidalFunction(const string &name, float a, float b, float c, float d);
+
 	TrapezoidalFunction(string nodeName, ParameterSet params);
 
 	//destructor

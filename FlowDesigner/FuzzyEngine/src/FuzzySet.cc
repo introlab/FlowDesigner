@@ -44,6 +44,10 @@ FuzzySet::FuzzySet(const string &name)
 
 }
 
+FuzzySet::FuzzySet() 
+  : BufferedNode("INVALID", ParameterSet()), m_name("INVALID") {
+}
+
 FuzzySet::FuzzySet(string nodeName, ParameterSet params) 
   : BufferedNode(nodeName,params) {
   

@@ -37,6 +37,8 @@ public:
 
 	FuzzySet(string nodeName, ParameterSet params);
 
+	FuzzySet();
+
 	//destructor
 	virtual ~FuzzySet();
 
