@@ -90,11 +90,7 @@ fd_streambuf::fd_streambuf(int _fd, bool _owner)
 int fd_streambuf::overflow(int c = EOF)
 {
    write(fd, &c, 1);
-   //FIXME: determine EOF
-   /*if (eof(file))
-      return EOF;
-   else
-   return c;*/
+   //FIXME: Find EOF?
 }
 
 
@@ -151,11 +147,12 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 
 #endif
 
-/*
+
 int main() 
 {
-   fileptr_ostream out(stdout);
+   fd_ostream out(1);
+   //fileptr_ostream out(stdout);
    out.write("salut\n", 6);
 }
 
-*/
+

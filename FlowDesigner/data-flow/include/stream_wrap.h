@@ -7,40 +7,101 @@
 #include <iostream>
 #include <stdio.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 using namespace std;
 
 class fileptr_streambuf : public streambuf {
-  public:
-   //typedef char_traits<char> _Tr;
   protected:
+   virtual int overflow(int = EOF);
+   virtual streamsize xsputn(const char *s, streamsize n);
+
    virtual int uflow();
    virtual int underflow();
-   virtual int overflow(int = EOF);
+   virtual streamsize xsgetn(char *s, streamsize n);
+   virtual int pbackfail(int c);
   public:
    fileptr_streambuf(FILE *_file, bool _owner=false);
    ~fileptr_streambuf() {if (owner) fclose (file);}
   protected:
-   bool owner;
    FILE *file;
+   bool owner;
+   bool takeFromBuf;
+   char charBuf;
 };
+
+
 
 class fileptr_ostream : public ostream {
    fileptr_streambuf _streambuffer;
   public:
-   fileptr_ostream(FILE *_file)
-      : _streambuffer (_file)
+   fileptr_ostream(FILE *_file, bool _owner=false)
+      : _streambuffer (_file, _owner)
+      , ostream(&_streambuffer)
+      {clear();}
+};
+
+class fileptr_istream : public istream {
+   fileptr_streambuf _streambuffer;
+  public:
+   fileptr_istream(FILE *_file, bool _owner=false)
+      : _streambuffer (_file, _owner)
+      , istream(&_streambuffer)
+      {clear();}
+};
+
+
+
+
+
+#ifndef WIN32
+
+class fd_streambuf : public streambuf {
+  protected:
+   virtual int overflow(int = EOF);
+   virtual streamsize xsputn(const char *s, streamsize n);
+
+   virtual int uflow();
+   virtual int underflow();
+   virtual streamsize xsgetn(char *s, streamsize n);
+   virtual int pbackfail(int c);
+  public:
+   fd_streambuf(int _fd, bool _owner=false);
+   ~fd_streambuf() {if (owner) close (fd);}
+  protected:
+   int fd;
+   bool owner;
+   bool takeFromBuf;
+   char charBuf;
+};
+
+
+
+class fd_ostream : public ostream {
+   fd_streambuf _streambuffer;
+  public:
+   fd_ostream(int _fd, bool _owner=false)
+      : _streambuffer (_fd, _owner)
       , ostream(&_streambuffer)
       {clear();}
 };
 
 
-class fileptr_istream : public istream {
-   fileptr_streambuf _streambuffer;
+class fd_istream : public istream {
+   fd_streambuf _streambuffer;
   public:
-   fileptr_istream(FILE *_file)
-      : _streambuffer (_file)
+   fd_istream(int _fd, bool _owner=false)
+      : _streambuffer (_fd, _owner)
       , istream(&_streambuffer)
       {clear();}
 };
+#endif
+
 
 #endif
