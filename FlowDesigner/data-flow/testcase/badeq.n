@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node1" type="Equal" x="-239.000000" y="100.000000"/>
+    <Node name="node2" type="Constant" x="-406.000000" y="79.000000">
+      <Parameter name="VALUE" type="string" value="toto"/>
+    </Node>
+    <Node name="node3" type="Constant" x="-405.000000" y="122.000000">
+      <Parameter name="VALUE" type="float" value="2"/>
+    </Node>
+    <Link from="node2" output="VALUE" to="node1" input="INPUT1"/>
+    <Link from="node3" output="VALUE" to="node1" input="INPUT2"/>
+    <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
+  </Network>
+</Document>
