@@ -5,8 +5,8 @@
       <Parameter name="TYPE" type="string" value="TCP_STREAM"/>
       <Parameter name="PORT" type="int" value="10000"/>
     </Node>
-    <Node name="node2" type="Constant" x="-309.000000" y="119.000000">
-      <Parameter name="VALUE" type="string" value="laborius1"/>
+    <Node name="node2" type="Constant" x="-310.000000" y="117.000000">
+      <Parameter name="VALUE" type="string" value="localhost"/>
     </Node>
     <Node name="node3" type="Connect" x="32.000000" y="112.000000"/>
     <Node name="node5" type="Sound" x="-61.000000" y="158.000000">
