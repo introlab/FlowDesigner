@@ -4,6 +4,7 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
+#include "TrainingAlgo.h"
 
 class NNetTrainDBD;
 
@@ -130,7 +131,7 @@ public:
       
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
-      net.trainDeltaBar(tin, tout, maxEpoch, learnRate, increase, decrease);
+      TrainingDeltaBarDelta::train(&net, tin, tout, maxEpoch, learnRate, increase, decrease);
       
       out[count] = netValue;
 

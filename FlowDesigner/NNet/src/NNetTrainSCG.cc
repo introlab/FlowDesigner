@@ -4,6 +4,7 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
+#include "TrainingAlgo.h"
 
 class NNetTrainSCG;
 
@@ -120,7 +121,7 @@ public:
       
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
-      net.trainSCG(tin, tout, maxEpoch, sigma, lambda);
+      TrainingSCG::train(&net, tin, tout, maxEpoch, sigma, lambda);
       
       out[count] = netValue;
 

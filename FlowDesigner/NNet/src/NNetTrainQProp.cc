@@ -4,6 +4,7 @@
 #include "BufferedNode.h"
 #include "ObjectRef.h"
 #include "FFNet.h"
+#include "TrainingAlgo.h"
 
 class NNetTrainQProp;
 
@@ -130,7 +131,7 @@ public:
       
       FFNet &net = object_cast<FFNet> (netValue);
       //net.setDerivOffset(.05);
-      net.trainQProp(tin, tout, maxEpoch, learnRate);
+      TrainingQProp::train(&net, tin, tout, maxEpoch, learnRate);
       
       out[count] = netValue;
 

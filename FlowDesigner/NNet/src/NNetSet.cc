@@ -1,6 +1,7 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
 #include "NNetSet.h"
+#include "TrainingAlgo.h"
 
 DECLARE_TYPE(NNetSet)
 
@@ -101,7 +102,7 @@ void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *>
    {
       //if (i==47 || i==56)
       //if (i==1 || i==2 || i==4 || i==5 || i==17 || i==23)
-      nets[i]->trainDeltaBar(in[i],out[i],iter,learnRate,increase,decrease);
+      TrainingDeltaBarDelta::train(nets[i], in[i],out[i],iter,learnRate,increase,decrease);
    }
    
 }
