@@ -1,14 +1,15 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include <typeinfo>
+#include <pthread.h>
+#include <sstream>
+
 #include "vflow.h"
 #include "GUIDocument.h"
 #include "GUINetwork.h"
-#include <typeinfo>
 #include "ParameterSet.h"
 #include "Network.h"
-#include <pthread.h>
 #include "rc_ptrs.h"
-#include <sstream>
 #include "object_param.h"
 #include "UserException.h"
 

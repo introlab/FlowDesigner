@@ -1,10 +1,10 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include <iostream>
 #include "GUINetTerminal.h"
 #include "GUITerminal.h"
 #include "GUINode.h"
 #include "GUINetwork.h"
-#include <iostream>
 #include "UIDocument.h"
 #include "misc_gui.h"
 

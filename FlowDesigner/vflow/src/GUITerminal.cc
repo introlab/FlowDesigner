@@ -1,12 +1,12 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include <iostream>
 #include "GUITerminal.h"
 #include "GUINode.h"
 #include "GUILink.h"
 #include "GUINetTerminal.h"
 #include "vflow.h"
 #include "UIDocument.h"
-#include <iostream>
 
 using namespace std;
 

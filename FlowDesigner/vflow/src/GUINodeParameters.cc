@@ -1,5 +1,7 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include <string>
+#include <iostream>
 #include "GUINodeParameters.h"
 #include "GUINode.h"
 #include "GUINetwork.h"

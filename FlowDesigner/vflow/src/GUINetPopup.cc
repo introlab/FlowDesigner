@@ -1,13 +1,13 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include <iostream>
+#include <string>
+#include <set>
 #include "GUINetPopup.h"
 #include "GUINetwork.h"
 #include "UIDocument.h"
 #include "GUIDocument.h"
 #include "Node.h"
-#include <iostream>
-#include <string>
-#include <set>
 
 using namespace std;
 

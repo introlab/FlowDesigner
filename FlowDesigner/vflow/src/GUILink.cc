@@ -1,9 +1,9 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
+#include <iostream>
 #include "GUILink.h"
 #include "GUITerminal.h"
 #include "GUINetwork.h"
-#include <iostream>
 
 using namespace std;
 

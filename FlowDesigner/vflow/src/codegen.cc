@@ -8,11 +8,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <sstream>
+#include <stdlib.h>
 #include <gnome.h>
 #include "GUIDocument.h"
-#include <sstream>
 #include "BaseException.h"
-#include <stdlib.h>
 
 class CodeGenState {
    GtkWidget* dialog;

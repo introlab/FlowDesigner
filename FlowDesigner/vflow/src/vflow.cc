@@ -1,12 +1,13 @@
 // Copyright (C) 2001 Jean-Marc Valin & Dominic Letourneau
 
-#include "vflow.h"
-#include "iextensions.h"
 #include <list>
 #include <sstream>
+#include <libxml/parser.h>
+
+#include "vflow.h"
+#include "iextensions.h"
 #include "vflow_pref.h"
 #include "flow_version.h"
-#include <libxml/parser.h>
 #include "misc_gui.h"
 #include "GUIDocument.h"
 #include "GUINetwork.h"
