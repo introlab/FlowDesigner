@@ -52,6 +52,10 @@ int main(int argc, char **argv)
      cerr << endl;
      return 1;
   }  
+  catch (exception e) {
+     cerr << e.what() << endl;
+     return 2;
+  }
   catch (...) {
     cerr<<"Unknown unhandled exception in "<<argv[1]<<endl;
     cerr<<"Exiting"<<endl;
