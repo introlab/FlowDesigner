@@ -44,7 +44,7 @@ class FFNet {
 	    float *err = layers[k]->getError();
 	    for (int i=0;i<layerSize;i++)
 	    {
-	       float *w = layers[k]->getWeights(i);
+	       float *w = layers[k]->getTmpWeights(i);
 	       if (k==outputLayer)
 	       {
 		  //cerr << "output layer\n";
@@ -65,9 +65,9 @@ class FFNet {
 	       for (int j=0;j<layerInputs;j++)
 	       {
 		  //cout << w[j] << " -> ";
-		  w[j] += alpha * previous[j] * err[i] * deriv_tanh(current[i]);
+		  w[j] += alpha * previous[j] * err[i] * deriv(current[i]);
 	       }
-	       w[layerInputs] += alpha * err[i] * deriv_tanh(current[i]);
+	       w[layerInputs] += alpha * err[i] * deriv(current[i]);
 	       //cout << w[i] << endl;
 	    }
 	 }
@@ -81,9 +81,18 @@ class FFNet {
       {
 	 while (iter)
 	 {
+	    for (int i=0;i<layers.size();i++)
+	    {
+	       layers[i]->copyToTmp();
+	    }
 	    for (int i=0;i<in.size();i++)
 	       learn (in[i], out[i]);
-	    iter--;
+	    for (int i=0;i<layers.size();i++)
+	    {
+	       layers[i]->copyFromTmp();
+	    }
+ 	    iter--;
+	    
 	 }
       }
 };

@@ -11,6 +11,9 @@ FFLayer::FFLayer (int _nbNeurons, int _nbInputs)
       //weights[i]=1.0;
       weights[i]=(rand()%1000) * .002 - .05;
    }
+
+   tmp_weights = new float [nbNeurons*(nbInputs+1)];
+
    value = new float [nbNeurons];
    error = new float [nbNeurons];
 }
