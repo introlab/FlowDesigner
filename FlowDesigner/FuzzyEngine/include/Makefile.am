@@ -7,4 +7,5 @@ include_HEADERS = FuzzyFunction.h \
 	GenericModel.h \
 	TrapezoidalFunction.h \
 	TriangularFunction.h \
-	FuzzyOperators.h
+	FuzzyOperators.h \
+	Tokenizer.h

@@ -70,6 +70,11 @@ public:
   
   
   FuzzyRule* clone();
+
+  virtual void printOn(ostream &out=cout) {
+    print_rule(out);
+  }
+
   
  private:
   
@@ -89,6 +94,7 @@ inline istream& operator>> (istream &in, FuzzyRule &rule) {
   return in;
 }
 inline ostream& operator<< (ostream &out, FuzzyRule &rule) {
+  rule.printOn(out);
   return out;
 }
 

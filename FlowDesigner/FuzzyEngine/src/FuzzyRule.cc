@@ -19,6 +19,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "FuzzyRule.h"
+#include "Tokenizer.h"
 #include <string>
 
 
@@ -73,48 +74,48 @@ FuzzyRule::FuzzyRule(const FuzzyRule& cpy)
 FuzzyRule::FuzzyRule(string nodeName, ParameterSet params) 
   : BufferedNode(nodeName,params), m_rule_number(-1) {
   
+  cerr<<"FuzzyRule constructor"<<endl;
 
   m_ruleID = addOutput("RULE");
   String antecedant  = object_cast<String>(parameters.get("IF"));
   String consequent  = object_cast<String>(parameters.get("THEN"));
 
+  if (antecedant.size() == 0 || consequent.size() == 0) {
+    throw new GeneralException("Antecedant or consequent not specified",__FILE__,__LINE__);
+  }
 
-  vector<string> tmp_vector;
+  vector<char> discardToken(3);
+  vector<char> keepToken;
+  discardToken[0]= ' ';
+  discardToken[1]= ':';
+  discardToken[2]= ';';
 
-  char *tmp_string = strtok(const_cast<char*>(antecedant.c_str()),": \n");
+
+  vector<string> tokens;
+  string_to_token(tokens,antecedant,keepToken,discardToken);
+
+
+  if (tokens.size() %2 == 0 && tokens.size() != 0) { 
+    for (int i = 0; i < tokens.size(); i+= 2) {
+      m_antecedant.push_back(make_pair(tokens[i],tokens[i+1]));
+    }
+  }
+  else {
+    throw new GeneralException("Use VARIABLE1:VALUE VARIABLE2:VALUE as antecedant",__FILE__,__LINE__);
+  }
+   
+  string_to_token(tokens,consequent,keepToken,discardToken);
   
-  do {
-    tmp_vector.push_back(string(tmp_string));
-    tmp_string = strtok(NULL,": \n");
-  }
-  while (tmp_string != NULL);
-
-  if (tmp_vector.size() %2 == 0) {
-    for (int i = 0; i < tmp_vector.size(); i+=2) {
-      m_antecedant.push_back(make_pair(tmp_vector[i],tmp_vector[i+1]));
+  if (tokens.size() %2 == 0 && tokens.size() != 0) { 
+    for (int i = 0; i < tokens.size(); i+=2) {
+      m_consequent.push_back(make_pair(tokens[i],tokens[i+1]));
     }
   }
   else {
-    throw new GeneralException("Antecedant not valid (VARIABLE1:FUNCT1 VARIABLE2:FUNCT2)",__FILE__,__LINE__);
+    throw new GeneralException("Use VARIABLE1:VALUE VARIABLE2:VALUE as consequent",__FILE__,__LINE__);
   }
 
-  tmp_vector.resize(0);
-  tmp_string = strtok(const_cast<char*>(consequent.c_str()),": \n");
-
-  do {
-    tmp_vector.push_back(string(tmp_string));
-    tmp_string = strtok(NULL,": \n");
-  }
-  while (tmp_string != NULL);
-
-  if (tmp_vector.size() %2 == 0) {
-    for (int i = 0; i < tmp_vector.size(); i+=2) {
-      m_consequent.push_back(make_pair(tmp_vector[i],tmp_vector[i+1]));
-    }
-  }
-  else {
-    throw new GeneralException("Consequent not valid (VARIABLE1:FUNCT1 VARIABLE2:FUNCT2)",__FILE__,__LINE__);
-  }
+  
 
 
   print_rule(cerr);

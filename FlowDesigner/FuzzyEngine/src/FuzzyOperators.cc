@@ -21,7 +21,7 @@
 
 
 ///FuzzyRule and Vector<FuzzyRule> concatenation
-ObjectRef concatRuleVect(ObjectRef x, ObjectRef y) {
+ObjectRef RuleConcatRuleVect(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> &vect = object_cast<Vector<FuzzyRule> >(y);
   Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
@@ -35,10 +35,10 @@ ObjectRef concatRuleVect(ObjectRef x, ObjectRef y) {
   return ObjectRef(output);
 
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatRuleVect, FuzzyRule, Vector<FuzzyRule>);
+REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatRuleVect, FuzzyRule, Vector<FuzzyRule>);
 
 ///Vector<FuzzyRule> and FuzzyRule concatenation
-ObjectRef concatVectRule(ObjectRef x, ObjectRef y) {
+ObjectRef RuleConcatVectRule(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> &vect = object_cast<Vector<FuzzyRule> >(x);
 
@@ -53,10 +53,10 @@ ObjectRef concatVectRule(ObjectRef x, ObjectRef y) {
   return ObjectRef(output);
 
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatVectRule, Vector<FuzzyRule>, FuzzyRule);
+REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatVectRule, Vector<FuzzyRule>, FuzzyRule);
 
 ///FuzzyRule and FuzzyRule concatenation
-ObjectRef concatRuleRule(ObjectRef x, ObjectRef y) {
+ObjectRef RuleConcatRuleRule(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> *output = new Vector<FuzzyRule>;
   (*output).push_back(object_cast<FuzzyRule>(x));
@@ -65,11 +65,11 @@ ObjectRef concatRuleRule(ObjectRef x, ObjectRef y) {
   return ObjectRef(output);
 
 }
-REGISTER_DOUBLE_VTABLE(concatVtable, concatRuleRule, FuzzyRule, FuzzyRule);
+REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatRuleRule, FuzzyRule, FuzzyRule);
 
 
 ///Vector<FuzzyRule> and Vector<FuzzyRule> concatenation
-ObjectRef concatVectVect(ObjectRef x, ObjectRef y) {
+ObjectRef RuleConcatVectVect(ObjectRef x, ObjectRef y) {
 
   Vector<FuzzyRule> &vect1 = object_cast<Vector<FuzzyRule> >(x);
   Vector<FuzzyRule> &vect2 = object_cast<Vector<FuzzyRule> >(y);
@@ -87,3 +87,4 @@ ObjectRef concatVectVect(ObjectRef x, ObjectRef y) {
   return ObjectRef(output);
 
 }
+REGISTER_DOUBLE_VTABLE(concatVtable, RuleConcatVectVect, Vector<FuzzyRule>, Vector<FuzzyRule>);
