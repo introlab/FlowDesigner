@@ -72,7 +72,8 @@ include_HEADERS = Array.h \
 	Stream.h \
 	URLHandler.h \
   BinaryAND.h \
-  BinaryOR.h
+  BinaryOR.h \
+  Power.h
 	
 noinst_HEADERS = \
 	Pack.h \
