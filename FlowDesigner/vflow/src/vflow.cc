@@ -2,6 +2,7 @@
 
 #include "vflow.h"
 #include "iextensions.h"
+#include <list>
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -167,9 +168,23 @@ void vflowGUI::paste (GUIDocument *doc) {
 				       created_nodes[to_node]->getInputNamed(to_terminal->getName()));
 
 	 
-	 //todo : reshape link
+	 while (!my_link->get_link_points().empty()) {
+	   GUILinkPoint *p1 = my_link->get_link_points().front();
+	   my_link->get_link_points().pop_front();
+	   delete p1;
+	   
+	 }
 
-	 
+	 //todo : reshape link
+	 list<GUILinkPoint*> &p_list = links[j]->get_link_points();
+
+	 for (list<GUILinkPoint*>::iterator p_iter = p_list.begin();
+	      p_iter != p_list.end(); p_iter++) {
+	   //copying points
+	   my_link->get_link_points().push_back(new GUILinkPoint((*p_iter)->x + delta_x, (*p_iter)->y + delta_y));
+	 }
+
+	 dynamic_cast<GUILink*>(my_link)->update();
 
 	}
       }

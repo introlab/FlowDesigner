@@ -40,6 +40,8 @@ public:
 
    void move (bool isInput, double dx,double dy);
 
+   void update();
+
 
 };
 

@@ -421,3 +421,24 @@ void GUILink::move (bool isInput, double dx,double dy)
 
    
 }
+
+void GUILink::update() {
+
+  GnomeCanvasPoints *points = gnome_canvas_points_new(m_points.size());
+
+  m_points.front()->setxy(x1,y1);
+  m_points.back()->setxy(x2,y2);
+
+  int pos = 0;
+  
+  for (list<GUILinkPoint*>::iterator iter = m_points.begin();
+       iter != m_points.end(); iter++) {
+    
+    points->coords[pos++] = (*iter)->x;
+    points->coords[pos++] = (*iter)->y;
+  }
+  
+  gnome_canvas_item_set(item, "points", points, NULL);
+  gnome_canvas_points_unref(points);
+     
+}
