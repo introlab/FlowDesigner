@@ -2,12 +2,17 @@
 #include <string>
 #include "ObjectParser.h"
 #include "misc.h"
+#include <algo.h>
 
 DECLARE_TYPE(Cell)
 
 void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)
 {
-   if (level <= 0) return;
+   if (level <= 0) 
+   {
+      cerr << "LEAF: " << data.size() << endl;
+      return;
+   }
    int dim;
    float thresh;
    split(data, dim, thresh);
@@ -46,7 +51,7 @@ void Cell::split(const vector<pair<int, float *> > &data, int &bestDim, float &b
       float threshold;
       float currentMutual;
       findThreshold(data, i, threshold, currentMutual);
-      cerr << "threshold: " << threshold << " currentMutual: " << currentMutual << endl;
+      //cerr << "threshold: " << threshold << " currentMutual: " << currentMutual << endl;
       if (currentMutual > bestMutual)
       {
          bestMutual=currentMutual;
@@ -127,6 +132,7 @@ void Cell::split(const vector<pair<int, float *> > &data, int &bestDim, float &b
    }
    }*/
 
+/*
 void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &bestThresh, float &bestScore)
 {
    float sum = 0, s2 = 0;
@@ -144,7 +150,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    }
    sum /= data.size();
    s2=sqrt(s2/data.size() - sqr(sum) );
-   cerr << "s2 = " << s2 << " N = " << data.size() << endl;
+   //cerr << "s2 = " << s2 << " N = " << data.size() << endl;
    float min_value = sum - 1.5*s2;
    float max_value = sum + 1.5*s2;
    //thresh=sum/data.size();
@@ -187,8 +193,57 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    }
    
 }
+*/
 
+static int float_less(const void *a, const void *b)
+{
+   return *((float *)a) < *((float *)b);
+}
 
+//find threshold using split at median and mutual information
+void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
+{
+   float sum = 0;
+   int i,k;
+   /*for (i=0;i<data.size();i++)
+      sum += data[i].second[dim];
+      thresh=sum/data.size();*/
+   if (data.size()==0) thresh=0; 
+   else {
+      float sorted[data.size()];
+      for (i=0;i<data.size();i++)
+         sorted[i] = data[i].second[dim];
+      //qsort(sorted,data.size(),sizeof(float), float_less);
+      sort (sorted,sorted+data.size());
+      thresh=sorted[data.size()/2];
+   }
+   
+   int sumAi = 0, sumBi = 0;
+   vector<int> Ai (numberClasses, 0);
+   vector<int> Bi (numberClasses, 0);
+   for (k=0;k<data.size();k++)
+   {
+      if (data[k].second[dim] >= thresh) 
+      {
+         sumAi++;
+         Ai[data[k].first]++;
+      } else {
+         sumBi++;
+         Bi[data[k].first]++;
+      }
+   }
+   
+   double weight = double(sumAi)/data.size();
+   score = 0.0;
+   for (i = 0;i<numberClasses;i++)
+   {
+      score += - weight     *  entropy_funct (double( Ai[i] ) / sumAi )
+               - (1-weight) *  entropy_funct (double( Bi[i] ) / sumBi );
+   }
+
+}
+
+//find threshold using split at average and mutual information
 /*void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
 {
    float sum = 0;
@@ -221,7 +276,8 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
                - (1-weight) *  entropy_funct (double( Bi[i] ) / sumBi );
    }
 
-}*/
+}
+*/
 
 /*void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
 {

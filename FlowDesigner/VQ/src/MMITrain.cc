@@ -29,6 +29,7 @@ MMITrain::MMITrain(string nodeName, ParameterSet params)
    //cerr << "MMITrain initialize\n";
    outputID = addOutput("OUTPUT");
    framesInputID = addInput("FRAMES");
+   nb_levels=dereference_cast<int> (parameters.get("LEVELS"));
 }
 
 void MMITrain::specificInitialize()
@@ -72,9 +73,10 @@ ObjectRef MMITrain::getOutput(int output_id, int count)
             }
          }
          
-         mmi->recursiveSplit(data, 10);
+         mmi->recursiveSplit(data, nb_levels);
          mmi->setNumbering();
          currentMMI = ObjectRef(mmi);
+         //exit(1);
       }
       return unlock_and_return(currentMMI);
    }
