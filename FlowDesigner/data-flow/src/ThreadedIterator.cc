@@ -129,8 +129,9 @@ void ThreadedIterator::stop_thread() {
     //to avoid any deadlocks
     iterator_unlock();
     cerr<<"Threaded iterator cancelling thread..."<<endl;
+    #ifdef HAVE_PTHREAD_CANCEL
     pthread_cancel(work_thread);
-    
+    #endif
 
     //wait for the thread
     //void **return_status;  
