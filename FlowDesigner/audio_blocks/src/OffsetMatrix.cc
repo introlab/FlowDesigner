@@ -11,7 +11,7 @@ DECLARE_NODE(OffsetMatrix)
 /*Node
  *
  * @name OffsetMatrix
- * @category DSP:Base
+ * @category DSP:Manip
  * @description Applies a gain to a vector
  *
  * @input_name INPUT
