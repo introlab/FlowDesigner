@@ -5,13 +5,13 @@
     <Node name="node2" type="NOP" x="-288.000000" y="135.000000"/>
     <Node name="node3" type="FFT" x="-196.000000" y="169.000000"/>
     <Node name="node4" type="PS" x="-130.000000" y="170.000000"/>
-    <Node name="node5" type="Log" x="65.000000" y="163.000000"/>
+    <Node name="node5" type="Log" x="68.000000" y="170.000000"/>
     <Node name="node6" type="PlotProbe" x="230.000000" y="165.000000">
       <Parameter name="BREAK_AT" type="subnet_param" value="BREAK_AT"/>
       <Parameter name="SHOW" type="subnet_param" value="SHOW"/>
       <Parameter name="SKIP" type="subnet_param" value="SKIP"/>
     </Node>
-    <Node name="node7" type="IF" x="152.000000" y="165.000000"/>
+    <Node name="node7" type="IF" x="158.000000" y="171.000000"/>
     <Node name="node8" type="IF" x="18.000000" y="185.000000"/>
     <Node name="node9" type="Sqrt" x="-71.000000" y="169.000000"/>
     <Node name="node10" type="Constant" x="-200.000000" y="100.000000">
@@ -36,4 +36,9 @@
     <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
     <NetInput name="INPUT" node="node2" terminal="INPUT"/>
   </Network>
+  <Parameter name="BREAK_AT" type="int" value=""/>
+  <Parameter name="SHOW" type="bool" value=""/>
+  <Parameter name="SKIP" type="int" value=""/>
+  <Parameter name="SQRT" type="bool" value=""/>
+  <Parameter name="LOG" type="bool" value=""/>
 </Document>

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <Document>
-  <Network type="subnet" name="MAIN" category="Signal:Filters">
+  <Network type="subnet" name="MAIN" category="Signal:Filter">
     <Node name="node1" type="FIR" x="-84.000000" y="90.000000">
       <Parameter name="CONTINUOUS" type="int" value="1"/>
       <Parameter name="NONCAUSAL" type="subnet_param" value="DELAY"/>
     </Node>
-    <Node name="node2" type="LPFilter" x="-214.000000" y="124.000000">
+    <Node name="node2" type="LPFilter" x="-224.000000" y="98.000000">
       <Parameter name="LENGTH" type="subnet_param" value="FILTER_LENGTH"/>
       <Parameter name="THETA" type="subnet_param" value="FREQ"/>
       <Parameter name="HP" type="int" value="1"/>
@@ -14,7 +14,7 @@
     <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
   </Network>
-  <Parameter name="DELAY" type="" value=""/>
-  <Parameter name="FILTER_LENGTH" type="" value=""/>
-  <Parameter name="FREQ" type="" value=""/>
+  <Parameter name="DELAY" type="int" value=""/>
+  <Parameter name="FILTER_LENGTH" type="int" value=""/>
+  <Parameter name="FREQ" type="float" value=""/>
 </Document>

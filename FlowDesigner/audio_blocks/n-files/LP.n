@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Document>
-  <Network type="subnet" name="MAIN" category="Signal:Filters">
+  <Network type="subnet" name="MAIN" category="Signal:Filter">
     <Node name="node1" type="FIR" x="-84.000000" y="90.000000">
       <Parameter name="CONTINUOUS" type="int" value="1"/>
       <Parameter name="NONCAUSAL" type="subnet_param" value="DELAY"/>
@@ -13,7 +13,7 @@
     <NetOutput name="OUTPUT" node="node1" terminal="OUTPUT"/>
     <NetInput name="INPUT" node="node1" terminal="INPUT"/>
   </Network>
-  <Parameter name="FILTER_LENGTH" type="" value=""/>
-  <Parameter name="DELAY" type="" value=""/>
-  <Parameter name="FREQ" type="" value=""/>
+  <Parameter name="DELAY" type="int" value=""/>
+  <Parameter name="FILTER_LENGTH" type="int" value=""/>
+  <Parameter name="FREQ" type="float" value=""/>
 </Document>

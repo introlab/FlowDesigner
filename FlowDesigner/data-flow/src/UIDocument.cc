@@ -519,13 +519,25 @@ void UIDocument::loadExtDocInfo(const string &path, const string &name)
 {
    string fullname = path + "/" + name;
    xmlDocPtr doc = xmlParseFile(fullname.c_str());
-   
+   string basename = string(name.begin(), name.end()-2);
+
    if (!doc || !doc->root || !doc->root->name)
    {
       cerr << "ExtDoc: error loading " << fullname << "\n";
       xmlFreeDoc (doc);
       return;
    }
+
+   if (externalDocInfo.find(basename) != externalDocInfo.end())
+   {
+      cerr << "error: net " << basename << " already existed\n";
+      return;
+   }
+   //cerr << "new subnet info with name: " << netName << "\n";
+   SubnetInfo *info = new SubnetInfo;
+   externalDocInfo[basename] = info;
+   
+
    xmlNodePtr root=doc->root;
    xmlNodePtr net = root->childs;
    
@@ -534,13 +546,56 @@ void UIDocument::loadExtDocInfo(const string &path, const string &name)
       //cerr << "scanning networks...\n";
       if (string((char*)net->name) == "Network")
       {
-     //cerr << "scanning a net\n";
-     string netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
-     if (netName == "MAIN")
-     {
-        string basename = string(name.begin(), name.end()-2);
-        loadNetInfo(net, externalDocInfo, basename);
-     }
+	 //cerr << "scanning a net\n";
+	 string netName = string((char *)xmlGetProp(net, (CHAR *)"name"));
+	 if (netName == "MAIN")
+	 {
+	    
+	    CHAR *category = xmlGetProp(net, (CHAR *)"category");
+	    if (category)
+	       info->category = string((char *)category);
+
+	    //loadNetInfo(net, externalDocInfo, basename);
+	   
+ 
+	    xmlNodePtr node = net->childs;
+	    while (node != NULL)
+	    {
+	       if (string((char*)node->name) == "NetInput")
+	       {
+		  string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+		  ItemInfo *newInfo = new ItemInfo;
+		  newInfo->name = termName;
+		  info->inputs.insert (info->inputs.end(), newInfo);
+	 
+	       } else if (string((char*)node->name) == "NetOutput")
+	       {
+		  string termName = string((char *)xmlGetProp(node, (CHAR *)"name"));
+		  ItemInfo *newInfo = new ItemInfo;
+		  newInfo->name = termName;
+		  info->outputs.insert (info->outputs.end(), newInfo);
+	 
+	       }
+	       node = node->next;
+	    }
+
+
+	 }
+      } else if (string((char*)net->name) == "Parameter")
+      {
+	 char *param_name = (char *)xmlGetProp(net, (CHAR *)"name");
+	 char *param_type = (char *)xmlGetProp(net, (CHAR *)"type");
+	 if (param_name && param_type)
+	 {
+	    ItemInfo *newInfo = new ItemInfo;
+	    newInfo->name = param_name;
+	    if (string(param_type)=="")
+	       newInfo->type = "int";
+	    else
+	       newInfo->type = param_type;
+	    info->params.insert (info->params.end(), newInfo);
+	 }
+	 //cerr << "param\n";
       }
       net = net->next;
    }

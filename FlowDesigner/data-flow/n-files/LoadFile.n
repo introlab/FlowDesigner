@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Document>
   <Network type="subnet" name="MAIN" category="IO">
-    <Node name="node1" type="Constant" x="-535.000000" y="16.000000">
+    <Node name="node1" type="Constant" x="-537.000000" y="10.000000">
       <Parameter name="VALUE" type="subnet_param" value="FILENAME"/>
     </Node>
     <Node name="node2" type="InputStream" x="-415.000000" y="11.000000"/>
@@ -10,4 +10,5 @@
     <Link from="node1" output="VALUE" to="node2" input="INPUT"/>
     <NetOutput name="OUTPUT" node="node3" terminal="OUTPUT"/>
   </Network>
+  <Parameter name="FILENAME" type="string" value=""/>
 </Document>
