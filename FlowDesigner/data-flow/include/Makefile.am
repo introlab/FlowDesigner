@@ -60,5 +60,6 @@ noinst_HEADERS = \
 	FlowException.h \
 	vmethod.h  \
 	sstream.unused \
-	IntfNode.h
+	IntfNode.h \
+	ObjectPool.h
 
