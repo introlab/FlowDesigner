@@ -228,7 +228,7 @@ public:
       //Get result in buffer
       pthread_mutex_lock(&bufferLock);
       //cerr << "returning " << count << endl;
-      ObjectRef returnValue = (*buff)[count];
+      ObjectRef returnValue = buff->get(count);
       pthread_mutex_unlock(&bufferLock);
       if (typeid(*returnValue) == typeid(ExceptionObject))
       {
