@@ -7,4 +7,4 @@ override libdir=${prefix}/share/flowdesigner/lib
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
-SUBDIRS = src m
+SUBDIRS = src
