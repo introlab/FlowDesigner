@@ -46,7 +46,7 @@ public:
       {
 	 for (iterator i=begin();i!=end();i++)
 	    destr(i);
-	 delete[] (data);
+	 delete[] (char *)(data);
       }      
    }
 
@@ -115,14 +115,20 @@ void Vector<T>::resize(int new_size, const T &x)
 	 int new_capacity = new_size;
 
 	 T* tmp = (T*)new char [new_capacity*sizeof(T)];
+#if 0 //FIXME: Help! Which one is right?
 	 for (int i=0;i<obj_size;i++)
 	    constr(tmp+i,data[i]);
 	 if (data)
 	 {
 	    for (iterator i=begin();i!=end();i++)
 	       destr(i);
-	    delete[] (data);
+	    delete[] (char *)(data);
 	 }
+#else
+	 memcpy(tmp, data, obj_size*sizeof(T));
+	 if (data)
+	    delete[] (char *)(data);
+#endif
 	 data = tmp;
 	 capacity = new_capacity;
       }
@@ -149,6 +155,8 @@ void Vector<T>::insert(iterator after, const T &x)
       int new_capacity = obj_size+1;
       //Allocate new memory
       T* tmp = (T*)new char [new_capacity*sizeof(T)];
+
+#if 0 //FIXME: Help! Which one is right?
       //copy the elements before the inserted object
       for (int i=0;i<pos;i++)
 	 constr(tmp+i,data[i]);
@@ -158,21 +166,33 @@ void Vector<T>::insert(iterator after, const T &x)
       for (int i=pos+1;i<obj_size+1;i++)
 	 constr(tmp+i,data[i-1]);
       //Free old memory
+      data = tmp;
       if (data)
       {
 	 for (iterator i=begin();i!=end();i++)
 	    destr(i);
-	 delete[] (data);
+	 delete[] (char *)(data);
       }
+#else
+      memcpy(tmp, data, pos*sizeof(T));
+      constr(tmp+pos,x);
+      memcpy(tmp+pos+1, data+pos, (end()-after)*sizeof(T));
       data = tmp;
+      if (data)
+	 delete[] (char *)(data);
+#endif
       capacity = new_capacity;
    } else {
+#if 0 //FIXME: Help! Which one is right?
       for (iterator i=after+1;i<end()+1;i++)
       {
 	 constr(i,*(i-1));
 	 destr(i-1);
       }
       constr(after,x);
+#else
+      memmove(after+1, after, (end()-after)*sizeof(T));
+#endif
    }
    obj_size++;
 }
@@ -180,11 +200,15 @@ void Vector<T>::insert(iterator after, const T &x)
 template<class T>
 void Vector<T>::erase(iterator it)
 {
+#if 0 //FIXME: Help! Which one is right?
    for (iterator i=it;i<end()-1;i++)
    {
       destr(i);
       constr(i,*(i+1));
    }
+#else
+   memmove(it+1, it, (end()-it-1)*sizeof(T));
+#endif
    destr(end()-1);
    obj_size--;
 }
