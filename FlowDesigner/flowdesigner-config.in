@@ -142,31 +142,31 @@ while test $# -gt 0; do
 	;;
     effects)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/effects -lflow -leffects"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/effects"
 	;;
     hmm)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/HMM -lflow -lhmm"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/HMM "
 	;;
     nnet)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/NNet -lflow -lNNet"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/NNet"
 	;;
     audio_blocks)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/audio_blocks -lflow -lablocks"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/audio_blocks"
 	;;
     fuzzy)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/fuzzy -lflow -lfuzzy"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/FuzzyEngine"
 	;;
     vq)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/VQ -lflow -lvq"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/VQ "
 	;;
     vflow)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/vflow -lflow"
-	the_flags="$the_flags -I$includedir"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/vflow"
 	;;
     config)
 	the_libs="$the_libs $LD_FLAGS $LIBS"
