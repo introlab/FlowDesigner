@@ -19,7 +19,11 @@ class VFlowPref {
 
    static bool getBool(const string &str);
    static void setBool(const string &str, bool val);
-   //static bool isShowAll() {return pref.showAll;}
+
+   static guint32 getColor(const string &str);
+   static void setColor(const string &str, guint32 col);
+
+   static void Save();
 };
 
 
@@ -29,6 +33,9 @@ class VFlowPrefDialog {
    GtkWidget *runprocess;
    GtkWidget *showallio;
    GtkWidget *showtooltip;
+   GtkWidget *colorpicker1;
+   GtkWidget *colorpicker2;
+   GtkWidget *colorpicker3;
   public:
    VFlowPrefDialog();
    ~VFlowPrefDialog();

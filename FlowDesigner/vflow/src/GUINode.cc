@@ -114,14 +114,16 @@ void GUINode::draw()
 	 y1=min(y1,ty1);
 	 y2=max(y2,ty2);
       }
-   
+
+   guint32 col = VFlowPref::getColor("RegularColor");
+
    item2 = gnome_canvas_item_new(group,
 				 gnome_canvas_rect_get_type(),
 				 "x1", x1-5,
 				 "y1", y1-5,
 				 "x2", x2+5,
 				 "y2", y2+5,
-				 "fill_color_rgba", 0x8cd0af20,
+				 "fill_color_rgba", col,
 				 "outline_color", "black",
 				 "width_units", 2.0,
 				 NULL);
@@ -529,6 +531,7 @@ void GUINode::initialize_widgets() {
     outputs.insert(outputs.end(), new GUITerminal (outputname[i], this, false, x2, y2));
   }
 
+   guint32 col = VFlowPref::getColor("RegularColor");
  
   //creating rectangle
   nodeRect = gnome_canvas_item_new(group,
@@ -537,7 +540,7 @@ void GUINode::initialize_widgets() {
 				"y1", y1-5,
 				"x2", x2+5,
 				"y2", y2+5,
-				"fill_color_rgba", 0x8cd0af20,
+				"fill_color_rgba", col,
 				"outline_color", "black",
 				"width_units", 2.0,
 				NULL);
@@ -650,22 +653,26 @@ void GUINode::redraw() {
 
 void GUINode::notifyError(const string &message)
 {
-   gnome_canvas_item_set(nodeRect, "fill_color_rgba", 0xC0202020, NULL);
+   guint32 col = VFlowPref::getColor("ErrorColor");
+   gnome_canvas_item_set (nodeRect,
+			  "fill_color_rgba", col,
+			  NULL);
    //dynamic_cast<GUINetwork *> (getNetwork())->updateScroll();
 }
 
 void GUINode::select() {
 
-  gnome_canvas_item_set (nodeRect,
-			 "fill_color_rgba", 0x8ca0af20,
-			 NULL);
+   guint32 col = VFlowPref::getColor("SelectedColor");
+   gnome_canvas_item_set (nodeRect,
+			  "fill_color_rgba", col,
+			  NULL);
 }
 
 void GUINode::unselect() {
-  
- gnome_canvas_item_set (nodeRect,
-			"fill_color_rgba", 0x8cd0af20,
-			NULL);
+   guint32 col = VFlowPref::getColor("RegularColor");
+   gnome_canvas_item_set (nodeRect,
+			  "fill_color_rgba", col,
+			  NULL);
 }
 
 void GUINode::getBounds(double &x1, double &y1, double &x2, double &y2) {
