@@ -870,6 +870,9 @@ void exit_event  (GtkMenuItem  *menuitem, vflowGUI *vflow)
    {
       int close = close_doc_event(NULL, vflow);
 
+      if (close == 0)
+         return;
+
       if (close==-1) {
          break;
       }
