@@ -25,3 +25,5 @@ vflow preferences...
 allow to change the thread stack size
 
 fix segfaults on "no condition" and "input not connected"
+
+catch exceptions on DL opening modules at startup

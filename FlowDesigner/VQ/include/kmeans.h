@@ -42,6 +42,8 @@ public:
       : dist(_dist)
    {}
 
+   int nbClasses() const {return means.size();}
+
    const vector<float> &operator[] (int i) const {return means[i];}
 
    int split (const vector<float *> &data, int len);

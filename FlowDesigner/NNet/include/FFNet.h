@@ -19,15 +19,18 @@ class FFNet : public Object {
    FFNet(const Vector<int> &_topo);
    FFNet() {}
    double *calc(const double *input);
+   double calcError(const vector<float *> &tin, const vector<float *> &tout);
 
-   void learn(double *input, double *output, double alpha);
-   void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
+   void learn(double *input, double *output);
+   //void learnlm(double *input, double *output, double **jacob, double *err, double &sse);
 
    void train(vector<float *> in, vector<float *> out, int iter, double learnRate=.00001, double mom=.9, 
 	      double increase=1.05, double decrease=.7, double errRatio=1.04, int nbSets=1);
 
-   void trainlm(vector<float *> in, vector<float *> out, int maxIter);
+   void traincg(vector<float *> in, vector<float *> out, int iter);
 
+   //void trainlm(vector<float *> in, vector<float *> out, int maxIter);
+   
    void printOn(ostream &out) const;
    void readFrom (istream &in);
 };

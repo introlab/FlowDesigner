@@ -68,7 +68,8 @@ class FFLayer : public Object {
   public:
    double (*func) (double);
    double (*deriv_func) (double);
-   double *tmp_weights;
+   double *gradient;
+   double *saved_weights;
    double *deriv;
   protected:
    int nbNeurons;
@@ -81,7 +82,15 @@ class FFLayer : public Object {
   public:
    FFLayer() {};
    FFLayer(int _nbNeurons, int _nbInputs, string type = "tansig");
-   ~FFLayer() {delete tmp_weights; delete value; delete weights; delete error; delete deriv;}
+   ~FFLayer() 
+      {
+	 delete [] gradient; 
+	 delete [] saved_weights; 
+	 delete [] value; 
+	 delete [] weights; 
+	 delete [] error; 
+	 delete [] deriv;
+      }
    void update(const double *previous)
       {
 	 for (int i=0;i<nbNeurons;i++)
@@ -95,19 +104,33 @@ class FFLayer : public Object {
 	    deriv[i]=deriv_func(value[i]);
 	 }
       }
-   void copyToTmp()
+   void saveWeights()
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    tmp_weights[i]=0;
+	    saved_weights[i]=weights[i];
 	 }
       }
-   void copyFromTmp(double mom)
+   void loadWeights()
       {
 	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
 	 {
-	    //momentum[i] = mom*momentum[i] + (1-mom)*tmp_weights[i];
-	    momentum[i] = mom*momentum[i] + tmp_weights[i];
+	    weights[i]=saved_weights[i];
+	 }
+      }
+   void resetGradient()
+      {
+	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	 {
+	    gradient[i]=0;
+	 }
+      }
+   void updateGradient(double alpha, double mom)
+      {
+	 for (int i=0;i<nbNeurons*(nbInputs+1);i++)
+	 {
+	    //momentum[i] = mom*momentum[i] + (1-mom)*gradient[i];
+	    momentum[i] = mom*momentum[i] + alpha*gradient[i];
 	    //momentum[i] += weights[i]*.00001*(rand()%100-50);
 	    weights[i]+=momentum[i];
 	 }
@@ -122,7 +145,7 @@ class FFLayer : public Object {
    void init(double minmax);
    double *getValue() {return value;}
    double *getWeights(int i) {return weights + i*(nbInputs+1);}
-   double *getTmpWeights(int i) {return tmp_weights + i*(nbInputs+1);}
+   double *getGradient(int i) {return gradient + i*(nbInputs+1);}
    double *getError() {return error;}
    void printOn(ostream &out) const;
    void readFrom (istream &in);

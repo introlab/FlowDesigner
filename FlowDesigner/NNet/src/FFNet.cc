@@ -89,9 +89,9 @@ void FFNet::learn(double *input, double *output)
 	 }
 	 for (int j=0;j<layerInputs;j++)
 	 {
-	    w[j] += previousValue[j] * delta[i];
+	    w[j] = previousValue[j] * delta[i];
 	 }
-	 w[layerInputs] += delta[i];
+	 w[layerInputs] = delta[i];
       }
    }	 
 }
@@ -263,7 +263,7 @@ void FFNet::traincg(vector<float *> tin, vector<float *> tout, int iter)
 
       double min_error = FLT_MAX;
       double min_alpha = 0;
-      for (double alpha = .00000000001; alpha < .0001 ; alpha *= 3)
+      for (double alpha = .00000000001; alpha < .0001 ; alpha *= 5)
       {
 	 for (i=0;i<layers.size();i++)
 	    layers[i]->saveWeights();
@@ -292,7 +292,7 @@ void FFNet::traincg(vector<float *> tin, vector<float *> tout, int iter)
       double B=min_alpha*3;
       double sseA, sseB;
       double middle;
-      for (j=0;j<15;j++)
+      for (j=0;j<10;j++)
       {
 	 for (i=0;i<layers.size();i++)
 	    layers[i]->saveWeights();

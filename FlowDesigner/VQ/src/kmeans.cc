@@ -147,15 +147,23 @@ void KMeans::update (const vector<float *> &data, int len)
    }
    for (i=0; i<nbMeans;i++)
    {
-      float accum_1 = 1.0/accum[i];
-      //cerr << "mean " << i << ": (accum = " << accum[i] << ") ";
-      for (j=0;j<length;j++)  
+      if (accum[i]==0)
       {
-         //cerr << means[i][j] << " ";
-         means[i][j] *= accum_1;
-         //cerr << means[i][j] << " ";
+	 cerr << "empty vector " << i << "\n";
+	 int id = rand()%data.size();
+	 for (j=0;j<length;j++)  
+	    means[i][j] = data[id][j];
+      } else {
+	 float accum_1 = 1.0/accum[i];
+	 //cerr << "mean " << i << ": (accum = " << accum[i] << ") ";
+	 for (j=0;j<length;j++)  
+	 {
+	    //cerr << means[i][j] << " ";
+	    means[i][j] *= accum_1;
+	    //cerr << means[i][j] << " ";
+	 }
+	 //cerr << endl;
       }
-      //cerr << endl;
    }
    
 #ifndef STACK_ALLOC
@@ -197,10 +205,13 @@ void KMeans::train (int codeSize, const vector<float *> &data, int len, bool bin
    } else {
       for (i=1;i<codeSize;i++)
       {
+	 cerr << "iter " << i << endl;
          split (data, len);
          for (j=0;j<4;j++)
             update(data, len);
       }
+      for (j=0;j<30;j++)
+	 update(data, len);
    }
 }
 
