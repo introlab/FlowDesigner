@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN" category="Signal:DSP">
+    <Node name="node1" type="LPC" x="-472.000000" y="177.000000">
+      <Parameter name="INPUTLENGTH" type="subnet_param" value="FRAME_SIZE2"/>
+      <Parameter name="OUTPUTLENGTH" type="subnet_param" value="LPC_SIZE"/>
+      <Parameter name="LAG_THETA" type="subnet_param" value="LAG_THETA"/>
+    </Node>
+    <Node name="node2" type="Window" x="-582.000000" y="176.000000">
+      <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE2"/>
+      <Parameter name="WINDOW" type="string" value="HANNING"/>
+    </Node>
+    <Node name="node3" type="FIR" x="-349.000000" y="127.000000">
+      <Parameter name="LENGTH" type="subnet_param" value="FRAME_SIZE"/>
+      <Parameter name="CONTINUOUS" type="int" value="1"/>
+    </Node>
+    <Node name="node4" type="NOP" x="-774.000000" y="117.000000"/>
+    <Node name="node5" type="Overlap" x="-688.000000" y="174.000000">
+      <Parameter name="INPUTLENGTH" type="subnet_param" value="FRAME_SIZE"/>
+      <Parameter name="OUTPUTLENGTH" type="subnet_param" value="FRAME_SIZE2"/>
+    </Node>
+    <Link from="node2" output="OUTPUT" to="node1" input="INPUT"/>
+    <Link from="node1" output="OUTPUT" to="node3" input="FILTER"/>
+    <Link from="node4" output="OUTPUT" to="node3" input="INPUT"/>
+    <Link from="node5" output="OUTPUT" to="node2" input="INPUT"/>
+    <Link from="node4" output="OUTPUT" to="node5" input="INPUT"/>
+    <NetOutput name="LPC" node="node1" terminal="OUTPUT"/>
+    <NetOutput name="EXC" node="node3" terminal="OUTPUT"/>
+    <NetInput name="INPUT" node="node4" terminal="INPUT"/>
+  </Network>
+  <Parameter name="FRAME_SIZE2" type="" value=""/>
+  <Parameter name="LPC_SIZE" type="" value=""/>
+  <Parameter name="RADIUS" type="" value=""/>
+  <Parameter name="FRAME_SIZE" type="" value=""/>
+</Document>
