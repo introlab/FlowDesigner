@@ -11,6 +11,8 @@
 #include <fstream>
 #include <pthread.h>
 #include "UINetTerminal.h"
+#include "UINodeParameters.h"
+#include "UINodeRepository.h"
 #include <set>
 
 //struct xmlNode;
@@ -138,6 +140,9 @@ public:
 
    virtual void updateAllSubnetTerminals(const string _nettype, const string _terminalname, 
 					 UINetTerminal::NetTermType _terminaltype, bool _remove); 
+
+
+   virtual void updateAllSubnetParameters(const string _nettype, NodeInfo* _info);
 
 };
 

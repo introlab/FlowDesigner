@@ -158,13 +158,111 @@ static void node_remove_output (GtkButton *button, GUINodeParameters *node_param
 
 
 
-GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams)
-   : node(_node)
-   , nodeParams(_nodeParams)
-   , textParams(_nodeParams->get_textParams())
-   , inputSelect(NULL)
-   , outputSelect(NULL)
+GUINodeParameters::GUINodeParameters(UINode *_node, string type)
+  : UINodeParameters(_node,type), inputSelect(NULL), outputSelect(NULL), nodeproperty(NULL)
 {
+
+}
+
+GUINodeParameters::~GUINodeParameters()
+{
+
+  if (nodeproperty) {
+    gtk_widget_destroy(nodeproperty);
+  }
+}
+
+void GUINodeParameters::show()
+{
+  //create all widgets
+  createWindow();
+}
+
+void GUINodeParameters::hide()
+{
+  //destroy widgets
+  gtk_widget_destroy(nodeproperty);
+
+  nodeproperty = NULL;
+
+}
+
+
+void GUINodeParameters::apply()
+{
+   //Set this to true if there's any change involving a subnet_param change
+   bool changedNetInterface=false;
+   for (int i=0;i<params.size();i++)
+   {
+      //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
+      GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
+      GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
+      string newType = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
+      string newValue = gtk_entry_get_text(GTK_ENTRY(gtkentr));
+
+      //There's a subnet_param involved
+      if (newType == "subnet_param" || textParams[i]->type == "subnet_param")
+      {
+	 //There's a change somewhere
+	if (newType != textParams[i]->type || newValue != textParams[i]->value) {
+	  //subnet param 
+	  changedNetInterface=true;
+	  cerr<<"changedNetInterface = true"<<endl;
+	  cerr<<"type : "<<newType<<endl;
+	  cerr<<"value: "<<newValue<<endl;
+
+	  //TODO : Should be done otherwise...
+	  //(DL) Adding parameters properly
+	  //insertLoadedParam(textParams[i],newType, newValue);
+	}
+      }
+      textParams[i]->type = newType;
+      textParams[i]->value = newValue;
+
+   }
+   //nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
+   GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments));
+   GtkTextIter start;
+   GtkTextIter end;
+   gtk_text_buffer_get_start_iter (buffer, &start);
+   gtk_text_buffer_get_start_iter (buffer, &end);
+   
+   setComments(string(gtk_text_buffer_get_text(buffer, &start, &end, true)));
+   
+   node->getNetwork()->setModified();
+
+   cerr<<"Calling interfaceChangeNotify"<<endl;
+   node->getNetwork()->interfaceChangeNotify();   
+}
+
+void GUINodeParameters::changed()
+{
+   gnome_property_box_changed(GNOME_PROPERTY_BOX(nodeproperty));
+}
+
+ParameterData *GUINodeParameters::getParamDataNamed(string n)
+{
+   for (int i=0;i<textParams.size();i++)
+      if (textParams[i]->name == n)
+         return &(params[i]);
+   return NULL;
+}
+
+/*
+void GUINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
+{
+
+   ParameterData *data = getParamDataNamed(param->name);
+   const vector<string> &types=ObjectParam::allTypes();
+   for (int i=0;i<types.size();i++)
+      if (types[i] == type)
+	 gtk_option_menu_set_history (GTK_OPTION_MENU (data->optionmenu), i);
+   GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(data->entry));
+   gtk_entry_set_text(GTK_ENTRY(gtkentr),(gchar *)value.c_str());   
+}
+*/
+
+void GUINodeParameters::createWindow() {
    params.resize(textParams.size());
    //cerr << "GUINodeParameters::GUINodeParameters" << textParams.size() << "\n";
    
@@ -382,7 +480,7 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook2), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook2), 1), label13);
    {
       int a=0;
-      const char *str = nodeParams->getComments().c_str();
+      const char *str = getComments().c_str();
      gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments)),
                               str, -1);
 
@@ -617,82 +715,5 @@ GUINodeParameters::GUINodeParameters(GUINode *_node, string type, UINodeParamete
    gnome_property_box_set_state(GNOME_PROPERTY_BOX (nodeproperty), false);
    gtk_widget_show(nodeproperty);
    //cerr << "this is " << this << "\n";
-}
 
-GUINodeParameters::~GUINodeParameters()
-{
-   gtk_widget_destroy(nodeproperty);
-   node->paramClose();
-}
-
-void GUINodeParameters::show()
-{
-   gtk_widget_show (nodeproperty);
-}
-
-void GUINodeParameters::hide()
-{
-   //gtk_widget_hide (nodeproperty);
-   delete this;
-   //cerr << this << endl;
-}
-
-
-void GUINodeParameters::apply()
-{
-   //Set this to true if there's any change involving a subnet_param change
-   bool changedNetInterface=false;
-   for (int i=0;i<params.size();i++)
-   {
-      //GtkWidget *gtk_option_menu_get_menu(params[i].optionmenu);
-      GtkWidget *menu = gtk_menu_get_active (GTK_MENU(params[i].optionmenu_menu));
-      GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(params[i].entry));
-      string newType = (char *)gtk_object_get_user_data (GTK_OBJECT(menu));
-      string newValue = gtk_entry_get_text(GTK_ENTRY(gtkentr));
-
-      //There's a subnet_param involved
-      if (newType == "subnet_param" || textParams[i]->type == "subnet_param")
-      {
-	 //There's a change somewhere
-	 if (newType != textParams[i]->type || newValue != textParams[i]->value)
-	    changedNetInterface=true;
-      }
-      textParams[i]->type = newType;
-      textParams[i]->value = newValue;
-   }
-   //nodeParams->setComments(string(gtk_editable_get_chars(GTK_EDITABLE(text_comments), 0, -1)));
-   GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_comments));
-   GtkTextIter start;
-   GtkTextIter end;
-   gtk_text_buffer_get_start_iter (buffer, &start);
-   gtk_text_buffer_get_start_iter (buffer, &end);
-   
-   nodeParams->setComments(string(gtk_text_buffer_get_text(buffer, &start, &end, true)));
-   node->getNetwork()->setModified();
-   node->getNetwork()->interfaceChangeNotify();
-}
-
-void GUINodeParameters::changed()
-{
-   gnome_property_box_changed(GNOME_PROPERTY_BOX(nodeproperty));
-}
-
-ParameterData *GUINodeParameters::getParamDataNamed(string n)
-{
-   for (int i=0;i<textParams.size();i++)
-      if (textParams[i]->name == n)
-         return &(params[i]);
-   return NULL;
-}
-
-void GUINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
-{
-   ParameterData *data = getParamDataNamed(param->name);
-   const vector<string> &types=ObjectParam::allTypes();
-   for (int i=0;i<types.size();i++)
-      if (types[i] == type)
-	 gtk_option_menu_set_history (GTK_OPTION_MENU (data->optionmenu), i);
-   GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(data->entry));
-   gtk_entry_set_text(GTK_ENTRY(gtkentr),(gchar *)value.c_str());
-   
 }

@@ -64,6 +64,7 @@ protected:
    /**All the node parameters*/
    UINodeParameters *parameters;
 
+
 public:
 
    /**"Normal" constructor*/
@@ -123,6 +124,8 @@ public:
    
    void insertNetParams(vector<ItemInfo *> &params);
 
+   void updateNetParams(vector<ItemInfo *> &params);
+
 //   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual void notifyError(const string &message) {}
@@ -132,6 +135,8 @@ public:
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
 
    virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
+ 
+
 
    Node *build(const ParameterSet &params);
 

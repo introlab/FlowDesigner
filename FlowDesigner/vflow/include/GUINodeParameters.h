@@ -6,7 +6,7 @@
 #include <gnome.h>
 #include <string>
 #include <vector>
-#include <tree.h>
+//#include <tree.h>
 #include "UINodeParameters.h"
 #include "GUINode.h"
 
@@ -20,33 +20,35 @@ public:
    GtkWidget *combo_entry;
    GtkWidget *entry;
    GtkWidget *label;
-
 };
 
+/*
+  (DL)
+  Now deriving from UINodeParameters, July 16 2003
+*/
 
-class GUINodeParameters {
+class GUINodeParameters : public UINodeParameters{
+
 protected:
    GtkWidget *nodeproperty;
-   UINodeParameters *nodeParams;
    vector<ParameterData> params;
-   vector<ParameterText *> &textParams;
-   GUINode *node;
    GtkWidget *text_comments;
    GtkWidget *list1;
    GtkWidget *list2;
    GtkWidget *input_entry, *output_entry;
    GtkWidget *inputSelect, *outputSelect;
+   void createWindow();
+
 public:
-   GUINodeParameters(GUINode *_node, string type, UINodeParameters *_nodeParams);
-   ~GUINodeParameters();
+   GUINodeParameters(UINode *_node, string type);
+   virtual ~GUINodeParameters();
    void show();
    void hide();
    void apply();
    void changed();
-   void insertNetParams(vector<string> &par);
    ParameterData *getParamDataNamed(string n);
-   void insertLoadedParam(ParameterText *param, string type, string value);
-   GUINode *getGUINode() {return node;}
+   //virtual void insertLoadedParam(ParameterText *param, string type, string value);
+   GUINode *getGUINode() {return dynamic_cast<GUINode*>(node);}
    void addInput();
    void addOutput();
    void removeInput();
@@ -56,6 +58,4 @@ public:
    void unsetInputSelect(GtkWidget *w) {if (inputSelect==w) inputSelect=NULL;}
    void unsetOutputSelect(GtkWidget *w) {if (outputSelect==w) outputSelect=NULL;}
 };
-
-
 #endif

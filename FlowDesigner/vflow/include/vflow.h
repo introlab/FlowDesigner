@@ -41,7 +41,7 @@ class vflowGUI {
   friend gint remove_doc_cb (GnomeMDI *mdi, GnomeMDIChild *child);
   friend void overflow_doc_event(GtkMenuItem *menuitem, vflowGUI *vflow);
   friend void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow);
-  friend void abou_event  (GtkMenuItem *menuitem, vflowGUI *vflow);
+  friend void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow);
 
  public:
 

@@ -728,18 +728,23 @@ void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool topl
 
 void UINodeRepository::updateNetInfo(UINetwork *net)
 {
-   //cerr << "UINodeRepository::updateNetInfo\n";
+  cerr << "UINodeRepository::updateNetInfo for network "<<net->getName()<<endl;
    iterator inet = info.find(net->getName());
    if (inet!=info.end())
    {
-      delete inet->second;
+     cerr<<"UINodeRepository deleting network info:"<<net->getName()<<endl;
+     delete inet->second;
    }
+
    NodeInfo *ninfo = new NodeInfo;
    vector<string> tmp = net->getTerminals(UINetTerminal::INPUT);
+
    for (unsigned int i = 0; i < tmp.size(); i++)
    {
       ItemInfo *newInfo = new ItemInfo;
       newInfo->name = tmp[i];
+
+      cerr<<"adding new Info for inputs "<<newInfo->name<<endl;
       ninfo->inputs.push_back(newInfo);
    }
    tmp = net->getTerminals(UINetTerminal::OUTPUT);
@@ -747,12 +752,17 @@ void UINodeRepository::updateNetInfo(UINetwork *net)
    {
       ItemInfo *newInfo = new ItemInfo;
       newInfo->name = tmp[i];
+
+      cerr<<"adding new Info for outputs "<<newInfo->name<<endl;
       ninfo->outputs.push_back(newInfo);
    }
+
+   cerr<<"insertingNetParams"<<endl;
    net->insertNetParams(ninfo->params);
 
    ninfo->category = "Subnet";
    ninfo->description = "subnet";
    
+   cerr<<"updated network info for "<<net->getName()<<endl;
    info[net->getName()] = ninfo;
 }

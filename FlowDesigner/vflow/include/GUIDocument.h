@@ -28,6 +28,11 @@ protected:
   friend void create_net(gchar * str, GUIDocument *doc);
   friend void create_iter(gchar * str, GUIDocument *doc);
 
+  //signals
+  friend void document_change_current_page_event(GtkNotebook *notebook, gint arg1,  GUIDocument *document);
+  friend gboolean document_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, GUIDocument *document);
+  friend gboolean document_select_page_event(GtkNotebook *notebook, gboolean arg1, GUIDocument *document);
+
    GnomeMDIGenericChild *mdiChild;
 
    //GtkWidget *view;
@@ -36,7 +41,7 @@ protected:
    
    GtkWidget *label1;
    GtkWidget *vbox2;
-   GtkWidget *notebook1;
+   GtkWidget *document_notebook;
    GtkWidget *less2;
    GtkWidget *scrolledwindow1;
    string less_text;
@@ -58,7 +63,7 @@ public:
 
    GtkWidget *getView() {return vbox2;}
 
-   GtkWidget *getNotebook() {return notebook1;}
+   GtkWidget *getNotebook() {return document_notebook;}
 
    void less_print(const string &message);
 
@@ -81,9 +86,9 @@ public:
    UINetwork* getCurrentNet();
 
 
-   UINetwork *newNetwork(const string &_name, UINetwork::Type type);
+   virtual UINetwork *newNetwork(const string &_name, UINetwork::Type type);
 
-   UINetwork *newNetwork(xmlNodePtr _net);
+   virtual UINetwork *newNetwork(xmlNodePtr _net);
 
    virtual void setFullPath(const string &fullpath);
 

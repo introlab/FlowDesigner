@@ -8,6 +8,10 @@
 #include "flow_version.h"
 #include <libxml/parser.h>
 #include "misc_gui.h"
+#include "GUIDocument.h"
+#include "GUINetwork.h"
+#include "GUILink.h"
+#include "GUINode.h"
 
 void GUIDocument_codegen(GUIDocument *doc);
 
@@ -63,6 +67,8 @@ GUIDocument *vflowGUI::getCurrentDoc()
    {
       return NULL;
    } else {
+
+     cerr<<"Current page of the notebook : "<<curr<<endl;
       GtkWidget *page = gtk_notebook_get_nth_page (GTK_NOTEBOOK(notebook1), curr);
       return (GUIDocument*)gtk_object_get_data(GTK_OBJECT(page), "doc");
    }
@@ -96,7 +102,9 @@ void vflowGUI::load_document (const string fname) {
   doc->resetModified();
 }
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void vflowGUI::copy(GUIDocument *doc) {
   //cerr<<"vflowGUI::copy called"<<endl;
 
@@ -111,7 +119,9 @@ void vflowGUI::copy(GUIDocument *doc) {
   
 
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void vflowGUI::paste (GUIDocument *doc) {
 
   //cerr<<"vflowGUI::paste called"<<endl;
@@ -255,7 +265,9 @@ void vflowGUI::paste (GUIDocument *doc) {
   }
 
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void vflowGUI::cut(GUIDocument *doc) {
   //cerr<<"vflowGUI::cut called"<<endl;
 
@@ -267,7 +279,9 @@ void vflowGUI::cut(GUIDocument *doc) {
     //cerr<<"clipboard size : "<<clipboard.size()<<endl;    
   }
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void vflowGUI::clear(GUIDocument *doc) {
   //cerr<<"vflowGUI::clear called"<<endl;
   if (doc) {
@@ -514,7 +528,9 @@ void save_doc_event(GtkWidget *widget, vflowGUI *vflow)
 }
 
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static void on_cut_activate (GtkMenuItem *menuitem, gpointer user_data) 
 {
 
@@ -527,7 +543,9 @@ static void on_cut_activate (GtkMenuItem *menuitem, gpointer user_data)
    vflowGUI::instance()->cut(doc);
 }
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static void on_copy_activate (GtkMenuItem *menuitem, gpointer user_data) 
 {
 
@@ -539,7 +557,9 @@ static void on_copy_activate (GtkMenuItem *menuitem, gpointer user_data)
    //calling application copy
    vflowGUI::instance()->copy(doc);
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static void on_paste_activate (GtkMenuItem *menuitem, gpointer user_data) 
 {
    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
@@ -552,7 +572,9 @@ static void on_paste_activate (GtkMenuItem *menuitem, gpointer user_data)
    vflowGUI::instance()->paste(doc);
 
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data) 
 {
    GUIDocument *doc = vflowGUI::instance()->getCurrentDoc();
@@ -572,7 +594,9 @@ static void on_clear_activate (GtkMenuItem *menuitem, gpointer user_data)
 
 }
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static int net_create_id=0;
 static int iter_create_id=1;
 static int threaded_create_id=2;
@@ -625,7 +649,9 @@ static void add_net_event  (GtkMenuItem     *menuitem,
 }
 
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static void rename_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
@@ -641,7 +667,9 @@ static void rename_net_event  (GtkMenuItem     *menuitem,
    //doc
  //cerr << "remove net\n";
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 static void remove_net_event  (GtkMenuItem     *menuitem,
                             gpointer         user_data)
 {
@@ -822,24 +850,32 @@ gint remove_doc_cb (GnomeMDI *mdi, GnomeMDIChild *child) {
    */	
    return TRUE;
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void overflow_doc_event(GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
    gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/user-guide.html", NULL);
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void overflow_noderef_event(GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
    gnome_url_show("http://freespeech.sourceforge.net/FreeSpeech/html/Overflow/nodes.html",NULL);
 }
 
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void on_preferences1_activate  (GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
    new VFlowPrefDialog;
    //create_propertybox1();
 }
+/**********************************************************************************************************
 
+**********************************************************************************************************/
 void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow) 
 {
    const gchar *authors[] = {
@@ -913,12 +949,9 @@ void on_gchld(int sig)
    //cerr << "Child died\n";
 }
 
+/**********************************************************************************************************
 
-
-
-
-
-
+**********************************************************************************************************/
 void vflowGUI::create_mdi () 
 {
 static GnomeUIInfo file1_menu_uiinfo[] =
@@ -1075,6 +1108,7 @@ static GnomeUIInfo menubar1_uiinfo[] =
                                 "gtk-new",
                                 _("New"),
                                 NULL, NULL, NULL, -1);
+
 gtk_widget_show (button1);
 gtk_signal_connect (GTK_OBJECT (button1), "clicked",
                     GTK_SIGNAL_FUNC (new_doc_event),

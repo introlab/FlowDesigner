@@ -45,6 +45,7 @@ UINodeParameters::~UINodeParameters()
 
 void UINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
 {
+  //cerr<<"UINodeParameters::insertLoadedParam"<<endl;
 }
 
 void UINodeParameters::load(xmlNodePtr node)
@@ -55,25 +56,36 @@ void UINodeParameters::load(xmlNodePtr node)
    
    while (par)
    {
+     //cerr<<"par->name "<<par->name<<endl;
       if (string((char*)par->name) == "Parameter")
       {
+	
+
 	 char *str_name = (char *) xmlGetProp(par, (xmlChar *)"name");
 	 char *str_type = (char *) xmlGetProp(par, (xmlChar *)"type");
 	 char *str_value = (char *) xmlGetProp(par, (xmlChar *)"value");
          string name = string (str_name);
          string type = string (str_type);
          string value = string (str_value);
-	 free(str_name); free(str_type); free(str_value);
+
+	 //cerr<<"name :"<<name<<endl;
+	 //cerr<<"type :"<<type<<endl;
+	 //cerr<<"value : "<<value<<endl;
+	 
+	 free(str_name); 
+	 free(str_type); 
+	 free(str_value);
          
          ParameterText *param = getParamNamed(name);
 	 if (param)
 	 {
 	    param->type = type;
 	    param->value = value;
+	    //cerr<<"insertLoadedParam"<<endl;
 	    insertLoadedParam(param, type, value);
 	    //cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
 	 } else {
-	    //cerr << "param " << name << " no longer used\n";
+	    cerr << "param " << name << " no longer used\n";
 	 }
       } else if (string((char*)par->name) == "Comments")
       {
@@ -134,24 +146,74 @@ ParameterText *UINodeParameters::getParamNamed(string n)
 
 void UINodeParameters::insertNetParams(vector<ItemInfo *> &par)
 {
-   for (unsigned int i=0;i<textParams.size();i++)
-   {
-      if (textParams[i]->value != "" && textParams[i]->type == "subnet_param")
-      {
-     bool alreadyPresent = false;
-     for (unsigned int j=0;j<par.size();j++)
-        if (par[j]->name == textParams[i]->value)
-           alreadyPresent=true;
-     if (!alreadyPresent) 
-         {
-            ItemInfo *newInfo = new ItemInfo;
-            newInfo->name = textParams[i]->value;
-            par.insert(par.end(), newInfo);
-         }
-        // par.insert(par.end(), textParams[i]->value);
+  cerr<<"UINodeParameters::insertNetParams"<<endl;
+
+   for (unsigned int i=0;i<textParams.size();i++) {
+
+     cerr<<"textParams[i]->value "<<textParams[i]->value<<endl;
+     cerr<<"textParams[i]->type "<<textParams[i]->type<<endl;
+
+      if (textParams[i]->value != "" && textParams[i]->type == "subnet_param") {
+
+
+
+	  bool alreadyPresent = false;
+	  for (unsigned int j=0;j<par.size();j++) {
+	    if (par[j]->name == textParams[i]->value) {
+	      alreadyPresent=true;
+	    }
+	  }
+
+	  if (!alreadyPresent) {
+	    ItemInfo *newInfo = new ItemInfo;
+	    newInfo->name = textParams[i]->value;
+	    par.insert(par.end(), newInfo);
+	  }
+	  // par.insert(par.end(), textParams[i]->value);
       }
    }
 }
+
+//Update node parameters when the node is in fact a subnet and the subnet was modified
+//Must be careful not to erase what the user entered (things that are still valid)
+void UINodeParameters::updateNetParams(vector<ItemInfo *> &par) {
+
+  cerr<<"UINodeParameters::updateNetParams called"<<endl;
+  
+  //string name;
+  //string type;
+  //string value;
+  //string description;
+
+
+  //add new parameters	
+  for (int i = 0; i < par.size(); i++) {
+    if (!getParamNamed(par[i]->name)) {
+      cerr<<"adding a parameter : "<<par[i]->name<<endl;
+      addParameterText(par[i]->name, par[i]->type, par[i]->value, par[i]->description);
+    }
+  }
+
+  //remove unused parameters (TODO : better implementation)
+  for (int i = 0; i <  textParams.size(); i++) {
+    bool found = false;
+    string name;
+    
+    for (int j = 0; j < par.size(); j++) {
+      if (textParams[i]->name == par[j]->name) {
+	found = true;
+	break;
+      }
+    }
+
+    if (!found) {
+      //delete this parameter
+      cerr<<"removing parameter : "<<textParams[i]->name<<endl;
+      removeParameterText(textParams[i]->name);
+    }
+  }
+}
+
 
 ParameterText *UINodeParameters::addParameterText(string name, string type,
 						  string value, string descr)

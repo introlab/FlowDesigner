@@ -165,6 +165,9 @@ void UINode::insertNetParams(vector<ItemInfo *> &params)
    parameters->insertNetParams(params);
 }
 
+void UINode::updateNetParams(vector<ItemInfo *> &params) {
+  parameters->updateNetParams(params);
+}
 
 UILink *UINode::newLink (UITerminal *_from, UITerminal *_to)
 {

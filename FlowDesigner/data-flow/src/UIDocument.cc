@@ -5,6 +5,7 @@
 #include <libxml/parser.h>
 #include "UIDocument.h"
 #include "UINetwork.h"
+#include "UINode.h"
 #include "Node.h"
 #include "Network.h"
 #include "ParameterSet.h"
@@ -269,13 +270,13 @@ void UIDocument::loadXML(xmlNodePtr root)
 
 UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
-   //cerr << "UIDocument::newNetwork\n";
+   cerr << "UIDocument::newNetwork\n";
    return new UINetwork(this, _name, type);
 }
 
 UINetwork *UIDocument::newNetwork(xmlNodePtr _net)
 {
-   //cerr << "UIDocument::newNetwork\n";
+   cerr << "UIDocument::newNetwork\n";
    return new UINetwork(this, _net);
 }
 
@@ -651,11 +652,26 @@ void UIDocument::setFullPath(const string &fullpath)
    untitled=false; 
 }
 
+void UIDocument::updateNetInfo(UINetwork *net) {
+
+  //change our net information
+  subnetInfo.updateNetInfo(net);
+
+  //TODO : move this code somewhere else? (DL)
+
+  //update "networks parameters that included this net as a node"
+  for (int i = 0; i < networks.size(); i++) {
+    networks[i]->updateAllSubnetParameters(net->getName(), subnetInfo.findNode(net->getName()));
+  }
+}
+
 void UIDocument::updateAllNetworks() {
 
   //update network information
-  for (unsigned int i=0;i<networks.size();i++) 
-    subnetInfo.updateNetInfo(networks[i]);
+  for (unsigned int i=0;i<networks.size();i++) {
+    //subnetInfo.updateNetInfo(networks[i]);
+    updateNetInfo(networks[i]);
+  }
   
 }
 

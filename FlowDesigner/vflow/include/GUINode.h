@@ -8,15 +8,15 @@
 #include <string>
 #include <vector>
 #include <string>
-#include <tree.h>
+//#include <tree>
 #include <fstream>
-#include "GUITerminal.h"
-
-
-class GUINetwork;
-class GUINodeParameters;
+#include <iostream>
+#include <list>
+#include "UINetTerminal.h"
+#include "UITerminal.h"
 
 class GUINode : public UINode {
+
 protected:
   
    GnomeCanvasGroup *group;
@@ -31,14 +31,13 @@ protected:
    GnomeCanvasItem *nodeText;
 
    void initialize_widgets();
-   GUINodeParameters *guiParams;
 
 public:
 
    void addTerminal(const string &_name, UINetTerminal::NetTermType _type);
   
    GUINode(UINetwork* _net, string _name, string _type, double x, double y);
-  
+
    GUINode(UINetwork* _net, xmlNodePtr def);
   
    ~GUINode();
@@ -47,8 +46,6 @@ public:
   
    void createPopup();
   
-   void paramClose() {guiParams=NULL;}
-
    virtual void rename(const string &newName);
 
    gint event(GdkEvent *event);
@@ -68,11 +65,13 @@ public:
    void propertiesShow();
 
    void help();
-  
+
+   virtual UINodeParameters *newNodeParameters (UINode *_node, string type);
+
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
   
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, string _name);
-  
+
    virtual void notifyError(const string &message);
 
    void redraw();

@@ -69,6 +69,8 @@ public:
 
    virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
 
+   virtual UINode *newNode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit);
+
 //   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to, char *str);

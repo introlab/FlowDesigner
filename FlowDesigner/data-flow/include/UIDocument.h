@@ -151,7 +151,7 @@ public:
 
    virtual void setFullPath(const string &fullpath);
 
-   void updateNetInfo(UINetwork *net) {subnetInfo.updateNetInfo(net);}
+   void updateNetInfo(UINetwork *net); 
 
    void updateAllNetworks();
    

@@ -24,23 +24,22 @@ GUINode::GUINode(UINetwork* _net, string _name, string _type, double _x, double 
    : UINode(_net, _name, _type, _x, _y, false)
    , dragging(false)
    , grab(false)
-   , guiParams(NULL)
 {
 
-   initialize_widgets();
-   createPopup();
+  parameters = newNodeParameters(this,type);
+  initialize_widgets();
+  createPopup();
 }
 
 
 GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
-   : UINode(_net, def,false)
-   //: net(_net)
-   , dragging(false)
-   , grab(false)
-   , guiParams(NULL)
+   : UINode(_net, def,false), dragging(false) , grab(false) 
 {
-   initialize_widgets();
-   createPopup();
+
+  parameters = newNodeParameters(this, type);
+  initialize_widgets();
+  parameters->load(def);
+  createPopup();
 }
 
 GUINode::~GUINode()
@@ -104,8 +103,13 @@ static void node_delete (GtkMenuItem *menuitem, gpointer user_data)
 
 void GUINode::propertiesShow()
 {
-   if (!guiParams)
-      guiParams = new GUINodeParameters (this, type, parameters);
+
+  GUINodeParameters *my_params = dynamic_cast<GUINodeParameters*>(parameters);
+  
+  if (my_params) {
+    my_params->show();
+  }
+      
 }
 
 void GUINode::help()
@@ -255,7 +259,10 @@ gint GUINode::event(GdkEvent *event)
 	   //copying parameters
 	   UINodeParameters *params_source = getParameters() ;
 
-	   UINodeParameters *params_destination = new UINodeParameters(my_node,getType());
+
+	   //FIXME : PROBABLE LEAK.
+
+	   UINodeParameters *params_destination = new GUINodeParameters(my_node,getType());
 	   
 	   params_destination->copyParameterText(params_source);
 
@@ -690,5 +697,12 @@ void GUINode::rename(const string &newName) {
                              
 
   redraw();
+
+}
+
+UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type) {
+  
+  cerr<<"GUINode::newNodeParameters"<<endl;
+  return new GUINodeParameters (_node, type);
 
 }

@@ -87,8 +87,11 @@ GUINetwork::~GUINetwork()
 void GUINetwork::create()
 {
    //cerr << "GUINetwork::create()\n";
-   GtkWidget *notebook1 = dynamic_cast<GUIDocument *>(doc)->getNotebook();
-   //cerr << "GUINetwork::create()\n";
+   GtkWidget *document_notebook = dynamic_cast<GUIDocument *>(doc)->getNotebook();
+
+   cerr << "GUINetwork::create() name : "<<name<<endl;
+   cerr << "GUINetwork::create() with notebook : "<<document_notebook<<endl;
+
    //gtk_widget_show (notebook1);
 
    scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
@@ -142,7 +145,11 @@ void GUINetwork::create()
    //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label1);
    canvas=GNOME_CANVAS(canvas1);
 
-   gtk_notebook_append_page(GTK_NOTEBOOK(dynamic_cast<GUIDocument *>(doc)->getNotebook()), scrolledwindow1, label1);
+   gtk_notebook_append_page(GTK_NOTEBOOK(document_notebook), scrolledwindow1, label1);
+
+
+
+
 
 
    GnomeCanvasItem *background = gnome_canvas_item_new(gnome_canvas_root(canvas),
@@ -169,7 +176,7 @@ void GUINetwork::create()
    
    */
 
-     gtk_notebook_set_current_page (GTK_NOTEBOOK(notebook1), -1);
+     gtk_notebook_set_current_page (GTK_NOTEBOOK(document_notebook), -1);
 }
 
 
@@ -239,12 +246,12 @@ UINode * GUINetwork::addNode (string type, double xx, double yy)
       if (unique)
          break;
    }
-   UINode *newNode = new GUINode (this, newName, type, xx, yy);
-   nodes.insert(nodes.end(), newNode);
+   UINode *my_newNode = new GUINode (this, newName, type, xx, yy);
+   nodes.insert(nodes.end(), my_newNode);
    updateScroll();
 
    doc->setModified();
-   return newNode;
+   return my_newNode;
 }
 
 
@@ -452,10 +459,20 @@ UITerminal *GUINetwork::isNearOutputTerminal (double &x, double &y)
 }
 
 
-UINode *GUINetwork::newNode(UINetwork* _net, xmlNodePtr def)
-{
-   return new GUINode(_net, def);
+UINode *GUINetwork::newNode(UINetwork* _net, xmlNodePtr def) {
+  
+  cerr<<"GUINetwork::newNode called (XML)"<<endl;
+  return new GUINode(_net, def);
 }
+
+
+UINode *GUINetwork::newNode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit) {
+  
+  cerr<<"GUINetwork::newNode called (STD)"<<endl;
+
+  return new GUINode(_net, _name, _type, _x, _y);
+}
+
 
 /*UITerminal *GUINetwork::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
 {

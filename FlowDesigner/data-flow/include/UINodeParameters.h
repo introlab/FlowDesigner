@@ -37,6 +37,9 @@ public:
    void load(xmlNodePtr node);
    ParameterText *getParamNamed(string n);
    void insertNetParams(vector<ItemInfo *> &par);
+
+   void updateNetParams(vector<ItemInfo *> &par);
+
    virtual void insertLoadedParam(ParameterText *param, string type, string value);
    ParameterText *addParameterText(string name, string type, string value,
 								   string description);

@@ -45,22 +45,24 @@ GUIDocument::GUIDocument(string _name)
    : UIDocument(_name)
    , docproperty(NULL)
    , vbox2(NULL)
-   , notebook1(NULL)
+   , document_notebook(NULL)
    , less2(NULL)
 //   , untitled(true)
 //   , modified(false)
 {
 
-   GtkWidget *notebook = vflowGUI::instance()->get_notebook();
+  GtkWidget *vflow_notebook = vflowGUI::instance()->get_notebook();
+  cerr<<"GUIDocument getting notebook ptr (vflow app): "<<vflow_notebook<<endl;
 
   vbox2 = gtk_vpaned_new ();
-
   //gtk_widget_set_usize(vbox2, -1, 400);
-
   gtk_widget_ref (vbox2);
+
   //gtk_object_set_data_full (GTK_OBJECT (mdi), "vbox2", vbox2,
   //                          (GtkDestroyNotify) gtk_widget_unref);
 
+  cerr<<"GUIDocument creating document : "<<_name<<endl;
+  cerr<<"GUIDocument setting document data ""doc"" to vbox2 : "<<this<<endl;
   gtk_object_set_data(GTK_OBJECT(vbox2), "doc", this);
   gtk_widget_show (vbox2);
   
@@ -69,19 +71,22 @@ GUIDocument::GUIDocument(string _name)
   
   
 
-  notebook1 = gtk_notebook_new ();
-  gtk_widget_set_usize(notebook1, -1, 320);
-  gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook1), TRUE);
-  gtk_notebook_popup_enable (GTK_NOTEBOOK(notebook1));
+  document_notebook = gtk_notebook_new ();
+  cerr<<"GUIDocument creating document notebook: "<<document_notebook<<endl;
+  
 
-  gtk_widget_ref (notebook1);
-  //gtk_object_set_data_full (GTK_OBJECT (mdi), "notebook1", notebook1,
+  gtk_widget_set_usize(document_notebook, -1, 320);
+  gtk_notebook_set_scrollable(GTK_NOTEBOOK(document_notebook), TRUE);
+  gtk_notebook_popup_enable (GTK_NOTEBOOK(document_notebook));
+
+  gtk_widget_ref (document_notebook);
+  //gtk_object_set_data_full (GTK_OBJECT (mdi), "document_notebook", document_notebook,
   //                          (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (notebook1);
+  gtk_widget_show (document_notebook);
 
-  gtk_paned_pack1 (GTK_PANED(vbox2), notebook1, TRUE, TRUE);
-  //gtk_container_add (GTK_CONTAINER (vbox2), notebook1);
-  //gtk_box_pack_start (GTK_BOX (vbox2), notebook1, TRUE, TRUE, 0);
+  gtk_paned_pack1 (GTK_PANED(vbox2), document_notebook, TRUE, TRUE);
+  //gtk_container_add (GTK_CONTAINER (vbox2), document_notebook);
+  //gtk_box_pack_start (GTK_BOX (vbox2), document_notebook, TRUE, TRUE, 0);
 
   
   scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
@@ -89,8 +94,7 @@ GUIDocument::GUIDocument(string _name)
   gtk_widget_set_size_request(GTK_WIDGET(scrolledwindow1), -1, 100);
   gtk_paned_pack2 (GTK_PANED(vbox2), scrolledwindow1, FALSE, TRUE);
   //gnome_app_set_contents (GNOME_APP (), scrolledwindow1);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS)
-;
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
 
   less2 = gtk_text_view_new ();
@@ -113,13 +117,20 @@ GUIDocument::GUIDocument(string _name)
   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0), label1);
 
   gtk_label_set_justify (GTK_LABEL (label1), GTK_JUSTIFY_LEFT);
-  gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox2, label1);
+  gtk_notebook_append_page(GTK_NOTEBOOK(vflow_notebook), vbox2, label1);
 
   //gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook), vbox2, label1);
 
   less_print("VFlow " VERSION " by Jean-Marc Valin & Dominic Letourneau");
   less_print("--");
-  gtk_notebook_set_current_page (GTK_NOTEBOOK(notebook), -1);
+
+  //if negative, last page will be used.
+  gtk_notebook_set_current_page (GTK_NOTEBOOK(vflow_notebook), -1);
+
+  //signals 
+  gtk_signal_connect(GTK_OBJECT(vflow_notebook),"change-current-page", GTK_SIGNAL_FUNC(document_change_current_page_event), this);
+  gtk_signal_connect(GTK_OBJECT(vflow_notebook),"focus-tab",GTK_SIGNAL_FUNC(document_focus_tab_event),this);  
+  gtk_signal_connect(GTK_OBJECT(vflow_notebook),"select-page",GTK_SIGNAL_FUNC(document_select_page_event),this);
   
 }
 
@@ -268,12 +279,12 @@ void GUIDocument::load()
 
 void GUIDocument::removeCurrentNet()
 {
-   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(document_notebook));
    //cerr << "netID = " << netID << endl;
    if (netID == -1) 
       return;
    delete networks[netID];
-   gtk_notebook_remove_page (GTK_NOTEBOOK(notebook1), netID);
+   gtk_notebook_remove_page (GTK_NOTEBOOK(document_notebook), netID);
    for (int i=netID;i<networks.size()-1;i++)
    {
       networks[i]=networks[i+1];
@@ -284,7 +295,7 @@ void GUIDocument::removeCurrentNet()
 
 void GUIDocument::renameCurrentNet()
 {
-   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+   int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(document_notebook));
    //cerr << "netID = " << netID << endl;
    if (netID == -1) 
       return;
@@ -302,7 +313,7 @@ void GUIDocument::renameCurrentNet()
 
 UINetwork* GUIDocument::getCurrentNet() {
 
-  int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));
+  int netID = gtk_notebook_get_current_page (GTK_NOTEBOOK(document_notebook));
 
   if (netID == -1) {
     return NULL;
@@ -316,13 +327,13 @@ UINetwork* GUIDocument::getCurrentNet() {
 
 UINetwork *GUIDocument::newNetwork(const string &_name, UINetwork::Type type)
 {
-   //cerr << "GUIDocument::newNetwork\n";
+   cerr << "GUIDocument::newNetwork (STD)\n";
    return new GUINetwork(this, _name, type);
 }
 
 UINetwork *GUIDocument::newNetwork(xmlNodePtr _net)
 {
-   //cerr << "GUIDocument::newNetwork\n";
+   cerr << "GUIDocument::newNetwork (XML)\n";
    return new GUINetwork(this, _net);
 }
 
@@ -919,9 +930,36 @@ void GUIDocument::error(char *err)
 
 void GUIDocument::updateSubnet() {
 
+  cerr<<"updateSubnet"<<endl;
+
   for (int j = 0; j < networks.size(); j++) {
     for (int i= 0; i < networks.size(); i++) {
       networks[i]->newNetNotify("Subnet",networks[j]->getName());
     }
   }
+}
+
+/**********************************************************************************************************
+change-current-page signal
+**********************************************************************************************************/
+void document_change_current_page_event(GtkNotebook *notebook, gint arg1, GUIDocument *document) {
+
+  cerr<<"GUIDocument Notebook current_page_event : "<<document->getName()<<endl;
+ 
+}
+
+
+/**********************************************************************************************************
+focus-tab signal
+**********************************************************************************************************/
+gboolean document_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, GUIDocument *document) {
+
+  cerr<<"GUIDocument Notebook focus_tab_event : "<<document->getName()<<endl;
+}
+
+/**********************************************************************************************************
+select-page signal
+**********************************************************************************************************/
+gboolean document_select_page_event(GtkNotebook *notebook, gboolean arg1, GUIDocument *document) {
+  cerr<<"GUIDocument Notebook select_page_event : "<<document->getName()<<endl;
 }

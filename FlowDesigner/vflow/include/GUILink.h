@@ -4,7 +4,7 @@
 #define GUILINK_H
 
 #include <gnome.h>
-#include <tree.h>
+//#include <tree.h>
 #include "UILink.h"
 #include <math.h>
 
