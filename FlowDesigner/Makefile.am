@@ -14,10 +14,10 @@ EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd
 if COND_OPT
 SUBDIRS = data-flow @modules@ tools examples
 else
-SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow vflow tools examples
+SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow octave vflow tools examples
 endif
 
-DIST_SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow vflow tools examples
+DIST_SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow octave vflow tools examples
 
 rpm: dist
 	rpmbuild -ta ${PACKAGE}-${VERSION}.tar.gz
