@@ -60,7 +60,7 @@ public:
   
   FuzzyRule* clone();
 
-  virtual void printOn(ostream &out=cout);
+  virtual void printOn(ostream &out=cout) const;
 
 
   

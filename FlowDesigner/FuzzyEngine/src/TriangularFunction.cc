@@ -126,6 +126,6 @@ float TriangularFunction::get_center_of_gravity() {
   return cog;
 }
 
-void TriangularFunction::printOn(ostream &out) {
+void TriangularFunction::printOn(ostream &out) const {
   out << "<TriangularFunction " << m_name<<" "<<m_a<<" "<<m_b<<" "<<m_c<<" >\n";
 }

@@ -62,9 +62,6 @@ public:
 	//cloning capability
 	virtual FuzzyModel* clone() = 0;
 
-	virtual void printOn(ostream &out) = 0;
-
-
 	//constants representing input and output sets
 	static const int FUZZY_INPUT_SET;
 	static const int FUZZY_OUTPUT_SET;

@@ -35,7 +35,7 @@ public:
 	//cloning capability
 	virtual FuzzyModel* clone();
 
-	virtual void printOn(ostream &out);
+	virtual void printOn(ostream &out=cout) const;
 	
 
 private:

@@ -125,6 +125,11 @@
     <Node name="node17" type="Concat" x="-1659.000000" y="-46.000000"/>
     <Node name="node23" type="Concat" x="-1660.000000" y="47.000000"/>
     <Node name="node35" type="Concat" x="-1402.000000" y="-8.000000"/>
+    <Node name="node37" type="Save" x="-840.000000" y="-240.000000"/>
+    <Node name="node40" type="Constant" x="-1126.000000" y="-118.000000">
+      <Parameter name="VALUE" type="string" value="FuzzyModel.txt"/>
+    </Node>
+    <Node name="node41" type="OutputStream" x="-1015.000000" y="-118.000000"/>
     <Link from="node38" output="VALUE" to="node36" input="INPUT">-1407 -104 -1322 -105 -1322 -215 -1288 -216.5 </Link>
     <Link from="node13" output="SET" to="node36" input="CONSEQUENT_SETS">-1528 -160 -1480 -231 -1288 -231.5 </Link>
     <Link from="node3" output="RULE" to="node39" input="INPUT1"/>
@@ -162,7 +167,10 @@
     <Link from="node21" output="SET" to="node35" input="INPUT1"/>
     <Link from="node24" output="SET" to="node35" input="INPUT2"/>
     <Link from="node35" output="OUTPUT" to="node36" input="ANTECEDENT_SETS">-1380 -8 -1352 -9 -1353 -248 -1288 -247 </Link>
-    <NetOutput name="MODEL" node="node36" terminal="MODEL"/>
+    <Link from="node36" output="MODEL" to="node37" input="OBJECT"/>
+    <Link from="node40" output="VALUE" to="node41" input="INPUT"/>
+    <Link from="node41" output="OUTPUT" to="node37" input="STREAM"/>
     <NetOutput name="OUTPUT" node="node36" terminal="OUTPUT"/>
+    <NetOutput name="MODEL" node="node37" terminal="OUTPUT"/>
   </Network>
 </Document>

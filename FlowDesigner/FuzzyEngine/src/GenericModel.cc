@@ -169,7 +169,7 @@ FuzzyModel* GenericModel::clone() {
 
 }
 
-void GenericModel::printOn(ostream &out) {
+void GenericModel::printOn(ostream &out) const {
 
   out << "<GenericModel "; 
   out<<m_rules.size()<<endl;

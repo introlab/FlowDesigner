@@ -63,9 +63,6 @@ public:
 	//cloning capability
 	virtual FuzzyFunction* clone() = 0;
 
-	virtual void printOn(ostream &out) = 0;
-
-
 	virtual void calculate(int output_id, int count, Buffer &out);
 
 

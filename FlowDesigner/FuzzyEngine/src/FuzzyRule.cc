@@ -183,7 +183,7 @@ FuzzyRule* FuzzyRule::clone() {
   return my_clone;
 }
 
-void FuzzyRule::printOn(ostream &out) {
+void FuzzyRule::printOn(ostream &out) const {
 
   out << "<FuzzyRule "; 
   out <<m_rule_number<<" ";

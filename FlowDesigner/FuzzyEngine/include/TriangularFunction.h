@@ -41,7 +41,7 @@ public:
 	virtual FuzzyFunction* clone();
 
 		
-	virtual void printOn(ostream &out=cout);
+	virtual void printOn(ostream &out=cout) const;
 
 
 
