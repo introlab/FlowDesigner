@@ -20,10 +20,10 @@
     <Node name="node_PlotProbe_1" type="PlotProbe" x="690.000000" y="166.000000">
       <Parameter name="BREAK_AT" type="int" value="-1"/>
       <Parameter name="SHOW" type="int" value=""/>
-      <Parameter name="SKIP" type="int" value="100"/>
+      <Parameter name="SKIP" type="int" value=""/>
     </Node>
-    <Node name="node_Constant_2" type="Constant" x="285.000000" y="306.000000">
-      <Parameter name="VALUE" type="bool" value="true"/>
+    <Node name="node_Sleep_1" type="Sleep" x="261.000000" y="298.000000">
+      <Parameter name="MICROSECONDS" type="int" value="50000"/>
     </Node>
     <Link from="node1" output="ACTIVATED" to="node_IF_1" input="COND"/>
     <Link from="node_WriteAudio_1" output="OUTPUT" to="node_IF_1" input="THEN"/>
@@ -33,7 +33,7 @@
     <Link from="node_IF_1" output="OUTPUT" to="node_PlotProbe_1" input="INPUT"/>
     <NetInput name="SOUND" node="node_WriteAudio_1" terminal="DEVICE"/>
     <NetOutput name="OUTPUT" node="node_PlotProbe_1" terminal="OUTPUT"/>
-    <NetCondition name="CONDITION" node="node_Constant_2" terminal="VALUE"/>
+    <NetCondition name="CONDITION" node="node_Sleep_1" terminal="VALUE"/>
   </Network>
   <Network type="subnet" name="MAIN">
     <Node name="node1" type="MAIN_LOOP" x="-284.000000" y="118.000000">
