@@ -12,7 +12,8 @@
 #include "ObjectPool.h"
 #include "ObjectParser.h"
 #include "typetraits.h"
-
+//temporarily inserting include of Stream.h
+#include "Stream.h"
 
 using namespace std;
 
