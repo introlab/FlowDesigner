@@ -25,16 +25,16 @@ DECLARE_NODE(Add)
  *
  * @name Add
  * @category Math
- * @description No description available
+ * @description Adds two input values and returns the result
  *
  * @input_name INPUT1
- * @input_description No description available
+ * @input_description First value
  *
  * @input_name INPUT2
- * @input_description No description available
+ * @input_description Second value
  *
  * @output_name OUTPUT
- * @output_description No description available
+ * @output_description Result of the addition
  *
 END*/
 
