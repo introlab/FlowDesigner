@@ -47,6 +47,16 @@ public:
        m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::BROADCAST_TYPE, port));
      }
 
+     if (socketType == "TCP_SERVER") {
+       cerr<<"creating TCP_SERVER socket"<<endl;
+       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::TCP_SERVER_STREAM_TYPE, port));
+     }
+
+     if (socketType == "TCP_CLIENT") {
+       m_socketRef = ObjectRef(new NetworkSocket(NetworkSocket::TCP_CLIENT_STREAM_TYPE, port));
+     }
+
+
      outputID = addOutput("OUTPUT");
    }
 
