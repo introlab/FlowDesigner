@@ -217,6 +217,8 @@ extern ObjectRef FalseObject;
 class String : public string, public Object
 {
 public:
+  typedef string basicType;
+
    String() : string() {}
    void printOn(ostream &out) const;
    void readFrom(istream &in);
@@ -229,6 +231,7 @@ public:
    String(const string &str) : string(str)
    {}
    
+   const string& val() { return *this;}
 };
 
 istream &operator >> (istream &in, String &str);

@@ -57,6 +57,16 @@ ObjectRef StringCTypeConversion(ObjectRef in)
   return ObjectRef(new U(value));
 }
 
+
+template <class T, class U>
+ObjectRef CTypeVectorConversion (ObjectRef in) {
+  RCPtr<T> FromCType = in;
+  RCPtr<U> ToVector(U::alloc(1));
+  (*ToVector)[0] = static_cast<typename U::basicType>(FromCType->val());
+  return ToVector;
+}
+
+
 //(DL) 17/02/2004
 //Commented conversions make no sense to be implemented (?)
 
@@ -129,6 +139,22 @@ REGISTER_CONVERSION_TEMPLATE(Complex<float>, String, CTypeStringConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<double>, String, CTypeStringConversion);
 REGISTER_CONVERSION_TEMPLATE(String, String, CTypeStringConversion);
 REGISTER_CONVERSION(NilObject, String, ReturnNilObject);
+
+//to Vector conversion
+//REGISTER_CONVERSION_TEMPLATE(Bool, Vector<bool>, CTypeStringConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Vector<int>, CTypeVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Vector<float>, CTypeVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Vector<double>, CTypeVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<float>, Vector<complex<float> >, CTypeVectorConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<double>, Vector<complex<double> >, CTypeVectorConversion);
+
+//NilObject to Vector<T> returns nilObject...
+REGISTER_CONVERSION(NilObject, Vector<int>, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Vector<float>, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Vector<double>, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Vector<complex<float> >, ReturnNilObject);
+REGISTER_CONVERSION(NilObject, Vector<complex<double> >, ReturnNilObject);
+
 
 //(DL) 17/02/2004
 //OLD conversion (to be removed someday)
