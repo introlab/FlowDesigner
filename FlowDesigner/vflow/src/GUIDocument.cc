@@ -125,8 +125,13 @@ void GUIDocument::load()
    {
       gtk_widget_destroy(docproperty);
    }
+
    createParamDialog();
 
+   for (int i=0;i<params.size();i++)
+   {
+      insertLoadedParam(&(params[i]), params[i].type, params[i].value);
+   }
 }
 
 
@@ -336,17 +341,27 @@ static const vector<string> &allDocTypes()
    return types;
 }
 
+void GUIDocument::insertLoadedParam(DocParameterData *param, string type, string value)
+{
+   const vector<string> &types=allDocTypes();
+   for (int i=0;i<types.size();i++)
+      if (types[i] == type)
+         gtk_option_menu_set_history (GTK_OPTION_MENU (param->optionmenu), i);
+   GtkWidget *gtkentr = gnome_entry_gtk_entry(GNOME_ENTRY(param->entry));
+   gtk_entry_set_text(GTK_ENTRY(gtkentr),(gchar *)value.c_str());
+
+}
 
 void GUIDocument::createParamDialog()
 {
    int i;
 
-   vector<string> tmp = getNetParams("MAIN");
+   /*vector<string> tmp = getNetParams("MAIN");
    cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
    params.resize(tmp.size());
    for (i=0;i<tmp.size();i++)
       params[i].name=tmp[i];
-   cerr << "--\n";
+      cerr << "--\n";*/
    
    //cerr << "GUINodeParameters::GUINodeParameters\n";
 
