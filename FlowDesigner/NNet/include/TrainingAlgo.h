@@ -5,6 +5,8 @@
 
 #include <vector>
 
+using namespace std;
+
 class FFNet;
 
 class TrainingAlgo {
