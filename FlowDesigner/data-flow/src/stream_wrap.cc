@@ -110,7 +110,6 @@ streamsize fd_streambuf::xsputn(const char *s, streamsize n)
 }
 
 
-
 int fd_streambuf::uflow()
 {
    if (takeFromBuf)
@@ -118,8 +117,10 @@ int fd_streambuf::uflow()
       takeFromBuf = false;
       return charBuf;
    } else {
-      read(fd, &charBuf, 1);
-      return charBuf;      
+      if (read(fd, &charBuf, 1) > 0)
+         return charBuf;
+      else
+         return EOF;
    }
 }
 
@@ -130,7 +131,10 @@ int fd_streambuf::underflow()
       return charBuf;
    } else
    {
-      read(fd, &charBuf, 1);
+      if (read(fd, &charBuf, 1) <= 0)
+      {
+         return EOF;
+      }
       takeFromBuf = true;
       return charBuf;
    }
@@ -152,7 +156,11 @@ int fd_streambuf::pbackfail(int c)
 
 streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 {
-   return read(fd, s, n);
+   int nbytes = read(fd, s, n);
+   if (nbytes > 0)
+      return nbytes;
+   else
+      return EOF;
 }
 
 

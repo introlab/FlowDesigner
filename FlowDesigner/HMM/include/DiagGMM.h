@@ -3,6 +3,7 @@
 #ifndef DIAG_GMM_H
 #define DIAG_GMM_H
 #include "Object.h"
+#include <vector>
 
 class GMM;
 
@@ -30,6 +31,8 @@ public:
 
    /**Destructor*/
    ~DiagGMM() {if (ptr) delete [] ptr;}
+
+   void train (const vector<float *> &frames, int nb_dim, int nb_gaussians, int nb_splits);
 
    /**Score a frame*/
    float score(const float *vec);

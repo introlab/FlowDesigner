@@ -5,10 +5,19 @@
 #include "net_types.h"
 #include "vmethod.h"
 #include <sstream>
+#include "typemap.h"
+#include "conversion.h"
 
 using namespace std;
 
 //@implements core
+
+
+TypeMap<TypeMap<conv_func> > &Conversion::conv_table()
+{
+   static TypeMap<TypeMap<conv_func> > table;
+   return table;
+}
 
 /*This doesn't compile with MSVC++ broken templates*/
 #ifndef BROKEN_TEMPLATES
@@ -32,6 +41,8 @@ ObjectRef IntStringConversion(ObjectRef in)
   String my_string = object_cast<String>(in);
   return ObjectRef(Int::alloc(atoi(my_string.c_str())));
 }
+
+REGISTER_CONVERSION(Int, Float, IntCTypeConversion<Float>);
 
 REGISTER_VTABLE0(toInt, Int, IntCTypeConversion<Int>, 1);
 REGISTER_VTABLE0(toInt, Bool, IntCTypeConversion<Bool>, 2);
