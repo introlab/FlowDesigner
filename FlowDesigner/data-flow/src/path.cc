@@ -60,7 +60,7 @@ void recursiveScanDL(const string &path, vector<string> &libList, bool debug) {
   DIR *my_directory = opendir (path.c_str());
   
   if (!my_directory) {
-    perror("error opening directory");
+    perror((std::string("error opening directory ") + path).c_str());
     return;
   }
   
