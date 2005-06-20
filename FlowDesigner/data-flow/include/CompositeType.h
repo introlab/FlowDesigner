@@ -11,12 +11,14 @@ namespace FD {
 /**Allows user-defined types (analog to structs in C/C++)*/
 class CompositeType : public Object {
    typedef std::map<std::string, ObjectRef> map_type;
+   typedef std::pair<std::string, ObjectRef> map_element_type;
    map_type fields;
 public:
    CompositeType() {}
    void printOn(std::ostream &out) const;
    void readFrom(std::istream &in);
    void addField(const std::string &name, ObjectRef obj) {fields[name]=obj;}
+   void conservativeAddField(const std::string &name, ObjectRef obj);
    ObjectRef get(const std::string &name) const
    {
       map_type::const_iterator it = fields.find(name);

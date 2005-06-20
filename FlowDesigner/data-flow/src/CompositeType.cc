@@ -42,3 +42,9 @@ void CompositeType::readFrom(istream &in)
    }
 
 }
+
+void CompositeType::conservativeAddField(const std::string &name, ObjectRef obj)
+{
+   fields.insert(map_element_type(name,obj));
+}
+
