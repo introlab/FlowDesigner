@@ -8,7 +8,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(GMMScore)
 /*Node
@@ -84,3 +85,4 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
    else 
       throw new NodeException (this, "GMMScore: Unknown output id", __FILE__, __LINE__);
 }
+}//namespace FD

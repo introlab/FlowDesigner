@@ -3,7 +3,8 @@
 #include "mean.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(Mean)
 //@implements GMM
@@ -64,4 +65,4 @@ istream &operator >> (istream &in, Mean &gauss)
 
    return in;
 }
-
+}//namespace FD

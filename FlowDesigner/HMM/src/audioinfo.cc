@@ -5,7 +5,8 @@
 #include <string.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(AudioInfo)
 
@@ -89,3 +90,5 @@ istream &operator >> (istream &in, AudioInfo &info)
    info.readFrom(in);
    return in;
 }
+
+}//namespace FD

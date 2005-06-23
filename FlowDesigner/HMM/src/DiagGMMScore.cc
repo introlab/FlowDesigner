@@ -5,7 +5,8 @@
 #include "DiagGMM.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class DiagGMMScore;
 
@@ -68,3 +69,5 @@ public:
       
 NO_ORDER_NODE_SPEEDUP(DiagGMMScore)
 };
+
+}//namespace FD

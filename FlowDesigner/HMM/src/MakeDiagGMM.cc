@@ -5,7 +5,8 @@
 #include "DiagGMM.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class MakeDiagGMM;
 
@@ -53,3 +54,5 @@ public:
 
       
 };
+
+}//namespace FD

@@ -8,7 +8,8 @@
 #include <iostream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(Gaussian)
 //@implements GMM
@@ -123,3 +124,4 @@ istream &operator >> (istream &in, Gaussian &gauss)
    return in;
 }
 
+}//namespace FD

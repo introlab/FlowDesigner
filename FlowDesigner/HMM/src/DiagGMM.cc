@@ -8,7 +8,8 @@
 #include "iextensions.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(DiagGMM)
 //@implements DGMM
@@ -609,3 +610,5 @@ istream &operator >> (istream &in, DiagGMM &gmm)
    gmm.readFrom(in);
    return in;
 }
+
+}//namespace FD

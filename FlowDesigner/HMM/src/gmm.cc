@@ -13,7 +13,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(GMM)
 //@implements GMM
@@ -440,3 +441,4 @@ istream &operator >> (istream &in, GMM &gmm)
    gmm.readFrom(in);
    return in;
 }
+}//namespace FD

@@ -6,7 +6,8 @@
 #include <string>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(DiagonalCovariance)
 //@implements GMM
@@ -117,3 +118,4 @@ istream &operator >> (istream &in, DiagonalCovariance &cov)
    cov.readFrom(in);   
    return in;
 }
+}//namespace FD

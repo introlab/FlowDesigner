@@ -7,7 +7,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class TransMatrix;
 
@@ -93,3 +94,5 @@ protected:
    TransMatrix() {throw new GeneralException("TransMatrix copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD

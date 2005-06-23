@@ -7,7 +7,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class GMMTrain;
 DECLARE_NODE(GMMTrain)
@@ -86,3 +87,4 @@ public:
 
 };
 
+}//namespace FD

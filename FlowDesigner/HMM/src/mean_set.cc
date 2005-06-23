@@ -4,7 +4,8 @@
 #include "ObjectParser.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(MeanSet)
 //@implements GMM
@@ -71,3 +72,4 @@ istream &operator >> (istream &in, MeanSet &cov)
    cov.readFrom(in);
    return in;
 }
+}//namespace FD

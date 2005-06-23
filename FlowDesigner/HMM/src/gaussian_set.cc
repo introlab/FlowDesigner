@@ -4,7 +4,8 @@
 #include "ObjectParser.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(GaussianSet)
 //@implements GMM
@@ -87,3 +88,5 @@ istream &operator >> (istream &in, GaussianSet &cov)
    cov.readFrom(in);
    return in;
 }
+
+}//namespace FD

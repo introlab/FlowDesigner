@@ -5,7 +5,8 @@
 #include "Object.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(AcousticModel)
 
@@ -75,3 +76,5 @@ istream &operator >> (istream &in, AcousticModel &mdl)
    mdl.readFrom(in);
    return in;
 }
+
+}//namespace FD
