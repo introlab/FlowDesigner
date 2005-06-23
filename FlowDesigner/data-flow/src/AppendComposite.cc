@@ -68,7 +68,7 @@ public:
       RCPtr<CompositeType> composite = getInput(inputID, count);
       out[count] = composite;
       
-      for (unsigned int i=0; i< inputs.size(); i++)
+      for (unsigned int i=1; i< inputs.size(); i++)
       {
          ObjectRef in = getInput(i, count);
          if (m_override)
