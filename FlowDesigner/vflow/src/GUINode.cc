@@ -273,6 +273,32 @@ gint GUINode::event(GdkEvent *event)
 	   UINodeParameters *params_source = getParameters() ;
 
 
+	   //copying inputs (for resizable nodes)
+	   std::vector<UITerminal *> all_inputs = getInputs();
+	   for (int i = 0; i < all_inputs.size(); i++) {
+	     string input_name = all_inputs[i]->getName();
+	     string input_type = all_inputs[i]->getType();
+	     if (my_node->getInputNamed(input_name) == NULL) {
+	       //add this input
+	       my_node->addTerminal(string(input_name), UINetTerminal::INPUT);
+	     }
+	   }
+	   
+	   
+	   //copying outputs (for resizable nodes)
+	   std::vector<UITerminal *> all_outputs = getOutputs();
+	   
+	   for (int i = 0; i < all_outputs.size(); i++) {
+	     string output_name = all_outputs[i]->getName();
+	     string output_type = all_outputs[i]->getType();
+	     if (my_node->getOutputNamed(output_name) == NULL) {
+	       //add this output
+	       my_node->addTerminal(string(output_name), UINetTerminal::OUTPUT);
+	     }
+	   }
+	   
+
+
 	   //FIXME : PROBABLE LEAK.
 
 	   UINodeParameters *params_destination = new GUINodeParameters(my_node,getType());

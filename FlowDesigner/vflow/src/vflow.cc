@@ -218,13 +218,34 @@ void vflowGUI::paste (GUIDocument *doc) {
     created_nodes.insert(make_pair((*iter),my_node));    
 
     //copying parameters
-    UINodeParameters *params_source = (*iter)->getParameters();
-    
-    UINodeParameters *params_destination = new GUINodeParameters(my_node,(*iter)->getType());
-    
-    params_destination->copyParameterText(params_source);
-    
+    UINodeParameters *params_source = (*iter)->getParameters();    
+    UINodeParameters *params_destination = new GUINodeParameters(my_node,(*iter)->getType());    
+    params_destination->copyParameterText(params_source);    
     my_node->setNodeParameters(params_destination);
+
+    //copying inputs (for resizable nodes)
+    std::vector<UITerminal *> all_inputs = (*iter)->getInputs();
+    for (int i = 0; i < all_inputs.size(); i++) {
+      string input_name = all_inputs[i]->getName();
+      string input_type = all_inputs[i]->getType();
+      if (my_node->getInputNamed(input_name) == NULL) {
+	//add this input
+	my_node->addTerminal(string(input_name), UINetTerminal::INPUT);
+      }
+    }
+
+
+    //copying outputs (for resizable nodes)
+    std::vector<UITerminal *> all_outputs = (*iter)->getOutputs();
+
+    for (int i = 0; i < all_outputs.size(); i++) {
+      string output_name = all_outputs[i]->getName();
+      string output_type = all_outputs[i]->getType();
+      if (my_node->getOutputNamed(output_name) == NULL) {
+	//add this output
+	my_node->addTerminal(string(output_name), UINetTerminal::OUTPUT);
+      }
+    }
 
     //unselecting old node
     (*iter)->unselect();
