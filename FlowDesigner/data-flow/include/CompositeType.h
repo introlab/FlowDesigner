@@ -10,10 +10,9 @@ namespace FD {
 
 /**Allows user-defined types (analog to structs in C/C++)*/
 class CompositeType : public Object {
+  public:
    typedef std::map<std::string, ObjectRef> map_type;
    typedef std::pair<std::string, ObjectRef> map_element_type;
-   map_type fields;
-public:
    CompositeType() {}
    void printOn(std::ostream &out) const;
    void readFrom(std::istream &in);
@@ -31,6 +30,9 @@ public:
    {
      return fields;
    }
+
+  private:
+   map_type fields;
 };
 
 }//namespace FD
