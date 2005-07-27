@@ -124,7 +124,7 @@ public:
       double dist=0;
       for (unsigned int i=0;i<dimension;i++)
       {
-         dist+=sqr(fr[i]-(*mean)[i]);
+         dist+=FD::sqr<double>(fr[i]-(*mean)[i]);
       }
       //cerr << "det: " << covariance->getDeterminant() << endl;
       return dist;

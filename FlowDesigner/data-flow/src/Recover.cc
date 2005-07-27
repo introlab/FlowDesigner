@@ -86,7 +86,7 @@ public:
 	    ostringstream sstr;	    
 	    e->print(sstr);
 	    currentException = ObjectRef(new String(sstr.str()));
-	    ObjectRef catchValue(NULL);
+	    ObjectRef catchValue = nilObject;
 	    try 
 	    {
 	       catchValue = getInput(catchID, count);

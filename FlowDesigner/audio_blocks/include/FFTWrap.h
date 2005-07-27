@@ -28,6 +28,8 @@ using namespace __gnu_cxx;
 
 //typedef fftw_complex fft_complex;
 
+#define NO_HASH_MAP
+
 #ifdef NO_HASH_MAP
 #include <map>
 #else

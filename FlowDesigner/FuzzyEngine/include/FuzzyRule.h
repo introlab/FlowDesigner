@@ -79,12 +79,14 @@ public:
   int m_ruleID;
 };
 
+template<>
 inline void Vector<FuzzyRule*>::printOn(std::ostream &out) const {
   for (int i = 0; i < size(); i++) {
     operator[](i)->printOn(out);
   }
 }
 
+template<>
 inline void Vector<FuzzyRule*>::destroy() {
 
  for (Vector<FuzzyRule*>::iterator iter = this->begin();

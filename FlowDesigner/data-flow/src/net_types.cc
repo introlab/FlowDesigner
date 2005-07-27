@@ -30,25 +30,25 @@ DECLARE_TYPE(Complex<double>)
 DECLARE_TYPE(NetCType<complex<float> >)
 DECLARE_TYPE(NetCType<complex<double> >)
 
-template<class> vector<Char*> ObjectPool<Char>::stack;
-template<class> vector<Int *> ObjectPool<Int>::stack;
-template<class> vector<Bool *> ObjectPool<Bool>::stack;
-template<class> vector<Float *> ObjectPool<Float>::stack;
-template<class> vector<Double *> ObjectPool<Double>::stack;
-template<class> vector<Complex<float> *> ObjectPool<Complex<float> >::stack;
-template<class> vector<Complex<double> *> ObjectPool<Complex<double> >::stack;
-template<class> vector<NetCType<complex<float> > *> ObjectPool<NetCType<complex<float> > >::stack;
-template<class> vector<NetCType<complex<double> > *> ObjectPool<NetCType<complex<double> > >::stack;
+template<> vector<Char*> ObjectPool<Char>::stack = std::vector<FD::Char*>();
+template<> vector<Int *> ObjectPool<Int>::stack = std::vector<FD::Int*>();
+template<> vector<Bool *> ObjectPool<Bool>::stack = std::vector<FD::Bool*>();
+template<> vector<Float *> ObjectPool<Float>::stack = std::vector<FD::Float*>();
+template<> vector<Double *> ObjectPool<Double>::stack = std::vector<FD::Double*>();
+template<> vector<Complex<float> *> ObjectPool<Complex<float> >::stack = std::vector<FD::Complex<float> *>();
+template<> vector<Complex<double> *> ObjectPool<Complex<double> >::stack = std::vector<FD::Complex<double> *>();
+template<> vector<NetCType<complex<float> > *> ObjectPool<NetCType<complex<float> > >::stack = std::vector<FD::NetCType<complex<float> > * >();
+template<> vector<NetCType<complex<double> > *> ObjectPool<NetCType<complex<double> > >::stack = std::vector<FD::NetCType<complex<double> > * >();
 
-template<class> FastMutex ObjectPool<Char>::mutex;
-template<class> FastMutex ObjectPool<Int>::mutex;
-template<class> FastMutex ObjectPool<Bool>::mutex;
-template<class> FastMutex ObjectPool<Float>::mutex;
-template<class> FastMutex ObjectPool<Double>::mutex;
-template<class> FastMutex ObjectPool<Complex<float> >::mutex;
-template<class> FastMutex ObjectPool<Complex<double> >::mutex;
-template<class> FastMutex ObjectPool<NetCType<complex<float> > >::mutex;
-template<class> FastMutex ObjectPool<NetCType<complex<double> > >::mutex;
+template<> FastMutex ObjectPool<Char>::mutex = FastMutex();
+template<> FastMutex ObjectPool<Int>::mutex = FastMutex();
+template<> FastMutex ObjectPool<Bool>::mutex = FastMutex();
+template<> FastMutex ObjectPool<Float>::mutex = FastMutex();
+template<> FastMutex ObjectPool<Double>::mutex = FastMutex();
+template<> FastMutex ObjectPool<Complex<float> >::mutex = FastMutex();
+template<> FastMutex ObjectPool<Complex<double> >::mutex = FastMutex();
+template<> FastMutex ObjectPool<NetCType<complex<float> > >::mutex = FastMutex();
+template<> FastMutex ObjectPool<NetCType<complex<double> > >::mutex = FastMutex();
 
 
 ObjectRef TrueObject(new Bool(true));
