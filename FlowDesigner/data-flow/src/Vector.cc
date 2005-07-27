@@ -34,21 +34,21 @@ VectorPool<float> floatVectorPool;
 VectorPool<double> doubleVectorPool;
 
 //pretty print specialization
-
+template<>
 void Vector<float>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<" ";
   }
   out<<endl;
 }
-
+template<>
 void Vector<double>::prettyPrint(ostream &out) const {
  for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<" ";
   }
   out<<endl;
 }
-
+template<>
 void Vector<int>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<" ";
@@ -64,21 +64,21 @@ void Vector<bool>::prettyPrint(ostream &out) const {
   out<<endl;
 }
 #endif
-
+template<>
 void Vector<ObjectRef>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     (*this)[i]->prettyPrint(out);
     out<<endl;
   } 
 }
-
+template<>
 void Vector<complex<float> >::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<" ";
   }
   out<<endl;
 }
-
+template<>
 void Vector<complex<double> >::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<" ";
@@ -86,13 +86,13 @@ void Vector<complex<double> >::prettyPrint(ostream &out) const {
   out<<endl;
 }
 
-
+template<>
 void Vector<string>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<endl;
   }
 }
-
+template<>
 void Vector<String>::prettyPrint(ostream &out) const {
   for (unsigned int i = 0; i < size(); i++) {
     out<<(*this)[i]<<endl;
