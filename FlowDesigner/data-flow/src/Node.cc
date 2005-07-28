@@ -16,21 +16,21 @@ namespace FD {
 //our static factory dictionary
 map<string,_NodeFactory*> &Node::factoryDictionary()
 { 
-   static map<string,_NodeFactory*> var;
+   static map<string,_NodeFactory*> var = map<string,_NodeFactory*>();
    return var; 
 }
 
 //our static node info dictionary
 vector<string> &Node::nodeInfo()
 { 
-   static vector<string> var;
+   static vector<string> var = vector<string>();
    return var; 
 }
 
 //our static xpm dictionary
 map<string, char**> &Node::XPMDictionary()
 {
-  static map<string,char**> var;
+  static map<string,char**> var = map<string,char**>();
   return var;
 }
 

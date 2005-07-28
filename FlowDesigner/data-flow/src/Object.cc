@@ -12,14 +12,14 @@ namespace FD {
 
 map<string, _ObjectFactory*>& Object::ObjectFactoryDictionary()
 {
-   static map<string, _ObjectFactory*> dict;
+   static map<string, _ObjectFactory*> dict = map<string, _ObjectFactory*>();
    return dict;
 }
 
 //map<const type_info *, _ObjectFactory*>& Object::TypeidDictionary()
 TypeMap<_ObjectFactory*>& Object::TypeidDictionary()
 {
-   static TypeMap<_ObjectFactory*> dict;
+   static TypeMap<_ObjectFactory*> dict = TypeMap<_ObjectFactory*>();
    return dict;
 }
 
