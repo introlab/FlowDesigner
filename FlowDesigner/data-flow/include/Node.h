@@ -153,7 +153,7 @@ public:
    /**Standard request-passing method between nodes during initialization*/
    virtual void request(int outputID, const ParameterSet &req)
    {
-      for (int i=0;i<inputs.size();i++)
+      for (unsigned int i=0;i<inputs.size();i++)
          inputs[i].node->request(inputs[i].outputID,req);      
    }
 
