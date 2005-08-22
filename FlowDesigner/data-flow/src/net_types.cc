@@ -142,7 +142,10 @@ void String::unserialize(istream &in)
 
 void String::prettyPrint(ostream &out) const
 {
-   out << *(string*) (this);
+   // CC : gcc 4.0 doesn't like this cast (caused weird outputs)
+   // out << *(string*) (this);
+   // Changed it for :
+   out << (string)(*(this));
 }
 
 istream &operator >> (istream &in, String &str)
