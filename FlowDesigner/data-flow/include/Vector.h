@@ -216,7 +216,7 @@ template <class T>
 inline ObjectRef Vector<T>::clone() {
   Vector<T> *cpy = Vector<T>::alloc(this->size());
   
-  for (int i = 0; i < this->size(); i++) {
+  for (unsigned int i = 0; i < this->size(); i++) {
     (*cpy)[i] = (*this)[i];
   }
   return ObjectRef(cpy);
@@ -229,7 +229,7 @@ inline ObjectRef Vector<ObjectRef>::clone() {
   
   Vector<ObjectRef> *cpy = new Vector<ObjectRef>(this->size());
   
-  for (int i = 0; i < this->size(); i++) {
+  for (unsigned int i = 0; i < this->size(); i++) {
     //cloning every Object in the vector
     (*cpy)[i] = (*this)[i]->clone();
   }
@@ -528,17 +528,17 @@ struct VecMethod<T,TTraits::ObjectPointer> {
       in >> ch;
    }
 
-   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   static inline ObjectRef getIndex(Vector<T> &v, unsigned int pos) 
    {
-     if (pos < 0 || pos >= v.size()) {
+     if (pos >= v.size()) {
        throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }
      return v[pos];
    }   
 
-   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   static inline void setIndex(Vector<T> &v, unsigned int pos, ObjectRef val) 
    {
-     if (pos < 0 || pos >= v.size()) {
+     if (pos >= v.size()) {
        throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }
      v[pos] = val;
@@ -567,17 +567,17 @@ struct VecMethod<T,TTraits::Basic> {
       in >> ch;
    }
    
-   static inline ObjectRef getIndex(Vector<T> &v, int pos) 
+   static inline ObjectRef getIndex(Vector<T> &v, unsigned int pos) 
    {
-     if (pos < 0 || pos >= v.size()) {
+     if (pos >= v.size()) {
        throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }     
      return ObjectRef( NetCType<T>::alloc(v[pos]));
    }   
    
-   static inline void setIndex(Vector<T> &v, int pos, ObjectRef val) 
+   static inline void setIndex(Vector<T> &v, unsigned int pos, ObjectRef val) 
    {
-     if (pos < 0 || pos >= v.size()) {
+     if (pos >= v.size()) {
        throw new GeneralException("Vector getIndex : index out of bound",__FILE__,__LINE__);
      }  
      RCPtr<NetCType<T> > obj = val;     
