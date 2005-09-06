@@ -4,7 +4,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.100 2004/01/13 22:12:41 jmvalin Exp $
+# $Id: Makefile.am,v 1.101 2004/02/06 15:42:31 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -12,7 +12,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 lib_LTLIBRARIES = libablocks.la 
 
 install-data-local:
-	mkdir -p $(libdir)
+	mkdir -p $(datadir)
 	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
 	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/audio_blocks.def)
 

@@ -149,7 +149,7 @@ while test $# -gt 0; do
 	the_flags="$the_flags -I$includedir -I$toolboxdir/HMM "
 	;;
     nnet)
-	the_libs="$the_libs -L$libdir -L$toolboxdir/NNet -lflow -lNNet"
+	the_libs="$the_libs -L$libdir -L$toolboxdir/NNet -lflow -lnnet"
 	the_flags="$the_flags -I$includedir -I$toolboxdir/NNet"
 	;;
     audio_blocks)
@@ -157,7 +157,7 @@ while test $# -gt 0; do
 	the_flags="$the_flags -I$includedir -I$toolboxdir/audio_blocks"
 	;;
     fuzzy)
-	the_libs="$the_libs -L$libdir -L$toolboxdir/fuzzy -lflow -lfuzzy"
+	the_libs="$the_libs -L$libdir -L$toolboxdir/FuzzyEngine -lflow -lfuzzy"
 	the_flags="$the_flags -I$includedir -I$toolboxdir/FuzzyEngine"
 	;;
     vq)
@@ -167,6 +167,14 @@ while test $# -gt 0; do
     vflow)
 	the_libs="$the_libs -L$libdir -L$toolboxdir/vflow -lflow"
 	the_flags="$the_flags -I$includedir -I$toolboxdir/vflow"
+	;;
+    octave)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/Octave -lflow -lOctave"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/Octave"
+	;;
+    lapack)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/lapackflow -lflow -llapackflow"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/lapackflow"
 	;;
     config)
 	the_libs="$the_libs $LD_FLAGS $LIBS"

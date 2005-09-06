@@ -292,7 +292,7 @@ void FeatureMap::printOn(ostream &out) const
    out << ">\n";
 }
 
-ostream &operator << (ostream &out, const FeatureMap &cell)
+ostream &FD::operator << (ostream &out, const FeatureMap &cell)
 {
    cell.printOn(out);
    return out;
@@ -350,7 +350,7 @@ void FeatureMap::readFrom (istream &in)
    
 }
 
-istream &operator >> (istream &in, FeatureMap &cell)
+istream &FD::operator >> (istream &in, FeatureMap &cell)
 {
    if (!isValidType(in, "FeatureMap")) 
       return in;

@@ -319,7 +319,7 @@ void KMeans::readFrom (istream &in)
    }
 }
 
-istream &operator >> (istream &in, KMeans &mdl)
+istream &FD::operator >> (istream &in, KMeans &mdl)
 {
    if (!isValidType(in, "KMeans")) return in;
    mdl.readFrom(in);

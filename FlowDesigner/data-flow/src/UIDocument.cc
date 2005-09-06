@@ -650,6 +650,8 @@ set<string> UIDocument::genCode(ostream &out, const string &functName, bool loca
       out << "#include <Iterator.h>\n";
       out << "#include <object_param.h>\n\n\n";
    }
+   out << "using namespace std;\n";
+   out << "using namespace FD;\n\n\n";
    int id=0;
    UINetwork *uinet = getNetworkNamed("MAIN");
    if (!uinet)

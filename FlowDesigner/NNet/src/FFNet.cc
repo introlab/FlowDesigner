@@ -438,7 +438,7 @@ void FFNet::readFrom (istream &in)
    setupLayersAfterRead();
 }
 
-istream &operator >> (istream &in, FFNet &net)
+istream &FD::operator >> (istream &in, FFNet &net)
 {
    if (!isValidType(in, "FFNet")) return in;
    net.readFrom(in);

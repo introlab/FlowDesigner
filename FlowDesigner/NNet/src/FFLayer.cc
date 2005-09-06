@@ -160,7 +160,7 @@ void FFLayer::readFrom (istream &in)
 }
 
 
-istream &operator >> (istream &in, FFLayer &layer)
+istream &FD::operator >> (istream &in, FFLayer &layer)
 {
    if (!isValidType(in, "FFLayer")) return in;
    layer.readFrom(in);

@@ -447,7 +447,7 @@ void Cell::printOn(ostream &out) const
    out << ">\n";
 }
 
-ostream &operator << (ostream &out, const Cell &cell)
+ostream &FD::operator << (ostream &out, const Cell &cell)
 {
    cell.printOn(out);
    return out;
@@ -500,7 +500,7 @@ void Cell::readFrom (istream &in)
    
 }
 
-istream &operator >> (istream &in, Cell &cell)
+istream &FD::operator >> (istream &in, Cell &cell)
 {
    if (!isValidType(in, "Cell")) 
       return in;
