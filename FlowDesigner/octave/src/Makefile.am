@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.1 2004/05/26 01:52:18 maestro Exp $
+# $Id: Makefile.am,v 1.2 2005/09/06 13:53:57 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -25,8 +25,8 @@ libOctave_la_LDFLAGS = -release $(LT_RELEASE) -L$(OCTAVE_LIB) -loctave -loctinte
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include -I$(OCTAVE_INCLUDE) -I$(OCTAVE_INCLUDE)/octave
 
-LDADD = $(top_srcdir)/src/libOctave.la \
-        $(top_srcdir)/../data-flow/src/libflow.la
+#LDADD = $(top_srcdir)/src/libOctave.la \
+#        $(top_srcdir)/../data-flow/src/libflow.la
 
 bin_PROGRAMS = test
 
@@ -35,4 +35,3 @@ test_SOURCES = test.cc
 test_LDADD = -L$(OCTAVE_LIB) -loctave -loctinterp -lcruft \
         -ltermcap -lreadline -ldl -lg2c $(XML2_LIB) -lncurses
 
-LDFLAGS = 
