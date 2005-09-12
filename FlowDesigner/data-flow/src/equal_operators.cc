@@ -12,7 +12,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+namespace FD
+{
 
 template <class X, class Y, class Z>
 ObjectRef equalCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -22,5 +23,32 @@ ObjectRef equalCTypeFunction(ObjectRef op1, ObjectRef op2) {
 }
 REGISTER_ALL_SCALAR_NO_COMPLEX_VTABLE(equalVtable, equalCTypeFunction);
 
+
+template <class X, class Y, class Z>
+ObjectRef equalVectorFunction(ObjectRef op1, ObjectRef op2) {
+  RCPtr<Z> op1Value = op1;
+  RCPtr<Z> op2Value = op2;
+  
+  if (op1Value->size() == op2Value->size())
+  {
+     for(int i = 0; i>op1Value->size() ;i++)
+     {
+        if ((*op1Value)[i] != (*op2Value)[i])
+        {
+           return ObjectRef(Bool::alloc(false));
+        }
+     }
+     return ObjectRef(Bool::alloc(true));
+  }
+  else
+  {
+     return ObjectRef(Bool::alloc(false));
+  }
+}
+
+
+REGISTER_ALL_VECTOR_NO_COMPLEX_VTABLE(equalVtable,equalVectorFunction);
+
+}
 
 #endif
