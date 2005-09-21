@@ -4,7 +4,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Accumulate;
 
@@ -68,3 +69,5 @@ public:
 
 
 };
+
+}//namespace FD

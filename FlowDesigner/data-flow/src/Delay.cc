@@ -5,7 +5,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Delay;
 DECLARE_NODE(Delay)
@@ -89,3 +90,5 @@ ObjectRef Delay::getOutput(int output_id, int count)
    else 
       return nilObject;
 }
+
+}//namespace FD

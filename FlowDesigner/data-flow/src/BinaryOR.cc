@@ -20,7 +20,8 @@
 #include "BinaryOR.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(BinaryOR);
 
@@ -70,5 +71,8 @@ void BinaryOR::calculate(int output_id, int count, Buffer &out)
 
    (*outputs[m_outputID].buffer)[count] = ObjectRef(Int::alloc(input|mask));
 }
+
+}//namespace FD
+
 #endif //_BINARY_OR_CC_
 

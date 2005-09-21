@@ -3,7 +3,8 @@
 #include "DLManager.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 map<string,LoadedLibrary* > DLManager::loaded;
 map<string, ToolboxData> ToolboxList::loadedToolboxes;
@@ -56,3 +57,5 @@ vector<string> ToolboxList::load(const vector<string> &list, int debug)
    } while (remain.size() != 0 && remain.size() != lastPass);
    return errors;
 }
+
+}//namespace FD

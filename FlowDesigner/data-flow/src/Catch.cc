@@ -4,7 +4,8 @@
 #include "FlowException.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Catch;
 
@@ -111,3 +112,5 @@ public:
 
 
 };
+
+}//namespace FD

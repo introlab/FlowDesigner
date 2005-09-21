@@ -3,7 +3,8 @@
 #include "Node.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Feedback;
 
@@ -125,3 +126,5 @@ public:
    }
       
 };
+
+}//namespace FD

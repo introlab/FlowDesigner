@@ -3,7 +3,8 @@
 #include "Constant.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(Constant)
 /*Node
@@ -45,3 +46,4 @@ ObjectRef Constant::getOutput(int output_id, int count)
   if (output_id==outputID) return value;
   else throw new NodeException (this, "Constant: Unknown output id", __FILE__, __LINE__);
 }
+}//namespace FD

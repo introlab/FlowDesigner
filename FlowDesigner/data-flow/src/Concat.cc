@@ -4,7 +4,7 @@
 #include "operators.h"
 
 using namespace std;
-using namespace FD;
+namespace FD {
 
 class Concat;
 
@@ -51,3 +51,5 @@ public:
    }
 
 };
+
+}//namespace FD

@@ -8,7 +8,8 @@
 #include <sstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ConstantVector;
 
@@ -70,3 +71,5 @@ protected:
    ConstantVector() {throw new GeneralException("ConstantVector copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD

@@ -15,7 +15,8 @@
 #include <libxml/globals.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 typedef Network *NetworkPtr;
 
@@ -179,3 +180,5 @@ int main(int argc, char **argv) {
    delete batchflowApp::instance();
    return 0;
 }
+
+}//namespace FD

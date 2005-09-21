@@ -6,7 +6,8 @@
 #include "SocketStream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Accept;
 
@@ -71,3 +72,4 @@ public:
    }
 
 };
+}//namespace FD

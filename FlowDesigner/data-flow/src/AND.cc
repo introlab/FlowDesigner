@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class AND;
 
@@ -93,3 +94,5 @@ public:
       }
    }
 };
+
+}//namespace FD

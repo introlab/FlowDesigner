@@ -3,7 +3,8 @@
 #include "Node.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Action;
 
@@ -97,3 +98,4 @@ public:
    }
 
 };
+}//namespace FD

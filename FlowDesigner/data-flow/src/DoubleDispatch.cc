@@ -4,7 +4,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DoubleDispatchException::DoubleDispatchException(DoubleDispatch *_table, string _type1, string _type2)
    : table(_table)
@@ -30,3 +31,5 @@ void SingleDispatchException::print(ostream &out) {
    out << "SingleDisptach Vtable error: no match for " << table->getName() << "(" << type1 << ")" << endl;
 }
 */
+
+}//namespace FD

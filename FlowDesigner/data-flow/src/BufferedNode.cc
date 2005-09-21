@@ -6,7 +6,8 @@
 //@implements core
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 BufferedNode::BufferedNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)
@@ -125,3 +126,5 @@ ObjectRef BufferedNode::getOutput(int output_id, int count)
       throw e->add(new NodeException (this, "Exception caught in BufferedNode::getOutput", __FILE__, __LINE__));
    }
 }
+
+}//namespace FD

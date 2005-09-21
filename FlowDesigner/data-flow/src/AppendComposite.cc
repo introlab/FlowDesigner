@@ -4,7 +4,8 @@
 #include "CompositeType.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class AppendComposite;
 
@@ -85,3 +86,5 @@ public:
    NO_ORDER_NODE_SPEEDUP(AppendComposite)
       
 };
+
+}//namespace FD

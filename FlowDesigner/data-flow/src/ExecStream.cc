@@ -8,7 +8,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ExecStream;
 
@@ -78,3 +79,5 @@ protected:
    ExecStream() {throw new GeneralException("ExecStream copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD

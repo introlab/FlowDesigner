@@ -5,7 +5,8 @@
 #include "ObjectParser.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(CompositeType)
 
@@ -48,3 +49,5 @@ void CompositeType::conservativeAddField(const std::string &name, ObjectRef obj)
    fields.insert(map_element_type(name,obj));
 }
 
+
+}//namespace FD

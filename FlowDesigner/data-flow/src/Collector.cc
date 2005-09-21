@@ -5,7 +5,8 @@
 //@implements core
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(Collector)
 
@@ -86,6 +87,8 @@ ObjectRef Collector::getOutput(int output_id, int count)
       throw new NodeException(this,"Unknown output_id",__FILE__,__LINE__);
    }
 }
+
+}//namespace FD
 
 
 

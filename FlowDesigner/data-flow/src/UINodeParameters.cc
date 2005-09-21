@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace FD 
+namespace FD {
 
 class ParamTypeChange {
 public:

@@ -9,7 +9,8 @@
 #include <sstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class DCMatrix;
 
@@ -82,3 +83,4 @@ protected:
    DCMatrix() {throw new GeneralException("DCMatrix copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD
