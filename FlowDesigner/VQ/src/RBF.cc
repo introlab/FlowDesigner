@@ -6,7 +6,8 @@
 #include "misc.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(RBF)
 //@implements VQ
@@ -92,3 +93,4 @@ istream &operator >> (istream &in, RBF &mdl)
    mdl.readFrom(in);
    return in;
 }
+}//namespace FD

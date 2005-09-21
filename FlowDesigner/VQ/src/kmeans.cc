@@ -5,7 +5,8 @@
 #include "ObjectParser.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(KMeans)
 //@implements VQ
@@ -319,9 +320,10 @@ void KMeans::readFrom (istream &in)
    }
 }
 
-istream &FD::operator >> (istream &in, KMeans &mdl)
+istream &operator >> (istream &in, KMeans &mdl)
 {
    if (!isValidType(in, "KMeans")) return in;
    mdl.readFrom(in);
    return in;
 }
+}//namespace FD

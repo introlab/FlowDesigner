@@ -6,7 +6,8 @@
 #include "ObjectParser.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(MSVQ)
 //@implements MSVQ
@@ -155,3 +156,4 @@ istream &operator >> (istream &in, MSVQ &mdl)
    mdl.readFrom(in);
    return in;
 }
+}//namespace FD

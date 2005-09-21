@@ -10,7 +10,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VQWeightMeans;
 
@@ -71,3 +72,4 @@ public:
    }
 
 };
+}//namespace FD

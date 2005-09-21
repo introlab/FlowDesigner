@@ -6,7 +6,8 @@
 #include "kmeans.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VQuantizeDiff;
 
@@ -94,3 +95,4 @@ public:
    }
 
 };
+}//namespace FD

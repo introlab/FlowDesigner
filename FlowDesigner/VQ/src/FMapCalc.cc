@@ -7,7 +7,8 @@
 #include "FeatureMap.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class FMapCalc;
 
@@ -75,3 +76,4 @@ public:
    }
 
 };
+}//namespace FD

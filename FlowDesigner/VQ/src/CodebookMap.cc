@@ -3,7 +3,8 @@
 #include "CodebookMap.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(CodebookMap)
 //@implements CMap
@@ -96,3 +97,4 @@ istream &operator >> (istream &in, CodebookMap &net)
    net.readFrom(in);
    return in;
 }
+}//namespace FD

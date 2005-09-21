@@ -8,7 +8,8 @@
 #include "CodebookMap.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class CMTrain;
 
@@ -124,3 +125,4 @@ public:
    }
 
 };
+}//namespace FD

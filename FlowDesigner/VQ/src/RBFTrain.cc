@@ -6,7 +6,8 @@
 #include "BufferedNode.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class RBFTrain;
 DECLARE_NODE(RBFTrain)
@@ -93,3 +94,4 @@ class RBFTrain : public BufferedNode {
       
 
 };
+}//namespace FD

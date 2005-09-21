@@ -11,7 +11,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(Cell)
 //@implements VQ
@@ -447,7 +448,7 @@ void Cell::printOn(ostream &out) const
    out << ">\n";
 }
 
-ostream &FD::operator << (ostream &out, const Cell &cell)
+ostream &operator << (ostream &out, const Cell &cell)
 {
    cell.printOn(out);
    return out;
@@ -500,10 +501,11 @@ void Cell::readFrom (istream &in)
    
 }
 
-istream &FD::operator >> (istream &in, Cell &cell)
+istream &operator >> (istream &in, Cell &cell)
 {
    if (!isValidType(in, "Cell")) 
       return in;
    cell.readFrom(in);
    return in;
 }
+}//namespace FD

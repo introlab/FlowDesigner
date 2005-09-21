@@ -6,7 +6,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VQTrain;
 DECLARE_NODE(VQTrain)
@@ -81,3 +82,4 @@ public:
    }
 
 };
+}//namespace FD

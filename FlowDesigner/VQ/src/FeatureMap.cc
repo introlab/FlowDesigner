@@ -15,7 +15,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(FeatureMap)
 //@implements FeatureMap
@@ -292,7 +293,7 @@ void FeatureMap::printOn(ostream &out) const
    out << ">\n";
 }
 
-ostream &FD::operator << (ostream &out, const FeatureMap &cell)
+ostream &operator << (ostream &out, const FeatureMap &cell)
 {
    cell.printOn(out);
    return out;
@@ -350,10 +351,11 @@ void FeatureMap::readFrom (istream &in)
    
 }
 
-istream &FD::operator >> (istream &in, FeatureMap &cell)
+istream &operator >> (istream &in, FeatureMap &cell)
 {
    if (!isValidType(in, "FeatureMap")) 
       return in;
    cell.readFrom(in);
    return in;
 }
+}//namespace FD
