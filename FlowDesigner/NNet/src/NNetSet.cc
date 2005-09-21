@@ -4,7 +4,8 @@
 #include "TrainingAlgo.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(NNetSet)
 //@implements NNetSet
@@ -181,3 +182,4 @@ istream &operator >> (istream &in, NNetSet &net)
    net.readFrom(in);
    return in;
 }
+}//namespace FD

@@ -6,7 +6,8 @@
 #include "FFNet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetTrainRecurDBD;
 
@@ -189,3 +190,4 @@ protected:
    NNetTrainRecurDBD() {throw new GeneralException("NNetTrainRecurDBD copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

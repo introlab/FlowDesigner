@@ -7,7 +7,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //@require FFNet
 //@implements FFNetTrain
@@ -467,3 +468,4 @@ void TrainingWeightDeltaBarDelta::train(FFNet *net, vector<float *> tin, vector<
    net->setWeights(&wk[0]);
    //vec_copy(&wk[0], net->weights, nbWeights);
 }
+}//namespace FD

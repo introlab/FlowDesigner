@@ -13,7 +13,8 @@
 #include "Array.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(FFNet)
 //DECLARE_TYPE(Vector<FFNet>)
@@ -438,9 +439,10 @@ void FFNet::readFrom (istream &in)
    setupLayersAfterRead();
 }
 
-istream &FD::operator >> (istream &in, FFNet &net)
+istream &operator >> (istream &in, FFNet &net)
 {
    if (!isValidType(in, "FFNet")) return in;
    net.readFrom(in);
    return in;
 }
+}//namespace FD

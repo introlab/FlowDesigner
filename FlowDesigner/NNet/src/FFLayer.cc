@@ -7,7 +7,8 @@
 #include "misc.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(FFLayer)
 DECLARE_TYPE(Vector<FFLayer>)
@@ -160,9 +161,10 @@ void FFLayer::readFrom (istream &in)
 }
 
 
-istream &FD::operator >> (istream &in, FFLayer &layer)
+istream &operator >> (istream &in, FFLayer &layer)
 {
    if (!isValidType(in, "FFLayer")) return in;
    layer.readFrom(in);
    return in;
 }
+}//namespace FD

@@ -6,7 +6,8 @@
 #include "FFNet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetExecRecurrent;
 
@@ -105,3 +106,4 @@ public:
    }
 
 };
+}//namespace FD

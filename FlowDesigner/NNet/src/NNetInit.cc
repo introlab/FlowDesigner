@@ -9,7 +9,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetInit;
 
@@ -117,3 +118,4 @@ protected:
    NNetInit() {throw new GeneralException("NNetInit copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

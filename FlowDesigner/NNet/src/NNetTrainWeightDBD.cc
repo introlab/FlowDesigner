@@ -7,7 +7,8 @@
 #include "TrainingAlgo.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetTrainWeightDBD;
 
@@ -154,3 +155,4 @@ public:
    }
 
 };
+}//namespace FD

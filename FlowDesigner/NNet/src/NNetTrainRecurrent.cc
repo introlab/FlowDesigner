@@ -6,7 +6,8 @@
 #include "FFNet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetTrainRecurrent;
 
@@ -186,3 +187,4 @@ protected:
    NNetTrainRecurrent() {throw new GeneralException("NNetTrainRecurrent copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

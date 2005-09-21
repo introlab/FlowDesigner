@@ -6,7 +6,8 @@
 #include "NNetSet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetSetTrainDBD;
 
@@ -150,3 +151,4 @@ public:
 
 
 };
+}//namespace FD

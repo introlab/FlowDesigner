@@ -7,7 +7,8 @@
 #include "TrainingAlgo.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetTrainQProp;
 
@@ -146,3 +147,4 @@ protected:
    NNetTrainQProp() {throw new GeneralException("NNetTrainQProp copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

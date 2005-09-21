@@ -6,7 +6,8 @@
 #include "FFNet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetTrainCGB;
 
@@ -162,3 +163,4 @@ protected:
    NNetTrainCGB() {throw new GeneralException("NNetTrainCGB copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

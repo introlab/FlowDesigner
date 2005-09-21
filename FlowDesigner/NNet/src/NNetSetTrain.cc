@@ -6,7 +6,8 @@
 #include "NNetSet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetSetTrain;
 
@@ -217,3 +218,4 @@ protected:
    NNetSetTrain() {throw new GeneralException("NNetSetTrain copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

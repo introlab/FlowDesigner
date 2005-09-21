@@ -9,7 +9,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetSetChooseBest;
 
@@ -115,3 +116,4 @@ protected:
    NNetSetChooseBest() {throw new GeneralException("NNetSetChooseBest copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

@@ -7,7 +7,8 @@
 #include "TrainingAlgo.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NNetTrainSCG;
 
@@ -136,3 +137,5 @@ protected:
    NNetTrainSCG() {throw new GeneralException("NNetTrainSCG copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD
