@@ -9,7 +9,8 @@
 #include "UIDocument.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static gint terminal_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -197,3 +198,4 @@ void GUITerminal::move (double dx,double dy)
    for (i=0;i<connections.size();i++)
       dynamic_cast<GUILink *>(connections[i])->move(isInput, dx, dy);
 }
+}//namespace FD

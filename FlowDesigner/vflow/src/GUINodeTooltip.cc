@@ -9,7 +9,8 @@
 #include "UIDocument.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    : node(_node)
@@ -113,3 +114,4 @@ GUINodeTooltip::~GUINodeTooltip()
 {
    gtk_object_destroy(GTK_OBJECT(group));
 }
+}//namespace FD

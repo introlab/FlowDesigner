@@ -17,7 +17,8 @@
 #include "gtkextra/gtkextra.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(MultiPlotProbe)
 /*Node
@@ -263,5 +264,5 @@ void MultiPlotProbe::print()
    gtk_plot_canvas_export_ps_with_size(GTK_PLOT_CANVAS(canvas), "plot.eps", GTK_PLOT_PORTRAIT, 1, GTK_PLOT_MM, .4*xmax, .4*ymax);
 }
 
-
+}//namespace FD
 #endif

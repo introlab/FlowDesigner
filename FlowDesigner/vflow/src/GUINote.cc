@@ -3,7 +3,8 @@
 
 //Copyright (C) 2004 Dominic Letourneau
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static gint gui_note_event_handler (GnomeCanvasItem *item, GdkEvent *event, GUINote *note) {
    return note->event(event);
@@ -236,3 +237,4 @@ gint GUINote::event(GdkEvent *event) {
 
   return TRUE;
 }
+}//namespace FD

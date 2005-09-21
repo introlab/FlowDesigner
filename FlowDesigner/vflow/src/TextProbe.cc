@@ -7,7 +7,8 @@
 #include <sstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(TextProbe)
 /*Node
@@ -97,3 +98,4 @@ void TextProbe::display()
    gdk_threads_leave();
 }
 
+}//namespace FD

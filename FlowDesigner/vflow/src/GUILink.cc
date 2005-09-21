@@ -6,7 +6,8 @@
 #include "GUINetwork.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -483,3 +484,4 @@ void GUILink::update() {
   gnome_canvas_points_unref(points);
      
 }
+}//namespace FD

@@ -15,7 +15,8 @@
 #include "vflow.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static gint node_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 {
@@ -783,3 +784,4 @@ void GUINode::rename(const string &newName) {
 UINodeParameters *GUINode::newNodeParameters (UINode *_node, string type) {
   return new GUINodeParameters (_node, type);
 }
+}//namespace FD

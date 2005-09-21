@@ -14,7 +14,8 @@
 #include "flow_pref.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static void pref_apply (GnomePropertyBox *propertybox, gint arg1, VFlowPrefDialog* user_data)
 {
@@ -412,3 +413,4 @@ void VFlowPrefDialog::close()
 {
    delete this;
 }
+}//namespace FD

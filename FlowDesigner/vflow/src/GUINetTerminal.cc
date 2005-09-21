@@ -9,7 +9,8 @@
 #include "misc_gui.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static void create_net_terminal(gchar * str, GUINetTerminal *term)
 {
@@ -229,3 +230,4 @@ string GUINetTerminal::find_unique_name(const string &_name, NetTermType _type) 
 void GUINetTerminal::setAbsPos(double x, double y) {
   gnome_canvas_item_set(item,"x",x,"y",y,NULL);
 }
+}//namespace FD

@@ -9,7 +9,8 @@
 #include "object_param.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 static int user_count = 0;
 
@@ -722,3 +723,4 @@ void GUINodeParameters::createWindow() {
    //cerr << "this is " << this << "\n";
 
 }
+}//namespace FD

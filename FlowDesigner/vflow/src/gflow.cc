@@ -26,6 +26,8 @@
 using namespace std;
 using namespace FD;
 
+namespace FD {
+
 void quit()
 {
    gdk_threads_enter(); 
@@ -41,7 +43,7 @@ void run2(GRunContext *ctx)
    //cerr << "End of run2()" << endl;
    //gtk_main_quit();
 }
-
+}//namespace FD
 
 int main(int argc, char **argv)
 {
@@ -148,3 +150,4 @@ int main(int argc, char **argv)
    return 0;
 
 }
+

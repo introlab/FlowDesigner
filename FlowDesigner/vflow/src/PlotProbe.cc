@@ -11,7 +11,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(PlotProbe)
 /*Node
@@ -190,3 +191,4 @@ void PlotProbe::show_hide()
       
    }
 }
+}//namespace FD
