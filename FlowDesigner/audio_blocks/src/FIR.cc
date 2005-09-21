@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class FIR;
 
@@ -160,3 +161,4 @@ public:
    }
 
 };
+}//namespace FD

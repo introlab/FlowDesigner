@@ -6,7 +6,8 @@
 #include "vec.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class StopRecord;
 
@@ -101,3 +102,5 @@ public:
 
       
 };
+
+}//namespace FD

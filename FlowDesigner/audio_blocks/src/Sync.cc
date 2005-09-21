@@ -5,7 +5,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Sync;
 DECLARE_NODE(Sync)
@@ -94,3 +95,5 @@ ObjectRef Sync::getOutput(int output_id, int count)
    NodeInput input = inputs[inputID];
    return input.node->getOutput(input.outputID,int(floor(.5+count*ratio)));
 }
+
+}//namespace FD

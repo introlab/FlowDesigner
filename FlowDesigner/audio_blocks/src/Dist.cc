@@ -6,7 +6,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Dist;
 
@@ -109,3 +110,4 @@ public:
    }
 
 };
+}//namespace FD

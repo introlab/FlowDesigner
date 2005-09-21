@@ -9,7 +9,7 @@
 #include "reverb.h"
 
 //@implements Reverb
-using namespace FD;
+namespace FD {
 
 allpass::allpass()
 {
@@ -329,3 +329,4 @@ float revmodel::getmode()
 }
 
 //ends
+}//namespace FD

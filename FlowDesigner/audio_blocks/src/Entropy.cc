@@ -14,7 +14,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Entropy;
 
@@ -78,3 +79,4 @@ public:
    }
 
 };
+}//namespace FD

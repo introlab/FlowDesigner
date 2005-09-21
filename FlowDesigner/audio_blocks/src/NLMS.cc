@@ -7,7 +7,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NLMS;
 
@@ -152,3 +153,5 @@ public:
    }
 
 };
+
+}//namespace FD

@@ -6,7 +6,8 @@
 #include "lsp.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class LSP2LPC;
 
@@ -60,3 +61,4 @@ public:
    NO_ORDER_NODE_SPEEDUP(LSP2LPC)
       
 };
+}//namespace FD

@@ -8,7 +8,8 @@
 #include "FFTWrap.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class LPC2PS;
 
@@ -103,3 +104,4 @@ public:
    }
 
 };
+}//namespace FD

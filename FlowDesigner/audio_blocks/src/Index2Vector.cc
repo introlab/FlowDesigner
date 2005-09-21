@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Index2Vector;
 
@@ -65,3 +66,5 @@ public:
    }
 
 };
+
+}//namespace FD

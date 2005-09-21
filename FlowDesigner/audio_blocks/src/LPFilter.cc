@@ -8,7 +8,8 @@
 #include "misc.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class LPFilter;
 
@@ -102,3 +103,4 @@ protected:
    LPFilter() {throw new GeneralException("LPFilter copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+}//namespace FD

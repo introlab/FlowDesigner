@@ -8,7 +8,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class FDSaveFrame;
 
@@ -98,3 +99,5 @@ public:
       out[count] = inputValue;
    }
 };
+
+}//namespace FD

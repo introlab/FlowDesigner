@@ -12,7 +12,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class AudioStream;
 
@@ -368,3 +369,4 @@ protected:
    }
 
 };
+}//namespace FD

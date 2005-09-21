@@ -6,7 +6,8 @@
 #include "Matrix.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class OffsetMatrix;
 
@@ -77,3 +78,4 @@ public:
 
       
 };
+}//namespace FD

@@ -6,7 +6,8 @@
 #include "vec.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class TimeAutocorr;
 
@@ -101,3 +102,5 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(TimeAutocorr)
 };
+
+}//namespace FD

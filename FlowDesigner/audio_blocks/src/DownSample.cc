@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class DownSample;
 
@@ -65,3 +66,4 @@ public:
    }
 
 };
+}//namespace FD

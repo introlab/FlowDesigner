@@ -7,7 +7,8 @@
 #include <algorithm>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Sort;
 
@@ -60,3 +61,5 @@ public:
    NO_ORDER_NODE_SPEEDUP(Sort)
       
 };
+
+}//namespace FD

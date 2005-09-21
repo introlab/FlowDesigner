@@ -7,7 +7,8 @@
 #include "FFTWrap.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class DCT;
 
@@ -161,3 +162,4 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(DCT)
 };
+}//namespace FD

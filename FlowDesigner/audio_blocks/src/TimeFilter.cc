@@ -6,7 +6,8 @@
 #include <strstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class TimeFilter;
 
@@ -126,3 +127,5 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(TimeFilter)
 };
+
+}//namespace FD

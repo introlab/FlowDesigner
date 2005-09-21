@@ -11,7 +11,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class MFCC;
 
@@ -231,3 +232,5 @@ public:
    }
 
 };
+
+}//namespace FD

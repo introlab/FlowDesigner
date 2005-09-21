@@ -14,7 +14,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class TimeEntropy;
 
@@ -153,3 +154,5 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(TimeEntropy)
 };
+
+}//namespace FD

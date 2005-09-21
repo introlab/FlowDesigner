@@ -9,7 +9,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class WriteAudio;
 
@@ -98,3 +99,5 @@ public:
       out[count] = inputValue;
    }
 };
+
+}//namespace FD

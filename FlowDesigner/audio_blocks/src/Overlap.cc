@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Overlap;
 
@@ -110,3 +111,5 @@ public:
    }
 
 };
+
+}//namespace FD

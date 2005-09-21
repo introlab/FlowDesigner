@@ -6,7 +6,8 @@
 #include <stdlib.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class IIR;
 
@@ -105,3 +106,4 @@ public:
    }
 
 };
+}//namespace FD

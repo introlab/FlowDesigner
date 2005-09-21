@@ -6,7 +6,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Reframe;
 
@@ -120,3 +121,5 @@ public:
    }
 
 };
+
+}//namespace FD

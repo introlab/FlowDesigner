@@ -7,7 +7,8 @@
 #include "Matrix.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class CovarianceAccum;
 
@@ -73,3 +74,4 @@ public:
    }
       
 };
+}//namespace FD

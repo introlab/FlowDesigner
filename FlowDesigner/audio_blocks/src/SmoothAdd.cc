@@ -6,7 +6,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class SmoothAdd;
 
@@ -98,3 +99,5 @@ public:
    }
 
 };
+
+}//namespace FD

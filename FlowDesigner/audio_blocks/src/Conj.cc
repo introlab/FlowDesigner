@@ -6,7 +6,8 @@
 #include <complex>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Conj;
 
@@ -59,3 +60,4 @@ public:
 
       
 };
+}//namespace FD

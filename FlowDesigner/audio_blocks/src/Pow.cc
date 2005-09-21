@@ -6,7 +6,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Pow;
 
@@ -68,3 +69,5 @@ public:
    }
 
 };
+
+}//namespace FD

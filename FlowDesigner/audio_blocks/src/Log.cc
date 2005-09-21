@@ -11,7 +11,8 @@
 #endif
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Log;
 
@@ -76,3 +77,4 @@ public:
       
 NO_ORDER_NODE_SPEEDUP(Log)
 };
+}//namespace FD

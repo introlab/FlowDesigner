@@ -3,5 +3,6 @@
 #include "FFTWrap.h"
 
 //@implements FFT
-
-_FFTWrap FFTWrap;
+namespace FD {
+  _FFTWrap FFTWrap;
+}

@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Concatenate;
 
@@ -73,3 +74,4 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(Concatenate);
 };
+}//namespace FD

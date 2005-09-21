@@ -8,7 +8,8 @@
 #include "mdct.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class MDCT;
 
@@ -96,3 +97,4 @@ public:
    }
 
 };
+}//namespace FD

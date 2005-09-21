@@ -7,7 +7,8 @@
 #include "vec.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Sqrt;
 
@@ -57,3 +58,5 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(Sqrt)
 };
+
+}//namespace FD

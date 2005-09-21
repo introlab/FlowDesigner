@@ -15,7 +15,8 @@
 
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ArgMax;
 
@@ -95,3 +96,4 @@ public:
    }
 
 };
+}//namespace FD

@@ -4,7 +4,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class GCMS;
 
@@ -102,7 +103,7 @@ protected:
 
 };
 
-
+}//namespace FD
 
 
 

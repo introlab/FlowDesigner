@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Abs;
 
@@ -59,3 +60,4 @@ public:
    }
 
 };
+}//namespace FD

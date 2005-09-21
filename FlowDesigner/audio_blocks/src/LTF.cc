@@ -7,7 +7,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class LTF;
 
@@ -90,3 +91,5 @@ public:
    }
 
 };
+
+}//namespace FD

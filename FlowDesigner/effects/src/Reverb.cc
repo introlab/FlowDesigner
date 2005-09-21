@@ -6,7 +6,8 @@
 #include "reverb.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Reverb;
 
@@ -148,3 +149,4 @@ public:
 
       
 };
+}//namespace FD

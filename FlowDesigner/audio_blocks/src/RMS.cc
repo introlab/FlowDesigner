@@ -6,7 +6,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class RMS;
 
@@ -62,3 +63,5 @@ public:
    }
 
 };
+
+}//namespace FD

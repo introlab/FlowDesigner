@@ -9,7 +9,8 @@
 #include "misc.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Noise;
 
@@ -110,3 +111,5 @@ public:
 
       
 };
+
+}//namespace FD

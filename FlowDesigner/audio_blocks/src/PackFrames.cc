@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class PackFrames;
 
@@ -84,3 +85,5 @@ public:
 
       
 };
+
+}//namespace FD

@@ -10,7 +10,8 @@
 #include "misc.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class PS2LPC;
 
@@ -134,3 +135,5 @@ public:
    }
 
 };
+
+}//namespace FD

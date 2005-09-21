@@ -8,7 +8,8 @@
 #include <complex>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class IRFFT;
 
@@ -70,3 +71,4 @@ public:
    }
 
 };
+}//namespace FD

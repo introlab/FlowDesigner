@@ -7,7 +7,8 @@
 #include "FFTWrap.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class FFT;
 
@@ -58,3 +59,4 @@ public:
    }
 
 };
+}//namespace FD

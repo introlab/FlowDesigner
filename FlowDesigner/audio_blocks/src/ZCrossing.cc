@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ZCrossing;
 
@@ -61,3 +62,5 @@ public:
 
       
 };
+
+}//namespace FD

@@ -6,7 +6,8 @@
 #include "vec.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Gain;
 
@@ -62,3 +63,4 @@ public:
    NO_ORDER_NODE_SPEEDUP(Gain)
       
 };
+}//namespace FD

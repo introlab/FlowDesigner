@@ -6,7 +6,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class DTMF;
 
@@ -112,3 +113,4 @@ public:
 
       
 };
+}//namespace FD
