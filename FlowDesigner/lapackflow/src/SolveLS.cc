@@ -7,7 +7,8 @@
 #include "lapackflow.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class SolveLS;
 
@@ -78,3 +79,4 @@ public:
    }
 
 };
+}//namespace FD

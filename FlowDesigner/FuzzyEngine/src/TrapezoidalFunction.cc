@@ -9,7 +9,8 @@
 #include "FuzzyOperators.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 
 DECLARE_NODE(TrapezoidalFunction)
@@ -223,3 +224,4 @@ Vector<float> TrapezoidalFunction::get_bounds() {
   return bounds;
 
 }
+}//namespace FD

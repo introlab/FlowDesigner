@@ -7,7 +7,8 @@
 #include "FuzzyFunction.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 //////////////////////////////////////////////////////////////////////
 // Construction
 //////////////////////////////////////////////////////////////////////
@@ -51,4 +52,4 @@ void FuzzyFunction::calculate(int output_id, int count, Buffer &out) {
 }
 
 
-
+}//namespace FD

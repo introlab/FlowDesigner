@@ -14,7 +14,8 @@
 #include "FuzzyOperators.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(FuzzySet)
 DECLARE_TYPE(FuzzySet)
@@ -314,3 +315,4 @@ void FuzzySet::readFrom(istream &in) {
          throw new ParsingException ("FuzzySet::readFrom : Parse error: '>' expected ");
    }
 }
+}//namespace FD

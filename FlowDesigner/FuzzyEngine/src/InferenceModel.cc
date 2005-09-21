@@ -8,7 +8,8 @@
 #include "Exception.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(InferenceModel)
 DECLARE_TYPE(InferenceModel)
@@ -263,3 +264,4 @@ void InferenceModel::calculate(int output_id, int count, Buffer &out) {
   }
   
 }
+}//namespace FD

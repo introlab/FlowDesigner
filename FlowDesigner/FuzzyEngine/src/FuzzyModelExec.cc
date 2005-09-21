@@ -9,7 +9,8 @@
 #include "GenericModel.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class FuzzyModelExec;
 
@@ -82,3 +83,4 @@ public:
    }//calculate
 
 };
+}//namespace FD

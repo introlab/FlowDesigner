@@ -12,7 +12,8 @@
 #include <iostream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //////////////////////////////////////////////////////////////////////
 // Constants
@@ -478,3 +479,4 @@ void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
 
 
 }
+}//namespace FD

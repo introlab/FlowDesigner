@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 #include "FuzzyOperators.h"
 
-using namespace FD;
+namespace FD {
 
 /*
 
@@ -98,3 +98,4 @@ REGISTER_DOUBLE_VTABLE(concatVtable, SetConcatVectVect, Vector<FuzzySet*>, Vecto
 */
 
 
+}//namespace FD

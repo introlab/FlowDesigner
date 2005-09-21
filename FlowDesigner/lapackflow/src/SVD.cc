@@ -7,7 +7,8 @@
 #include "lapackflow.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class SVD;
 
@@ -81,3 +82,4 @@ public:
    }
 
 };
+}//namespace FD
