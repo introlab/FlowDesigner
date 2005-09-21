@@ -16,7 +16,6 @@
 #include <float.h>
 #endif
 
-using namespace std;
 #if (__GNUC__ == 3 && __GNUC_MINOR__ >= 1 && HAVE_EXT_HASH_MAP)
 using namespace __gnu_cxx;
 #endif
@@ -41,15 +40,17 @@ using namespace __gnu_cxx;
 
 #endif /*ifdef NO_HASH_MAP*/
 
+namespace FD {
+
 class _FFTWrap {
 #ifdef NO_HASH_MAP
-   typedef map<int, rfftw_plan> FFTPlanMap;
-   typedef map<int, rfftw_plan> RFFTPlanMap;
+   typedef std::map<int, rfftw_plan> FFTPlanMap;
+   typedef std::map<int, rfftw_plan> RFFTPlanMap;
 #else
-   typedef hash_map<int, rfftw_plan, hash<int> > FFTPlanMap;
-   typedef hash_map<int, rfftw_plan, hash<int> > RFFTPlanMap;
-//typedef map<int, rfftw_plan> FFTPlanMap;
-  // typedef map<int, rfftw_plan> RFFTPlanMap;
+   typedef std::hash_map<int, rfftw_plan, hash<int> > FFTPlanMap;
+   typedef std::hash_map<int, rfftw_plan, hash<int> > RFFTPlanMap;
+   //typedef std::map<int, rfftw_plan> FFTPlanMap;
+   // typedef std::map<int, rfftw_plan> RFFTPlanMap;
 #endif
    
    FFTPlanMap FFTPlans[2];
@@ -67,7 +68,7 @@ class _FFTWrap {
    }
 
 #ifndef STUPID_COMPLEX_KLUDGE
-   void fft (const complex<float> *fin, complex<float> *fout, int size)
+   void fft (const std::complex<float> *fin, std::complex<float> *fout, int size)
    {
       FFTW_COMPLEX in[size];
       FFTW_COMPLEX out[size];
@@ -89,10 +90,10 @@ class _FFTWrap {
       fftw_one (*plan, const_cast <FFTW_COMPLEX *> (in), out);
 
       for (int i=0;i<size;i++)
-	 fout[i] = complex<float> (out[i].re, out[i].im);
+	 fout[i] = std::complex<float> (out[i].re, out[i].im);
    }
 
-   void ifft (const complex<float> *fin, complex<float> *fout, int size)
+   void ifft (const std::complex<float> *fin, std::complex<float> *fout, int size)
    {
       FFTW_COMPLEX in[size];
       FFTW_COMPLEX out[size];
@@ -114,7 +115,7 @@ class _FFTWrap {
       fftw_one (*plan, const_cast <FFTW_COMPLEX *> (in), out);
 
       for (int i=0;i<size;i++)
-	 fout[i] = complex<float> (out[i].re, out[i].im);
+	 fout[i] = std::complex<float> (out[i].re, out[i].im);
    }
 #endif
 
@@ -164,7 +165,7 @@ class _FFTWrap {
    
 };
 
-
+}//namespace FD
 
 
 #else /* ifdef HAVE_FFTW */
@@ -176,33 +177,34 @@ class _FFTWrap {
 #include <iostream>
 #include <math.h>
 
+namespace FD {
 
 class _FFTWrap {
   public:
 #ifndef STUPID_COMPLEX_KLUDGE
-   void fft (const complex<float> *fin, complex<float> *fout, int size)
+   void fft (const std::complex<float> *fin, std::complex<float> *fout, int size)
    {
       float fact = 2*M_PI/size;
       for (int i=0;i<size;i++)
       {
-	 fout[i] = complex<float> (0,0);
+	 fout[i] = std::complex<float> (0,0);
 	 for (int j=0;j<size;j++)
 	 {
-	    complex<float> c(cos(fact*j*i),-sin(fact*j*i));
+	    std::complex<float> c(cos(fact*j*i),-sin(fact*j*i));
 	    fout[i] += c*fin[j];
 	 }
       }
    }
 
-   void ifft (const complex<float> *fin, complex<float> *fout, int size)
+   void ifft (const std::complex<float> *fin, std::complex<float> *fout, int size)
    {
       float fact = 2*M_PI/size;
       for (int i=0;i<size;i++)
       {
-	 fout[i] = complex<float> (0,0);
+	 fout[i] = std::complex<float> (0,0);
 	 for (int j=0;j<size;j++)
 	 {
-	    complex<float> c(cos(fact*j*i),sin(fact*j*i));
+	    std::complex<float> c(cos(fact*j*i),sin(fact*j*i));
 	    fout[i] += c*fin[j];
 	 }
       }
@@ -266,8 +268,15 @@ class _FFTWrap {
 
 };
 
+}//namespace FD
+
 #endif /* ifdef HAVE_FFTW */
 
+
+namespace FD {
+
 extern _FFTWrap FFTWrap;
+
+}//namespace FD
 
 #endif
