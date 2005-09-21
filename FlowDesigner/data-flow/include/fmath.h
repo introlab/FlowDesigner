@@ -13,7 +13,7 @@
 #include <float.h>
 #endif
 
-
+namespace FD {
 #ifdef WIN32 /*Work around bug in MSVC++ (for) variable scope*/
 #define for if(0);else for
 #endif
@@ -149,5 +149,5 @@ inline float fexp(float f)
    return val + ( val*m.f * (1+.5*m.f) );
 }
 
-
+}//namespace FD
 #endif
