@@ -7,7 +7,7 @@
 #include "pseudosem.h"
 #include <list>
 
-
+namespace FD {
 
 class RTCTimer;
 
@@ -47,4 +47,5 @@ public:
    friend class RTCUser;
 };
 
+}//namespace FD
 #endif

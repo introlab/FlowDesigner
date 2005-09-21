@@ -19,6 +19,8 @@
 #include <unistd.h>
 #endif
 
+namespace FD {
+
 /**
 
 Base class for network sockets. The class supports two types of communication :
@@ -246,4 +248,5 @@ class socket_iostream : public std::iostream {
     {clear();}
 };
 
+}//namespace FD
 #endif
