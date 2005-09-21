@@ -15,8 +15,8 @@
 #include <libxml/globals.h>
 
 using namespace std;
+using namespace FD;
 
-namespace FD {
 
 typedef Network *NetworkPtr;
 
@@ -181,4 +181,4 @@ int main(int argc, char **argv) {
    return 0;
 }
 
-}//namespace FD
+

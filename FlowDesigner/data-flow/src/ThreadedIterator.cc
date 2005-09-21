@@ -151,7 +151,7 @@ void ThreadedIterator::initialize() {
    
 }
 
-void * FD::workloop (void *param) {
+void * workloop (void *param) {
   
   if (param == NULL) {
     throw new NodeException (NULL,string("Error in ThreadedIterator::getOutput workloop: NULL param."), __FILE__,__LINE__);

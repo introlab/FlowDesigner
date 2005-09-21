@@ -64,6 +64,10 @@ void node2html(string nodeName, NodeInfo *info, ostream &out)
    out << "\\vspace{0,3cm}\n";
 }
 
+}//namespace FD
+
+using namespace FD;
+
 int main(int argc, char **argv)
 {
    //UIDocument::loadAllInfo();
@@ -101,4 +105,4 @@ int main(int argc, char **argv)
 
 
 }
-}//namespace FD
+

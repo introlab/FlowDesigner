@@ -7,6 +7,6 @@ using namespace std;
 
 namespace FD {
 
-map<string, FD::ObjectRef> FD::Variable::all;
+map<string, ObjectRef> Variable::all;
 
 }//namespace FD

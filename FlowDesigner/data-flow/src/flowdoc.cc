@@ -293,7 +293,9 @@ void categContent( string categName, string nextcateg, ostream &out)
 
 
 
+}//namespace FD
 
+using namespace FD;
 
 int main(int argc, char **argv)
 {
@@ -388,4 +390,4 @@ int main(int argc, char **argv)
 }
 
 
-}//namespace FD
+

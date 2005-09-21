@@ -832,7 +832,7 @@ CLOBBER_3DNOW
 
 #else /* _ENABLE_3DNOW */
 
-#define ERROR_3DNOW_NI {throw new FD::GeneralException("Trying to use 3DNow!, but Overflow not compiled with _ENABLE_3DNOW. Bad, bad, this should never happen", __FILE__, __LINE__);}
+#define ERROR_3DNOW_NI {throw new GeneralException("Trying to use 3DNow!, but Overflow not compiled with _ENABLE_3DNOW. Bad, bad, this should never happen", __FILE__, __LINE__);}
 
 inline float vec_inner_prod_3dnow(const float *a, const float *b, int len)
 ERROR_3DNOW_NI

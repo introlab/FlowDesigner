@@ -6,7 +6,7 @@
 #include <vector>
 #include "multithread.h"
 
-
+namespace FD {
 
 #define MAX_STORE 100
 
@@ -55,5 +55,5 @@ class ObjectPool {
    }
 
 };
-
+}//namespace FD
 #endif

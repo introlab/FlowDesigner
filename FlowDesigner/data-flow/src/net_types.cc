@@ -14,9 +14,10 @@
 #include "Complex.h"
 
 //@implements core
-using namespace std;
 
 namespace FD {
+
+using namespace std;
 
 DECLARE_TYPE(Char)
 DECLARE_TYPE(Int)
@@ -30,21 +31,21 @@ DECLARE_TYPE(Complex<double>)
 DECLARE_TYPE(NetCType<complex<float> >)
 DECLARE_TYPE(NetCType<complex<double> >)
 
-template<> vector<Char*> ObjectPool<Char>::stack = std::vector<FD::Char*>();
-template<> vector<Int *> ObjectPool<Int>::stack = std::vector<FD::Int*>();
-template<> vector<Bool *> ObjectPool<Bool>::stack = std::vector<FD::Bool*>();
-template<> vector<Float *> ObjectPool<Float>::stack = std::vector<FD::Float*>();
-template<> vector<Double *> ObjectPool<Double>::stack = std::vector<FD::Double*>();
-template<> vector<Complex<float> *> ObjectPool<Complex<float> >::stack = std::vector<FD::Complex<float> *>();
-template<> vector<Complex<double> *> ObjectPool<Complex<double> >::stack = std::vector<FD::Complex<double> *>();
-template<> vector<NetCType<complex<float> > *> ObjectPool<NetCType<complex<float> > >::stack = std::vector<FD::NetCType<complex<float> > * >();
-template<> vector<NetCType<complex<double> > *> ObjectPool<NetCType<complex<double> > >::stack = std::vector<FD::NetCType<complex<double> > * >();
+template<> vector<Char *> ObjectPool<Char >::stack = std::vector<Char *>();
+template<> vector<Int *> ObjectPool<Int >::stack = std::vector<Int *>();
+template<> vector<Bool *> ObjectPool<Bool >::stack = std::vector<Bool *>();
+template<> vector<Float *> ObjectPool<Float >::stack = std::vector<Float *>();
+template<> vector<Double *> ObjectPool<Double >::stack = std::vector<Double *>();
+template<> vector<Complex<float> *> ObjectPool<Complex<float> >::stack = std::vector<Complex<float> *>();
+template<> vector<Complex<double> *> ObjectPool<Complex<double> >::stack = std::vector<Complex<double> *>();
+template<> vector<NetCType<complex<float> > *> ObjectPool<NetCType<complex<float> > >::stack = std::vector<NetCType<complex<float> > * >();
+template<> vector<NetCType<complex<double> > *> ObjectPool<NetCType<complex<double> > >::stack = std::vector<NetCType<complex<double> > * >();
 
-template<> FastMutex ObjectPool<Char>::mutex = FastMutex();
-template<> FastMutex ObjectPool<Int>::mutex = FastMutex();
-template<> FastMutex ObjectPool<Bool>::mutex = FastMutex();
-template<> FastMutex ObjectPool<Float>::mutex = FastMutex();
-template<> FastMutex ObjectPool<Double>::mutex = FastMutex();
+template<> FastMutex ObjectPool<Char >::mutex = FastMutex();
+template<> FastMutex ObjectPool<Int >::mutex = FastMutex();
+template<> FastMutex ObjectPool<Bool >::mutex = FastMutex();
+template<> FastMutex ObjectPool<Float >::mutex = FastMutex();
+template<> FastMutex ObjectPool<Double >::mutex = FastMutex();
 template<> FastMutex ObjectPool<Complex<float> >::mutex = FastMutex();
 template<> FastMutex ObjectPool<Complex<double> >::mutex = FastMutex();
 template<> FastMutex ObjectPool<NetCType<complex<float> > >::mutex = FastMutex();
