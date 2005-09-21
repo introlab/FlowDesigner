@@ -8,7 +8,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Serialize;
 DECLARE_NODE(Serialize)
@@ -78,5 +79,5 @@ public:
 
 };
 
-
+}//namespace FD
 

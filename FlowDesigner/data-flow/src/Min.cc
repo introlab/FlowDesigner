@@ -4,7 +4,8 @@
 #include "operators.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Min;
 DECLARE_NODE(Min)
@@ -68,3 +69,5 @@ public:
    }
 
 };
+
+}//namespace FD

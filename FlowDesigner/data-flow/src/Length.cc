@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Length;
 
@@ -48,3 +49,5 @@ public:
 
       
 };
+
+}//namespace FD

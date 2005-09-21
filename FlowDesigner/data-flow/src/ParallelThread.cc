@@ -8,7 +8,8 @@
 #include "FlowException.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ParallelThread;
 
@@ -254,3 +255,5 @@ public:
 
       
 };
+
+}//namespace FD

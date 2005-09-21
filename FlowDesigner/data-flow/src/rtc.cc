@@ -10,7 +10,8 @@
 #include <BaseException.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 #if defined(HAVE_LINUX_RTC_H) || defined(HAVE_LINUX_MC146818RTC_H)
 #define HAVE_RTC
@@ -162,3 +163,5 @@ RTCTimer &RTCTimer::instance()
    static RTCTimer ret;
    return ret;
 }
+
+}//namespace FD

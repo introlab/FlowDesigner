@@ -11,7 +11,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template <class X, class Y, class Z>
 ObjectRef concatCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -126,7 +127,7 @@ ObjectRef concatStringString(ObjectRef op1, ObjectRef op2) {
 }
 REGISTER_DOUBLE_VTABLE(concatVtable,concatStringString,String,String);
 
-
+}//namespace FD
 
 
 

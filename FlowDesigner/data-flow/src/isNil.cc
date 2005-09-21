@@ -4,7 +4,8 @@
 #include "BufferedNode.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class isNil;
 
@@ -57,6 +58,6 @@ public:
   
 };
 
-
+}//namespace FD
 
 #endif

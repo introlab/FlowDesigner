@@ -11,7 +11,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template <class X, class Y, class Z>
 ObjectRef divCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -147,5 +148,6 @@ ObjectRef divMatrixScalarFunction(ObjectRef op1, ObjectRef op2) {
 }
 REGISTER_ALL_MATRIX_SCALAR_VTABLE(divVtable, divMatrixScalarFunction);
 
+}//namespace FD
 
 #endif

@@ -5,6 +5,8 @@
 //@implements core
 using namespace std;
 
+namespace FD {
+
 map<string, FD::ObjectRef> FD::Variable::all;
 
-
+}//namespace FD

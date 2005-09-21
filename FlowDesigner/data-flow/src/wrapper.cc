@@ -8,7 +8,8 @@
 #include "IntfNode.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 OFWrapper::OFWrapper(UIDocument* _doc)
    : doc(_doc)
@@ -79,3 +80,4 @@ ObjectRef OFWrapper::process()
    return net->getOutput(0,count++);
 }
 
+}//namespace FD

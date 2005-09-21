@@ -15,7 +15,7 @@
 #include <errno.h>
 
 using namespace std;
-using namespace FD;
+using namespace FD {
 
 class TCPConnect;
 
@@ -104,5 +104,6 @@ public:
    NO_ORDER_NODE_SPEEDUP(TCPConnect)
 };
 
+}//namespace FD
 
 

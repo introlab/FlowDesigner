@@ -12,7 +12,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 
 template <class X, class Y, class Z>
@@ -150,4 +151,6 @@ ObjectRef subMatrixScalarFunction(ObjectRef op1, ObjectRef op2) {
 REGISTER_ALL_MATRIX_SCALAR_VTABLE(subVtable, subMatrixScalarFunction);
 
 
+
+}//namespace FD
 #endif

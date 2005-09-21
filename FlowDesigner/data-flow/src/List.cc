@@ -6,7 +6,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class List;
 DECLARE_NODE(List)
@@ -71,5 +72,5 @@ protected:
 
 };
 
-
+}//namespace FD
 

@@ -12,7 +12,8 @@
 //@implements UIClasses
 
 using namespace std;
-using namespace FD;
+
+namespace FD 
 
 class ParamTypeChange {
 public:
@@ -339,3 +340,5 @@ void UINodeParameters::copyParameterText(UINodeParameters *cpy) {
     addParameterText(my_name, my_type, my_value, my_description);
   }
 }
+
+}//namespace FD

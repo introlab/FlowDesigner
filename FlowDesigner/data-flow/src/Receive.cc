@@ -10,7 +10,8 @@
 #include <string>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Receive;
 
@@ -93,3 +94,5 @@ protected:
    Receive() {throw new GeneralException("Receive copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD

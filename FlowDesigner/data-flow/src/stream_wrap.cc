@@ -5,7 +5,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE(EOFObject)
 
@@ -407,6 +408,6 @@ void pipe_streambuf::pipeString(const string &in, string &out)
 #endif
 }
 
-
+}//namespace FD
 #endif
 

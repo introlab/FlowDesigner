@@ -6,7 +6,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Load;
 DECLARE_NODE(Load)
@@ -58,3 +59,5 @@ public:
    }
 
 };
+
+}//namespace FD

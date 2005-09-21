@@ -4,7 +4,8 @@
 #include "CompositeType.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class MakeComposite;
 
@@ -56,3 +57,5 @@ public:
    NO_ORDER_NODE_SPEEDUP(MakeComposite)
       
 };
+
+}//namespace FD

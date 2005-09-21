@@ -22,7 +22,8 @@
 
 //@implements UIClasses
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 UIDocument::UIDocument(string _name)
    : modified(false)
@@ -951,4 +952,6 @@ void UIDocument::importNetwork(const std::string &fileName) {
   else {
     throw new GeneralException(string("File does not exist : ") + fileName,__FILE__,__LINE__);
   }
+}
+
 }

@@ -4,7 +4,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 IntfNode::IntfNode(string nodeName, const ParameterSet &params)
    : Node(nodeName, params)
@@ -57,3 +58,5 @@ void IntfNode::setValue(int count, ObjectRef val)
    //(*buff)[count+lookAhead] = val;
    (*buff)[count] = val;
 }
+
+}//namespace FD

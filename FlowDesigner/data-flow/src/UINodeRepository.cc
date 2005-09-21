@@ -20,7 +20,8 @@
 //@implements UIClasses
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 UINodeRepository::UINodeRepository(const UINodeRepository &)
 {
@@ -847,3 +848,5 @@ void UINodeRepository::updateNetInfo(UINetwork *net)
    //we are dealing with a local repository, in a document
    info[net->getName()] = ninfo;
 }
+
+}//namespace FD

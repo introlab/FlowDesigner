@@ -8,7 +8,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 /***************************************************************************/
 /*
@@ -185,3 +186,5 @@ void Iterator::reset()
    processCount = -1;
    Network::reset();
 }
+
+}//namespace FD

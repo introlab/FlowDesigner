@@ -9,7 +9,8 @@
 #include <iostream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //@implements UIClasses
 
@@ -53,3 +54,5 @@ void UITerminal::disconnectNetTerminal()
    netTerminal = NULL;
    node->getNetwork()->setModified();
 }
+
+}//namespace FD

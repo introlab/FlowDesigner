@@ -22,7 +22,8 @@
 //@implements core
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 map<string,url_func>  &URLHandler::url_table()
 {
@@ -168,3 +169,5 @@ ObjectRef tcp_url_handler(const string& url, int flags) {
   return nilObject;
 }
 REGISTER_URL_HANDLER(tcp,tcp_url_handler);
+
+}//namespace FD

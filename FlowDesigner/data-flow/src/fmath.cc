@@ -4,6 +4,9 @@
 
 //@implements core
 
+namespace FD {
+
 float logtable2[FLOGLOOKUP2SIZE];
 float exptable[FEXPSIZE];
 
+}//namespace FD

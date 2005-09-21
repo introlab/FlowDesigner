@@ -7,7 +7,8 @@
 #include "variables.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VarLoad;
 
@@ -67,3 +68,5 @@ public:
    }
 
 };
+
+}//namespace FD

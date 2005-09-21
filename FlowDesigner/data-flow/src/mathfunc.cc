@@ -7,7 +7,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template<class T>
 ObjectRef logObj(ObjectRef in)
@@ -52,3 +53,5 @@ REGISTER_VTABLE0(sin, Int, sinObj<Int>, 2)
 
 REGISTER_VTABLE0(cos, Float, cosObj<Float>, 1)
 REGISTER_VTABLE0(cos, Int, cosObj<Int>, 2)
+
+}//namespace FD

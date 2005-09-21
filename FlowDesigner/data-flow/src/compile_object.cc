@@ -4,7 +4,8 @@
 #include <fstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 CompileObject::CompileObject(const string &_code)
    : code(_code)
@@ -36,3 +37,5 @@ void CompileObject::compile()
    if (!sym)
       throw new GeneralException("Cannot get symbol in CompileObject library", __FILE__, __LINE__);
 }
+
+}//namespace FD

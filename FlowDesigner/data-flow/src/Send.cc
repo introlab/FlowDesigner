@@ -9,7 +9,8 @@
 #include <netinet/in.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 #define LOOPBACK "127.0.0.1"
 
@@ -130,3 +131,5 @@ protected:
    Send() {throw new GeneralException("Send copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD

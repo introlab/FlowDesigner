@@ -11,7 +11,8 @@
 #include <errno.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 const int network_socket::BROADCAST_TYPE = 0;
 const int network_socket::TCP_STREAM_TYPE = 1;
@@ -197,9 +198,11 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
 
   switch (m_type) {
   case BROADCAST_TYPE:
-
+    #ifndef __CYGWIN__
     packet_len = recvfrom(m_read_socket, (char*)packet, size, 0, (sockaddr*) &m_read_addr, &addr_len);
-
+    #else
+    #warning CYGWIN not yet supported for broadcast network_socket
+    #endif
     if ((int) packet_len < 0) {
       if (errno == EAGAIN) {
 	return 0;
@@ -215,8 +218,11 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
   case TCP_STREAM_TYPE:
 
 	  //Will wait for all data (if not error occurs)
-		flags = MSG_WAITALL;
-
+                #ifndef __CYGWIN__
+                flags = MSG_WAITALL;
+		#else
+		#warning CYGWIN not fully supported for TCP_STREAM_TYPE
+		#endif
 		packet_len = recv(m_read_socket, packet, size,flags);
 
 		if (packet_len < 0) {
@@ -557,3 +563,6 @@ streamsize socket_streambuf::xsgetn(char *s, streamsize n) {
   return recv_packet((unsigned char*) s, (size_t) n);
 
 }
+
+
+}//namespace FD

@@ -6,7 +6,8 @@
 #include "ObjectRef.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
@@ -100,3 +101,4 @@ int main(int argc, char **argv)
 
 
 }
+}//namespace FD

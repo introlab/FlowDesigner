@@ -5,7 +5,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ReadInt;
 DECLARE_NODE(ReadInt)
@@ -65,3 +66,5 @@ public:
    }
 
 };
+
+}//namespace FD

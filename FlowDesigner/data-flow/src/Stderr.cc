@@ -4,7 +4,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Stderr;
 
@@ -48,3 +49,6 @@ public:
    }
 
 };
+
+}//namespace FD
+

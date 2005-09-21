@@ -4,7 +4,8 @@
 #include "misc.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //@implements core
 
@@ -38,3 +39,4 @@ void BinIO::_write(ostream &out, const void* data, size_t typeSize, size_t lengt
 #endif
 }
 
+}//namespace FD

@@ -12,7 +12,8 @@
 #include "Matrix.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //@implements core
 
@@ -416,5 +417,7 @@ REGISTER_VTABLE0(toVect, Float, VectorCTypeConversion<Float>, 3);
 REGISTER_VTABLE0(toVect, Double, VectorCTypeConversion<Double>, 4);
 REGISTER_VTABLE0(toVect, String, VectorStringConversion, 5);
 REGISTER_VTABLE0(toVect, NilObject, ReturnNilObject, 6);
+
+}//namespace FD
 
 #endif //BROKEN_TEMPLATES

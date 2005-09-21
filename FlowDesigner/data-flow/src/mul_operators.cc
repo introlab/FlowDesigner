@@ -12,7 +12,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template <class X, class Y, class Z>
 ObjectRef mulCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -146,4 +147,8 @@ ObjectRef mulMatrixScalarFunction(ObjectRef op1, ObjectRef op2) {
   return resultValue;
 }
 REGISTER_ALL_MATRIX_SCALAR_VTABLE(mulVtable, mulMatrixScalarFunction);
+
+
+}//namespace FD
+
 #endif

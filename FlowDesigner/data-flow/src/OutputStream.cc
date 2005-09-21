@@ -9,7 +9,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class OutputStream;
 
@@ -119,4 +120,6 @@ protected:
    OutputStream() {throw new GeneralException("OutputStream copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD
 

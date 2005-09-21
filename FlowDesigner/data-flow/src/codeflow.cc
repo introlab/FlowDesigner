@@ -8,7 +8,8 @@
 #include <set>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 int main(int argc, char **argv)
 {
@@ -58,3 +59,5 @@ int main(int argc, char **argv)
    return 0;
 }
 
+
+}//namespace FD

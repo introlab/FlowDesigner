@@ -8,7 +8,8 @@
 #include "rtc.h"
 //#include <unistd.h>
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Sleep;
 
@@ -58,4 +59,7 @@ public:
       else throw new NodeException (this, "Sleep: Unknown output id", __FILE__, __LINE__);
    }
 };
+
+}//namespace FD
+
 #endif

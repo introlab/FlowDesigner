@@ -14,7 +14,8 @@
 #include <unistd.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class URLStream;
 
@@ -90,3 +91,4 @@ protected:
   NO_ORDER_NODE_SPEEDUP(URLStream)
 };
 
+}//namespace FD

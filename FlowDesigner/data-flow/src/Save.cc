@@ -8,7 +8,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Save;
 DECLARE_NODE(Save)
@@ -97,5 +98,5 @@ public:
   
 };
 
-
+}//namespace FD
 

@@ -18,7 +18,8 @@ extern "C" {
 //@implements UIClasses
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y, bool doInit)
    : destroyed(false)
@@ -362,3 +363,5 @@ void UINode::rename (const string &newName) {
   type = newName;
 
 }
+
+}//namespace FD

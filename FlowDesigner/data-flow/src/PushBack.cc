@@ -9,7 +9,8 @@
 #include <sstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class PushBack;
 
@@ -69,3 +70,4 @@ public:
       return vectorValue;
    }
 };
+}//namespace FD

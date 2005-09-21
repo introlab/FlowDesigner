@@ -3,7 +3,8 @@
 #include "Node.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class IterCount;
 DECLARE_NODE(IterCount)
@@ -38,3 +39,5 @@ public:
    }
    
 };
+
+}//namespace FD

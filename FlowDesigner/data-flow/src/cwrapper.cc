@@ -12,7 +12,8 @@
 #include "wrapper.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 /**Initializes the Overflow library*/
 void overflowInitialize(void)
@@ -196,3 +197,5 @@ void destroyDocument(void *vdoc)
 {
    delete (UIDocument *)vdoc;
 }
+
+}//namespace FD

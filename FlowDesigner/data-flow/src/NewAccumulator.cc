@@ -8,7 +8,8 @@
 #include <sstream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NewAccumulator;
 
@@ -47,3 +48,5 @@ public:
       out[count] = new Vector<ObjectRef>;
    }
 };
+
+}//namespace FD

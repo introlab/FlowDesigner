@@ -10,7 +10,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_TYPE2("Matrix", Matrix<float>)
 DECLARE_TYPE(Matrix<bool>)
@@ -23,4 +24,5 @@ DECLARE_TYPE(Matrix<ObjectRef>)
 DECLARE_TYPE(Matrix<string>)
 DECLARE_TYPE(Matrix<String>)
 
+}//namespace FD
 

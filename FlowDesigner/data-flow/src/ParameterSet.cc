@@ -4,7 +4,8 @@
 #include "ParameterSet.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //@implements core
 
@@ -70,3 +71,5 @@ void ParameterSet::checkUnused() const
       }
    }
 }
+
+}//namespace FD

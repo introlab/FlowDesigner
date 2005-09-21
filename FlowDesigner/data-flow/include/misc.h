@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdlib.h>
 
+
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -99,10 +100,14 @@ inline int _log2<1>(int i)
       return 0;
 }
 
+#ifndef __CYGWIN__
 inline int log2(int i)
 {
    return _log2<16>(i);
 }
+#else
+#warning log2(inti) not implemented yet for CYGWIN
+#endif
 
 
 

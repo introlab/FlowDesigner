@@ -20,7 +20,8 @@
 #include "Power.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(Power);
 
@@ -70,5 +71,9 @@ void Power::calculate(int output_id, int count, Buffer &out)
 
    (*outputs[m_outputID].buffer)[count] = ObjectRef(Float::alloc(pow(base->val(),exp->val())));
 }
+
+
+}//namespace FD
+
 #endif //_POWER_CC_
 

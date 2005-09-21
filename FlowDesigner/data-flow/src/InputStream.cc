@@ -10,7 +10,8 @@
 #include "Stream.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class InputStream;
 
@@ -150,3 +151,5 @@ NO_ORDER_NODE_SPEEDUP(InputStream)
 
 
 
+
+}//namespace FD

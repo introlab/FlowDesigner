@@ -7,7 +7,8 @@
 #include <vector>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 void node2html(string nodeName, NodeInfo *info, ostream &out)
 {
@@ -386,62 +387,5 @@ int main(int argc, char **argv)
        << "</html>\n";
 }
 
-// ANCIENNE VERSION DU PROGRAMME (PARTIE MAIN)
 
-
-//int main(int argc, char **argv)
-//{
-//     UIDocument::loadAllInfo();
-//   UINodeRepository::Scan();
-   
-//   ostream &out = cout;
-
-//   out << "<!doctype html public \"-//w3c//dtd html 4.0 transitional//en\">\n"
-//       << "<html>\n"
-//       << "<head>\n"
-//       << "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n"
-//       << "<meta name=\"GENERATOR\" content=\"FlowDesigner\">\n"
-//       << "<meta name=\"Author\" content=\"Jean-Marc Valin\">\n"
-//       << "<title>FlowDesigner node documentation</title>\n"
-//       << "<!-- This page was created by the FlowDesigner documentation generator -->\n"
-//       << "</head>\n"
-//       << "<body>\n";
-   
-//   UINodeRepository::iterator i;
-
-//Parcours la banque de donnees et affiche le grand tableau
-
-
-//   out << "<h1>List of available FlowDesigner nodes Category</h1>\n\n";
-//   out << "<center><table BORDER COLS=3 WIDTH=\"100%\" NOSAVE >\n\n";
-//   int count=0;
-//   i = UINodeRepository::Begin();
-//   while (i != UINodeRepository::End())
-//   {
-//      if (count %3==0)
-//	 out << "<tr>\n";
-//      out << "<td><a href=\"#" << i->first << " (" << i->second->category << ")" << "\">" << i->first << " (" << i->second->category << ")" << "</a></td>\n";
-//      if (count %3==2)
-//	 out << "</tr>\n";
-//      count++;
-//      i++;
-//   }   
-//   if (count %3!=0)
-//      out << "</tr>\n";
-//   out << "</table></center>\n";
-
-
-//Affiche les informations sur les noeuds
-
-//   out << "\n<h1>Nodes Documentation</h1>\n\n";
-//   i = UINodeRepository::Begin();
-//   while (i != UINodeRepository::End())
-//   {
-//      node2html(i->first, i->second, out);
-//      i++;
-//   }
-//   out << "\n</body>\n"
-//       << "</html>\n";
-
-
-//}
+}//namespace FD

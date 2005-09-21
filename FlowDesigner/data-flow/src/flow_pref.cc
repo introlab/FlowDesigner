@@ -13,7 +13,8 @@
 #include <libxml/parser.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 FlowPref FlowPref::pref;
 
@@ -178,3 +179,4 @@ void FlowPref::save()
    modified=false;
 }
 
+}//namespace FD

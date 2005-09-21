@@ -5,7 +5,8 @@
 #include "vmethod.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VMethod;
 
@@ -58,3 +59,5 @@ public:
 
       
 };
+
+}//namespace FD

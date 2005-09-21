@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Sum;
 
@@ -61,3 +62,5 @@ public:
       
 NO_ORDER_NODE_SPEEDUP(Sum)
 };
+
+}//namespace FD

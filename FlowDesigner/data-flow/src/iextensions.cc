@@ -28,7 +28,8 @@
 #include <iostream>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //@implements core
 
@@ -192,5 +193,7 @@ void IExtensions::detect3DNow()
 {
    i3dnow=false;
 }
+
+}//namespace FD
 
 #endif /*CHECK_3DNOW*/

@@ -6,7 +6,8 @@
 #include "Exception.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VectorSetIndex;
 
@@ -91,6 +92,6 @@ public:
   
 };
 
-
+}//namespace FD
 
 #endif

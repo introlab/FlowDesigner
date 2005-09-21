@@ -19,7 +19,8 @@
 //@implements UIClasses
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
    : destroyed(false)
@@ -964,3 +965,4 @@ void UINetwork::removeNote(UINote *note) {
 
 }
    
+}//namespace FD

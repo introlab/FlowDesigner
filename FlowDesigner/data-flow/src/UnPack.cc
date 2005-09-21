@@ -5,7 +5,8 @@
 #include "Vector.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 DECLARE_NODE(UnPack)
 /*Node
@@ -75,3 +76,5 @@ ObjectRef UnPack::getOutput(int output_id, int count)
    else 
       throw new NodeException (this, "UnPack: Unknown output id", __FILE__, __LINE__);
 }
+
+}//namespace FD

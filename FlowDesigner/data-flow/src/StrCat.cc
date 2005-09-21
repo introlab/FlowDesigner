@@ -4,7 +4,8 @@
 #include "Buffer.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class StrCat;
 
@@ -59,3 +60,5 @@ public:
    }
 
 };
+
+}//namespace FD

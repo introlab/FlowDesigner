@@ -5,7 +5,8 @@
 #include <math.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class SampleAndHold;
 DECLARE_NODE(SampleAndHold)
@@ -76,3 +77,5 @@ ObjectRef SampleAndHold::getOutput(int output_id, int count)
 {
    return getInput(output_id, count-count%down);
 }
+
+}//namespace FD

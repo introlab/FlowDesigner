@@ -5,7 +5,8 @@
 #include "operators.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Sub;
 
@@ -68,3 +69,5 @@ public:
 
 NO_ORDER_NODE_SPEEDUP(Sub)
 };
+
+}//namespace FD

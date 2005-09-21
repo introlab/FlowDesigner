@@ -6,7 +6,8 @@
 //@implements core
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 /***************************************************************************/
 /*
@@ -328,3 +329,6 @@ void Network::reset() {
       (*iter).second->reset();
    }
 }
+
+}//namespace FD
+

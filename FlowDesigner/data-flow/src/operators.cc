@@ -6,7 +6,8 @@
 //@implements core
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 //Operators for Float and Float
 /*
@@ -251,3 +252,5 @@ ObjectRef concatString(ObjectRef x, ObjectRef y)
    return ObjectRef(new String(object_cast<String> (x) + (object_cast<String> (y))));
 }
 REGISTER_DOUBLE_VTABLE(concatVtable, concatString, String, String);
+
+}//namespace FD

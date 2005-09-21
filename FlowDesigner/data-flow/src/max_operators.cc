@@ -11,7 +11,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template <class X, class Y, class Z>
 ObjectRef maxCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -107,5 +108,7 @@ ObjectRef maxMatrixObjectRef(ObjectRef op1, ObjectRef op2) {
   return resultValue;
 }
 REGISTER_DOUBLE_VTABLE(maxVtable,maxMatrixObjectRef,Matrix<ObjectRef>,Matrix<ObjectRef>);
+
+}//namespace FD
 
 #endif

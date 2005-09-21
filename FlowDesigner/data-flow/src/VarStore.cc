@@ -7,7 +7,8 @@
 #include "variables.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VarStore;
 
@@ -89,3 +90,5 @@ protected:
    VarStore() {throw new GeneralException("VarStore copy constructor should not be called",__FILE__,__LINE__);}
 
 };
+
+}//namespace FD

@@ -3,7 +3,8 @@
 #include "Node.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Iterate;
 
@@ -52,3 +53,5 @@ public:
    }
    
 };
+
+}//namespace FD

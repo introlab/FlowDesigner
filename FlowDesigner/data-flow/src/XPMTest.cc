@@ -5,7 +5,8 @@
 #include "test.xpm"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class XPMTest;
 DECLARE_NODE_XPM(XPMTest, test_xpm)
@@ -59,3 +60,4 @@ public:
    
 };
 
+}//namespace FD

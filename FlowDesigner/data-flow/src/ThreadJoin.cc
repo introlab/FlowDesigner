@@ -4,7 +4,8 @@
 #include <pthread.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class ThreadJoin;
 
@@ -76,3 +77,4 @@ public:
    }
 
 };
+}//namespace FD

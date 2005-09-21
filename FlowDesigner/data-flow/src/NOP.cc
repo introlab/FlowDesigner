@@ -7,7 +7,8 @@
 #include "BufferedNode.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NOP;
 
@@ -55,3 +56,6 @@ public:
 
   }
 };
+
+}//namespace FD
+

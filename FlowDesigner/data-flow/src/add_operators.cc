@@ -10,7 +10,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template <class X, class Y, class Z>
 ObjectRef addCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -149,5 +150,7 @@ REGISTER_ALL_MATRIX_SCALAR_VTABLE(addVtable, addMatrixScalarFunction);
 
 
 
+
+}//namespace FD
 
 #endif

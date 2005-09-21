@@ -9,7 +9,8 @@
 #include <unistd.h>
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 const int ThreadedIterator::STATUS_RUNNING = 1;
 const int ThreadedIterator::STATUS_STOPPED = 0;
@@ -218,5 +219,7 @@ void * FD::workloop (void *param) {
   
   return NULL;
 }
+
+}//namespace FD
 
 #endif

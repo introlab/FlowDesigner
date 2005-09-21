@@ -11,7 +11,8 @@
 
 //@implements UIClasses
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
    : from(_from)
@@ -124,3 +125,5 @@ void UILink::genCode(ostream &out)
    out << "   net->connect(\"" << to->getNode()->getName() << "\", \"" << to->getName()
        << "\", \"" << from->getNode()->getName() << "\", \"" << from->getName() << "\");\n\n";
 }
+
+}//namespace FD

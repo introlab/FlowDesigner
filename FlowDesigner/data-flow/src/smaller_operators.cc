@@ -12,7 +12,8 @@
 //@implements core
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 template <class X, class Y, class Z>
 ObjectRef smallerCTypeFunction(ObjectRef op1, ObjectRef op2) {
@@ -23,6 +24,6 @@ ObjectRef smallerCTypeFunction(ObjectRef op1, ObjectRef op2) {
 REGISTER_ALL_SCALAR_NO_COMPLEX_VTABLE(smallerVtable, smallerCTypeFunction);
 
 
-
+}//namespace FD
 
 #endif

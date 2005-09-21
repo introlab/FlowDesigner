@@ -5,7 +5,8 @@
 #include "operators.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class Mul;
 
@@ -53,3 +54,5 @@ public:
    }
 
 };
+
+}//namespace FD

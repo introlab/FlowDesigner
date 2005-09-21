@@ -9,7 +9,8 @@
 
 //@implements core
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 const vector<string> &ObjectParam::allTypes(bool allowSubnetParam)
 {
@@ -104,3 +105,5 @@ ObjectRef ObjectParam::stringParam(string type, string value, ParameterSet &para
       throw new GeneralException("Unknown parameter type: \"" + type + "\"", __FILE__, __LINE__);
    }
 }
+
+}//namespace FD

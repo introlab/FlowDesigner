@@ -4,7 +4,8 @@
 #include "Exception.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class NOT;
 
@@ -48,3 +49,5 @@ public:
 
    }
 };
+
+}//namespace FD

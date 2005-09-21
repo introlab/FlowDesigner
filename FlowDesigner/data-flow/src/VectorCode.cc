@@ -5,7 +5,8 @@
 #include "compile_object.h"
 
 using namespace std;
-using namespace FD;
+
+namespace FD {
 
 class VectorCode;
 
@@ -66,3 +67,5 @@ public:
    NO_ORDER_NODE_SPEEDUP(VectorCode)
       
 };
+
+}//namespace FD
