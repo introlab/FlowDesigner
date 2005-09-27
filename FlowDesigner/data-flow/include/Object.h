@@ -111,9 +111,9 @@ class Object
       {
 	 if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
 	 {
-		 std::string message = std::string("Duplicated object type found : ") 
-			 + objType + std::string(", it not be inserted in the ObjectFactoryDictionary.");
-		 throw new GeneralException(message,__FILE__,__LINE__);
+		 std::cerr<< "Duplicated object type found : "
+			  << objType << ", it not be inserted in the ObjectFactoryDictionary."<<std::endl;
+		 
 		 return -1;
 	 }
 	 else
