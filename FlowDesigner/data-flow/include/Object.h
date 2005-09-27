@@ -109,9 +109,19 @@ class Object
       template<class T>
       static int addObjectType(const std::string &objType, _ObjectFactory *factory)
       {
-         ObjectFactoryDictionary()[objType] = factory;
-         TypeidDictionary()[&typeid(T)] = factory;
-         return 0;
+	 if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
+	 {
+		 std::string message = std::string("Duplicated object type found : ") 
+			 + objType + std::string(", it not be inserted in the ObjectFactoryDictionary.");
+		 throw new GeneralException(message,__FILE__,__LINE__);
+		 return -1;
+	 }
+	 else
+	 {
+         	ObjectFactoryDictionary()[objType] = factory;
+         	TypeidDictionary()[&typeid(T)] = factory;
+         	return 0;
+	 }
       }
 
       static std::map<std::string, _ObjectFactory*>& ObjectFactoryDictionary();
