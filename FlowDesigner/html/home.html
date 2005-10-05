@@ -13,82 +13,17 @@
     <td>
 	<div align="left">
 	<h1>FlowDesigner</h1>
+	<h3><a href="http://sourceforge.net/project/shownotes.php?release_id=361355">Current Version : 0.9.0 (10/2005)</a> <a href="http://sourceforge.net/project/showfiles.php?group_id=99346"> [DOWNLOAD] </a></h3>
     </div>
 	</td>
     <td>
 	<div align="right">
-<IMG src="images/rec_pro_sdj_new.gif" width="124" height="74" border="0">	
+	<IMG src="images/rec_pro_sdj_new.gif" width="124" height="74" border="0">
+	<a href="http://www.gel.usherbrooke.ca/laborius"><IMG src="images/Laborius.jpg" alt="Laborius" width="74" height="74" border="0"></a>	
     </div>
     </td>
   </tr>
 </table>
-
-<hr>
-<h3>RECENT NEWS</h3></center>
-<table border=2 width="100%" bgcolor="#CCDDEE">
-	<tr>
-	<td width="20%" bgcolor="#AABBCC"><div align="left"><b>DATE</b></div></td>
-	<td width="80%" bgcolor="#AABBCC"><div align=left><b>DESCRIPTION</b></div></td>
-	</tr>
-	<tr>
-	<td width="20%"><div align="left">22/10/2004</div></td>
-    	<td width="80%"><div align=left><a href="http://sourceforge.net/project/showfiles.php?group_id=99346">FlowDesigner 0.8.2</a> released!
-	Please see <a href="download.html">download section</a> to download sources or binaries.
-            <br>
-            <br>
-             *** Added features ***<br>
-             - Now able to create notes (GUINotes) in the user interface. Notes can be added anywhere in any Network like post-it notes. Still need some work, but working properly. Notes can be moved anywhere, but they do not always appear at the good position when creating them.
-            <br>
-            - Now able to import / export already existing networks. Next step is to have the ability to modify imported networks directly.
-            <br>
-             
-            
-            <br>
-            *** Fixed features ****
-            <br>
-            - Now display the network type (iterator, subnet) properly in the Network tab(s)
-            <br>
-            - Node Parameters dialog working properly. Still need to bring back focus when dialog is minimized.
-            <br>
-            <br>
-            *** Help Needed ***
-            <br>
-            - We need help to continue our Octave toolkit. Maybe you can contribute?
-            <br>
-            - We need help to create RPM and deb packages for the most popular Linux distributions. Please contact us if you have made RPMs and / or Debian packages so we can make them available for everybody.
-            <br>
-            <br>
-            Please report bugs at the<a href="http://sourceforge.net/projects/flowdesigner">FlowDesigner SourceForge Page</a>.</div></td>
-	</tr>
-	<tr>
-	<td width="20%"><div align="left">25/06/2004</div></td>
-    	<td width="80%"><div align=left><a href="http://sourceforge.net/project/showfiles.php?group_id=99346">FlowDesigner 0.8.1</a> released!
-	Please see <a href="download.html">download section</a> to download sources or binaries. This release includes
-	new URL streams that can be specified by users at run time by using : tcp:host:port, file:filename, etc.
-	Added automatic type conversion when using RCPtr<T> = ObjectRef. Fixed parameters passing at run-time from 
-	document parameters. Now working with <a href="http://marie.sourceforge.net">MARIE</a>. Fixed String serialization. Added 
-	Vector conversion with toInt, toFloat nodes. Removed ownership on sockets, which causes exceptions on 
-	some systems. Work around what seems to be gnome header bugs. Reordered #include"s so that gnome.h 
-	gets included after other headers. Octave plugin now parses octave file and executes properly, still 
-	need more work on this toolbox. Added a lot of operators on basic types : add, sub, mul, div, concat.
-  	Please report bugs at the <a href="http://sourceforge.net/projects/flowdesigner">FlowDesigner SourceForge Page</a>.</div></td>
-	</tr>	
-	<tr>
-	<td width="20%"><div align="left">20/01/2004</div></td>
-    <td width="80%"><div align=left><a href="http://sourceforge.net/project/showfiles.php?group_id=99346">FlowDesigner 0.8.0</a> released!
-	Please see <a href="download.html">download section</a> to download sources or binaries. This release includes
-	muptiple GUI improvements, better node documentation, reorganised nodes and much more... Please report bugs at the
-	<a href="http://sourceforge.net/projects/flowdesigner">FlowDesigner SourceForge Page</a>.</div></td>
-	</tr>
-	<tr>
-	<td width="20%"><div align="left">12/01/2004</div></td>
-	<td width="80%"><div align=left><a href="http://sourceforge.net/projects/flowdesigner">FlowDesigner</a> project created. <a href="http://sourceforge.net/projects/freespeech">Overflow development</a>
-	will continue with the FlowDesigner project.
-	</div></td>
-
-	</tr>
-</table>
-
 <hr>
 <p>FlowDesigner is a free (GPL/LGPL) data flow oriented development environment.
 It can be used to build complex applications by combining small, reusable
@@ -128,13 +63,65 @@ Signal processing</li>
 <p>Your suggestions to improve FlowDesigner are welcomed and appreciated. Enjoy!
 
 <hr WIDTH="100%">
-
+<h3>RECENT NEWS</h3></center>
+<table border=2 width="100%" bgcolor="#CCDDEE">
+	<tr>
+	<td width="20%" bgcolor="#AABBCC"><div align="left"><b>DATE</b></div></td>
+	<td width="80%" bgcolor="#AABBCC"><div align=left><b>DESCRIPTION</b></div></td>
+	</tr>
+	<tr>
+	<td width="20%"><div align="left">05/10/2005</div></td>
+    	<td width="80%"><div align=left> 
+	<br>
+	<a href="http://sourceforge.net/project/showfiles.php?group_id=99346">FlowDesigner 0.9.0</a> released! Please see <a href="download.html">download section</a> to download sources or binaries.
+	<br>
+	<br><b>Changes from version 0.8.2 :</b>
+	<br>- Added code in the FD namespace.
+	<br>- Minor autoconf scripts changes.
+	<br>- Resizeable node copy now works properly.
+	<br>- Make sure static variables are properly initialized for gcc 4.x.
+	<br>- Minor templates fixes.
+	<br>- Cygwin port  (starting, need help!)
+	</div></td>
+	</tr>
+	<tr>
+	<td width="20%"><div align="left">22/10/2004</div></td>
+    	<td width="80%"><div align=left><a href="http://sourceforge.net/project/showfiles.php?group_id=99346">FlowDesigner 0.8.2</a> released!
+	Please see <a href="download.html">download section</a> to download sources or binaries.
+            <br>
+            <br>
+             *** Added features ***<br>
+             - Now able to create notes (GUINotes) in the user interface. Notes can be added anywhere in any Network like post-it notes. Still need some work, but working properly. Notes can be moved anywhere, but they do not always appear at the good position when creating them.
+            <br>
+            - Now able to import / export already existing networks. Next step is to have the ability to modify imported networks directly.
+            <br>
+             
+            
+            <br>
+            *** Fixed features ****
+            <br>
+            - Now display the network type (iterator, subnet) properly in the Network tab(s)
+            <br>
+            - Node Parameters dialog working properly. Still need to bring back focus when dialog is minimized.
+            <br>
+            <br>
+            *** Help Needed ***
+            <br>
+            - We need help to continue our Octave toolkit. Maybe you can contribute?
+            <br>
+            - We need help to create RPM and deb packages for the most popular Linux distributions. Please contact us if you have made RPMs and / or Debian packages so we can make them available for everybody.
+            <br>
+            <br>
+            Please report bugs at the <a href="http://sourceforge.net/projects/flowdesigner">FlowDesigner SourceForge Page</a>.</div></td>
+	</tr>
+</table>
+<hr WIDTH="100%">
 <table border=0 width="100%">
   <tr>
     <td>
 	<div align="left">
 
-	<A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=99346&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></A>
+	<A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=99346&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></a>
     </div>
 	</td>
     <td>
@@ -155,7 +142,7 @@ var sc_invisible=1;
 
 
 <div align="Right">
-<br><i>$Date: 2004/10/22 18:22:59 $</i></div>
+<br><i>$Date: 2005/10/03 16:56:59 $</i></div>
 </div>
 </body>
 </html>

@@ -1,76 +1,82 @@
 <!DOCTYPE webproject>
 <webproject>
-<project usePreviewPrefix="0" previewPrefix="file:file%3A" type="Local" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
-<upload remote_host="shell.sf.net" remote_port="22" remote_path="/home/groups/f/fl/flowdesigner/htdocs" remote_protocol="sftp" user="maestro" />
-<defaultDTD>-//w3c//dtd html 4.01 frameset//en</defaultDTD>
-<templates>templates/</templates>
-<toolbars>toolbars/</toolbars>
-<author>Dominic Letourneau</author>
-<email>Dominic.Letourneau@USherbrooke.ca</email>
-<item upload_time="" url="CVS/" />
-<item upload_time="1074654306" modified_time="1074654306" url="CVS/Entries" />
-<item upload_time="1074453989" modified_time="1074453989" url="CVS/Repository" />
-<item upload_time="1074453989" modified_time="1074453989" url="CVS/Root" />
-<item upload_time="" url="images/" />
-<item upload_time="" url="images/CVS/" />
-<item upload_time="1074455332" modified_time="1074455332" url="images/CVS/Entries" />
-<item upload_time="1074455208" modified_time="1074455208" url="images/CVS/Repository" />
-<item upload_time="1074455208" modified_time="1074455208" url="images/CVS/Root" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/authors_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/authors_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/b17.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/copybtn.gif" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/doc_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/doc_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/download_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/download_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/home_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/home_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/infbtbar.gif" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/links_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/links_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/news_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/news_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/overflow.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/overflow.png" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/screenshots_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/screenshots_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/status_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/status_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/todo_off.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="images/todo_on.jpg" />
-<item upload_time="1074455187" modified_time="1074455187" url="announce-0.1.0.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="API.html" />
-<item upload_time="1074650400" modified_time="1074650400" url="authors.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="collect.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="collection.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="compiling.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="decoding.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="description.html" />
-<item upload_time="1074650471" modified_time="1074650471" url="doc.html" />
-<item upload_time="1074460922" modified_time="1074460922" url="download.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="extend.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="FAQ.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="front_end.html" />
-<item upload_time="1074647001" modified_time="1074647001" url="hmm.html" />
-<item upload_time="1074653386" modified_time="1074653386" url="home.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="index.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="internals.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="library.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="links.html" />
-<item upload_time="1074654890" modified_time="1074654890" url="menu.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="modules.html" />
-<item upload_time="1074653043" modified_time="1074653043" url="news.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="overview.html" />
-<item upload_time="1074654361" modified_time="1074654361" url="screenshots.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="server.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="status.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="todo.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="training.html" />
-<item upload_time="1074455331" modified_time="1074455331" url="user-guide.html" />
-<item upload_time="1074460922" modified_time="1074460922" url="CVS.html" />
-<item upload_time="1074647114" modified_time="1074647114" url="flowdesigner.webprj" />
-<item upload_time="1074455187" modified_time="1074455187" url="indexa.html" />
-<item upload_time="1074455187" modified_time="1074455187" url="indexb.html" />
-</project>
+  <project usePreviewPrefix="0" previewPrefix="file:file%3A" type="Local" newfiles="-//wapforum//dtd wml 1.2//en" name="flowdesigner" encoding="iso 8859-1" >
+    <upload remote_host="shell.sf.net" remote_port="22" remote_path="/home/groups/f/fl/flowdesigner/htdocs" remote_protocol="sftp" user="maestro" />
+    <defaultDTD>-//w3c//dtd html 4.01 frameset//en</defaultDTD>
+    <templates>templates/</templates>
+    <toolbars>toolbars/</toolbars>
+    <author>Dominic Letourneau</author>
+    <email>Dominic.Letourneau@USherbrooke.ca</email>
+    <item upload_time="" url="CVS/" uploadstatus="1" />
+    <item upload_time="1074654306" modified_time="1074654306" url="CVS/Entries" uploadstatus="1" />
+    <item upload_time="1074453989" modified_time="1074453989" url="CVS/Repository" uploadstatus="1" />
+    <item upload_time="1074453989" modified_time="1074453989" url="CVS/Root" uploadstatus="1" />
+    <item upload_time="" url="images/" uploadstatus="1" />
+    <item upload_time="" url="images/CVS/" uploadstatus="1" />
+    <item upload_time="1074455332" modified_time="1074455332" url="images/CVS/Entries" uploadstatus="1" />
+    <item upload_time="1074455208" modified_time="1074455208" url="images/CVS/Repository" uploadstatus="1" />
+    <item upload_time="1074455208" modified_time="1074455208" url="images/CVS/Root" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/authors_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/authors_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/b17.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/copybtn.gif" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/doc_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/doc_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/download_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/download_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/home_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/home_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/infbtbar.gif" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/links_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/links_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/news_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/news_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/overflow.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/overflow.png" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/screenshots_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/screenshots_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/status_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/status_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/todo_off.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="images/todo_on.jpg" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="announce-0.1.0.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="API.html" uploadstatus="1" />
+    <item upload_time="1074650400" modified_time="1074650400" url="authors.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="collect.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="collection.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="compiling.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="decoding.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="description.html" uploadstatus="1" />
+    <item upload_time="1074650471" modified_time="1074650471" url="doc.html" uploadstatus="1" />
+    <item upload_time="1074460922" modified_time="1074460922" url="download.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="extend.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="FAQ.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="front_end.html" uploadstatus="1" />
+    <item upload_time="1074647001" modified_time="1074647001" url="hmm.html" uploadstatus="1" />
+    <item upload_time="1074653386" modified_time="1074653386" url="home.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="index.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="internals.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="library.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="links.html" uploadstatus="1" />
+    <item upload_time="1074654890" modified_time="1074654890" url="menu.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="modules.html" uploadstatus="1" />
+    <item upload_time="1074653043" modified_time="1074653043" url="news.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="overview.html" uploadstatus="1" />
+    <item upload_time="1074654361" modified_time="1074654361" url="screenshots.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="server.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="status.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="todo.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="training.html" uploadstatus="1" />
+    <item upload_time="1074455331" modified_time="1074455331" url="user-guide.html" uploadstatus="1" />
+    <item upload_time="1074460922" modified_time="1074460922" url="CVS.html" uploadstatus="1" />
+    <item upload_time="1074647114" modified_time="1074647114" url="flowdesigner.webprj" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="indexa.html" uploadstatus="1" />
+    <item upload_time="1074455187" modified_time="1074455187" url="indexb.html" uploadstatus="1" />
+    <item url="" uploadstatus="1" />
+    <item url="images/Laborius.jpg" />
+    <item url="images/rec_pro_sdj_new.gif" />
+    <treestatus>
+      <openfolder url="images" />
+    </treestatus>
+  </project>
 </webproject>
