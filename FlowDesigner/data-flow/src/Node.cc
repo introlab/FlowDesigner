@@ -309,12 +309,12 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
          factoryDictionary().insert (factoryEntry(factoryName,factory));
       }
       else {
-         cerr<<"NULL _NodeFactory pointer, exiting"<<endl;
+         cerr<<"Node::addFactory : NULL _NodeFactory pointer, exiting"<<endl;
          exit(-1);
       }
    }
    else {
-      //cerr << "The factory (" << factoryName << ") already exists. Ignoring the new one." << endl;
+      cerr << "Node::addFactory : The factory (" << factoryName << ") already exists. Ignoring the new one." << endl;
    }
    return 0;
 };
