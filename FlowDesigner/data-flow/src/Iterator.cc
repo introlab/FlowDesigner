@@ -163,21 +163,30 @@ void Iterator::initialize() {
    }
 
    // We must initialize the conditionNode before
-
+   
    conditionNode->initialize();
-
+   
    this->Network::initialize();
    
    if (parameters.exist("DOWHILE"))
    {
-      if (dereference_cast<bool> (parameters.get("DOWHILE")))
-         doWhile = true;
-      else
-         doWhile = false;
-          
-   } else 
-      doWhile = false;
    
+     ObjectRef param = parameters.get("DOWHILE");
+   
+     if (!param.isNil()) {
+       if (dereference_cast<bool> (parameters.get("DOWHILE"))) {
+         doWhile = true;
+       }
+       else {
+         doWhile = false;
+       }
+     }
+     else {
+       doWhile = false;
+     }
+   } else {
+     doWhile = false;
+   }
    processCount = -1;
 }
 
