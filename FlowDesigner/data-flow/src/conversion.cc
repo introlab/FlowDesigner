@@ -386,14 +386,11 @@ template<class T>
 ObjectRef VectorCTypeConversion(ObjectRef in)
 {
  
-
    typedef typename T::basicType BaseType;
    BaseType value=dereference_cast<BaseType> (in);
 
-   T &object = object_cast<T>(in);
-
    //create vector
-   Vector<BaseType> *vect = new Vector<BaseType>(1,(bool) value);
+   Vector<BaseType> *vect = new Vector<BaseType>(1,value);
 
    //return vector
    return ObjectRef(vect);
