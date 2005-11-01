@@ -53,7 +53,8 @@ libbaseProbe_la_SOURCES = Probe.cc \
 	GtkPlotProbe.cc \
 	KeyPad.cc
 
-libbaseProbe_la_LDFLAGS = -release $(LT_RELEASE)
+libbaseProbe_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(top_srcdir)/../data-flow/src/libflow.la \
+	$(GNOME_XML_LIB) $(GNOME_GTHR_LIB) $(LIB_FFTW) $(GNOME_PIXBUF_LIB)
 
 
 LDFLAGS = $(FFTW_LDFLAGS)

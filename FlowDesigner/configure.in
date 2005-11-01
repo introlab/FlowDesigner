@@ -46,7 +46,9 @@ AC_MODULE_OPT(vflow, yes)
 
 AM_CONDITIONAL(COND_OPT, true)
 
+
 modules="$audio_blocks $VQ $HMM $NNet $FuzzyEngine $effects $lapackflow $octave $vflow"
+
 AC_SUBST(modules)
 AC_CONFIG_SUBDIRS($modules)
 
@@ -55,6 +57,22 @@ dnl Put configuration information in config.h.
 
 AC_CANONICAL_HOST
 AC_DISABLE_STATIC
+
+#CYGWIN LDFLAGS ADDITION
+case $host_os in
+  *cygwin* ) CYGWIN="yes";;
+         * ) CYGWIN="no";;
+esac
+
+
+if test "$CYGWIN" = "yes"; then
+	AC_LIBTOOL_WIN32_DLL
+	CYGWIN_LDFLAGS="-no-undefined"
+else
+	CYGWIN_LDFLAGS=""
+fi
+
+AC_SUBST(CYGWIN_LDFLAGS)
 AM_PROG_LIBTOOL
 
 dnl AC_DEFINE(VERSION, ${VERSION})
@@ -118,7 +136,7 @@ fi
 if test "$vflow" = "vflow"; then
 	AC_MSG_RESULT([$PACKAGE will build vflow toolkit])
 fi
-
+AC_MSG_RESULT([Using CYGWIN FLAGS : $CYGWIN_LDFLAGS])
 AC_MSG_RESULT([])
 AC_MSG_RESULT([*************************************************************])
 AC_MSG_RESULT([$PACKAGE will be installed in $prefix])

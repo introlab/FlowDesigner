@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.130 2005/06/23 15:29:05 maestro Exp $
+# $Id: Makefile.am,v 1.131 2005/06/27 14:02:36 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -146,18 +146,18 @@ libflow_la_SOURCES = Node.cc \
 	TCPConnect.cc \
 	URLHandler.cc \
 	URLStream.cc \
-  	BinaryAND.cc \
-  	BinaryOR.cc \
-  	Power.cc \
+	BinaryAND.cc \
+	BinaryOR.cc \
+	Power.cc \
 	UINote.cc \
 	wrapper.cc \
 	cwrapper.cc
 
 
 
-#libflow_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
-libflow_la_LDFLAGS = -release $(LT_RELEASE)
-#libflow_LDADD = $(GNOME_XML_LIB)
+
+libflow_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(GNOME_XML_LIB)
+
 
 bin_PROGRAMS = batchflow docflow codeflow texflow
 

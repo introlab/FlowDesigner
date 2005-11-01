@@ -38,6 +38,21 @@ AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 
 AC_DISABLE_STATIC
+#CYGWIN LDFLAGS ADDITION
+case $host_os in
+  *cygwin* ) CYGWIN="yes";;
+         * ) CYGWIN="no";;
+esac
+
+
+if test "$CYGWIN" = "yes"; then
+	AC_LIBTOOL_WIN32_DLL
+	CYGWIN_LDFLAGS="-no-undefined"
+else
+	CYGWIN_LDFLAGS=""
+fi
+
+AC_SUBST(CYGWIN_LDFLAGS)
 AM_PROG_LIBTOOL
 
 case "$host_os" in 

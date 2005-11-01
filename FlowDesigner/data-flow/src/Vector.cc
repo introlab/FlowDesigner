@@ -33,6 +33,8 @@ DECLARE_TYPE(Vector<String>)
 VectorPool<float> floatVectorPool;
 VectorPool<double> doubleVectorPool;
 
+#ifndef __CYGWIN__
+
 //pretty print specialization
 template<>
 void Vector<float>::prettyPrint(ostream &out) const {
@@ -98,6 +100,8 @@ void Vector<String>::prettyPrint(ostream &out) const {
     out<<(*this)[i]<<endl;
   }
 }
+
+#endif
 /*
 //MOVED to Vector.h
 

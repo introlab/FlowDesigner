@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.43 2004/02/06 15:42:31 maestro Exp $
+# $Id: Makefile.am,v 1.44 2005/09/06 13:53:57 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -29,8 +29,8 @@ libnnet_la_SOURCES = FFLayer.cc FFNet.cc \
 	TrainingAlgo.cc \
 	NNetTrainWeightDBD.cc
 
-#libvq_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) @LIBS@
-libnnet_la_LDFLAGS = -release $(LT_RELEASE)
+
+libnnet_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(top_srcdir)/../data-flow/src/libflow.la
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include
 

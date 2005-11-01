@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.2 2005/09/06 13:53:57 maestro Exp $
+# $Id: Makefile.am,v 1.3 2005/09/08 13:11:56 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -20,7 +20,7 @@ install-data-local:
 libOctave_la_SOURCES = OctaveParser.cc
 
 
-libOctave_la_LDFLAGS = -release $(LT_RELEASE) -L$(OCTAVE_LIB) -loctave -loctinterp -lcruft \
+libOctave_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS)  $(top_srcdir)/../data-flow/src/libflow.la -L$(OCTAVE_LIB) -loctave -loctinterp -lcruft \
         -ltermcap -lreadline -ldl -lg2c $(XML2_LIB) -lncurses
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/../data-flow/include -I$(OCTAVE_INCLUDE) -I$(OCTAVE_INCLUDE)/octave

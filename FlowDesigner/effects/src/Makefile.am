@@ -4,7 +4,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/effects
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.17 2004/02/06 15:42:32 maestro Exp $
+# $Id: Makefile.am,v 1.18 2005/09/06 13:53:57 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -18,7 +18,7 @@ install-data-local:
 
 libeffects_la_SOURCES =	Saturate.cc rev.cc Reverb.cc
 
-libeffects_la_LDFLAGS = -release $(LT_RELEASE)
+libeffects_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(top_srcdir)/../data-flow/src/libflow.la
 
 INCLUDES = -I$(top_srcdir)/../data-flow/include -I$(top_srcdir)/include 
 

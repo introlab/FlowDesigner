@@ -4,7 +4,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.101 2004/02/06 15:42:31 maestro Exp $
+# $Id: Makefile.am,v 1.102 2005/09/06 13:53:57 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -98,7 +98,7 @@ libablocks_la_SOURCES =	\
 	LSP2LPC.cc \
 	LPC2LSP.cc
 
-libablocks_la_LDFLAGS = -release $(LT_RELEASE)
+libablocks_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(LIB_FFTW) $(top_srcdir)/../data-flow/src/libflow.la
 
 INCLUDES = -I$(top_srcdir)/../data-flow/include -I$(top_srcdir)/include $(FFTW_INCLUDES)
 
