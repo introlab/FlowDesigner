@@ -1,16 +1,12 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.131 2005/06/27 14:02:36 maestro Exp $
+# $Id: Makefile.am,v 1.132 2005/11/01 21:45:33 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/lib/flowdesigner/toolbox/data-flow
-
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(top_srcdir); perl tools/src/info2def.pl data-flow/src/*.cc data-flow/include/*.h > $(datadir)/data-flow.def)
 
 lib_LTLIBRARIES = libflow.la
 
@@ -153,7 +149,9 @@ libflow_la_SOURCES = Node.cc \
 	wrapper.cc \
 	cwrapper.cc
 
-
+install-data-local:
+	mkdir -p $(datadir)
+	(perl $(top_srcdir)/tools/src/info2def.pl $(libflow_la_SOURCES) > $(datadir)/data-flow.def)
 
 
 libflow_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(GNOME_XML_LIB)
@@ -180,8 +178,12 @@ docflow_LDADD = $(GNOME_XML_LIB) libflow.la
 
 codeflow_LDADD = $(GNOME_XML_LIB) libflow.la 
 
-batchflow_LDFLAGS = $(FFTW_LDFLAGS)
+batchflow_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS)
 
-texflow_LDFLAGS = $(FFTW_LDFLAGS)
+texflow_LDFLAGS = $(CYGWIN_LDFLAGS)
+
+docflow_LDFLAGS = $(CYGWIN_LDFLAGS)
+
+codeflow_LDFLAGS = $(CYGWIN_LDFLAGS)
 
 INCLUDES = -I$(top_srcdir)/data-flow/include $(GNOME_XML_INCLUDE) 

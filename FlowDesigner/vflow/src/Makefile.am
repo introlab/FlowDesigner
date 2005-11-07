@@ -4,10 +4,7 @@ override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/lib/flowdesigner/toolbox/vflow
 override libdir=${prefix}/lib/flowdesigner/toolbox/vflow
 
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h> $(datadir)/vflow.def)
-	(cd $(libdir); rm -f baseProbe.tlb; ln -s libbaseProbe.so baseProbe.tlb)
+
 
 INCLUDES = \
            -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -53,11 +50,21 @@ libbaseProbe_la_SOURCES = Probe.cc \
 	GtkPlotProbe.cc \
 	KeyPad.cc
 
+install-data-local:
+	mkdir -p $(datadir)
+if WITH_CYGWIN		
+	(cd $(libdir); rm -f baseProbe.tlb; ln -s libbaseProbe.dll.a baseProbe.tlb)
+else
+	(cd $(libdir); rm -f baseProbe.tlb; ln -s libbaseProbe.so baseProbe.tlb)	
+endif
+	(perl $(top_srcdir)/../tools/src/info2def.pl $(libbaseProbe_la_SOURCES) > $(datadir)/vflow.def)
+
+
 libbaseProbe_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(top_srcdir)/../data-flow/src/libflow.la \
 	$(GNOME_XML_LIB) $(GNOME_GTHR_LIB) $(LIB_FFTW) $(GNOME_PIXBUF_LIB)
 
 
-LDFLAGS = $(FFTW_LDFLAGS)
+LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS)
 
 LDADD = @PACKAGE_LIBS@ $(GNOME_XML_LIB) $(GNOME_GTHR_LIB) \
 	$(top_srcdir)/../data-flow/src/libflow.la \

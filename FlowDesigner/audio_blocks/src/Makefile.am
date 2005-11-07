@@ -4,17 +4,12 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.102 2005/09/06 13:53:57 maestro Exp $
+# $Id: Makefile.am,v 1.103 2005/11/01 21:45:33 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libablocks.la 
-
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/audio_blocks.def)
 
 libablocks_la_SOURCES =	\
 	GCMS.cc \
@@ -62,8 +57,8 @@ libablocks_la_SOURCES =	\
 	SeparChannels.cc \
 	Sqrt.cc \
 	Poly.cc \
-	mdct.c \
-	window.c \
+	mdct2.c \
+	window2.c \
 	MDCT.cc \
 	Pow.cc \
 	TimeEntropy.cc \
@@ -97,6 +92,16 @@ libablocks_la_SOURCES =	\
 	lsp.c \
 	LSP2LPC.cc \
 	LPC2LSP.cc
+
+install-data-local:
+	mkdir -p $(datadir)
+if WITH_CYGWIN
+	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.dll.a audio_blocks.tlb)	
+else
+	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
+endif
+	(perl $(top_srcdir)/../tools/src/info2def.pl $(libablocks_la_SOURCES) > $(datadir)/audio_blocks.def)
+
 
 libablocks_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(LIB_FFTW) $(top_srcdir)/../data-flow/src/libflow.la
 

@@ -3,17 +3,14 @@ override datadir=${prefix}/lib/flowdesigner/toolbox/VQ
 override libdir=${prefix}/lib/flowdesigner/toolbox/VQ
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.33 2004/02/06 15:42:31 maestro Exp $
+# $Id: Makefile.am,v 1.34 2005/11/01 21:45:33 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libvq.la
 
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(libdir); rm -f vq.tlb; ln -s libvq.so vq.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/vq.def)
+
 
 # Sources for compilation in the library
 libvq_la_SOURCES = kmeans.cc \
@@ -36,6 +33,16 @@ libvq_la_SOURCES = kmeans.cc \
 	FMapCalc.cc \
 	FMapTrain.cc \
 	FeatureMap.cc
+
+install-data-local:
+	mkdir -p $(datadir)
+if WITH_CYGWIN
+	(cd $(libdir); rm -f vq.tlb; ln -s libvq.dll.a vq.tlb)	
+else
+	(cd $(libdir); rm -f vq.tlb; ln -s libvq.so vq.tlb)
+endif
+	(perl $(top_srcdir)/../tools/src/info2def.pl $(libvq_la_SOURCES) > $(datadir)/vq.def)
+
 
 
 libvq_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(top_srcdir)/../data-flow/src/libflow.la

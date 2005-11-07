@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.44 2005/09/06 13:53:57 maestro Exp $
+# $Id: Makefile.am,v 1.45 2005/11/01 21:45:32 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -11,10 +11,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/NNet
 
 lib_LTLIBRARIES = libnnet.la
 
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(libdir); rm -f NNet.tlb; ln -s libnnet.so NNet.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/NNet.def)
+
 
 # Sources for compilation in the library
 libnnet_la_SOURCES = FFLayer.cc FFNet.cc \
@@ -29,6 +26,15 @@ libnnet_la_SOURCES = FFLayer.cc FFNet.cc \
 	TrainingAlgo.cc \
 	NNetTrainWeightDBD.cc
 
+
+install-data-local:
+	mkdir -p $(datadir)
+if WITH_CYGWIN
+	(cd $(libdir); rm -f NNet.tlb; ln -s libnnet.dll.a NNet.tlb)
+else
+	(cd $(libdir); rm -f NNet.tlb; ln -s libnnet.so NNet.tlb)
+endif
+	(perl $(top_srcdir)/../tools/src/info2def.pl $(libnnet_la_SOURCES) > $(datadir)/NNet.def)
 
 libnnet_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(top_srcdir)/../data-flow/src/libflow.la
 

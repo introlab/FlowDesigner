@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.3 2005/09/08 13:11:56 maestro Exp $
+# $Id: Makefile.am,v 1.4 2005/11/01 21:45:34 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -11,14 +11,17 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/Octave
 
 lib_LTLIBRARIES = libOctave.la
 
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(libdir); rm -f Octave.tlb; ln -s libOctave.so Octave.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.cc include/*.h > $(datadir)/Octave.def)
-
 # Sources for compilation in the library
 libOctave_la_SOURCES = OctaveParser.cc
 
+install-data-local:
+	mkdir -p $(datadir)
+if WITH_CYGWIN
+	(cd $(libdir); rm -f Octave.tlb; ln -s libOctave.dll.a Octave.tlb)
+else
+	(cd $(libdir); rm -f Octave.tlb; ln -s libOctave.so Octave.tlb)
+endif
+	(perl $(top_srcdir)/../tools/src/info2def.pl $(libOctave_la_SOURCES) > $(datadir)/Octave.def)
 
 libOctave_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS)  $(top_srcdir)/../data-flow/src/libflow.la -L$(OCTAVE_LIB) -loctave -loctinterp -lcruft \
         -ltermcap -lreadline -ldl -lg2c $(XML2_LIB) -lncurses

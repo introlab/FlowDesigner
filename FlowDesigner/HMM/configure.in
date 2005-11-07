@@ -50,7 +50,7 @@ if test "$CYGWIN" = "yes"; then
 else
 	CYGWIN_LDFLAGS=""
 fi
-
+AM_CONDITIONAL(WITH_CYGWIN, test "$CYGWIN" = "yes")
 AC_SUBST(CYGWIN_LDFLAGS)
 AM_PROG_LIBTOOL
 

@@ -4,10 +4,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/lapackflow
 
 lib_LTLIBRARIES = liblapackflow.la 
 
-install-data-local:
-	mkdir -p $(datadir)
-	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.so lapackflow.tlb)
-	(cd $(top_srcdir); perl ../tools/src/info2def.pl src/*.f src/*.cc include/*.h > $(datadir)/lapackflow.def)
+
 
 liblapackflow_la_SOURCES = lapackflow.cc \
 	flapack.f \
@@ -15,6 +12,16 @@ liblapackflow_la_SOURCES = lapackflow.cc \
 	SolveLS.cc \
 	Eig.cc \
 	SVD.cc
+
+install-data-local:
+	mkdir -p $(datadir)
+if WITH_CYGWIN
+	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.dll.a lapackflow.tlb)
+else
+	(cd $(libdir); rm -f lapackflow.tlb; ln -s liblapackflow.so lapackflow.tlb)
+endif
+	(perl $(top_srcdir)/../tools/src/info2def.pl $(liblapackflow_la_SOURCES) > $(datadir)/lapackflow.def)
+
 
 liblapackflow_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) \
 	$(top_srcdir)/../data-flow/src/libflow.la -llapack -lblas -lm
