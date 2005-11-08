@@ -1,7 +1,7 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
 override datadir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
 override libdir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
-
+override bindir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
 
 include_HEADERS = FuzzyFunction.h \
 	FuzzyModel.h \

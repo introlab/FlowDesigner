@@ -1,10 +1,10 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/HMM
 override datadir=${prefix}/lib/flowdesigner/toolbox/HMM
 override libdir=${prefix}/lib/flowdesigner/toolbox/HMM
-
+override bindir=${prefix}/lib/flowdesigner/toolbox/HMM
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.35 2005/11/01 21:45:32 maestro Exp $
+# $Id: Makefile.am,v 1.36 2005/11/07 17:59:59 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -24,7 +24,8 @@ libhmm_la_SOURCES =	gmm.cc covariance.cc gaussian.cc \
 install-data-local:
 	mkdir -p $(datadir)
 if WITH_CYGWIN
-	(cd $(libdir); rm -f hmm.tlb; ln -s libhmm.dll.a hmm.tlb)	
+	(cd $(libdir); rm -f hmm.tlb; \
+	 ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cyghmm-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll hmm.tlb)	
 else
 	(cd $(libdir); rm -f hmm.tlb; ln -s libhmm.so hmm.tlb)
 endif

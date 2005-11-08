@@ -1,10 +1,10 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 override datadir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
-
+override bindir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.103 2005/11/01 21:45:33 maestro Exp $
+# $Id: Makefile.am,v 1.104 2005/11/07 18:00:00 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -96,7 +96,8 @@ libablocks_la_SOURCES =	\
 install-data-local:
 	mkdir -p $(datadir)
 if WITH_CYGWIN
-	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.dll.a audio_blocks.tlb)	
+	(cd $(libdir); rm -f audio_blocks.tlb; \
+	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygablocks-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll audio_blocks.tlb)	
 else
 	(cd $(libdir); rm -f audio_blocks.tlb; ln -s libablocks.so audio_blocks.tlb)
 endif

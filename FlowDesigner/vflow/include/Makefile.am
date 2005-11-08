@@ -1,6 +1,7 @@
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/lib/flowdesigner/toolbox/vflow
 override libdir=${prefix}/lib/flowdesigner/toolbox/vflow
+#bindir default is OK
 
 include_HEADERS = GUIDocument.h \
 	GUILink.h \

@@ -75,24 +75,22 @@ public:
 
 #endif
 
-
 //Inline function that "template recursively" calculates the log-base2 
 //of an N-bit integer in O(log2(N)) 
-
 //Template argument is N/2
 template<int M2>
-inline int _log2(int i)
+inline int fd_log2(int i)
 {
    if (i>>M2)
    {
-      return M2+_log2<M2/2>(i>>M2);
+      return M2 + fd_log2<M2/2>(i>>M2);
    } else {
-      return _log2<M2/2>(i);
+      return fd_log2<M2/2>(i);
    }
 }
 
 template<>
-inline int _log2<1>(int i)
+inline int fd_log2<1>(int i)
 {
    if (i&2)
       return 1;
@@ -100,15 +98,11 @@ inline int _log2<1>(int i)
       return 0;
 }
 
-#ifndef __CYGWIN__
-inline int log2(int i)
-{
-   return _log2<16>(i);
-}
-#else
-#warning log2(inti) not implemented yet for CYGWIN
-#endif
 
+inline int fd_log2(int i)
+{
+   return fd_log2<16>(i);
+}
 
 
 /**Gaussian random generator*/

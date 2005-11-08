@@ -34,11 +34,8 @@ typedef void *DL_HANDLE_TYPE;
 inline DL_HANDLE_TYPE _DL_OPEN(std::string path, int debug = 1) 
 {
    //std::cerr << "opening lib " << path.c_str() << std::endl;
-#ifndef __CYGWIN__
+
    DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_LAZY|RTLD_GLOBAL);
-#else   
-   DL_HANDLE_TYPE library = dlopen (path.c_str(), RTLD_NOW | RTLD_GLOBAL);
-#endif
 
    if (!library && debug) 
       std::cerr << "Toolbox load error: " << dlerror() << std::endl;

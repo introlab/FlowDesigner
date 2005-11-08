@@ -1,10 +1,11 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/effects
 override datadir=${prefix}/lib/flowdesigner/toolbox/effects
 override libdir=${prefix}/lib/flowdesigner/toolbox/effects
+override bindir=${prefix}/lib/flowdesigner/toolbox/effects
 
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.19 2005/11/01 21:45:33 maestro Exp $
+# $Id: Makefile.am,v 1.20 2005/11/07 18:00:00 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -17,7 +18,8 @@ install-data-local:
 	mkdir -p $(datadir)
 
 if WITH_CYGWIN
-	(cd $(libdir); rm -f effects.tlb; ln -s libeffects.dll.a effects.tlb)
+	(cd $(libdir); rm -f effects.tlb; \
+	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygeffects-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll effects.tlb)
 else
 	(cd $(libdir); rm -f effects.tlb; ln -s libeffects.so effects.tlb)	
 endif

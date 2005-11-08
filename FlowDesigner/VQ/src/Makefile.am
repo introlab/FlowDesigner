@@ -1,9 +1,10 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/VQ
 override datadir=${prefix}/lib/flowdesigner/toolbox/VQ
 override libdir=${prefix}/lib/flowdesigner/toolbox/VQ
+override bindir=${prefix}/lib/flowdesigner/toolbox/VQ
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.34 2005/11/01 21:45:33 maestro Exp $
+# $Id: Makefile.am,v 1.35 2005/11/07 18:00:00 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -37,7 +38,8 @@ libvq_la_SOURCES = kmeans.cc \
 install-data-local:
 	mkdir -p $(datadir)
 if WITH_CYGWIN
-	(cd $(libdir); rm -f vq.tlb; ln -s libvq.dll.a vq.tlb)	
+	(cd $(libdir); rm -f vq.tlb; \
+	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygvq-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll vq.tlb)	
 else
 	(cd $(libdir); rm -f vq.tlb; ln -s libvq.so vq.tlb)
 endif

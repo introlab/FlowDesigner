@@ -1,10 +1,10 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
 override datadir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
 override libdir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
-
+override bindir=${prefix}/lib/flowdesigner/toolbox/FuzzyEngine
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.24 2005/11/01 21:45:32 maestro Exp $
+# $Id: Makefile.am,v 1.25 2005/11/07 17:59:59 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -29,7 +29,8 @@ libfuzzy_la_SOURCES = FuzzyFunction.cc \
 install-data-local:
 	mkdir -p $(datadir)
 if WITH_CYGWIN
-	(cd $(libdir); rm -f fuzzy.tlb; ln -s libfuzzy.dll.a fuzzy.tlb)	
+	(cd $(libdir); rm -f fuzzy.tlb; \
+	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygfuzzy-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll fuzzy.tlb)	
 else
 	(cd $(libdir); rm -f fuzzy.tlb; ln -s libfuzzy.so fuzzy.tlb)
 endif

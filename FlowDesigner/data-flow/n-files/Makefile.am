@@ -2,7 +2,8 @@
 
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/lib/flowdesigner/toolbox/data-flow
-override libdir=${prefix}/lib
+override libdir=${prefix}/lib/flowdesigner/toolbox/data-flow
+override bindir=${prefix}/lib/flowdesigner/toolbox/data-flow
 
 toolboxdir = $(datadir)
 
@@ -15,7 +16,7 @@ toolbox_DATA = LoadFile.n \
 	       ToBool.n \
 	       ToDouble.n \
 	       ToString.n \
-		   ToVect.n \
+	       ToVect.n \
 	       Modulo.n \
 	       Step.n \
 	       Trigger.n \

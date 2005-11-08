@@ -1,10 +1,9 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/lapackflow
 override datadir=${prefix}/lib/flowdesigner/toolbox/lapackflow
 override libdir=${prefix}/lib/flowdesigner/toolbox/lapackflow
+override bindir=${prefix}/lib/flowdesigner/toolbox/lapackflow
 
 lib_LTLIBRARIES = liblapackflow.la 
-
-
 
 liblapackflow_la_SOURCES = lapackflow.cc \
 	flapack.f \

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.45 2005/11/01 21:45:32 maestro Exp $
+# $Id: Makefile.am,v 1.46 2005/11/07 17:59:59 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -8,10 +8,9 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/NNet
 override datadir=${prefix}/lib/flowdesigner/toolbox/NNet
 override libdir=${prefix}/lib/flowdesigner/toolbox/NNet
+override bindir=${prefix}/lib/flowdesigner/toolbox/NNet
 
 lib_LTLIBRARIES = libnnet.la
-
-
 
 # Sources for compilation in the library
 libnnet_la_SOURCES = FFLayer.cc FFNet.cc \
@@ -30,7 +29,8 @@ libnnet_la_SOURCES = FFLayer.cc FFNet.cc \
 install-data-local:
 	mkdir -p $(datadir)
 if WITH_CYGWIN
-	(cd $(libdir); rm -f NNet.tlb; ln -s libnnet.dll.a NNet.tlb)
+	(cd $(libdir); rm -f NNet.tlb; \
+	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygnnet-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll NNet.tlb)
 else
 	(cd $(libdir); rm -f NNet.tlb; ln -s libnnet.so NNet.tlb)
 endif

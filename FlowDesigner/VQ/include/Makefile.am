@@ -1,7 +1,7 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/VQ
 override datadir=${prefix}/lib/flowdesigner/toolbox/VQ
 override libdir=${prefix}/lib/flowdesigner/toolbox/VQ
-
+override bindir=${prefix}/lib/flowdesigner/toolbox/VQ
 
 include_HEADERS = kmeans.h Cell.h \
 	CodebookMap.h FeatureMap.h \

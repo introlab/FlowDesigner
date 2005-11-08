@@ -1,12 +1,13 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.132 2005/11/01 21:45:33 maestro Exp $
+# $Id: Makefile.am,v 1.133 2005/11/07 18:00:00 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/lib/flowdesigner/toolbox/data-flow
+#Default bindir and libdir are OK
 
 lib_LTLIBRARIES = libflow.la
 

@@ -1,7 +1,7 @@
 override includedir=${prefix}/lib/flowdesigner/toolbox/HMM
 override datadir=${prefix}/lib/flowdesigner/toolbox/HMM
 override libdir=${prefix}/lib/flowdesigner/toolbox/HMM
-
+override bindir=${prefix}/lib/flowdesigner/toolbox/HMM
 
 include_HEADERS = covariance.h \
 	gaussian.h \

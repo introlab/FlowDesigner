@@ -1,7 +1,7 @@
-
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/share/flowdesigner
 override libdir=${prefix}/lib/flowdesigner/lib
+override bindir=${prefix}/bin
 
 include_HEADERS = Array.h \
 	Node.h \
@@ -71,11 +71,11 @@ include_HEADERS = Array.h \
 	Complex.h \
 	Stream.h \
 	URLHandler.h \
-  	BinaryAND.h \
-  	BinaryOR.h \
-  	Power.h \
+	BinaryAND.h \
+	BinaryOR.h \
+	Power.h \
 	UINote.h
-	
+
 noinst_HEADERS = \
 	Pack.h \
 	UnPack.h \

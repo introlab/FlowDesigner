@@ -309,6 +309,7 @@ void Vector<T>::prettyPrint(std::ostream &out) const
   _vector_printOn(*this,out);
 }
 
+
 template <class T>
 inline void _vector_readFrom(Vector<T> &v, std::istream &in)
 {

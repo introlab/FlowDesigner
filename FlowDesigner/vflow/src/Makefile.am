@@ -3,7 +3,7 @@
 override includedir=${prefix}/include/flowdesigner
 override datadir=${prefix}/lib/flowdesigner/toolbox/vflow
 override libdir=${prefix}/lib/flowdesigner/toolbox/vflow
-
+#default bindir is OK
 
 
 INCLUDES = \
@@ -53,7 +53,8 @@ libbaseProbe_la_SOURCES = Probe.cc \
 install-data-local:
 	mkdir -p $(datadir)
 if WITH_CYGWIN		
-	(cd $(libdir); rm -f baseProbe.tlb; ln -s libbaseProbe.dll.a baseProbe.tlb)
+	(cd $(libdir); rm -f baseProbe.tlb; \
+	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygbaseProbe-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll baseProbe.tlb)
 else
 	(cd $(libdir); rm -f baseProbe.tlb; ln -s libbaseProbe.so baseProbe.tlb)	
 endif
