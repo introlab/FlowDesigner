@@ -53,7 +53,7 @@ class VectorPool {
 	    return ret;
 	 }
       } else {
-	std::vector <Vector<T> *> &stack = largeList[fd_log2(size)];
+	std::vector <Vector<T> *> &stack = largeList[FD::log2(size)];
 	 if (stack.empty())
 	 {
             mutex.unlock();
@@ -84,7 +84,7 @@ class VectorPool {
 	 }
 	 
       } else {
-	 std::vector <Vector<T> *> &stack = largeList[fd_log2(sz)];
+	std::vector <Vector<T> *> &stack = largeList[FD::log2(sz)];
 	 if (stack.size() > max_stored)
 	 {
 	    delete vec;
