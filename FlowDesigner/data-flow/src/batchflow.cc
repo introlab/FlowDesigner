@@ -34,8 +34,8 @@ public:
   batchflowApp()
   : m_doc(NULL), m_net(NULL) {
 
-    //IExtensions::detect();
-    //scanDL();
+    IExtensions::detect();
+    scanDL();
     UINodeRepository::Scan();
   }
 
