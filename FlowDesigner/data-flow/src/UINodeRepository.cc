@@ -23,6 +23,39 @@ using namespace std;
 
 namespace FD {
 
+
+ostream& operator<< (ostream &out, const ItemInfo &iInfo) {
+	out<<"\tname:  "<<iInfo.name<<endl;
+	out<<"\ttype:  "<<iInfo.type<<endl;
+	out<<"\tvalue: "<<iInfo.value<<endl;
+	out<<"\tdesc:  "<<iInfo.description<<endl;
+	return out;
+}
+
+ostream& operator<< (ostream & out, const NodeInfo &nInfo) {
+ 
+  out<<"INPUTS:"<<endl;
+  for (unsigned int i = 0; i < nInfo.inputs.size(); i++) {
+    out<<*(nInfo.inputs[i]);
+  }
+  out<<"OUTPUTS:"<<endl;
+  for (unsigned int i = 0; i < nInfo.outputs.size(); i++) {
+    out<<*(nInfo.outputs[i]);
+  }
+  out<<"PARAMETERS:"<<endl;
+  for (unsigned int i = 0; i < nInfo.params.size(); i++) {
+    out<<*(nInfo.params[i]);
+  }
+  out<<"CATEGORY:"<<nInfo.category<<endl;
+  out<<"DESCRIPTION:"<<nInfo.description<<endl;
+  out<<"SOURCEFILE:"<<nInfo.sourceFile<<endl;
+  out<<"REQUIRELIST:"<<nInfo.requireList<<endl;
+  out<<"KIND:"<<nInfo.kind<<endl;
+  return out;
+}
+
+
+
 UINodeRepository::UINodeRepository(const UINodeRepository &)
 {
    throw new GeneralException("I wouldn't try copying a UINodeRepository if I were you", __FILE__, __LINE__);
@@ -63,6 +96,15 @@ void UINodeRepository::Scan()
       LoadAllInfoRecursive(dirs[i]);
    }
    cerr<<"done loading def files"<<endl;
+   /*
+   cerr<<"+++repository contains after loading: "<<endl;
+   for (map<string,NodeInfo*>::iterator iter = GlobalRepository().info.begin();
+	iter != GlobalRepository().info.end(); iter++) {
+     cerr<<"**************"<<iter->first<<"("<<iter->second<<")"<<endl;
+     cerr<<*(iter->second)<<endl;
+   }
+   */
+
 }
 
 set<string> &UINodeRepository::FindFileFromModule(const string &name)
@@ -123,13 +165,27 @@ UINodeRepository::~UINodeRepository()
 
 void UINodeRepository::clean()
 {
-   iterator it = info.begin();
-   while (it != info.end()) {
-      delete it->second;
-      info.erase(it);
-      it++;
+
+  /*
+   cerr<<"+++repository contains before cleaning: "<<endl;
+   for (map<string,NodeInfo*>::iterator iter = GlobalRepository().info.begin();
+	iter != GlobalRepository().info.end(); iter++) {
+     cerr<<"**************"<<iter->first<<"("<<iter->second<<")"<<endl;
+     cerr<<*(iter->second)<<endl;
    }
-   //info = map<string, NodeInfo *>();
+  */
+
+   while(!info.empty()) {
+
+     iterator iter = info.begin();
+     //cerr<<"deleting NodeInfo : "<<iter->first<<endl;
+     if (iter->second) {
+       //deleting NodeInfo
+       delete iter->second;
+     }
+     info.erase(iter);
+   }
+
 }
 
 
@@ -171,7 +227,9 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	 free(req);
 	 //cerr << my_info->sourceFile << ":" << my_info->requireList << endl;
 	 nodeName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
+	 //cerr<<"inserting into global repository  :"<<nodeName<<endl;
 	 GlobalRepository().info[nodeName] = my_info;
+	 
 	 xmlNodePtr data = node->children;
 	 while (data != NULL)
 	 {
@@ -182,10 +240,15 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	       ItemInfo *newInfo = new ItemInfo;
 	       char *str_name = (char *)xmlGetProp(data, (xmlChar *)"name");
 	       char *str_type = (char *)xmlGetProp(data, (xmlChar *)"type");
-	       //FIXME: Check for NULL
-	       newInfo->name = string(str_name);
-	       newInfo->type = string(str_type);
-	       free(str_name); free(str_type);
+
+	       if (str_name) {
+		 newInfo->name = string(str_name);
+		 free(str_name);
+	       }
+	       if (str_type) {
+		 newInfo->type = string(str_type);
+		 free(str_type);
+	       }
 	       tmp = xmlGetProp(data, (xmlChar *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
@@ -229,10 +292,16 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	       ItemInfo *newInfo = new ItemInfo;
 	       char *str_name = (char *)xmlGetProp(data, (xmlChar *)"name");
 	       char *str_type = (char *)xmlGetProp(data, (xmlChar *)"type");
-	       //FIXME: Check for NULL
-	       newInfo->name = string(str_name);
-	       newInfo->type = string(str_type);
-	       free(str_name); free(str_type);
+	       
+	       if (str_name) {
+		 newInfo->name = string(str_name);
+		 free(str_name);
+	       }
+	       if (str_type) {
+		 newInfo->type = string(str_type);
+		 free(str_type);
+	       }
+	      
 	       tmp = xmlGetProp(data, (xmlChar *)"value");
 	       if (tmp == NULL)
 		  newInfo->value = "";
@@ -397,6 +466,8 @@ void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
    //cerr << "new subnet info with name: " << netName << "\n";
    NodeInfo *my_info = new NodeInfo;
    my_info->kind = NodeInfo::external;
+
+   //cerr<<"Inserting external info : "<<basename<<endl;
    externalDocInfo[basename] = my_info;
    
 
