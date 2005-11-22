@@ -138,7 +138,7 @@ void UIDocument::load()
    if (docFile.fail())
    {
       error("Error: cannot open file");
-      //cerr << "load: error loading " << fullpath << "\n";
+      cerr << "load: error loading " << fullpath << "\n";
       addNetwork("MAIN", UINetwork::subnet);
       resetModified();
       return;
@@ -188,7 +188,9 @@ void UIDocument::load()
       }
       docStr.append(buff, 1024);
    }
+   cerr<<"loading XML document from memory"<<endl;
    loadFromMemory(docStr.c_str(), docStr.size());
+   cerr<<"done!"<<endl;
 
 }
 
@@ -577,6 +579,9 @@ Network *UIDocument::buildExternal(const string &type, const string &_name, cons
 
 Network *UIDocument::build(const string &_name, const ParameterSet &params)
 {
+
+  cerr<<"Building network  :"<<_name<<endl;
+
    Network *net = NULL;
    try {
       UINetwork *uinet = getNetworkNamed("MAIN");

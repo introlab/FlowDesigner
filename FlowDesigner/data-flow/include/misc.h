@@ -78,6 +78,12 @@ public:
 //Inline function that "template recursively" calculates the log-base2 
 //of an N-bit integer in O(log2(N)) 
 //Template argument is N/2
+#ifndef __CYGWIN__
+
+
+//(DL) 22 Nov 2005
+//Cygwin does not like recursive templates...
+
 template<int M2>
 inline int _log2(int i)
 {
@@ -98,11 +104,13 @@ inline int _log2<1>(int i)
       return 0;
 }
 
-
 inline int log2(int i)
 {
    return _log2<16>(i);
 }
+
+#endif
+
 
 
 /**Gaussian random generator*/

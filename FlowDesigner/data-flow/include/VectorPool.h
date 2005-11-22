@@ -53,7 +53,11 @@ class VectorPool {
 	    return ret;
 	 }
       } else {
-	std::vector <Vector<T> *> &stack = largeList[FD::log2(size)];
+#ifndef __CYGWIN__
+	 std::vector <Vector<T> *> &stack = largeList[FD::log2(size)];
+#else
+	 std::vector <Vector<T> *> &stack = largeList[(int) log2(size)];
+#endif
 	 if (stack.empty())
 	 {
             mutex.unlock();
@@ -84,7 +88,11 @@ class VectorPool {
 	 }
 	 
       } else {
+#ifndef __CYGWIN__
 	std::vector <Vector<T> *> &stack = largeList[FD::log2(sz)];
+#else
+	std::vector <Vector<T> *> &stack = largeList[(int) log2(sz)];
+#endif
 	 if (stack.size() > max_stored)
 	 {
 	    delete vec;

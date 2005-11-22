@@ -62,6 +62,7 @@ void UINodeRepository::Scan()
    {
       LoadAllInfoRecursive(dirs[i]);
    }
+   cerr<<"done loading def files"<<endl;
 }
 
 set<string> &UINodeRepository::FindFileFromModule(const string &name)
@@ -136,6 +137,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 {
 
    string fullname = path + "/" + name;
+   cerr<<"Loading def :"<<fullname<<endl;
    xmlDocPtr doc = xmlParseFile(fullname.c_str());
    
    if (!doc || !doc->children || !doc->children->name)
