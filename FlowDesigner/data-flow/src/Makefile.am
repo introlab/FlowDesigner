@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.133 2005/11/07 18:00:00 maestro Exp $
+# $Id: Makefile.am,v 1.134 2005/11/08 19:07:39 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -158,16 +158,15 @@ install-data-local:
 libflow_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(GNOME_XML_LIB)
 
 
-bin_PROGRAMS = batchflow docflow codeflow texflow
+bin_PROGRAMS = batchflow docflow codeflow texflow cygwinTest
 
-batchflow_SOURCES = \
-	batchflow.cc
+batchflow_SOURCES = batchflow.cc
 
-texflow_SOURCES = \
-	texflow.cc
+texflow_SOURCES = texflow.cc
 
-docflow_SOURCES = \
-	flowdoc.cc
+docflow_SOURCES = flowdoc.cc
+
+cygwinTest_SOURCES = cygwinTest.cc
 
 codeflow_SOURCES = codeflow.cc
 
@@ -179,6 +178,8 @@ docflow_LDADD = $(GNOME_XML_LIB) libflow.la
 
 codeflow_LDADD = $(GNOME_XML_LIB) libflow.la 
 
+cygwinTest_LDADD = $(GNOME_XML_LIB) libflow.la 
+
 batchflow_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS)
 
 texflow_LDFLAGS = $(CYGWIN_LDFLAGS)
@@ -186,5 +187,7 @@ texflow_LDFLAGS = $(CYGWIN_LDFLAGS)
 docflow_LDFLAGS = $(CYGWIN_LDFLAGS)
 
 codeflow_LDFLAGS = $(CYGWIN_LDFLAGS)
+
+cygwinTest_LDFLAGS = $(CYGWIN_LDFLAGS) $(FFTW_LDFLAGS)
 
 INCLUDES = -I$(top_srcdir)/data-flow/include $(GNOME_XML_INCLUDE) 
