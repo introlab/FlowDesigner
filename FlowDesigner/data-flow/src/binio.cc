@@ -12,7 +12,7 @@ namespace FD {
 void BinIO::_read(istream &in, void* data, size_t typeSize, size_t length)
 {
 #ifdef WORDS_BIGENDIAN
-   in.read(data, typeSize*length);
+  in.read((char*)data, typeSize*length);
 #else
    char *orig = (char *)(data);
    //char copy[length*typeSize];
@@ -27,7 +27,7 @@ void BinIO::_read(istream &in, void* data, size_t typeSize, size_t length)
 void BinIO::_write(ostream &out, const void* data, size_t typeSize, size_t length)
 {
 #ifdef WORDS_BIGENDIAN
-   out.write(data, typeSize*length);
+  out.write((char*)data, typeSize*length);
 #else
    char *orig = (char *)(data);
    //char copy[length*typeSize];

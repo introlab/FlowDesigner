@@ -199,7 +199,7 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
   switch (m_type) {
   case BROADCAST_TYPE:
     #ifndef __CYGWIN__
-    packet_len = recvfrom(m_read_socket, (char*)packet, size, 0, (sockaddr*) &m_read_addr, &addr_len);
+    packet_len = recvfrom(m_read_socket, (char*)packet, (size_t)size, 0, (sockaddr*) &m_read_addr, &addr_len);
     #else
     #warning CYGWIN not yet supported for broadcast network_socket
     #endif
