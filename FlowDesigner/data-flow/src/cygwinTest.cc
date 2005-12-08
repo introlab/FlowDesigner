@@ -11,7 +11,10 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-  cerr<<"Cywin test starting ... "<<endl;
+  cerr<<"Cygwin DoubleDispatch test starting  ... "<<endl;
+  cerr<<"addVtable.getSize() = "<<DoubleDispatch::getTable("addVtable").getSize()<<endl;
+  cerr<<"subVtable.getSize() = "<<DoubleDispatch::getTable("subVtable").getSize()<<endl;
+
 
   try {
 

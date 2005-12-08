@@ -8,73 +8,72 @@
 
 namespace FD {
 
-DEFINE_DOUBLE_VTABLE(addVtable);
-
+//DEFINE_DOUBLE_VTABLE(addVtable);
 inline ObjectRef operator+(ObjectRef x, ObjectRef y)
 {
-   return addVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("addVtable")).call(x,y);
 }
 
-DEFINE_DOUBLE_VTABLE(subVtable);
+//DEFINE_DOUBLE_VTABLE(subVtable);
 
 inline ObjectRef operator-(ObjectRef x, ObjectRef y)
 {
-   return subVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("subVtable")).call(x,y);
 }
 
-DEFINE_DOUBLE_VTABLE(mulVtable);
+//DEFINE_DOUBLE_VTABLE(mulVtable);
 
 inline ObjectRef operator*(ObjectRef x, ObjectRef y)
 {
-   return mulVtable::perform(x,y);
+ return DoubleDispatch::getTable(std::string("mulVtable")).call(x,y);
 }
 
-DEFINE_DOUBLE_VTABLE(divVtable);
+//DEFINE_DOUBLE_VTABLE(divVtable);
 
 inline ObjectRef operator/(ObjectRef x, ObjectRef y)
 {
-   return divVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("divVtable")).call(x,y);
 }
 
-DEFINE_DOUBLE_VTABLE(smallerVtable);
+//DEFINE_DOUBLE_VTABLE(smallerVtable);
 
 inline ObjectRef operator<(ObjectRef x, ObjectRef y)
 {
-  return smallerVtable::perform(x,y);
+ return DoubleDispatch::getTable(std::string("smallerVtable")).call(x,y);
 }
 
 inline ObjectRef operator>(ObjectRef x, ObjectRef y)
 {
-  return smallerVtable::perform(y,x);
+  return DoubleDispatch::getTable(std::string("smallerVtable")).call(x,y);
 }
 
 
-DEFINE_DOUBLE_VTABLE(equalVtable);
+//DEFINE_DOUBLE_VTABLE(equalVtable);
 
 inline ObjectRef operator==(ObjectRef x, ObjectRef y)
 {
-   return equalVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("equalVtable")).call(x,y);
 }
 
 
-DEFINE_DOUBLE_VTABLE(maxVtable);
+//DEFINE_DOUBLE_VTABLE(maxVtable);
 inline ObjectRef max(ObjectRef x, ObjectRef y)
 {
-   return maxVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("maxVtable")).call(x,y);
 }
 
 
-DEFINE_DOUBLE_VTABLE(minVtable);
+//DEFINE_DOUBLE_VTABLE(minVtable);
 inline ObjectRef min(ObjectRef x, ObjectRef y)
 {
-   return minVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("minVtable")).call(x,y);
 }
 
 
-DEFINE_DOUBLE_VTABLE(concatVtable);
+//DEFINE_DOUBLE_VTABLE(concatVtable);
 inline ObjectRef concat(ObjectRef x, ObjectRef y)
 {
-   return concatVtable::perform(x,y);
+  return DoubleDispatch::getTable(std::string("concatVtable")).call(x,y);
 }
 
 #define REGISTER_ALL_SCALAR_VTABLE(table, function)  \

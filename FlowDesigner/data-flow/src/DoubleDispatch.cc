@@ -16,20 +16,32 @@ DoubleDispatchException::DoubleDispatchException(DoubleDispatch *_table, string 
 
 void DoubleDispatchException::print(ostream &out) 
 {
-   out << "DoubleDispatch Vtable error: no match for " << table->getName() << "(" << type1 << ", " << type2 << ")" << endl;
+  out << "DoubleDispatch Vtable error: no match for " << table->getName()<<" (" << type1 << ", " << type2 << ")" << endl;
 }
 
-
-/*
-SingleDispatchException::SingleDispatchException(SingleDispatch *_table, string _type1)
-   : table(_table)
-   , type1(_type1) {
-
+std::map<std::string,DoubleDispatch> & DoubleDispatch::getAllTables() {
+  static map<std::string,DoubleDispatch> allTables;
+  return allTables;
 }
 
-void SingleDispatchException::print(ostream &out) {
-   out << "SingleDisptach Vtable error: no match for " << table->getName() << "(" << type1 << ")" << endl;
+DoubleDispatch& DoubleDispatch::getTable(const std::string &tableName) {
+  //static map<std::string,DoubleDispatch> allTables;   
+  return DoubleDispatch::getAllTables()[tableName];
 }
-*/
+
+//indirect way to get the name
+std::string DoubleDispatch::getName()
+{
+  
+  for (map<std::string,DoubleDispatch>::iterator iter = DoubleDispatch::getAllTables().begin();
+       iter != DoubleDispatch::getAllTables().end(); iter++) 
+  {
+    if (&(iter->second) == this) {
+      return iter->first;
+    }
+  }
+  
+  return string("unknown");
+}
 
 }//namespace FD

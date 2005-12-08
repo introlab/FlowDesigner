@@ -6,12 +6,9 @@
 #include "typemap.h"
 #include "ObjectRef.h"
 #include "BaseException.h"
-
-//#ifdef NO_HASH_MAP
 #include <map>
-//#else
-//#include <hash_map>
-//#endif
+#include <string>
+
 
 namespace FD {
 
@@ -27,35 +24,35 @@ class DoubleDispatchException : public BaseException {
    
 };
 
-//template<class T, class U>
+
 class DoubleDispatch {
   public:
    typedef ObjectRef (*funct_ptr) (ObjectRef x, ObjectRef y);
 
-  protected:
-   std::string name;
-//#ifdef NO_HASH_MAP
-   //typedef map<const type_info *, funct_ptr> vtable1Type;
-   //typedef map<const type_info *, vtable1Type > vtable2Type;
+   static DoubleDispatch& getTable(const std::string &tableName);
+   static std::map<std::string,DoubleDispatch>& getAllTables();
 
+  protected:
+
+   //std::string name;
    typedef TypeMap<funct_ptr> vtable1Type;
    typedef TypeMap<vtable1Type> vtable2Type;
-//#else
-//   typedef hash_map<const type_info *, funct_ptr> vtable1Type;
-//   typedef hash_map<const type_info *, vtable1Type > vtable2Type;
-//#endif
    vtable2Type vtable;
 
   public:
-   DoubleDispatch(std::string _name) : name(_name) {}
+   
+   std::string getName();
 
-   const std::string &getName() {return name;}
+   DoubleDispatch(){}
 
-   void registerFunct(funct_ptr ptr, const std::type_info *x, const std::type_info *y)
+   int getSize() {return vtable.size();}
+
+   int registerFunct(funct_ptr ptr, const std::type_info *x, const std::type_info *y)
    {
-      vtable[x][y] = ptr;
+     vtable[x][y] = ptr;
+     return vtable.size();
    }
-
+   
    ObjectRef call(ObjectRef x, ObjectRef y)
    {
       const std::type_info *t1 = &typeid(*x);
@@ -76,29 +73,15 @@ class DoubleDispatch {
    }
 };
 
-
-#define DEFINE_DOUBLE_VTABLE(klass) class klass {                                   \
-  public:                                                                           \
-   static DoubleDispatch &vtable() {static DoubleDispatch table(# klass); return table;}     \
-   static ObjectRef perform(ObjectRef x, ObjectRef y)                               \
-   {                                                                                \
-      return vtable().call(x,y);                                                    \
-   }                                                                                \
-   static int reg(DoubleDispatch::funct_ptr ptr, const std::type_info *x, const std::type_info *y) \
-   {                                                                                \
-      vtable().registerFunct(ptr,x,y);                                              \
-      return 0;                                                                     \
-   }                                                                                \
-};
-
-#define REGISTER_DOUBLE_VTABLE(klass, func, type1, type2) \
-        int dummy_vtable_init_for ## klass ## _ ## func =\
-        klass::reg(func, &typeid(type1), &typeid(type2));
+#define REGISTER_DOUBLE_VTABLE(name, func, type1, type2) \
+  int dummy_vtable_init_for ## name ## _ ## func  = \
+    DoubleDispatch::getTable(#name).registerFunct(func, &typeid(type1), &typeid(type2));			
 
 
-#define REGISTER_DOUBLE_VTABLE_TEMPLATE(klass, func, type1, type2, type3, id) \
-        int dummy_vtable_init_for ## klass ## func ## _ ## id =\
-	  klass::reg(func<type1,type2,type3>, &typeid(type1), &typeid(type2));
+
+#define REGISTER_DOUBLE_VTABLE_TEMPLATE(name, func, type1, type2, type3, id) \
+  int dummy_vtable_init_for ## name ## func ## _ ## id =  \
+    DoubleDispatch::getTable(#name).registerFunct(func<type1,type2,type3>, &typeid(type1), &typeid(type2));
 
 }//namespace FD
 #endif
