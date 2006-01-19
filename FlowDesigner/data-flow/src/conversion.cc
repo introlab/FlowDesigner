@@ -90,6 +90,20 @@ ObjectRef MatrixMatrixConversion (ObjectRef in) {
 }
 
 
+template <class T, class U>
+ObjectRef VectorMatrixConversion (ObjectRef in) {
+  RCPtr<T> FromVector = in;
+  RCPtr<U> ToMatrix( new U(1,FromVector->size()));
+  for (int i = 0; i < FromVector->size(); i++) {
+    (*ToMatrix)(0,i) = static_cast<typename U::basicType>((*FromVector)[i]);
+  }
+  return ToMatrix;
+}
+
+
+
+
+
 //(DL) 17/02/2004
 //Commented conversions that make no sense to be implemented (?)
 
@@ -220,6 +234,32 @@ REGISTER_CONVERSION_TEMPLATE(Matrix<double>, Matrix<complex<double> >, MatrixMat
 REGISTER_CONVERSION_TEMPLATE(Matrix<complex<float> >, Matrix<complex<float> >, MatrixMatrixConversion);
 REGISTER_CONVERSION_TEMPLATE(Matrix<complex<float> >, Matrix<complex<double> >, MatrixMatrixConversion);
 REGISTER_CONVERSION_TEMPLATE(Matrix<complex<double> >, Matrix<complex<double> >, MatrixMatrixConversion);
+
+
+//Vector to Matrix conversion
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Matrix<int>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Matrix<float>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Matrix<double>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Matrix<complex<float> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<int>, Matrix<complex<double> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Matrix<int>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Matrix<float>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Matrix<double>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Matrix<complex<float> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<float>, Matrix<complex<double> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Matrix<int>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Matrix<float>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Matrix<double>, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Matrix<complex<float> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<double>, Matrix<complex<double> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<complex<float> >, Matrix<complex<float> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<complex<float> >, Matrix<complex<double> >, VectorMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Vector<complex<double> >, Matrix<complex<double> >, VectorMatrixConversion);
+
+
+
+
+
 
 //NilObject to Matrix<T> returns nilObject...
 REGISTER_CONVERSION(NilObject, Matrix<int>, ReturnNilObject);
