@@ -101,6 +101,13 @@ ObjectRef VectorMatrixConversion (ObjectRef in) {
 }
 
 
+template <class T, class U>
+ObjectRef CTypeMatrixConversion (ObjectRef in) {
+  RCPtr<T> FromCType = in;
+  RCPtr<U> ToMatrix(new U(1,1));
+  (*ToMatrix)(0,0) = static_cast<typename U::basicType>(FromCType->val());
+  return ToMatrix;
+}
 
 
 
@@ -181,12 +188,21 @@ REGISTER_CONVERSION_TEMPLATE(String, String, CTypeStringConversion);
 REGISTER_CONVERSION(NilObject, String, ReturnNilObject);
 
 //CType to Vector conversion
-//REGISTER_CONVERSION_TEMPLATE(Bool, Vector<bool>, CTypeStringConversion);
+//REGISTER_CONVERSION_TEMPLATE(Bool, Vector<bool>, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Int, Vector<int>, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Float, Vector<float>, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Double, Vector<double>, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<float>, Vector<complex<float> >, CTypeVectorConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<double>, Vector<complex<double> >, CTypeVectorConversion);
+
+//CType to Matrix conversion
+//REGISTER_CONVERSION_TEMPLATE(Bool, Matrix<bool>, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Int, Matrix<int>, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Matrix<float>, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Matrix<double>, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<float>, Matrix<complex<float> >, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Complex<double>, Matrix<complex<double> >, CTypeMatrixConversion);
+
 
 //Vector to Vector conversion
 REGISTER_CONVERSION_TEMPLATE(Vector<int>, Vector<int>, VectorVectorConversion);
