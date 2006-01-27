@@ -1,0 +1,20 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document category="Octave">
+  <Network type="subnet" name="MAIN">
+    <Node name="node_OctaveFullScriptPath_1" type="OctaveFullScriptPath" x="10.000000" y="98.000000">
+      <Parameter name="SCRIPT_NAME" type="string" value="gnuplot.oct" description="The name of the script (installed) to be converted with its full path. "/>
+    </Node>
+    <Node name="node_OctaveParser_1" type="OctaveParser" x="254.000000" y="106.000000">
+      <Parameter name="VERBOSE" type="bool" value="true" description="Put Octave in verbose mode"/>
+    </Node>
+    <Node name="node_MakeComposite_1" type="MakeComposite" x="19.000000" y="186.000000"/>
+    <Node name="node_GetComposite_1" type="GetComposite" x="358.000000" y="106.000000"/>
+    <Link from="node_OctaveFullScriptPath_1" output="SCRIPT_PATH" to="node_OctaveParser_1" input="FILE_NAME"/>
+    <Link from="node_MakeComposite_1" output="OUTPUT" to="node_OctaveParser_1" input="VARIABLES_IN"/>
+    <Link from="node_OctaveParser_1" output="VARIABLES_OUT" to="node_GetComposite_1" input="INPUT"/>
+    <NetInput name="FD_OBJECT" node="node_MakeComposite_1" terminal="FD_OBJECT" object_type="any" description="No description available"/>
+    <NetOutput name="FD_OBJECT" node="node_GetComposite_1" terminal="FD_OBJECT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.9.1"/>
+  </Network>
+</Document>

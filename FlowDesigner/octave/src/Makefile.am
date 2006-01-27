@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.6 2005/11/08 19:07:40 maestro Exp $
+# $Id: Makefile.am,v 1.7 2006/01/18 16:50:54 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -13,7 +13,8 @@ override bindir=${prefix}/lib/flowdesigner/toolbox/Octave
 lib_LTLIBRARIES = libOctave.la
 
 # Sources for compilation in the library
-libOctave_la_SOURCES = OctaveParser.cc
+libOctave_la_SOURCES = OctaveParser.cc \
+	OctaveFullScriptPath.cc
 
 install-data-local:
 	echo "octave lib : -L $(OCTAVE_LIB)"

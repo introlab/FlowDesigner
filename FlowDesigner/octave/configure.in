@@ -31,6 +31,8 @@ AC_SUBST(LT_AGE)
 VERSION=$FLOWDESIGNER_VERSION
 PACKAGE=Octave
 
+AC_DEFINE_UNQUOTED(OCTAVE_SCRIPTS_PATH,"${prefix}/lib/flowdesigner/toolbox/Octave/scripts")
+
 
 AC_PATH_PROG(OCTAVE_CONFIG,octave-config,no,$PATH)
 if test "OCTAVE_CONFIG" = no; then
@@ -39,6 +41,7 @@ fi
 
 OCTAVE_LIB=`$OCTAVE_CONFIG -p OCTLIBDIR`
 OCTAVE_INCLUDE=`$OCTAVE_CONFIG -p OCTINCLUDEDIR`
+OCTAVE_VERSION=`$OCTAVE_CONFIG -p VERSION`
 XML2_INCLUDE=`xml2-config --cflags`
 XML2_LIB=`xml2-config --libs`
 
@@ -70,12 +73,14 @@ AC_FLOWDESIGNER_CHECKS
 
 AC_SUBST(OCTAVE_LIB)
 AC_SUBST(OCTAVE_INCLUDE)
+AC_SUBST(OCTAVE_VERSION)
 AC_SUBST(XML2_INCLUDE)
 AC_SUBST(XML2_LIB)
 
 AC_OUTPUT([Makefile \
 	include/Makefile \
 	src/Makefile \
-	n-files/Makefile
+	n-files/Makefile \
+	scripts/Makefile
 	])
 

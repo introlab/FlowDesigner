@@ -3,10 +3,16 @@
 <Document>
   <Network type="subnet" name="MAIN">
     <Node name="node_OctaveParser_1" type="OctaveParser" x="-203.000000" y="90.000000"/>
-    <Node name="node_Constant_1" type="Constant" x="-363.000000" y="90.000000">
+    <Node name="node_Constant_1" type="Constant" x="-384.000000" y="60.000000">
       <Parameter name="VALUE" type="string" value="test.oct" description="The value"/>
     </Node>
+    <Node name="node_MakeComposite_1" type="MakeComposite" x="-436.000000" y="125.000000"/>
+    <Node name="node_Constant_2" type="Constant" x="-641.000000" y="122.000000">
+      <Parameter name="VALUE" type="object" value="&lt;Matrix&lt;complex&lt;double&gt;&gt; &lt;rows 2&gt; &lt;cols 3&gt; &lt;data 1 2 3 1 2 3&gt; &gt;" description="The value"/>
+    </Node>
     <Link from="node_Constant_1" output="VALUE" to="node_OctaveParser_1" input="FILE_NAME"/>
-    <NetOutput name="OUTPUT" node="node_OctaveParser_1" terminal="OUTPUT" object_type="Vector&lt;ObjectRef&gt;" description="Result of the octave code execution"/>
+    <Link from="node_MakeComposite_1" output="OUTPUT" to="node_OctaveParser_1" input="VARIABLES_IN"/>
+    <Link from="node_Constant_2" output="VALUE" to="node_MakeComposite_1" input="ALLO"/>
+    <NetOutput name="VARIABLES_OUT" node="node_OctaveParser_1" terminal="VARIABLES_OUT" object_type="Vector&lt;ObjectRef&gt;" description="Result of the octave code execution"/>
   </Network>
 </Document>
