@@ -20,12 +20,45 @@ using namespace std;
 
 namespace FD {
 
-/*static gboolean net_canvas_event   (GtkWidget       *widget,
-                                     GdkEventButton  *event,
-                                     GUINetwork      *net)
+
+
+void canvas_drag_data_received  (GtkWidget *widget,
+			      GdkDragContext     *context,
+			      gint                x,
+			      gint                y,
+			      GtkSelectionData   *data,
+			      guint               info,
+			      guint               time,
+			      GUINetwork          *net)
 {
-   return net->buttonEvent(event);
-   }*/
+
+  //cerr<<"Got drag_data for widget "<<widget<<endl;
+  //cerr<<"Got drag_data for GUINetwork "<<net<<endl;
+  //g_print("Canvas Got: %s\n",data->data);
+
+  if (net) {
+
+    string nodeType((const char*)data->data);
+
+    int offset_x;
+    int offset_y;
+
+    gnome_canvas_get_scroll_offsets(net->canvas,&offset_x,&offset_y);
+
+    double world_x;
+    double world_y;
+
+    //gnome_canvas_w2c(net->canvas,world_x,world_y,&cx,&cy);
+    
+    gnome_canvas_c2w (net->canvas,x+offset_x,y+offset_y,&world_x,&world_y);
+    net->addNode(nodeType,world_x,world_y);
+
+  }
+  
+}
+
+
+
 
 static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, GUINetwork      *net)
 {
@@ -148,6 +181,28 @@ void GUINetwork::create()
    gtk_widget_show (canvas1);
    gtk_container_add (GTK_CONTAINER (scrolledwindow1), canvas1);
    gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas1), -400, -400, 400, 400);
+
+
+
+   /* DRAG & DROP TEST */
+   //DL FEB 3 2006
+   static GtkTargetEntry target_table[] = {
+     { "text/plain", 0, 0 }
+   };
+    
+   
+   gtk_drag_dest_set (canvas1,
+		      GTK_DEST_DEFAULT_ALL,
+		      target_table, 1,
+		      GDK_ACTION_COPY);
+
+
+   gtk_signal_connect (GTK_OBJECT (canvas1), "drag_data_received",
+		       GTK_SIGNAL_FUNC (canvas_drag_data_received),
+		       this);
+
+   /* DRAG & DROP TEST END */
+
 
    
    //add this network to the document

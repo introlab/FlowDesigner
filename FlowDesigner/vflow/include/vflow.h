@@ -14,6 +14,7 @@
 #include "UIDocument.h"
 #include "GUIDocument.h"
 #include "GUINetwork.h"
+#include "GUITreeView.h"
 #include "BaseException.h"
 #include "path.h"
 #include <signal.h>
@@ -95,6 +96,7 @@ class vflowGUI {
   GtkWidget *button5;
   GtkWidget *button6;
  
+  GUITreeView *m_treeView;
 
   vflowGUI();
 

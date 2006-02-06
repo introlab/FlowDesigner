@@ -38,7 +38,8 @@ flowdesigner_SOURCES = vflow.cc \
 	GUINodeTooltip.cc \
 	vflow_pref.cc \
 	misc_gui.cc \
-	GUINote.cc
+	GUINote.cc \
+	GUITreeView.cc
 
 gflow_SOURCES = gflow.cc \
 	GRunContext.cc \

@@ -14,6 +14,7 @@
 #include "GUILink.h"
 #include "GUINode.h"
 #include "GUINodeParameters.h"
+#include "GUITreeView.h"
 
 using namespace std;
 using namespace FD;
@@ -962,7 +963,6 @@ gint network_import_fsel_destroy(GtkWidget *button, GtkWidget *sel) {
   return TRUE; 
 }
 
-
 /**********************************************************************************************************
 
 **********************************************************************************************************/
@@ -1360,13 +1360,14 @@ void vflowGUI::create_mdi ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, (GdkModifierType) 0, NULL
       },
+      GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_ITEM, N_("Import Network"),
 	NULL,
 	(gpointer) import_network_event, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, (GdkModifierType) 0, NULL
-      },      
+      },
       GNOMEUIINFO_END
     };
   
@@ -1414,6 +1415,7 @@ void vflowGUI::create_mdi ()
   
   GtkWidget *app1;
   GtkWidget *bonobodock1;
+  GtkWidget *bobobodockTreeView;
   GtkWidget *toolbar1;
   GtkWidget *button1;
   GtkWidget *button2;
@@ -1447,6 +1449,24 @@ void vflowGUI::create_mdi ()
   gnome_app_add_toolbar (GNOME_APP (app1), GTK_TOOLBAR (toolbar1), "toolbar1",
                                 BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
                                 BONOBO_DOCK_TOP, 1, 0, 0);
+
+  
+  
+  m_treeView = new GUITreeView();
+
+  GtkWidget *viewWidget = m_treeView->createTreeView();
+
+  m_treeView->fillNodeTreeView();
+
+  //
+  //gnome_app_add_docked(GNOME_APP(app1),viewWidget, "viewWidget",
+  //		       BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  //		       BONOBO_DOCK_LEFT, 1, 0, 0);
+
+  
+
+
+
   gtk_container_set_border_width (GTK_CONTAINER (toolbar1), 1);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar1), GTK_TOOLBAR_BOTH);
 
@@ -1532,9 +1552,25 @@ void vflowGUI::create_mdi ()
                       GTK_SIGNAL_FUNC (exit_event),
                       this);
 
+
+
+
+
+  //split window into 2 parts
+  GtkWidget *hbox_split = gtk_hbox_new(FALSE,0);
+  gtk_widget_show(hbox_split);
+
+  //main notebook
   notebook1 = gtk_notebook_new ();
   gtk_widget_show (notebook1);
-  gnome_app_set_contents (GNOME_APP (app1), notebook1);
+
+  //pack widgets in hbox
+  gtk_box_pack_start (GTK_BOX (hbox_split), viewWidget, FALSE,FALSE,0);
+  gtk_box_pack_start (GTK_BOX (hbox_split), notebook1, TRUE , TRUE, 0);
+  
+  
+  gnome_app_set_contents (GNOME_APP (app1),hbox_split);
+
 
   //signals 
   gtk_signal_connect(GTK_OBJECT(notebook1),"change-current-page", GTK_SIGNAL_FUNC(vflow_change_current_page_event), this);

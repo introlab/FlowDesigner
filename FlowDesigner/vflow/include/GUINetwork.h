@@ -16,6 +16,15 @@ class GUINodeTooltip;
 class GUINetwork : public UINetwork {
 
   friend void network_description_changed_event (GtkTextBuffer *textbuffer, GUINetwork *network);
+  friend void canvas_drag_data_received  (GtkWidget *widget,
+					  GdkDragContext     *context,
+					  gint                x,
+					  gint                y,
+					  GtkSelectionData   *data,
+					  guint               info,
+					  guint               time,
+					  GUINetwork          *net);
+
 
 protected:
    GnomeCanvas *canvas;
