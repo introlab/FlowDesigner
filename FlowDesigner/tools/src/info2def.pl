@@ -30,9 +30,6 @@ sub hash_copy {
 }
 
 
-if ($ARGC == 0) {
-        exit;
-}
 
 
 
