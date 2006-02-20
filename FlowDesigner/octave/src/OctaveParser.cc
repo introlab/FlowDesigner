@@ -165,7 +165,7 @@ public:
       
       //top_level_sym_tab->print_info(cerr);
       string_vector variableNames = top_level_sym_tab->variable_name_list();
-      variableNames.list_in_columns(cerr);
+      //variableNames.list_in_columns(cerr);
 
       for (int i = 0; i <variableNames.length(); i++) {
        
