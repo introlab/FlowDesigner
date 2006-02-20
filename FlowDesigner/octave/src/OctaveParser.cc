@@ -13,6 +13,7 @@
 #include "octave/file-io.h"
 #include "octave/ops.h"
 #include "octave/error.h"
+#include "octave/oct-env.h"
 
 namespace FD {
 
@@ -84,6 +85,11 @@ public:
      // installed, and the call to install_builtins must come before the
      // options are processed because some command line options override
      // defaults by calling bind_builtin_variable.
+         
+     //add script path
+     string OctPath = octave_env::getenv("OCTAVE_PATH");
+     OctPath += string(":") + string(OCTAVE_SCRIPTS_PATH) + string("//");
+     octave_env::putenv("OCTAVE_PATH",OctPath);
      
      sysdep_init ();
      
@@ -104,7 +110,10 @@ public:
      install_ops ();
      
      install_builtins ();
-     
+
+     octave_env::chdir(OCTAVE_SCRIPTS_PATH);
+
+
    }
 
   void calculate(int output_id, int count, FD::Buffer &out) {
@@ -125,7 +134,7 @@ public:
 
     for (FD::CompositeType::map_type::iterator iter = cMap.begin();
 	 iter != cMap.end(); iter++) {
-
+	
       std::string mName = iter->first;
       FD::RCPtr<FD::Matrix<complex<double> > > mPtr = iter->second;
 
