@@ -29,6 +29,13 @@ sub hash_copy {
   return $new_hash;
 }
 
+
+if ($ARGC == 0) {
+        exit;
+}
+
+
+
 print "<?xml version=\"1.0\"?>\n";
 print "<Definitions>\n";
 
@@ -91,6 +98,8 @@ $curr_filename=$ARGV[0];
 $next_filename=$ARGV[1];
 $base_filename = $curr_filename;
 $base_filename =~ s/.*\///;
+
+
 # read through the file
 while (<>)
   {
