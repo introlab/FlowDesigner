@@ -6,6 +6,18 @@
 #include "Object.h"
 #include <sstream>
 
+
+/** \mainpage FlowDesignerCore FlowDesigner User Guide
+
+
+    Testing.
+    \ref FlowDesignerCore ["FlowDesigner Core"]
+
+*/
+
+
+
+
 //@implements core
 
 using namespace std;

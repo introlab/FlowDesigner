@@ -202,6 +202,10 @@ REGISTER_CONVERSION_TEMPLATE(Float, Matrix<float>, CTypeMatrixConversion);
 REGISTER_CONVERSION_TEMPLATE(Double, Matrix<double>, CTypeMatrixConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<float>, Matrix<complex<float> >, CTypeMatrixConversion);
 REGISTER_CONVERSION_TEMPLATE(Complex<double>, Matrix<complex<double> >, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Matrix<complex<float> >, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Float, Matrix<complex<double> >, CTypeMatrixConversion);
+REGISTER_CONVERSION_TEMPLATE(Double, Matrix<complex<double> >, CTypeMatrixConversion);
+
 
 
 //Vector to Vector conversion
