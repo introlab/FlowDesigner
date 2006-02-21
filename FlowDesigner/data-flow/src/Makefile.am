@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.134 2005/11/08 19:07:39 maestro Exp $
+# $Id: Makefile.am,v 1.135 2005/12/07 19:22:33 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -103,6 +103,7 @@ libflow_la_SOURCES = Node.cc \
 	DCVector.cc \
 	Trace.cc \
 	Index.cc \
+	Index2D.cc \
 	Concat.cc \
 	object_param.cc \
 	binio.cc \
