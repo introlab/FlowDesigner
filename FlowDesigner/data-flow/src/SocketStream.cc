@@ -194,7 +194,7 @@ size_t network_socket::recv_packet(unsigned char *packet, size_t size) {
 
   size_t packet_len = 0;
   unsigned int flags = 0;
-  size_t addr_len = sizeof(m_read_addr);
+  socklen_t addr_len = sizeof(m_read_addr);
 
   switch (m_type) {
   case BROADCAST_TYPE:
