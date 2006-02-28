@@ -42,6 +42,7 @@ hpux*) OS=HPUX ;;
 linux*) OS=LINUX ;;
 freebsd*) OS=FREEBSD ;;
 solaris*) OS=SOLARIS ;;
+darwin*) OS=DARWIN ;;
 esac
 AC_DEFINE_UNQUOTED(${OS})
 
