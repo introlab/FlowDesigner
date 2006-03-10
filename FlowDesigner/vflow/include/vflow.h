@@ -79,6 +79,8 @@ class vflowGUI {
 
   void clear(GUIDocument *doc);
 
+  void update_prefs();
+
   ~vflowGUI();
 
   GtkWidget* get_mdi() {return mdi;}

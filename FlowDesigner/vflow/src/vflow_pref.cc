@@ -12,6 +12,7 @@
 #include <gnome.h>
 #include "vflow_pref.h"
 #include "flow_pref.h"
+#include "vflow.h"
 
 using namespace std;
 
@@ -126,6 +127,17 @@ VFlowPrefDialog::VFlowPrefDialog()
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showtooltip), FlowPref::getBool("VFLOW", "ShowTooltips"));
   gtk_signal_connect (GTK_OBJECT (showtooltip), "toggled",
 		      GTK_SIGNAL_FUNC(pref_changed), propertybox1);
+  
+  showtreeview = gtk_check_button_new_with_label(_("Show Node Tree View"));
+  gtk_widget_ref(showtreeview);
+  gtk_object_set_data_full(GTK_OBJECT(propertybox1), "showtreeview", showtreeview,
+			   (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show(showtreeview);
+  gtk_box_pack_start(GTK_BOX(vbox4),showtreeview,FALSE,FALSE,0);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(showtreeview), FlowPref::getBool("VFLOW","ShowTreeView"));
+  gtk_signal_connect(GTK_OBJECT(showtreeview), "toggled",
+		     GTK_SIGNAL_FUNC(pref_changed), propertybox1);
+
 
   frame2 = gtk_frame_new (_("Run"));
   gtk_widget_ref (frame2);
@@ -387,6 +399,10 @@ void VFlowPrefDialog::apply()
    FlowPref::setBool("VFLOW", "PrintOutput", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(printout)));
    FlowPref::setBool("VFLOW", "ShowAllInOut", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showallio)));
    FlowPref::setBool("VFLOW", "ShowTooltips", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showtooltip)));
+   FlowPref::setBool("VFLOW", "ShowTreeView", gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(showtreeview)));
+
+
+  
 
    guint8 r, g, b, a;
    guint32 rr, gg, bb, aa;
@@ -406,6 +422,9 @@ void VFlowPrefDialog::apply()
    col = (rr<<24) + (gg<<16) + (bb<<8) + aa;
    FlowPref::setColor("VFLOW", "ErrorColor", col);
    FlowPref::Save();
+
+
+   vflowGUI::instance()->update_prefs();
 }
 
 

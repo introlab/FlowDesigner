@@ -15,6 +15,7 @@ class VFlowPrefDialog {
    GtkWidget *runprocess;
    GtkWidget *showallio;
    GtkWidget *showtooltip;
+   GtkWidget *showtreeview;
    GtkWidget *colorpicker1;
    GtkWidget *colorpicker2;
    GtkWidget *colorpicker3;

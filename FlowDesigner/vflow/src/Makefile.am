@@ -42,8 +42,7 @@ flowdesigner_SOURCES = vflow.cc \
 	GUITreeView.cc
 
 gflow_SOURCES = gflow.cc \
-	GRunContext.cc \
-	vflow_pref.cc 
+	GRunContext.cc  
 
 libbaseProbe_la_SOURCES = Probe.cc \
 	TextProbe.cc \

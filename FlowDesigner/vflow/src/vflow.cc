@@ -1273,6 +1273,23 @@ void on_gchld(int sig)
    //cerr << "Child died\n";
 }
 
+
+void vflowGUI::update_prefs() 
+{
+
+  if (m_treeView)
+  {
+    if (FlowPref::getBool("VFLOW", "ShowTreeView"))
+    {
+      m_treeView->show();
+    }
+    else
+    {
+      m_treeView->hide();
+    }
+  }
+}
+
 /**********************************************************************************************************
 
 **********************************************************************************************************/
@@ -1457,7 +1474,7 @@ void vflowGUI::create_mdi ()
   GtkWidget *viewWidget = m_treeView->createTreeView();
 
   m_treeView->fillNodeTreeView();
-
+  
   //
   //gnome_app_add_docked(GNOME_APP(app1),viewWidget, "viewWidget",
   //		       BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
@@ -1653,11 +1670,12 @@ GLADE_HOOKUP_OBJECT (app1, edit1_menu_uiinfo[5].widget, "properties1");
 //GLADE_HOOKUP_OBJECT (app1, label1, "label1");
   GLADE_HOOKUP_OBJECT (app1, appbar1, "appbar1");
 
-//return app1;
-//gtk_widget_show (app1);
-mdi=app1;
+  //return app1;
+  //gtk_widget_show (app1);
+  mdi=app1;
 
-set_run_mode(false);
+  set_run_mode(false);
+  update_prefs();
 }
 
 

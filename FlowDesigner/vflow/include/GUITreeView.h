@@ -20,6 +20,8 @@ namespace FD {
     GtkWidget* getTreeView(){return m_treeview;}
     GtkWidget* createTreeView();
     void fillNodeTreeView();
+    void show();
+    void hide();
 
   protected:
 

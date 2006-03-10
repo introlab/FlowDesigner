@@ -444,6 +444,22 @@ namespace FD {
 
   }
 
+  void GUITreeView::show()
+  {
+    if (m_window) 
+    {
+      gtk_widget_show(m_window);
+    }
+  }
+
+  void GUITreeView::hide()
+  {
+    if (m_window) 
+    {
+      gtk_widget_hide(m_window);
+    }
+  }
+
 
   void GUITreeView::displayInfo(const std::string &name) 
   {
@@ -757,6 +773,8 @@ namespace FD {
   {
     cerr<<"on_m_searchEntry_changed"<<endl;
   }
+
+
 
 
 
