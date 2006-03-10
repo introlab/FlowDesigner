@@ -22,6 +22,7 @@ FlowPref::FlowPref()
 {
    params["VFLOW"]["ShowAllInOut"] = "no";
    params["VFLOW"]["ShowTooltips"] = "yes";
+   params["VFLOW"]["ShowTreeView"] = "yes";
    params["VFLOW"]["PrintOutput"]  = "yes";
    params["VFLOW"]["RunProcess"]   = "no";
    params["VFLOW"]["RegularColor"] = "0x8cd0af80";
