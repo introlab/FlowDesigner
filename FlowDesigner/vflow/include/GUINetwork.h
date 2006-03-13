@@ -118,6 +118,9 @@ public:
      gnome_canvas_get_scroll_offsets (GNOME_CANVAS(canvas),&c1,&c2);
    }
    
+   
+   void auto_scroll(double x, double y);
+
    virtual void rename(std::string newName);
    
 

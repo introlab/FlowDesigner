@@ -285,7 +285,7 @@ gint GUILink::event(GdkEvent *event)
 
 
          gnome_canvas_item_set(item, "points", points, NULL);
-
+	 dynamic_cast<GUINetwork*>(net)->auto_scroll(item_x,item_y);
 	 
 	 gnome_canvas_points_unref(points);
 
@@ -458,9 +458,7 @@ void GUILink::move (bool isInput, double dx,double dy)
      gnome_canvas_item_set(item, "points", points, NULL);
      gnome_canvas_points_unref(points);
   }
-   
-  
-
+    
    
 }
 

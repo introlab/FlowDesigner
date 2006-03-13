@@ -58,12 +58,14 @@ void canvas_drag_data_received  (GtkWidget *widget,
 }
 
 
+void check_resize (GtkContainer *container, GUINetwork *net)
+{
+  cerr<<"check resize"<<endl;
+}
 
 
 static gint background_handler (GnomeCanvasItem *item, GdkEvent *event, GUINetwork      *net)
-{
-
-   
+{  
   return net->buttonEvent(event);
 
 }
@@ -200,6 +202,13 @@ void GUINetwork::create()
    gtk_signal_connect (GTK_OBJECT (canvas1), "drag_data_received",
 		       GTK_SIGNAL_FUNC (canvas_drag_data_received),
 		       this);
+
+
+   
+   gtk_signal_connect(GTK_OBJECT(canvas1), "check-resize",
+		      (GtkSignalFunc) check_resize,
+		      this);
+
 
    /* DRAG & DROP TEST END */
 
@@ -740,6 +749,71 @@ void GUINetwork::applyNetworkProperties() {
 
 UINote* GUINetwork::newNote(const std::string &text, double x, double y, bool visible) {
   return new GUINote(text,x,y,visible,this);
+}
+
+void GUINetwork::auto_scroll(double x, double y) {
+  //cerr<<"auto scroll x"<<x<<" y"<<y<<endl;
+
+
+  int offset_x;
+  int offset_y;
+
+  gnome_canvas_get_scroll_offsets(canvas,&offset_x,&offset_y);
+
+  double scroll_x1;
+  double scroll_y1;
+  double scroll_x2;
+  double scroll_y2;
+  
+  gnome_canvas_get_scroll_region(canvas,&scroll_x1,&scroll_y1,&scroll_x2,&scroll_y2);
+
+  GtkWidget*  hsbar = gtk_scrolled_window_get_hscrollbar (GTK_SCROLLED_WINDOW(scrolledwindow1));
+  GtkWidget*  vsbar = gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW(scrolledwindow1));
+ 
+  GtkAdjustment* h_adj = gtk_range_get_adjustment(GTK_RANGE(hsbar));  
+  double h_upper, h_lower, h_page_size;
+  g_object_get(G_OBJECT(h_adj),"lower",&h_lower,"upper",&h_upper,"page_size",&h_page_size,NULL);
+  //cerr<<"h_lower"<<h_lower<<" h_upper "<<h_upper<<"h_page_size "<<h_page_size<<endl;
+
+
+  GtkAdjustment* v_adj = gtk_range_get_adjustment(GTK_RANGE(vsbar));  
+  double v_upper, v_lower, v_page_size;
+  g_object_get(G_OBJECT(v_adj),"lower",&v_lower,"upper",&v_upper,"page_size",&v_page_size,NULL);
+  //cerr<<"v_lower"<<v_lower<<" v_upper "<<v_upper<<"v_page_size "<<v_page_size<<endl;
+
+  int supp_offset_x = 0;
+  int supp_offset_y = 0;
+
+  //RIGHT BOUNDARY
+  if (x > scroll_x1 + (double)(offset_x + h_page_size - 25))
+  {
+    //cerr<<"RIGHT BOUNDARY"<<endl;
+    supp_offset_x += 10;
+  }
+
+  //LEFT BOUNDARY
+  if ((scroll_x1 + offset_x + 25.0) > x) {
+    //cerr<<"LEFT BOUNDARY"<<endl;    
+    supp_offset_x -= 10;
+  }
+
+  //TOP BOUNDARY
+  if ((scroll_y1 + offset_y + 25.0) > y) {
+    //cerr<<"TOP BOUNDARY"<<endl;
+    supp_offset_y -= 10;
+  }
+
+  //BOTTOM BOUNDARY
+  if (y > scroll_y1 + (double) (offset_y + v_page_size - 25)) {
+    //cerr<<"BOTTOM BOUNDARY"<<endl;
+    supp_offset_y += 10;
+  }
+  
+  if (supp_offset_x != 0 || supp_offset_y != 0) {
+    gnome_canvas_scroll_to(canvas,offset_x + supp_offset_x, offset_y + supp_offset_y);
+  }
+
+
 }
 
 }//namespace FD

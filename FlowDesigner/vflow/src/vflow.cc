@@ -1455,6 +1455,9 @@ void vflowGUI::create_mdi ()
   gtk_signal_connect (GTK_OBJECT (app1), "delete-event",GTK_SIGNAL_FUNC (delete_app), this);
 
 
+  //default size
+  gtk_window_set_default_size (GTK_WINDOW(app1),1024,768);
+
 
   bonobodock1 = GNOME_APP (app1)->dock;
   gtk_widget_show (bonobodock1);
