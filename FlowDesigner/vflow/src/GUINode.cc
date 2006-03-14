@@ -406,6 +406,7 @@ gint GUINode::event(GdkEvent *event)
 	 
 
 	 net->setModified();
+	 dynamic_cast<GUINetwork*>(net)->auto_scroll(item_x,item_y);
       }
 
       return TRUE;
