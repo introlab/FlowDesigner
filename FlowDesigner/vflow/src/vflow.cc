@@ -68,6 +68,14 @@ vflowGUI::~vflowGUI() {
 
 }
 
+void vflowGUI::display_treeview_nodetype(const std::string &nodeType)
+{
+  if (m_treeView)
+  {
+    m_treeView->displayInfo(nodeType);
+  }
+}
+
 GUIDocument *vflowGUI::getCurrentDoc()
 {
    int curr = gtk_notebook_get_current_page (GTK_NOTEBOOK(notebook1));

@@ -71,6 +71,8 @@ class vflowGUI {
 
   void display_statusbar_text(const std::string &text);
 
+  void display_treeview_nodetype(const std::string &nodeType);
+
   void copy(GUIDocument *doc);
 
   void paste (GUIDocument *doc);

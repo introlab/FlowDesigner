@@ -362,9 +362,11 @@ gint GUINode::event(GdkEvent *event)
          return TRUE;
          break;
       case 2:
-	 dynamic_cast<GUINetwork *> (net)->popTooltip(this);
-	 //new GUINodeTooltip(this);
-         //return TRUE;
+	 //dynamic_cast<GUINetwork *> (net)->popTooltip(this);
+	 
+         vflowGUI::instance()->display_treeview_nodetype(getType());
+	 return TRUE;
+	
          break;
 
       case 3:
@@ -413,8 +415,8 @@ gint GUINode::event(GdkEvent *event)
 
       break;
       
-   case GDK_ENTER_NOTIFY:
-      dynamic_cast<GUINetwork *>(net)->popTooltip(NULL);
+   case GDK_ENTER_NOTIFY:     
+     dynamic_cast<GUINetwork *>(net)->popTooltip(this);
       break;
    case GDK_LEAVE_NOTIFY:
       dynamic_cast<GUINetwork *>(net)->popTooltip(NULL);

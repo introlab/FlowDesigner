@@ -7,6 +7,7 @@
 #include "GUINetwork.h"
 #include <map>
 #include "UIDocument.h"
+#include "vflow.h"
 
 using namespace std;
 
@@ -30,20 +31,21 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    ostringstream tooltext;
    vector<ParameterText *> &params = node->getParameters()->get_textParams();
    tooltext << "Name: " << node->getName() << endl;
-   tooltext << "Type: " << node->getType();
+   //tooltext << "Type: " << node->getType();
    //tooltext << "Parameters:";
    for (int i=0;i<params.size();i++)
    {
       if (params[i]->value != "")
-	tooltext << endl << params[i]->name << ": " << params[i]->value << " (" << params[i]->type << "); " << params[i]->description;
+	tooltext << endl << params[i]->name << ": (" << params[i]->type << ") " << params[i]->value;
       else
-	 tooltext << endl << params[i]->name << ": (" << params[i]->type << "); " << params[i]->description; 
+	 tooltext << endl << params[i]->name << ": (" << params[i]->type << ") (not set) "; 
    }
-   if (node->getComments() != "")
-   {
-      tooltext << endl;
-      tooltext << node->getComments();      
-   } 
+
+   //if (node->getComments() != "")
+   //{
+   //   tooltext << endl;
+   //   tooltext << node->getComments();      
+   //} 
 
    //look in the document repository (will also look in the global repository)
    NodeInfo *info = node->getNetwork()->getDocument()->getRepository().findNode(node->getType());
@@ -52,7 +54,7 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
    //Old way of doing things 
    //NodeInfo *info = UINodeRepository::Find(node->getType());   
    
-   if (info)
+   if (0 /* info */)
      {
        string &desc = info->description;
        DYN_VEC(char, desc.size()+1, sdesc);
@@ -79,6 +81,8 @@ GUINodeTooltip::GUINodeTooltip(GUINode *_node)
        //tooltext << endl << "\"" << iter->second->description << "\"";
      }
    
+   //vflowGUI::instance()->display_treeview_nodetype(node->getType());
+
 
    tooltipText = gnome_canvas_item_new(group,
 				gnome_canvas_text_get_type(),
