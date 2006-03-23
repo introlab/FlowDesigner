@@ -550,11 +550,14 @@ void GUINode::initialize_widgets() {
 				"font", "sans 10",
 				NULL);
 
+
+
   //getting the node bounds
   gnome_canvas_item_get_bounds(nodeText, &x1,&y1, &x2, &y2);      
   gnome_canvas_item_raise_to_top(nodeText);
 
 
+  
   vector<ItemInfo *> inputname = net->getDocument()->getNetInputs(type);
   vector<ItemInfo *> outputname = net->getDocument()->getNetOutputs(type);
   
@@ -608,8 +611,22 @@ void GUINode::initialize_widgets() {
 
   gnome_canvas_item_lower_to_bottom(nodeRect);
 
+  //adding node label (under)
+  nodeLabel = gnome_canvas_item_new(group,
+				    gnome_canvas_text_get_type(),
+				    "x", 0.0,
+				    "y", y2 + 10.0,
+				    "text",name.c_str(),
+				    "anchor", GTK_ANCHOR_CENTER,
+				    "fill_color", "black",
+				    "font", "sans 8",
+				    NULL);
 
- 
+  gnome_canvas_item_raise_to_top(nodeLabel);
+
+  
+  
+
 
   gtk_signal_connect(GTK_OBJECT(group), "event",
 		     (GtkSignalFunc) node_handler,
@@ -726,6 +743,13 @@ void GUINode::redraw() {
 			"x2",rx2,
 			"y2",ry2,
 			NULL);
+
+  //updating node label
+  gnome_canvas_item_set(nodeLabel,
+			"x",(rx1 + rx2) / 2.0,
+			"y",ry2 + 10.0,
+			NULL);
+			
 
 
 }

@@ -31,6 +31,7 @@ protected:
   
    GnomeCanvasItem *nodeRect;
    GnomeCanvasItem *nodeText;
+   GnomeCanvasItem *nodeLabel;
 
    void initialize_widgets();
 
