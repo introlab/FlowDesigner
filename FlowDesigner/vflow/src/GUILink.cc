@@ -4,6 +4,8 @@
 #include "GUILink.h"
 #include "GUITerminal.h"
 #include "GUINetwork.h"
+#include "vflow.h"
+#include <sstream>
 
 using namespace std;
 
@@ -114,7 +116,7 @@ gint GUILink::event(GdkEvent *event)
    GdkCursor *fleur;
    double item_x, item_y;
    GnomeCanvasPoints *points;
-
+   stringstream text;
 
 
   
@@ -253,6 +255,13 @@ gint GUILink::event(GdkEvent *event)
    case GDK_MOTION_NOTIFY:
      
      //cerr<<"motion notify event"<<endl;
+     //change status to display what the link is
+
+     if (from && to) {
+       text<<"GUILink : from : "<<from->getNode()->getName()<<":"<<from->getName() <<
+	 " to : "<<to->getNode()->getName()<<":"<<to->getName();
+       vflowGUI::instance()->display_statusbar_text(text.str());             
+     }
 
       if (!complete && (event->motion.state & GDK_BUTTON1_MASK)) 
       {
