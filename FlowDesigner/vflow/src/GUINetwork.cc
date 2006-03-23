@@ -816,4 +816,41 @@ void GUINetwork::auto_scroll(double x, double y) {
 
 }
 
+void GUINetwork::get_visible_bounds(double &x1, double &y1, double &x2, double &y2) {
+
+  int offset_x;
+  int offset_y;
+
+  gnome_canvas_get_scroll_offsets(canvas,&offset_x,&offset_y);
+
+  double scroll_x1;
+  double scroll_y1;
+  double scroll_x2;
+  double scroll_y2;
+  
+  gnome_canvas_get_scroll_region(canvas,&scroll_x1,&scroll_y1,&scroll_x2,&scroll_y2);
+
+  GtkWidget*  hsbar = gtk_scrolled_window_get_hscrollbar (GTK_SCROLLED_WINDOW(scrolledwindow1));
+  GtkWidget*  vsbar = gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW(scrolledwindow1));
+ 
+  GtkAdjustment* h_adj = gtk_range_get_adjustment(GTK_RANGE(hsbar));  
+  double h_upper, h_lower, h_page_size;
+  g_object_get(G_OBJECT(h_adj),"lower",&h_lower,"upper",&h_upper,"page_size",&h_page_size,NULL);
+  
+
+
+  GtkAdjustment* v_adj = gtk_range_get_adjustment(GTK_RANGE(vsbar));  
+  double v_upper, v_lower, v_page_size;
+  g_object_get(G_OBJECT(v_adj),"lower",&v_lower,"upper",&v_upper,"page_size",&v_page_size,NULL);
+  
+  x1 = scroll_x1 + offset_x;
+  x2 = scroll_x1 + offset_x + h_page_size;
+
+  y1 = scroll_y1 + offset_y;
+  y2 = scroll_y1 + offset_y + v_page_size;
+
+
+}
+
+
 }//namespace FD

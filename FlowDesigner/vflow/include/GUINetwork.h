@@ -118,6 +118,7 @@ public:
      gnome_canvas_get_scroll_offsets (GNOME_CANVAS(canvas),&c1,&c2);
    }
    
+   void get_visible_bounds(double &x1, double &y1, double &x2, double &y2); 
    
    void auto_scroll(double x, double y);
 

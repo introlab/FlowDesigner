@@ -14,12 +14,14 @@
 #include "GUINetwork.h"
 #include "UINodeRepository.h"
 #include "Node.h"
+#include "vflow.h"
 
 using namespace std;
 
 namespace FD {
 
   void treeview_onRowActivated (GtkTreeView *treeview, GtkTreePath  *path, GtkTreeViewColumn  *col, GUITreeView *gView);
+  gboolean treeview_onCursorChanged(GtkTreeView *treeview, GUITreeView *gView);
 
   void on_m_treeview_drag_begin               (GtkWidget       *widget,
 					       GdkDragContext  *drag_context,
@@ -192,7 +194,8 @@ namespace FD {
 
 
 
-
+    gtk_tree_view_set_enable_search (GTK_TREE_VIEW(m_treeview),TRUE);
+                                             
     //m_arrow = gtk_arrow_new (GTK_ARROW_LEFT, GTK_SHADOW_OUT);
     //gtk_widget_show (m_arrow);    
     //gtk_widget_set_size_request (m_arrow, 51, 51);
@@ -208,6 +211,7 @@ namespace FD {
 
     g_signal_connect(m_treeview, "row-activated", (GCallback) treeview_onRowActivated, this);
 
+    g_signal_connect(m_treeview, "cursor-changed", (GCallback) treeview_onCursorChanged,this);
 			
     g_signal_connect ((gpointer) m_treeview, "drag_begin",
 		      G_CALLBACK (on_m_treeview_drag_begin),
@@ -520,27 +524,31 @@ namespace FD {
 				       out1.str().size(),
 				       "normal",
 				       NULL);
-				       
 
-      //INPUTS      
-      gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
-      gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
-					       &end,
-					       (const gchar*) "INPUTS\n",
-					       7,
-					       "header",
-					       NULL);
+      //INPUTS
+      if (info->inputs.size() > 0)
+      {
+
+	gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
+	gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
+						 &end,
+						 (const gchar*) "INPUTS\n",
+						 7,
+						 "header",
+						 NULL);
 
 
-      stringstream out2;
+
+	stringstream out2;
+	
+	for (int i = 0; i < info->inputs.size(); i++) {
+	  out2<<"name : "<<info->inputs[i]->name<<endl;
+	  out2<<"type : "<<info->inputs[i]->type<<endl;
+	  out2<<"value : "<<info->inputs[i]->value<<endl;
+	  out2<<"description : "<<info->inputs[i]->description<<endl;
+	}
+	out2<<endl;
       
-      for (int i = 0; i < info->inputs.size(); i++) {
-	out2<<"name : "<<info->inputs[i]->name<<endl;
-	out2<<"type : "<<info->inputs[i]->type<<endl;
-	out2<<"value : "<<info->inputs[i]->value<<endl;
-	out2<<"description : "<<info->inputs[i]->description<<endl;
-      }
-      out2<<endl;
 
       gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
       gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
@@ -549,90 +557,136 @@ namespace FD {
 				       out2.str().size(),
 				       "normal",
 				       NULL);
-
-
+      }
 
       //OUTPUTS
-      gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
-      gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
-					       &end,
-					       (const gchar*) "OUTPUTS\n",
-					       8,
-					       "header",
-					       NULL);
+      if (info->outputs.size() > 0)
+      {
+	gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
+	gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
+						 &end,
+						 (const gchar*) "OUTPUTS\n",
+						 8,
+						 "header",
+						 NULL);
+	
+	stringstream out3;
+	for (int i = 0; i < info->outputs.size(); i++) {
+	  out3<<"name : "<<info->outputs[i]->name<<endl;
+	  out3<<"type : "<<info->outputs[i]->type<<endl;
+	  out3<<"value : "<<info->outputs[i]->value<<endl;
+	  out3<<"description : "<<info->outputs[i]->description<<endl;
+	}
+	out3<<endl;
+	
       
-      stringstream out3;
-      for (int i = 0; i < info->outputs.size(); i++) {
-	out3<<"name : "<<info->outputs[i]->name<<endl;
-	out3<<"type : "<<info->outputs[i]->type<<endl;
-	out3<<"value : "<<info->outputs[i]->value<<endl;
-	out3<<"description : "<<info->outputs[i]->description<<endl;
-      }
-      out3<<endl;
 
       gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
       gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
-				       &end,
-				       (const gchar*) out3.str().c_str(),
-				       out3.str().size(),
-				       "normal",
-				       NULL);
+					       &end,
+					       (const gchar*) out3.str().c_str(),
+					       out3.str().size(),
+					       "normal",
+					       NULL);
+
+      }
 
       //PARAMETERS
-      gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
-      gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
-					       &end,
-					       (const gchar*) "PARAMETERS\n",
-					       11,
-					       "header",
-					       NULL);
-      
-      stringstream out4;
-      for (int i = 0; i < info->params.size(); i++) {
-	out4<<"name : "<<info->params[i]->name<<endl;
-	out4<<"type : "<<info->params[i]->type<<endl;
-	out4<<"value : "<<info->params[i]->value<<endl;
-	out4<<"description : "<<info->params[i]->description<<endl;
+      if (info->params.size() > 0)
+      {
+	gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
+	gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
+						 &end,
+						 (const gchar*) "PARAMETERS\n",
+						 11,
+						 "header",
+						 NULL);
+	
+	stringstream out4;
+	for (int i = 0; i < info->params.size(); i++) {
+	  out4<<"name : "<<info->params[i]->name<<endl;
+	  out4<<"type : "<<info->params[i]->type<<endl;
+	  out4<<"value : "<<info->params[i]->value<<endl;
+	  out4<<"description : "<<info->params[i]->description<<endl;
+	}
+	out4<<endl;
+	gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
+	gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
+						 &end,
+						 (const gchar*) out4.str().c_str(),
+						 out4.str().size(),
+						 "normal",
+						 NULL);
       }
-      out4<<endl;
-      gtk_text_buffer_get_end_iter(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),&end);
-      gtk_text_buffer_insert_with_tags_by_name(gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
-				       &end,
-				       (const gchar*) out4.str().c_str(),
-				       out4.str().size(),
-				       "normal",
-				       NULL);
-            
     }
 
   }
 
 
 
+  
+  gboolean treeview_onCursorChanged(GtkTreeView *treeview, GUITreeView *gView)
+  {
+   
+    GtkTreePath *path;
+    GtkTreeViewColumn *focus_column;
+    GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+    GtkTreeIter iter;
+    GtkTreeIter children;
+
+    gtk_tree_view_get_cursor(GTK_TREE_VIEW(treeview),&path,&focus_column);
+
+    if (gtk_tree_model_get_iter(model, &iter, path))
+    {
+      //check if it's a leaf node (actual node type) only.
+      if (!gtk_tree_model_iter_children (GTK_TREE_MODEL(model),&children,&iter)) 
+      {
+	gchar *name;		
+	gtk_tree_model_get(model, &iter, 0, &name, -1);		
+	//g_print ("Double-clicked row contains name %s\n", name);
+	gView->displayInfo(string(name));		
+	g_free(name);
+      }
+    }
+
+    return TRUE;
+
+  }
+
 
   void treeview_onRowActivated (GtkTreeView *treeview, GtkTreePath  *path, 
 				GtkTreeViewColumn  *col, GUITreeView *gView)
   {
-    GtkTreeModel *model;
-    GtkTreeIter   iter;
-    GtkTreeIter   children;
+        
+    GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+    GtkTreeIter iter;
+    GtkTreeIter children;
 
-    g_print ("A row has been double-clicked!\n");
-
-    model = gtk_tree_view_get_model(treeview);
 
     if (gtk_tree_model_get_iter(model, &iter, path))
+    {
+      //check if it's a leaf node (actual node type) only.
+      if (!gtk_tree_model_iter_children (GTK_TREE_MODEL(model),&children,&iter)) 
       {
-	//check if it's a leaf node (actual node type) only.
-	if (!gtk_tree_model_iter_children (GTK_TREE_MODEL(model),&children,&iter)) 
-	  {
-	    gchar *name;		
-	    gtk_tree_model_get(model, &iter, 0, &name, -1);		
-	    g_print ("Double-clicked row contains name %s\n", name);
-	    gView->displayInfo(string(name));		
-	    g_free(name);
-	  }
+	gchar *name;		
+	gtk_tree_model_get(model, &iter, 0, &name, -1);		
+
+	//create node in the network
+	GUINetwork *net = dynamic_cast<GUINetwork*>(vflowGUI::instance()->getCurrentDoc()->getCurrentNet());
+
+
+	//virtual UINode *newNode(UINetwork* _net, std::string _name, std::string _type, double _x, double _y, bool doInit);
+
+	if (net)
+	{
+	  double x1,y1,x2,y2;
+	  net->get_visible_bounds(x1,y1,x2,y2);
+	  net->addNode(name,(x1 + x2)/2.0 + (rand() % 250),(y1 + y2)/2.0 + (rand() % 250));
+	}
+
+	g_free(name);
       }
+    }
   }
 
 
@@ -642,7 +696,7 @@ namespace FD {
 					  GdkDragContext  *drag_context,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_m_treeview_drag_begin"<<endl;
+    //cerr<<"on_m_treeview_drag_begin"<<endl;
   }
 
 
@@ -654,7 +708,7 @@ namespace FD {
 					  guint            time,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_m_treeview_drag_data_get"<<endl;
+    //cerr<<"on_m_treeview_drag_data_get"<<endl;
 
     GtkTreeView *treeView = GTK_TREE_VIEW(widget);
 
@@ -703,7 +757,7 @@ namespace FD {
 					  GUITreeView*         gView)
   {
 
-    cerr<<"on_m_treeview_drag_drop"<<endl;
+    //cerr<<"on_m_treeview_drag_drop"<<endl;
     return FALSE;
   }
 
@@ -722,7 +776,7 @@ namespace FD {
 					  GdkEventButton  *event,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_canvas_button_press_event"<<endl;
+    //cerr<<"on_canvas_button_press_event"<<endl;
     return FALSE;
   }
 
@@ -732,7 +786,7 @@ namespace FD {
 					  GdkEventButton  *event,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_canvas_button_release_event"<<endl;
+    //cerr<<"on_canvas_button_release_event"<<endl;
     return FALSE;
   }
 
@@ -742,7 +796,7 @@ namespace FD {
 					  GdkDragContext  *drag_context,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_canvas_drag_begin"<<endl;
+    //cerr<<"on_canvas_drag_begin"<<endl;
   }
 
 
@@ -754,8 +808,8 @@ namespace FD {
 					  guint            time,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_canvas_drag_drop"<<endl;
-    cerr<<"x"<<x<<" y"<<y<<endl;
+    //cerr<<"on_canvas_drag_drop"<<endl;
+    //cerr<<"x"<<x<<" y"<<y<<endl;
     return TRUE;
   }
 
@@ -764,7 +818,7 @@ namespace FD {
   on_m_canvas_grab_focus                 (GtkWidget       *widget,
 					  GUITreeView*         gView)
   {
-    cerr<<"on_m_canvas_grab_focus"<<endl;
+    //cerr<<"on_m_canvas_grab_focus"<<endl;
   }
 
 
