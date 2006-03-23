@@ -681,7 +681,7 @@ namespace FD {
 	{
 	  double x1,y1,x2,y2;
 	  net->get_visible_bounds(x1,y1,x2,y2);
-	  net->addNode(name,(x1 + x2)/2.0 + (rand() % 250),(y1 + y2)/2.0 + (rand() % 250));
+	  net->addNode(name,x1 + (rand() % (int)(x2 - x1)),y1 + (rand() % (int)(y2-y1)));
 	}
 
 	g_free(name);
