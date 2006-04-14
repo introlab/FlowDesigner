@@ -661,6 +661,11 @@ static void network_properties_apply (GnomePropertyBox *propertybox, gint arg1, 
 
 
 
+void network_description_changed_event (GtkTextBuffer *textbuffer, GUINetwork *network) {  
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(network->networkProperties),TRUE);
+}
+
+
 void GUINetwork::showProperties() {
 
   if (networkProperties) {
@@ -727,10 +732,6 @@ void GUINetwork::showProperties() {
 }
 
 
-
-void network_description_changed_event (GtkTextBuffer *textbuffer, GUINetwork *network) {  
-  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(network->networkProperties),TRUE);
-}
 
 
 void GUINetwork::applyNetworkProperties() {

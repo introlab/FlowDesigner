@@ -49,6 +49,152 @@ KeyPad::~KeyPad() {
   gdk_threads_leave();
 }
 
+//callbacks
+gboolean on_KeyPad_key_press_event(GtkWidget *widget,
+                                 GdkEventKey *event,
+                                 gpointer user_data)
+{
+   switch(event->keyval)
+   {
+   case '`': case '~': case '1': case '!': case '2': case '@':
+   case '3': case '#': case '4': case '$': case '5': case '%':
+   case '6': case '^': case '7': case '&': case '8': case '*':
+   case '9': case '(': case '0': case ')': case '-': case '_':
+   case '=': case '+': case 'q': case 'Q': case 'w': case 'W':
+   case 'e': case 'E': case 'r': case 'R': case 't': case 'T':
+   case 'y': case 'Y': case 'u': case 'U': case 'i': case 'I':
+   case 'o': case 'O': case 'p': case 'P': case '[': case '{':
+   case ']': case '}': case '\\': case '|': case 'a': case 'A':
+   case 's': case 'S': case 'd': case 'D': case 'f': case 'F':
+   case 'g': case 'G': case 'h': case 'H': case 'j': case 'J':
+   case 'k': case 'K': case 'l': case 'L': case ';': case ':':
+   case '\'': case '"': case 'z': case 'Z': case 'x': case 'X':
+   case 'c': case 'C': case 'v': case 'V': case 'b': case 'B':
+   case 'n': case 'N': case 'm': case 'M': case ',': case '<':
+   case '.': case '>': case '/': case '?':
+      ((KeyPad*)user_data)->setKeyValue(event->keyval,250000);
+      break;
+   default:
+      break;
+   }
+   return 0;
+}
+
+void on_button_released(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->reset();
+}
+
+void on_button_A_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('A');
+}
+
+void on_button_B_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('B');
+}
+
+void on_button_C_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('C');
+}
+
+void on_button_D_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('D');
+}
+
+void on_button_E_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('E');
+}
+
+void on_button_F_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('F');
+}
+
+void on_button_0_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('0');
+}
+
+void on_button_1_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('1');
+}
+
+void on_button_2_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('2');
+}
+
+void on_button_3_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('3');
+}
+
+void on_button_4_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('4');
+}
+
+void on_button_5_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('5');
+}
+
+void on_button_6_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('6');
+}
+
+void on_button_7_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('7');
+}
+
+void on_button_8_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('8');
+}
+
+void on_button_9_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('9');
+}
+
+void on_button_dot_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('.');
+}
+
+void on_button_div_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('/');
+}
+
+void on_button_mul_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('*');
+}
+
+void on_button_sub_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('-');
+}
+
+void on_button_add_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('+');
+}
+
+void on_button_equa_pressed(GtkButton *button, gpointer user_data)
+{
+   ((KeyPad*)user_data)->setKeyValue('=');
+}
+
 void KeyPad::initialize()
 {
 
@@ -415,150 +561,6 @@ void KeyPad::setKeyValue(char keyValue, int timer)
    m_key = ObjectRef(new String(string(tmp)));
 }
 
-//callbacks
-gboolean on_KeyPad_key_press_event(GtkWidget *widget,
-                                 GdkEventKey *event,
-                                 gpointer user_data)
-{
-   switch(event->keyval)
-   {
-   case '`': case '~': case '1': case '!': case '2': case '@':
-   case '3': case '#': case '4': case '$': case '5': case '%':
-   case '6': case '^': case '7': case '&': case '8': case '*':
-   case '9': case '(': case '0': case ')': case '-': case '_':
-   case '=': case '+': case 'q': case 'Q': case 'w': case 'W':
-   case 'e': case 'E': case 'r': case 'R': case 't': case 'T':
-   case 'y': case 'Y': case 'u': case 'U': case 'i': case 'I':
-   case 'o': case 'O': case 'p': case 'P': case '[': case '{':
-   case ']': case '}': case '\\': case '|': case 'a': case 'A':
-   case 's': case 'S': case 'd': case 'D': case 'f': case 'F':
-   case 'g': case 'G': case 'h': case 'H': case 'j': case 'J':
-   case 'k': case 'K': case 'l': case 'L': case ';': case ':':
-   case '\'': case '"': case 'z': case 'Z': case 'x': case 'X':
-   case 'c': case 'C': case 'v': case 'V': case 'b': case 'B':
-   case 'n': case 'N': case 'm': case 'M': case ',': case '<':
-   case '.': case '>': case '/': case '?':
-      ((KeyPad*)user_data)->setKeyValue(event->keyval,250000);
-      break;
-   default:
-      break;
-   }
-   return 0;
-}
 
-void on_button_released(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->reset();
-}
-
-void on_button_A_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('A');
-}
-
-void on_button_B_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('B');
-}
-
-void on_button_C_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('C');
-}
-
-void on_button_D_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('D');
-}
-
-void on_button_E_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('E');
-}
-
-void on_button_F_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('F');
-}
-
-void on_button_0_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('0');
-}
-
-void on_button_1_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('1');
-}
-
-void on_button_2_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('2');
-}
-
-void on_button_3_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('3');
-}
-
-void on_button_4_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('4');
-}
-
-void on_button_5_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('5');
-}
-
-void on_button_6_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('6');
-}
-
-void on_button_7_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('7');
-}
-
-void on_button_8_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('8');
-}
-
-void on_button_9_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('9');
-}
-
-void on_button_dot_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('.');
-}
-
-void on_button_div_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('/');
-}
-
-void on_button_mul_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('*');
-}
-
-void on_button_sub_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('-');
-}
-
-void on_button_add_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('+');
-}
-
-void on_button_equa_pressed(GtkButton *button, gpointer user_data)
-{
-   ((KeyPad*)user_data)->setKeyValue('=');
-}
 
 }//namespace FD

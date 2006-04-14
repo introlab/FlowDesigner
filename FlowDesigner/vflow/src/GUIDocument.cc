@@ -597,6 +597,23 @@ void GUIDocument::insertLoadedParam(DocParameterData *param, string type, string
 
 }
 
+void document_category_changed_event (GtkEntry *entry, GUIDocument *document) {
+
+  //get the entry text
+  string entry_text(gtk_entry_get_text(entry));   
+
+  //change the category
+  //will be changed when apply is pressed
+  //document->setCategory(entry_text);
+  
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(document->docproperty),TRUE);
+  
+}
+
+void document_comments_changed_event (GtkTextBuffer *textbuffer, GUIDocument *document) {  
+  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(document->docproperty),TRUE);
+}
+
 void GUIDocument::createParamDialog()
 {
    int i;
@@ -868,22 +885,7 @@ void GUIDocument::createParamDialog()
 
 }
 
-void document_comments_changed_event (GtkTextBuffer *textbuffer, GUIDocument *document) {  
-  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(document->docproperty),TRUE);
-}
 
-void document_category_changed_event (GtkEntry *entry, GUIDocument *document) {
-
-  //get the entry text
-  string entry_text(gtk_entry_get_text(entry));   
-
-  //change the category
-  //will be changed when apply is pressed
-  //document->setCategory(entry_text);
-  
-  gnome_property_box_set_modified (GNOME_PROPERTY_BOX(document->docproperty),TRUE);
-  
-}
 
 static void threadFunct(GUIDocument *doc)
 {

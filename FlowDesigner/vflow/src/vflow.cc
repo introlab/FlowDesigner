@@ -731,7 +731,7 @@ static void add_net_event  (GtkMenuItem     *menuitem,
       return;
    }
 
-   char *ask_phrase;
+   const char *ask_phrase;
    string default_str;
    UINetwork::Type net_type;
    switch (*(int*)user_data)
@@ -1217,7 +1217,7 @@ void about_event  (GtkMenuItem *menuitem, vflowGUI *vflow)
    };
   const gchar *documenters[] = { NULL };
   /* TRANSLATORS: Replace this string with your names, one name per line. */
-  gchar *translators = _("translator_credits");
+  const gchar *translators = _("translator_credits");
   GtkWidget *about2;
 
   if (!strcmp (translators, "translator_credits"))
@@ -1296,6 +1296,34 @@ void vflowGUI::update_prefs()
       m_treeView->hide();
     }
   }
+}
+
+
+/**********************************************************************************************************
+change-current-page signal
+**********************************************************************************************************/
+void vflow_change_current_page_event(GtkNotebook *notebook, gint arg1, vflowGUI *vflow) {
+
+  cerr<<"VFLOW change current page"<<endl;
+}
+
+
+/**********************************************************************************************************
+focus-tab signal
+**********************************************************************************************************/
+gboolean vflow_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, vflowGUI *vflow) {
+
+   cerr<<"VFLOW focus tab event"<<endl;
+   return true;
+}
+
+/**********************************************************************************************************
+select-page signal
+**********************************************************************************************************/
+gboolean vflow_select_page_event(GtkNotebook *notebook, gboolean arg1, vflowGUI *vflow) {
+  
+  cerr<<"VFLOW select page event"<<endl;
+  return true;
 }
 
 /**********************************************************************************************************
@@ -1689,33 +1717,6 @@ GLADE_HOOKUP_OBJECT (app1, edit1_menu_uiinfo[5].widget, "properties1");
   update_prefs();
 }
 
-
-/**********************************************************************************************************
-change-current-page signal
-**********************************************************************************************************/
-void vflow_change_current_page_event(GtkNotebook *notebook, gint arg1, vflowGUI *vflow) {
-
-  cerr<<"VFLOW change current page"<<endl;
-}
-
-
-/**********************************************************************************************************
-focus-tab signal
-**********************************************************************************************************/
-gboolean vflow_focus_tab_event(GtkNotebook *notebook, GtkNotebookTab arg1, vflowGUI *vflow) {
-
-   cerr<<"VFLOW focus tab event"<<endl;
-   return true;
-}
-
-/**********************************************************************************************************
-select-page signal
-**********************************************************************************************************/
-gboolean vflow_select_page_event(GtkNotebook *notebook, gboolean arg1, vflowGUI *vflow) {
-  
-  cerr<<"VFLOW select page event"<<endl;
-  return true;
-}
 
 }//namespace FD
 

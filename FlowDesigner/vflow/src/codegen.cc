@@ -37,17 +37,17 @@ public:
 void CodeGenState::ok()
 {
    try {
-      char *dirname=gnome_file_entry_get_full_path(GNOME_FILE_ENTRY(fileentry1),FALSE);
+      const char *dirname=gnome_file_entry_get_full_path(GNOME_FILE_ENTRY(fileentry1),FALSE);
       if (!dirname || !strlen(dirname))
 	 dirname = ".";
 
       //Should create directory??
 
-      char *filename=(char*)gtk_entry_get_text(GTK_ENTRY(combo_entry2));
+      const char *filename=(char*)gtk_entry_get_text(GTK_ENTRY(combo_entry2));
       if (!filename || !strlen(filename))
 	 filename = "build_doc.cc";
 
-      char *funcname = (char*)gtk_entry_get_text(GTK_ENTRY(combo_entry1));
+      const char *funcname = (char*)gtk_entry_get_text(GTK_ENTRY(combo_entry1));
       if (!funcname || !strlen(funcname))
 	 funcname = "buildFunct";
  

@@ -42,7 +42,7 @@ GUINetTerminal::GUINetTerminal(UITerminal *_terminal, NetTermType _type, const s
    gint anchor;
    
    terminal->getItemPos(x,y);
-   char *color;
+   const char *color;
    if (type == INPUT)
    {
      //defaultName = "INPUT";
