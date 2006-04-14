@@ -14,7 +14,7 @@ using namespace std;
 
 namespace FD {
 
-UILink::UILink(UITerminal *_from, UITerminal *_to, char *points_str)
+UILink::UILink(UITerminal *_from, UITerminal *_to, const char *points_str)
    : from(_from)
    , to(_to)
 {

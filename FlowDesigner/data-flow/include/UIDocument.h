@@ -190,7 +190,7 @@ public:
 
    void updateAllNetworks();
    
-   static std::string findExternal(const std::string &filename, char *searchPath="FLOWDESIGNER_PATH", bool include_home=true, bool fullPathOutput=true);
+   static std::string findExternal(const std::string &filename, const char *searchPath="FLOWDESIGNER_PATH", bool include_home=true, bool fullPathOutput=true);
 
    static void genCodeExternal(const std::string &type, std::ostream &out, int &id, std::set<std::string> &nodeList);
 
@@ -201,7 +201,7 @@ public:
    
  protected:
    
-   virtual void error(char *err);
+   virtual void error(const char *err);
 
  private:
 

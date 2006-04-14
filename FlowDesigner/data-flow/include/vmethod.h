@@ -28,7 +28,7 @@ class SymbolSet {
       }
    }
 
-   int get (char *str)
+   int get (const char *str)
    {
       return get(std::string(str));
    }
@@ -77,7 +77,7 @@ class VirtualMethods {
       return symbols->get(str);
    }
 
-   int lookup (char *str)
+   int lookup (const char *str)
    {
       return symbols->get(str);
    }

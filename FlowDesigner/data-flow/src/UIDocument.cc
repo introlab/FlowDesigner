@@ -416,7 +416,7 @@ void UIDocument::removeNetwork(UINetwork *toRemove)
    setModified();
 }
 
-void UIDocument::error(char *err)
+void UIDocument::error(const char *err)
 {
    cerr << err << endl;
 }
@@ -493,7 +493,7 @@ char *UIDocument::saveToMemory(int &size)
    return mem;
 }
 
-string UIDocument::findExternal(const string &filename, char *searchPath, bool include_home, bool fullPathOutput)
+string UIDocument::findExternal(const string &filename, const char *searchPath, bool include_home, bool fullPathOutput)
 {
    vector<string> pathlist = envList(searchPath, include_home);
    string fullname;

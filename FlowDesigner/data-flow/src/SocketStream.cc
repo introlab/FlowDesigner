@@ -152,7 +152,7 @@ void network_socket::shutdown() {
 ///////////////////////////////////////////////////////////////////////////
 // Send a packet
 //
-size_t network_socket::send_packet(unsigned char *packet, size_t size) {
+size_t network_socket::send_packet(const unsigned char *packet, size_t size) {
     
   unsigned int flags = 0;
 

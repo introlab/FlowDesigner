@@ -8,7 +8,7 @@
 
 namespace FD {
 
-std::vector<std::string> envList(char *envName, bool include_home=true);
+std::vector<std::string> envList(const char *envName, bool include_home=true);
 
 extern "C" {
 void scanDL(bool debug=false);

@@ -14,13 +14,13 @@ extern "C" {
    void overflowInitializeNoDL(void);
    
    /**Loads an Overflow .n document*/
-   void *overflowLoadDocument(char *filename);
+   void *overflowLoadDocument(const char *filename);
 
    /**Runs a document that returns a frame buffer*/
-   int overflowProcessAudioFile(void *vdoc, char **argv, int *length, int *nbFeatures, float **data);
+   int overflowProcessAudioFile(void *vdoc, const char **argv, int *length, int *nbFeatures, float **data);
 
    /**Create an Overflow network from a document*/
-   void *overflowNewNetwork(void *vdoc, char **argv);
+   void *overflowNewNetwork(void *vdoc, const char **argv);
 
    /**Processes one frame*/
    int overflowProcessFrame(void *vnet, float *in, int inLength, float **out, int *outLength);

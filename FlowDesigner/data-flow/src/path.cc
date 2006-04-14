@@ -12,7 +12,7 @@ using namespace std;
 
 namespace FD {
 
-vector<string> envList(char *envName, bool include_home)
+vector<string> envList(const char *envName, bool include_home)
 {
    vector<string> list;
    if (include_home)

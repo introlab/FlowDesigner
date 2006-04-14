@@ -72,7 +72,7 @@ class network_socket {
      \param packet Byte pointer to the data to send.
      \param size the number of bytes to send
   */
-  size_t send_packet(unsigned char *packet, size_t size);
+  size_t send_packet(const unsigned char *packet, size_t size);
 
 
   /**

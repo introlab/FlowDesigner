@@ -95,7 +95,7 @@ protected:
 
 public:
    //UILink(UITerminal *_from, UITerminal *_to, double _x1, double _y1, double _x2, double _y2);
-   UILink(UITerminal *_from, UITerminal *_to, char *points_str=NULL);
+   UILink(UITerminal *_from, UITerminal *_to, const char *points_str=NULL);
 
    virtual ~UILink();
 
