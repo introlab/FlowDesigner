@@ -189,13 +189,13 @@ protected:
    virtual int translateOutput(std::string inputName);
 
    /**Run-time assertions*/
-   virtual void rt_assert(bool cond, std::string message="", char *_file="unknown", int _line=0);
+   virtual void rt_assert(bool cond, std::string message="", const char *_file="unknown", int _line=0);
 
    /**Construct-time assertions*/
-   virtual void construct_assert(bool cond, std::string message="", char *_file="unknown", int _line=0);
+   virtual void construct_assert(bool cond, std::string message="", const char *_file="unknown", int _line=0);
 
    /**Error with the node*/
-   virtual void throw_error(bool send_ptr, std::string message, char *_file, int _line);
+   virtual void throw_error(bool send_ptr, std::string message, const char *_file, int _line);
 
 public:
    /**The node instance factory*/
@@ -258,7 +258,7 @@ class NodeException : public BaseException {
 public:
 
    /**The constructor with a message a file name and a line number*/
-   NodeException( Node *_node, std::string _message, char *_file, int _line) 
+   NodeException( Node *_node, std::string _message, const char *_file, int _line) 
       : message(_message)
       , node(_node)
       , file(_file)

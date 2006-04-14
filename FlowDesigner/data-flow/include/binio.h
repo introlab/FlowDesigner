@@ -6,7 +6,7 @@
 #include <iostream>
 #include <stdlib.h>
 
-
+namespace FD {
 
 class BinIO {
 public:
@@ -28,4 +28,5 @@ public:
 
 };
 
+}
 #endif
