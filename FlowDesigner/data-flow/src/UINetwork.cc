@@ -484,9 +484,8 @@ UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
    return new UITerminal (_name, _node, _isInput, _x, _y);
 }*/
 
-UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str)
+UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
 {
-   //BUG HERE (GUI instead of UI)
    //cerr << "UINetwork::newLink\n";
    return new UILink (_from, _to, str);
 }

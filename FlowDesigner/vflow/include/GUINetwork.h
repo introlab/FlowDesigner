@@ -92,7 +92,7 @@ public:
 
 //   virtual UITerminal *newTerminal (std::string _name, UINode *_node, bool _isInput, double _x, double _y);
 
-   virtual UILink *newLink (UITerminal *_from, UITerminal *_to, char *str);
+   virtual UILink *newLink (UITerminal *_from, UITerminal *_to, char *str=NULL);
 
    virtual UINote* newNote(const std::string &text, double x, double y, bool visible);
 
