@@ -16,7 +16,7 @@ static gint link_handler (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
    return ((GUILink *)(data))->event(event);
 }
 
-GUILink::GUILink(UITerminal *_from, UITerminal *_to, char *points_str)
+GUILink::GUILink(UITerminal *_from, UITerminal *_to, const char *points_str)
   : UILink (_from, _to, points_str), MIN_POINT_DISTANCE(10.0) {
 
 

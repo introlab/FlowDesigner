@@ -543,7 +543,7 @@ UINode *GUINetwork::newNode(UINetwork* _net, string _name, string _type, double 
    return new GUITerminal (_name, _node, _isInput, _x, _y);
 }*/
 
-UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to, char *str)
+UILink *GUINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str)
 {
    return new GUILink (_from, _to, str);
 }

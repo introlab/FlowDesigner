@@ -173,13 +173,18 @@ namespace FD {
     gtk_paned_pack2 (GTK_PANED (m_verticalPane), m_textviewScrollWindow, TRUE, TRUE);
     gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (m_textviewScrollWindow), GTK_SHADOW_IN);
 
- 
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (m_textviewScrollWindow), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+
+   
 
     m_textview = gtk_text_view_new ();
     gtk_widget_show (m_textview);
     gtk_container_add (GTK_CONTAINER (m_textviewScrollWindow), m_textview);
     gtk_widget_set_size_request (m_textview, 200, 500);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(m_textview),FALSE);
+
+    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(m_textview),GTK_WRAP_WORD_CHAR);
+
 
     //TAGS FOR FONT TYPES
     GtkTextTag* tag_header = gtk_text_buffer_create_tag (gtk_text_view_get_buffer (GTK_TEXT_VIEW (m_textview)),
@@ -673,9 +678,6 @@ namespace FD {
 
 	//create node in the network
 	GUINetwork *net = dynamic_cast<GUINetwork*>(vflowGUI::instance()->getCurrentDoc()->getCurrentNet());
-
-
-	//virtual UINode *newNode(UINetwork* _net, std::string _name, std::string _type, double _x, double _y, bool doInit);
 
 	if (net)
 	{

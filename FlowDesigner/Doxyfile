@@ -391,7 +391,7 @@ WARN_LOGFILE           = Doxygen.warn
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = "data-flow/include" "audio_blocks/include" "effects/include" "FuzzyEngine/include" "HMM/include" "lapackflow/include" "NNet/include" "octave/include" "vflow/include" "VQ/include"
+INPUT                  = "data-flow" "audio_blocks" "effects" "FuzzyEngine" "HMM" "lapackflow" "NNet" "octave" "vflow" "VQ"
 						
 
 # If the value of the INPUT tag contains directories, you can use the 

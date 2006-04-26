@@ -29,7 +29,7 @@ protected:
 
 
 public:
-   GUILink(UITerminal *_from, UITerminal *_to, char *points_str=NULL);
+   GUILink(UITerminal *_from, UITerminal *_to, const char *points_str=NULL);
 
    ~GUILink();
 
