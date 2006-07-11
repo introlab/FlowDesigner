@@ -86,6 +86,7 @@ public:
 	    isInside = true;
 	    ostringstream sstr;	    
 	    e->print(sstr);
+	    delete e;
 	    currentException = ObjectRef(new String(sstr.str()));
 	    ObjectRef catchValue = nilObject;
 	    try 
