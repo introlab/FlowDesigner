@@ -51,7 +51,14 @@ public:
       
       for (unsigned int i=0; i< outputNames.size(); i++)
       {
-         (*outputs[i].buffer)[count] = comp.get(outputNames[i]);
+	try {
+	  (*outputs[i].buffer)[count] = comp.get(outputNames[i]);
+	}
+	catch (BaseException *e) {
+	  e->print(cerr);
+	  e->add(new GeneralException("Unable to get composite element named " + outputNames[i],__FILE__,__LINE__));
+	  throw e;
+	}
       }
    }
 
