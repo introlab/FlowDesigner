@@ -24,7 +24,6 @@ LoadedLibrary *DLManager::getLib(const string &name)
 vector<string> ToolboxList::load(const vector<string> &list, int debug)
 {
 	
-  debug = true;
    vector<string> remain(list);
    vector<string> errors;
 
