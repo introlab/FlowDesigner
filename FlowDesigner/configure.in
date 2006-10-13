@@ -43,11 +43,12 @@ AC_MODULE_OPT(FuzzyEngine, yes)
 AC_MODULE_OPT(lapackflow, no)
 AC_MODULE_OPT(octave, no)
 AC_MODULE_OPT(vflow, yes)
+AC_MODULE_OPT(qtflow, no)
 
 AM_CONDITIONAL(COND_OPT, true)
 
 
-modules="$audio_blocks $VQ $HMM $NNet $FuzzyEngine $effects $lapackflow $octave $vflow"
+modules="$audio_blocks $VQ $HMM $NNet $FuzzyEngine $effects $lapackflow $octave $vflow $qtflow"
 
 AC_SUBST(modules)
 AC_CONFIG_SUBDIRS($modules)
@@ -132,10 +133,14 @@ if test "$octave" = "octave"; then
 	AC_MSG_RESULT([$PACKAGE will build octave toolkit])
 fi
 		
-
 if test "$vflow" = "vflow"; then
 	AC_MSG_RESULT([$PACKAGE will build vflow toolkit])
 fi
+
+if test "$qtflow" = "qtflow"; then
+	AC_MSG_RESULT([$PACKAGE will build qtflow toolkit])
+fi
+
 AC_MSG_RESULT([Using CYGWIN FLAGS : $CYGWIN_LDFLAGS])
 AC_MSG_RESULT([])
 AC_MSG_RESULT([*************************************************************])
