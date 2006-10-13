@@ -1,4 +1,4 @@
-AC_INIT(src/flowdesigner.cc)
+AC_INIT(src/main.cc)
 
 dnl AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(VFlow, 0.9.1)

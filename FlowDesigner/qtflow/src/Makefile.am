@@ -8,14 +8,26 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/qtflow
 
 INCLUDES = @PACKAGE_CFLAGS@ \
 	$(GNOME_PIXBUF_INCLUDE) \
-	-I$(top_srcdir)/../data-flow/include 
+	-I$(top_srcdir)/../data-flow/include  \
+	-I../include
 
 
 bin_PROGRAMS = flowdesigner-qt 
 
 lib_LTLIBRARIES = libbaseProbeQt.la 
 
-flowdesigner_qt_SOURCES = flowdesigner.cc
+flowdesigner_qt_SOURCES = main.cc \
+	QtLink.cc  \
+	.moc/moc_QtLink.cc \
+	QtNetwork.cc  \
+	.moc/moc_QtNetwork.cc \
+	QtNode.cc  \
+	.moc/moc_QtNode.cc \
+	QtTerminal.cc \
+	.moc/moc_QtTerminal.cc \
+	QtFlowDesigner.cc \
+	.moc/moc_QtFlowDesigner.cc
+
 
 libbaseProbeQt_la_SOURCES = 
 
@@ -37,3 +49,19 @@ libbaseProbeQt_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) \
 
 flowdesigner_qt_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS) $(PACKAGE_LIBS) $(top_srcdir)/../data-flow/src/libflow.la
 
+# This rule lets GNU make create any moc_*.cc from the equivalent *.h
+.moc/moc_%.cc: ../include/%.h
+	mkdir -p .moc
+	moc $< -o $@
+
+%.ui.cc: %.ui
+	uic $< -o $<.h
+#	uic -impl $<.h $< -o $@
+
+# Adjust this line according to your resources.qrc
+# resources.cc : resources.qrc octave-gui.png
+# 	rcc resources.qrc -o resources.cc
+#
+# This line ensures that generated moc_*.cc and resources.cc files are
+# deleted when we make clean.
+CLEANFILES = $(filter moc_%.cc,$(flowdesigner_qt_SOURCES) $(libbaseProbeQt_la_SOURCES))
