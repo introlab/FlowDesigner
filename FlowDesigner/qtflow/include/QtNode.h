@@ -1,15 +1,20 @@
+//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
+
 #ifndef _QTNODE_H
 #define _QTNODE_H
 
 #include <QGraphicsItem>
 #include <QList>
 #include <QGraphicsTextItem>
+#include <QGraphicsSceneMouseEvent>
 #include <string>
 #include <vector>
 
+namespace FD
+{
+
 class QtLink;
 class QtNetwork;
-class QGraphicsSceneMouseEvent;
 class QtTerminal;
 
 class QtNode : public QGraphicsRectItem
@@ -51,4 +56,5 @@ private:
 
 };
 
+}//namespace FD
 #endif

@@ -1,8 +1,13 @@
+//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
+
 #ifndef _QTLINK_H
 #define _QTLINK_H
 
 #include <QGraphicsItem>
 #include <string>
+
+namespace FD 
+{
 
 class QtNode;
 class QtTerminal;
@@ -33,5 +38,7 @@ class QtLink : public QGraphicsItem
         QtTerminal *m_dest;
         qreal arrowSize;
 };
+
+}//namespace FD
 
 #endif

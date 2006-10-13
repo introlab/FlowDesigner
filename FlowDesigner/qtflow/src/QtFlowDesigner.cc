@@ -1,6 +1,10 @@
+//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
+
 #include "QtFlowDesigner.h"
 #include "QtNetwork.h"
 
+namespace FD
+{
 
 QtFlowDesigner::QtFlowDesigner (QWidget* parent)
     : QMainWindow(parent)
@@ -30,4 +34,6 @@ void QtFlowDesigner::newNetworkClicked()
 {
     //newNetwork("TESTING");         
 }
+
+}//namespace FD
 

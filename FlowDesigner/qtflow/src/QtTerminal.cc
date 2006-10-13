@@ -1,3 +1,5 @@
+//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
+
 #include "QtNetwork.h"
 #include "QtTerminal.h"
 #include "QtNode.h"
@@ -8,6 +10,10 @@
 #include <string>
 
 using namespace std;
+
+
+namespace FD
+{
 
 QtTerminal::QtTerminal(QtNode *node, std::string name, int type, float x, float y)
     : QGraphicsRectItem(QRectF(x,y,5.0,5.0),node),m_node(node), m_type(type),
@@ -103,4 +109,6 @@ std::string QtTerminal::getName()
 {
     return m_label->toPlainText().toStdString();
 }   
+
+} //namespace FD
 

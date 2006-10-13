@@ -1,14 +1,13 @@
+//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
+
 #ifndef _QTNETWORK_H_
 #define _QTNETWORK_H_
 
 
 #include <QtGui/QGraphicsView>
 
-
-class Node;
-class Edge;
-class QGraphicsSceneMouseEvent;
-// class QGraphicsScene;
+namespace FD
+{
 
 class QtNetwork : public QGraphicsView
 {
@@ -27,5 +26,5 @@ class QtNetwork : public QGraphicsView
         void scaleView(qreal scaleFactor);
     
 };
-
+}//namespace FD
 #endif

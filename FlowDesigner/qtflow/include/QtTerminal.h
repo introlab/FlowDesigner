@@ -1,3 +1,5 @@
+//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
+
 #ifndef _QTTERMINAL_H_
 #define _QTTERMINAL_H_
 
@@ -6,6 +8,9 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsRectItem>
 #include <string>
+
+namespace FD
+{
 
 class QtNode;
 class QtLink;
@@ -42,6 +47,6 @@ class QtTerminal : public QGraphicsRectItem
 };   
 
 
-
+}
 #endif
 
