@@ -2,6 +2,7 @@
 
 #include "QtFlowDesigner.h"
 #include "QtNetwork.h"
+#include "QtNodeTreeView.h"
 
 namespace FD
 {
@@ -51,7 +52,7 @@ void QtFlowDesigner::setupUi()
     hboxLayout1->setSpacing(6);
     hboxLayout1->setMargin(0);
     hboxLayout1->setObjectName(QString::fromUtf8("hboxLayout1"));
-    treeView = new QTreeView(horizontalLayout_2);
+    treeView = new QtNodeTreeView(horizontalLayout_2);
     treeView->setObjectName(QString::fromUtf8("treeView"));
 
     hboxLayout1->addWidget(treeView);

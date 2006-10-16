@@ -22,6 +22,9 @@
 namespace FD
 {
 
+//forward declaration
+class QtNodeTreeView;
+
 class QtFlowDesigner : public QMainWindow
 {
     Q_OBJECT
@@ -62,6 +65,7 @@ class QtFlowDesigner : public QMainWindow
     QMenu *menuPreferences;
     QMenu *menuNetwork;
     QStatusBar *statusbar;
+    QtNodeTreeView *m_treeView;
 };
 
 }//namespace FD
