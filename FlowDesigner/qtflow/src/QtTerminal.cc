@@ -16,10 +16,10 @@ namespace FD
 {
 
 QtTerminal::QtTerminal(QtNode *node, std::string name, int type, float x, float y)
-    : QGraphicsRectItem(QRectF(x,y,5.0,5.0),node),m_node(node), m_type(type),
+    : QGraphicsRectItem(QRectF(0,0,5.0,5.0),node),m_node(node), m_type(type),
     m_virtualQtTerminal(NULL), m_virtualQtLink(NULL), m_linking(false)
 {
-       
+    setPos(x,y);   
     m_label = new QGraphicsTextItem(name.c_str(),this);    
     QRectF rect = m_label->boundingRect();
 
@@ -37,7 +37,7 @@ QtTerminal::QtTerminal(QtNode *node, std::string name, int type, float x, float 
             break;                              
     }      
     
-    m_label->setPos(x + offset_x, y+ offset_y);
+    m_label->setPos(offset_x, offset_y);
     setBrush(QBrush(QColor(255,0,0,128)));
 }
 
