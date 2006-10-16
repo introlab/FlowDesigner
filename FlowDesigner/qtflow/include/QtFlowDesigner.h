@@ -16,6 +16,8 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+#include <QtGui/QTextEdit>
+#include <QtGui/QWorkspace>
 
 #include <string>
 
@@ -43,7 +45,8 @@ class QtFlowDesigner : public QMainWindow
 
 	protected:
 
-     void QtFlowDesigner::setupUi();
+     void setupUi();
+     void setupUiv2();
      void retranslateUi();
 
 
@@ -53,6 +56,7 @@ class QtFlowDesigner : public QMainWindow
     QHBoxLayout *hboxLayout;
     QWidget *verticalLayout;
     QVBoxLayout *vboxLayout;
+    QVBoxLayout *vboxMainLayout;   
     QWidget *horizontalLayout_2;
     QHBoxLayout *hboxLayout1;
     QTreeView *treeView;
@@ -66,6 +70,8 @@ class QtFlowDesigner : public QMainWindow
     QMenu *menuNetwork;
     QStatusBar *statusbar;
     QtNodeTreeView *m_treeView;
+    QTextEdit *m_textEdit;
+    QWorkspace *m_workspace;      
 };
 
 }//namespace FD

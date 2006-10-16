@@ -28,10 +28,12 @@ flowdesigner_qt_SOURCES = main.cc \
 	QtFlowDesigner.cc \
 	.moc/moc_QtFlowDesigner.cc \
 	QtNodeTreeView.cc \
-	.moc/moc_QtNodeTreeView.cc
+	.moc/moc_QtNodeTreeView.cc \
+	QtDocument.cc \
+	.moc/moc_QtDocument.cc
 
 
-libbaseProbeQt_la_SOURCES = 
+libbaseProbeQt_la_SOURCES = empty.cc 
 
 install-data-local:
 	mkdir -p $(datadir)
@@ -39,7 +41,7 @@ if WITH_CYGWIN
 	(cd $(libdir); rm -f baseProbeQt.tlb; \
 	ln -s $(prefix)/lib/flowdesigner/toolbox/bin/cygbaseProbeQt-$(FLOWDESIGNER_MAJOR_VERSION)-$(FLOWDESIGNER_MINOR_VERSION).dll baseProbeQt.tlb)
 else
-	(cd $(libdir); rm -f baseProbQte.tlb; ln -s libbaseProbeQt.so baseProbeQt.tlb)	
+	(cd $(libdir); rm -f baseProbeQt.tlb; ln -s libbaseProbeQt.so baseProbeQt.tlb)	
 endif
 	(perl $(top_srcdir)/../tools/src/info2def.pl $(libbaseProbeQt_la_SOURCES) > $(datadir)/qtflow.def)
 
