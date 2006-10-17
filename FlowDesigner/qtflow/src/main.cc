@@ -17,18 +17,31 @@ int main(int argc, char* argv[])
 		IExtensions::detect();
 		scanDL();
 		UINodeRepository::Scan();
+        
+        QApplication app(argc, argv);
+        QtFlowDesigner fd;
+
+        for (int i = 1; i < argc; i++)
+        {
+            fd.loadDocument(argv[i]);
+        }
+       
+        fd.show();
+        return app.exec();      
    	} 
 	catch (BaseException *e)
    	{
       		e->print();
       		delete e;
-      		//exit(1);
+      		exit(-1);
    	}
+    catch (...)
+    {
+        std::cerr<<"Unknown exception caught"<<std::endl;
+        exit(-1);                     
+    }      
 
 
 
-	QApplication app(argc, argv);
-	QtFlowDesigner fd;
-	fd.show();
-	return app.exec();
+    return 0;
 }

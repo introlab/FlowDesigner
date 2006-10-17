@@ -196,6 +196,10 @@ namespace FD
             graph->ensureVisible (this);
 
             QGraphicsItem::mouseMoveEvent(event);
+            for (QList<QtLink*>::iterator iter = edgeList.begin(); iter != edgeList.end(); iter++)
+            {
+                (*iter)->adjust();               
+            }            
         }
     }
 

@@ -59,6 +59,10 @@ namespace FD
                 QtTerminal *sourceTerminal = source->getQtTerminal(links[i]->getFromTerminal());
                 QtTerminal *destTerminal = dest->getQtTerminal(links[i]->getToTerminal());
                 QtLink *link = new QtLink(sourceTerminal,destTerminal);
+                
+                link->adjust();
+                source->addQtLink(link);
+                dest->addQtLink(link);
                 scene->addItem(link);
                 m_linkMap.insert(make_pair(links[i],link));
             }

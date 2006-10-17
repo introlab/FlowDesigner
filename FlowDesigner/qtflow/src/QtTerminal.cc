@@ -105,6 +105,7 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_node->getQtNetwork()->scene()->addItem(m_virtualQtTerminal);
         m_virtualQtLink->adjust();
         m_linking = true;
+        event->accept();      
     }
 
 }
