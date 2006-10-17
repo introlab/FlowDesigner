@@ -313,7 +313,10 @@ void QtFlowDesigner::newNetwork(const std::string name)
 void QtFlowDesigner::newNetworkClicked()
 {
     //newNetwork("MAIN");
-    QWidget *window = m_workspace->addWindow(new QtDocument(this,"MAIN"));
+    QtDocument *doc =  new QtDocument(this,"MAIN");
+    doc->open("test.n");     
+    QWidget *window = m_workspace->addWindow(doc);
+    window->setWindowTitle("test");
     m_workspace->setActiveWindow(window);
     window->show();    
 }

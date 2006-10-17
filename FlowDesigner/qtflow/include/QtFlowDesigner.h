@@ -39,6 +39,9 @@ class QtFlowDesigner : public QMainWindow
     
     void newNetwork(const std::string name);
     
+    
+    void newDocument(const std::string &name);   
+    
     public slots:
         void newNetworkClicked();         
 

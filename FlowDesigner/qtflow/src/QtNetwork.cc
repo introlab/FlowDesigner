@@ -3,6 +3,7 @@
 #include "QtNetwork.h"
 #include "QtLink.h"
 #include "QtNode.h"
+#include "UILink.h"
 
 #include <QDebug>
 #include <QGraphicsScene>
@@ -13,78 +14,73 @@
 #include <math.h>
 #include "QtTerminal.h"
 
+#include <iostream>
+
 namespace FD
 {
 
-QtNetwork::QtNetwork()
+    using namespace std;   
+    
+QtNetwork::QtNetwork(UINetwork *uiNetwork)
+    : m_uiNetwork(uiNetwork)            
 {
+    //Creating graphics scene
     QGraphicsScene* scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+    scene->setSceneRect(-400, -400, 400, 400);
     setScene(scene);
     setCacheMode(CacheBackground);
-    setRenderHint(QPainter::Antialiasing);
-
-    // QGraphicsRectItem*rect1 = new QGraphicsRectItem(50, 50, 100, 100);
-    // rect1->setBrush(QBrush(Qt::gray, Qt::SolidPattern));
-    // scene->addItem(rect1);
+    setRenderHint(QPainter::Antialiasing);   
     
-    QtNode *node1 = new QtNode(this,"QtNode1");
-    node1->addQtTerminal("terminal1",QtTerminal::INPUT);
-    node1->addQtTerminal("terminal2",QtTerminal::INPUT);
-    node1->addQtTerminal("terminal3",QtTerminal::INPUT);
-    node1->addQtTerminal("terminal4",QtTerminal::OUTPUT);
-    node1->addQtTerminal("terminal5",QtTerminal::OUTPUT);
-    node1->addQtTerminal("terminal6",QtTerminal::OUTPUT);
-    QtNode *node2 = new QtNode(this,"QtNode2");
-    node2->addQtTerminal("terminal1",QtTerminal::INPUT);
-    node2->addQtTerminal("terminal2",QtTerminal::INPUT);
-    node2->addQtTerminal("terminal3",QtTerminal::INPUT);
-    node2->addQtTerminal("terminal4",QtTerminal::OUTPUT);
-    node2->addQtTerminal("terminal5",QtTerminal::OUTPUT);
-    node2->addQtTerminal("terminal6",QtTerminal::OUTPUT);
-    // QtNode *node3 = new QtNode(this);
-    // QtNode *node4 = new QtNode(this);
-    // centerQtNode = new QtNode(this);
-    // QtNode *node6 = new QtNode(this);
-    // QtNode *node7 = new QtNode(this);
-    // QtNode *node8 = new QtNode(this);
-    // QtNode *node9 = new QtNode(this);
-    scene->addItem(node1);
-    scene->addItem(node2);
-    // scene->addItem(node3);
-    // scene->addItem(node4);
-    // scene->addItem(centerQtNode);
-    // scene->addItem(node6);
-    // scene->addItem(node7);
-    // scene->addItem(node8);
-    // scene->addItem(node9);
-    //scene->addItem(new Link(node1, node2));
-    // scene->addItem(new Edge(node2, node3));
-    // scene->addItem(new Edge(node2, centerQtNode));
-    // scene->addItem(new Edge(node3, node6));
-    // scene->addItem(new Edge(node4, node1));
-    // scene->addItem(new Edge(node4, centerQtNode));
-    // scene->addItem(new Edge(centerQtNode, node6));
-    // scene->addItem(new Edge(centerQtNode, node8));
-    // scene->addItem(new Edge(node6, node9));
-    // scene->addItem(new Edge(node7, node4));
-    // scene->addItem(new Edge(node8, node7));
-    // scene->addItem(new Edge(node9, node8));
-    //
-    node1->setPos(-50, -50);
-    node2->setPos(0, -50);
-    // node3->setPos(50, -50);
-    // node4->setPos(-50, 0);
-    // centerQtNode->setPos(0, 0);
-    // node6->setPos(50, 0);
-    // node7->setPos(-50, 50);
-    // node8->setPos(0, 50);
-    // node9->setPos(50, 50);
+    if (m_uiNetwork)
+    {
+        
+        //PROCESS NODES
+        std::vector<UINode *> nodes = m_uiNetwork->getNodes();          
+        cerr<<"QtNetwork::QtNetwork  nodes found : "<<nodes.size()<<endl;        
+        for (unsigned int i = 0; i < nodes.size(); i++)
+        {
+            QtNode *node = new QtNode(this,nodes[i]);
+            scene->addItem(node);
+            m_nodeMap.insert(make_pair(nodes[i],node));
+            //m_nodes.push_back(node);
+        }
+          
+        //PROCESS LINKS
+        std::vector<UILink *> links = m_uiNetwork->getLinks();
+        cerr<<"QtNetwork::QtNetwork  links found : "<<links.size()<<endl;
+        for (unsigned int i = 0; i < links.size(); i++)
+        {
+            //CAN WE DO BETTER?
+            UINode *fromNode = links[i]->getFromTerminal()->getNode();
+            UINode *destNode = links[i]->getToTerminal()->getNode();                              
+            QtNode *source = m_nodeMap[fromNode];
+            QtNode *dest = m_nodeMap[destNode];                              
+            QtTerminal *sourceTerminal = source->getQtTerminal(links[i]->getFromTerminal());
+            QtTerminal *destTerminal = dest->getQtTerminal(links[i]->getToTerminal());
+            QtLink *link = new QtLink(sourceTerminal,destTerminal);
+            scene->addItem(link);         
+            m_linkMap.insert(make_pair(links[i],link));        
+        }         
+        
+        
+        //TODO PROCCESS PARAMETERS
+        
+        
+        
+        //UPDATE SCENE RECT
+        QRectF bbox = scene->itemsBoundingRect();
+        qreal x1,y1,x2,y2;
+        bbox.getCoords(&x1,&y1,&x2,&y2);
+        bbox.setCoords(x1 - 100, y1 - 100, x2 + 100, y2 + 100);
+        scene->setSceneRect(bbox);                  
+        
+    }      
 
-    scale(0.8, 0.8);
+    
+    scale(1.0, 1.0);
     setMinimumSize(400, 400);
-    setWindowTitle(tr("Essai 1"));
+    setWindowTitle("Essai 1");
 }
 
 void QtNetwork::keyPressEvent(QKeyEvent *event)
@@ -122,9 +118,9 @@ void QtNetwork::keyPressEvent(QKeyEvent *event)
 
 void QtNetwork::contextMenuEvent(QContextMenuEvent *event)
 {
-    QtNode* newQtNode = new QtNode(this);
-    scene()->addItem(newQtNode);
-    newQtNode->setPos(mapToScene(event->pos()));
+    //QtNode* newQtNode = new QtNode(this);
+    //scene()->addItem(newQtNode);
+    //newQtNode->setPos(mapToScene(event->pos()));
 }
 
 void QtNetwork::wheelEvent(QWheelEvent *event)

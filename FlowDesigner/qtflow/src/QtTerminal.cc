@@ -4,6 +4,7 @@
 #include "QtTerminal.h"
 #include "QtNode.h"
 #include "QtLink.h"
+#include "QtNetTerminal.h"
 #include <QGraphicsScene>
 #include <QBrush>
 #include <iostream>
@@ -40,6 +41,51 @@ QtTerminal::QtTerminal(QtNode *node, std::string name, int type, float x, float 
     m_label->setPos(offset_x, offset_y);
     setBrush(QBrush(QColor(255,0,0,128)));
 }
+
+
+QtTerminal::QtTerminal(QtNode *node, UITerminal *uiTerminal)
+    : QGraphicsRectItem(QRectF(0,0,5.0,5.0),node), m_node(node),
+      m_virtualQtTerminal(NULL), m_virtualQtLink(NULL), m_linking(false), m_uiTerminal(uiTerminal), m_netTerminal(NULL)
+{
+    if (m_uiTerminal)
+    {
+        //double posx, posy;
+        //m_uiTerminal->getPos(posx,posy);              
+        //cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<endl;              
+        //setPos(posx,posy);                                            
+        
+        m_label = new QGraphicsTextItem(m_uiTerminal->getName().c_str(),this);
+        QRectF rect = m_label->boundingRect();
+        
+        float offset_x = 0;
+        float offset_y = 0;//-1 * rect.height() / 2.0 + 5.0 / 2.0;
+        
+        if (m_uiTerminal->isInputTerminal())
+        {
+            offset_x = 5;//-1 * rect.width();
+            cerr<<"temrminal is input"<<endl;         
+        }
+        else
+        {
+            offset_x = -1 * rect.width();//5.0;
+            cerr<<"terminal is output"<<endl;                                 
+        }         
+        m_label->setPos(offset_x, offset_y);
+        setBrush(QBrush(QColor(255,0,0,128)));
+
+        //HANDLE NET TERMINALS      
+        if (m_uiTerminal->getNetTerminal())
+        {
+            m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());         
+        }         
+        
+        
+    }      
+}   
+
+
+
+
 
 
 void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -30,7 +30,9 @@ flowdesigner_qt_SOURCES = main.cc \
 	QtNodeTreeView.cc \
 	.moc/moc_QtNodeTreeView.cc \
 	QtDocument.cc \
-	.moc/moc_QtDocument.cc
+	.moc/moc_QtDocument.cc \
+	QtNetTerminal.cc \
+	.moc/moc_QtNetTerminal.cc
 
 
 libbaseProbeQt_la_SOURCES = empty.cc 

@@ -8,12 +8,14 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsRectItem>
 #include <string>
+#include "UITerminal.h"
 
 namespace FD
 {
 
 class QtNode;
 class QtLink;
+class QtNetTerminal;
 
 class QtTerminal : public QGraphicsRectItem
 {
@@ -22,6 +24,8 @@ class QtTerminal : public QGraphicsRectItem
         enum {INPUT,OUTPUT,VIRTUAL};
               
     QtTerminal(QtNode *node, std::string name="", int type = INPUT ,float x = 0, float y = 0);
+    
+    QtTerminal(QtNode *node, UITerminal *uiTerminal);
 
     int getType(){return m_type;}
     
@@ -43,6 +47,9 @@ class QtTerminal : public QGraphicsRectItem
         QtTerminal* m_virtualQtTerminal;
         QtLink* m_virtualQtLink;
         bool m_linking;
+        UITerminal *m_uiTerminal;
+        
+        QtNetTerminal* m_netTerminal;
 
 };   
 
