@@ -40,10 +40,12 @@ class QtFlowDesigner : public QMainWindow
     void newNetwork(const std::string name);
     
     
-    void newDocument(const std::string &name);   
+    void newDocument(const std::string &name);
+    void loadDocument(const std::string &path);      
     
     public slots:
-        void newNetworkClicked();         
+        void newNetworkClicked();
+        void openDocumentClicked();               
 
 
 	protected:
