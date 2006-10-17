@@ -36,7 +36,14 @@ namespace FD
         //std::vector<QtNode*> m_nodes;
         //std::vector<QtLink*> m_links;
         std::map<UINode*,QtNode*> m_nodeMap;
-        std::map<UILink*,QtLink*> m_linkMap;            
+        std::map<UILink*,QtLink*> m_linkMap;
+                 
+                     
+        //Drag & Drop
+        void dragEnterEvent(QDragEnterEvent *event);
+        void dragMoveEvent(QDragMoveEvent *event);
+        void dropEvent(QDropEvent *event);        
+        
     };
 }//namespace FD
 #endif

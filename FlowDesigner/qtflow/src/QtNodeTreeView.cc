@@ -20,7 +20,7 @@ namespace FD
         m_root = new QTreeWidgetItem(this);
         m_root->setText(0,"Nodes");
         scanNodeRepository();
-
+        setDragEnabled(true);
     }
 
     
@@ -121,5 +121,24 @@ namespace FD
         
         return catLevels;
     }
+    
+    void QtNodeTreeView::dragEnterEvent(QDragEnterEvent *event)
+    {
+        cerr<<"QtNodeTreeView::dragEnterEvent(QDragEnterEvent *event)"<<endl;
+        event->accept();
+    }
+
+    void QtNodeTreeView::dragMoveEvent(QDragMoveEvent *event)
+    {
+        cerr<<"QtNodeTreeView::dragMoveEvent(QDragMoveEvent *event)"<<endl;
+        event->accept();
+    }
+
+    void QtNodeTreeView::dropEvent(QDropEvent *event)
+    {
+        cerr<<"tNodeTreeView::dropEvent(QDropEvent *event)"<<endl;
+        event->accept();
+    }   
+    
 
 }//namespace FD

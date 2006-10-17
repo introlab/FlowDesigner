@@ -31,7 +31,8 @@ namespace FD
             QTabWidget *m_tabWidget;         
             UIDocument *m_doc;
                              
-            std::vector<QtNetwork*> m_networks;         
+            std::vector<QtNetwork*> m_networks;
+
     
     };
 } //namespace FD  

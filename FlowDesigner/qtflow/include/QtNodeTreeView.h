@@ -6,7 +6,7 @@
 #include "UINodeRepository.h"
 #include <vector>
 #include <string>
-
+#include <QtGui>
 
 namespace FD
 {
@@ -23,6 +23,12 @@ class QtNodeTreeView : public  QTreeWidget
 	void scanNodeRepository();
 	std::vector<std::string> extractCategory(const std::string &category);
     void insert(const QTreeWidgetItem* root, const std::vector<std::string> &path, int level);
+
+    //Drag & Drop   
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+    void dropEvent(QDropEvent *event);
+    
     
     QTreeWidgetItem *m_root;   
 

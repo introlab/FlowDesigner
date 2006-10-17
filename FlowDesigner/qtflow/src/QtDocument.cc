@@ -74,6 +74,8 @@ namespace FD
                 m_tabWidget->addTab(m_networks.back(), nets[i]->getName().c_str());
             }            
         }
-    }      
+    }
+    
+
 
 }//namespace FD

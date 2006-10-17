@@ -81,7 +81,10 @@ namespace FD
 
         }
 
-
+        //setDragEnabled(true);
+        //setAcceptDrops(true);
+        //setDropIndicatorShown(true)
+                
         scale(1.0, 1.0);
         setMinimumSize(400, 400);
         setWindowTitle("Essai 1");
@@ -181,4 +184,24 @@ namespace FD
         scale(scaleFactor, scaleFactor);
     }
 
+         //Drag & Drop
+    void QtNetwork::dragEnterEvent(QDragEnterEvent *event)
+    {
+        cerr<<"QtNetwork::dragEnterEvent(QDragEnterEvent *event)"<<endl;      
+        event->accept();         
+    }
+          
+    void QtNetwork::dragMoveEvent(QDragMoveEvent *event)
+    {
+        cerr<<"QtNetwork::dragMoveEvent(QDragMoveEvent *event)"<<endl;
+        event->accept();         
+    }
+          
+    void QtNetwork::dropEvent(QDropEvent *event)
+    {
+        cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;
+        event->accept();         
+    }      
+    
+    
 } //namespace FD
