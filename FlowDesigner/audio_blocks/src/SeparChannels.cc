@@ -9,7 +9,7 @@ namespace FD {
 
 class SeparChannels;
 
-DECLARE_NODE(SeparChannels)
+DECLARE_NODE(SeparChannels);
 /*Node
  *
  * @name SeparChannels
@@ -20,13 +20,18 @@ DECLARE_NODE(SeparChannels)
  * @input_type Vector<float>
  * @input_description Stero frame (encoded as left, right, left, right, ...)
  *
- * @output_name LEFT
+ * @output_name CHANNEL1
  * @output_type Vector<float>
- * @output_description Frame for the left channel
+ * @output_description Frame for first channel
  *
- * @output_name RIGHT
+ * @output_name CHANNEL2
  * @output_type Vector<float>
- * @output_description Frame for the right channel
+ * @output_description Frame for second channel
+ *
+ * @parameter_name NB_CHANNELS
+ * @parameter_type int
+ * @parameter_value 2
+ * @parameter_description Number of channels in the input
  *
 END*/
 
@@ -34,16 +39,27 @@ END*/
 class SeparChannels : public BufferedNode {
    
    int inputID;
-   int output1ID;
-   int output2ID;
+   vector<int> outputID;
 
 public:
    SeparChannels(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
       inputID = addInput("INPUT");
-      output1ID = addOutput("LEFT");
-      output2ID = addOutput("RIGHT");
+      if (parameters.exist("NB_CHANNELS"))
+      {
+         outputID.resize(dereference_cast<int> (parameters.get("NB_CHANNELS")));
+         for (int i=0;i<outputID.size();i++)
+         {
+            char inStr[9] = "CHANNELX";
+            inStr[7] = '1'+i;
+            outputID[i] = addOutput(inStr);
+         }
+      } else {
+         outputID.resize(2);
+         outputID[0] = addOutput("LEFT");
+         outputID[1] = addOutput("RIGHT");
+      }
    }
 
    void calculate(int output_id, int count, Buffer &out)
@@ -52,22 +68,24 @@ public:
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       int inputLength = in.size();
-      int outputLength = inputLength>>1;
+      int outputLength = inputLength/outputID.size();
 
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
       
       int channel;
-      if (output_id == output1ID)
-	 channel = 0;
-      else 
-	 channel = 1;
+      for (int i=0;i<outputID.size();i++)
+         if (output_id == outputID[i])
+            channel = i;
+      if (channel>=outputID.size())
+         throw new NodeException(this, "Sound copy constructor should not be called",__FILE__,__LINE__);
       for (int i=0;i<outputLength;i++)
       {
-	 output[i] = in[2*i+channel];
+         output[i] = in[outputID.size()*i+channel];
       }
    }
 
 };
 
 }//namespace FD
+
