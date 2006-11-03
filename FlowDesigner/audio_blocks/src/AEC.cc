@@ -5,6 +5,7 @@
 #include "Vector.h"
 #include <math.h>
 #include <speex/speex_echo.h>
+#include <speex/speex_preprocess.h>
 
 using namespace std;
 
@@ -12,12 +13,13 @@ namespace FD {
 
 class AEC;
 
-DECLARE_NODE(AEC)
+DECLARE_NODE(AEC);
+ 
 /*Node
  *
  * @name AEC
  * @category DSP:Filter
- * @description Computes the natural logarithm of a vector using a *rough* appriximation (only 17 MSB used)
+ * @description Acoustic echo canceller (AEC) with non-linear processing (NLP)
  *
  * @input_name INPUT
  * @input_type Vector<float>
@@ -51,6 +53,21 @@ DECLARE_NODE(AEC)
  * @parameter_value true
  * @parameter_description Whether noise suppression (aka nonlinear processing) is used
  *
+ * @parameter_name NOISE_SUPPRESS
+ * @parameter_type int
+ * @parameter_value 15
+ * @parameter_description Amount of noise to suppress (dB)
+ *
+ * @parameter_name ECHO_SUPPRESS
+ * @parameter_type int
+ * @parameter_value 45
+ * @parameter_description Amount of echo to suppress (dB)
+ *
+ * @parameter_name ECHO_SUPPRESS_ACTIVE
+ * @parameter_type int
+ * @parameter_value 10
+ * @parameter_description Amount of noise to suppress when there is active speech (dB)
+ *
 END*/
 
 
@@ -60,6 +77,7 @@ class AEC : public BufferedNode {
    int farEndID;
    int outputID;
    SpeexEchoState *state;
+   SpeexPreprocessState *pre;
    int frameSize;
    spx_int32_t rate;
    int tail;
@@ -79,6 +97,19 @@ public:
       nlp = dereference_cast<bool> (parameters.get("NLP"));
       state = speex_echo_state_init(frameSize, tail);
       speex_echo_ctl(state, SPEEX_ECHO_SET_SAMPLING_RATE, &rate);
+      if (dereference_cast<bool> (parameters.get("NLP")))
+      {
+         pre = speex_preprocess_state_init(frameSize, rate);
+         speex_preprocess_ctl(pre, SPEEX_PREPROCESS_SET_ECHO_STATE, state);
+         int tmp = dereference_cast<int> (parameters.get("NOISE_SUPPRESS"));
+         speex_preprocess_ctl(pre, SPEEX_PREPROCESS_SET_NOISE_SUPPRESS, &tmp);
+         tmp = dereference_cast<int> (parameters.get("ECHO_SUPPRESS"));
+         speex_preprocess_ctl(pre, SPEEX_PREPROCESS_SET_ECHO_SUPPRESS, &tmp);
+         tmp = dereference_cast<int> (parameters.get("ECHO_SUPPRESS_ACTIVE"));
+         speex_preprocess_ctl(pre, SPEEX_PREPROCESS_SET_ECHO_SUPPRESS_ACTIVE, &tmp);
+      } else {
+         pre = NULL;
+      }
       inOrder = true;
    }
    
@@ -101,6 +132,9 @@ public:
          fars[i] = far[i];
       //std:cerr << "cancel " << inputLength << std::endl;
       speex_echo_cancellation(state, &ins[0], &fars[0], &outs[0]);
+      //speex_echo_capture(state, &ins[0], &outs[0], NULL);
+      //speex_echo_playback(state, &fars[0]);
+      speex_preprocess_run(pre, &outs[0]);
       for (int i=0;i<inputLength;i++)
          output[i] = outs[i];
    }
