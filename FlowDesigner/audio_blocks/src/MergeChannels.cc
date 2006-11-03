@@ -12,64 +12,104 @@ class MergeChannels;
 
 DECLARE_NODE(MergeChannels)
 /*Node
-
+ *
  * @name MergeChannels
  * @category DSP:Audio
  * @description No description available
-
- * @input_name LEFT
+ *
+ * @input_name CHANNEL1
  * @input_description No description available
-
- * @input_name RIGHT
+ *
+ * @input_name CHANNEL2
  * @input_description No description available
-
+ *
  * @output_name OUTPUT
  * @output_description No description available
-
+ *
+ * @parameter_name NB_CHANNELS
+ * @parameter_type int
+ * @parameter_value 2
+ * @parameter_description Number of channels in the input
+ *
+ * @parameter_name ADDING
+ * @parameter_type bool
+ * @parameter_value false
+ * @parameter_description Whether the channels should be added instead of interlaced
+ *
 END*/
 
 
 class MergeChannels : public BufferedNode {
    
-   int input1ID;
-   int input2ID;
+   vector<int> inputID;
    int outputID;
-
+   bool adding;
 public:
    MergeChannels(string nodeName, ParameterSet params)
    : BufferedNode(nodeName, params)
    {
-      input1ID = addInput("LEFT");
-      input2ID = addInput("RIGHT");
+      if (parameters.exist("NB_CHANNELS"))
+      {
+         inputID.resize(dereference_cast<int> (parameters.get("NB_CHANNELS")));
+         for (int i=0;i<inputID.size();i++)
+         {
+            char inStr[9] = "CHANNELX";
+            inStr[7] = '1'+i;
+            inputID[i] = addInput(inStr);
+         }
+      } else {
+         inputID.resize(2);
+         inputID[0] = addInput("LEFT");
+         inputID[1] = addInput("RIGHT");
+      }
+
       outputID = addOutput("OUTPUT");
+      
+      adding = false;
+      if (parameters.exist("ADDING") && dereference_cast<bool> (parameters.get("ADDING")))
+         adding = true;
    }
 
    void calculate(int output_id, int count, Buffer &out)
    {
-      ObjectRef input1Value = getInput(input1ID, count);
-
-
-      ObjectRef input2Value = getInput(input2ID, count);
-
-
-      const Vector<float> &in1 = object_cast<Vector<float> > (input1Value);
-      const Vector<float> &in2 = object_cast<Vector<float> > (input2Value);
+      vector<ObjectRef> inputValues(inputID.size());
       
-      if (in1.size() != in2.size())
+      for (int i=0;i<inputID.size();i++)
+         inputValues[i] = getInput(inputID[i], count);
+      
+      vector<const Vector<float> *> in (inputID.size());
+      for (int i=0;i<inputID.size();i++)
       {
-	 //cerr << in1.size() << " " << in2.size() << endl;
-	 throw new NodeException (this, "Channels have different length", __FILE__, __LINE__);
+         in[i] = &object_cast<Vector<float> > (inputValues[i]);
+         if (in[i]->size() != in[0]->size())
+            throw new NodeException (this, "Channels have different length", __FILE__, __LINE__);
       }
-      int inputLength = in1.size();
-      int outputLength = inputLength << 1;
+      int inputLength = in[0]->size();
+      int outputLength;
+      
+      if (adding)
+         outputLength = inputLength;
+      else
+         outputLength = inputLength*inputID.size();
       
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
-      for (int i=0;i<inputLength;i++)
+      if (adding)
       {
-	 output[2*i] = in1[i];
-	 output[2*i+1] = in2[i];
+         for (int i=0;i<inputLength;i++)
+            output[i] = 0;
+         for (int j=0;j<inputID.size();j++)
+         {
+            for (int i=0;i<inputLength;i++)
+               output[i] += (*(in[j]))[i];
+         }         
+      } else {
+         for (int j=0;j<inputID.size();j++)
+         {
+            for (int i=0;i<inputLength;i++)
+               output[inputID.size()*i+j] = (*(in[j]))[i];
+         }
       }
    }
 
