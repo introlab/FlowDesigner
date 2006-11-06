@@ -1,4 +1,4 @@
-// Copyright (C) 1999 Jean-Marc Valin
+// Copyright (C) 1999-2006 Jean-Marc Valin & Dominic Letourneau
 
 #include "Node.h"
 #include "Vector.h"
@@ -62,21 +62,21 @@ END*/
 
 class alsa_streambuf : public std::streambuf {
    protected:
-      virtual int overflow(int = EOF) {std::cerr << "Don't call alsa_streambuf::overflow()" << std::endl;}
+      virtual int overflow(int = EOF) {std::cerr << "Don't call alsa_streambuf::overflow()" << std::endl;return 1;}
       virtual std::streamsize xsputn(const char *s, std::streamsize n);
 
-      virtual int uflow()  {std::cerr << "Don't call alsa_streambuf::uflow()" << std::endl;}
-      virtual int underflow()  {std::cerr << "Don't call alsa_streambuf::underflow()" << std::endl;}
+      virtual int uflow()  {std::cerr << "Don't call alsa_streambuf::uflow()" << std::endl;return 1;}
+      virtual int underflow()  {std::cerr << "Don't call alsa_streambuf::underflow()" << std::endl;return 1;}
       virtual std::streamsize xsgetn(char *s, std::streamsize n);
-      virtual int pbackfail(int c) {std::cerr << "Don't call alsa_streambuf::pbackfail()" << std::endl;}
+      virtual int pbackfail(int c) {std::cerr << "Don't call alsa_streambuf::pbackfail()" << std::endl;return 1;}
    public:
       alsa_streambuf(std::string dev, int _mode, unsigned int _rate, int _channels, int _period);
       virtual ~alsa_streambuf();
    protected:
       std::string device_name;
+      unsigned int rate;
       int channels;
       int mode;
-      unsigned int rate;
       int period;
       snd_pcm_t *capture_handle;
       snd_pcm_t *playback_handle;
@@ -130,105 +130,105 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
    err = snd_output_stdio_attach(&jcd_out, stdout, 0);
    
    if ((err = snd_pcm_open (&capture_handle, device_name.c_str(), SND_PCM_STREAM_CAPTURE, 0)) < 0) {
-      fprintf (stderr, "cannot open audio device %s (%s)\n",
+      fprintf (stderr, "cannot open capture audio device %s (%s)\n",
                device_name.c_str(),
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0) {
-      fprintf (stderr, "cannot allocate hardware parameter structure (%s)\n",
+      fprintf (stderr, "cannot allocate capture hardware parameter structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_any (capture_handle, hw_params)) < 0) {
-      fprintf (stderr, "cannot initialize hardware parameter structure (%s)\n",
+      fprintf (stderr, "cannot initialize capture hardware parameter structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_set_access (capture_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
-      fprintf (stderr, "cannot set access type (%s)\n",
+      fprintf (stderr, "cannot set capture access type (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_set_format (capture_handle, hw_params, SND_PCM_FORMAT_S16_LE)) < 0) {
-      fprintf (stderr, "cannot set sample format (%s)\n",
+      fprintf (stderr, "cannot set capture sample format (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_set_rate_near (capture_handle, hw_params, &rate, 0)) < 0) {
-      fprintf (stderr, "cannot set sample rate (%s)\n",
+      fprintf (stderr, "cannot set capture sample rate (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    /*fprintf (stderr, "rate = %d\n", rate);*/
 
    if ((err = snd_pcm_hw_params_set_channels (capture_handle, hw_params, channels)) < 0) {
-      fprintf (stderr, "cannot set channel count (%s)\n",
+      fprintf (stderr, "cannot set capture channel count (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    
    period_size = period;
    dir = 0;
    if ((err = snd_pcm_hw_params_set_period_size_near (capture_handle, hw_params, &period_size, &dir)) < 0) {
-      fprintf (stderr, "cannot set period size (%s)\n",
+      fprintf (stderr, "cannot set capture period size (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
-   
+   dir = 0;
    if ((err = snd_pcm_hw_params_set_periods (capture_handle, hw_params, 2, 0)) < 0) {
-      fprintf (stderr, "cannot set period size (%s)\n",
+      fprintf (stderr, "cannot set capture number of periods (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    
    buffer_size = period_size * 2;
    dir=0;
    if ((err = snd_pcm_hw_params_set_buffer_size_near (capture_handle, hw_params, &buffer_size)) < 0) {
-      fprintf (stderr, "cannot set buffer time (%s)\n",
+      fprintf (stderr, "cannot set capture buffer size (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    
    if ((err = snd_pcm_hw_params (capture_handle, hw_params)) < 0) {
       fprintf (stderr, "cannot set capture parameters (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    /*snd_pcm_dump_setup(dev->capture_handle, jcd_out);*/
    snd_pcm_hw_params_free (hw_params);
 
    if ((err = snd_pcm_sw_params_malloc (&sw_params)) < 0) {
-      fprintf (stderr, "cannot allocate software parameters structure (%s)\n",
+      fprintf (stderr, "cannot allocate capture software parameters structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params_current (capture_handle, sw_params)) < 0) {
-      fprintf (stderr, "cannot initialize software parameters structure (%s)\n",
+      fprintf (stderr, "cannot initialize capture software parameters structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params_set_avail_min (capture_handle, sw_params, period)) < 0) {
-      fprintf (stderr, "cannot set minimum available count (%s)\n",
+      fprintf (stderr, "cannot set capture minimum available count (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params (capture_handle, sw_params)) < 0) {
-      fprintf (stderr, "cannot set software parameters (%s)\n",
+      fprintf (stderr, "cannot set capture software parameters (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    
    if ((err = snd_pcm_prepare (capture_handle)) < 0) {
-      fprintf (stderr, "cannot prepare audio interface for use (%s)\n",
+      fprintf (stderr, "cannot prepare capture audio interface for use (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
 
    
@@ -236,69 +236,69 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
    
    
    if ((err = snd_pcm_open (&playback_handle, device_name.c_str(), SND_PCM_STREAM_PLAYBACK, 0)) < 0) {
-      fprintf (stderr, "cannot open audio device %s (%s)\n",
+      fprintf (stderr, "cannot open playback audio device %s (%s)\n",
                device_name.c_str(),
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    
    if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0) {
-      fprintf (stderr, "cannot allocate hardware parameter structure (%s)\n",
+      fprintf (stderr, "cannot allocate playback hardware parameter structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_any (playback_handle, hw_params)) < 0) {
-      fprintf (stderr, "cannot initialize hardware parameter structure (%s)\n",
+      fprintf (stderr, "cannot initialize playback hardware parameter structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_set_access (playback_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
-      fprintf (stderr, "cannot set access type (%s)\n",
+      fprintf (stderr, "cannot set playback access type (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_set_format (playback_handle, hw_params, SND_PCM_FORMAT_S16_LE)) < 0) {
-      fprintf (stderr, "cannot set sample format (%s)\n",
+      fprintf (stderr, "cannot set playback sample format (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
    if ((err = snd_pcm_hw_params_set_rate_near (playback_handle, hw_params, &rate, 0)) < 0) {
-      fprintf (stderr, "cannot set sample rate (%s)\n",
+      fprintf (stderr, "cannot set playback sample rate (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    /*fprintf (stderr, "rate = %d\n", rate);*/
 
    if ((err = snd_pcm_hw_params_set_channels (playback_handle, hw_params, channels)) < 0) {
-      fprintf (stderr, "cannot set channel count (%s)\n",
+      fprintf (stderr, "cannot set playback channel count (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    
    period_size = period;
    dir = 0;
    if ((err = snd_pcm_hw_params_set_period_size_near (playback_handle, hw_params, &period_size, &dir)) < 0) {
-      fprintf (stderr, "cannot set period size (%s)\n",
+      fprintf (stderr, "cannot set playback period size (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    buffer_size = period_size * 2;
    dir=0;
    if ((err = snd_pcm_hw_params_set_buffer_size_near (playback_handle, hw_params, &buffer_size)) < 0) {
-      fprintf (stderr, "cannot set buffer time (%s)\n",
+      fprintf (stderr, "cannot set playback buffer size (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
 
    if ((err = snd_pcm_hw_params (playback_handle, hw_params)) < 0) {
       fprintf (stderr, "cannot set playback parameters (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
    /*snd_pcm_dump_setup(dev->playback_handle, jcd_out);*/
@@ -306,36 +306,36 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
 
    
    if ((err = snd_pcm_sw_params_malloc (&sw_params)) < 0) {
-      fprintf (stderr, "cannot allocate software parameters structure (%s)\n",
+      fprintf (stderr, "cannot allocate playback software parameters structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params_current (playback_handle, sw_params)) < 0) {
-      fprintf (stderr, "cannot initialize software parameters structure (%s)\n",
+      fprintf (stderr, "cannot initialize playback software parameters structure (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params_set_avail_min (playback_handle, sw_params, period)) < 0) {
-      fprintf (stderr, "cannot set minimum available count (%s)\n",
+      fprintf (stderr, "cannot set playback minimum available count (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params_set_start_threshold (playback_handle, sw_params, period)) < 0) {
-      fprintf (stderr, "cannot set start mode (%s)\n",
+      fprintf (stderr, "cannot set playback start mode (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    if ((err = snd_pcm_sw_params (playback_handle, sw_params)) < 0) {
-      fprintf (stderr, "cannot set software parameters (%s)\n",
+      fprintf (stderr, "cannot set playback software parameters (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
   
   
    if ((err = snd_pcm_prepare (playback_handle)) < 0) {
-      fprintf (stderr, "cannot prepare audio interface for use (%s)\n",
+      fprintf (stderr, "cannot prepare playback audio interface for use (%s)\n",
                snd_strerror (err));
-      assert(0);
+      throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
    
 #if 0
@@ -411,7 +411,7 @@ std::streamsize alsa_streambuf::xsputn(const char *s, std::streamsize n)
       //return 0;
    }
    //std::cerr << "wrote " << err << std::endl;
-   //cerr << "+";
+   //std::cerr << "+";
    return n;
 }
 
@@ -464,7 +464,13 @@ protected:
    
    /**The ID of the 'value' output*/
    int outputID;
-   
+   String device;
+   int speed;
+   int channels; 
+   int period; 
+   int nb_periods;
+   String mode;
+   bool devOpen;
 public:
 
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -478,14 +484,14 @@ public:
    {
       Node::initialize();
       
-      String device = object_cast <String> (parameters.get("DEVICE"));
-      int speed = dereference_cast<int> (parameters.get("RATE"));
-      int channels = dereference_cast<int> (parameters.get("CHANNELS")); 
-      int period = dereference_cast<int> (parameters.get("PERIOD")); 
-      int nb_periods = dereference_cast<int> (parameters.get("NB_PERIODS"));
-      String mode = object_cast <String> (parameters.get("MODE"));
+      device = object_cast <String> (parameters.get("DEVICE"));
+      speed = dereference_cast<int> (parameters.get("RATE"));
+      channels = dereference_cast<int> (parameters.get("CHANNELS")); 
+      period = dereference_cast<int> (parameters.get("PERIOD")); 
+      nb_periods = dereference_cast<int> (parameters.get("NB_PERIODS"));
+      mode = object_cast <String> (parameters.get("MODE"));
       
-      value = ObjectRef(new IOStream(new alsa_iostream(device, 0, speed, channels, period)));
+      devOpen = false;
    }
 
    virtual ~ALSASound()
@@ -497,6 +503,13 @@ public:
    and for the 'count' iteration */
    virtual ObjectRef getOutput(int output_id, int count)
    {
+      if (!devOpen) 
+      {
+         std::cerr << "Opening audio device " << device << std::endl;
+         value = ObjectRef(new IOStream(new alsa_iostream(device, 0, speed, channels, period)));
+         std::cerr << "done" << std::endl;
+         devOpen = true;
+      }
       if (output_id==outputID) return value;
       else throw new NodeException (this, "Sound: Unknown output id", __FILE__, __LINE__);
    }
