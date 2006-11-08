@@ -1,3 +1,4 @@
+// Copyright (C) 1999-2006 Jean-Marc Valin & Dominic Letourneau
 #include "stream_wrap.h"
 #include <string>
 #include "BaseException.h"
