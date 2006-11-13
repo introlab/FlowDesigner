@@ -4,12 +4,25 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 override bindir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.104 2005/11/07 18:00:00 maestro Exp $
+# $Id: Makefile.am,v 1.105 2005/11/08 19:07:39 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
 lib_LTLIBRARIES = libablocks.la 
+
+#SPEEX BLOCKS
+if SPEEX_FOUND
+SPEEX_FILES = AEC.cc
+endif
+#END SPEEX BLOCKS
+
+#ALSA BLOCKS
+if ALSA_FOUND
+ALSA_FILES = ALSASound.cc 
+endif
+
+#END ALSA BLOCKS
 
 libablocks_la_SOURCES =	\
 	GCMS.cc \
@@ -91,7 +104,7 @@ libablocks_la_SOURCES =	\
 	Sort.cc \
 	lsp.c \
 	LSP2LPC.cc \
-	LPC2LSP.cc
+	LPC2LSP.cc $(SPEEX_FILES) $(ALSA_FILES)
 
 install-data-local:
 	mkdir -p $(datadir)
@@ -106,8 +119,11 @@ endif
 
 libablocks_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(LIB_FFTW) $(top_srcdir)/../data-flow/src/libflow.la
 
-INCLUDES = -I$(top_srcdir)/../data-flow/include -I$(top_srcdir)/include $(FFTW_INCLUDES)
+INCLUDES = -I$(top_srcdir)/../data-flow/include \
+	-I$(top_srcdir)/include $(FFTW_INCLUDES) \
+	$(ALSA_CFLAGS) $(SPEEX_CFLAGS)
 
-LDADD = $(top_srcdir)/../data-flow/src/libflow.la $(LIB_FFTW)
+LDADD = $(top_srcdir)/../data-flow/src/libflow.la $(LIB_FFTW) \
+	$(ALSA_LIBS) $(SPEEX_LIBS)
 
 
