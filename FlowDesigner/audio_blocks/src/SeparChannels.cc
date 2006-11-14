@@ -28,6 +28,30 @@ DECLARE_NODE(SeparChannels);
  * @output_type Vector<float>
  * @output_description Frame for second channel
  *
+ * @output_name CHANNEL3
+ * @output_type Vector<float>
+ * @output_description Frame for 3rd channel
+ *
+ * @output_name CHANNEL4
+ * @output_type Vector<float>
+ * @output_description Frame for 4th channel
+ *
+ * @output_name CHANNEL5
+ * @output_type Vector<float>
+ * @output_description Frame for 5th channel
+ *
+ * @output_name CHANNEL6
+ * @output_type Vector<float>
+ * @output_description Frame for 6th channel
+ *
+ * @output_name CHANNEL7
+ * @output_type Vector<float>
+ * @output_description Frame for 7th channel
+ *
+ * @output_name CHANNEL8
+ * @output_type Vector<float>
+ * @output_description Frame for 8th channel
+ *
  * @parameter_name NB_CHANNELS
  * @parameter_type int
  * @parameter_value 2

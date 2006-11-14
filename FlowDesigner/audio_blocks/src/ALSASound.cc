@@ -127,6 +127,9 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
    snd_pcm_uframes_t buffer_size = 2*period;
    static snd_output_t *jcd_out;
    
+   int nb_periods=2;
+   std::cerr << "Initialising ALSA" << std::endl;
+
    err = snd_output_stdio_attach(&jcd_out, stdout, 0);
    
    if ((err = snd_pcm_open (&capture_handle, device_name.c_str(), SND_PCM_STREAM_CAPTURE, 0)) < 0) {
@@ -181,13 +184,13 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
       throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    dir = 0;
-   if ((err = snd_pcm_hw_params_set_periods (capture_handle, hw_params, 2, 0)) < 0) {
+   if ((err = snd_pcm_hw_params_set_periods (capture_handle, hw_params, nb_periods, 0)) < 0) {
       fprintf (stderr, "cannot set capture number of periods (%s)\n",
                snd_strerror (err));
       throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
    
-   buffer_size = period_size * 2;
+   buffer_size = period_size * nb_periods;
    dir=0;
    if ((err = snd_pcm_hw_params_set_buffer_size_near (capture_handle, hw_params, &buffer_size)) < 0) {
       fprintf (stderr, "cannot set capture buffer size (%s)\n",
@@ -200,7 +203,7 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
                snd_strerror (err));
       throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
    }
-   /*snd_pcm_dump_setup(dev->capture_handle, jcd_out);*/
+   snd_pcm_dump_setup(capture_handle, jcd_out);
    snd_pcm_hw_params_free (hw_params);
 
    if ((err = snd_pcm_sw_params_malloc (&sw_params)) < 0) {
@@ -225,12 +228,6 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
    }
 
    
-   if ((err = snd_pcm_prepare (capture_handle)) < 0) {
-      fprintf (stderr, "cannot prepare capture audio interface for use (%s)\n",
-               snd_strerror (err));
-      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
-   }
-
    
    
    
@@ -286,7 +283,13 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
                snd_strerror (err));
       throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
-   buffer_size = period_size * 2;
+   dir = 0;
+   if ((err = snd_pcm_hw_params_set_periods (playback_handle, hw_params, nb_periods, 0)) < 0) {
+      fprintf (stderr, "cannot set capture number of periods (%s)\n",
+               snd_strerror (err));
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
+   }
+   buffer_size = period_size * nb_periods;
    dir=0;
    if ((err = snd_pcm_hw_params_set_buffer_size_near (playback_handle, hw_params, &buffer_size)) < 0) {
       fprintf (stderr, "cannot set playback buffer size (%s)\n",
@@ -301,7 +304,7 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
       throw new GeneralException("Cannot setup playback", __FILE__, __LINE__);
    }
 
-   /*snd_pcm_dump_setup(dev->playback_handle, jcd_out);*/
+   snd_pcm_dump_setup(playback_handle, jcd_out);
    snd_pcm_hw_params_free (hw_params);
 
    
@@ -332,6 +335,15 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
    }
   
   
+   snd_pcm_link(capture_handle, playback_handle);
+   perror("snd_pcm_link");
+   if ((err = snd_pcm_prepare (capture_handle)) < 0) {
+      fprintf (stderr, "cannot prepare capture audio interface for use (%s)\n",
+               snd_strerror (err));
+      throw new GeneralException("Cannot setup capture", __FILE__, __LINE__);
+   }
+
+
    if ((err = snd_pcm_prepare (playback_handle)) < 0) {
       fprintf (stderr, "cannot prepare playback audio interface for use (%s)\n",
                snd_strerror (err));
@@ -358,16 +370,15 @@ alsa_streambuf::alsa_streambuf(std::string dev, int _mode, unsigned int _rate, i
       assert(0);
    }
 #endif
-
    struct sched_param param;
    param.sched_priority = sched_get_priority_max(SCHED_FIFO);
    //param.sched_priority = 40;
-   if (sched_setscheduler(0,SCHED_FIFO,&param))
-      perror("sched_setscheduler");
-
+   sched_setscheduler(0,SCHED_FIFO,&param);
+   perror("sched_setscheduler");
+   
    if (mlockall(MCL_FUTURE)!=0)
       perror("mlockall");
-
+   
    {
       short zeros[channels*period];
       for (int i=0;i<channels*period;i++)
@@ -383,9 +394,22 @@ alsa_streambuf::~alsa_streambuf()
    snd_pcm_close(capture_handle);
 }
 
+//#include <sys/time.h>
+//#include <time.h>
+
 std::streamsize alsa_streambuf::xsputn(const char *s, std::streamsize n)
 {
    int err;
+#if 0
+   struct timeval tv;
+   gettimeofday(&tv,NULL);
+   snd_pcm_sframes_t del1, del2;
+   snd_pcm_delay(playback_handle, &del1);
+   snd_pcm_delay(capture_handle, &del2);
+   fprintf (stderr, "+%d\t%d\t%d\n", tv.tv_usec, del1, del2);
+#endif
+   //fprintf (stderr, "+");
+   
    int nsamples = n/2/channels;
    if ((err = snd_pcm_writei (playback_handle, s, nsamples)) != nsamples)
    {
@@ -418,9 +442,20 @@ std::streamsize alsa_streambuf::xsputn(const char *s, std::streamsize n)
 std::streamsize alsa_streambuf::xsgetn(char *s, std::streamsize n)
 {
    int err;
+#if 0
+   struct timeval tv;
+   gettimeofday(&tv,NULL);
+   snd_pcm_sframes_t del1, del2;
+   snd_pcm_delay(playback_handle, &del1);
+   snd_pcm_delay(capture_handle, &del2);
+   fprintf (stderr, "-%d\t%d\t%d\n", tv.tv_usec, del1, del2);
+#endif
+   //fprintf (stderr, "-");
    int nsamples = n/2/channels;
+   //fprintf (stderr, "reading...\n");
    if ((err = snd_pcm_readi (capture_handle, s, nsamples)) != nsamples)
    {
+      //fprintf (stderr, "error\n");
       if (err<0)
       {
          //fprintf(stderr, "error %d, EPIPE = %d\n", err, EPIPE);
@@ -447,6 +482,7 @@ std::streamsize alsa_streambuf::xsgetn(char *s, std::streamsize n)
       }
       //return 0;
    }
+   //fprintf (stderr, "done reading\n");
    return n;
 }
 

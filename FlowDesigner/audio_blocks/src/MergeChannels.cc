@@ -10,7 +10,7 @@ namespace FD {
 
 class MergeChannels;
 
-DECLARE_NODE(MergeChannels)
+DECLARE_NODE(MergeChannels);
 /*Node
  *
  * @name MergeChannels
@@ -21,6 +21,24 @@ DECLARE_NODE(MergeChannels)
  * @input_description No description available
  *
  * @input_name CHANNEL2
+ * @input_description No description available
+ *
+ * @input_name CHANNEL3
+ * @input_description No description available
+ *
+ * @input_name CHANNEL4
+ * @input_description No description available
+ *
+ * @input_name CHANNEL5
+ * @input_description No description available
+ *
+ * @input_name CHANNEL6
+ * @input_description No description available
+ *
+ * @input_name CHANNEL7
+ * @input_description No description available
+ *
+ * @input_name CHANNEL8
  * @input_description No description available
  *
  * @output_name OUTPUT
