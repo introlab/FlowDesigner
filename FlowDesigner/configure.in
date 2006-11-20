@@ -89,6 +89,7 @@ AC_OUTPUT([Makefile \
 	data-flow/n-files/Makefile \
 	tools/Makefile tools/src/Makefile examples/Makefile \
 	flowdesigner-config FlowDesigner.spec \
+   FlowDesigner.pc \
 	])
 
 
