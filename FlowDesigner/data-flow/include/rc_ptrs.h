@@ -140,7 +140,7 @@ public:
    template <class Z>
    RCPtr& operator= (const RCPtr<Z> &r)
       ;/*{
-      if ((int) this != (int) (&r))
+      if ((void*) this != (void*) (&r))
       {
          X *tmp=dynamic_cast<X*> (r.ptr);
          //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
@@ -168,7 +168,7 @@ public:
    template <class Z>
    RCPtr& operator= (Z *r)
    {
-      if ((int) ptr != (int) (r))
+      if ((void*) ptr != (void*) (r))
       {
          X *tmp=dynamic_cast<X*> (r);
          //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
@@ -260,7 +260,7 @@ template <class X>
 template <class Z>
 RCPtr<X>& RCPtr<X>::operator= (const RCPtr<Z> &r)
 {
-   if ((int) this != (int) (&r))
+   if ((void*) this != (void*) (&r))
    {
       X *tmp=dynamic_cast<X*> (r.ptr);
       //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
