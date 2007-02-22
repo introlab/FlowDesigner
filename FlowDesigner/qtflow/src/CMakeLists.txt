@@ -37,4 +37,6 @@ INCLUDE_DIRECTORIES(../include ../../data-flow/include ${QT_INCLUDE_DIR})
 add_executable(qtflow ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS})
 
 # Linking with libflow and Qt libraries
-target_link_libraries(qtflow  ${QT_LIBRARIES} -L../../data-flow/src -llibflow)
+target_link_libraries(qtflow  ${QT_LIBRARIES} -L../../data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+
+install(TARGETS qtflow DESTINATION bin)
