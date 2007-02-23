@@ -64,7 +64,7 @@ namespace FD
         m_textEdit = new QTextEdit(this);
         m_textEdit->setLineWrapMode (QTextEdit::NoWrap);
         m_textEdit->setReadOnly(true);
-        m_textEdit->setText(QString("<b> FlowDesigner ") + QString(FLOWDESIGNER_VERSION) +
+        m_textEdit->setText(QString("<b> FlowDesigner ") + QString("FLOWDESIGNER_VERSION") +
                             QString(" by Jean-Marc Valin & Dominic Letourneau <br>") +
                             QString("(C) Copyright 1999-2006 <b><br>----<br>"));
         QWidget *window = m_workspace->addWindow(m_textEdit);
@@ -200,7 +200,7 @@ namespace FD
         vboxMainLayout->addWidget(m_textEdit);
         m_textEdit->setLineWrapMode (QTextEdit::NoWrap);
         m_textEdit->setReadOnly(true);
-        m_textEdit->setText(QString("<b> FlowDesigner ") + QString(FLOWDESIGNER_VERSION) +
+        m_textEdit->setText(QString("<b> FlowDesigner ") + QString("FLOWDESIGNER_VERSION") +
                             QString(" by Jean-Marc Valin & Dominic Letourneau <br>") +
                             QString("(C) Copyright 1999-2006 <b><br>----<br>"));
 

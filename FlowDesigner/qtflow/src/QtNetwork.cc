@@ -10,6 +10,8 @@
 #include <QWheelEvent>
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QTreeWidgetItem>
+#include "QtNodeTreeView.h"
 
 #include <math.h>
 #include "QtTerminal.h"
@@ -200,6 +202,21 @@ namespace FD
     void QtNetwork::dropEvent(QDropEvent *event)
     {
         cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;
+		
+		cerr<<"Source is "<<event->source()<<endl;
+		
+		QtNodeTreeView *treeView = dynamic_cast<QtNodeTreeView*>(event->source());
+		
+		if (treeView)
+		{
+			cerr<<"IT IS A TREE WIDGET ITEM"<<endl;
+			
+		}
+		
+		
+		cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
+		//QByteArray data = event->encodedData();
+		
         event->accept();         
     }      
     

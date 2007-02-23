@@ -5,17 +5,20 @@
 #include "path.h"
 #include "BaseException.h"
 #include "UINodeRepository.h"
-#include "iextensions.h"
+//#include "iextensions.h"
 
 using namespace FD;
+using namespace std;
 
 int main(int argc, char* argv[])
 {
 
 	try 
 	{
-		IExtensions::detect();
+		//IExtensions::detect();
 		scanDL();
+		
+		cerr<<"SCAN"<<endl;
 		UINodeRepository::Scan();
         
         QApplication app(argc, argv);
@@ -27,7 +30,9 @@ int main(int argc, char* argv[])
         }
        
         fd.show();
+		cerr<<"App.exec()"<<endl;
         return app.exec();      
+		cerr<<"App.exec() done"<<endl;
    	} 
 	catch (BaseException *e)
    	{

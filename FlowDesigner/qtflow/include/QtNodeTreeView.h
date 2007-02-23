@@ -28,8 +28,15 @@ class QtNodeTreeView : public  QTreeWidget
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *event);
-    
-    
+    virtual QStringList mimeTypes () const;	
+	virtual Qt::DropActions supportedDropActions () const;
+    virtual bool dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data, Qt::DropAction action);
+	
+	//Mouse events
+	//void mouseMoveEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
+	
+	//Root ITEM
     QTreeWidgetItem *m_root;   
 
 };

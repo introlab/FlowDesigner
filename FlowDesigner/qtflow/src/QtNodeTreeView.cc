@@ -49,11 +49,15 @@ namespace FD
             if (!found)
             {
                 QTreeWidgetItem *newroot = const_cast<QTreeWidgetItem *>(root);
+				
                                           
                 for (int i = level; i < path.size(); i++)
                 {
                     QTreeWidgetItem *item = new QTreeWidgetItem(newroot);
                     item->setText(0,path[i].c_str());
+					
+					
+					
                     newroot = item;                                                            
                 }
                 //Create tooltip
@@ -140,5 +144,51 @@ namespace FD
         event->accept();
     }   
     
+	bool QtNodeTreeView::dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data, Qt::DropAction action)
+	{
+	
+		cerr<<"QtNodeTreeView::dropMimeData"<<endl;
+	}
+	
+	QStringList QtNodeTreeView::mimeTypes () const
+	{
+		QStringList qstrList;
+		// list of accepted mime types for drop
+		qstrList.append("text/uri-list");
+		return qstrList;
+	}
+ 
+ 
+	Qt::DropActions QtNodeTreeView::supportedDropActions () const
+	{
+		// returns what actions are supported when dropping
+		return Qt::CopyAction | Qt::MoveAction;
+	}
 
+	
+	
+	void QtNodeTreeView::mouseMoveEvent(QMouseEvent *event)
+	{
+	    // if not left button - return
+	    if (!(event->buttons() & Qt::LeftButton)) return;
+	 
+	    // if no item selected, return (else it would crash)
+	    if (currentItem() == NULL) return;
+	 
+	    QDrag *drag = new QDrag(this);
+	    QMimeData *mimeData = new QMimeData;
+	 	 
+	    // mime stuff
+		mimeData->setText(currentItem()->text(0));
+	    drag->setMimeData(mimeData);
+	 
+	    // start drag
+	    drag->start(Qt::CopyAction | Qt::MoveAction);
+	}
+	
+	
+	
+	
+	
+	
 }//namespace FD
