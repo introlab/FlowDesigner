@@ -82,6 +82,9 @@ namespace FD
             scene->setSceneRect(bbox);
 
         }
+		else {
+			cerr<<"No UINetwork defined"<<endl;
+		}
 
         //setDragEnabled(true);
         //setAcceptDrops(true);
@@ -201,23 +204,33 @@ namespace FD
           
     void QtNetwork::dropEvent(QDropEvent *event)
     {
-        cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;
+        cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;	
+		cerr<<"Source is "<<event->source()<<endl;					
+		cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
 		
-		cerr<<"Source is "<<event->source()<<endl;
-		
-		QtNodeTreeView *treeView = dynamic_cast<QtNodeTreeView*>(event->source());
-		
-		if (treeView)
+		if (event->mimeData()->hasText())
 		{
-			cerr<<"IT IS A TREE WIDGET ITEM"<<endl;
+			//We received a node type name
+			event->accept();         		
+			
+			//create this node
+			if (m_uiNetwork)
+			{
+				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),0,0,true);
+				if (uiNode)
+				{
+					QtNode *node = new QtNode(this,uiNode);
+					scene()->addItem(node);
+					m_nodeMap.insert(make_pair(uiNode,node));
+					scene()->update();
+				}
+			}
 			
 		}
-		
-		
-		cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
-		//QByteArray data = event->encodedData();
-		
-        event->accept();         
+		else
+		{
+			event->ignore();
+		}
     }      
     
     

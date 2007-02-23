@@ -33,7 +33,6 @@ class QtNodeTreeView : public  QTreeWidget
     virtual bool dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data, Qt::DropAction action);
 	
 	//Mouse events
-	//void mouseMoveEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	
 	//Root ITEM
