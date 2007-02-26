@@ -16,7 +16,7 @@ using namespace std;
 
 namespace FD {
 
-vector<string> envList(const char *envName, bool include_home)
+std::vector<std::string> envList(const char *envName, bool include_home)
 {
    vector<string> list;
    if (include_home)
@@ -63,7 +63,8 @@ vector<string> envList(const char *envName, bool include_home)
 
 //Added recursive scan to look for toolbox subdirectories
 //(DL) 06/02/2004
-void recursiveScanDL(const string &path, vector<string> &libList, bool debug) {
+void recursiveScanDL(const std::string &path, std::vector<std::string> &libList, bool debug)
+{
   
   if (debug)
     cerr<<"recursive DL scan with path : "<<path<<endl;
@@ -102,7 +103,12 @@ void recursiveScanDL(const string &path, vector<string> &libList, bool debug) {
     }
     else {
       //this is a standard file, look for the .tlb extension
+#ifndef WIN32	  
       if (name.find(".tlb") != string::npos) {	    
+#else
+	  if (name.find(".dll") != string::npos && name.find(".a") == string::npos){
+#endif
+	  
 	if (debug) {
 	  cerr << "Found " << fullpath << endl;
 	}   

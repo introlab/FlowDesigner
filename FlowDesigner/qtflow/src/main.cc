@@ -1,6 +1,7 @@
 //Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
 
 #include "QtFlowDesigner.h"
+#include "QtDLManager.h"
 #include <QApplication>
 #include "path.h"
 #include "BaseException.h"
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
 	try 
 	{
 		//IExtensions::detect();
-		scanDL();
+		QtDLManager::scanDL();
 		
 		cerr<<"SCAN"<<endl;
 		UINodeRepository::Scan();
