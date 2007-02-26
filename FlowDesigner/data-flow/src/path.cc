@@ -30,6 +30,7 @@ vector<string> envList(const char *envName, bool include_home)
       list.insert(list.end(), prefix+ "/lib/flowdesigner/toolbox");
 #else
 	  #warning Hard coded prefix for debug purposes
+	  cerr<<"INSTALL_PREFIX IS : "<<INSTALL_PREFIX<<endl;
 	  list.insert(list.end(), INSTALL_PREFIX);
 #endif
    }
