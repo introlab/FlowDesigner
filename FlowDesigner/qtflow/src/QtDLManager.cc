@@ -36,7 +36,7 @@ namespace FD
 				}
 				else
 				{
-					cerr<<"... FAILED. "<<"Error message "<<mylib->errorString().toStdString()<<endl;
+					cerr<<"... FAILED. "<<"Error message : "<<mylib->errorString().toStdString()<<endl;
 					delete mylib;
 				}
 			}
