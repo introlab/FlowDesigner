@@ -11,9 +11,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#ifndef WIN32
+//#ifndef WIN32
 #include <unistd.h>
-#endif
+//#endif
+
 #include <string>
 
 #include "Object.h"
@@ -79,7 +80,7 @@ class fileptr_iostream : public std::iostream {
 
 
 
-#ifndef WIN32
+//#ifndef WIN32
 
 class fd_streambuf : public std::streambuf {
   protected:
@@ -181,7 +182,7 @@ class pipe_iostream : public std::iostream {
    void pipeString(const std::string &in, std::string &out) {_streambuffer.pipeString(in,out);}
 };
 
-#endif
+//#endif
 
 }//namespace FD
 #endif

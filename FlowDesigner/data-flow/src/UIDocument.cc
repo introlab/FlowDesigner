@@ -10,7 +10,11 @@
 #include "Network.h"
 #include "ParameterSet.h"
 #include <sys/stat.h>
+
+#ifndef WIN32
 #include <dlfcn.h>
+#endif
+
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>

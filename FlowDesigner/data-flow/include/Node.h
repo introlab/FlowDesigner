@@ -290,7 +290,7 @@ protected:
 
 
 
-#define DECLARE_NODE_XPM(NodeTypeName, XPMFilePtr) int dummy_initializer_for ## NodeTypeName = \
+#define DECLARE_NODE_XPM(NodeTypeName, XPMFilePtr) static int dummy_initializer_for ## NodeTypeName = \
                Node::addFactory (# NodeTypeName, new NodeFactory<NodeTypeName>(# NodeTypeName)) + \
                Node::addXPM (# NodeTypeName, XPMFilePtr);
 

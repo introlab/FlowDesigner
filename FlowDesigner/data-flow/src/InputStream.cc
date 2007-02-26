@@ -3,11 +3,19 @@
 #include "BufferedNode.h"
 #include "net_types.h"
 #include <stdio.h>
+#include <time.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include "Stream.h"
+
+#ifdef WIN32
+
+#include <windows.h>
+#define sleep(x) Sleep((x)*1000)
+
+#endif
 
 using namespace std;
 

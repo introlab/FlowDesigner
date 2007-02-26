@@ -13,7 +13,11 @@
 #include "Network.h"
 #include "Iterator.h"
 #include "ParameterSet.h"
+
+#ifndef WIN32
 #include "ThreadedIterator.h"
+#endif
+
 //UINetwork *currentNetwork;
 
 //@implements UIClasses
@@ -33,7 +37,7 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
 
   //(DL 04/08/2004)
   //Adding version to newly created network, could be improved
-  addNote(newNote(string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
+  addNote(newNote(string("Created with FlowDesigner ") + string("FLOWDESIGNER_VERSION"),0,0,false));
 
 }
 
@@ -521,9 +525,11 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    case subnet:
       net = new Network(netName, params);
       break;
+#ifndef WIN32
    case threaded:
       net = new ThreadedIterator(netName, params);
       break;
+#endif
    default:
       throw new GeneralException("Subnet of unknown type", __FILE__, __LINE__);
       break;

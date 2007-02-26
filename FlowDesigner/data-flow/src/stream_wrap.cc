@@ -86,9 +86,12 @@ streamsize fileptr_streambuf::xsgetn(char *s, streamsize n)
 
 
 
-#ifndef WIN32
+//#ifndef WIN32
 
+#ifndef WIN32
 #include <sys/wait.h>
+#endif
+
 #include <unistd.h>
 
 fd_streambuf::fd_streambuf(int _fd, bool _owner)
@@ -192,7 +195,7 @@ streamsize fd_streambuf::xsgetn(char *s, streamsize n)
 }
 
 
-
+#ifndef WIN32
 pipe_streambuf::pipe_streambuf(const string &command, bool _waitOnClose)
    : ifd(-1)
    , ofd(-1)
@@ -379,6 +382,7 @@ streamsize pipe_streambuf::xsgetn(char *s, streamsize n)
    } else
       throw new GeneralException("Cannot read from write-only pipe", __FILE__, __LINE__);
 }
+
 #if 0
 struct buff {
    int fd;
@@ -409,6 +413,8 @@ void pipe_streambuf::pipeString(const string &in, string &out)
 #endif
 }
 
-}//namespace FD
 #endif
+
+}//namespace FD
+
 

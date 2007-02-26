@@ -18,6 +18,7 @@ namespace FD {
 
 FlowPref FlowPref::pref;
 
+
 FlowPref::FlowPref()
 {
    params["VFLOW"]["ShowAllInOut"] = "no";
@@ -28,11 +29,24 @@ FlowPref::FlowPref()
    params["VFLOW"]["RegularColor"] = "0x8cd0af80";
    params["VFLOW"]["SelectedColor"]= "0xa8b2fc80";
    params["VFLOW"]["ErrorColor"]   = "0xfc959580";
-   
-   string filename = getenv("HOME");
-   filename += "/.flowrc";
+  
+   string filename;
+   char* path = getenv("HOME");
+   if (path)
+   {
+		filename += path;
+		filename += "/.flowrc";
+   }
+   else 
+   {
+		cerr<<"Error : HOME environment variable not set" << endl;
+		return;
+   }
+	
 
    xmlDocPtr doc = xmlParseFile (filename.c_str());
+   
+
    if (!doc || !doc->children || !doc->children->name)
    {
       cerr << "No (valid) preference file found, one will be created in ~/.flowrc" << endl;
@@ -149,8 +163,20 @@ void FlowPref::Save()
 
 void FlowPref::save()
 {
-   string filename = getenv("HOME");
-   filename += "/.flowrc";
+
+   string filename;
+   char* path = getenv("HOME");
+   if (path)
+   {
+		filename += path;
+		filename += "/.flowrc";
+   }
+   else 
+   {
+		cerr<<"FlowPref::save() - Error : HOME environment variable not set" << endl;
+		return;
+   }
+
    xmlDocPtr doc;
    doc = xmlNewDoc((xmlChar *)"1.0");
    doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Preferences", NULL);

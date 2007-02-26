@@ -9,7 +9,6 @@
 #include <string>
 #include <libxml/tree.h>
 #include <fstream>
-#include <pthread.h>
 #include "UINetTerminal.h"
 #include "UINodeParameters.h"
 #include "UINodeRepository.h"

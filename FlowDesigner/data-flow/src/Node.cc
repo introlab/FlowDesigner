@@ -318,6 +318,10 @@ int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
    if (!getFactoryNamed(factoryName)) {
       //the factory doesn't exist inserting it...
       if (factory != NULL) {
+#ifdef WIN32
+#warning Please remove this debug line.      	
+		 std::cerr<<"Inserting factory: "<<factoryName<<endl;
+#endif		 
          factoryDictionary().insert (factoryEntry(factoryName,factory));
       }
       else {

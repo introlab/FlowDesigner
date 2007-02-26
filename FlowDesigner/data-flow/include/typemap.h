@@ -2,19 +2,10 @@
 #ifndef TYPE_MAP_H
 #define TYPE_MAP_H
 
-#ifdef _MSC_VER
-#pragma warning (disable: 4786)
-#endif
-
 #include <algorithm>
 #include <map>
 #include <typeinfo>
 
-
-//Yes, this is yet another Visual C++ bug. It seems like the type_info::before() 
-//method is buggy, or it could be the STL map, I don't know. All I know is that
-//the follwing code doesn't work under MSVC++. That's why there's a (ugly) workaround.
-#ifndef WIN32
 
 struct compare_const_type_info_ptr : public std::binary_function<const std::type_info *, const std::type_info *, bool>
 {
@@ -28,65 +19,6 @@ template<typename T>
 class TypeMap : public std::map<const std::type_info *, T, compare_const_type_info_ptr >
 {
 };
-
-#else
-
-
-#include <vector>
-
-
-template<typename T>
-class TypeMap {
-  public:
-   typedef std::pair<const type_info *, T> element;
-   typedef element *iterator;
-   typedef const element *const_iterator;
-  private:
-   std::vector<element> tmap;
-  public:
-   
-   const_iterator begin() const {return tmap.begin();}
-   iterator begin() {return tmap.begin();}
-
-   const_iterator end() const {return tmap.end();}
-   iterator end() {return tmap.end();}
-
-   iterator find(const type_info *t) 
-   {
-      for (int i=0;i<tmap.size();i++)
-	 if (*t == *(tmap[i].first))
-	    return &tmap[i];
-      return end();
-   }
-
-   const_iterator find(const type_info *t) const
-   {
-      for (int i=0;i<tmap.size();i++)
-	 if (*t == *(tmap[i].first))
-	    return &tmap[i];
-      return end();
-   }
-
-   T &operator[] (const type_info *t) 
-   {
-      iterator it = find(t);
-      if (it != end())
-	 return it->second;
-      else
-      {
-	 element it;
-	 it.first = t;
-	 tmap.push_back(it);
-	 return tmap[tmap.size()-1].second;
-      }
-   }
-
-   
-};
-
-
-
-#endif
 
 
 #endif

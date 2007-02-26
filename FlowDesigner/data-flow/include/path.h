@@ -10,9 +10,9 @@ namespace FD {
 
 std::vector<std::string> envList(const char *envName, bool include_home=true);
 
-extern "C" {
+//extern "C" {
 void scanDL(bool debug=false);
-}
+//}
 
 }
 #endif

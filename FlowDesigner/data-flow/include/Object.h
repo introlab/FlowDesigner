@@ -118,6 +118,9 @@ class Object
 	 }
 	 else
 	 {
+			#ifdef WIN32
+			std::cerr<<"Adding object type : "<<objType<<std::endl;
+			#endif
          	ObjectFactoryDictionary()[objType] = factory;
          	TypeidDictionary()[&typeid(T)] = factory;
          	return 0;

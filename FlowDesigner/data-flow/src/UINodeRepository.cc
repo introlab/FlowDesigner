@@ -10,7 +10,11 @@
 
 /*This bunch of includes is for searching directories, maybe there's a better way...*/
 #include <sys/stat.h>
+
+#ifndef WIN32
 #include <dlfcn.h>
+#endif
+
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -64,6 +68,7 @@ UINodeRepository::UINodeRepository(const UINodeRepository &)
 
 UINodeRepository &UINodeRepository::GlobalRepository()
 {
+   //cerr<<"Getting global repository"<<endl;
    static UINodeRepository rep;
    return rep;
 }
@@ -88,15 +93,22 @@ map<string, set<string> > &UINodeRepository::HeaderDepend()
 
 void UINodeRepository::Scan()
 {
+
+  cerr<<"UINodeRepository::Scan()"<<endl;
+
   //(DL) 06/02/2004
-  vector<string> dirs = envList("FLOWDESIGNER_PATH");
-     
+  vector<string> dirs  = envList("FLOWDESIGNER_PATH");
+
+  
    for (unsigned int i=0;i<dirs.size();i++) 
    {
+	  cerr<<"Scanning def "<<dirs[i]<<endl;
       LoadAllInfoRecursive(dirs[i]);
    }
+   
    cerr<<"done loading def files"<<endl;
-   /*
+
+ /*  
    cerr<<"+++repository contains after loading: "<<endl;
    for (map<string,NodeInfo*>::iterator iter = GlobalRepository().info.begin();
 	iter != GlobalRepository().info.end(); iter++) {
@@ -561,7 +573,16 @@ void UINodeRepository::LoadAllInfoRecursive(const string &path) {
        current_entry != NULL; current_entry = readdir(my_directory)) {
     
     string name = current_entry->d_name;
+#ifndef WIN32	
     string fullpath = path + string("/") + name;
+#else
+	string fullpath = path + string("\\") + name;
+#warning Please remove this debug line.
+	cerr<<"UINodeRepository::LoadAllInfoRecursive with full path : "<<fullpath<<endl;
+#endif
+
+
+
 
     if (stat(fullpath.c_str(), &my_stat) < 0) {
        //cerr<<"stat error"<<endl;
@@ -588,7 +609,10 @@ void UINodeRepository::LoadAllInfoRecursive(const string &path) {
        //loading toolbox
        if (len > 4 && strcmp(".def", current_entry->d_name + len-4)==0)
        {
-	  //cerr<<"Loading toolbox : "<<fullpath<<endl;
+#ifdef WIN32       	
+#warning Please remove this debug line.
+	  cerr<<"Loading toolbox : "<<fullpath<<endl;
+#endif
 	  LoadNodeDefInfo(path, name);
        }
        

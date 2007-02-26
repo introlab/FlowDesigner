@@ -871,6 +871,79 @@ inline Vector<T> operator/ (const Vector<T> &v1, T scal)
    return v;
 }
 
+//pretty print specialization
+template<>
+inline void Vector<float>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<std::endl;
+}
+
+template<>
+inline void Vector<double>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<std::endl;
+}
+
+template<>
+inline void Vector<int>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<std::endl;
+}
+
+#if 0
+inline void Vector<bool>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<std::endl;
+}
+#endif
+
+template<>
+inline void Vector<ObjectRef>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    (*this)[i]->prettyPrint(out);
+    out<<std::endl;
+  } 
+}
+
+template<>
+inline void Vector<std::complex<float> >::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<std::endl;
+}
+
+template<>
+inline void Vector<std::complex<double> >::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<" ";
+  }
+  out<<std::endl;
+}
+
+template<>
+inline void Vector<std::string>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<std::endl;
+  }
+}
+
+template<>
+inline void Vector<String>::prettyPrint(std::ostream &out) const {
+  for (unsigned int i = 0; i < size(); i++) {
+    out<<(*this)[i]<<std::endl;
+  }
+}
+
+
 
 }//end namespace FD
 
