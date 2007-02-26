@@ -14,6 +14,7 @@ SET(QTFLOW_SRCS
 	QtNodeTreeView.cc
 	QtDocument.cc
 	QtNetTerminal.cc
+	QtDLManager.cc
 )
 
 SET(QTFLOW_HEADERS 
