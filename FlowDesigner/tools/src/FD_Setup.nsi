@@ -40,6 +40,17 @@ Section "binaries" ;No components page, name is not important
   
 SectionEnd ; end the section
 
+
+Section "headers" ;No components page, name is not important
+
+  ; Set output path to the installation directory.
+  SetOutPath $INSTDIR\include\flowdesigner
+  
+  ; Put file there
+  File include\flowdesigner\*.h
+
+SectionEnd ; end the section
+
 Section "toolbox"
 	SetOutPath $INSTDIR\toolbox\bin
 		
