@@ -14,7 +14,7 @@ Name "FlowDesigner"
 OutFile "FD_Setup.exe"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES\FlowDesigner
+InstallDir C:\FlowDesigner
 
 ;--------------------------------
 

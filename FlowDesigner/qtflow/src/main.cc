@@ -19,7 +19,6 @@ int main(int argc, char* argv[])
 		//IExtensions::detect();
 		QtDLManager::scanDL();
 		
-		cerr<<"SCAN"<<endl;
 		UINodeRepository::Scan();
         
         QApplication app(argc, argv);
