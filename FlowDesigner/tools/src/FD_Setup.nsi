@@ -36,6 +36,7 @@ Section "binaries" ;No components page, name is not important
   File bin\liblibflow.dll
   File bin\liblibflow.dll.a
   File bin\qtflow.exe
+  File bin\info2def.pl
   
 SectionEnd ; end the section
 
