@@ -4,7 +4,7 @@
 #include "msvq.h"
 #include "Vector.h"
 #include "BufferedNode.h"
-#include <strstream>
+#include <sstream>
 
 using namespace std;
 
@@ -60,7 +60,7 @@ public:
          
          //stages = ObjectRef(new Vector<int>);
 	 //Vector<int> &val = object_cast<Vector<int> > (stages);
-	 istrstream str_vector(object_cast <String> (parameters.get("STAGES")).c_str());
+	 stringstream str_vector(object_cast <String> (parameters.get("STAGES")).c_str());
 	 str_vector >> stages;
 	 
 
