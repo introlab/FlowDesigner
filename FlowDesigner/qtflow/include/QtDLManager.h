@@ -12,7 +12,7 @@ namespace FD {
 		
 		static std::list<QLibrary*> &getLoadedLibraries();
 		
-		static void scanDL(std::string path=std::string(INSTALL_PREFIX) + "/toolbox");
+		static void scanDL(std::string path=std::string(INSTALL_PREFIX) + "/lib/flowdesigner/toolbox");
 		
 		private:
 		

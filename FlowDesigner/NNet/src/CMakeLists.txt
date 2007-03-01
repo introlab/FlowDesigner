@@ -26,8 +26,8 @@ set_target_properties(libnnet-dynamic PROPERTIES OUTPUT_NAME libnnet)
 
 target_link_libraries(libnnet-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
 
-install(TARGETS libnnet-dynamic DESTINATION toolbox/bin)
+install(TARGETS libnnet-dynamic DESTINATION ${FD_TOOLBOX_DIR}/NNET)
   
 #INSTALLING .def file  
-INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/NNet/src OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/libnnet.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${NNET_SRCS})" )  
+INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/NNet/src OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/${FD_TOOLBOX_DIR}/NNET/libnnet.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${NNET_SRCS})" )  
 

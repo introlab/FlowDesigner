@@ -21,18 +21,13 @@ std::vector<std::string> envList(const char *envName, bool include_home)
    vector<string> list;
    if (include_home)
    {
-#ifndef WIN32
       string prefix = INSTALL_PREFIX;
       char *home = getenv("FLOWDESIGNER_HOME");
       if (home && strcmp(home, "")!=0)
 	 prefix=home;
 
       list.insert(list.end(), prefix+ "/lib/flowdesigner/toolbox");
-#else
-	  #warning Hard coded prefix for debug purposes
-	  cerr<<"INSTALL_PREFIX IS : "<<INSTALL_PREFIX<<endl;
-	  list.insert(list.end(), INSTALL_PREFIX);
-#endif
+
    }
    char *strPath = getenv(envName);
    if (!strPath)

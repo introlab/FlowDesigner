@@ -10,9 +10,6 @@
 #include <float.h>
 #endif
 
-#ifdef WIN32
-#include <float.h>
-#endif
 using namespace std;
 
 namespace FD {

@@ -32,11 +32,7 @@ Section "binaries" ;No components page, name is not important
   SetOutPath $INSTDIR\bin
   
   ; Put file there
-  File bin\batchflow.exe
-  File bin\liblibflow.dll
-  File bin\liblibflow.dll.a
-  File bin\qtflow.exe
-  File bin\info2def.pl
+  File bin\*
   
 SectionEnd ; end the section
 
@@ -51,18 +47,44 @@ Section "headers" ;No components page, name is not important
 
 SectionEnd ; end the section
 
-Section "toolbox"
-	SetOutPath $INSTDIR\toolbox\bin
+Section "fuzzy"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\fuzzy
 		
 	;Put file there
-	File libnnet.def
-	File libflow.def
-	File libfuzzy.def
-	File toolbox\bin\liblibfuzzy.dll
-	File toolbox\bin\liblibfuzzy.dll.a
-	File toolbox\bin\liblibnnet.dll
-	File toolbox\bin\liblibnnet.dll.a
-	
+	File lib\flowdesigner\toolbox\fuzzy\*
+		
+SectionEnd ;end the section
+
+Section "libflow"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\libflow
+		
+	;Put file there
+	File lib\flowdesigner\toolbox\libflow\*
+		
+SectionEnd ;end the section
+
+Section "nnet"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\nnet
+		
+	;Put file there
+	File lib\flowdesigner\toolbox\nnet\*
+		
+SectionEnd ;end the section
+
+Section "vq"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\vq
+		
+	;Put file there
+	File lib\flowdesigner\toolbox\vq\*
+		
+SectionEnd ;end the section
+
+Section "hmm"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\hmm
+		
+	;Put file there
+	File lib\flowdesigner\toolbox\hmm\*
+		
 SectionEnd ;end the section
 
 Section "QT"
