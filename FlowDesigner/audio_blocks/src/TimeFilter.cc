@@ -3,7 +3,7 @@
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
-#include <strstream>
+#include <sstream>
 
 using namespace std;
 
@@ -67,8 +67,8 @@ public:
          inputLength = dereference_cast<int> (parameters.get("INPUTLENGTH"));
       else inputLength = dereference_cast<int> (parameters.get("LENGTH"));
 
-      istrstream fir_str(object_cast <String> (parameters.get("FIR")).c_str());
-      istrstream iir_str(object_cast <String> (parameters.get("IIR")).c_str());
+      stringstream fir_str(object_cast <String> (parameters.get("FIR")).c_str());
+      stringstream iir_str(object_cast <String> (parameters.get("IIR")).c_str());
       fir_str >> fir;
       iir_str >> iir;
       

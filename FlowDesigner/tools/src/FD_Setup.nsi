@@ -87,6 +87,23 @@ Section "hmm"
 		
 SectionEnd ;end the section
 
+Section "audio"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\audio
+		
+	;Put file there
+	File lib\flowdesigner\toolbox\audio\*
+		
+SectionEnd ;end the section
+
+Section "effects"
+	SetOutPath $INSTDIR\lib\flowdesigner\toolbox\effects
+		
+	;Put file there
+	File lib\flowdesigner\toolbox\effects\*
+		
+SectionEnd ;end the section
+
+
 Section "QT"
 	SetOutPath $INSTDIR\bin
 		
