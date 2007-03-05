@@ -2,33 +2,48 @@
 #include "QtNetwork.h"
 #include <iostream>
 #include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include "QtRunContext.h"
 
 namespace FD
 {
     using namespace std;
     
     QtDocument::QtDocument(QWidget *parent, const std::string &name)
-    : QMainWindow(parent), m_name(name)         
+    : QDialog(parent), m_name(name)         
     {
         cerr<<"QtDocument created"<<endl;      
         m_doc = new UIDocument (m_name);
 
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
-        m_vboxLayout->setMargin(0);
+        m_vboxLayout->setMargin(0);		
         m_vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
         
-        m_tabWidget = new QTabWidget(this);
+		//Create button group
+		m_buttonGroup = new QButtonGroup(this);
+		
+		
+		
+		//m_vboxLayout->insertLayout(0,m_buttonGroup);
+		
+		//Create run button
+		QPushButton *runButton = new QPushButton("RUN", this);	
+		m_buttonGroup->addButton(runButton);
+		
+		//connect signal
+		connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
+		
+		//create tab widget
+        m_tabWidget = new QTabWidget(NULL);
         m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         
-        //QtNetwork *tab = new QtNetwork();
-        //tab->setObjectName(QString::fromUtf8("tab"));
-        //m_tabWidget->addTab(tab, "tab");
-     
-        
-        m_vboxLayout->addWidget(m_tabWidget);
-        setCentralWidget(m_tabWidget);          
-        //resize(800,600);
+		m_vboxLayout->addWidget(runButton);		
+		m_vboxLayout->addWidget(m_tabWidget);
+		
+		setLayout(m_vboxLayout);
+ 
+        resize(800,600);
    
     }      
 
@@ -76,6 +91,18 @@ namespace FD
         }
     }
     
+	void QtDocument::onRunDocument()
+	{
+		cerr<<"Run clicked..."<<endl;
+				
+		if (m_doc)
+		{
+			ParameterSet params;
+			QtRunContext context(m_doc,params);
+			context.run();
+		}
+		
+	}
 
 
 }//namespace FD
