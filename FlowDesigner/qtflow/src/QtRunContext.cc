@@ -1,3 +1,4 @@
+//Copyright (C) 2007 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca)
 #include "QtRunContext.h"
 #include "Exception.h"
 #include <sstream>

@@ -85,16 +85,29 @@ namespace FD
             vector<string> categories = extractCategory(info->second->category);
                  
             switch(info->second->kind)
-            {
-                default:
-                    //verify if this node is valid               
-                    if (Node::getFactoryNamed(info->first))
+            {					
+				case NodeInfo::builtin:
+				    if (Node::getFactoryNamed(info->first))
                     {
                         //add node name at the end                  
                         categories.push_back(info->first);
                         insert(m_root,categories,0);                                                   
                     }                  
-                    break;                              
+				break;
+				
+				case NodeInfo::subnet:
+						
+				break;
+				
+				case NodeInfo::external:
+					//add node name at the end    
+					categories.push_back(info->first);
+					insert(m_root,categories,0);
+				break;
+			
+                default:
+					cerr<<"QtNodeTreeView::scanNodeRepository() - Unknown kind : "<<info->second->kind<<endl;					               
+                break;                              
                                 
             }                        
             info++;

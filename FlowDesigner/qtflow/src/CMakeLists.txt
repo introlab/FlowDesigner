@@ -16,6 +16,7 @@ SET(QTFLOW_SRCS
 	QtNetTerminal.cc
 	QtDLManager.cc
 	QtRunContext.cc
+	QtNodeParameters.cc
 )
 
 SET(QTFLOW_HEADERS 
@@ -29,6 +30,7 @@ SET(QTFLOW_HEADERS
 	../include/QtNetTerminal.h
 	../include/QtDLManager.h
 	../include/QtRunContext.h
+	../include/QtNodeParameters.h
 )
 
 #This will generate moc_* for Qt

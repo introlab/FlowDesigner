@@ -3,6 +3,7 @@
 #include "QtNode.h"
 #include "QtNetwork.h"
 #include "QtTerminal.h"
+#include "QtNodeParameters.h"
 
 #include <QRectF>
 #include <QGraphicsScene>
@@ -181,6 +182,23 @@ namespace FD
         }
     }
 
+	void QtNode::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event)
+	{
+		update();
+		if (event->button() == Qt::LeftButton)
+		{
+			if (m_uiNode)
+			{
+				QtNodeParameters params(m_uiNode);
+			
+				params.exec();
+			
+				event->accept();
+			}
+		}
+	
+	}
+	
     void QtNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     {
         update();
