@@ -15,6 +15,7 @@ SET(QTFLOW_SRCS
 	QtDocument.cc
 	QtNetTerminal.cc
 	QtDLManager.cc
+	QtRunContext.cc
 )
 
 SET(QTFLOW_HEADERS 
@@ -26,6 +27,8 @@ SET(QTFLOW_HEADERS
 	../include/QtNodeTreeView.h
 	../include/QtDocument.h
 	../include/QtNetTerminal.h
+	../include/QtDLManager.h
+	../include/QtRunContext.h
 )
 
 #This will generate moc_* for Qt
@@ -34,10 +37,15 @@ QT4_WRAP_CPP(QTFLOW_MOC_SRCS ${QTFLOW_HEADERS})
 #include files
 INCLUDE_DIRECTORIES(../include ../../data-flow/include ${QT_INCLUDE_DIR})
 
+# create an executable file named "flowdesigner" from the source files 
+add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS})
+
 # create an executable file named "qtflow" from the source files 
-add_executable(qtflow ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS})
+add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
 
 # Linking with libflow and Qt libraries
+target_link_libraries(flowdesigner  ${QT_LIBRARIES} -L../../data-flow/src -llibflow ${LIBXML2_LIBRARIES})
 target_link_libraries(qtflow  ${QT_LIBRARIES} -L../../data-flow/src -llibflow ${LIBXML2_LIBRARIES})
 
+install(TARGETS flowdesigner DESTINATION bin)
 install(TARGETS qtflow DESTINATION bin)
