@@ -41,7 +41,7 @@ namespace FD
             m_uiNode->getPos(posx,posy);
             setPos(posx,posy);
                                     
-            cerr<<"inserting node "<<m_uiNode->getName()<<" at position " << posx<<","<<posy<<endl;         
+            //cerr<<"inserting node "<<m_uiNode->getName()<<" at position " << posx<<","<<posy<<endl;         
             
             nameItem = new QGraphicsTextItem(m_uiNode->getType().c_str(),this);
             
@@ -60,10 +60,10 @@ namespace FD
             setBrush(QBrush(QColor(0,128,0,128)));
             setZValue(1);                                   
             
-            cerr<<"QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)"<<endl;
+            //cerr<<"QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)"<<endl;
                      
             std::vector<UITerminal *> inputs = m_uiNode->getInputs();
-            cerr<<"inputs size : "<<inputs.size()<<endl;
+            //cerr<<"inputs size : "<<inputs.size()<<endl;
                 
             for (unsigned int i = 0; i < inputs.size(); i++)
             {            
@@ -73,7 +73,7 @@ namespace FD
             }                  
             
             std::vector <UITerminal *> outputs = m_uiNode->getOutputs();
-            cerr<<"outputs size : "<<outputs.size()<<endl;
+            //cerr<<"outputs size : "<<outputs.size()<<endl;
             for (unsigned int i =0; i< outputs.size(); i++)
             {
                 //QtTerminal *term = new QtTerminal(this,outputs[i]);

@@ -4,7 +4,7 @@
 #include "QtLink.h"
 #include "QtNode.h"
 #include "QtTerminal.h"
-
+#include "UIProbeLink.h"
 #include <cmath>
 #include <iostream>
 

@@ -7,8 +7,12 @@
 #include "QtNetTerminal.h"
 #include <QGraphicsScene>
 #include <QBrush>
+#include <QInputDialog>
 #include <iostream>
 #include <string>
+
+#include "UINetTerminal.h"
+
 
 using namespace std;
 
@@ -93,19 +97,64 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
     update();
     if (event->button() == Qt::LeftButton)
     {
-        QGraphicsItem::mousePressEvent(event);
-        
-        cerr<<"mousePressEvent on terminal "<<getName()<<" posx "<<pos().x()<<" posy "<<pos().y()<<endl;
-        //TODO CREATE LINK
-        m_virtualQtTerminal = new QtTerminal(NULL,"VIRTUAL",QtTerminal::VIRTUAL);
-        //m_virtualQtTerminal->hide();
-        m_virtualQtTerminal->setPos(event->scenePos());
-        m_virtualQtLink = new QtLink(this,m_virtualQtTerminal);
-        m_node->getQtNetwork()->scene()->addItem(m_virtualQtLink);
-        m_node->getQtNetwork()->scene()->addItem(m_virtualQtTerminal);
-        m_virtualQtLink->adjust();
-        m_linking = true;
-        event->accept();      
+	
+		if (event->modifiers() == Qt::NoModifier)
+		{
+		
+	        QGraphicsItem::mousePressEvent(event);
+	        
+	        cerr<<"mousePressEvent on terminal "<<getName()<<" posx "<<pos().x()<<" posy "<<pos().y()<<endl;
+	        //TODO CREATE LINK
+	        m_virtualQtTerminal = new QtTerminal(NULL,"VIRTUAL",QtTerminal::VIRTUAL);
+	        //m_virtualQtTerminal->hide();
+	        m_virtualQtTerminal->setPos(event->scenePos());
+	        m_virtualQtLink = new QtLink(this,m_virtualQtTerminal);
+	        m_node->getQtNetwork()->scene()->addItem(m_virtualQtLink);
+	        m_node->getQtNetwork()->scene()->addItem(m_virtualQtTerminal);
+	        m_virtualQtLink->adjust();
+	        m_linking = true;
+	        event->accept();      
+		}
+		else if (event->modifiers() == Qt::ShiftModifier)
+		{
+			if (m_uiTerminal)
+			{
+		
+				//CREATING A NET TERMINAL
+				bool ok;
+				QString name = QInputDialog::getText(NULL,QString("Network Terminal Name"),
+										QString("Terminal Name : "),QLineEdit::Normal,
+										QString(m_uiTerminal->getName().c_str()),&ok);
+
+				//TODO :  LOOK FOR DUPLICATED NAMES							
+				if (ok && !name.isEmpty())
+				{
+				
+					//CREATE NET TERMINAL
+					UINetTerminal *netTerminal = NULL;
+
+
+					if (m_uiTerminal->isInputTerminal())
+					{
+						netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::INPUT,name.toStdString());
+					}
+					else
+					{
+						netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString());
+					}
+					
+					//CONNECT NET TERMINAL
+					m_uiTerminal->connectNetTerminal(netTerminal);
+				
+					//CREATE GUI PART
+					m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());
+				
+				}
+										
+				m_linking = false;
+				event->accept();
+			}
+		}
     }
 
 }

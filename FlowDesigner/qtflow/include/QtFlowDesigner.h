@@ -46,7 +46,7 @@ class QtFlowDesigner : public QMainWindow
     public slots:
         void newNetworkClicked();
         void openDocumentClicked();               
-
+		void saveDocumentClicked(); 
 
 	protected:
 
@@ -56,6 +56,7 @@ class QtFlowDesigner : public QMainWindow
 
 
     QAction *actionLoad_Document;
+	QAction *actionSave_Document;
     QAction *actionNewNetwork;
     QWidget *centralwidget;
     QHBoxLayout *hboxLayout;

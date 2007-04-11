@@ -216,9 +216,11 @@ namespace FD
 			//create this node
 			if (m_uiNetwork)
 			{
-				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),0,0,true);
+				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),event->pos().x(),event->pos().y(),true);
+								
 				if (uiNode)
 				{
+					m_uiNetwork->addNode(uiNode);
 					QtNode *node = new QtNode(this,uiNode);
 					scene()->addItem(node);
 					m_nodeMap.insert(make_pair(uiNode,node));

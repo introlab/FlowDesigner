@@ -91,6 +91,16 @@ namespace FD
         }
     }
     
+	void QtDocument::save(const std::string &file)
+	{
+		if (m_doc)
+		{
+			m_doc->setFullPath(file);
+			m_doc->save();
+		}
+	}
+	
+	
 	void QtDocument::onRunDocument()
 	{
 		cerr<<"Run clicked..."<<endl;
@@ -103,6 +113,4 @@ namespace FD
 		}
 		
 	}
-
-
 }//namespace FD

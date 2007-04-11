@@ -25,7 +25,9 @@ namespace FD
         public:
             QtDocument(QWidget *parent, const std::string &name = "Untitled");
                           
-            void open(const std::string &file);         
+            void open(const std::string &file);       
+
+		    void save(const std::string &file);
     
 		public slots:
 			

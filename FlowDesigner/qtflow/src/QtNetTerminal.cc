@@ -3,10 +3,11 @@
 #include "QtTerminal.h"
 #include <QPainter>
 #include <QStyleOption>
-
+#include <iostream>
 
 namespace FD
 {
+	using namespace std;
 
     QtNetTerminal::QtNetTerminal(QtTerminal* parent, UINetTerminal *uiNetTerminal)
     : QGraphicsTextItem(parent), m_uiNetTerminal(uiNetTerminal)
@@ -24,17 +25,18 @@ namespace FD
             switch(m_uiNetTerminal->getType())
             {
                 case UINetTerminal::INPUT :
-                    setDefaultTextColor( QColor(128,0,0,128));
+                    setDefaultTextColor( QColor(0,0,0));
                     setPos(-width -10,0);
                     break;
                                                            
                 case UINetTerminal::OUTPUT :
-                    setDefaultTextColor( QColor(0,128,0,128));
+					cerr<<"Creating TEXT FOR NET OUTPUT : "<<m_uiNetTerminal->getName().c_str()<<endl;
+                    setDefaultTextColor( QColor(0,0,0));
                     setPos(10,0);
                     break;
                                                      
                 case UINetTerminal::CONDITION :
-                    setDefaultTextColor( QColor(0,0,128,128));
+                    setDefaultTextColor( QColor(0,0,0));
                     setPos(10,0);               
                     break;                              
             }

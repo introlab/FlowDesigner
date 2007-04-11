@@ -24,6 +24,7 @@ namespace FD
 
         connect(actionNewNetwork, SIGNAL(triggered()),this,SLOT(newNetworkClicked()));
         connect(actionLoad_Document, SIGNAL(triggered()),this,SLOT(openDocumentClicked()));
+		connect(actionSave_Document, SIGNAL(triggered()),this,SLOT(saveDocumentClicked()));
     }
 
     QtFlowDesigner::~QtFlowDesigner()
@@ -35,7 +36,10 @@ namespace FD
         //Action menus
         setObjectName(QString::fromUtf8("QtFlowDesigner"));
         actionLoad_Document = new QAction(this);
-        actionLoad_Document->setObjectName(QString::fromUtf8("actionLoad_Document"));
+        actionLoad_Document->setObjectName(QString::fromUtf8("actionSave_Document"));
+		actionSave_Document = new QAction(this);
+        actionSave_Document->setObjectName(QString::fromUtf8("actionSave_Document"));
+		
         actionNewNetwork = new QAction(this);
         actionNewNetwork->setObjectName(QString::fromUtf8("actionNewNetwork"));
 
@@ -145,6 +149,7 @@ namespace FD
         menubar->addAction(menuPreferences->menuAction());
         menubar->addAction(menu_About->menuAction());
         menuFile->addAction(actionLoad_Document);
+		menuFile->addAction(actionSave_Document);
         menuNetwork->addAction(actionNewNetwork);
         menuNetwork->addSeparator();
 
@@ -171,6 +176,9 @@ namespace FD
         setObjectName(QString::fromUtf8("QtFlowDesigner"));
         actionLoad_Document = new QAction(this);
         actionLoad_Document->setObjectName(QString::fromUtf8("actionLoad_Document"));
+        actionSave_Document = new QAction(this);		
+        actionSave_Document->setObjectName(QString::fromUtf8("actionSave_Document"));
+
         actionNewNetwork = new QAction(this);
         actionNewNetwork->setObjectName(QString::fromUtf8("actionNewNetwork"));
 
@@ -277,6 +285,7 @@ namespace FD
         menubar->addAction(menuPreferences->menuAction());
         menubar->addAction(menu_About->menuAction());
         menuFile->addAction(actionLoad_Document);
+		menuFile->addAction(actionSave_Document);
         menuNetwork->addAction(actionNewNetwork);
         menuNetwork->addSeparator();
 
@@ -294,6 +303,7 @@ namespace FD
         setWindowTitle(QApplication::translate("QtFlowDesigner", "FlowDesigner", 0, QApplication::UnicodeUTF8));
 
         actionLoad_Document->setText(QApplication::translate("QtFlowDesigner", "Load Document", 0, QApplication::UnicodeUTF8));
+		actionSave_Document->setText(QApplication::translate("QtFlowDesigner", "Save Document", 0, QApplication::UnicodeUTF8));
         actionNewNetwork->setText(QApplication::translate("QtFlowDesigner", "newNetwork", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QtFlowDesigner", "Tab 1", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QtFlowDesigner", "Tab 2", 0, QApplication::UnicodeUTF8));
@@ -345,6 +355,44 @@ namespace FD
             }
             m_workspace->tile();
         }         
+    }
+	
+	
+	void QtFlowDesigner::saveDocumentClicked()
+    {
+        cerr<<"Save document clicked"<<endl;
+				
+		QtDocument *activeDocument = dynamic_cast<QtDocument*>(m_workspace->activeWindow());
+		
+		if (activeDocument)
+		{
+			cerr<<"ACTIVE DOCUMENT FOUND"<<endl;
+			QFileDialog dialog(this);
+	        dialog.setFileMode(QFileDialog::AnyFile);
+			
+			QStringList filters;
+	        filters << "FlowDesigner Document (*.n)"
+	                << "Any files (*)";
+	            
+	        dialog.setFilters(filters); 
+			dialog.setAcceptMode(QFileDialog::AcceptSave);
+			if (dialog.exec())
+			{
+				QStringList fileNames = dialog.selectedFiles();
+                      
+				for (QStringList::iterator iter = fileNames.begin();
+					iter != fileNames.end(); iter++)
+				{
+					activeDocument->save((*iter).toStdString());                                 
+				}
+			}
+		}
+		else
+		{
+			cerr<<"ACTIVE DOCUMENT NOT FOUND"<<endl;
+		}
+		
+		
     }
     
     void QtFlowDesigner::loadDocument(const std::string &path)

@@ -6,11 +6,13 @@
 #include <QGraphicsItem>
 #include <string>
 
+
 namespace FD 
 {
 
 class QtNode;
 class QtTerminal;
+class UIProbeLink;
 
 class QtLink : public QGraphicsItem
 {
@@ -32,6 +34,8 @@ class QtLink : public QGraphicsItem
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     
     private:
+	
+		UIProbeLink *m_probeLink;
         QPointF m_sourcePoint;
         QPointF m_destPoint;      
         QtTerminal *m_source;
