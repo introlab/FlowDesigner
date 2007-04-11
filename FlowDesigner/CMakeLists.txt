@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.4.0)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/macros)
 
 SET( CMAKE_BUILD_TYPE Release )
-SET(CMAKE_INSTALL_PREFIX "C:\\FlowDesigner")
+SET(CMAKE_INSTALL_PREFIX "C:/FlowDesigner")
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 SET(FD_TOOLBOX_DIR lib/flowdesigner/toolbox)
 
@@ -19,7 +19,7 @@ ADD_DEFINITIONS(-DHAVE_VALUES_H)
 
 find_package(libxml2 REQUIRED)
 find_package(perl REQUIRED)
-find_package(OpenCV REQUIRED)
+#find_package(OpenCV REQUIRED)
 
 
 SUBDIRS(${FLOWDESIGNER_SOURCE_DIR}/data-flow 
@@ -56,6 +56,6 @@ IF(WIN32 AND NOT UNIX)
   SET(CPACK_NSIS_MODIFY_PATH ON)
 ENDIF(WIN32 AND NOT UNIX)
 
-SET(CPACK_PACKAGE_EXECUTABLES "batchflow;qtflow")
+SET(CPACK_PACKAGE_EXECUTABLES "batchflow;flowdesigner")
 
 INCLUDE(CPack)

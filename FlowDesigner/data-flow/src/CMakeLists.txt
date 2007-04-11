@@ -116,6 +116,7 @@ SET(UI_SRCS
 	UITerminal.cc
 	UINodeRepository.cc
 	UINote.cc
+	UIProbeLink.cc
 	flow_pref.cc	
 )
 
