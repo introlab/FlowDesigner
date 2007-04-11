@@ -1,13 +1,17 @@
+PROJECT (FlowDesigner)
+
+#Look for minimum cmake version
 cmake_minimum_required(VERSION 2.4.0)
 
-
+# This line will tell CMake to look in the project directory for configure scripts
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/macros)
 
 SET( CMAKE_BUILD_TYPE Release )
 SET(CMAKE_INSTALL_PREFIX "C:\\FlowDesigner")
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 SET(FD_TOOLBOX_DIR lib/flowdesigner/toolbox)
 
-PROJECT (FlowDesigner)
+
 ADD_DEFINITIONS(-DFLOWDESIGNER_VERSION=\\\"TESTING\\\")
 ADD_DEFINITIONS(-DINSTALL_PREFIX=\\\"C:/FlowDesigner\\\")
 ADD_DEFINITIONS(-DHAVE_FLOAT_H)
@@ -15,6 +19,7 @@ ADD_DEFINITIONS(-DHAVE_VALUES_H)
 
 find_package(libxml2 REQUIRED)
 find_package(perl REQUIRED)
+find_package(OpenCV REQUIRED)
 
 
 SUBDIRS(${FLOWDESIGNER_SOURCE_DIR}/data-flow 
