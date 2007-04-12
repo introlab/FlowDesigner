@@ -117,7 +117,7 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 		else if (event->modifiers() == Qt::ShiftModifier)
 		{
-			if (m_uiTerminal)
+			if (m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL)
 			{
 		
 				//CREATING A NET TERMINAL
@@ -147,8 +147,10 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
 					m_uiTerminal->connectNetTerminal(netTerminal);
 				
 					//CREATE GUI PART
+					cerr << "QtTerminal Scene pos x :"<<scenePos ().x() << " y:"<< scenePos().y() <<endl;
+					
 					m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());
-				
+					scene()->addItem(m_netTerminal);
 				}
 										
 				m_linking = false;

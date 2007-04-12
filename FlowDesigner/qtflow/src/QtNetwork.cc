@@ -198,7 +198,8 @@ namespace FD
           
     void QtNetwork::dragMoveEvent(QDragMoveEvent *event)
     {
-        cerr<<"QtNetwork::dragMoveEvent(QDragMoveEvent *event)"<<endl;
+        cerr<<"QtNetwork::dragMoveEvent(QDragMoveEvent *event)";
+		cerr<<" x: "<<event->pos().x()<<" y:"<<event->pos().y()<<endl;
         event->accept();         
     }
           
@@ -216,15 +217,21 @@ namespace FD
 			//create this node
 			if (m_uiNetwork)
 			{
-				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),event->pos().x(),event->pos().y(),true);
+			
+				QPointF pos = mapToScene(event->pos());
+			
+				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
 								
 				if (uiNode)
 				{
 					m_uiNetwork->addNode(uiNode);
-					QtNode *node = new QtNode(this,uiNode);
+					QtNode *node = new QtNode(this,uiNode);														
 					scene()->addItem(node);
+					
+					cerr<<"DROPPED ITEM POS X:"<<node->pos().x()<<" Y:"<<node->pos().y()<<endl;
+					
 					m_nodeMap.insert(make_pair(uiNode,node));
-					scene()->update();
+					//scene()->update();
 				}
 			}
 			
@@ -235,5 +242,10 @@ namespace FD
 		}
     }      
     
+	void QtNetwork::mouseMoveEvent ( QMouseEvent * e )
+	{
+		cerr<<"QtNetwork mouse position x:"<<e->pos().x()<<" y:"<<e->pos().y()<<endl;
+		QGraphicsView::mouseMoveEvent(e);
+	}
     
 } //namespace FD

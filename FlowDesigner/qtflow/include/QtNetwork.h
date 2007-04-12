@@ -23,6 +23,7 @@ namespace FD
               
 
     protected:
+		void mouseMoveEvent ( QMouseEvent * e );
         void keyPressEvent(QKeyEvent *event);
         void wheelEvent(QWheelEvent *event);
         void contextMenuEvent(QContextMenuEvent *event);
