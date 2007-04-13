@@ -35,6 +35,7 @@ class QtTerminal : public QGraphicsRectItem
       
     std::string getName();
 
+	UITerminal * getUITerminal() {return m_uiTerminal;}
     
     protected:
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

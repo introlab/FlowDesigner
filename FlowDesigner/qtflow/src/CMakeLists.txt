@@ -17,6 +17,12 @@ SET(QTFLOW_SRCS
 	QtDLManager.cc
 	QtRunContext.cc
 	QtNodeParameters.cc
+	UIDocumentController.cc
+	UINetworkController.cc
+	UINodeController.cc
+	UITerminalController.cc
+	UINetTerminalController.cc
+	UILinkController.cc
 )
 
 SET(QTFLOW_HEADERS 
@@ -31,6 +37,12 @@ SET(QTFLOW_HEADERS
 	../include/QtDLManager.h
 	../include/QtRunContext.h
 	../include/QtNodeParameters.h
+	../include/UIDocumentController.h
+	../include/UINetworkController.h
+	../include/UINodeController.h
+	../include/UITerminalController.h
+	../include/UINetTerminalController.h
+	../include/UILinkController.h
 )
 
 #This will generate moc_* for Qt

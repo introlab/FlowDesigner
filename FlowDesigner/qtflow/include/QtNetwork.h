@@ -20,6 +20,8 @@ namespace FD
 
     public:
         QtNetwork(UINetwork *uiNetwork = NULL);
+		
+		void addQtLink(QtLink *link);
               
 
     protected:

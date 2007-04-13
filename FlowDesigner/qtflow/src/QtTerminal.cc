@@ -12,7 +12,7 @@
 #include <string>
 
 #include "UINetTerminal.h"
-
+#include "UIProbeLink.h"
 
 using namespace std;
 
@@ -108,7 +108,7 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	        m_virtualQtTerminal = new QtTerminal(NULL,"VIRTUAL",QtTerminal::VIRTUAL);
 	        //m_virtualQtTerminal->hide();
 	        m_virtualQtTerminal->setPos(event->scenePos());
-	        m_virtualQtLink = new QtLink(this,m_virtualQtTerminal);
+	        m_virtualQtLink = new QtLink(this,m_virtualQtTerminal,NULL);
 	        m_node->getQtNetwork()->scene()->addItem(m_virtualQtLink);
 	        m_node->getQtNetwork()->scene()->addItem(m_virtualQtTerminal);
 	        m_virtualQtLink->adjust();
@@ -174,16 +174,28 @@ void QtTerminal::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         {
             cerr<<"found terminal "<<destinationQtTerminal->getName()<<endl;
             //QtNode* node= destinationQtTerminal->getQtNode();
-            QtLink* link = new QtLink(this,destinationQtTerminal);
-            link->adjust();
-            m_node->getQtNetwork()->scene()->addItem(link);
-            m_node->addQtLink(link);
+			
+			//Creating probe link (from , to , points)
+			UIProbeLink *pLink = new UIProbeLink(m_uiTerminal,destinationQtTerminal->getUITerminal(),NULL);
+			
+			
+            QtLink* link = new QtLink(this,destinationQtTerminal,pLink);
+            
+           
+			
+			m_node->getQtNetwork()->addQtLink(link);
+			
+            
+			//USEFUL WHEN UPDATING POSITION OF NODES
+			m_node->addQtLink(link);
             destinationQtTerminal->getQtNode()->addQtLink(link);                                   
         }
                 
         m_linking = false;
         delete m_virtualQtTerminal;
+		m_virtualQtTerminal = NULL;
         delete m_virtualQtLink;
+		m_virtualQtLink = NULL;
     }            
 }
 

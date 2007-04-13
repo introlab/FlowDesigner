@@ -60,7 +60,7 @@ namespace FD
                 QtNode *dest = m_nodeMap[destNode];
                 QtTerminal *sourceTerminal = source->getQtTerminal(links[i]->getFromTerminal());
                 QtTerminal *destTerminal = dest->getQtTerminal(links[i]->getToTerminal());
-                QtLink *link = new QtLink(sourceTerminal,destTerminal);
+                QtLink *link = new QtLink(sourceTerminal,destTerminal,links[i]);
                 
                 link->adjust();
                 source->addQtLink(link);
@@ -247,5 +247,21 @@ namespace FD
 		cerr<<"QtNetwork mouse position x:"<<e->pos().x()<<" y:"<<e->pos().y()<<endl;
 		QGraphicsView::mouseMoveEvent(e);
 	}
+	
+	void QtNetwork::addQtLink(QtLink *link)
+	{
+		if (link)
+		{
+			//m_linkMap.insert(make_pair(links[i],link));
+		
+			if (link->getUILink() && m_uiNetwork)
+			{
+				m_uiNetwork->addLink(link->getUILink());
+				scene()->addItem(link);
+				m_linkMap.insert(make_pair(link->getUILink(),link));
+			}		
+		}
+	}
+	
     
 } //namespace FD

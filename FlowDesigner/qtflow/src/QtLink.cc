@@ -16,8 +16,8 @@ namespace FD
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-QtLink::QtLink(QtTerminal * source, QtTerminal * dest)
-    : m_source(source), m_dest(dest), arrowSize(10)
+QtLink::QtLink(QtTerminal * source, QtTerminal * dest, UILink* uiLink)
+    : m_source(source), m_dest(dest), arrowSize(10), m_uiLink(uiLink)
 {
     setAcceptedMouseButtons(0);
     adjust();

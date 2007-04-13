@@ -12,12 +12,12 @@ namespace FD
 
 class QtNode;
 class QtTerminal;
-class UIProbeLink;
+class UILink;
 
 class QtLink : public QGraphicsItem
 {
     public:
-        QtLink(QtTerminal *source, QtTerminal *dest);
+        QtLink(QtTerminal *source, QtTerminal *dest, UILink* uiLink);
         ~QtLink();
 
         QtTerminal *sourceQtTerminal() const {return m_source;}
@@ -28,18 +28,19 @@ class QtLink : public QGraphicsItem
 
         void adjust();
 
+		UILink* getUILink() {return m_uiLink;}
     
     protected:
         QRectF boundingRect() const;
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     
     private:
-	
-		UIProbeLink *m_probeLink;
+			
         QPointF m_sourcePoint;
         QPointF m_destPoint;      
         QtTerminal *m_source;
         QtTerminal *m_dest;
+		UILink *m_uiLink;
         qreal arrowSize;
 };
 
