@@ -17,8 +17,8 @@ ADD_DEFINITIONS(-DINSTALL_PREFIX=\\\"C:/FlowDesigner\\\")
 ADD_DEFINITIONS(-DHAVE_FLOAT_H)
 ADD_DEFINITIONS(-DHAVE_VALUES_H)
 
-find_package(libxml2 REQUIRED)
-find_package(perl REQUIRED)
+find_package(LibXml2 REQUIRED)
+find_package(Perl REQUIRED)
 #find_package(OpenCV REQUIRED)
 
 
