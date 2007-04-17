@@ -47,7 +47,7 @@ QtTerminal::QtTerminal(QtNode *node, std::string name, int type, float x, float 
 }
 
 
-QtTerminal::QtTerminal(QtNode *node, UITerminal *uiTerminal)
+QtTerminal::QtTerminal(QtNode *node, UITerminalController *uiTerminal)
     : QGraphicsRectItem(QRectF(0,0,5.0,5.0),node), m_node(node),
       m_virtualQtTerminal(NULL), m_virtualQtLink(NULL), m_linking(false), m_uiTerminal(uiTerminal), m_netTerminal(NULL)
 {
@@ -86,11 +86,6 @@ QtTerminal::QtTerminal(QtNode *node, UITerminal *uiTerminal)
         
     }      
 }   
-
-
-
-
-
 
 void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

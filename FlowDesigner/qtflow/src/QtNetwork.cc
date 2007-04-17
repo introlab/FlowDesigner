@@ -15,7 +15,8 @@
 
 #include <math.h>
 #include "QtTerminal.h"
-
+#include "UINetworkController.h"
+#include "UINodeController.h"
 #include <iostream>
 
 namespace FD
@@ -23,7 +24,7 @@ namespace FD
 
     using namespace std;
 
-    QtNetwork::QtNetwork(UINetwork *uiNetwork)
+    QtNetwork::QtNetwork(UINetworkController *uiNetwork)
             : m_uiNetwork(uiNetwork)
     {
         //Creating graphics scene
@@ -34,6 +35,7 @@ namespace FD
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
 
+		/*
         if (m_uiNetwork)
         {
 
@@ -72,7 +74,7 @@ namespace FD
 
             //TODO PROCCESS PARAMETERS
 
-
+*/
 
             //UPDATE SCENE RECT
             QRectF bbox = scene->itemsBoundingRect();
@@ -81,11 +83,12 @@ namespace FD
             bbox.setCoords(x1 - 100, y1 - 100, x2 + 100, y2 + 100);
             scene->setSceneRect(bbox);
 
+/*
         }
 		else {
 			cerr<<"No UINetwork defined"<<endl;
 		}
-
+*/
         //setDragEnabled(true);
         //setAcceptDrops(true);
         //setDropIndicatorShown(true)
@@ -220,6 +223,9 @@ namespace FD
 			
 				QPointF pos = mapToScene(event->pos());
 			
+				m_uiNetwork->createNode(event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+			
+			/*
 				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
 								
 				if (uiNode)
@@ -233,6 +239,8 @@ namespace FD
 					m_nodeMap.insert(make_pair(uiNode,node));
 					//scene()->update();
 				}
+				
+			*/	
 			}
 			
 		}
@@ -263,5 +271,14 @@ namespace FD
 		}
 	}
 	
-    
+    QtNode* QtNetwork::addNode(UINodeController* node)
+	{
+		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
+		QtNode *qtnode = new QtNode(this,node);
+		node->setQtNode(qtnode);
+        scene()->addItem(qtnode);
+        m_nodeMap.insert(make_pair(node,qtnode));
+	}
+	
+	
 } //namespace FD

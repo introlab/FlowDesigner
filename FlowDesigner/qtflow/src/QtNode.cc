@@ -15,6 +15,10 @@
 #include <iostream>
 #include <algorithm>
 
+
+#include "UINodeController.h"
+#include "UITerminalController.h"
+
 namespace FD
 {
     using namespace std;
@@ -31,7 +35,7 @@ namespace FD
         setZValue(1);
     }
 
-    QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
+    QtNode::QtNode(QtNetwork *graphWidget, UINodeController *uiNode)
             : QGraphicsRectItem(0,0,50,25), graph(graphWidget), m_uiNode(uiNode),
             m_linking(false)
     {
@@ -264,38 +268,7 @@ namespace FD
         }
     }
 
-    QtTerminal* QtNode::addQtTerminal(std::string name, int type)
-    {
-        /*      
-        //get boundaries
-        QRectF boundaries = boundingRect();
 
-        qreal x1,y1,x2,y2;
-        boundaries.getCoords(&x1,&y1,&x2,&y2);
-        QtTerminal *terminal = NULL;
-        switch (type)
-        {
-        case QtTerminal::INPUT:
-            terminal = new QtTerminal(this,name,type, x1 - 2.5,y1 + 10 * (qreal) m_inputQtTerminals.size());
-            m_inputQtTerminals.push_back(terminal);
-            break;
-        case QtTerminal::OUTPUT:
-            terminal = new QtTerminal(this,name,type, x2 - 2.5,y1 + 10 * (qreal) m_outputQtTerminals.size());
-            m_outputQtTerminals.push_back(terminal);
-            break;
-        }
-
-
-        //boundaries = childrenBoundingRect().unite(boundingRect());
-
-        setRect(QRectF(x1,y1,x2,y1 + 10 * (qreal) std::max( m_inputQtTerminals.size(), m_outputQtTerminals.size())));
-
-
-        return terminal;
-        return NULL;
-        */            
-    }
-    
     QtTerminal* QtNode::addQtTerminal(UITerminal *uiTerminal)
     {
         QtTerminal *terminal = NULL;

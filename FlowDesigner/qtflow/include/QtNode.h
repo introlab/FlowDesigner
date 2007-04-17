@@ -11,7 +11,7 @@
 #include <vector>
 #include <map>
 
-#include "UINode.h"
+#include "UINodeController.h"
 
 namespace FD
 {
@@ -19,13 +19,16 @@ namespace FD
 class QtLink;
 class QtNetwork;
 class QtTerminal;
+class UINodeController;
+class UITerminalController;
+class UITerminal;
 
 class QtNode : public QGraphicsRectItem
 {
 public:
     QtNode(QtNetwork *graphWidget, std::string name = "");
 
-    QtNode(QtNetwork *graphWidget, UINode *uiNode = NULL);   
+    QtNode(QtNetwork *graphWidget, UINodeController *uiNode);   
     
     void addQtLink(QtLink *edge);
     void removeQtLink(QtLink *edge);
@@ -34,15 +37,13 @@ public:
     enum { Type = UserType + 1 };
     int type() const { return Type; }
     
-    //QRectF boundingRect() const;
-    //QPainterPath shape() const;
-    //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QtTerminal* addQtTerminal(std::string name, int type);
+
+	
     QtTerminal* addQtTerminal(UITerminal *terminal);
     
     QtNetwork* getQtNetwork() { return graph;}   
 
-    QtTerminal* getQtTerminal(UITerminal *terminal);   
+    //QtTerminal* getQtTerminal(UITerminal *terminal);   
     
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -62,8 +63,8 @@ protected:
    bool m_linking;
    //std::vector<QtTerminal*> m_inputQtTerminals;
    //std::vector<QtTerminal*> m_outputQtTerminals;
-   std::map<UITerminal*,QtTerminal*> m_inputTerminalsMap;
-   std::map<UITerminal*,QtTerminal*> m_outputTerminalsMap;
+   //std::map<UITerminal*,QtTerminal*> m_inputTerminalsMap;
+   //std::map<UITerminal*,QtTerminal*> m_outputTerminalsMap;
 
    
 };

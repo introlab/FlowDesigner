@@ -5,10 +5,13 @@
 #include <QtGui/QPushButton>
 #include "QtRunContext.h"
 
+#include "UIDocumentController.h"
+#include "UINetworkController.h"
+
 namespace FD
 {
     using namespace std;
-    
+ /*   
     QtDocument::QtDocument(QWidget *parent, const std::string &name)
     : QDialog(parent), m_name(name)         
     {
@@ -46,7 +49,63 @@ namespace FD
         resize(800,600);
    
     }      
-
+*/
+	QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)
+		: QDialog(parent), m_doc(doc)
+	{
+		cerr<<"QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)"<<__FILE__<<__LINE__<<endl;
+	
+	
+	
+	
+        m_vboxLayout = new QVBoxLayout(this);
+        m_vboxLayout->setSpacing(6);
+        m_vboxLayout->setMargin(0);		
+        m_vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
+        
+		//Create button group
+		m_buttonGroup = new QButtonGroup(this);
+		
+		
+		
+		//m_vboxLayout->insertLayout(0,m_buttonGroup);
+		
+		//Create run button
+		QPushButton *runButton = new QPushButton("RUN", this);	
+		m_buttonGroup->addButton(runButton);
+		
+		//connect signal
+		connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
+		
+		//create tab widget
+        m_tabWidget = new QTabWidget(NULL);
+        m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
+        
+		m_vboxLayout->addWidget(runButton);		
+		m_vboxLayout->addWidget(m_tabWidget);
+		
+		setLayout(m_vboxLayout);
+ 
+        resize(800,600);	
+	
+		
+		if (m_doc == NULL)
+		{
+			//Create a new document with a MAIN network
+			m_doc = new UIDocumentController("Untitled",this);		
+			m_doc->addNetwork("MAIN",UINetwork::subnet);
+		}
+		else
+		{
+			//OPEN ALREADY EXISTING DOCUMENT
+		}
+	
+	
+	
+	}
+	
+	
+	
     void QtDocument::open(const std::string &fname) {
         
         int pos = fname.rfind("/");
@@ -60,7 +119,7 @@ namespace FD
             doc_name = fname;
         }
 
-        m_doc = new UIDocument(doc_name);
+        m_doc = new UIDocumentController(doc_name,this);
         m_doc->setFullPath(fname);
 
         try {
@@ -84,7 +143,7 @@ namespace FD
             cerr<<"networks found :"<<nets.size()<<endl;
             for (unsigned int i = 0; i < nets.size(); i++)
             {
-                m_networks.push_back(new QtNetwork(nets[i]));
+                m_networks.push_back(new QtNetwork(dynamic_cast<UINetworkController*>(nets[i])));
                 m_networks.back()->setObjectName(QString::fromUtf8(nets[i]->getName().c_str()));
                 m_tabWidget->addTab(m_networks.back(), nets[i]->getName().c_str());
             }            
@@ -113,4 +172,16 @@ namespace FD
 		}
 		
 	}
+	
+	QtNetwork* QtDocument::addNetwork(UINetworkController* net)
+	{
+		QtNetwork *qtnet = new QtNetwork(net);
+		net->setQtNetwork(qtnet);
+		m_networks.push_back(qtnet);
+		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
+        m_tabWidget->addTab(qtnet, net->getName().c_str());
+		return qtnet;	
+	}
+	
+	
 }//namespace FD

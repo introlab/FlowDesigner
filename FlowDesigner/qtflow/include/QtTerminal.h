@@ -8,7 +8,7 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsRectItem>
 #include <string>
-#include "UITerminal.h"
+#include "UITerminalController.h"
 
 namespace FD
 {
@@ -23,21 +23,23 @@ class QtTerminal : public QGraphicsRectItem
            
         enum {INPUT,OUTPUT,VIRTUAL};
               
-    QtTerminal(QtNode *node, std::string name="", int type = INPUT ,float x = 0, float y = 0);
-    
-    QtTerminal(QtNode *node, UITerminal *uiTerminal);
+	    QtTerminal(QtNode *node, std::string name="", int type = INPUT ,float x = 0, float y = 0);
+	    
+	    QtTerminal(QtNode *node, UITerminalController *uiTerminal);
 
-    int getType(){return m_type;}
-    
-    void setType(int type) {m_type = type;}
-    
-    QtNode* getQtNode(){return m_node;}
-      
-    std::string getName();
+	    int getType(){return m_type;}
+	    
+	    void setType(int type) {m_type = type;}
+	    
+	    QtNode* getQtNode(){return m_node;}
+	      
+	    std::string getName();
 
-	UITerminal * getUITerminal() {return m_uiTerminal;}
+		UITerminal * getUITerminal() {return m_uiTerminal;}
     
     protected:
+	
+		//QT events
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
@@ -48,7 +50,8 @@ class QtTerminal : public QGraphicsRectItem
         QtTerminal* m_virtualQtTerminal;
         QtLink* m_virtualQtLink;
         bool m_linking;
-        UITerminal *m_uiTerminal;
+		
+        UITerminalController *m_uiTerminal;
         
         QtNetTerminal* m_netTerminal;
 

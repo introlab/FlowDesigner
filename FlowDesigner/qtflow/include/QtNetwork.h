@@ -5,7 +5,7 @@
 
 
 #include <QtGui/QGraphicsView>
-#include "UINetwork.h"
+
 #include <map>
 
 namespace FD
@@ -13,17 +13,23 @@ namespace FD
     //forward declaration
     class QtNode;
     class QtLink;      
+	class UINetworkController;
+	class UINodeController;
+	class UINode;
+	class UILink;
     
     class QtNetwork : public QGraphicsView
     {
         Q_OBJECT
 
     public:
-        QtNetwork(UINetwork *uiNetwork = NULL);
+        QtNetwork(UINetworkController *uiNetwork = NULL);
 		
 		void addQtLink(QtLink *link);
               
 
+		QtNode* addNode(UINodeController* node);	  
+			  
     protected:
 		void mouseMoveEvent ( QMouseEvent * e );
         void keyPressEvent(QKeyEvent *event);
@@ -34,7 +40,7 @@ namespace FD
 
         void scaleView(qreal scaleFactor);
 
-        UINetwork *m_uiNetwork;
+        UINetworkController *m_uiNetwork;
                     
         //std::vector<QtNode*> m_nodes;
         //std::vector<QtLink*> m_links;

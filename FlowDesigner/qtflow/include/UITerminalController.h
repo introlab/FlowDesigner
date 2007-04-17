@@ -6,14 +6,17 @@
 
 namespace FD {
 	
+	class UINodeController;
+	
 	class UITerminalController : public QObject, public UITerminal
 	{
 		Q_OBJECT;
 		public:
 		
+		UITerminalController(ItemInfo *terminalInfo, UINodeController *_node, bool _isInput, double _x, double _y);
 		
-		private:
-		UITerminalController();
+		protected:
+		
 	
 	};
 
