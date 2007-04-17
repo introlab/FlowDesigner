@@ -28,7 +28,7 @@ INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	
 add_library(libhmm-dynamic SHARED ${HMM_SRCS})
 	
-set_target_properties(libhmm-dynamic PROPERTIES OUTPUT_NAME libhmm)
+set_target_properties(libhmm-dynamic PROPERTIES OUTPUT_NAME libhmm.tlb)
 
 target_link_libraries(libhmm-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
 

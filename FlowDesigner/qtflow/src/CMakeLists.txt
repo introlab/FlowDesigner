@@ -49,7 +49,7 @@ SET(QTFLOW_HEADERS
 QT4_WRAP_CPP(QTFLOW_MOC_SRCS ${QTFLOW_HEADERS})
 
 #include files
-INCLUDE_DIRECTORIES(../include ../../data-flow/include ${QT_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(../include ${FLOWDESIGNER_SOURCE_DIR}/data-flow/include ${QT_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 # create an executable file named "flowdesigner" from the source files 
 add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS})

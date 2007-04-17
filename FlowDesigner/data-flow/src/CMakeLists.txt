@@ -96,6 +96,8 @@ SET(NODES_SRCS
 	XPMTest.cc	
 )
 
+
+
 SET(NETWORK_SRCS
 	Network.cc
 	Iterator.cc
@@ -105,6 +107,9 @@ SET(NETWORK_SRCS
 	LoadDoc.cc
 	BuildDoc.cc
 )
+
+
+
 
 SET(UI_SRCS
 	UIDocument.cc	
@@ -130,20 +135,40 @@ SET (UTILS_SRCS
 )
 
 
-INCLUDE_DIRECTORIES(../include ${LIBXML2_INCLUDE})
-	
-#add_library(libflow-dynamic STATIC ${LIBFLOW_SRCS})
+IF(UNIX)
+      #ADDITIONNAL FILES FOR COMPILATION UNDER UNIX/LINUX
+      SET(NETWORK_SRCS 
+         ${NETWORK_SRCS}
+         ThreadedIterator.cc
+         ThreadJoin.cc
+         SerialThread.cc
+         ParallelThread.cc
+      )
 
+      SET (UTILS_SRCS
+         ${UTILS_SRCS}
+         DLManager.cc
+      )
+   
+      SET (UNIX_ADDITIONAL_LIBRARIES
+         -lpthread
+      )
+
+ENDIF(UNIX)
+
+
+INCLUDE_DIRECTORIES(../include ${LIBXML2_INCLUDE_DIR})
+	
 set(FULL_SRCS ${DATATYPES_SRCS} ${NODES_SRCS} ${NETWORK_SRCS} ${UI_SRCS} ${UTILS_SRCS} )
 
 add_library(libflow-dynamic SHARED ${FULL_SRCS})
 	
 set_target_properties(libflow-dynamic PROPERTIES OUTPUT_NAME libflow)
-#${LIBXML2_LIBRARIES}
-target_link_libraries(libflow-dynamic ${LIBXML2_LIBRARIES})
+
+target_link_libraries(libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES})
 
 add_executable(batchflow batchflow.cc)
-target_link_libraries(batchflow libflow-dynamic ${LIBXML2_LIBRARIES})
+target_link_libraries(batchflow libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES})
 
 
 
