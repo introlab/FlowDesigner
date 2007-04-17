@@ -36,9 +36,15 @@ namespace FD {
 		//TO DO, UPDATE MULTIPLE VIEWS?
 		if (m_QtNetwork)
 		{
-			m_QtNetwork->addNode(nodeController);		
+			QtNode *qtNode = m_QtNetwork->addNode(nodeController);
+                        nodeController->setQtNode(qtNode);
 		}
 	
+                //UPDATE VIEW 
+               nodeController->updateTerminals();
+               nodeController->updateParameters();
+
+
 		return nodeController;
 	}
 						   

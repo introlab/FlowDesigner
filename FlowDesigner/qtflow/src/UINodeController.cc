@@ -21,11 +21,15 @@ namespace FD
 		: UINode(_net,_name,_type,x,y,false), m_QtNode(NULL)
 	{
 		cerr<<"UINodeController::UINodeController created"<<endl;
-
-		//WARNING : 
+		description = net->getDocument()->getDescription(type);
+		//END  
+	}
+	
+        void UINodeController::updateTerminals()
+        {
+                //WARNING : 
 		//This part is taken from  UINode's constructor and must be reimplemented here since
-		//it calls virtual functions that are not "known" to base class at construction.		
-		parameters = newNodeParameters(this,type);
+		//it calls virtual functions that are not "known" to base class at construction.
 
 		vector<ItemInfo *> inputname;
 		vector<ItemInfo *> outputname;
@@ -41,14 +45,17 @@ namespace FD
 		{ 
 			outputs.insert(outputs.end(), newTerminal(outputname[i], this, false, 0.0, 0.0));
 		}
-	  
-		description = net->getDocument()->getDescription(type);
-		//END  
-		  
-		
-		
-	}
-	
+        }
+
+        void UINodeController::updateParameters()
+        {
+                //WARNING : 
+		//This part is taken from  UINode's constructor and must be reimplemented here since
+		//it calls virtual functions that are not "known" to base class at construction.		
+		parameters = newNodeParameters(this,type);
+
+        }
+
 	
 	UILink* UINodeController::newLink (UITerminal *_from, UITerminal *_to)
 	{
@@ -78,5 +85,13 @@ namespace FD
 		
 	
 	}
+      
+        void UINodeController::setQtNode(QtNode* node)
+         {
+            cerr<<"UINodeController::setQtNode "<<node<<endl;
+            m_QtNode = node;
+            
+
+         }
 
 }

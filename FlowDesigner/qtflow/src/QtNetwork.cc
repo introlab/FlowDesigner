@@ -252,7 +252,6 @@ namespace FD
     
 	void QtNetwork::mouseMoveEvent ( QMouseEvent * e )
 	{
-		cerr<<"QtNetwork mouse position x:"<<e->pos().x()<<" y:"<<e->pos().y()<<endl;
 		QGraphicsView::mouseMoveEvent(e);
 	}
 	
@@ -275,9 +274,9 @@ namespace FD
 	{
 		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);
-		node->setQtNode(qtnode);
-        scene()->addItem(qtnode);
-        m_nodeMap.insert(make_pair(node,qtnode));
+                scene()->addItem(qtnode);
+                m_nodeMap.insert(make_pair(node,qtnode));
+                return qtnode;
 	}
 	
 	

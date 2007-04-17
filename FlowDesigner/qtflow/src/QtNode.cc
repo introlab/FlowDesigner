@@ -250,7 +250,7 @@ namespace FD
                 terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);
                             
                 cerr<<"terminal boundaries "<<xx1<<","<<yy1<<" "<<xx2<<","<<yy2<<endl;            
-                
+                scene()->addItem(terminal);
                 
                 terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 10 * (qreal) m_inputTerminalsMap.size());
                 //m_inputQtTerminals.push_back(terminal);
@@ -260,7 +260,7 @@ namespace FD
             {
                 
                 terminal = new QtTerminal(this,uiTerminal);
-                
+                scene()->addItem(terminal);
                 
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
                 qreal xx1,yy1,xx2,yy2;
