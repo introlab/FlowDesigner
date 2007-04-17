@@ -3,6 +3,7 @@
 #include "QtTerminal.h"
 #include <QPainter>
 #include <QStyleOption>
+#include <QGraphicsScene>
 #include <iostream>
 
 namespace FD
@@ -53,7 +54,8 @@ namespace FD
                     break;                              
             }
 			cerr << "IS VISIBLE :"<<isVisible()<<endl;
-            //setFont(myfont);         
+            //setFont(myfont);     
+             
         }         
 
     }

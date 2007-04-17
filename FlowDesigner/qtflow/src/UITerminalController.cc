@@ -31,8 +31,11 @@ namespace FD
             }
 	}
 	
+        QtTerminal* UITerminalController::getQtTerminal()
+        {
+            return m_QtTerminal;         
+        }
 	
-
 } //namespace FD
 
 

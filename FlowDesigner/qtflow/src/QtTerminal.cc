@@ -126,8 +126,27 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				if (ok && !name.isEmpty())
 				{
 				
+                                        if (m_uiTerminal)
+                                        {
+                                             UINode *myNode = m_uiTerminal->getNode();
+                                            if (myNode)
+                                            {
+                                                if (m_uiTerminal->isInputTerminal())
+                                                {
+                                                   myNode->newNetTerminal(m_uiTerminal,UINetTerminal::INPUT,name.toStdString());
+                                                }
+                                                else
+                                                {
+                                                      myNode->newNetTerminal(m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString());
+                                                }
+                                            }                                             
+                                        }                              
+                                        /*        
+               
 					//CREATE NET TERMINAL
 					UINetTerminal *netTerminal = NULL;
+
+                                          
 
 
 					if (m_uiTerminal->isInputTerminal())
@@ -147,6 +166,8 @@ void QtTerminal::mousePressEvent(QGraphicsSceneMouseEvent *event)
 					
 					m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());
 					scene()->addItem(m_netTerminal);
+                                        */  
+
 				}
 										
 				m_linking = false;
@@ -215,6 +236,14 @@ std::string QtTerminal::getName()
 {
     return m_label->toPlainText().toStdString();
 }   
+
+QtNetTerminal* QtTerminal::addNetTerminal(UINetTerminal *netTerminal)
+{
+   QtNetTerminal* myNetTerminal = new QtNetTerminal(this,netTerminal);
+   scene()->addItem(myNetTerminal);
+   return myNetTerminal;
+}
+
 
 } //namespace FD
 

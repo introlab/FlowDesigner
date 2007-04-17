@@ -2,6 +2,7 @@
 #include "UINodeController.h"
 #include "UINetworkController.h"
 #include "UITerminalController.h"
+#include "UINetTerminalController.h"
 #include "UIDocumentController.h"
 #include "QtNode.h"
 #include <iostream>
@@ -72,7 +73,8 @@ namespace FD
 	UINetTerminal* UINodeController::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
 		const std::string &_objType, const std::string &_description)
 	{
-		return NULL;
+                cerr<<"UINetTerminal* UINodeController::newNetTerminal"<<endl;
+                return  new UINetTerminalController(dynamic_cast<UITerminalController*>(_terminal), _type, _name);		
 	}
 
 	UINodeParameters* UINodeController::newNodeParameters (UINode *_node, std::string type)
