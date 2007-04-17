@@ -43,13 +43,13 @@ UINode::UINode(UINetwork* _net, string _name, string _type, double _x, double _y
       
       for (unsigned int i=0;i<inputname.size();i++)
       {
-         inputs.insert(inputs.end(), new UITerminal (inputname[i], 
+         inputs.insert(inputs.end(), newTerminal(inputname[i], 
                                                      this, true, 0.0, 0.0));
       }
       
       for (unsigned int i=0;i<outputname.size();i++) 
       { 
-         outputs.insert(outputs.end(), new UITerminal (outputname[i], 
+         outputs.insert(outputs.end(), newTerminal(outputname[i], 
                                                        this, false, 0.0, 0.0));
       }
       
@@ -98,13 +98,13 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
       
       for (unsigned int i=0;i<inputname.size();i++)
       {
-         inputs.insert(inputs.end(), new UITerminal (inputname[i],
+         inputs.insert(inputs.end(), newTerminal (inputname[i],
                                                      this, true, 0.0, 0.0));
       }
       
       for (unsigned int i=0;i<outputname.size();i++)
       {
-         outputs.insert(outputs.end(), new UITerminal (outputname[i], 
+         outputs.insert(outputs.end(), newTerminal (outputname[i], 
                                                        this, false, 0.0, 0.0));
       }
 
@@ -249,13 +249,13 @@ void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
 
    case UINetTerminal::INPUT:
 
-      inputs.insert(inputs.end(), new UITerminal (&info, this, true, x1, y1));
+      inputs.insert(inputs.end(), newTerminal (&info, this, true, x1, y1));
     
       break;
 
    case UINetTerminal::OUTPUT:
 
-      outputs.insert(outputs.end(), new UITerminal (&info, this, false, x2,y2 ));
+      outputs.insert(outputs.end(), newTerminal (&info, this, false, x2,y2 ));
     
       break;
 
@@ -362,6 +362,11 @@ void UINode::rename (const string &newName) {
 
   type = newName;
 
+}
+
+UITerminal* UINode::newTerminal(ItemInfo *_info, UINode *_node, bool _isInput, double _x, double _y)
+{
+	return new UITerminal(_info,_node,_isInput,_x,_y);
 }
 
 }//namespace FD

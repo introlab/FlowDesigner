@@ -37,7 +37,7 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
 
   //(DL 04/08/2004)
   //Adding version to newly created network, could be improved
-  addNote(newNote(string("Created with FlowDesigner ") + string("FLOWDESIGNER_VERSION"),0,0,false));
+  addNote(newNote(string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
 
 }
 

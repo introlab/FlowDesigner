@@ -131,6 +131,8 @@ public:
    virtual void notifyError(const std::string &message) {}
 
    virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
+   
+   virtual UITerminal* newTerminal(ItemInfo *_info, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
 					  const std::string &_objType="any", const std::string &_description="No description available");
