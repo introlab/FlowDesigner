@@ -47,7 +47,7 @@ QtTerminal::QtTerminal(QtNode *node, std::string name, int type, float x, float 
 }
 
 
-QtTerminal::QtTerminal(QtNode *node, UITerminalController *uiTerminal)
+QtTerminal::QtTerminal(QtNode *node, UITerminal *uiTerminal)
     : QGraphicsRectItem(QRectF(0,0,5.0,5.0),node), m_node(node),
       m_virtualQtTerminal(NULL), m_virtualQtLink(NULL), m_linking(false), m_uiTerminal(uiTerminal), m_netTerminal(NULL)
 {
@@ -77,12 +77,13 @@ QtTerminal::QtTerminal(QtNode *node, UITerminalController *uiTerminal)
         m_label->setPos(offset_x, offset_y);
         setBrush(QBrush(QColor(255,0,0,128)));
 
+        /*
         //HANDLE NET TERMINALS      
         if (m_uiTerminal->getNetTerminal())
         {
             m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());         
         }         
-        
+        */
         
     }      
 }   

@@ -25,7 +25,7 @@ class QtTerminal : public QGraphicsRectItem
               
 	    QtTerminal(QtNode *node, std::string name="", int type = INPUT ,float x = 0, float y = 0);
 	    
-	    QtTerminal(QtNode *node, UITerminalController *uiTerminal);
+	    QtTerminal(QtNode *node, UITerminal *uiTerminal);
 
 	    int getType(){return m_type;}
 	    
@@ -35,7 +35,7 @@ class QtTerminal : public QGraphicsRectItem
 	      
 	    std::string getName();
 
-		UITerminal * getUITerminal() {return m_uiTerminal;}
+	    UITerminal * getUITerminal() {return m_uiTerminal;}
     
     protected:
 	
@@ -51,7 +51,7 @@ class QtTerminal : public QGraphicsRectItem
         QtLink* m_virtualQtLink;
         bool m_linking;
 		
-        UITerminalController *m_uiTerminal;
+        UITerminal *m_uiTerminal;
         
         QtNetTerminal* m_netTerminal;
 

@@ -35,9 +35,8 @@ namespace FD
         setZValue(1);
     }
 
-    QtNode::QtNode(QtNetwork *graphWidget, UINodeController *uiNode)
-            : QGraphicsRectItem(0,0,50,25), graph(graphWidget), m_uiNode(uiNode),
-            m_linking(false)
+    QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
+            : QGraphicsRectItem(0,0,50,25), graph(graphWidget), m_uiNode(uiNode), m_linking(false)
     {
         if (m_uiNode)
         {
@@ -65,7 +64,8 @@ namespace FD
             setZValue(1);                                   
             
             //cerr<<"QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)"<<endl;
-                     
+            /*         
+
             std::vector<UITerminal *> inputs = m_uiNode->getInputs();
             //cerr<<"inputs size : "<<inputs.size()<<endl;
                 
@@ -83,8 +83,9 @@ namespace FD
                 //QtTerminal *term = new QtTerminal(this,outputs[i]);
                 //m_outputQtTerminals.push_back(term);
                 addQtTerminal(outputs[i]);
-            }            
-        }         
+            }   
+            */      
+        } //if m_uiNode        
              
     }
 
@@ -103,52 +104,8 @@ namespace FD
     {
         return edgeList;
     }
-    /*
-    QRectF QtNode::boundingRect() const
-    {
-        qreal adjust = 2;
-        return QRectF(-10 - adjust, -10 - adjust,
-                      43 + adjust, 23 + adjust);
-    }
-     
-    QPainterPath QtNode::shape() const
-    {
-        QPainterPath path;
-        // path.addEllipse(-10, -10, 20, 20);
-        path.addRect(-10, -10, 40, 20);
-        return path;
-    }
-     
-    void QtNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
-    {
-        // painter->setPen(Qt::NoPen);
-        if (isSelected())
-        {
-           painter->setPen(QPen(Qt::blue));
-        }
-        else
-        {
-           painter->setPen(QPen(Qt::black));
-        }
-        painter->setBrush(Qt::darkGray);
-        // painter->drawEllipse(-7, -7, 20, 20);
-        painter->drawRect(-10,-10,40,20);
-     
-        // QRadialGradient gradient(-3, -3, 10);
-        // if (option->state & QStyle::State_Sunken) {
-            // gradient.setCenter(3, 3);
-            // gradient.setFocalPoint(3, 3);
-            // gradient.setColorAt(1, QColor(Qt::yellow).light(120));
-            // gradient.setColorAt(0, QColor(Qt::darkYellow).light(120));
-        // } else {
-            // gradient.setColorAt(0, Qt::yellow);
-            // gradient.setColorAt(1, Qt::darkYellow);
-        // }
-        // painter->setBrush(gradient);
-        // painter->setPen(QPen(Qt::black, 0));
-        // painter->drawEllipse(-10, -10, 20, 20);
-    }
-    */
+/*
+
     QVariant QtNode::itemChange(GraphicsItemChange change, const QVariant &value)
     {
         switch (change)
@@ -268,7 +225,7 @@ namespace FD
         }
     }
 
-
+*/
     QtTerminal* QtNode::addQtTerminal(UITerminal *uiTerminal)
     {
         QtTerminal *terminal = NULL;
@@ -325,8 +282,10 @@ namespace FD
         }
         return terminal;
     }
-    
-    QtTerminal* QtNode::getQtTerminal(UITerminal *terminal) {
+ 
+/*   
+    QtTerminal* QtNode::getQtTerminal(UITerminal *terminal) 
+   {
         if (terminal->isInputTerminal())
         {
             if (m_inputTerminalsMap.find(terminal) != m_inputTerminalsMap.end())
@@ -351,5 +310,5 @@ namespace FD
         }
         return NULL;
     }      
-
+*/
 }//namespace FD

@@ -19,16 +19,17 @@ namespace FD
 class QtLink;
 class QtNetwork;
 class QtTerminal;
-class UINodeController;
-class UITerminalController;
 class UITerminal;
+class UINode;
 
 class QtNode : public QGraphicsRectItem
 {
+
 public:
+
     QtNode(QtNetwork *graphWidget, std::string name = "");
 
-    QtNode(QtNetwork *graphWidget, UINodeController *uiNode);   
+    QtNode(QtNetwork *graphWidget, UINode *uiNode);   
     
     void addQtLink(QtLink *edge);
     void removeQtLink(QtLink *edge);
@@ -46,25 +47,27 @@ public:
     //QtTerminal* getQtTerminal(UITerminal *terminal);   
     
 protected:
+
+ /*
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
-    
+    void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
+    */
+
     UINode *m_uiNode;
     QGraphicsTextItem *nameItem;
     QList<QtLink *> edgeList;
     QPointF newPos;
     QtNetwork *graph;
-   QtNode* m_virtualQtNode;
-   QtLink* m_virtualQtLink;
-   bool m_linking;
+    QtNode* m_virtualQtNode;
+    QtLink* m_virtualQtLink;
+    bool m_linking;
    //std::vector<QtTerminal*> m_inputQtTerminals;
    //std::vector<QtTerminal*> m_outputQtTerminals;
-   //std::map<UITerminal*,QtTerminal*> m_inputTerminalsMap;
-   //std::map<UITerminal*,QtTerminal*> m_outputTerminalsMap;
+   std::map<UITerminal*,QtTerminal*> m_inputTerminalsMap;
+   std::map<UITerminal*,QtTerminal*> m_outputTerminalsMap;
 
    
 };
