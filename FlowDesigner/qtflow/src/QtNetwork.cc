@@ -274,10 +274,23 @@ namespace FD
 	{
 		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);
-                scene()->addItem(qtnode);
-                m_nodeMap.insert(make_pair(node,qtnode));
-                return qtnode;
+        scene()->addItem(qtnode);
+        m_nodeMap.insert(make_pair(node,qtnode));
+        return qtnode;
 	}
 	
-	
+    QtLink* QtNetwork::addLink(QtTerminal *source, QtTerminal *dest, UILink* link)
+    {
+        if (source && dest && link)
+        {
+            QtLink *qtlink = new QtLink(source,dest,link);
+            scene()->addItem(qtlink);
+            m_linkMap.insert(make_pair(link,qtlink));
+            return qtlink;
+        }
+        else
+        {
+            return NULL;
+        }
+    }	
 } //namespace FD

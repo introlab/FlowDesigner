@@ -4,6 +4,7 @@
 #include "UINodeController.h"
 #include "UITerminalController.h"
 #include "UINetTerminalController.h"
+#include "UILinkController.h"
 #include <iostream>
 #include "QtNetwork.h"
 #include "UILink.h"
@@ -95,10 +96,7 @@ namespace FD {
 		//CREATE MODEL & CONTROLLER
 		//UILinkController *linkController = new UILinkController(dynamic_cast<UITerminalController*>(_from),
 		//														);
-		
-		
-		
-		return new UILink(_from,_to,str);
+		return new UILinkController(dynamic_cast<UITerminalController*>(_from),dynamic_cast<UITerminalController*>(_to),str);
 	}
 		
 	UINote* UINetworkController::newNote(const std::string &text, double x, double y, bool visible)
@@ -138,6 +136,20 @@ namespace FD {
             }
 
         }
+
+        //TODO
+        //UPDATE VIEW FOR EACH LINKS
+        for (unsigned int i = 0; i < links.size(); i++)
+        {
+            UILinkController *linkCtrl = dynamic_cast<UILinkController*>(links[i]);
+
+            if (linkCtrl)
+            {
+                linkCtrl->updateView(m_QtNetwork);
+            }
+
+        }
+
     }
 
 } //namespace FD

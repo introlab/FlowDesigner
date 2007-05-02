@@ -12,7 +12,8 @@ namespace FD
 {
     //forward declaration
     class QtNode;
-    class QtLink;      
+    class QtLink;
+    class QtTerminal;
     class UINetworkController;
     class UINodeController;
     class UINode;
@@ -27,7 +28,9 @@ namespace FD
 	        
         void addQtLink(QtLink *link);
                 
-        QtNode* addNode(UINodeController* node);	  
+        QtNode* addNode(UINodeController* node);
+    
+        QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILink* link);
 			  
     protected:
 

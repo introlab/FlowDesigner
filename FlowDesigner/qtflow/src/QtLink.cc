@@ -36,7 +36,7 @@ void QtLink::adjust()
 
     QPointF testPoint = m_source->mapFromParent (0,0);
     
-    cerr<<"Map from parent x "<<testPoint.x()<<" y "<<testPoint.y()<<endl;
+    //cerr<<"Map from parent x "<<testPoint.x()<<" y "<<testPoint.y()<<endl;
     
     //QLineF line(mapFromItem(m_source, 0, 0), mapFromItem(m_dest, 0, 0));
     QLineF line(m_source->scenePos(), m_dest->scenePos());

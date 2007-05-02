@@ -1,15 +1,30 @@
 #include "UILinkController.h"
+#include "UITerminalController.h"
+#include "QtNetwork.h"
+#include "QtLink.h"
+#include "QtNode.h"
 
 namespace FD
 {
 	using namespace std;
 	
-	UILinkController::UILinkController()
-	 : UILink(NULL,NULL,NULL)
-	{
-	
-	
-	}
 
+    UILinkController::UILinkController(UITerminalController *_from,UITerminalController *_to,const char *points_str)
+        : UILink(_from,_to,points_str), m_QtLink(NULL)
+    {
+
+
+    }
+
+    void UILinkController::updateView(QtNetwork *net)
+    {
+        //CREATE VIEW IF REQUIRED
+        if (!m_QtLink && net)
+        {
+            QtTerminal *source = dynamic_cast<UITerminalController*>(from)->getQtTerminal();
+            QtTerminal *dest = dynamic_cast<UITerminalController*>(to)->getQtTerminal();
+            m_QtLink = net->addLink(source,dest,this);
+        }
+    }
 
 } //namespace FD
