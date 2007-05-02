@@ -67,7 +67,7 @@ QtTerminal::QtTerminal(QtNode *node, UITerminal *uiTerminal)
         if (m_uiTerminal->isInputTerminal())
         {
             offset_x = 5;//-1 * rect.width();
-            cerr<<"temrminal is input"<<endl;         
+            cerr<<"terminal is input"<<endl;         
         }
         else
         {

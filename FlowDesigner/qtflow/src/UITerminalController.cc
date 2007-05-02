@@ -1,4 +1,5 @@
 #include "UITerminalController.h"
+#include "UINetTerminalController.h"
 #include "UINodeController.h"
 #include "QtNode.h"
 #include "QtTerminal.h"
@@ -22,7 +23,7 @@ namespace FD
 
                if (qtNode)
                {
-                     m_QtTerminal = qtNode->addQtTerminal(this);
+                     m_QtTerminal = qtNode->addTerminal(this);
                }
                else 
                {
@@ -36,6 +37,30 @@ namespace FD
             return m_QtTerminal;         
         }
 	
+        void UITerminalController::updateView(QtNode *node)
+        {
+            //CREATE VIEW IF REQUIRED
+            if (!m_QtTerminal && node)
+            {
+                m_QtTerminal = node->addTerminal(this);
+            }
+    
+            //UPDATE NET TERMINAL
+            if (netTerminal)
+            {
+                UINetTerminalController *netTerminalCTRL = dynamic_cast<UINetTerminalController*>(netTerminal);
+
+                if (netTerminalCTRL)
+                {
+                    netTerminalCTRL->updateView(m_QtTerminal);
+                }
+                
+
+            }
+
+
+        }
+
 } //namespace FD
 
 

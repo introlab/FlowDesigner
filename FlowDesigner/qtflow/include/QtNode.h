@@ -40,7 +40,7 @@ public:
     
 
 	
-    QtTerminal* addQtTerminal(UITerminal *terminal);
+    QtTerminal* addTerminal(UITerminal *terminal);
     
     QtNetwork* getQtNetwork() { return graph;}   
 

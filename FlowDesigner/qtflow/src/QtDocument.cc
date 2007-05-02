@@ -11,45 +11,46 @@
 namespace FD
 {
     using namespace std;
- /*   
+  
     QtDocument::QtDocument(QWidget *parent, const std::string &name)
-    : QDialog(parent), m_name(name)         
+    : QDialog(parent), m_doc(NULL), m_name(name)         
     {
         cerr<<"QtDocument created"<<endl;      
-        m_doc = new UIDocument (m_name);
-
+   
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
         m_vboxLayout->setMargin(0);		
         m_vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
         
-		//Create button group
-		m_buttonGroup = new QButtonGroup(this);
-		
-		
-		
-		//m_vboxLayout->insertLayout(0,m_buttonGroup);
-		
-		//Create run button
-		QPushButton *runButton = new QPushButton("RUN", this);	
-		m_buttonGroup->addButton(runButton);
-		
-		//connect signal
-		connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
+      //Create button group
+      m_buttonGroup = new QButtonGroup(this);
+      
+      
+      
+      //m_vboxLayout->insertLayout(0,m_buttonGroup);
+      
+      //Create run button
+      QPushButton *runButton = new QPushButton("RUN", this);	
+      m_buttonGroup->addButton(runButton);
+      
+      //connect signal
+      connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
 		
 		//create tab widget
         m_tabWidget = new QTabWidget(NULL);
         m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         
-		m_vboxLayout->addWidget(runButton);		
-		m_vboxLayout->addWidget(m_tabWidget);
-		
-		setLayout(m_vboxLayout);
+         m_vboxLayout->addWidget(runButton);		
+         m_vboxLayout->addWidget(m_tabWidget);
+         
+         setLayout(m_vboxLayout);
  
         resize(800,600);
-   
+  
+        open(name);
+ 
     }      
-*/
+
 	QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)
 		: QDialog(parent), m_doc(doc)
 	{
@@ -124,6 +125,7 @@ namespace FD
 
         try {
             m_doc->load();
+            m_doc->updateView();
             cerr<<"loading document : "<<fname<<endl;         
         } catch (BaseException *e) {
             //stringstream except;
@@ -135,7 +137,7 @@ namespace FD
         }
         m_doc->resetModified();
         
-        
+        /*
         if (m_doc)
         {         
             //create Qt networks
@@ -148,6 +150,7 @@ namespace FD
                 m_tabWidget->addTab(m_networks.back(), nets[i]->getName().c_str());
             }            
         }
+      */
     }
     
 	void QtDocument::save(const std::string &file)

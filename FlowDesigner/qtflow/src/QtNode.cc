@@ -226,7 +226,7 @@ namespace FD
     }
 
 */
-    QtTerminal* QtNode::addQtTerminal(UITerminal *uiTerminal)
+    QtTerminal* QtNode::addTerminal(UITerminal *uiTerminal)
     {
         QtTerminal *terminal = NULL;
     

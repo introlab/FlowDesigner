@@ -10,6 +10,7 @@ namespace FD
 	class UIDocumentController;
 	class UINodeController;
 	class QtNetwork;
+    class QtDocument;
 
 	class UINetworkController : public QObject, public UINetwork
 	{
@@ -18,12 +19,20 @@ namespace FD
 		public:
 		
 		UINetworkController(UIDocumentController* doc, const std::string &_name, UINetwork::Type type);
+
+        /**Construct a UINetwork from a parsed XML file*/
+        UINetworkController(UIDocumentController* _doc, xmlNodePtr net);
+
 		
 		UINodeController* createNode(std::string type, double x, double y, bool doInit);
 		
 		//must be re-implemented from UINetwork
 		virtual UINode *newNode(UINetwork* _net, std::string _name, 
 						   std::string _type, double _x, double _y, bool doInit);
+
+
+                virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
+
 						   
 		virtual UILink *newLink (UITerminal *_from, UITerminal *_to,const char *str=NULL);
 		
@@ -37,6 +46,8 @@ namespace FD
 		
 		QtNetwork* getQtNetwork(){return m_QtNetwork;}
 	
+        void updateView(QtDocument *doc);
+
 		private:
 		
 		UINetworkController();

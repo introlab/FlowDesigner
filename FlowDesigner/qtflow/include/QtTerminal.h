@@ -8,7 +8,7 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsRectItem>
 #include <string>
-#include "UITerminalController.h"
+#include "UITerminal.h"
 
 namespace FD
 {
@@ -16,6 +16,7 @@ namespace FD
 class QtNode;
 class QtLink;
 class QtNetTerminal;
+
 
 class QtTerminal : public QGraphicsRectItem
 {
@@ -36,6 +37,8 @@ class QtTerminal : public QGraphicsRectItem
 	    std::string getName();
 
 	    UITerminal * getUITerminal() {return m_uiTerminal;}
+
+            QtNetTerminal* addNetTerminal(UINetTerminal *netTerminal);
     
     protected:
 	

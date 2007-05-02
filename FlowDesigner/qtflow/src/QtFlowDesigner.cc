@@ -324,7 +324,7 @@ namespace FD
     void QtFlowDesigner::newNetworkClicked()
     {
         
-        QtDocument *doc =  new QtDocument(this);	   	  
+        QtDocument *doc =  new QtDocument(this,NULL);	   	  
         QWidget *window = m_workspace->addWindow(doc);
         window->setWindowTitle("test");
         m_workspace->setActiveWindow(window);
@@ -396,17 +396,12 @@ namespace FD
     
     void QtFlowDesigner::loadDocument(const std::string &path)
     {
-        
-		/*
-		QtDocument *doc =  new QtDocument(this,path.c_str());
+        QtDocument *doc =  new QtDocument(this,path);
+	QWidget *window = m_workspace->addWindow(doc);
+	window->setWindowTitle("test");
+	m_workspace->setActiveWindow(window);
+	window->show();            
 		
-		
-			doc->open(path);
-			QWidget *window = m_workspace->addWindow(doc);
-			window->setWindowTitle("test");
-			m_workspace->setActiveWindow(window);
-			window->show();            
-		*/
     }      
 
 }//namespace FD

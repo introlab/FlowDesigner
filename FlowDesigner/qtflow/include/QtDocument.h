@@ -26,7 +26,8 @@ namespace FD
 
         public:
 		
-			QtDocument(QWidget *parent, UIDocumentController* doc = NULL);
+            QtDocument(QWidget *parent, const std::string &name);
+            QtDocument(QWidget *parent, UIDocumentController *doc);
 		
             //QtDocument(QWidget *parent, const std::string &name = "Untitled");
                           

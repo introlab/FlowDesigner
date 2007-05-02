@@ -16,11 +16,13 @@ namespace FD
 		UIDocumentController(const std::string &name, QtDocument *doc);
 	
 		//Inherited from UIDocument, must be reimplemented
-		virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);   
+		virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
+
+        virtual UINetwork *newNetwork(xmlNodePtr _net);
+
+        void updateView();
 
 		private :
-		
-		UIDocumentController();
 		
 		QtDocument *m_QtDocument;
 	

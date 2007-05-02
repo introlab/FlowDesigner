@@ -4,7 +4,12 @@
 #include "UITerminalController.h"
 #include "UINetTerminalController.h"
 #include "UIDocumentController.h"
+
+#include "UILink.h"
+#include "UINodeParameters.h"
+
 #include "QtNode.h"
+#include "QtNetwork.h"
 #include <iostream>
 
 namespace FD
@@ -18,6 +23,23 @@ namespace FD
 	
 	}
 	
+	UINodeController::UINodeController(UINetworkController* _net, xmlNodePtr def)
+		: UINode(_net,def,false), m_QtNode(NULL)
+	{
+        cerr<<"UINodeController::UINodeController(UINetworkController* _net, xmlNodePtr def)"<<endl;
+
+        //creating GUI Node
+        if (_net && def)
+        {
+            //loading component
+            loadXML(def);
+        }
+
+
+
+	}
+	
+	
 	UINodeController::UINodeController(UINetworkController* _net, std::string _name, std::string _type, double x, double y)
 		: UINode(_net,_name,_type,x,y,false), m_QtNode(NULL)
 	{
@@ -28,7 +50,7 @@ namespace FD
 	
         void UINodeController::updateTerminals()
         {
-                //WARNING : 
+        //WARNING : 
 		//This part is taken from  UINode's constructor and must be reimplemented here since
 		//it calls virtual functions that are not "known" to base class at construction.
 
@@ -60,7 +82,8 @@ namespace FD
 	
 	UILink* UINodeController::newLink (UITerminal *_from, UITerminal *_to)
 	{
-		return NULL;
+		cerr<<"UILink* UINodeController::newLink"<<endl;
+		return new UILink(_from,_to);
 	}
 
 	
@@ -73,27 +96,57 @@ namespace FD
 	UINetTerminal* UINodeController::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
 		const std::string &_objType, const std::string &_description)
 	{
-                cerr<<"UINetTerminal* UINodeController::newNetTerminal"<<endl;
-                return  new UINetTerminalController(dynamic_cast<UITerminalController*>(_terminal), _type, _name);		
+	    cerr<<"UINetTerminal* UINodeController::newNetTerminal"<<endl;
+	    return  new UINetTerminalController(dynamic_cast<UITerminalController*>(_terminal), _type, _name);		
 	}
 
 	UINodeParameters* UINodeController::newNodeParameters (UINode *_node, std::string type)
 	{
-		return NULL;	
+		cerr<<"UINodeParameters* UINodeController::newNodeParameters"<<endl;
+		//return new UINodeParametersController(dynamic_cast<UINodeController*>(_node),type);
+		return new UINodeParameters(_node,type);
 	}
 
 	void UINodeController::rename (const std::string &newName)
 	{
-		
-	
+		UINode::rename(newName);
 	}
       
-        void UINodeController::setQtNode(QtNode* node)
-         {
-            cerr<<"UINodeController::setQtNode "<<node<<endl;
-            m_QtNode = node;
-            
+    void UINodeController::setQtNode(QtNode* node)
+     {
+        cerr<<"UINodeController::setQtNode "<<node<<endl;
+        m_QtNode = node;
+     }
 
-         }
+    void UINodeController::updateView(QtNetwork *net)
+    {
+        //CREATE THE VIEW IF REQUIRED
+        if (!m_QtNode && net)
+        {
+               m_QtNode = net->addNode(this);
+        }
 
+        //UPDATE THE VIEW
+        //INPUT TERMINALS
+        for (unsigned int i = 0; i < inputs.size(); i++)
+        {
+            UITerminalController *terminalCTRL = dynamic_cast<UITerminalController*>(inputs[i]); 
+
+            if (terminalCTRL)
+            {
+                terminalCTRL->updateView(m_QtNode);
+            }
+           
+        }
+        //OUTPUT TERMINALS
+        for (unsigned int i = 0; i < outputs.size(); i++)
+        {
+            UITerminalController *terminalCTRL = dynamic_cast<UITerminalController*>(outputs[i]);
+
+            if (terminalCTRL)
+            {
+                terminalCTRL->updateView(m_QtNode);
+            }
+        }
+    }
 }

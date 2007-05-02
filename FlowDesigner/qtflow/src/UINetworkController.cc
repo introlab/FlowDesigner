@@ -2,18 +2,29 @@
 #include "UINetworkController.h"
 #include "UIDocumentController.h"
 #include "UINodeController.h"
+#include "UITerminalController.h"
+#include "UINetTerminalController.h"
 #include <iostream>
 #include "QtNetwork.h"
+#include "UILink.h"
+#include "UINote.h"
 
 namespace FD {
 
 	using namespace std;
 
 	UINetworkController::UINetworkController()
-		:	UINetwork(NULL,NULL,false)
+		:	UINetwork(NULL,NULL,false), m_QtNetwork(NULL)
 	{
 	
 	
+	}
+
+	UINetworkController::UINetworkController(UIDocumentController *_doc, xmlNodePtr net)
+		: UINetwork(_doc,net,false), m_QtNetwork(NULL)
+	{
+		//Load XML		
+		load(net);	
 	}
 	
 	UINetworkController::UINetworkController(UIDocumentController *doc, const std::string &_name, UINetwork::Type type)
@@ -24,7 +35,7 @@ namespace FD {
 	}
 	
 	UINode* UINetworkController::newNode(UINetwork* _net, std::string _name, 
-						   std::string _type, double _x, double _y, bool doInit)
+						std::string _type, double _x, double _y, bool doInit)
 	{
 	
 		cerr<<"UINode* UINetworkController::newNode "<<endl;
@@ -37,17 +48,46 @@ namespace FD {
 		if (m_QtNetwork)
 		{
 			QtNode *qtNode = m_QtNetwork->addNode(nodeController);
-                        nodeController->setQtNode(qtNode);
+            nodeController->setQtNode(qtNode);
 		}
+
 	
-                //UPDATE VIEW 
-               nodeController->updateTerminals();
-               nodeController->updateParameters();
+        //UPDATE VIEW 
+        nodeController->updateTerminals();
+        nodeController->updateParameters();
 
 
 		return nodeController;
 	}
-						   
+		
+        UINode* UINetworkController::newNode(UINetwork* _net, xmlNodePtr def)
+        {
+		cerr<<"UINode* UINetworkController::newNode (XML)"<<endl;
+	
+		//CREATE MODEL & CONTROLLER
+		UINodeController *nodeController = new UINodeController(dynamic_cast<UINetworkController*>(_net),def);
+	
+		//UPDATE VIEW
+		//TO DO, UPDATE MULTIPLE VIEWS?
+		if (m_QtNetwork)
+		{
+			QtNode *qtNode = m_QtNetwork->addNode(nodeController);
+            nodeController->setQtNode(qtNode);
+		}
+        else
+        {
+            cerr<<"WARNING :  UINode* UINetworkController::newNode --> No QtNetwork defined."<<endl;
+        }
+	
+        //UPDATE VIEW 
+        //nodeController->updateTerminals();
+        //nodeController->updateParameters();
+
+            return nodeController;
+        }
+
+
+				
 	UILink* UINetworkController::newLink (UITerminal *_from, UITerminal *_to,const char *str)
 	{
 		cerr<<"UILink* UINetworkController::newLink"<<endl;
@@ -58,18 +98,18 @@ namespace FD {
 		
 		
 		
-		return NULL;
+		return new UILink(_from,_to,str);
 	}
 		
 	UINote* UINetworkController::newNote(const std::string &text, double x, double y, bool visible)
 	{
-		return NULL;	
+		return new UINote(text,x,y,visible);	
 	}
 
 	UINetTerminal * UINetworkController::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name, 
-					  const std::string &_objType, const std::string &_description)
+					const std::string &_objType, const std::string &_description)
 	{
-		return NULL;		  
+		return new UINetTerminalController(dynamic_cast<UITerminalController*>(_terminal),_type,_name,_objType,_description);		  
 	}
 	
 	UINodeController* UINetworkController::createNode(std::string type, double x, double y, bool doInit)
@@ -79,6 +119,26 @@ namespace FD {
 		return myNode;
 	}
 	
+    void UINetworkController::updateView(QtDocument *doc)
+    {
+        //CREATE VIEW IF REQUIRED
+        if (!m_QtNetwork && doc)
+        {
+               m_QtNetwork = doc->addNetwork(this);
+        }
+
+        //UPDATE VIEW FOR EACH NODES
+        for (unsigned int i =0; i < nodes.size(); i++)
+        {
+            UINodeController *nodeCtrl = dynamic_cast<UINodeController*>(nodes[i]);
+
+            if (nodeCtrl)
+            {
+                nodeCtrl->updateView(m_QtNetwork);
+            }
+
+        }
+    }
 
 } //namespace FD
 

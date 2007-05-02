@@ -9,6 +9,7 @@ namespace FD
 
 	class UINetworkController;
 	class QtNode;
+    class QtNetwork;
 
 	class UINodeController : public QObject, public UINode
 	{
@@ -16,6 +17,7 @@ namespace FD
 		
 		public:
 		
+			UINodeController(UINetworkController* _net, xmlNodePtr def);
 		
 			UINodeController(UINetworkController* _net, std::string _name, std::string _type, double x, double y);
 		
@@ -30,9 +32,15 @@ namespace FD
 			
 			virtual void rename (const std::string &newName);
 		
-			void setQtNode(QtNode *node){m_QtNode = node;}
+			void setQtNode(QtNode *node);
 			
 			QtNode* getQtNode(){return m_QtNode;}
+			
+			void updateTerminals();
+
+			void updateParameters();
+			
+            void updateView(QtNetwork *net);
 		
 		private:
 		
