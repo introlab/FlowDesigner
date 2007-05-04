@@ -64,55 +64,59 @@ UINode::UINode(UINetwork* _net, xmlNodePtr def, bool doInit)
    : destroyed(false)
    , net(_net)
 {
-   char *str_name = (char *)xmlGetProp(def, (xmlChar *)"name");
-   char *str_type = (char *)xmlGetProp(def, (xmlChar *)"type");
-   char *str_x = (char *)xmlGetProp(def, (xmlChar *)"x");
-   char *str_y = (char *)xmlGetProp(def, (xmlChar *)"y");
+    if (doInit)
+    {
+        loadXML(def);
+    }
+}
 
-   if (!str_name || !str_type || !str_x || !str_y)
-   {
-      throw new GeneralException("Missing node parameter(s) in XML definition", __FILE__, __LINE__);
-   }
+void UINode::loadXML(xmlNodePtr def)
+{
+    char *str_name = (char *)xmlGetProp(def, (xmlChar *)"name");
+    char *str_type = (char *)xmlGetProp(def, (xmlChar *)"type");
+    char *str_x = (char *)xmlGetProp(def, (xmlChar *)"x");
+    char *str_y = (char *)xmlGetProp(def, (xmlChar *)"y");
+    
+    if (!str_name || !str_type || !str_x || !str_y)
+    {
+        throw new GeneralException("Missing node parameter(s) in XML definition", __FILE__, __LINE__);
+    }
+    
+    name = string(str_name);
+    type = string(str_type);
+    x = atof(str_x);
+    y = atof(str_y);
+    
+    free (str_name); free (str_type); free(str_x); free(str_y);
 
-   name = string(str_name);
-   type = string(str_type);
-   x = atof(str_x);
-   y = atof(str_y);
+    xtmp = x;
+    ytmp = y;
 
-   free (str_name); free (str_type); free(str_x); free(str_y);
 
-   xtmp = x;
-   ytmp = y;
-  
-   if (doInit)
-   {
-       parameters = newNodeParameters(this, type);
-       parameters->load(def);
-      
-      vector<ItemInfo *> inputname;
-      vector<ItemInfo *> outputname;
-      {
-	 inputname = net->getDocument()->getNetInputs(type); 
-	 outputname = net->getDocument()->getNetOutputs(type); 
-      }
-      
-      for (unsigned int i=0;i<inputname.size();i++)
-      {
-         inputs.insert(inputs.end(), newTerminal (inputname[i],
-                                                     this, true, 0.0, 0.0));
-      }
-      
-      for (unsigned int i=0;i<outputname.size();i++)
-      {
-         outputs.insert(outputs.end(), newTerminal (outputname[i], 
-                                                       this, false, 0.0, 0.0));
-      }
+    parameters = newNodeParameters(this, type);
+    parameters->load(def);
+    
+    vector<ItemInfo *> inputname;
+    vector<ItemInfo *> outputname;
+    
+    inputname = net->getDocument()->getNetInputs(type); 
+    outputname = net->getDocument()->getNetOutputs(type); 
+    
 
-      description = net->getDocument()->getDescription(type);
-      
-      
-      
-   }
+    for (unsigned int i=0;i<inputname.size();i++)
+    {
+        inputs.insert(inputs.end(), newTerminal (inputname[i],
+                                                    this, true, 0.0, 0.0));
+    }
+
+    for (unsigned int i=0;i<outputname.size();i++)
+    {
+        outputs.insert(outputs.end(), newTerminal (outputname[i], 
+                                                    this, false, 0.0, 0.0));
+    }
+
+    description = net->getDocument()->getDescription(type);
+
 }
 
 UINode::~UINode()

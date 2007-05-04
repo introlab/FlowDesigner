@@ -98,6 +98,9 @@ public:
    /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
 
+   /** Load from an XML tree */
+   void loadXML(xmlNodePtr def);
+
    /**Returns the input (terminal) corresponding to a certain name*/
    UITerminal *getInputNamed(std::string n);
 
