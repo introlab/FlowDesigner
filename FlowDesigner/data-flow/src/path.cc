@@ -101,7 +101,7 @@ void recursiveScanDL(const std::string &path, std::vector<std::string> &libList,
 #ifndef WIN32	  
       if (name.find(".tlb") != string::npos) {	    
 #else
-	  if (name.find(".dll") != string::npos && name.find(".a") == string::npos){
+	  if (name.find(".tlb") != string::npos && name.find(".a") == string::npos){
 #endif
 	  
 	if (debug) {
