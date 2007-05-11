@@ -42,10 +42,34 @@ GUINode::GUINode(UINetwork* _net, xmlNodePtr def)
    : UINode(_net, def,false), dragging(false) , grab(false) 
 {
 
-  parameters = newNodeParameters(this, type);
-  initialize_widgets();
-  parameters->load(def);
-  createPopup();
+    //TODO use loadXML function instead of reimplementing xml loading here!
+    //loadXML(def);
+    char *str_name = (char *)xmlGetProp(def, (xmlChar *)"name");
+    char *str_type = (char *)xmlGetProp(def, (xmlChar *)"type");
+    char *str_x = (char *)xmlGetProp(def, (xmlChar *)"x");
+    char *str_y = (char *)xmlGetProp(def, (xmlChar *)"y");
+    
+    if (!str_name || !str_type || !str_x || !str_y)
+    {
+        throw new GeneralException("Missing node parameter(s) in XML definition", __FILE__, __LINE__);
+    }
+    
+    name = string(str_name);
+    type = string(str_type);
+    x = atof(str_x);
+    y = atof(str_y);
+    
+    free (str_name); free (str_type); free(str_x); free(str_y);
+
+    xtmp = x;
+    ytmp = y;
+
+    description = net->getDocument()->getDescription(type);
+    
+    parameters = newNodeParameters(this, type);
+    initialize_widgets();
+    parameters->load(def);
+    createPopup();
 }
 
 GUINode::~GUINode()
