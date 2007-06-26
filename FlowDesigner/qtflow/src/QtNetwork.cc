@@ -24,7 +24,7 @@ namespace FD
 
     using namespace std;
 
-    QtNetwork::QtNetwork(UINetworkController *uiNetwork)
+    QtNetwork::QtNetwork(UINetwork *uiNetwork)
             : m_uiNetwork(uiNetwork)
     {
         //Creating graphics scene
@@ -223,7 +223,10 @@ namespace FD
 			
 				QPointF pos = mapToScene(event->pos());
 			
-				m_uiNetwork->createNode(event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+				//m_uiNetwork->createNode(event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+
+                                m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+
 			
 			/*
 				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
@@ -270,7 +273,7 @@ namespace FD
 		}
 	}
 	
-    QtNode* QtNetwork::addNode(UINodeController* node)
+    QtNode* QtNetwork::addNode(UINode* node)
 	{
 		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);

@@ -317,7 +317,18 @@ namespace FD
     void QtFlowDesigner::newNetwork(const std::string name)
     {
 
-        tabWidget->addTab (new QtNetwork(), name.c_str());
+        //tabWidget->addTab (new QtNetwork(), name.c_str());
+
+        //get active window
+        QWidget *window =  m_workspace->activeWindow ();
+
+        QtDocument *doc = dynamic_cast<QtDocument*>(window);
+
+        if (doc)
+        {
+            cerr<<"Will create a new network"<<endl;
+        }
+    
 
     }
 
@@ -326,7 +337,7 @@ namespace FD
         
         QtDocument *doc =  new QtDocument(this,NULL);	   	  
         QWidget *window = m_workspace->addWindow(doc);
-        window->setWindowTitle("test");
+        window->setWindowTitle("QtDocument - untitled");
         m_workspace->setActiveWindow(window);
         window->show();
     }

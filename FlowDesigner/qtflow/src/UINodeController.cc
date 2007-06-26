@@ -4,7 +4,7 @@
 #include "UITerminalController.h"
 #include "UINetTerminalController.h"
 #include "UIDocumentController.h"
-
+#include "UILinkController.h"
 #include "UILink.h"
 #include "UINodeParameters.h"
 
@@ -45,7 +45,13 @@ namespace FD
 	{
 		cerr<<"UINodeController::UINodeController created"<<endl;
 		description = net->getDocument()->getDescription(type);
-		//END  
+		
+                //Updating information from terminals
+                updateTerminals();
+
+                //updating information from parameters
+                updateParameters();
+
 	}
 	
         void UINodeController::updateTerminals()
@@ -83,7 +89,7 @@ namespace FD
 	UILink* UINodeController::newLink (UITerminal *_from, UITerminal *_to)
 	{
 		cerr<<"UILink* UINodeController::newLink"<<endl;
-		return new UILink(_from,_to);
+		return new UILinkController(dynamic_cast<UITerminalController*>(_from),dynamic_cast<UITerminalController*>(_to));
 	}
 
 	
@@ -124,6 +130,8 @@ namespace FD
         if (!m_QtNode && net)
         {
                m_QtNode = net->addNode(this);
+
+               connect(m_QtNode,SIGNAL(positionChanged(float, float)),this,SLOT(setPos(float, float)));
         }
 
         //UPDATE THE VIEW
@@ -148,5 +156,22 @@ namespace FD
                 terminalCTRL->updateView(m_QtNode);
             }
         }
+	
+	//TODO : LINKS
+
+
+    }
+
+    void UINodeController::setPos(float _x, float _y)
+    {
+
+        cerr<<"(SLOT) UINodeController::setPos(float _x, float _y)"<<_x<<","<<_y<<endl;
+
+        x = _x;
+        y = _y;
+        
+        //update view
+
+        
     }
 }

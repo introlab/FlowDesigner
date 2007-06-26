@@ -46,7 +46,7 @@ class QtFlowDesigner : public QMainWindow
     public slots:
         void newNetworkClicked();
         void openDocumentClicked();               
-		void saveDocumentClicked(); 
+	void saveDocumentClicked(); 
 
 	protected:
 

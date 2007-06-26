@@ -104,43 +104,29 @@ namespace FD
     {
         return edgeList;
     }
-/*
+
+
 
     QVariant QtNode::itemChange(GraphicsItemChange change, const QVariant &value)
     {
-        switch (change)
-        {
-        case ItemPositionChange:
-            foreach (QtLink *edge, edgeList)
-            edge->adjust();
-            break;
-        default:
-            break;
-        };
+
+	if (change == ItemPositionChange && scene()) 
+	{
+       		//value is the new position.
+         	QPointF newPos = value.toPointF();
+
+	 	//emit position changed signal
+                cerr<<"(EMIT) positionChanged(newPos.x(),newPos.y())"<<endl;
+                emit positionChanged(newPos.x(),newPos.y());
+
+     	}
 
         return QGraphicsItem::itemChange(change, value);
     }
 
     void QtNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
-        update();
-        if (event->button() == Qt::LeftButton)
-        {
-            QGraphicsItem::mousePressEvent(event);
-        }
-        else if (event->button() == Qt::MidButton)
-        {
-            m_virtualQtNode = new QtNode(graph,"NEW");
-            m_virtualQtNode->hide();
-            graph->scene()->addItem(m_virtualQtNode);
-            m_virtualQtNode->setPos(event->scenePos());
-            //m_virtualQtLink = new QtLink(this, m_virtualQtNode);
-            //TODO CREATE LINK
-            graph->scene()->addItem(m_virtualQtLink);
-            m_virtualQtLink->adjust();
-            m_linking = true;
-            event->accept();
-        }
+	QGraphicsItem::mousePressEvent(event);
     }
 
 	void QtNode::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event)
@@ -162,70 +148,15 @@ namespace FD
 	
     void QtNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     {
-        update();
-        // if (m_virtualQtNode != NULL && m_virtualQtLink != NULL)
-        if (m_linking)
-        {
-            m_virtualQtNode->setPos(event->scenePos());
-            m_virtualQtLink->adjust();
-        }
-        else
-        {
-
-            graph->ensureVisible (this);
-
-            QGraphicsItem::mouseMoveEvent(event);
-            for (QList<QtLink*>::iterator iter = edgeList.begin(); iter != edgeList.end(); iter++)
-            {
-                (*iter)->adjust();               
-            }            
-        }
+	QGraphicsItem::mouseMoveEvent(event);
     }
 
     void QtNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
-        update();
-        if (event->button() == Qt::LeftButton)
-        {
-            QGraphicsItem::mouseReleaseEvent(event);
-        }
-        else if (event->button() == Qt::MidButton)
-        {
-            // if (this == graph->scene()->mouseGrabberItem())
-            // {
-            // graph->scene()->itemAt(event->buttonDownScenePos(event->button()))->mouseReleaseEvent(event);
-            // }
-            // else
-            // std::cerr << "mid button released"  << std::endl;
-            // QtNode* newQtNode = new QtNode(graph);
-            // graph->scene()->addItem(newQtNode);
-            // newQtNode->setPos(event->scenePos());
-            // QtNode* destinationQtNode = dynamic_cast<QtNode*>(graph->scene()->itemAt(event->buttonDownScenePos(event->button())));
-            QtNode* destinationQtNode = dynamic_cast<QtNode*>(graph->scene()->itemAt(event->scenePos()));
-            if (destinationQtNode == m_virtualQtNode)
-            {
-                std::cerr << "aieouille!!" << std::endl;
-            }
-            // QtNode* previousQtNode = dynamic_cast<QtNode*>(graph->scene()->mouseGrabberItem());
-            if (destinationQtNode != NULL && destinationQtNode != this)
-            {
-                //TODO CREATE LINK
-                //QtLink* createdQtLink = new QtLink(this, destinationQtNode);
-                //graph->scene()->addItem(createdQtLink);
-                //createdQtLink->adjust();
-                // graph->update();
-            }
-            graph->scene()->removeItem(m_virtualQtLink);
-            graph->scene()->removeItem(m_virtualQtNode);
-            delete(m_virtualQtLink);
-            m_virtualQtLink = NULL;
-            delete(m_virtualQtNode);
-            m_virtualQtNode = NULL;
-            m_linking = false;
-        }
+        QGraphicsItem::mouseReleaseEvent(event);
     }
 
-*/
+
     QtTerminal* QtNode::addTerminal(UITerminal *uiTerminal)
     {
         QtTerminal *terminal = NULL;

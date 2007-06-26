@@ -28,7 +28,7 @@ class QtLink : public QGraphicsItem
 
         void adjust();
 
-		UILink* getUILink() {return m_uiLink;}
+	UILink* getUILink() {return m_uiLink;}
     
     protected:
         QRectF boundingRect() const;
@@ -40,7 +40,7 @@ class QtLink : public QGraphicsItem
         QPointF m_destPoint;      
         QtTerminal *m_source;
         QtTerminal *m_dest;
-		UILink *m_uiLink;
+	UILink *m_uiLink;
         qreal arrowSize;
 };
 

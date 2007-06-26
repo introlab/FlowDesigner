@@ -47,6 +47,9 @@ class QtTerminal : public QGraphicsRectItem
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
         
+	virtual QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
+
+
         QGraphicsTextItem *m_label;
         QtNode *m_node;            
         int m_type;

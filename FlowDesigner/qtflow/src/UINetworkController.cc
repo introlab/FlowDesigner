@@ -48,14 +48,16 @@ namespace FD {
 		//TO DO, UPDATE MULTIPLE VIEWS?
 		if (m_QtNetwork)
 		{
-			QtNode *qtNode = m_QtNetwork->addNode(nodeController);
-            nodeController->setQtNode(qtNode);
+			//QtNode *qtNode = m_QtNetwork->addNode(nodeController);
+                        //nodeController->setQtNode(qtNode);
 		}
 
-	
-        //UPDATE VIEW 
-        nodeController->updateTerminals();
-        nodeController->updateParameters();
+                nodeController->updateView(m_QtNetwork);	
+
+
+                //UPDATE VIEW 
+                //nodeController->updateTerminals();
+                //nodeController->updateParameters();
 
 
 		return nodeController;
@@ -72,8 +74,9 @@ namespace FD {
 		//TO DO, UPDATE MULTIPLE VIEWS?
 		if (m_QtNetwork)
 		{
-			QtNode *qtNode = m_QtNetwork->addNode(nodeController);
-            nodeController->setQtNode(qtNode);
+                        nodeController->updateView(m_QtNetwork);
+			//QtNode *qtNode = m_QtNetwork->addNode(nodeController);
+                        //nodeController->setQtNode(qtNode);
 		}
         else
         {

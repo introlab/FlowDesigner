@@ -11,7 +11,7 @@
 #include <vector>
 #include <map>
 
-#include "UINodeController.h"
+#include "UINode.h"
 
 namespace FD
 {
@@ -22,8 +22,10 @@ class QtTerminal;
 class UITerminal;
 class UINode;
 
-class QtNode : public QGraphicsRectItem
+class QtNode : public QObject, public QGraphicsRectItem
 {
+
+    Q_OBJECT;
 
 public:
 
@@ -38,23 +40,26 @@ public:
     enum { Type = UserType + 1 };
     int type() const { return Type; }
     
-
 	
     QtTerminal* addTerminal(UITerminal *terminal);
     
     QtNetwork* getQtNetwork() { return graph;}   
 
     //QtTerminal* getQtTerminal(UITerminal *terminal);   
+
+signals:
+
+    void positionChanged(float x, float y);
     
 protected:
 
- /*
+
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
-    */
+
 
     UINode *m_uiNode;
     QGraphicsTextItem *nameItem;

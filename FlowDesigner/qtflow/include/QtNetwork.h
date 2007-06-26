@@ -14,8 +14,8 @@ namespace FD
     class QtNode;
     class QtLink;
     class QtTerminal;
-    class UINetworkController;
-    class UINodeController;
+    class UINetwork;
+    class UINode;
     class UINode;
     class UILink;
     
@@ -24,17 +24,18 @@ namespace FD
         Q_OBJECT
 
     public:
-        QtNetwork(UINetworkController *uiNetwork = NULL);
+
+        QtNetwork(UINetwork *uiNetwork);
 	        
         void addQtLink(QtLink *link);
                 
-        QtNode* addNode(UINodeController* node);
+        QtNode* addNode(UINode* node);
     
         QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILink* link);
 			  
     protected:
 
-	    void mouseMoveEvent ( QMouseEvent * e );
+	void mouseMoveEvent ( QMouseEvent * e );
         void keyPressEvent(QKeyEvent *event);
         void wheelEvent(QWheelEvent *event);
         void contextMenuEvent(QContextMenuEvent *event);
@@ -43,7 +44,7 @@ namespace FD
     
         void scaleView(qreal scaleFactor);
     
-        UINetworkController *m_uiNetwork;
+        UINetwork *m_uiNetwork;
                     
         //std::vector<QtNode*> m_nodes;
         //std::vector<QtLink*> m_links;

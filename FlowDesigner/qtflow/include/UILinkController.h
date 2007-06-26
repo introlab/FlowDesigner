@@ -22,6 +22,9 @@ namespace FD
                          UITerminalController *_to, 
                          const char *points_str=NULL);
 
+                public slots:
+                void positionChanged(double x, double y);
+
 		
         void updateView(QtNetwork *net);
 		
