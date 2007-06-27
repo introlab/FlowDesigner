@@ -18,10 +18,14 @@ class QtLink;
 class QtNetTerminal;
 
 
-class QtTerminal : public QGraphicsRectItem
+class QtTerminal : public QObject, public QGraphicsRectItem
 {
+
+    Q_OBJECT;
+
     public:
-           
+
+              
         enum {INPUT,OUTPUT,VIRTUAL};
               
 	    QtTerminal(QtNode *node, std::string name="", int type = INPUT ,float x = 0, float y = 0);
@@ -39,6 +43,10 @@ class QtTerminal : public QGraphicsRectItem
 	    UITerminal * getUITerminal() {return m_uiTerminal;}
 
             QtNetTerminal* addNetTerminal(UINetTerminal *netTerminal);
+
+    signals:
+
+            void positionChanged(float x, float y);
     
     protected:
 	

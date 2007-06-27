@@ -12,7 +12,7 @@ EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd FlowDesigner.pc.in
 
 #Fools KDevelop into finding all the files
 if COND_OPT
-SUBDIRS = data-flow @modules@ tools examples
+SUBDIRS = data-flow @modules@ tools examples qtflow
 else
 SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow octave vflow tools examples
 endif

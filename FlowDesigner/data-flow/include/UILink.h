@@ -99,11 +99,11 @@ public:
 
    virtual ~UILink();
 
-   void saveXML(xmlNode *root);
+   virtual void saveXML(xmlNode *root);
 
-   void build(Network *net);
+   virtual void build(Network *net);
 
-   void genCode(std::ostream &out);
+   virtual void genCode(std::ostream &out);
 
    std::list<GUILinkPoint*> & get_link_points() {return m_points;}
  

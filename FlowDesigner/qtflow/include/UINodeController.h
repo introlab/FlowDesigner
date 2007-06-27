@@ -42,9 +42,8 @@ namespace FD
 
 			void updateView ( QtNetwork *net );
 
-                public slots:
-
-                void setPos(float x, float y);
+		public slots:
+			void setPos ( float x, float y );
 
 
 		private:

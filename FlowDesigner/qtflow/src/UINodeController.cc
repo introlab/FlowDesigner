@@ -170,7 +170,37 @@ namespace FD
         x = _x;
         y = _y;
         
-        //update view
+        if (m_QtNode)
+        {
+            //update view for all input terminals
+            for (unsigned int i = 0; i < inputs.size(); i++)
+            {
+                UITerminalController *terminal  = dynamic_cast<UITerminalController*>(inputs[i]);
+
+                if (terminal)
+                {
+                    terminal->updateView(m_QtNode);
+                }
+            }
+
+            //update view for all output terminals
+            for (unsigned int i = 0; i < outputs.size(); i++)
+            {
+                UITerminalController *terminal  = dynamic_cast<UITerminalController*>(outputs[i]);
+
+                if (terminal)
+                {
+                    terminal->updateView(m_QtNode);
+                }
+            }        
+        }
+
+        //update view for terminals
+        /**Pointers to all the inputs*/
+        //std::vector <UITerminal *> inputs;
+
+        /**Pointers to all the outputs*/
+        //std::vector <UITerminal *> outputs;
 
         
     }

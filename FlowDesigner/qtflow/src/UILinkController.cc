@@ -17,8 +17,11 @@ namespace FD
 
         void UILinkController::updateView ( QtNetwork *net )
         {
+            if (net)
+            {
+
                 //CREATE VIEW IF REQUIRED
-                if ( !m_QtLink && net )
+                if ( !m_QtLink)
                 {
                         QtTerminal *source = dynamic_cast<UITerminalController*> ( from )->getQtTerminal();
                         QtTerminal *dest = dynamic_cast<UITerminalController*> ( to )->getQtTerminal();
@@ -26,6 +29,14 @@ namespace FD
                         //add link
                         m_QtLink = net->addLink ( source,dest,this );
                 }
+                else 
+                {
+                    //ADJUST LINK
+                    m_QtLink->adjust();
+                }
+
+
+            }
         }
 
     void UILinkController::positionChanged(double x, double y)

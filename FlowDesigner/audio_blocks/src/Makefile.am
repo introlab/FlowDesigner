@@ -4,7 +4,7 @@ override libdir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 override bindir=${prefix}/lib/flowdesigner/toolbox/audio_blocks
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.106 2006/11/13 15:50:42 maestro Exp $
+# $Id: Makefile.am,v 1.107 2006/11/14 04:42:50 jmvalin Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -124,6 +124,6 @@ INCLUDES = -I$(top_srcdir)/../data-flow/include \
 	$(ALSA_CFLAGS) $(SPEEX_CFLAGS)
 
 libablocks_la_LIBADD = $(top_builddir)/../data-flow/src/libflow.la $(LIB_FFTW) \
-	@ALSA_LIBS@ @SPEEX_LIBS@
+	$(ALSA_LIBS) $(SPEEX_LIBS)
 
 
