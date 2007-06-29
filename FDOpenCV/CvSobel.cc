@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvSobel
-   * @category FDOpenCV:Morphological_Operations
+   * @category FDOpenCV:Morphological Operations
    * @description Calculates first, second, third or mixed image derivatives using extended Sobel operator
    *
    * @input_name IMAGEIN
@@ -26,17 +26,18 @@ namespace FD {
    * @parameter_name XORDER
    * @parameter_type int
    * @parameter_value 1
-   * @parameter_description The first threshold
+   * @parameter_description Order of the derivative x
    *
    * @parameter_name YORDER
    * @parameter_type int
    * @parameter_value 0
-   * @parameter_description The second threshold   
+   * @parameter_description Order of the derivative y
    *
    * @parameter_name APERTURE_SIZE
    * @parameter_type int
    * @parameter_value 3
-   * @parameter_description Aperture parameter for Sobel operator
+   * @parameter_description Size of the extended Sobel kernel, must be 1, 3, 5 or 7
+   *
    END*/
    
    

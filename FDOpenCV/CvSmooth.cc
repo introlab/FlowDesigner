@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvSmooth
-   * @category FDOpenCV:Morphological_Operations
+   * @category FDOpenCV:Morphological Operations
    * @description Smooths the image
    *
    * @input_name IMAGEIN
@@ -27,6 +27,11 @@ namespace FD {
    * @parameter_type string
    * @parameter_value CV_BLUR_NO_SCALE;CV_BLUR;CV_GAUSSIAN;CV_MEDIAN;CV_BILATERAL
    * @parameter_description Type of the smoothing
+   * CV_BLUR_NO_SCALE (simple blur with no scaling) - summation over a pixel param1×param2 neighborhood. If the neighborhood size may vary, one may precompute integral image with cvIntegral function.
+   * CV_BLUR (simple blur) - summation over a pixel param1xparam2 neighborhood with subsequent scaling by 1/(param1*param2).
+   * CV_GAUSSIAN (gaussian blur) - convolving image with param1×param2 Gaussian kernel.
+   * CV_MEDIAN (median blur) - finding median of param1×param1 neighborhood (i.e. the neighborhood is square).
+   * CV_BILATERAL (bilateral filter) - applying bilateral 3x3 filtering with color sigma=param1 and space sigma=param2.    
    *
    * @parameter_name PARAM1
    * @parameter_type int

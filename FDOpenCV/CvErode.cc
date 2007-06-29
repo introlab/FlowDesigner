@@ -13,7 +13,7 @@ namespace FD {
    /*Node
    *
    * @name CvErode
-   * @category FDOpenCV:Morphological_Operations
+   * @category FDOpenCV:Morphological Operations
    * @description Erodes image by using arbitrary structuring element
    *
    * @input_name IMAGEIN

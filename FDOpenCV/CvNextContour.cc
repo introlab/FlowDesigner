@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvNextContour
-   * @category FDOpenCV:contour
+   * @category FDOpenCV:Contours
    * @description Point to the next contour
    *
    * @input_name CONTOURSIN
@@ -28,7 +28,7 @@ namespace FD {
    * @output_type	CvContours
    *
    * @output_name BOOL
-   * @output_description true if the next contour exist
+   * @output_description true if the next contour exist. If false, the first contour is return
    * @output_type	bool   
    *
    * @output_name NBELEMENTS

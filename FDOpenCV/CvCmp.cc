@@ -12,15 +12,17 @@ namespace FD {
    /*Node
    *
    * @name CvCmp
-   * @category FDOpenCV:Arithmetic_Logic_Comparison
-   * @description Compare 2 image
+   * @category FDOpenCV:Arithmetic Logic Comparison
+   * @description Performs per-element comparison of two images
+   * dst(I) is set to 0xff (all '1'-bits) if the particular relation between the elements is true and 0 otherwise.
+   * All the images must have the same type, except the destination, and the same size.
    *
    * @input_name IMAGEIN1
-   * @input_description Input image1
+   * @input_description Input image1.
    * @input_type CvImage
    *
    * @input_name IMAGEIN2
-   * @input_description Input image2
+   * @input_description Input image2.
    * @input_type CvImage
    *
    * @parameter_name CMP_OP

@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvFirstContour
-   * @category FDOpenCV:contour
+   * @category FDOpenCV:Contours
    * @description Point to the first contour
    *
    * @input_name CONTOURSIN

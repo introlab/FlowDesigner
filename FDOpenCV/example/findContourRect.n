@@ -24,7 +24,7 @@
     <Link from="node_CvThreshold_1" output="IMAGEOUT" to="node_CvFindContours_1" input="IMAGE"/>
     <Link from="node_CvLoadImage_1" output="IMAGE" to="node_CvThreshold_1" input="IMAGEIN"/>
     <Link from="node_CvFindContours_1" output="CONTOURS" to="node_LOOP0_1" input="ContoursIn"/>
-    <Link from="node_CvLoadImage_1" output="IMAGE" to="node_LOOP0_1" input="ImageIn"/>
+    <Link from="node_CvLoadImage_1" output="IMAGE" to="node_LOOP0_1" input="ImageIn">-321.5 -1041 -310 -1041 -309 -1062 149.5 -1062.5 </Link>
     <NetOutput name="imageOut" node="node_LOOP0_1" terminal="imageOut" object_type="any" description="No description available"/>
     <Note x="0" y="0" visible="0" text="Created with FlowDesigner FLOWDESIGNER_VERSION"/>
   </Network>
@@ -34,32 +34,32 @@
       <Parameter name="DELAY" type="int" value="1" description="Number of iteration for the delay"/>
       <Parameter name="BEFORE_LIMIT" type="int" value="0" description="When count - DELAY is smaller or equal to BEFORE_LIMIT, the input is pulled from BEFORE at (DELAY - count + BEFORE_LIMIT)"/>
     </Node>
-    <Node name="node_CvDrawContours_1" type="CvDrawContours" x="931.000000" y="-1139.000000">
+    <Node name="node_CvDrawContours_1" type="CvDrawContours" x="771.000000" y="-1148.000000">
       <Parameter name="MAX_LEVEL" type="int" value="0" description="Maximal level for drawn contours"/>
       <Parameter name="THICKNESS" type="int" value="1" description="Thickness of lines the contours are drawn with. If it is negative, the contour interiors are drawn"/>
       <Parameter name="LINE_TYPE" type="string" value="CV_AA" description="Type of the contour segments"/>
     </Node>
-    <Node name="node_CvShowImage_1" type="CvShowImage" x="1094.000000" y="-1140.000000">
+    <Node name="node_CvShowImage_1" type="CvShowImage" x="927.000000" y="-1148.000000">
       <Parameter name="WINDOW_TITLE" type="string" value="Contour Image" description="Window title."/>
     </Node>
-    <Node name="node_TextProbe_1" type="TextProbe" x="1223.000000" y="-1140.000000">
+    <Node name="node_TextProbe_1" type="TextProbe" x="1061.000000" y="-1149.000000">
       <Parameter name="BREAK_AT" type="int" value="" description="If set, the probe runs until (count = BREAK_AT)"/>
       <Parameter name="SHOW" type="bool" value="true" description="Whether or not to show the the data by default"/>
       <Parameter name="SKIP" type="int" value="" description="Count increment for each &quot;Next&quot;"/>
       <Parameter name="PROBE_NAME" type="string" value="" description="Name (title) of the probe"/>
     </Node>
-    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="618.000000" y="-1115.000000">
+    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="445.000000" y="-1101.000000">
       <Parameter name="CHANNEL1" type="int" value="0" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="0" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="255" description="Blue parameter"/>
     </Node>
-    <Node name="node_CvCreateColor_2" type="CvCreateColor" x="617.000000" y="-1067.000000">
+    <Node name="node_CvCreateColor_2" type="CvCreateColor" x="440.000000" y="-1058.000000">
       <Parameter name="CHANNEL1" type="int" value="0" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="255" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="0" description="Blue parameter"/>
     </Node>
-    <Node name="node_NOP_1" type="NOP" x="501.000000" y="-1142.000000"/>
-    <Node name="node_NOP_2" type="NOP" x="-55.000000" y="-1055.000000"/>
+    <Node name="node_NOP_1" type="NOP" x="446.000000" y="-1141.000000"/>
+    <Node name="node_NOP_2" type="NOP" x="-62.000000" y="-1070.000000"/>
     <Node name="node_Equal_1" type="Equal" x="-359.000000" y="-1146.000000"/>
     <Node name="node_IterCount_1" type="IterCount" x="-547.000000" y="-1154.000000"/>
     <Node name="node_Constant_1" type="Constant" x="-549.000000" y="-1106.000000">

@@ -14,15 +14,15 @@ namespace FD {
    /*Node
    *
    * @name CvDrawContours
-   * @category FDOpenCV:contour
+   * @category FDOpenCV:Contours
    * @description Draws contour outlines or interiors in the image
    *
    * @input_name CONTOURSIN
-   * @input_description The contours to handle
+   * @input_description The contour to handle
    * @input_type CvContours
    *
    * @input_name IMAGEIN
-   * @input_description the input image
+   * @input_description Image where the contours are to be drawn
    * @input_type CvImage
    *
    * @input_name EXTERNAL_COLOR
@@ -37,11 +37,16 @@ namespace FD {
    * @parameter_type int
    * @parameter_value 0
    * @parameter_description Maximal level for drawn contours
+   * If 0, only contour is drawn.
+   * If 1, the contour and all contours after it on the same level are drawn.
+   * If 2, all contours after and all contours one level below the contours are drawn, etc.
+   * If the value is negative, the function does not draw the contours following after contour but draws child contours of contour up to abs(max_level)-1 level.
    *
    * @parameter_name THICKNESS
    * @parameter_type int
    * @parameter_value -1
-   * @parameter_description Thickness of lines the contours are drawn with. If it is negative, the contour interiors are drawn
+   * @parameter_description Thickness of lines the contours are drawn with.
+   * If it is negative, the contour interiors are drawn
    *
    * @parameter_name LINE_TYPE
    * @parameter_type string

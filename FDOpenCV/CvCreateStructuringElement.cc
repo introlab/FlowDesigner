@@ -12,8 +12,9 @@ namespace FD {
    /*Node
    *
    * @name CvCreateStructuringElement
-   * @category FDOpenCV
+   * @category FDOpenCV:Structuring Element
    * @description Create A Structuring Element FROM PARAMETERS
+   * It allocates and fills the structure, which can be used as a structuring element in the morphological operations.
    *
    * @parameter_name COLS
    * @parameter_type int

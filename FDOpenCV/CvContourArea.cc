@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvContourArea
-   * @category FDOpenCV:contour
+   * @category FDOpenCV:Contours
    * @description Calculate the contour area
    *
    * @input_name CONTOURS

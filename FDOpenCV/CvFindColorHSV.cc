@@ -13,23 +13,24 @@ namespace FD {
    /*Node
    *
    * @name CvFindColorHSV
-   * @category FDOpenCV
-   * @description Detect the RGB color int the image
-   *
+   * @category FDOpenCV:Color
+   * @description Detects the color in the image with a HSV method
+   * dst(I) is set to 0xff (all '1'-bits) if the color is detect and 0 otherwise.
+   * 
    * @input_name IMAGEIN
-   * @input_description The inptu Image
+   * @input_description Input image
    * @input_type CvImage
    *
    * @input_name COLORMIN
-   * @input_description Color to find
+   * @input_description Color which represents the minimal value for each channel.
    * @input_type CvColor
    *
    * @input_name COLORMAX
-   * @input_description Color to find
+   * @input_description Color which represents the maximal value for each channel.
    * @input_type CvColor   
    * 
    * @output_name IMAGEOUT
-   * @output_description The result image
+   * @output_description Result image
    * @output_type	CvImage
    * 
    END*/

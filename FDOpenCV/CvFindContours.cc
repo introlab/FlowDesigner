@@ -13,7 +13,7 @@ namespace FD {
    /*Node
    *
    * @name CvFindContours
-   * @category FDOpenCV:contour
+   * @category FDOpenCV:Contours
    * @description Finds contours in binary image
    *
    * @input_name IMAGE
@@ -24,14 +24,23 @@ namespace FD {
    * @parameter_type string
    * @parameter_value CV_RETR_EXTERNAL;CV_RETR_LIST;CV_RETR_CCOMP;CV_RETR_TREE
    * @parameter_description Retrieval mode
+   * CV_RETR_EXTERNAL: retrive only the extreme outer contours
+   * CV_RETR_LIST: retrieve all the contours and puts them in the list
+   * CV_RETR_CCOMP: retrieve all the contours and organizes them into two-level hierarchy: top level are external boundaries of the components, second level are bounda boundaries of the holes
+   * CV_RETR_TREE: retrieve all the contours and reconstructs the full hierarchy of nested contours
    *
    * @parameter_name METHOD
    * @parameter_type string
    * @parameter_value CV_CHAIN_CODE;CV_CHAIN_APPROX_NONE;CV_CHAIN_APPROX_SIMPLE;CV_CHAIN_APPROX_TC89_L1;CV_LINK_RUNS
    * @parameter_description Approximation method
-   * 
+   * CV_CHAIN_CODE: output contours in the Freeman chain code. All other methods output polygons (sequences of vertices).
+   * CV_CHAIN_APPROX_NONE: translate all the points from the chain code into points;
+   * CV_CHAIN_APPROX_SIMPLE: compress horizontal, vertical, and diagonal segments, that is, the function leaves only their ending points;
+   * CV_CHAIN_APPROX_TC89_L1,CV_CHAIN_APPROX_TC89_KCOS: apply one of the flavors of Teh-Chin chain approximation algorithm.
+   * CV_LINK_RUNS: use completely different contour retrieval algorithm via linking of horizontal segments of 1?s. Only CV_RETR_LIST retrieval mode can be used with this method.
+   *
    * @output_name CONTOURS
-   * @output_description The element structure
+   * @output_description Contain the pointer to the first outer contour
    * @output_type	CvContours
    * 
    * @output_name NBCONTOURS

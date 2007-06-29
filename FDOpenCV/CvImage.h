@@ -45,7 +45,7 @@ namespace FD
       
       CvImage* gray() const;
       
-      CvImage* rgb() const;
+      CvImage* bgr() const;
       
       CvImage* zero() const;
       

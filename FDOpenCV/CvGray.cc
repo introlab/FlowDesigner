@@ -12,8 +12,8 @@ namespace FD {
    /*Node
    *
    * @name CvGray
-   * @category FDOpenCV:Morphological_Operations
-   * @description Implements Canny algorithm for edge detection
+   * @category FDOpenCV:Morphological Operations
+   * @description Implements Converts image from BGR to Gray
    *
    * @input_name IMAGEIN
    * @input_description Input image

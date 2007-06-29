@@ -14,7 +14,7 @@ namespace FD {
    *
    * @name CvRectangle
    * @category FDOpenCV:Draw
-   * @description Draws contour outlines or interiors in the image
+   * @description Draws a rectangle in the image
    *
    * @input_name IMAGEIN
    * @input_description the input image

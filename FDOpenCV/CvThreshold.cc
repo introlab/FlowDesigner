@@ -14,8 +14,8 @@ namespace FD {
    /*Node
    *
    * @name CvThreshold
-   * @category FDOpenCV:Morphological_Operations
-   * @description Implements Canny algorithm for edge detection
+   * @category FDOpenCV:Morphological Operations
+   * @description Applies fixed-level threshold to array elements
    *
    * @input_name IMAGEIN
    * @input_description Input image

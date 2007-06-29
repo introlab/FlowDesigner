@@ -14,8 +14,8 @@ namespace FD {
    /*Node
    *
    * @name CvSelectContour
-   * @category FDOpenCV:contour
-   * @description Draws contour outlines or interiors in the image
+   * @category FDOpenCV:Contours
+   * @description Point to the contour indicate by the index
    *
    * @input_name CONTOURSIN
    * @input_description The contour to handle
@@ -34,7 +34,7 @@ namespace FD {
    * @output_type	int
    * 
    * @output_name BOOL
-   * @output_description true if the next contour exist
+   * @output_description true if the next contour exist. If false, the first contour is return
    * @output_type	bool   
    *   
    END*/

@@ -13,8 +13,10 @@ namespace FD {
    /*Node
    *
    * @name CvCanny
-   * @category FDOpenCV:Morphological_Operations
+   * @category FDOpenCV:Morphological Operations
    * @description Implements Canny algorithm for edge detection
+   * The function cvCanny finds the edges on the input image image and marks them in the output image edges using the Canny algorithm.
+   * The smallest of threshold1 and threshold2 is used for edge linking, the largest - to find initial segments of strong edges.
    *
    * @input_name INPUT
    * @input_description Input image

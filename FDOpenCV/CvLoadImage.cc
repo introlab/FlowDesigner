@@ -14,8 +14,8 @@ namespace FD {
    /*Node
    *
    * @name CvLoadImage
-   * @category FDOpenCV
-   * @description Load an image from file
+   * @category FDOpenCV:Image
+   * @description Load an image from a file
    *
    * @input_name FILENAME
    * @input_description The file name to load

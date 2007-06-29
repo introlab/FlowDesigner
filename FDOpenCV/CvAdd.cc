@@ -12,19 +12,21 @@ namespace FD {
    /*Node
    *
    * @name CvAdd
-   * @category FDOpenCV:Arithmetic_Logic_Comparison
-   * @description Implements Canny algorithm for edge detection
+   * @category FDOpenCV:Arithmetic Logic Comparison
+   * @description Adds one image to another one:
+   * dst(I)=src1(I)+src2(I).
+   * The images must have the same type and the same size.
    *
    * @input_name IMAGE1
-   * @input_description Input image1
+   * @input_description Input image1.
    * @input_type CvImage
    *
    * @input_name IMAGE2
-   * @input_description Input image2
+   * @input_description Input image2.
    * @input_type CvImage   
    * 
    * @output_name OUTPUT
-   * @output_description Output image
+   * @output_description Output image.
    * @output_type CvImage
    *
    *

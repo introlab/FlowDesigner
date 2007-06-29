@@ -12,8 +12,8 @@ namespace FD {
    /*Node
    *
    * @name CvPrevHierarchy
-   * @category FDOpenCV:contour
-   * @description Point to the next contour
+   * @category FDOpenCV:Contours
+   * @description Point to the previous hierarchy
    *
    * @input_name CONTOURSIN
    * @input_description The contour to handle
@@ -24,7 +24,7 @@ namespace FD {
    * @output_type	CvContours
    *
    * @output_name BOOL
-   * @output_description True if the next contour exist
+   * @output_description True if the previous hierarchy exist. If false, the first contour is return
    * @output_type	bool   
    *
    * @output_name NBELEMENTS

@@ -13,8 +13,8 @@ namespace FD {
    /*Node
    *
    * @name CvShowImage
-   * @category FDOpenCV
-   * @description View a CvImage
+   * @category FDOpenCV:Image
+   * @description View an image
    *
    * @input_name IMAGEIN
    * @input_description Image to visualize

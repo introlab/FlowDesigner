@@ -12,16 +12,16 @@
       <Parameter name="MODE" type="string" value="CV_RETR_EXTERNAL" description="Retrieval mode"/>
       <Parameter name="METHOD" type="string" value="CV_CHAIN_APPROX_SIMPLE" description="Approximation method"/>
     </Node>
-    <Node name="node_LOOP0_1" type="LOOP0" x="-910.000000" y="-1270.000000">
+    <Node name="node_LOOP0_1" type="LOOP0" x="-983.000000" y="-1272.000000">
       <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
     </Node>
-    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="-1762.000000" y="-1313.000000">
+    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="-1783.000000" y="-1307.000000">
       <Parameter name="CHANNEL1" type="int" value="63" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="30" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="255" description="Blue parameter"/>
     </Node>
     <Node name="node_CvFindColorHSV_1" type="CvFindColorHSV" x="-1500.000000" y="-1321.000000"/>
-    <Node name="node_CvCreateColor_2" type="CvCreateColor" x="-1764.000000" y="-1356.000000">
+    <Node name="node_CvCreateColor_2" type="CvCreateColor" x="-1787.000000" y="-1356.000000">
       <Parameter name="CHANNEL1" type="int" value="15" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="0" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="225" description="Blue parameter"/>
@@ -38,32 +38,32 @@
   </Network>
   <Network type="iterator" name="LOOP0">
     <Node name="node_CvSelectContour_1" type="CvSelectContour" x="-1199.000000" y="-1531.000000"/>
-    <Node name="node_IterCount_2" type="IterCount" x="-1422.000000" y="-1526.000000"/>
-    <Node name="node_NOP_2" type="NOP" x="-1649.000000" y="-1544.000000"/>
-    <Node name="node_IF_1" type="IF" x="-246.000000" y="-1505.000000">
+    <Node name="node_IterCount_2" type="IterCount" x="-1420.000000" y="-1524.000000"/>
+    <Node name="node_NOP_2" type="NOP" x="-1524.000000" y="-1537.000000"/>
+    <Node name="node_IF_1" type="IF" x="-280.000000" y="-1525.000000">
       <Parameter name="PULL_ANYWAY" type="bool" value="" description="If true, the IF statement pulls also on the branch not taken"/>
     </Node>
-    <Node name="node_Greater_1" type="Greater" x="-627.000000" y="-1522.000000"/>
-    <Node name="node_NOP_3" type="NOP" x="-1340.000000" y="-1342.000000"/>
-    <Node name="node_Constant_1" type="Constant" x="-919.000000" y="-1595.000000">
+    <Node name="node_Greater_1" type="Greater" x="-433.000000" y="-1598.000000"/>
+    <Node name="node_NOP_3" type="NOP" x="-1062.000000" y="-1470.000000"/>
+    <Node name="node_Constant_1" type="Constant" x="-644.000000" y="-1649.000000">
       <Parameter name="VALUE" type="int" value="100" description="The value"/>
     </Node>
-    <Node name="node_TextProbe_1" type="TextProbe" x="-399.000000" y="-1361.000000">
+    <Node name="node_TextProbe_1" type="TextProbe" x="-450.000000" y="-1524.000000">
       <Parameter name="BREAK_AT" type="int" value="-" description="If set, the probe runs until (count = BREAK_AT)"/>
       <Parameter name="SHOW" type="bool" value="true" description="Whether or not to show the the data by default"/>
       <Parameter name="SKIP" type="int" value="" description="Count increment for each &quot;Next&quot;"/>
       <Parameter name="PROBE_NAME" type="string" value="CONTOURS" description="Name (title) of the probe"/>
     </Node>
-    <Node name="node_CvContourArea_1" type="CvContourArea" x="-928.000000" y="-1544.000000"/>
-    <Node name="node_CvShowImage_1" type="CvShowImage" x="-584.000000" y="-1339.000000">
+    <Node name="node_CvContourArea_1" type="CvContourArea" x="-645.000000" y="-1591.000000"/>
+    <Node name="node_CvShowImage_1" type="CvShowImage" x="-583.000000" y="-1523.000000">
       <Parameter name="WINDOW_TITLE" type="string" value="contourImage" description="Window title."/>
     </Node>
-    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="-1179.000000" y="-1235.000000">
+    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="-1062.000000" y="-1425.000000">
       <Parameter name="CHANNEL1" type="int" value="0" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="0" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="255" description="Blue parameter"/>
     </Node>
-    <Node name="node_CvDrawContours_1" type="CvDrawContours" x="-773.000000" y="-1363.000000">
+    <Node name="node_CvDrawContours_1" type="CvDrawContours" x="-738.000000" y="-1524.000000">
       <Parameter name="MAX_LEVEL" type="int" value="0" description="Maximal level for drawn contours"/>
       <Parameter name="THICKNESS" type="int" value="-1" description="Thickness of lines the contours are drawn with. If it is negative, the contour interiors are drawn"/>
       <Parameter name="LINE_TYPE" type="string" value="8" description="Type of the contour segments"/>
@@ -72,8 +72,8 @@
     <Link from="node_NOP_2" output="OUTPUT" to="node_CvSelectContour_1" input="CONTOURSIN"/>
     <Link from="node_Greater_1" output="OUTPUT" to="node_IF_1" input="COND"/>
     <Link from="node_TextProbe_1" output="OUTPUT" to="node_IF_1" input="THEN"/>
-    <Link from="node_NOP_3" output="OUTPUT" to="node_IF_1" input="ELSE"/>
-    <Link from="node_CvSelectContour_1" output="CONTOURSOUT" to="node_CvContourArea_1" input="CONTOURS"/>
+    <Link from="node_NOP_3" output="OUTPUT" to="node_IF_1" input="ELSE">-1043 -1470 -374 -1471 -375 -1510 -335 -1510 </Link>
+    <Link from="node_CvSelectContour_1" output="CONTOURSOUT" to="node_CvContourArea_1" input="CONTOURS">-1038.5 -1546 -955 -1546 -955 -1591 -698.5 -1591 </Link>
     <Link from="node_CvShowImage_1" output="IMAGEOUT" to="node_TextProbe_1" input="INPUT"/>
     <Link from="node_CvSelectContour_1" output="CONTOURSOUT" to="node_CvDrawContours_1" input="CONTOURSIN"/>
     <Link from="node_NOP_3" output="OUTPUT" to="node_CvDrawContours_1" input="IMAGEIN"/>

@@ -13,11 +13,12 @@ namespace FD {
    /*Node
    *
    * @name CvFindColorRGB
-   * @category FDOpenCV
-   * @description Detect the RGB color int the image
+   * @category FDOpenCV:Color
+   * @description Detects the color in the image with a RGB method
+   * dst(I) is set to 0xff (all '1'-bits) if the color is detect and 0 otherwise.
    *
    * @input_name IMAGEIN
-   * @input_description The inptu Image
+   * @input_description Input image
    * @input_type CvImage
    *
    * @input_name FIND_COLOR
@@ -40,7 +41,7 @@ namespace FD {
    * @parameter_description Sensibility with the blue color  
    * 
    * @output_name IMAGEOUT
-   * @output_description The result image
+   * @output_description Result image
    * @output_type	CvImage
    * 
    END*/

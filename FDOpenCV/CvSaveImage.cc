@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvSaveImage
-   * @category FDOpenCV
+   * @category FDOpenCV:Image
    * @description Save an image in a file
    *
    * @input_name IMAGE

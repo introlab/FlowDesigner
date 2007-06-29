@@ -12,26 +12,26 @@ namespace FD {
    /*Node
    *
    * @name CvCreateColor
-   * @category FDOpenCV
-   * @description Create a RGB colour
+   * @category FDOpenCV:Color
+   * @description Create a 3 channels color (ex: RGB, HSV...).
    *
    * @parameter_name CHANNEL1
    * @parameter_type int
    * @parameter_value 0
-   * @parameter_description Red parameter
+   * @parameter_description channel1
    *
    * @parameter_name CHANNEL2
    * @parameter_type int
    * @parameter_value 0
-   * @parameter_description Green parameter
+   * @parameter_description channel2
    *
    * @parameter_name CHANNEL3
    * @parameter_type int
    * @parameter_value 0
-   * @parameter_description Blue parameter
+   * @parameter_description channel3
    * 
    * @output_name COLOUR
-   * @output_description The element structure
+   * @output_description The element structure of the color
    * @output_type	CvColor
    * 
    END*/

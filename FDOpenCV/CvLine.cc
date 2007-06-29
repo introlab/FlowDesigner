@@ -26,24 +26,24 @@ namespace FD {
    * @input_type CvColor
    *
    * @input_name X1
-   * @input_description x1
+   * @input_description x coordinate to the first extremity of the line
    * @input_type int
    *
    * @input_name Y1
-   * @input_description y1
+   * @input_description y coordinate to the first extremity of the line
    * @input_type int
    *
-   * @input_name R
-   * @input_description r
-   * @input_type float
+   * @input_name X2
+   * @input_description x coordinate to the second extremity of the line
+   * @input_type int
    *
-   * @input_name ANGLE
-   * @input_description angle
-   * @input_type float
+   * @input_name Y2
+   * @input_description y coordinate to the second extremity of the line
+   * @input_type int
    *
    * @parameter_name THICKNESS
    * @parameter_type int
-   * @parameter_value -1
+   * @parameter_value 1
    * @parameter_description Thickness of lines that make up the rectangle. Negative values, make the function to draw a filled rectangle
    *   
    * @parameter_name LINE_TYPE
@@ -75,8 +75,8 @@ namespace FD {
       int m_imageInID;
       int m_x1ID;
       int m_y1ID;
-      int m_rID;
-      int m_angleID; 
+      int m_x2ID;
+      int m_y2ID; 
       //Output ID
       int m_imageOutID;
       //Parameter
@@ -95,8 +95,8 @@ namespace FD {
          m_imageInID = addInput("IMAGEIN");
          m_x1ID = addInput("X1");
          m_y1ID = addInput("Y1");
-         m_rID = addInput("R");
-         m_angleID = addInput("ANGLE");         
+         m_x2ID = addInput("X2");
+         m_y2ID = addInput("Y2");         
          //add outputs
          m_imageOutID = addOutput("IMAGEOUT");
          
@@ -118,16 +118,14 @@ namespace FD {
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          RCPtr<Int> x1Ptr = getInput(m_x1ID,count);
          RCPtr<Int> y1Ptr = getInput(m_y1ID,count);
-         RCPtr<Float> rPtr = getInput(m_rID,count);
-         RCPtr<Float> anglePtr = getInput(m_angleID,count);         
+         RCPtr<Float> x2Ptr = getInput(m_x2ID,count);
+         RCPtr<Float> y2Ptr = getInput(m_y2ID,count);         
          //Handle
          CvImage* image = new CvImage(&(*imagePtr));
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
-         int x2 = (int) (*x1Ptr + 100*(*rPtr)*cos( (*anglePtr) * (3.14/180) ));
-         int y2 = (int) (*y1Ptr + 100*(*rPtr)*sin( (*anglePtr) * (3.14/180) ));
          OPENCV_CALL( cvLine( image->getImage(), cvPoint(*x1Ptr,*y1Ptr)
-            , cvPoint(x2,y2), ColorPtr->getColor()
+            , cvPoint(*x2Ptr,*y2Ptr), ColorPtr->getColor()
             , m_thickness ,m_lineTypeMap[m_lineType], m_shift ));         
          __END__;
          cvSetErrMode( CV_ErrModeLeaf );

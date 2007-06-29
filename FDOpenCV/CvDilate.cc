@@ -13,7 +13,7 @@ namespace FD {
    /*Node
    *
    * @name CvDilate
-   * @category FDOpenCV:Morphological_Operations
+   * @category FDOpenCV:Morphological Operations
    * @description Dilates image by using arbitrary structuring element
    *
    * @input_name IMAGEIN

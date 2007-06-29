@@ -12,8 +12,8 @@ namespace FD {
    /*Node
    *
    * @name CvCreateImage
-   * @category FDOpenCV
-   * @description Creates an image : creates header and allocates data
+   * @category FDOpenCV:Image
+   * @description Creates an image : header and allocates data
    *
    * @parameter_name WIDTH
    * @parameter_type int

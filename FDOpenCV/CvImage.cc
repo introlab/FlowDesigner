@@ -108,7 +108,7 @@ namespace FD {
       return image;
    }   
    
-   CvImage* CvImage::rgb() const
+   CvImage* CvImage::bgr() const
    {
       CvImage* image;    
       if(m_image->nChannels == 1)

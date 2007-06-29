@@ -13,7 +13,7 @@ namespace FD {
    /*Node
    *
    * @name CvMorphology
-   * @category FDOpenCV:Morphological_Operations
+   * @category FDOpenCV:Morphological Operations
    * @description Performs advanced morphological transformations
    *
    * @input_name IMAGEIN
