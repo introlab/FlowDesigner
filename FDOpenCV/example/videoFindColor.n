@@ -7,7 +7,7 @@
     </Node>
     <Node name="node_CvLoadVideo_1" type="CvLoadVideo" x="-374.000000" y="130.000000"/>
     <Node name="node_Constant_1" type="Constant" x="-518.000000" y="129.000000">
-      <Parameter name="VALUE" type="string" value="./video.avi" description="The value"/>
+      <Parameter name="VALUE" type="string" value="./Tito_son.mov" description="The value"/>
     </Node>
     <Link from="node_Constant_1" output="VALUE" to="node_CvLoadVideo_1" input="FILENAME"/>
     <Link from="node_CvLoadVideo_1" output="VIDEO" to="node_LOOP0_1" input="VIDEO"/>
@@ -20,7 +20,7 @@
       <Parameter name="WINDOW_TITLE" type="string" value="Video Contour" description="Window title."/>
     </Node>
     <Node name="node_CvFindContours_1" type="CvFindContours" x="-184.000000" y="69.000000">
-      <Parameter name="MODE" type="string" value="CV_RETR_LIST" description="Retrieval mode"/>
+      <Parameter name="MODE" type="string" value="CV_RETR_EXTERNAL" description="Retrieval mode"/>
       <Parameter name="METHOD" type="string" value="CV_CHAIN_APPROX_SIMPLE" description="Approximation method"/>
     </Node>
     <Node name="node_CvShowImage_2" type="CvShowImage" x="-600.000000" y="55.000000">
@@ -33,18 +33,18 @@
     </Node>
     <Node name="node_CvFindColorHSV_1" type="CvFindColorHSV" x="-332.000000" y="70.000000"/>
     <Node name="node_CvCreateColor_2" type="CvCreateColor" x="-601.000000" y="97.000000">
-      <Parameter name="CHANNEL1" type="int" value="330" description="Red parameter"/>
-      <Parameter name="CHANNEL2" type="int" value="30" description="Green parameter"/>
+      <Parameter name="CHANNEL1" type="int" value="30" description="Red parameter"/>
+      <Parameter name="CHANNEL2" type="int" value="120" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="100" description="Blue parameter"/>
     </Node>
-    <Node name="node_CvCreateColor_3" type="CvCreateColor" x="-601.000000" y="141.000000">
-      <Parameter name="CHANNEL1" type="int" value="15" description="Red parameter"/>
+    <Node name="node_CvCreateColor_3" type="CvCreateColor" x="-600.000000" y="141.000000">
+      <Parameter name="CHANNEL1" type="int" value="64" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="255" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="255" description="Blue parameter"/>
     </Node>
     <Node name="node_CvDrawContours_1" type="CvDrawContours" x="217.000000" y="84.000000">
       <Parameter name="MAX_LEVEL" type="int" value="1" description="Maximal level for drawn contours"/>
-      <Parameter name="THICKNESS" type="int" value="-1" description="Thickness of lines the contours are drawn with. If it is negative, the contour interiors are drawn"/>
+      <Parameter name="THICKNESS" type="int" value="1" description="Thickness of lines the contours are drawn with. If it is negative, the contour interiors are drawn"/>
       <Parameter name="LINE_TYPE" type="string" value="CV_AA" description="Type of the contour segments"/>
     </Node>
     <Link from="node_CvQueryFrame_1" output="IMAGE" to="node_CvShowImage_2" input="IMAGEIN"/>
