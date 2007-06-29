@@ -47,6 +47,7 @@ class QtTerminal : public QObject, public QGraphicsRectItem
     signals:
 
             void positionChanged(float x, float y);
+            void newLinkCreated(UITerminal* from, UITerminal* to);
     
     protected:
 	
@@ -68,7 +69,6 @@ class QtTerminal : public QObject, public QGraphicsRectItem
         UITerminal *m_uiTerminal;
         
         QtNetTerminal* m_netTerminal;
-
 };   
 
 

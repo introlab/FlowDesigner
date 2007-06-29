@@ -16,6 +16,7 @@ class UILink;
 
 class QtLink : public QGraphicsItem
 {
+
     public:
         QtLink(QtTerminal *source, QtTerminal *dest, UILink* uiLink);
         ~QtLink();

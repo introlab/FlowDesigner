@@ -6,45 +6,43 @@
 
 namespace FD
 {
-        using namespace std;
+	using namespace std;
 
 
-        UILinkController::UILinkController ( UITerminalController *_from,UITerminalController *_to,const char *points_str )
-                        : UILink ( _from,_to,points_str ), m_QtLink ( NULL )
-        {
+	UILinkController::UILinkController ( UITerminalController *_from,UITerminalController *_to,const char *points_str )
+			: UILink ( _from,_to,points_str ), m_QtLink ( NULL )
+	{
+	}
 
-        }
+	void UILinkController::updateView ( QtNetwork *net )
+	{
+		if ( net )
+		{
 
-        void UILinkController::updateView ( QtNetwork *net )
-        {
-            if (net)
-            {
+			//CREATE VIEW IF REQUIRED
+			if ( !m_QtLink )
+			{
+				QtTerminal *source = dynamic_cast<UITerminalController*> ( from )->getQtTerminal();
+				QtTerminal *dest = dynamic_cast<UITerminalController*> ( to )->getQtTerminal();
 
-                //CREATE VIEW IF REQUIRED
-                if ( !m_QtLink)
-                {
-                        QtTerminal *source = dynamic_cast<UITerminalController*> ( from )->getQtTerminal();
-                        QtTerminal *dest = dynamic_cast<UITerminalController*> ( to )->getQtTerminal();
+				//add link
+				m_QtLink = net->addLink ( source,dest,this );
+			}
+			else
+			{
+				//ADJUST LINK
+				m_QtLink->adjust();
+			}
 
-                        //add link
-                        m_QtLink = net->addLink ( source,dest,this );
-                }
-                else 
-                {
-                    //ADJUST LINK
-                    m_QtLink->adjust();
-                }
+		}
+	}
 
-
-            }
-        }
-
-    void UILinkController::positionChanged(double x, double y)
-    {
-        if (m_QtLink)
-        {
-            m_QtLink->setPos(x,y);
-        }
-    }
+	void UILinkController::positionChanged ( double x, double y )
+	{
+		if ( m_QtLink )
+		{
+			m_QtLink->adjust();
+		}
+	}
 
 } //namespace FD

@@ -122,37 +122,39 @@ namespace FD {
 	
     void UINetworkController::updateView(QtDocument *doc)
     {
-        //CREATE VIEW IF REQUIRED
-        if (!m_QtNetwork && doc)
-        {
-               m_QtNetwork = doc->addNetwork(this);
-        }
 
-        //UPDATE VIEW FOR EACH NODES
-        for (unsigned int i =0; i < nodes.size(); i++)
+        if (doc)
         {
-            UINodeController *nodeCtrl = dynamic_cast<UINodeController*>(nodes[i]);
-
-            if (nodeCtrl)
+            //CREATE VIEW IF REQUIRED
+            if (!m_QtNetwork)
             {
-                nodeCtrl->updateView(m_QtNetwork);
+                m_QtNetwork = doc->addNetwork(this);
             }
-
-        }
-
-        //TODO
-        //UPDATE VIEW FOR EACH LINKS
-        for (unsigned int i = 0; i < links.size(); i++)
-        {
-            UILinkController *linkCtrl = dynamic_cast<UILinkController*>(links[i]);
-
-            if (linkCtrl)
+    
+            //UPDATE VIEW FOR EACH NODES
+            for (unsigned int i =0; i < nodes.size(); i++)
             {
-                linkCtrl->updateView(m_QtNetwork);
+                UINodeController *nodeCtrl = dynamic_cast<UINodeController*>(nodes[i]);
+    
+                if (nodeCtrl)
+                {
+                    nodeCtrl->updateView(m_QtNetwork);
+                }
+    
             }
-
-        }
-
+    
+            //UPDATE VIEW FOR EACH LINKS
+            for (unsigned int i = 0; i < links.size(); i++)
+            {
+                UILinkController *linkCtrl = dynamic_cast<UILinkController*>(links[i]);
+    
+                if (linkCtrl)
+                {
+                    linkCtrl->updateView(m_QtNetwork);
+                }
+    
+            }
+        }//if doc
     }
 
 } //namespace FD

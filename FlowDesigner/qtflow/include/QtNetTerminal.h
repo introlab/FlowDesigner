@@ -12,7 +12,6 @@ namespace FD
     
     class QtNetTerminal : public QGraphicsTextItem
     {
-        Q_OBJECT;
               
         public:
             

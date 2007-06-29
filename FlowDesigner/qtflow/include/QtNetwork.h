@@ -21,7 +21,7 @@ namespace FD
     
     class QtNetwork : public QGraphicsView
     {
-        Q_OBJECT
+        Q_OBJECT;
 
     public:
 
