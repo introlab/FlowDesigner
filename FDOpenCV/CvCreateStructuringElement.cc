@@ -38,7 +38,7 @@ namespace FD {
    *
    * @parameter_name SHAPE
    * @parameter_type string
-   * @parameter_value CV_SHAPE_RECT;CV_SHAPE_CROSS;CV_SHAPE_ELLIPSE;CV_SHAPE_CUSTOM;
+   * @parameter_value CV_SHAPE_RECT;CV_SHAPE_CROSS;CV_SHAPE_ELLIPSE
    * @parameter_description Shape of the structuring element      
    *   
    * @output_name STRUCTURINGELEMENT

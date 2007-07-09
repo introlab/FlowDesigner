@@ -6,7 +6,7 @@
       <Parameter name="ISCOLOR" type="int" value="-1" description="Specifies colorness of the loaded image   "/>
     </Node>
     <Node name="node_Constant_1" type="Constant" x="-886.000000" y="-299.000000">
-      <Parameter name="VALUE" type="string" value="./building.jpg" description="The value"/>
+      <Parameter name="VALUE" type="string" value="./azimut.jpg" description="The value"/>
     </Node>
     <Node name="node_LOOP0_1" type="LOOP0" x="-625.000000" y="-299.000000">
       <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>

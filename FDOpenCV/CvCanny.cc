@@ -74,11 +74,12 @@ namespace FD {
          RCPtr<CvImage> imagePtr = getInput(m_inputID,count);  
          
          //Handle
+         CvImage* imageGray = imagePtr->gray(); 
          CvImage* image = imagePtr->gray(); 
          
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
-         OPENCV_CALL(cvCanny(imagePtr->getImage(), image->getImage(), m_threshold1, m_threshold2, m_aperture_size));
+         OPENCV_CALL(cvCanny(imageGray->getImage(), image->getImage(), m_threshold1, m_threshold2, m_aperture_size));
          __END__;
          cvSetErrMode( CV_ErrModeLeaf );
          
