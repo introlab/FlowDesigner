@@ -77,18 +77,22 @@ namespace FD {
          RCPtr<CvImage> imageIn1Ptr = getInput(m_imageIn1ID,count);   
          RCPtr<CvImage> imageIn2Ptr = getInput(m_imageIn2ID,count);
          //Handle
-         CvImage* image;
-         
-         cvSetErrMode( CV_ErrModeSilent );
-         __BEGIN__;
-         OPENCV_CALL(image = new CvImage(imageIn1Ptr->getImage()));
-         OPENCV_CALL( cvCmp( imageIn1Ptr->getImage(), imageIn2Ptr->getImage(), image->getImage(), m_cmpOpMap[m_cmpOp] ));          
-         __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
-         
-         if( cvGetErrStatus() != CV_StsOk  )
+         CvImage* image = new CvImage(imageIn1Ptr->getImage());
+         if(imageIn1Ptr->getImage()->nChannels == 1 && imageIn2Ptr->getImage()->nChannels == 1)
          {
-            throw new GeneralException("OPENCV - Error to add the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+            cvSetErrMode( CV_ErrModeSilent );
+            __BEGIN__;
+            OPENCV_CALL( cvCmp( imageIn1Ptr->getImage(), imageIn2Ptr->getImage(), image->getImage(), m_cmpOpMap[m_cmpOp] ));          
+            __END__;
+            cvSetErrMode( CV_ErrModeLeaf );
+            if( cvGetErrStatus() != CV_StsOk  )
+            {
+               throw new GeneralException("OPENCV - Error to compare the images: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+            }
+         }
+         else
+         {
+            throw new GeneralException("OPENCV - Error to compare the images: they must be single-channel",__FILE__,__LINE__);
          }
          
          out[count] = ObjectRef(image);

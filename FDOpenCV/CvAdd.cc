@@ -61,7 +61,7 @@ namespace FD {
          CvImage* image;
          
          cvSetErrMode( CV_ErrModeSilent );
-         image = new CvImage(*image1Ptr);
+         image = new CvImage(image1Ptr->getImage());
          __BEGIN__;
          OPENCV_CALL(cvAdd(image1Ptr->getImage(), image2Ptr->getImage(), image->getImage()));          
          __END__;
@@ -69,7 +69,7 @@ namespace FD {
          
          if( cvGetErrStatus() != CV_StsOk  )
          {
-            throw new GeneralException("OPENCV - Error to add the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+            throw new GeneralException("OPENCV - Error to add the images: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }
          
          out[count] = ObjectRef(image);
