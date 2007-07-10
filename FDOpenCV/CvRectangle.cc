@@ -123,13 +123,15 @@ namespace FD {
          
          //Handle
          CvImage* image = new CvImage(imagePtr->getImage());
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL( cvRectangle( image->getImage(), cvPoint(m_x1,m_y1)
             , cvPoint(m_x2,m_y2), CV_RGB( (colorPtr->getColor()).val[0], (colorPtr->getColor()).val[1], (colorPtr->getColor()).val[2] )
             , m_thickness ,m_lineTypeMap[m_lineType], m_shift ));         
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to draw a rectangle: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

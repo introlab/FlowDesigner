@@ -49,9 +49,9 @@
       <Parameter name="PROBE_NAME" type="string" value="" description="Name (title) of the probe"/>
     </Node>
     <Node name="node_CvCreateColor_1" type="CvCreateColor" x="445.000000" y="-1101.000000">
-      <Parameter name="CHANNEL1" type="int" value="0" description="Red parameter"/>
+      <Parameter name="CHANNEL1" type="int" value="255" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="0" description="Green parameter"/>
-      <Parameter name="CHANNEL3" type="int" value="255" description="Blue parameter"/>
+      <Parameter name="CHANNEL3" type="int" value="0" description="Blue parameter"/>
     </Node>
     <Node name="node_CvCreateColor_2" type="CvCreateColor" x="440.000000" y="-1058.000000">
       <Parameter name="CHANNEL1" type="int" value="0" description="Red parameter"/>

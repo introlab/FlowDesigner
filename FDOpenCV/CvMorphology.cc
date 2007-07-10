@@ -89,11 +89,12 @@ namespace FD {
          CvImage* imageTemp= new CvImage(imagePtr->getImage());  
          CvImage* imageOut= new CvImage(imagePtr->getImage()); 
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL(cvMorphologyEx(imagePtr->getImage(), imageOut->getImage(), imageTemp->getImage(), elementPtr->getStructuringElement(), m_operationMap[m_operation], m_iterations)); 
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to morphology the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

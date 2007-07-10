@@ -74,6 +74,7 @@ namespace FD {
          IplImage* temp;
          IplImage* imageHSV; 
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__;          
          
@@ -83,7 +84,7 @@ namespace FD {
          OPENCV_CALL( cvCvtColor( imagePtr->getImage(), imageHSV, CV_BGR2HSV )); 
          
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to find the color: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

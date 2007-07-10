@@ -71,11 +71,12 @@ namespace FD {
          //Handle
          gdk_threads_enter();
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL(cvShowImage(m_windowName.c_str(), imagePtr->getImage()));     
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to show the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

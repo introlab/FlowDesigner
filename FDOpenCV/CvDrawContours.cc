@@ -111,14 +111,15 @@ namespace FD {
          CvImage* image = new CvImage( imagePtr->getImage());      
          CvContours* contours = new CvContours( &(*contoursPtr));         
 
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL( cvDrawContours( image->getImage(), contours->getContours()
             , CV_RGB( (externalColorPtr->getColor()).val[0], (externalColorPtr->getColor()).val[1], (externalColorPtr->getColor()).val[2] )
-            , CV_RGB( (externalColorPtr->getColor()).val[0], (holeColorPtr->getColor()).val[1], (holeColorPtr->getColor()).val[2] )
+            , CV_RGB( (holeColorPtr->getColor()).val[0], (holeColorPtr->getColor()).val[1], (holeColorPtr->getColor()).val[2] )
             , m_maxLevel,m_thickness, m_lineTypeMap[m_lineType] )); 
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to draw the contours: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

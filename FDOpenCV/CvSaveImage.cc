@@ -55,11 +55,13 @@ namespace FD {
          RCPtr<CvImage> image = getInput(m_imageID,count);
          
          //Handle
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL(cvSaveImage( filename->c_str(), image->getImage()));     
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to save the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

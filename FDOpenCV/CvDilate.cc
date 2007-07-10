@@ -65,12 +65,14 @@ namespace FD {
          RCPtr<CvStructuringElement> elememtPtr = getInput(m_elementID,count);
          
          //Handle
-         CvImage* image= new CvImage(imagePtr->getImage());  
+         CvImage* image= new CvImage(imagePtr->getImage());
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__;
          OPENCV_CALL(cvDilate(imagePtr->getImage(), image->getImage(), elememtPtr->getStructuringElement(), m_iterations));
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to dilate the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

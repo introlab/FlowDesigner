@@ -23,7 +23,7 @@ namespace FD {
    *
    * @input_name IMAGE2
    * @input_description Input image2.
-   * @input_type CvImage   
+   * @input_type CvImage
    * 
    * @output_name OUTPUT
    * @output_description Output image.
@@ -60,12 +60,13 @@ namespace FD {
          //Handle
          CvImage* image;
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          image = new CvImage(image1Ptr->getImage());
          __BEGIN__;
          OPENCV_CALL(cvAdd(image1Ptr->getImage(), image2Ptr->getImage(), image->getImage()));          
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
          {

@@ -23,11 +23,12 @@ namespace FD {
    
 	CvVideo::CvVideo(const std::string &path)
 	{
+      int status = cvGetErrMode();
       cvSetErrMode( CV_ErrModeSilent );
       __BEGIN__;
       OPENCV_CALL(m_video = cvCaptureFromFile(path.c_str()));
       __END__;
-      cvSetErrMode( CV_ErrModeLeaf );
+      cvSetErrMode( status );
       if( cvGetErrStatus() != CV_StsOk  )
       {
          throw new GeneralException("OPENCV - Error to load the video: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

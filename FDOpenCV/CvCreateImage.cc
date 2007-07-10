@@ -83,12 +83,13 @@ namespace FD {
          //Handle of the inputs
          IplImage* temp;
 
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
          OPENCV_CALL(temp = cvCreateImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels ));
          OPENCV_CALL(cvZero(temp));
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
          {

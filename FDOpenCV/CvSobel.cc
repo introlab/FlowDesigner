@@ -72,6 +72,8 @@ namespace FD {
          
          //Handle
          CvImage* image = imagePtr->gray();
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          if((image->getImage())->depth < 16)
@@ -86,7 +88,7 @@ namespace FD {
             OPENCV_CALL(cvSobel(image->getImage(), image->getImage(), m_xorder, m_yorder, m_aperture_size));
          }   
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to sobel the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

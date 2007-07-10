@@ -81,11 +81,12 @@ namespace FD {
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          CvImage* image = imagePtr->gray();     
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL(cvThreshold(image->getImage(), image->getImage(), m_threshold, m_max_value, m_thresholeTypeMap[m_thresholdType]));         
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to threshold the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

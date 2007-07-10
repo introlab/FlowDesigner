@@ -66,11 +66,13 @@ namespace FD {
          
          //Handle
          CvImage* image= new CvImage(&(*imagePtr));  
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__;
          OPENCV_CALL(cvErode( imagePtr->getImage(), image->getImage(), elementPtr->getStructuringElement(), m_iterations));
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to erode the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

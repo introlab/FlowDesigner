@@ -9,11 +9,12 @@ namespace FD {
    
 	CvColor::CvColor()
 	{
+      int status = cvGetErrMode();
       cvSetErrMode( CV_ErrModeSilent );
       __BEGIN__; 
       OPENCV_CALL(m_Color = CV_RGB(0,0,0));         
       __END__;
-      cvSetErrMode( CV_ErrModeLeaf );
+      cvSetErrMode( status );
       if( cvGetErrStatus() != CV_StsOk  )
       {
          throw new GeneralException("OPENCV - Error to construct the RGB color: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
@@ -22,11 +23,12 @@ namespace FD {
    
    CvColor::CvColor(int channel1, int channel2, int channel3)
 	{
+      int status = cvGetErrMode();
       cvSetErrMode( CV_ErrModeSilent );
       __BEGIN__; 
       OPENCV_CALL(m_Color = cvScalar(channel1,channel2,channel3));         
       __END__;
-      cvSetErrMode( CV_ErrModeLeaf );
+      cvSetErrMode( status );
       if( cvGetErrStatus() != CV_StsOk  )
       {
          throw new GeneralException("OPENCV - Error to construct the RGB color: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

@@ -111,13 +111,15 @@ namespace FD {
          CvContours* contours = new CvContours();
          CvSeq* firstContours; 
          int nbContours;
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
          OPENCV_CALL(nbContours = cvFindContours( image->getImage(), m_storage
             , &firstContours, sizeof(CvContour)
             , m_modeMap[m_mode], m_methodMap[m_method] ));
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
          {

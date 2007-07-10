@@ -94,13 +94,14 @@ namespace FD {
          //Handle
          CvImage* image = new CvImage(imagePtr->getImage());
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL( cvSmooth( imagePtr->getImage(), image->getImage(),
             m_smoothTypeMap[m_smoothType],
             m_param1, m_param2, m_param3 ));         
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to smooth the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

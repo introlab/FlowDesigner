@@ -77,11 +77,12 @@ namespace FD {
          CvImage* imageGray = imagePtr->gray(); 
          CvImage* image = imagePtr->gray(); 
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
          OPENCV_CALL(cvCanny(imageGray->getImage(), image->getImage(), m_threshold1, m_threshold2, m_aperture_size));
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
          {

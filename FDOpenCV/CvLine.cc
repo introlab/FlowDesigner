@@ -123,13 +123,14 @@ namespace FD {
          //Handle
          CvImage* image = new CvImage(&(*imagePtr));
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );         
          __BEGIN__; 
          OPENCV_CALL( cvLine( image->getImage(), cvPoint(*x1Ptr,*y1Ptr)
             , cvPoint(*x2Ptr,*y2Ptr), CV_RGB( (colorPtr->getColor()).val[0], (colorPtr->getColor()).val[1], (colorPtr->getColor()).val[2] )
             , m_thickness ,m_lineTypeMap[m_lineType], m_shift ));         
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to draw a line: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

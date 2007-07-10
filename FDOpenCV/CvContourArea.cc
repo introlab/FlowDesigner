@@ -51,11 +51,12 @@ namespace FD {
          //Handle
          float area;
          
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
          OPENCV_CALL(area = (float)(fabs(cvContourArea( contoursPtr->getContours()))));
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
          {

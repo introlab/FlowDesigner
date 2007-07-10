@@ -88,9 +88,11 @@ namespace FD {
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          RCPtr<CvColor> findColorPtr = getInput(m_findColorID,count);         
          IplImage* temp; 
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          OPENCV_CALL(temp = cvCreateImage( cvGetSize((imagePtr->getImage())), IPL_DEPTH_8U, 1));
-         cvSetErrMode( CV_ErrModeLeaf );         
+         cvSetErrMode( status );         
          if( cvGetErrStatus() == CV_StsOk  )
          {
             cvZero(temp);

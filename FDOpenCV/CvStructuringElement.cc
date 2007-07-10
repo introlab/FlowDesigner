@@ -15,11 +15,12 @@ namespace FD {
    CvStructuringElement::CvStructuringElement(int cols, int rows, int anchor_x, int anchor_y, int shape)
    : m_structuringElement(NULL)
 	{      
+      int status = cvGetErrMode();
       cvSetErrMode( CV_ErrModeSilent );
       __BEGIN__; 
       OPENCV_CALL(m_structuringElement = cvCreateStructuringElementEx( cols, rows, anchor_x, anchor_y, shape, NULL));         
       __END__;
-      cvSetErrMode( CV_ErrModeLeaf );
+      cvSetErrMode( status );
       if( cvGetErrStatus() != CV_StsOk  )
       {
          throw new GeneralException("OPENCV - Error to create the structuring element: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

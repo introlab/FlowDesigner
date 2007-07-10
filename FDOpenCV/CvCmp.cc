@@ -80,11 +80,12 @@ namespace FD {
          CvImage* image = new CvImage(imageIn1Ptr->getImage());
          if(imageIn1Ptr->getImage()->nChannels == 1 && imageIn2Ptr->getImage()->nChannels == 1)
          {
+            int status = cvGetErrMode();
             cvSetErrMode( CV_ErrModeSilent );
             __BEGIN__;
             OPENCV_CALL( cvCmp( imageIn1Ptr->getImage(), imageIn2Ptr->getImage(), image->getImage(), m_cmpOpMap[m_cmpOp] ));          
             __END__;
-            cvSetErrMode( CV_ErrModeLeaf );
+            cvSetErrMode( status );
             if( cvGetErrStatus() != CV_StsOk  )
             {
                throw new GeneralException("OPENCV - Error to compare the images: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

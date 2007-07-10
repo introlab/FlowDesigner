@@ -59,11 +59,13 @@ namespace FD {
          CvImage* image;   
          IplImage* frame;
          bool Bool = true;
+         
+         int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL( frame = cvQueryFrame(videoPtr->getVideo()) );        
          __END__;
-         cvSetErrMode( CV_ErrModeLeaf );
+         cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to take a frame: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
