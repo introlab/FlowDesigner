@@ -81,21 +81,22 @@ namespace FD {
          int i=0;
          bool Bool = true;
          CvContours* contours = new CvContours(&(*contoursPtr));
-         contours->setContours(contours->getFirstContours()->h_next);
-         for(i=0; i<*(indexPtr); i++)
-         {
-            if((contours->getContours()) == 0)
-            {
-               throw new GeneralException("OPENCV - Contour doesn't exist",__FILE__,__LINE__);
-            }
-            contours->setContours(contours->getContours()->h_next);
-         }
          
          if((contours->getContours()) == 0)
          {
-            Bool = false;
-            contours->setContours(contours->getFirstContours());
-         }     
+            throw new GeneralException("OPENCV - Contour doesn't exist",__FILE__,__LINE__);
+         }
+         
+         for(i=0; i<*(indexPtr); i++)
+         {            
+            contours->setContours(contours->getContours()->h_next);
+            if((contours->getContours()) == 0)
+            {
+               Bool = false;
+               contours->setContours(contours->getFirstContours());
+            } 
+         }
+         
          (*(outputs[m_boolID].buffer))[count] = ObjectRef(Bool::alloc(Bool));
          (*(outputs[m_contoursOutID].buffer))[count] = ObjectRef(contours); 
          (*(outputs[m_nbElementsID].buffer))[count] = ObjectRef(Int::alloc( ((contours->getContours())->total)));

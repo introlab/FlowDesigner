@@ -114,7 +114,8 @@ namespace FD {
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL( cvDrawContours( image->getImage(), contours->getContours()
-            , externalColorPtr->getColor(), holeColorPtr->getColor()
+            , CV_RGB( (externalColorPtr->getColor()).val[0], (externalColorPtr->getColor()).val[1], (externalColorPtr->getColor()).val[2] )
+            , CV_RGB( (externalColorPtr->getColor()).val[0], (holeColorPtr->getColor()).val[1], (holeColorPtr->getColor()).val[2] )
             , m_maxLevel,m_thickness, m_lineTypeMap[m_lineType] )); 
          __END__;
          cvSetErrMode( CV_ErrModeLeaf );

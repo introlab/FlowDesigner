@@ -118,7 +118,7 @@ namespace FD {
       void calculate(int output_id, int count, Buffer &out)
       {           
          //Read the inputs
-         RCPtr<CvColor> ColorPtr = getInput(m_colorID,count);
+         RCPtr<CvColor> colorPtr = getInput(m_colorID,count);
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          
          //Handle
@@ -126,7 +126,7 @@ namespace FD {
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL( cvRectangle( image->getImage(), cvPoint(m_x1,m_y1)
-            , cvPoint(m_x2,m_y2), ColorPtr->getColor()
+            , cvPoint(m_x2,m_y2), CV_RGB( (colorPtr->getColor()).val[0], (colorPtr->getColor()).val[1], (colorPtr->getColor()).val[2] )
             , m_thickness ,m_lineTypeMap[m_lineType], m_shift ));         
          __END__;
          cvSetErrMode( CV_ErrModeLeaf );

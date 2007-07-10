@@ -12,7 +12,7 @@ namespace FD {
    /*Node
    *
    * @name CvGray
-   * @category FDOpenCV:Morphological Operations
+   * @category FDOpenCV:Color
    * @description Implements Converts image from BGR to Gray
    *
    * @input_name IMAGEIN

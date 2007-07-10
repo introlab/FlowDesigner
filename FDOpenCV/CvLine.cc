@@ -114,7 +114,7 @@ namespace FD {
       void calculate(int output_id, int count, Buffer &out)
       {           
          //Read the inputs
-         RCPtr<CvColor> ColorPtr = getInput(m_colorID,count);
+         RCPtr<CvColor> colorPtr = getInput(m_colorID,count);
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          RCPtr<Int> x1Ptr = getInput(m_x1ID,count);
          RCPtr<Int> y1Ptr = getInput(m_y1ID,count);
@@ -122,10 +122,11 @@ namespace FD {
          RCPtr<Float> y2Ptr = getInput(m_y2ID,count);         
          //Handle
          CvImage* image = new CvImage(&(*imagePtr));
-         cvSetErrMode( CV_ErrModeSilent );
+         
+         cvSetErrMode( CV_ErrModeSilent );         
          __BEGIN__; 
          OPENCV_CALL( cvLine( image->getImage(), cvPoint(*x1Ptr,*y1Ptr)
-            , cvPoint(*x2Ptr,*y2Ptr), ColorPtr->getColor()
+            , cvPoint(*x2Ptr,*y2Ptr), CV_RGB( (colorPtr->getColor()).val[0], (colorPtr->getColor()).val[1], (colorPtr->getColor()).val[2] )
             , m_thickness ,m_lineTypeMap[m_lineType], m_shift ));         
          __END__;
          cvSetErrMode( CV_ErrModeLeaf );
@@ -133,7 +134,7 @@ namespace FD {
          {
             throw new GeneralException("OPENCV - Error to draw a line: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          } 
-       
+         
          out[count] = ObjectRef(image);
       }
       
