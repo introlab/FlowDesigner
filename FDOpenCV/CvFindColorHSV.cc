@@ -93,9 +93,9 @@ namespace FD {
          unsigned char H,S,V;
          bool h;
          int x,y;
-         for (x=0; x<=imageHSV->width ; x++)
+         for (x=0; x<imageHSV->width ; x++)
          {
-            for (y=0; y<=imageHSV->height ; y++)
+            for (y=0; y<imageHSV->height ; y++)
             {
                H = ((uchar*)(imageHSV->imageData + imageHSV->widthStep*y))[x*3];
                S = ((uchar*)(imageHSV->imageData + imageHSV->widthStep*y))[x*3+1];
