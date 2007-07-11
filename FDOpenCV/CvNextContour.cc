@@ -69,25 +69,34 @@ namespace FD {
          RCPtr<Bool> boolPtr = getInput(m_boolInID,count);
          //Handle of the inputs
          bool Bool = true;
-         if((contoursPtr->getContours()) == 0)
-         {
-            throw new GeneralException("OPENCV - Contour doesn't exist",__FILE__,__LINE__);
-         } 
+         int total;
          CvContours* contours = new CvContours(&(*contoursPtr)); 
-         
-         if( !(*boolPtr))
-         {
-            contours->setContours(contours->getContours()->h_next);
-            if((contours->getContours()) == 0)
+         if((contoursPtr->getContours()) != 0)
+         {          
+            if( !(*boolPtr))
             {
-               Bool = false;
-               contours->setContours(contours->getFirstContours());
-            }     
+               contours->setContours(contours->getContours()->h_next);
+               if((contours->getContours()) == 0)
+               {
+                  Bool = false;
+                  total = 0;
+                  contours->setContours(contours->getFirstContours());
+               }
+               else
+               {
+                  total = contours->getContours()->total;               
+               }
+            }
+         }
+         else
+         {
+            Bool = false;
+            total = 0;
          }
          
          (*(outputs[m_contoursOutID].buffer))[count] = ObjectRef(contours); 
          (*(outputs[m_boolOutID].buffer))[count] = ObjectRef(Bool::alloc(Bool));
-         (*(outputs[m_nbElementsID].buffer))[count] = ObjectRef(Int::alloc( ((contours->getContours())->total)));
+         (*(outputs[m_nbElementsID].buffer))[count] = ObjectRef(Int::alloc( total ));
          
       }
       

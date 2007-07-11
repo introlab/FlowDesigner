@@ -75,31 +75,35 @@ namespace FD {
          //Read the inputs
          RCPtr<CvContours> contoursPtr = getInput(m_contoursInID,count);
          RCPtr<Int> indexPtr = getInput(m_indexID,count);
-         
          //Handle of the inputs
          
          int i=0;
+         int total;
          bool Bool = true;
          CvContours* contours = new CvContours(&(*contoursPtr));
-         
-         if((contours->getContours()) == 0)
+         if((contours->getContours()) != 0)
          {
-            throw new GeneralException("OPENCV - Contour doesn't exist",__FILE__,__LINE__);
+            for(i=0; i<*(indexPtr); i++)
+            {            
+               contours->setContours(contours->getContours()->h_next);
+               if((contours->getContours()) == 0)
+               {
+                  Bool = false;
+                  total=0;
+                  contours->setContours(contours->getFirstContours());
+                  break;
+               } 
+               total = contours->getContours()->total;
+            }
          }
-         
-         for(i=0; i<*(indexPtr); i++)
-         {            
-            contours->setContours(contours->getContours()->h_next);
-            if((contours->getContours()) == 0)
-            {
-               Bool = false;
-               contours->setContours(contours->getFirstContours());
-            } 
-         }
-         
+         else
+         {
+            Bool = false;
+            total=0;
+         } 
          (*(outputs[m_boolID].buffer))[count] = ObjectRef(Bool::alloc(Bool));
          (*(outputs[m_contoursOutID].buffer))[count] = ObjectRef(contours); 
-         (*(outputs[m_nbElementsID].buffer))[count] = ObjectRef(Int::alloc( ((contours->getContours())->total)));
+         (*(outputs[m_nbElementsID].buffer))[count] = ObjectRef(Int::alloc(total));
       }
       
       NO_ORDER_NODE_SPEEDUP(CvSelectContour)
