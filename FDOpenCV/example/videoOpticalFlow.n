@@ -28,33 +28,35 @@
     </Node>
     <Node name="node_NOP_1" type="NOP" x="-778.000000" y="114.000000"/>
     <Node name="node_Greater_1" type="Greater" x="-662.000000" y="-22.000000"/>
-    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="81.000000" y="-46.000000">
+    <Node name="node_CvCreateColor_1" type="CvCreateColor" x="292.000000" y="-118.000000">
       <Parameter name="CHANNEL1" type="int" value="0" description="Red parameter"/>
       <Parameter name="CHANNEL2" type="int" value="0" description="Green parameter"/>
       <Parameter name="CHANNEL3" type="int" value="255" description="Blue parameter"/>
     </Node>
-    <Node name="node_CvShowImage_1" type="CvShowImage" x="482.000000" y="-62.000000">
+    <Node name="node_CvShowImage_1" type="CvShowImage" x="621.000000" y="-33.000000">
       <Parameter name="WINDOW_TITLE" type="string" value="BaseImage" description="Window title."/>
     </Node>
     <Node name="node_CvOpticalFlow_1" type="CvOpticalFlow" x="-331.000000" y="0.000000">
       <Parameter name="WIN_SIZE_X" type="int" value="3" description="Size of the averaging window used for grouping pixels (width)"/>
       <Parameter name="WIN_SIZE_Y" type="int" value="3" description="Size of the averaging window used for grouping pixels (height)"/>
     </Node>
-    <Node name="node_CvLine_1" type="CvLine" x="336.000000" y="-4.000000">
+    <Node name="node_CvLine_1" type="CvLine" x="506.000000" y="-33.000000">
       <Parameter name="THICKNESS" type="int" value="1" description="Thickness of lines that make up the rectangle. Negative values, make the function to draw a filled rectangle&#10;  "/>
       <Parameter name="LINE_TYPE" type="string" value="CV_AA" description="Type of the contour segments&#10;  "/>
       <Parameter name="SHIFT" type="int" value="0" description="Number of fractional bits in the point coordinates"/>
     </Node>
-    <Node name="node_Mul_1" type="Mul" x="-61.000000" y="14.000000"/>
-    <Node name="node_Mul_2" type="Mul" x="-61.000000" y="75.000000"/>
-    <Node name="node_Constant_3" type="Constant" x="-284.000000" y="85.000000">
+    <Node name="node_Mul_1" type="Mul" x="115.000000" y="-44.000000"/>
+    <Node name="node_Mul_2" type="Mul" x="114.000000" y="27.000000"/>
+    <Node name="node_Constant_3" type="Constant" x="-31.000000" y="-10.000000">
       <Parameter name="VALUE" type="int" value="300" description="The value"/>
     </Node>
-    <Node name="node_Add_1" type="Add" x="105.000000" y="5.000000"/>
-    <Node name="node_Add_2" type="Add" x="97.000000" y="69.000000"/>
-    <Node name="node_Constant_5" type="Constant" x="-88.000000" y="-39.000000">
+    <Node name="node_Add_1" type="Add" x="313.000000" y="-51.000000"/>
+    <Node name="node_Add_2" type="Add" x="307.000000" y="18.000000"/>
+    <Node name="node_Constant_5" type="Constant" x="183.000000" y="-14.000000">
       <Parameter name="VALUE" type="int" value="150" description="The value"/>
     </Node>
+    <Node name="node_CvAvg_1" type="CvAvg" x="-160.000000" y="-38.000000"/>
+    <Node name="node_CvAvg_2" type="CvAvg" x="-159.000000" y="51.000000"/>
     <Link from="node_Delay_1" output="OUTPUT" to="node_IF_1" input="THEN"/>
     <Link from="node_NOP_1" output="OUTPUT" to="node_IF_1" input="ELSE"/>
     <Link from="node_NOP_1" output="OUTPUT" to="node_Delay_1" input="INPUT"/>
@@ -64,10 +66,7 @@
     <Link from="node_CvQueryFrame_1" output="IMAGE" to="node_NOP_1" input="INPUT"/>
     <Link from="node_IF_1" output="OUTPUT" to="node_CvOpticalFlow_1" input="PREV"/>
     <Link from="node_CvCreateColor_1" output="COLOUR" to="node_CvLine_1" input="COLOR"/>
-    <Link from="node_CvOpticalFlow_1" output="X" to="node_Mul_1" input="INPUT1"/>
-    <Link from="node_CvOpticalFlow_1" output="Y" to="node_Mul_2" input="INPUT1"/>
     <Link from="node_Constant_3" output="VALUE" to="node_Mul_1" input="INPUT2"/>
-    <Link from="node_Constant_3" output="VALUE" to="node_Mul_2" input="INPUT2"/>
     <Link from="node_Constant_5" output="VALUE" to="node_CvLine_1" input="X1"/>
     <Link from="node_Constant_5" output="VALUE" to="node_Add_1" input="INPUT1"/>
     <Link from="node_Mul_1" output="OUTPUT" to="node_Add_1" input="INPUT2"/>
@@ -76,9 +75,14 @@
     <Link from="node_Add_1" output="OUTPUT" to="node_CvLine_1" input="X2"/>
     <Link from="node_Add_2" output="OUTPUT" to="node_CvLine_1" input="Y2"/>
     <Link from="node_NOP_1" output="OUTPUT" to="node_CvOpticalFlow_1" input="CURR"/>
-    <Link from="node_NOP_1" output="OUTPUT" to="node_CvLine_1" input="IMAGEIN">-759 114 206 113 207 -43 250 -41.5 </Link>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvLine_1" input="IMAGEIN">-759 114 377 114 377 -72 420 -70.5 </Link>
     <Link from="node_Constant_5" output="VALUE" to="node_Add_2" input="INPUT1"/>
     <Link from="node_Constant_5" output="VALUE" to="node_CvLine_1" input="Y1"/>
+    <Link from="node_CvAvg_1" output="AVG_1" to="node_Mul_1" input="INPUT1"/>
+    <Link from="node_CvOpticalFlow_1" output="VEL_X" to="node_CvAvg_1" input="IMAGE"/>
+    <Link from="node_CvOpticalFlow_1" output="VEL_Y" to="node_CvAvg_2" input="IMAGE"/>
+    <Link from="node_Constant_3" output="VALUE" to="node_Mul_2" input="INPUT1"/>
+    <Link from="node_CvAvg_2" output="AVG_1" to="node_Mul_2" input="INPUT2"/>
     <NetInput name="VIDEO" node="node_CvQueryFrame_1" terminal="VIDEO" object_type="CvVideo" description="Video capturing structure"/>
     <NetCondition name="CONDITION" node="node_CvQueryFrame_1" terminal="BOOL"/>
     <NetOutput name="IMAGEOUT" node="node_CvShowImage_1" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
