@@ -35,6 +35,20 @@ namespace FD {
       }
 	}
    
+	CvVideo::CvVideo(const int index)
+	{
+      int status = cvGetErrMode();
+      cvSetErrMode( CV_ErrModeSilent );
+      __BEGIN__;
+      OPENCV_CALL(m_video = cvCaptureFromCAM( index ));
+      __END__;
+      cvSetErrMode( status );
+      if( cvGetErrStatus() != CV_StsOk  )
+      {
+         throw new GeneralException("OPENCV - Error to load the video: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+      }
+	}   
+   
 	/**Serialize (binary) the object to a stream*/
 	void CvVideo::serialize(std::ostream &out) const
 	{

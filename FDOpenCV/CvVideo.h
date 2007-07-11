@@ -21,7 +21,8 @@ namespace FD
       CvVideo(CvCapture* image);
 		~CvVideo();
 		CvVideo(const std::string &path);
-		
+		CvVideo(const int index);
+      
 		/**Serialize (binary) the object to a stream*/
 		virtual void serialize(std::ostream &out) const;
 		
