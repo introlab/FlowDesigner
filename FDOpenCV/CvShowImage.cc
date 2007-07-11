@@ -25,6 +25,11 @@ namespace FD {
    * @parameter_value BaseImage
    * @parameter_description Window title.
    * 
+   * @parameter_name FLAGS
+   * @parameter_type int
+   * @parameter_value 1
+   * @parameter_description If it is set to 1, window size is automatically adjusted to fit the displayed image, while user can not change the window size manually.
+   *    
    * @output_name IMAGEOUT
    * @output_description Same as input image 
    * @output_type CvImage
@@ -37,6 +42,7 @@ namespace FD {
       int m_imageInID;
       int m_imageOutID;
       std::string m_windowName;
+      int m_flags;
       
       
       public:
@@ -49,10 +55,11 @@ namespace FD {
          m_imageOutID = addOutput("IMAGEOUT");         
          //Initialize parameters         
          RCPtr<String> windowNamePtr = parameters.get("WINDOW_TITLE");
+         m_flags = dereference_cast<int>(parameters.get("FLAGS"));
          //Create the windows
          m_windowName = *windowNamePtr;
          gdk_threads_enter();
-         cvNamedWindow(m_windowName.c_str(), 1 );
+         cvNamedWindow(m_windowName.c_str(), m_flags );
          gdk_threads_leave();
       }
       
@@ -70,19 +77,17 @@ namespace FD {
          
          //Handle
          gdk_threads_enter();
-         
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
-         OPENCV_CALL(cvShowImage(m_windowName.c_str(), imagePtr->getImage()));     
+         OPENCV_CALL(cvShowImage(m_windowName.c_str(), imagePtr->getImage()));   
          __END__;
          cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to show the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
-         } 
-         
-         gdk_threads_leave();
+         }          
+         gdk_threads_leave();         
          out[count] = imagePtr;
       }
       
