@@ -91,13 +91,30 @@ namespace FD {
          m_methodMap["CV_CHAIN_APPROX_TC89_L1"] = CV_CHAIN_APPROX_TC89_L1;
          m_methodMap["CV_LINK_RUNS"] = CV_LINK_RUNS;
          //Initialze the memory storage
-         m_storage = cvCreateMemStorage(0);
+         int status = cvGetErrMode();
+         cvSetErrMode( CV_ErrModeSilent ); 
+         __BEGIN__;
+         OPENCV_CALL(m_storage = cvCreateMemStorage(0));
+         __END__;
+         cvSetErrMode( status );       
+         if( cvGetErrStatus() != CV_StsOk  )
+         {
+            throw new GeneralException("OPENCV - Error to find contours: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+         }         
       }
       
       ~CvFindContours()
       {
-         cout << "Erase Storage" << endl;
-         cvReleaseMemStorage(&m_storage);
+         int status = cvGetErrMode();
+         cvSetErrMode( CV_ErrModeSilent ); 
+         __BEGIN__;
+         OPENCV_CALL(cvReleaseMemStorage(&m_storage));
+         __END__;
+         cvSetErrMode( status );         
+         if( cvGetErrStatus() != CV_StsOk  )
+         {
+            throw new GeneralException("OPENCV - Error to find contours: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+         }         
       }
       
       
@@ -105,7 +122,6 @@ namespace FD {
       {   
          //Read the inputs
          RCPtr<CvImage> imagePtr = getInput(m_imageID,count);
-         
          //Handle
          CvImage* image = new CvImage(imagePtr->getImage());
          CvContours* contours = new CvContours();
@@ -115,12 +131,12 @@ namespace FD {
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
+         OPENCV_CALL(cvClearMemStorage( m_storage ));
          OPENCV_CALL(nbContours = cvFindContours( image->getImage(), m_storage
             , &firstContours, sizeof(CvContour)
             , m_modeMap[m_mode], m_methodMap[m_method] ));
          __END__;
          cvSetErrMode( status );
-         
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to find contours: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
