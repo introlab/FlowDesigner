@@ -77,7 +77,6 @@ namespace FD {
          }
          else
          {
-            cout << "FIN" << endl;
             Bool = false; 
             image = new CvImage();
          }
