@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
-# $Id: Makefile.am,v 1.4 2007/07/11 14:25:57 jdascenzio Exp $
+# $Id: Makefile.am,v 1.5 2007/07/11 20:04:26 jdascenzio Exp $
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
@@ -15,6 +15,7 @@ libFDOpenCV_la_SOURCES =  \
    CvAdd.cc\
    CvCmp.cc\
    CvAvg.cc\
+   CvGravityCenter.cc\
    CvCreateColor.cc \
    CvFindColorRGB.cc \
    CvFindColorHSV.cc \
