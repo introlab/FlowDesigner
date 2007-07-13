@@ -13,8 +13,8 @@ namespace FD {
    DECLARE_NODE(CvGravityCenter)
    /*Node
    *
-   * @name CvGravityCenter:Arithmetic Logic Comparison
-   * @category FDOpenCV
+   * @name CvGravityCenter
+   * @category FDOpenCV:Arithmetic Logic Comparison
    * @description Calculate the coordinate of the gravity center.
    *
    * @input_name IMAGE
