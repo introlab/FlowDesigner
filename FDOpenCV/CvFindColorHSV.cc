@@ -122,6 +122,7 @@ namespace FD {
                }
             }
          } 
+         cvReleaseImage( &imageHSV );
          
          out[count] = ObjectRef(new CvImage(temp));
       }
