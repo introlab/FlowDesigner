@@ -31,13 +31,18 @@ namespace FD {
    *
    * @parameter_name METHOD
    * @parameter_type string
-   * @parameter_value CV_CHAIN_CODE;CV_CHAIN_APPROX_NONE;CV_CHAIN_APPROX_SIMPLE;CV_CHAIN_APPROX_TC89_L1;CV_LINK_RUNS
+   * @parameter_value CV_CHAIN_APPROX_NONE;CV_CHAIN_APPROX_SIMPLE;CV_CHAIN_APPROX_TC89_L1;CV_LINK_RUNS
    * @parameter_description Approximation method
    * CV_CHAIN_CODE: output contours in the Freeman chain code. All other methods output polygons (sequences of vertices).
    * CV_CHAIN_APPROX_NONE: translate all the points from the chain code into points;
    * CV_CHAIN_APPROX_SIMPLE: compress horizontal, vertical, and diagonal segments, that is, the function leaves only their ending points;
    * CV_CHAIN_APPROX_TC89_L1,CV_CHAIN_APPROX_TC89_KCOS: apply one of the flavors of Teh-Chin chain approximation algorithm.
    * CV_LINK_RUNS: use completely different contour retrieval algorithm via linking of horizontal segments of 1?s. Only CV_RETR_LIST retrieval mode can be used with this method.
+   *
+   * @parameter_name AREA_MIN
+   * @parameter_type float
+   * @parameter_value 0
+   * @parameter_description All the contours which are superior to this value will be retrived.
    *
    * @output_name CONTOURS
    * @output_description Contain the pointer to the first outer contour
@@ -59,6 +64,7 @@ namespace FD {
       //Parameters
       string m_mode;
       string m_method;
+      float m_areaMin;
       
       //map of the mode and methode
       map<string,int> m_modeMap;
@@ -79,6 +85,8 @@ namespace FD {
          //Initialize parameters         
          m_mode = object_cast<String>(parameters.get("MODE"));
          m_method = object_cast<String>(parameters.get("METHOD"));
+         m_areaMin = object_cast<Float>(parameters.get("AREA_MIN"));
+         
          //Initialize the mode map
          m_modeMap["CV_RETR_EXTERNAL"] = CV_RETR_EXTERNAL;
          m_modeMap["CV_RETR_LIST"] = CV_RETR_LIST;
@@ -124,27 +132,49 @@ namespace FD {
          RCPtr<CvImage> imagePtr = getInput(m_imageID,count);
          //Handle
          CvImage* image = new CvImage(imagePtr->getImage());
-         CvContours* contours = new CvContours();
-         CvSeq* firstContours; 
-         int nbContours;
+         CvSeq* contours; 
+         int nbContours=0;
+         double area;
+         CvContourScanner scanner;
          
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
-         OPENCV_CALL(cvClearMemStorage( m_storage ));
-         OPENCV_CALL(nbContours = cvFindContours( image->getImage(), m_storage
-            , &firstContours, sizeof(CvContour)
-            , m_modeMap[m_mode], m_methodMap[m_method] ));
+         OPENCV_CALL(cvClearMemStorage( m_storage ));  
+         OPENCV_CALL(scanner = cvStartFindContours( image->getImage(), m_storage
+            , sizeof(CvContour)
+            , m_modeMap[m_mode]
+            , m_methodMap[m_method]
+            , cvPoint(0,0) ));
+         OPENCV_CALL(contours = cvFindNextContour( scanner ));
+         while(contours!=NULL)
+         {
+            OPENCV_CALL(area = fabs(cvContourArea( contours )));
+            if( area > m_areaMin)
+            {
+               OPENCV_CALL(cvSubstituteContour( scanner, contours ));
+               nbContours++;
+            }
+            else
+            {
+               OPENCV_CALL(cvSubstituteContour( scanner, NULL));
+            }
+            OPENCV_CALL(contours = cvFindNextContour( scanner ));
+         }
+         contours = cvEndFindContours( &scanner );
+
          __END__;
          cvSetErrMode( status );
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to find contours: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }         
-         contours->setNbContours(nbContours);
-         contours->setContours(firstContours);
-         contours->setFirstContours(firstContours);
-         (*(outputs[m_contoursID].buffer))[count] = ObjectRef(contours); 
+         
+         CvContours* Contours = new CvContours();
+         Contours->setNbContours(nbContours);
+         Contours->setContours(contours);
+         Contours->setFirstContours(contours);
+         (*(outputs[m_contoursID].buffer))[count] = ObjectRef(Contours); 
          (*(outputs[m_nbContoursID].buffer))[count] = ObjectRef(Int::alloc(nbContours));
       }
       

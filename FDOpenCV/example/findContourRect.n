@@ -29,11 +29,6 @@
     <Note x="0" y="0" visible="0" text="Created with FlowDesigner FLOWDESIGNER_VERSION"/>
   </Network>
   <Network type="iterator" name="LOOP0">
-    <Node name="node_CvNextContour_1" type="CvNextContour" x="-123.000000" y="-1155.000000"/>
-    <Node name="node_Feedback_1" type="Feedback" x="231.000000" y="-1163.000000">
-      <Parameter name="DELAY" type="int" value="1" description="Number of iteration for the delay"/>
-      <Parameter name="BEFORE_LIMIT" type="int" value="0" description="When count - DELAY is smaller or equal to BEFORE_LIMIT, the input is pulled from BEFORE at (DELAY - count + BEFORE_LIMIT)"/>
-    </Node>
     <Node name="node_CvDrawContours_1" type="CvDrawContours" x="771.000000" y="-1148.000000">
       <Parameter name="MAX_LEVEL" type="int" value="0" description="Maximal level for drawn contours"/>
       <Parameter name="THICKNESS" type="int" value="1" description="Thickness of lines the contours are drawn with. If it is negative, the contour interiors are drawn"/>
@@ -41,6 +36,7 @@
     </Node>
     <Node name="node_CvShowImage_1" type="CvShowImage" x="927.000000" y="-1148.000000">
       <Parameter name="WINDOW_TITLE" type="string" value="Contour Image" description="Window title."/>
+      <Parameter name="FLAGS" type="int" value="1" description="If it is set to 1, window size is automatically adjusted to fit the displayed image, while user can not change the window size manually.&#10;   "/>
     </Node>
     <Node name="node_TextProbe_1" type="TextProbe" x="1061.000000" y="-1149.000000">
       <Parameter name="BREAK_AT" type="int" value="" description="If set, the probe runs until (count = BREAK_AT)"/>
@@ -59,28 +55,21 @@
       <Parameter name="CHANNEL3" type="int" value="0" description="Blue parameter"/>
     </Node>
     <Node name="node_NOP_1" type="NOP" x="446.000000" y="-1141.000000"/>
-    <Node name="node_NOP_2" type="NOP" x="-62.000000" y="-1070.000000"/>
-    <Node name="node_Equal_1" type="Equal" x="-359.000000" y="-1146.000000"/>
-    <Node name="node_IterCount_1" type="IterCount" x="-547.000000" y="-1154.000000"/>
-    <Node name="node_Constant_1" type="Constant" x="-549.000000" y="-1106.000000">
-      <Parameter name="VALUE" type="int" value="0" description="The value"/>
-    </Node>
+    <Node name="node_NOP_2" type="NOP" x="-136.000000" y="-1163.000000"/>
+    <Node name="node_CvSelectContour_1" type="CvSelectContour" x="109.000000" y="-1157.000000"/>
+    <Node name="node_IterCount_1" type="IterCount" x="-138.000000" y="-1115.000000"/>
     <Link from="node_CvCreateColor_1" output="COLOUR" to="node_CvDrawContours_1" input="EXTERNAL_COLOR"/>
     <Link from="node_CvCreateColor_2" output="COLOUR" to="node_CvDrawContours_1" input="HOLE_COLOR"/>
     <Link from="node_CvDrawContours_1" output="IMAGEOUT" to="node_CvShowImage_1" input="IMAGEIN"/>
     <Link from="node_CvShowImage_1" output="IMAGEOUT" to="node_TextProbe_1" input="INPUT"/>
     <Link from="node_NOP_1" output="OUTPUT" to="node_CvDrawContours_1" input="IMAGEIN"/>
-    <Link from="node_CvNextContour_1" output="CONTOURSOUT" to="node_Feedback_1" input="INPUT"/>
-    <Link from="node_Feedback_1" output="DELAY" to="node_CvNextContour_1" input="CONTOURSIN">325.5 -1155.5 359 -1154 359 -1116 -296 -1116 -296 -1163 -265.5 -1162.5 </Link>
-    <Link from="node_IterCount_1" output="OUTPUT" to="node_Equal_1" input="INPUT1"/>
-    <Link from="node_Constant_1" output="VALUE" to="node_Equal_1" input="INPUT2"/>
-    <Link from="node_Equal_1" output="OUTPUT" to="node_CvNextContour_1" input="BOOL"/>
-    <Link from="node_Feedback_1" output="OUTPUT" to="node_CvDrawContours_1" input="CONTOURSIN"/>
-    <Link from="node_NOP_2" output="OUTPUT" to="node_Feedback_1" input="BEFORE"/>
+    <Link from="node_CvSelectContour_1" output="CONTOURSOUT" to="node_CvDrawContours_1" input="CONTOURSIN"/>
+    <Link from="node_NOP_2" output="OUTPUT" to="node_CvSelectContour_1" input="CONTOURSIN"/>
+    <Link from="node_IterCount_1" output="OUTPUT" to="node_CvSelectContour_1" input="INDEX"/>
     <NetOutput name="imageOut" node="node_TextProbe_1" terminal="OUTPUT" object_type="any" description="Pass through"/>
     <NetInput name="ImageIn" node="node_NOP_1" terminal="INPUT" object_type="any" description="The input"/>
     <NetInput name="ContoursIn" node="node_NOP_2" terminal="INPUT" object_type="any" description="The input"/>
-    <NetCondition name="CONDITION" node="node_CvNextContour_1" terminal="BOOL"/>
+    <NetCondition name="CONDITION" node="node_CvSelectContour_1" terminal="BOOL"/>
     <Note x="0" y="0" visible="0" text="Created with FlowDesigner FLOWDESIGNER_VERSION"/>
   </Network>
 </Document>
