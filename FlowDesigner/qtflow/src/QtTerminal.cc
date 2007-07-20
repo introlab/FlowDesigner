@@ -12,6 +12,7 @@
 #include <string>
 
 #include "UINetTerminal.h"
+#include "UINetwork.h"
 #include "UIProbeLink.h"
 
 using namespace std;
@@ -183,7 +184,7 @@ namespace FD
 			cerr<<"mouseReleaseEvent on terminal "<<getName() <<endl;
 			QtTerminal* destinationQtTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
 
-			//TERMINAL REAR BY?
+			//TERMINAL NEAR BY?
 			if ( destinationQtTerminal )
 			{
 				cerr<<"found terminal"<<destinationQtTerminal->getName() <<endl;
@@ -202,10 +203,14 @@ namespace FD
                                     if (sourceQtTerminal->getType() == INPUT)
                                     {
                                         emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
+										m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
+										
                                     }
                                     else
                                     {   
                                         emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
+										m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
+										
                                     }
                                  }       
 

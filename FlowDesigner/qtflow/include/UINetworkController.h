@@ -31,7 +31,7 @@ namespace FD
 						   std::string _type, double _x, double _y, bool doInit);
 
 
-                virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
+		virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
 
 						   
 		virtual UILink *newLink (UITerminal *_from, UITerminal *_to,const char *str=NULL);

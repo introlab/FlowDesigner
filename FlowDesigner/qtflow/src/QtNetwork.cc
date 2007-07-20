@@ -18,6 +18,7 @@
 #include "UINetworkController.h"
 #include "UINodeController.h"
 #include <iostream>
+#include <sstream>
 
 namespace FD
 {
@@ -225,7 +226,14 @@ namespace FD
 			
 				//m_uiNetwork->createNode(event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
 
-                                m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+				static int number = 0;
+				
+				stringstream nodename;
+				
+				nodename << event->mimeData()->text().toStdString() << "_" << number++;
+
+				UINode* node = m_uiNetwork->newNode(m_uiNetwork,nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+				m_uiNetwork->addNode(node);
 
 			
 			/*

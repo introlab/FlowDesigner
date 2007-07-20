@@ -25,7 +25,6 @@ namespace FD
 		public slots:
 			void positionChanged ( double x, double y );
 
-
 			void updateView ( QtNetwork *net );
 
 			QtLink* getQtLink() {return m_QtLink;}
