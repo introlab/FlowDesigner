@@ -47,10 +47,20 @@ namespace FD {
    }
    
 	CvImage::~CvImage()
-	{
+	{               
       if(m_image != NULL)
       {
+                 
          cvReleaseImage( &m_image );
+      }
+	}
+	
+	void CvImage::releaseImage()
+	{                
+      if(m_image != NULL)
+      {         
+         cvReleaseImage( &m_image );
+         m_image = NULL;
       }
 	}
    

@@ -22,7 +22,8 @@ namespace FD
       
 		public:
       
-		CvImage();
+        CvImage();
+      
       CvImage(const IplImage* image);
       CvImage(const CvImage* image);
 
@@ -42,6 +43,7 @@ namespace FD
 		virtual void readFrom(std::istream &in=std::cin);
       
 		IplImage* getImage() const;
+		void releaseImage();
       
       CvImage* gray() const;
       
