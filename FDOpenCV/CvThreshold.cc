@@ -80,14 +80,15 @@ namespace FD {
          //Read the inputs
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          CvImage* imageGRAY = imagePtr->gray(); 
-         CvImage* image =  new CvImage(cvCreateImage(cvSize(imagePtr->getImage()->width, imagePtr->getImage()->height)
-            , IPL_DEPTH_8U, 1));
+         CvImage* image =  new CvImage(cvSize(imagePtr->getImage()->width, imagePtr->getImage()->height)
+            , IPL_DEPTH_8U, 1);
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
          OPENCV_CALL(cvThreshold(imageGRAY->getImage(), image->getImage(), m_threshold, m_max_value, m_thresholeTypeMap[m_thresholdType]));         
          __END__;
          cvSetErrMode( status );
+         delete imageGRAY;
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to threshold the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

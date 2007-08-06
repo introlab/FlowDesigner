@@ -78,7 +78,7 @@ namespace FD {
             throw new GeneralException("OPENCV - Error to erode the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }
          
-         out[count] = image;
+         out[count] = ObjectRef(image);
       }
       
       NO_ORDER_NODE_SPEEDUP(CvErode)

@@ -99,7 +99,7 @@ namespace FD {
          {
             throw new GeneralException("OPENCV - Error to morphology the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          } 
-         
+         delete imageTemp;         
          out[count] = ObjectRef(imageOut);
       }
       

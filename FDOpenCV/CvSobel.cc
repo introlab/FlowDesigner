@@ -79,16 +79,17 @@ namespace FD {
          if((image->getImage())->depth < 16)
          {
             CvImage* imageTemp;
-            OPENCV_CALL(imageTemp = new CvImage(cvCreateImage( cvGetSize(image->getImage()), IPL_DEPTH_16S, 1)));
+            OPENCV_CALL(imageTemp = new CvImage(cvGetSize(image->getImage()), IPL_DEPTH_16S, 1));
             OPENCV_CALL(cvSobel(image->getImage(), imageTemp->getImage(), m_xorder, m_yorder, m_aperture_size));
             OPENCV_CALL(cvConvertScaleAbs( imageTemp->getImage(),image->getImage())); 
+            delete imageTemp;
          }
          else
          {
             OPENCV_CALL(cvSobel(image->getImage(), image->getImage(), m_xorder, m_yorder, m_aperture_size));
          }   
          __END__;
-         cvSetErrMode( status );
+         cvSetErrMode( status );         
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to sobel the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);

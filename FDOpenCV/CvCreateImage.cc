@@ -81,23 +81,21 @@ namespace FD {
       void calculate(int output_id, int count, Buffer &out)
       {       
          //Handle of the inputs
-         IplImage* temp;
+         CvImage* image;
 
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
-         OPENCV_CALL(temp = cvCreateImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels ));
-         OPENCV_CALL(cvZero(temp));
+         OPENCV_CALL(image = new CvImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels ));
+         OPENCV_CALL(cvZero(image->getImage()));
          __END__;
          cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to create the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
-         }
+         }        
          
-         
-         CvImage* image = new CvImage(temp);
          out[count] = ObjectRef(image);
       }
       

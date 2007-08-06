@@ -47,7 +47,7 @@ namespace FD {
          //Read the inputs
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);  
          //Handle
-         out[count] = imagePtr->gray();
+         out[count] = ObjectRef(imagePtr->gray());
       }
       
       NO_ORDER_NODE_SPEEDUP(CvGray)
