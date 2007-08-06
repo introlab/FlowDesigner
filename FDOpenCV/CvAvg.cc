@@ -43,8 +43,6 @@ namespace FD {
       int m_avg2ID;
       int m_avg3ID;
       
-      CvScalar m_average;
-      
       public:
       CvAvg(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
@@ -55,8 +53,6 @@ namespace FD {
          m_avg1ID = addOutput("AVG_1");
          m_avg2ID = addOutput("AVG_2");
          m_avg3ID = addOutput("AVG_3");
-         
-         m_average = cvScalar(0,0,0,0);
       }      
       
       void calculate(int output_id, int count, Buffer &out)
@@ -64,11 +60,12 @@ namespace FD {
          //Read the inputs
          RCPtr<CvImage> imagePtr = getInput(m_imageID,count);   
          //Handle
-         m_average = cvScalar(0,0,0,0);
+         
+         CvScalar average = cvScalar(0,0,0,0);
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__;
-         OPENCV_CALL(m_average = cvAvg( imagePtr->getImage() ));       
+         OPENCV_CALL(average = cvAvg( imagePtr->getImage() ));       
          __END__;
          cvSetErrMode( status );
          
@@ -77,9 +74,9 @@ namespace FD {
             throw new GeneralException("OPENCV - Error to mean the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }
          
-         (*(outputs[m_avg1ID].buffer))[count] = ObjectRef(Float::alloc( m_average.val[0]));
-         (*(outputs[m_avg2ID].buffer))[count] = ObjectRef(Float::alloc( m_average.val[1]));
-         (*(outputs[m_avg3ID].buffer))[count] = ObjectRef(Float::alloc( m_average.val[2]));
+         (*(outputs[m_avg1ID].buffer))[count] = ObjectRef(Float::alloc( average.val[0]));
+         (*(outputs[m_avg2ID].buffer))[count] = ObjectRef(Float::alloc( average.val[1]));
+         (*(outputs[m_avg3ID].buffer))[count] = ObjectRef(Float::alloc( average.val[2]));
       }
       
       NO_ORDER_NODE_SPEEDUP(CvAvg)
