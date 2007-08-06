@@ -46,7 +46,6 @@ namespace FD {
       public:
       CvAdd(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
-      , m_image(NULL)
       {
          //add inputs
          m_image1ID = addInput("IMAGE1");
@@ -63,6 +62,7 @@ namespace FD {
          //Handle
          
          int status = cvGetErrMode();
+         m_image->releaseImage();
          cvSetErrMode( CV_ErrModeSilent );
          m_image = new CvImage(image1Ptr->getImage());
          __BEGIN__;
