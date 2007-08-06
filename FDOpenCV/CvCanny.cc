@@ -75,7 +75,7 @@ namespace FD {
          
          //Handle
          CvImage* imageGray = imagePtr->gray(); 
-         CvImage* image = imagePtr->gray(); 
+         CvImage* image = new CvImage(imageGray); 
          
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
@@ -83,7 +83,7 @@ namespace FD {
          OPENCV_CALL(cvCanny(imageGray->getImage(), image->getImage(), m_threshold1, m_threshold2, m_aperture_size));
          __END__;
          cvSetErrMode( status );
-         
+         delete imageGray;         
          if( cvGetErrStatus() != CV_StsOk  )
          {
             throw new GeneralException("OPENCV - Error to apply Canny on the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
