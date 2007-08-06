@@ -41,9 +41,12 @@ namespace FD {
       //Output ID
       int m_outputID;
       
+      CvImage* m_image;
+      
       public:
       CvAdd(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
+      , m_image(NULL)
       {
          //add inputs
          m_image1ID = addInput("IMAGE1");
@@ -58,13 +61,12 @@ namespace FD {
          RCPtr<CvImage> image1Ptr = getInput(m_image1ID,count);   
          RCPtr<CvImage> image2Ptr = getInput(m_image2ID,count);
          //Handle
-         CvImage* image;
          
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
-         image = new CvImage(image1Ptr->getImage());
+         m_image = new CvImage(image1Ptr->getImage());
          __BEGIN__;
-         OPENCV_CALL(cvAdd(image1Ptr->getImage(), image2Ptr->getImage(), image->getImage()));          
+         OPENCV_CALL(cvAdd(image1Ptr->getImage(), image2Ptr->getImage(), m_image->getImage()));          
          __END__;
          cvSetErrMode( status );
          
@@ -73,7 +75,7 @@ namespace FD {
             throw new GeneralException("OPENCV - Error to add the images: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }
          
-         out[count] = ObjectRef(image);
+         out[count] = ObjectRef(m_image);
       }
       
       NO_ORDER_NODE_SPEEDUP(CvAdd)
