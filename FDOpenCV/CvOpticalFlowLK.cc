@@ -90,8 +90,8 @@ namespace FD {
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
-         OPENCV_CALL( velx = new CvImage( cvCreateImage( cvGetSize(prevPtr->getImage()), IPL_DEPTH_32F, 1)) );
-         OPENCV_CALL( vely = new CvImage( cvCreateImage( cvGetSize(prevPtr->getImage()), IPL_DEPTH_32F, 1)) );
+         OPENCV_CALL( velx = new CvImage( cvGetSize(prevPtr->getImage()), IPL_DEPTH_32F, 1) );
+         OPENCV_CALL( vely = new CvImage( cvGetSize(prevPtr->getImage()), IPL_DEPTH_32F, 1) );
          OPENCV_CALL( cvCalcOpticalFlowLK( prev->getImage(), curr->getImage()
             , cvSize(m_winSizeX,m_winSizeY)
             , velx->getImage(), vely->getImage() )); 
@@ -101,7 +101,8 @@ namespace FD {
          {
             throw new GeneralException("OPENCV - Error to calculate the optical flow: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          } 
-         
+         delete prev;
+         delete curr;
          (*(outputs[m_velxID].buffer))[count] = ObjectRef(velx); 
          (*(outputs[m_velyID].buffer))[count] = ObjectRef(vely); 
       }
