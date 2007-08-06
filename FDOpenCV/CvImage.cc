@@ -46,6 +46,21 @@ namespace FD {
       }
    }
    
+   CvImage::CvImage(CvSize size, int depth, int channels)
+   {
+      int status = cvGetErrMode();
+      cvSetErrMode( CV_ErrModeSilent );
+      __BEGIN__;         
+      OPENCV_CALL(m_image = cvCreateImage( size, depth, channels));
+      OPENCV_CALL(cvSetZero(m_image));
+      __END__;
+      cvSetErrMode( status );
+      if( cvGetErrStatus() != CV_StsOk  )
+      {            
+         throw new GeneralException("OPENCV - Error to create an image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+      }          
+   }
+   
 	CvImage::~CvImage()
 	{               
       if(m_image != NULL)
@@ -58,7 +73,8 @@ namespace FD {
 	void CvImage::releaseImage()
 	{                
       if(m_image != NULL)
-      {         
+      {  
+         cout << "cvReleaseImage( &m_image )"<<endl;        
          cvReleaseImage( &m_image );
          m_image = NULL;
       }
@@ -114,13 +130,13 @@ namespace FD {
    
    CvImage* CvImage::gray() const
    {
-      CvImage* image;
+      CvImage* image = NULL;
       if(m_image->nChannels != 1)
       {     
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__;         
-         OPENCV_CALL(image = new CvImage(cvCreateImage( cvGetSize(m_image), m_image->depth, 1)));
+         OPENCV_CALL(image = new CvImage(cvGetSize(m_image), m_image->depth, 1));
          OPENCV_CALL(cvCvtColor(m_image, image->getImage(), CV_BGR2GRAY));
          __END__;
          cvSetErrMode( status );
@@ -144,7 +160,7 @@ namespace FD {
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
          __BEGIN__; 
-         OPENCV_CALL(image = new CvImage(cvCreateImage( cvGetSize(m_image), m_image->depth, 3)));
+         OPENCV_CALL(image = new CvImage(cvGetSize(m_image), m_image->depth, 3));
          OPENCV_CALL(cvCvtColor(m_image, image->getImage(), CV_GRAY2BGR));
          __END__;
          cvSetErrMode( status );
@@ -162,8 +178,7 @@ namespace FD {
    
    CvImage* CvImage::zero() const
    {
-      CvImage* image = new CvImage(*this);  
-      
+      CvImage* image = new CvImage(m_image);      
       int status = cvGetErrMode();
       cvSetErrMode( CV_ErrModeSilent );
       __BEGIN__;       

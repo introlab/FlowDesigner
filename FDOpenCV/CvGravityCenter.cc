@@ -95,7 +95,7 @@ namespace FD {
          {
             throw new GeneralException("OPENCV - Error to calculate the gravity center: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          } 
-         
+         delete image;
          (*(outputs[m_xID].buffer))[count] = ObjectRef(Float::alloc(x)); 
          (*(outputs[m_yID].buffer))[count] = ObjectRef(Float::alloc(y)); 
       }

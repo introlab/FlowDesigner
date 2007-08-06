@@ -29,6 +29,7 @@ namespace FD
 
 		~CvImage();
 		CvImage(const std::string &path, const int &iscolor);
+		CvImage(CvSize size, int depth, int channels);
 		
 		/**Serialize (binary) the object to a stream*/
 		virtual void serialize(std::ostream &out) const;

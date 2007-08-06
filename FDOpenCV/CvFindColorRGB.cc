@@ -87,42 +87,28 @@ namespace FD {
          //Read the inputs         
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          RCPtr<CvColor> findColorPtr = getInput(m_findColorID,count);         
-         IplImage* temp; 
-         
-         int status = cvGetErrMode();
-         cvSetErrMode( CV_ErrModeSilent );
-         OPENCV_CALL(temp = cvCreateImage( cvGetSize((imagePtr->getImage())), IPL_DEPTH_8U, 1));
-         cvSetErrMode( status );         
-         if( cvGetErrStatus() == CV_StsOk  )
+         CvImage* image = new CvImage( cvGetSize(imagePtr->getImage()), IPL_DEPTH_8U, 1 );          
+         unsigned char B,G,R;
+         unsigned int x,y;
+         int d=20;            
+         for (x=0; x<(imagePtr->getImage())->width ; x++)
          {
-            cvZero(temp);
-            unsigned char B,G,R;
-            unsigned int x,y;
-            int d=20;            
-            for (x=0; x<(imagePtr->getImage())->width ; x++)
+            for (y=0; y<(imagePtr->getImage())->height ; y++)
             {
-               for (y=0; y<(imagePtr->getImage())->height ; y++)
+               B = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3];
+               G = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3+1];
+               R = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3+2];
+               
+               if( ((findColorPtr->channel3()-m_BSensibility)<=B & B<=(findColorPtr->channel3()+m_BSensibility)) & 
+                  ((findColorPtr->channel2()-m_GSensibility)<=G & G<=(findColorPtr->channel2()+m_GSensibility)) &
+               ((findColorPtr->channel1()-m_RSensibility)<=R & R<=(findColorPtr->channel1()+m_RSensibility)) )
                {
-                  B = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3];
-                  G = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3+1];
-                  R = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3+2];
-                  
-                  if( ((findColorPtr->channel3()-m_BSensibility)<=B & B<=(findColorPtr->channel3()+m_BSensibility)) & 
-                     ((findColorPtr->channel2()-m_GSensibility)<=G & G<=(findColorPtr->channel2()+m_GSensibility)) &
-                  ((findColorPtr->channel1()-m_RSensibility)<=R & R<=(findColorPtr->channel1()+m_RSensibility)) )
-                  {
-                     ((uchar*)(temp->imageData + temp->widthStep*y))[x]=255;
-                  }
+                  ((uchar*)(image->getImage()->imageData + image->getImage()->widthStep*y))[x]=255;
                }
-            } 
-         }
-         else
-         {
-            throw new GeneralException("OPENCV - Error to find colors: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
-         }         
-         out[count] = ObjectRef(new CvImage(temp));
-      }
-      
+            }
+         }                 
+         out[count] = ObjectRef(image);
+      }      
       NO_ORDER_NODE_SPEEDUP(CvFindColorRGB)
    };
 }//namespace FD

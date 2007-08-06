@@ -57,6 +57,8 @@ namespace FD {
          
          //Handle
          CvImage* image;   
+         
+         //Should not be released or modified
          IplImage* frame;
          bool Bool = true;
          

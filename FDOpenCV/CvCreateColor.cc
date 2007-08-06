@@ -60,8 +60,8 @@ namespace FD {
       void calculate(int output_id, int count, Buffer &out)
       {   
          //Handle
-         RCPtr<CvColor> color(new CvColor(m_channel1, m_channel2, m_channel3));  
-         out[count] = color;
+         CvColor* color = new CvColor(m_channel1, m_channel2, m_channel3);  
+         out[count] = ObjectRef(color);
       }
       
       NO_ORDER_NODE_SPEEDUP(CvCreateColor)

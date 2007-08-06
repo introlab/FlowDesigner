@@ -169,7 +169,7 @@ namespace FD {
          {
             throw new GeneralException("OPENCV - Error to find contours: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }         
-         
+         delete image;
          CvContours* Contours = new CvContours();
          Contours->setNbContours(nbContours);
          Contours->setContours(contours);

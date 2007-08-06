@@ -65,21 +65,18 @@ namespace FD {
       }
       
       void calculate(int output_id, int count, Buffer &out)
-      {           
+      {     
          //Read the inputs         
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
          RCPtr<CvColor> colorMinPtr = getInput(m_colorMinID,count);
          RCPtr<CvColor> colorMaxPtr = getInput(m_colorMaxID,count);
          
-         IplImage* temp;
+         CvImage* image = new CvImage( cvGetSize(imagePtr->getImage()), IPL_DEPTH_8U, 1 ); 
          IplImage* imageHSV; 
          
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent );
-         __BEGIN__;          
-         
-         OPENCV_CALL( temp = cvCreateImage( cvGetSize(imagePtr->getImage()), IPL_DEPTH_8U, 1) ); 
-         OPENCV_CALL(cvZero(temp));
+         __BEGIN__;     
          OPENCV_CALL( imageHSV = cvCreateImage( cvGetSize(imagePtr->getImage()), IPL_DEPTH_8U, 3));
          OPENCV_CALL( cvCvtColor( imagePtr->getImage(), imageHSV, CV_BGR2HSV )); 
          
@@ -115,16 +112,12 @@ namespace FD {
                && ( V <= colorMaxPtr->channel3() ) && ( V >= colorMinPtr->channel3() ) )
                
                {
-                  ((uchar*)(temp->imageData + temp->widthStep*y))[x]=255;
-               }
-               else    
-               {
-               }
+                  ((uchar*)(image->getImage()->imageData + image->getImage()->widthStep*y))[x]=255;
+               }               
             }
          } 
          cvReleaseImage( &imageHSV );
-         
-         out[count] = ObjectRef(new CvImage(temp));
+         out[count] = ObjectRef(image);
       }
       
       NO_ORDER_NODE_SPEEDUP(CvFindColorHSV)
