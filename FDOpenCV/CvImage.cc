@@ -13,15 +13,22 @@ namespace FD {
    
    CvImage::CvImage(const IplImage* image)
    {
-      int status = cvGetErrMode();
-      cvSetErrMode( CV_ErrModeSilent ); 
-      __BEGIN__;
-      OPENCV_CALL(m_image = cvCloneImage(image));
-      __END__;
-      cvSetErrMode( status );
-      if( cvGetErrStatus() != CV_StsOk  )
+      if(image != NULL)
       {
-         throw new GeneralException("OPENCV - Error to clone the image " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+         int status = cvGetErrMode();
+         cvSetErrMode( CV_ErrModeSilent ); 
+         __BEGIN__;
+         OPENCV_CALL(m_image = cvCloneImage(image));
+         __END__;
+         cvSetErrMode( status );
+         if( cvGetErrStatus() != CV_StsOk  )
+         {
+            throw new GeneralException("OPENCV - Error to clone the image " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
+         }
+      }
+      else
+      {
+         m_image = 0;
       }
    } 
    
@@ -41,7 +48,10 @@ namespace FD {
    
 	CvImage::~CvImage()
 	{
-      cvReleaseImage( &m_image );
+      if(m_image != NULL)
+      {
+         cvReleaseImage( &m_image );
+      }
 	}
    
 	CvImage::CvImage(const std::string &path, const int &iscolor)
@@ -56,7 +66,7 @@ namespace FD {
       {
          throw new GeneralException("OPENCV - Error to load the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
       }
-      if(m_image == 0)
+      if(m_image == NULL)
       {
          throw new GeneralException("OPENCV - Error to load the image: it's NULL check your path" ,__FILE__,__LINE__);
       }
