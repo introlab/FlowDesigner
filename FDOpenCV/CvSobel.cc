@@ -71,6 +71,11 @@ namespace FD {
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count); 
          
          //Handle
+         if(imagePtr->getImage() == NULL)
+         {
+            out[count] = ObjectRef(imagePtr);
+            return;
+         }
          CvImage* image = imagePtr->gray();
          
          int status = cvGetErrMode();

@@ -79,6 +79,11 @@ namespace FD {
       {
          //Read the inputs
          RCPtr<CvImage> imagePtr = getInput(m_imageInID,count);
+         if(imagePtr->getImage() == NULL)
+         {
+            out[count] = ObjectRef(imagePtr);
+            return;
+         }
          CvImage* imageGRAY = imagePtr->gray(); 
          CvImage* image =  new CvImage(cvSize(imagePtr->getImage()->width, imagePtr->getImage()->height)
             , IPL_DEPTH_8U, 1);
