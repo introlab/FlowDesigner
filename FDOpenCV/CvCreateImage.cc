@@ -35,6 +35,11 @@ namespace FD {
    * @parameter_value 1
    * @parameter_description Number of channels per element(pixel). Can be 1, 2, 3 or 4
    *
+   * @parameter_name VALUE
+   * @parameter_type float
+   * @parameter_value 0
+   * @parameter_description Sets every element of image to given value
+   *
    * @output_name IMAGE
    * @output_description The result image
    * @output_type	CvImage
@@ -50,6 +55,7 @@ namespace FD {
       int m_height;
       string m_depth;
       int m_channels;
+      float m_value;
       //map of the depth
       map<string,int> m_depthMap;
       
@@ -66,6 +72,7 @@ namespace FD {
          m_height = dereference_cast<int>(parameters.get("HEIGHT"));
          m_depth = object_cast<String>(parameters.get("DEPTH")); 
          m_channels = dereference_cast<int>(parameters.get("CHANNELS"));
+         m_value = dereference_cast<float>(parameters.get("VALUE"));
          
          //Initialize lineType map
          m_depthMap["IPL_DEPTH_8U"] = IPL_DEPTH_8U;
@@ -86,8 +93,8 @@ namespace FD {
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
-         OPENCV_CALL(image = new CvImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels ));
-         OPENCV_CALL(cvZero(image->getImage()));
+         OPENCV_CALL(temp = cvCreateImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels ));
+         OPENCV_CALL(cvSet(temp, cvScalarAll(((double)m_value)) ));
          __END__;
          cvSetErrMode( status );
          
