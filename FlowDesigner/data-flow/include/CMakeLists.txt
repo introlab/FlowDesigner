@@ -73,6 +73,7 @@ SET(DATAFLOW_HEADERS
 	BinaryOR.h
 	Power.h
 	UINote.h
+      JitterMatrix.h
 )
 
 INSTALL(FILES ${DATAFLOW_HEADERS} DESTINATION include/flowdesigner)

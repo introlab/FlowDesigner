@@ -74,7 +74,8 @@ include_HEADERS = Array.h \
 	BinaryAND.h \
 	BinaryOR.h \
 	Power.h \
-	UINote.h
+	UINote.h \
+      JitterMatrix.h \
 
 noinst_HEADERS = \
 	Pack.h \

@@ -21,6 +21,7 @@ SET(DATATYPES_SRCS
 	stream_wrap.cc
 	variables.cc
 	CompositeType.cc
+        JitterMatrix.cc
 )	
 
 SET(NODES_SRCS

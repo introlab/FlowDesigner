@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in. -*-Makefile-*-
 
-# $Id: Makefile.am,v 1.136 2006/02/21 16:05:23 maestro Exp $
+# $Id: Makefile.am,v 1.137 2007/06/27 13:24:09 maestro Exp $
 
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
@@ -150,7 +150,8 @@ libflow_la_SOURCES = Node.cc \
 	Power.cc \
 	UINote.cc \
 	wrapper.cc \
-	cwrapper.cc
+	cwrapper.cc \
+      JitterMatrix.cc
 
 install-data-local:
 	mkdir -p $(datadir)
