@@ -31,7 +31,7 @@ namespace FD
         //Creating graphics scene
         QGraphicsScene* scene = new QGraphicsScene(this);
         scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-        scene->setSceneRect(-400, -400, 400, 400);
+        //scene->setSceneRect(-400, -400, 400, 400);
         setScene(scene);
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
@@ -78,12 +78,12 @@ namespace FD
 */
 
             //UPDATE SCENE RECT
-            QRectF bbox = scene->itemsBoundingRect();
+            /*QRectF bbox = scene->itemsBoundingRect();
             qreal x1,y1,x2,y2;
             bbox.getCoords(&x1,&y1,&x2,&y2);
             bbox.setCoords(x1 - 100, y1 - 100, x2 + 100, y2 + 100);
             scene->setSceneRect(bbox);
-
+*/
 /*
         }
 		else {
@@ -139,11 +139,12 @@ namespace FD
         //QtNode* newQtNode = new QtNode(this);
         //scene()->addItem(newQtNode);
         //newQtNode->setPos(mapToScene(event->pos()));
+        
     }
 
     void QtNetwork::wheelEvent(QWheelEvent *event)
-    {
-        scaleView(pow((double)2, -event->delta() / 240.0));
+    {                
+        scaleView(pow((double)2, -event->delta() / 240.0)); 
     }
 
     // void QtNetwork::drawBackground(QPainter *painter, const QRectF &rect)
@@ -191,7 +192,6 @@ namespace FD
             return;
 
         scale(scaleFactor, scaleFactor);
-        scene()->setSceneRect(QRectF());
     }
 
          //Drag & Drop
@@ -287,8 +287,7 @@ namespace FD
 		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);
         scene()->addItem(qtnode);
-        m_nodeMap.insert(make_pair(node,qtnode));
-        scene()->setSceneRect(QRectF());                
+        m_nodeMap.insert(make_pair(node,qtnode));              
         return qtnode;
 	}
 	
