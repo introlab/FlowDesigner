@@ -182,15 +182,19 @@ void UIDocument::load()
    string docStr="<?xml";
    while(1)
    {
-      char buff[1025];
-      docFile.read(buff, 1024);
-      buff[1024]=0;
+      //char buff[1025];
+      //docFile.read(buff, 1024);
+      //buff[1024]=0;
+      string buff;
+      getline( docFile, buff );
       if (docFile.fail())
       {
-	 docStr.append(buff, docFile.gcount());
+	 //docStr.append(buff, docFile.gcount());
+	 docStr.append(buff.c_str(), docFile.gcount());
 	 break; 
       }
-      docStr.append(buff, 1024);
+      //docStr.append(buff, 1024);
+      docStr.append(buff.c_str());
    }
    cerr<<"loading XML document from memory"<<endl;
    loadFromMemory(docStr.c_str(), docStr.size());
