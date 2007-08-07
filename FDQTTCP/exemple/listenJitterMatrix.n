@@ -1,0 +1,30 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node_LOOP0_1" type="LOOP0" x="-119.000000" y="87.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="IMAGEOUT" node="node_LOOP0_1" terminal="IMAGEOUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.9.1"/>
+  </Network>
+  <Network type="iterator" name="LOOP0">
+    <Node name="node_QtListenJitterMatrix_1" type="QtListenJitterMatrix" x="-263.000000" y="90.000000">
+      <Parameter name="HOSTADDRESS" type="string" value="127.0.0.1" description="Host address"/>
+      <Parameter name="PORT" type="int" value="7000" description="Port"/>
+    </Node>
+    <Node name="node_Constant_1" type="Constant" x="-140.000000" y="27.000000">
+      <Parameter name="VALUE" type="bool" value="true" description="The value"/>
+    </Node>
+    <Node name="node_CvJitterMatrixToImage_1" type="CvJitterMatrixToImage" x="59.000000" y="83.000000"/>
+    <Node name="node_CvShowImage_1" type="CvShowImage" x="221.000000" y="78.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="BaseImage" description="Window title."/>
+      <Parameter name="FLAGS" type="int" value="1" description="If it is set to 1, window size is automatically adjusted to fit the displayed image, while user can not change the window size manually.&#10;   "/>
+    </Node>
+    <Link from="node_CvJitterMatrixToImage_1" output="IMAGE" to="node_CvShowImage_1" input="IMAGEIN"/>
+    <Link from="node_QtListenJitterMatrix_1" output="JITTERMATRIX" to="node_CvJitterMatrixToImage_1" input="JITTERMATRIX"/>
+    <NetCondition name="CONDITION" node="node_Constant_1" terminal="VALUE"/>
+    <NetOutput name="IMAGEOUT" node="node_CvShowImage_1" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.9.1"/>
+  </Network>
+</Document>

@@ -1,0 +1,27 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node_LOOP0_1" type="LOOP0" x="-156.000000" y="52.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="STRING" node="node_LOOP0_1" terminal="STRING" object_type="" description="Pass through"/>
+    <NetOutput name="NEW" node="node_LOOP0_1" terminal="NEW" object_type="" description="Pass through"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.9.1"/>
+  </Network>
+  <Network type="iterator" name="LOOP0">
+    <Node name="node_Constant_1" type="Constant" x="-383.000000" y="-37.000000">
+      <Parameter name="VALUE" type="bool" value="true" description="The value"/>
+    </Node>
+    <Node name="node_QtListenString_1" type="QtListenString" x="-270.000000" y="98.000000">
+      <Parameter name="HOSTADDRESS" type="string" value="127.0.0.1" description="Host address"/>
+      <Parameter name="PORT" type="int" value="7000" description="Port"/>
+    </Node>
+    <Link from="node_QtListenString_1" output="STRING" to="node_TextProbe_1" input="INPUT"/>
+    <Link from="node_QtListenString_1" output="NEW" to="node_TextProbe_2" input="INPUT"/>
+    <NetOutput name="STRING" node="node_QtListenString_1" terminal="STRING" object_type="any" description="Pass through"/>
+    <NetOutput name="NEW" node="node_QtListenString_1" terminal="NEW" object_type="any" description="Pass through"/>
+    <NetCondition name="CONDITION" node="node_Constant_1" terminal="VALUE"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.9.1"/>
+  </Network>
+</Document>
