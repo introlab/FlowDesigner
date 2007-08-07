@@ -191,6 +191,7 @@ namespace FD
             return;
 
         scale(scaleFactor, scaleFactor);
+        scene()->setSceneRect(QRectF());
     }
 
          //Drag & Drop
@@ -287,6 +288,7 @@ namespace FD
 		QtNode *qtnode = new QtNode(this,node);
         scene()->addItem(qtnode);
         m_nodeMap.insert(make_pair(node,qtnode));
+        scene()->setSceneRect(QRectF());                
         return qtnode;
 	}
 	
