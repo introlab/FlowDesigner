@@ -88,13 +88,11 @@ namespace FD {
       void calculate(int output_id, int count, Buffer &out)
       {       
          //Handle of the inputs
-         CvImage* image;
-
+         CvImage* image = new CvImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels );
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
-         OPENCV_CALL(temp = cvCreateImage( cvSize(m_width,m_height) , m_depthMap[m_depth], m_channels ));
-         OPENCV_CALL(cvSet(temp, cvScalarAll(((double)m_value)) ));
+         OPENCV_CALL(cvSet(image, cvScalarAll(((double)m_value)) ));
          __END__;
          cvSetErrMode( status );
          
