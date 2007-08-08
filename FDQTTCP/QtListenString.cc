@@ -109,7 +109,7 @@ namespace FD {
          else
          {
             cout << "QtListenString -> ERROR to listen: ";
-            cout<< QStringToString(m_tcpServer.errorString()) << endl;
+            cout << m_tcpServer.errorString().toStdString() << endl;
          }
          return false;
       }
@@ -120,13 +120,7 @@ namespace FD {
          QByteArray read = m_tcpServerConnection->readAll();  
          cout <<  string( read.data(), read.size()) << endl;
          m_string = string( read.data(), read.size());
-      }  
-      
-      const string QStringToString(const QString qstring)
-      {
-         return std::string( (char*)(qstring.data()), qstring.size() * sizeof(QChar));   
       }
-      
    };
 }//namespace FD
 

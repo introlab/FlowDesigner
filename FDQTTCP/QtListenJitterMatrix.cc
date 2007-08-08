@@ -99,7 +99,7 @@ namespace FD {
          else
          {
             cout << "QtListenJitterMatrix -> ERROR to listen: ";
-            cout<< QStringToString(m_tcpServer.errorString()) << endl;
+            cout<< m_tcpServer.errorString().toStdString() << endl;
          }
          return false;
       }
@@ -247,13 +247,7 @@ namespace FD {
 
          //cout << "QtListenJitterMatrix -> Read JMTX SUCCESS" << endl;
          
-      }
-      
-      const string QStringToString(const QString qstring)
-      {            
-         return std::string( (char*)(qstring.data()), qstring.size() * sizeof(QChar));   
-      }
-      
+      }      
    };
 }//namespace FD
 

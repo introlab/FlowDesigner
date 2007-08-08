@@ -88,7 +88,7 @@ namespace FD {
             else
             {
                cout << "QtSendJitterMatrix -> Error of connection : ";
-               cout << QStringToString(m_tcpClient.errorString()) << endl;
+               cout << m_tcpClient.errorString().toStdString() << endl;
                (*(outputs[m_boolWriteID].buffer))[count] = ObjectRef(Bool::alloc(false));
                return;
             }
@@ -160,16 +160,8 @@ namespace FD {
                cout << "WriteJitterMatrix -> ERROR"<< endl;
                return;
             }
-            
          }         
-         
-         (*(outputs[m_boolWriteID].buffer))[count] = ObjectRef(Bool::alloc(true));     
-         
-      } 
-      
-      const string QStringToString(const QString qstring)
-      {
-         return std::string( (char*)(qstring.data()), qstring.size() * sizeof(QChar));   
+         (*(outputs[m_boolWriteID].buffer))[count] = ObjectRef(Bool::alloc(true));   
       }
    };
 }//namespace FD
