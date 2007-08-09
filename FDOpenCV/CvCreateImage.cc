@@ -92,12 +92,12 @@ namespace FD {
          int status = cvGetErrMode();
          cvSetErrMode( CV_ErrModeSilent ); 
          __BEGIN__;
-         OPENCV_CALL(cvSet(image, cvScalarAll(((double)m_value)) ));
+         OPENCV_CALL(cvSet(image->getImage(), cvScalarAll( (double)m_value )));
          __END__;
          cvSetErrMode( status );
          
          if( cvGetErrStatus() != CV_StsOk  )
-         {
+         {        
             throw new GeneralException("OPENCV - Error to create the image: " +  CCHAR(cvErrorStr( cvGetErrStatus() )),__FILE__,__LINE__);
          }        
          
