@@ -43,8 +43,6 @@ SET(FDOPENCV_SRCS
    CvSobel.cc 
    CvThreshold.cc 
    CvCreateStructuringElement.cc
-   CvCvtPixToPlane.cc 
-   CvCvtPlaneToPix.cc
    CvJitterMatrixToImage.cc  
    CvImageToJitterMatrix.cc
 )	
