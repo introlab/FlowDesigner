@@ -28,7 +28,7 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
    vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
    for (unsigned int i=0;i<tmp.size();i++)
    {
-      ParameterText *newText = new ParameterText;
+      ParameterText *newText = new ParameterText;      
       newText->name = tmp[i]->name;
       //FIXME: This is just a temporary kludge
       if (tmp[i]->type == "any")
@@ -38,6 +38,10 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
       newText->value = tmp[i]->value;
       newText->description = tmp[i]->description;
       textParams.insert(textParams.end(), newText);
+      
+      ParameterText *newText1 = new ParameterText(*newText);
+      newText1->type = tmp[i]->type;
+      defaultTextParams.insert(defaultTextParams.end(), newText1);
    }
 }
 
@@ -45,6 +49,8 @@ UINodeParameters::~UINodeParameters()
 {
    for (unsigned int i=0;i<textParams.size();i++)
       delete textParams[i];
+   for (unsigned int i=0;i<defaultTextParams.size();i++)
+      delete defaultTextParams[i];
 }
 
 void UINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)

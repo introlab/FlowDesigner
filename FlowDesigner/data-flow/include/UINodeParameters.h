@@ -28,6 +28,7 @@ class UINodeParameters
 {
    protected:
       std::vector<ParameterText *> textParams;
+      std::vector<ParameterText *> defaultTextParams;
       std::string comments;
       UINode *node;
 
@@ -57,6 +58,7 @@ class UINodeParameters
       void setComments(const std::string &_comments) {comments = _comments;}
 
       std::vector<ParameterText *> &get_textParams() {return textParams;}   
+      const std::vector<ParameterText *> &get_defaultTextParams() {return defaultTextParams;}
       UINode *getUINode() {return node;}
 
 };
