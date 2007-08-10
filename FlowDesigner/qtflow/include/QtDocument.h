@@ -21,39 +21,41 @@ namespace FD
 	
     class QtDocument : public QDialog
     {         
-    
+        
         Q_OBJECT;
-
+        
         public:
 		
-            QtDocument(QWidget *parent, const std::string &name);
-            QtDocument(QWidget *parent, UIDocumentController *doc);
+        QtDocument(QWidget *parent, const std::string &name);
+        QtDocument(QWidget *parent, UIDocumentController *doc);
 		
-            //QtDocument(QWidget *parent, const std::string &name = "Untitled");
-                          
-            void open(const std::string &file);       
-
-		    void save(const std::string &file);
-			
-			QtNetwork* addNetwork(UINetworkController* net);
-			
-    
+        //QtDocument(QWidget *parent, const std::string &name = "Untitled");
+        
+        void open(const std::string &file);       
+        
+        void save(const std::string &file);
+        
+        QtNetwork* addNetwork(UINetworkController* net);   
+        void addSubnetNetwork(QString name);
+        void addIteratorNetwork(QString name);
+        
+        
 		public slots:
-			
-			void onRunDocument();
-	
-    
+        
+        void onRunDocument();
+        
+        
         protected:
-            QVBoxLayout *m_vboxLayout;
-            std::string m_name;
-            QTabWidget *m_tabWidget;         
-			QButtonGroup *m_buttonGroup;
-			
-            UIDocumentController *m_doc;
-                             
-            std::vector<QtNetwork*> m_networks;
-
-    
+        QVBoxLayout *m_vboxLayout;
+        std::string m_name;
+        QTabWidget *m_tabWidget;         
+        QButtonGroup *m_buttonGroup;
+        
+        UIDocumentController *m_doc;
+        
+        std::vector<QtNetwork*> m_networks;
+        
+        
     };
 } //namespace FD  
 #endif

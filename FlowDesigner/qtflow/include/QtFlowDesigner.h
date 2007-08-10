@@ -23,63 +23,65 @@
 
 namespace FD
 {
-
-//forward declaration
-class QtNodeTreeView;
-
-class QtFlowDesigner : public QMainWindow
-{
-    Q_OBJECT
     
-    public:
+    //forward declaration
+    class QtNodeTreeView;
+    
+    class QtFlowDesigner : public QMainWindow
+    {
+        Q_OBJECT
         
-    QtFlowDesigner (QWidget* parent = NULL);
-      
-    virtual ~QtFlowDesigner();
-    
-    void newNetwork(const std::string name);
-    
-    
-    void newDocument(const std::string &name);
-    void loadDocument(const std::string &path);      
-    
-    public slots:
+        public:
+        
+        QtFlowDesigner (QWidget* parent = NULL);
+        
+        virtual ~QtFlowDesigner();
+        
+        void newNetwork(const std::string name);
+        
+        
+        void newDocument(const std::string &name);
+        void loadDocument(const std::string &path);      
+        
+        public slots:
         void newNetworkClicked();
+        void newIteratorNetworkClicked();
         void openDocumentClicked();               
-	void saveDocumentClicked(); 
-
-	protected:
-
-     void setupUi();
-     void setupUiv2();
-     void retranslateUi();
-
-
-    QAction *actionLoad_Document;
-	QAction *actionSave_Document;
-    QAction *actionNewNetwork;
-    QWidget *centralwidget;
-    QHBoxLayout *hboxLayout;
-    QWidget *verticalLayout;
-    QVBoxLayout *vboxLayout;
-    QVBoxLayout *vboxMainLayout;   
-    QWidget *horizontalLayout_2;
-    QHBoxLayout *hboxLayout1;
-    QTreeView *treeView;
-    QTabWidget *tabWidget;
-    QWidget *tab;
-    QWidget *tab_2;
-    QMenuBar *menubar;
-    QMenu *menu_About;
-    QMenu *menuFile;
-    QMenu *menuPreferences;
-    QMenu *menuNetwork;
-    QStatusBar *statusbar;
-    QtNodeTreeView *m_treeView;
-    QTextEdit *m_textEdit;
-    QWorkspace *m_workspace;      
-};
-
+        void saveDocumentClicked(); 
+        
+        protected:
+        
+        void setupUi();
+        void setupUiv2();
+        void retranslateUi();
+        
+        
+        QAction *actionLoad_Document;
+        QAction *actionSave_Document;
+        QAction *actionNewNetwork;
+        QAction *actionNewIteratorNetwork;
+        QWidget *centralwidget;
+        QHBoxLayout *hboxLayout;
+        QWidget *verticalLayout;
+        QVBoxLayout *vboxLayout;
+        QVBoxLayout *vboxMainLayout;   
+        QWidget *horizontalLayout_2;
+        QHBoxLayout *hboxLayout1;
+        QTreeView *treeView;
+        QTabWidget *tabWidget;
+        QWidget *tab;
+        QWidget *tab_2;
+        QMenuBar *menubar;
+        QMenu *menu_About;
+        QMenu *menuFile;
+        QMenu *menuPreferences;
+        QMenu *menuNetwork;
+        QStatusBar *statusbar;
+        QtNodeTreeView *m_treeView;
+        QTextEdit *m_textEdit;
+        QWorkspace *m_workspace;      
+    };
+    
 }//namespace FD
 #endif
 

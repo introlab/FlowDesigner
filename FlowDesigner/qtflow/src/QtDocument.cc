@@ -11,54 +11,51 @@
 namespace FD
 {
     using namespace std;
-  
+    
     QtDocument::QtDocument(QWidget *parent, const std::string &name)
     : QDialog(parent), m_doc(NULL), m_name(name)         
     {
         cerr<<"QtDocument created"<<endl;      
-   
+        
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
         m_vboxLayout->setMargin(0);		
         m_vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
         
-      //Create button group
-      m_buttonGroup = new QButtonGroup(this);
-      
-      
-      
-      //m_vboxLayout->insertLayout(0,m_buttonGroup);
-      
-      //Create run button
-      QPushButton *runButton = new QPushButton("RUN", this);	
-      m_buttonGroup->addButton(runButton);
-      
-      //connect signal
-      connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
+        //Create button group
+        m_buttonGroup = new QButtonGroup(this);
+        
+        
+        
+        //m_vboxLayout->insertLayout(0,m_buttonGroup);
+        
+        //Create run button
+        QPushButton *runButton = new QPushButton("RUN", this);	
+        m_buttonGroup->addButton(runButton);
+        
+        //connect signal
+        connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
 		
 		//create tab widget
         m_tabWidget = new QTabWidget(NULL);
         m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
         
-         m_vboxLayout->addWidget(runButton);		
-         m_vboxLayout->addWidget(m_tabWidget);
-         
-         setLayout(m_vboxLayout);
- 
+        m_vboxLayout->addWidget(runButton);		
+        m_vboxLayout->addWidget(m_tabWidget);
+        
+        setLayout(m_vboxLayout);
+        
         resize(800,600);
-  
+        
         open(name);
- 
+        
     }      
-
+    
 	QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)
-		: QDialog(parent), m_doc(doc)
+    : QDialog(parent), m_doc(doc)
 	{
 		cerr<<"QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)"<<__FILE__<<__LINE__<<endl;
-	
-	
-	
-	
+        
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
         m_vboxLayout->setMargin(0);		
@@ -86,9 +83,9 @@ namespace FD
 		m_vboxLayout->addWidget(m_tabWidget);
 		
 		setLayout(m_vboxLayout);
- 
+        
         resize(800,600);	
-	
+        
 		
 		if (m_doc == NULL)
 		{
@@ -100,29 +97,34 @@ namespace FD
 		{
 			//OPEN ALREADY EXISTING DOCUMENT
 		}
-	
-	
-	
+        
 	}
-	
-	
+    
+    void QtDocument::addSubnetNetwork(QString name)
+    {
+        m_doc->addNetwork(name.toStdString(),UINetwork::subnet);
+    }
+    void QtDocument::addIteratorNetwork(QString name)
+    {
+        m_doc->addNetwork(name.toStdString(),UINetwork::iterator);
+    }
 	
     void QtDocument::open(const std::string &fname) {
         
         int pos = fname.rfind("/");
-
+        
         string doc_name;
-
+        
         if (pos != string::npos) {
             doc_name = fname.substr(pos + 1,fname.size() - (pos  +1));
         }
         else {
             doc_name = fname;
         }
-
+        
         m_doc = new UIDocumentController(doc_name,this);
         m_doc->setFullPath(fname);
-
+        
         try {
             m_doc->load();
             m_doc->updateView();
@@ -133,7 +135,7 @@ namespace FD
             //doc->less_print (except.str());
         } catch (...) {
             //doc->less_print ("Unknown exception caught while loading document");
-                     
+            
         }
         m_doc->resetModified();
         
@@ -150,7 +152,7 @@ namespace FD
                 m_tabWidget->addTab(m_networks.back(), nets[i]->getName().c_str());
             }            
         }
-      */
+        */
     }
     
 	void QtDocument::save(const std::string &file)
@@ -166,7 +168,7 @@ namespace FD
 	void QtDocument::onRunDocument()
 	{
 		cerr<<"Run clicked..."<<endl;
-				
+        
 		if (m_doc)
 		{
 			ParameterSet params;
