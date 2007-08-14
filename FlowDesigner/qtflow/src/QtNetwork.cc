@@ -98,7 +98,11 @@ namespace FD
         
         scale(1.0, 1.0);
         setMinimumSize(400, 400);
-        setWindowTitle("Essai 1");
+        
+    }
+    const std::string QtNetwork::getName() const
+    {
+        return m_uiNetwork->getName();
     }
     
     void QtNetwork::keyPressEvent(QKeyEvent *event)
@@ -160,15 +164,23 @@ namespace FD
     
     void QtNetwork::menuTriggered(QAction* action)
     {
-        cerr<<"QtNetwork::menuTriggered()"<<endl;
-        QPointF pos = mapToScene(m_contextMenuEvent->pos());
-        UINode* node = m_uiNetwork->newNode(m_uiNetwork
-        , action->text().toStdString()
-        , action->text().toStdString()
-        , pos.x()
-        , pos.y()
-        , true);
-    m_uiNetwork->addNode(node);    }
+        std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
+        for( unsigned int i=0 ; i< network.size(); i++ )
+        {
+            if( network[i]->getName() == action->text().toStdString())
+            {
+                QPointF pos = mapToScene(m_contextMenuEvent->pos());
+                UINode* node = m_uiNetwork->newNode(network[i]
+                , action->text().toStdString()
+                , action->text().toStdString()
+                , pos.x()
+                , pos.y()
+                , true);
+                m_uiNetwork->addNode(node);
+                 
+            }
+        }
+    }
     
     void QtNetwork::wheelEvent(QWheelEvent *event)
     {                

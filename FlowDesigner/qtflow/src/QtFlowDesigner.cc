@@ -5,6 +5,7 @@
 #include "QtNetwork.h"
 #include "QtNodeTreeView.h"
 #include <QFileDialog>
+#include <QMessageBox>
 #include "UINetworkController.h"
 #include <iostream>
 
@@ -346,8 +347,8 @@ namespace FD
         else
         {
             bool ok;
-            QString name = QInputDialog::getText ( NULL,QString ( "New Network" ),
-            QString ( "Network Name : " ),QLineEdit::Normal, "NAME",&ok );         
+            QString name = QInputDialog::getText ( NULL,QString ( "New network" ),
+            QString ( "Network name : " ),QLineEdit::Normal, "NAME",&ok );         
             doc->addSubnetNetwork(name);
         }
     }
@@ -364,10 +365,24 @@ namespace FD
         {
             bool ok;
             QString name = QInputDialog::getText ( NULL,QString ( "New Iterator Network" ),
-            QString ( "Network Name : " ),QLineEdit::Normal, "NAME",&ok );         
+            QString ( "Network Name : " ),QLineEdit::Normal, "NAME",&ok );  
+            
+            for(unsigned int i=0; i<doc->getNetworks().size(); i++)
+            {
+                if(doc->getNetworks()[i]->getName() == name.toStdString())
+                {
+                    QMessageBox::critical( this
+                    , tr("New Iterator Network ERROR")
+                    , tr("This name is already in used"));
+                    return;
+                }
+                
+            } 
             doc->addIteratorNetwork(name);
         }
-    }   
+        
+    }
+    
     
     void QtFlowDesigner::openDocumentClicked()
     {
@@ -393,43 +408,43 @@ namespace FD
             m_workspace->tile();
         }         
     }
-	
-	
-	void QtFlowDesigner::saveDocumentClicked()
+    
+    
+    void QtFlowDesigner::saveDocumentClicked()
     {
         cerr<<"Save document clicked"<<endl;
         
-		QtDocument *activeDocument = dynamic_cast<QtDocument*>(m_workspace->activeWindow());
-		
-		if (activeDocument)
-		{
-			cerr<<"ACTIVE DOCUMENT FOUND"<<endl;
-			QFileDialog dialog(this);
+        QtDocument *activeDocument = dynamic_cast<QtDocument*>(m_workspace->activeWindow());
+        
+        if (activeDocument)
+        {
+            cerr<<"ACTIVE DOCUMENT FOUND"<<endl;
+            QFileDialog dialog(this);
             dialog.setFileMode(QFileDialog::AnyFile);
-			
-			QStringList filters;
+            
+            QStringList filters;
             filters << "FlowDesigner Document (*.n)"
             << "Any files (*)";
             
             dialog.setFilters(filters); 
-			dialog.setAcceptMode(QFileDialog::AcceptSave);
-			if (dialog.exec())
-			{
-				QStringList fileNames = dialog.selectedFiles();
+            dialog.setAcceptMode(QFileDialog::AcceptSave);
+            if (dialog.exec())
+            {
+                QStringList fileNames = dialog.selectedFiles();
                 
-				for (QStringList::iterator iter = fileNames.begin();
+                for (QStringList::iterator iter = fileNames.begin();
                 iter != fileNames.end(); iter++)
-				{
-					activeDocument->save((*iter).toStdString());                                 
-				}
-			}
+                {
+                    activeDocument->save((*iter).toStdString());                                 
+                }
+            }
+        }
+        else
+        {
+            cerr<<"ACTIVE DOCUMENT NOT FOUND"<<endl;
 		}
-		else
-		{
-			cerr<<"ACTIVE DOCUMENT NOT FOUND"<<endl;
-		}
-		
-		
+        
+        
     }
     
     void QtFlowDesigner::loadDocument(const std::string &path)
@@ -439,7 +454,7 @@ namespace FD
         window->setWindowTitle("test");
         m_workspace->setActiveWindow(window);
         window->show();            
-		
+        
     }      
     
 }//namespace FD
