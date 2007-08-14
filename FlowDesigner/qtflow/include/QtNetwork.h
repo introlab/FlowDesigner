@@ -34,7 +34,7 @@ namespace FD
         QtNode* addNode(UINode* node);
         
         QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILink* link);
-        
+        const std::string getName() const;
         protected:
         
         void mouseMoveEvent ( QMouseEvent * e );
@@ -43,6 +43,7 @@ namespace FD
         void contextMenuEvent(QContextMenuEvent *event);
         QContextMenuEvent *m_contextMenuEvent;
         QMenu* menu;
+
         // void mouseReleaseEvent(QMouseEvent *event);
         // void drawBackground(QPainter *painter, const QRectF &rect);
         
