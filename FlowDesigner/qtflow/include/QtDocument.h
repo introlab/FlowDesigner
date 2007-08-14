@@ -38,7 +38,7 @@ namespace FD
         QtNetwork* addNetwork(UINetworkController* net);   
         void addSubnetNetwork(QString name);
         void addIteratorNetwork(QString name);
-        
+        std::vector<QtNetwork*> getNetworks() { return m_networks; }
         
 		public slots:
         
