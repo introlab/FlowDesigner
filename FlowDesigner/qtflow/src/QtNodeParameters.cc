@@ -300,6 +300,7 @@ namespace FD {
         }
     }
     
+    //Set the parameters view with parameters give 
     void QtNodeParameters::setView(const std::vector<ParameterText *> &textParams)
     {
         cerr<<"QtNodeParameters::setView()"<<endl;
