@@ -17,6 +17,8 @@
 #include "QtTerminal.h"
 #include "UINetworkController.h"
 #include "UINodeController.h"
+#include "UINodeRepository.h"
+#include "UIDocument.h"
 #include <iostream>
 #include <sstream>
 
@@ -136,11 +138,37 @@ namespace FD
     
     void QtNetwork::contextMenuEvent(QContextMenuEvent *event)
     {
+        cerr<<"QtNetwork::contextMenuEvent(QContextMenuEvent *event)"<<endl;        
+        m_contextMenuEvent = event;
+        std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
+        menu = new QMenu(this);
+        menu->setTitle(tr("SubNetwork")); 
+        for( unsigned int i=0; i < network.size(); i++ )            
+        {
+            menu->addAction( new QAction(network[i]->getName().c_str(), this) );
+            
+        }
+        
+        connect(menu, SIGNAL(triggered(QAction*)) ,this, SLOT( menuTriggered(QAction*) ) ); 
+        
+        menu->exec(event->globalPos());
+        
         //QtNode* newQtNode = new QtNode(this);
         //scene()->addItem(newQtNode);
         //newQtNode->setPos(mapToScene(event->pos()));
-        
     }
+    
+    void QtNetwork::menuTriggered(QAction* action)
+    {
+        cerr<<"QtNetwork::menuTriggered()"<<endl;
+        QPointF pos = mapToScene(m_contextMenuEvent->pos());
+        UINode* node = m_uiNetwork->newNode(m_uiNetwork
+        , action->text().toStdString()
+        , action->text().toStdString()
+        , pos.x()
+        , pos.y()
+        , true);
+    m_uiNetwork->addNode(node);    }
     
     void QtNetwork::wheelEvent(QWheelEvent *event)
     {                
