@@ -44,6 +44,7 @@ namespace FD
 		: UINode(_net,_name,_type,x,y,false), m_QtNode(NULL)
 	{
 		cerr<<"UINodeController::UINodeController created"<<endl;
+        net->getDocument()->updateNetInfo(net);
 		description = net->getDocument()->getDescription(type);
 		
                 //Updating information from terminals
