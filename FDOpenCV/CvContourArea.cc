@@ -18,11 +18,11 @@ namespace FD {
    * @input_name CONTOURS
    * @input_description The contours to handle
    * @input_type CvContours
-   * 
+   *
    * @output_name AREA
    * @output_description the contour area
-   * @output_type	float
-   * 
+   * @output_type float
+   *
    END*/
    
    class CvContourArea : public BufferedNode {

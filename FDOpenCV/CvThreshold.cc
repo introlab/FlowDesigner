@@ -20,7 +20,7 @@ namespace FD {
    * @input_name IMAGEIN
    * @input_description Input image
    * @input_type CvImage
-   * 
+   *
    * @output_name IMAGEOUT
    * @output_description Output image
    * @output_type CvImage
@@ -39,6 +39,7 @@ namespace FD {
    * @parameter_type string
    * @parameter_value CV_THRESH_BINARY;CV_THRESH_BINARY_INV;CV_THRESH_TRUNC;CV_THRESH_TOZERO;CV_THRESH_TOZERO_INV
    * @parameter_description Thresholding type
+   *
    END*/
    
    

@@ -42,8 +42,8 @@ namespace FD {
    *
    * @output_name IMAGE
    * @output_description The result image
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    
    class CvCreateImage : public BufferedNode {

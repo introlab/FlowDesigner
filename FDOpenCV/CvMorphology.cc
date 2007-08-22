@@ -33,11 +33,11 @@ namespace FD {
    * @parameter_type int
    * @parameter_value 1
    * @parameter_description Number of times erosion and dilation are applied
-   * 
+   *
    * @output_name IMAGEOUT
    * @output_description Destination image
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    
    class CvMorphology : public BufferedNode {

@@ -7,7 +7,7 @@
     </Node>
     <Node name="node_CvLoadVideo_1" type="CvLoadVideo" x="-404.000000" y="131.000000"/>
     <Node name="node_Constant_1" type="Constant" x="-531.000000" y="132.000000">
-      <Parameter name="VALUE" type="string" value="./Tito_son.mov" description="The value"/>
+      <Parameter name="VALUE" type="string" value="Tito_son.mov" description="The value"/>
     </Node>
     <Link from="node_Constant_1" output="VALUE" to="node_CvLoadVideo_1" input="FILENAME"/>
     <Link from="node_CvLoadVideo_1" output="VIDEO" to="node_LOOP0_1" input="VIDEO"/>

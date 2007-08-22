@@ -18,7 +18,7 @@ namespace FD {
    * @input_name IMAGEIN
    * @input_description Input image
    * @input_type CvImage
-   * 
+   *
    * @output_name IMAGEOUT
    * @output_description Image of the edges found by the function.
    * @output_type CvImage

@@ -23,7 +23,7 @@ namespace FD {
    * @input_name ELEMENT
    * @input_description Input element
    * @input_type CvStructuringElement
-   *   
+   *
    * @output_name IMAGEOUT
    * @output_description Output image
    * @output_type CvImage

@@ -42,8 +42,8 @@ namespace FD {
    * 
    * @output_name IMAGEOUT
    * @output_description Result image
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    inline std::string CINT(int value)
    {

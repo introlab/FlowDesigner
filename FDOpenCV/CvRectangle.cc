@@ -23,7 +23,7 @@ namespace FD {
    * @input_name COLOR
    * @input_description the BGR color of the rectangle
    * @input_type CvColor
-   * 
+   *
    * @parameter_name X1
    * @parameter_type int
    * @parameter_value 0
@@ -48,21 +48,21 @@ namespace FD {
    * @parameter_type int
    * @parameter_value -1
    * @parameter_description Thickness of lines that make up the rectangle. Negative values, make the function to draw a filled rectangle
-   *   
+   *
    * @parameter_name LINE_TYPE
    * @parameter_type string
    * @parameter_value 8;4;CV_AA
    * @parameter_description Type of the contour segments
-   *   
+   *
    * @parameter_name SHIFT
    * @parameter_type int
    * @parameter_value 0
    * @parameter_description Number of fractional bits in the point coordinates
-   * 
+   *
    * @output_name IMAGEOUT
    * @output_description The result image
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    inline std::string CINT(int value)
    {

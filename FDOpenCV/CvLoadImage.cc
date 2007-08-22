@@ -28,8 +28,8 @@ namespace FD {
    *
    * @output_name IMAGE
    * @output_description The loaded image data structure
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    
    

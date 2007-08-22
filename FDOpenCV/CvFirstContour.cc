@@ -21,7 +21,7 @@ namespace FD {
    *
    * @output_name CONTOURSOUT
    * @output_description The result contour
-   * @output_type	CvContours
+   * @output_type CvContours
    *
    END*/
    

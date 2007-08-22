@@ -21,7 +21,7 @@ namespace FD {
    *
    * @output_name JITTERMATRIX
    * @output_description The result jitterMatrix
-   * @output_type	JitterMatrix
+   * @output_type JitterMatrix
    *
    END*/
    

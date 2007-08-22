@@ -22,11 +22,11 @@ namespace FD {
    * @input_name FILENAME
    * @input_description The file name to save
    * @input_type string
-   * 
+   *
    * @output_name OUTPUT
    * @output_description The saved image
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    
    

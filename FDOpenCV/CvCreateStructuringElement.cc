@@ -43,8 +43,8 @@ namespace FD {
    *   
    * @output_name STRUCTURINGELEMENT
    * @output_description The element structure
-   * @output_type	CvStructuringElement
-   * 
+   * @output_type CvStructuringElement
+   *
    END*/
    
    

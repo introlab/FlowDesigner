@@ -25,8 +25,8 @@ namespace FD {
    * 
    * @output_name VIDEO
    * @output_description The loaded video data structure
-   * @output_type	CvVideo
-   * 
+   * @output_type CvVideo
+   *
    END*/
    
    

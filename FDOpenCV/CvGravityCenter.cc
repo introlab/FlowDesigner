@@ -25,7 +25,7 @@ namespace FD {
    * @parameter_type int
    * @parameter_value 0
    * @parameter_description If the flag is non-zero, all the zero pixel values are treated as zeroes, all the others are treated as 0xFF.
-   * 
+   *
    * @parameter_name CHANNEL
    * @parameter_type int
    * @parameter_value 1
@@ -33,11 +33,11 @@ namespace FD {
    *
    * @output_name X
    * @output_description The coordinate x of the gravity center.
-   * @output_type	float
-   * 
+   * @output_type float
+   *
    * @output_name Y
    * @output_description The coordinate y of the gravity center.
-   * @output_type	float
+   * @output_type float
    *
    END*/
    

@@ -22,11 +22,11 @@ namespace FD {
    * @output_name AVG_1
    * @output_description Average (mean) of the channel 1 of the image.
    * @output_type float
-   * 
+   *
    * @output_name AVG_2
    * @output_description Average (mean) of the channel 2 of the image.
    * @output_type float
-   * 
+   *
    * @output_name AVG_3
    * @output_description Average (mean) of the channel 3 of the image.
    * @output_type float

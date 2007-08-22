@@ -24,7 +24,7 @@ namespace FD {
    * @input_name IMAGE2
    * @input_description Input image2.
    * @input_type CvImage
-   * 
+   *
    * @output_name OUTPUT
    * @output_description Output image.
    * @output_type CvImage

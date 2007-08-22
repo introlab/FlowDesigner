@@ -33,14 +33,14 @@ namespace FD {
    * @parameter_type int
    * @parameter_value 3
    * @parameter_description Size of the averaging window used for grouping pixels (height)
-   * 
+   *
    * @output_name VEL_X
    * @output_description Horizontal component of the optical flow
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    * @output_name VEL_Y
    * @output_description Vertical component of the optical flow
-   * @output_type	CvImage
+   * @output_type CvImage
    *
    END*/
    

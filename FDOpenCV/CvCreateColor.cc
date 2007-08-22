@@ -32,8 +32,8 @@ namespace FD {
    * 
    * @output_name COLOUR
    * @output_description The element structure of the color
-   * @output_type	CvColor
-   * 
+   * @output_type CvColor
+   *
    END*/
    
    

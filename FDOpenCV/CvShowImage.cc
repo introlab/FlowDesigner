@@ -29,7 +29,7 @@ namespace FD {
    * @parameter_type int
    * @parameter_value 1
    * @parameter_description If it is set to 1, window size is automatically adjusted to fit the displayed image, while user can not change the window size manually.
-   *    
+   *
    * @output_name IMAGEOUT
    * @output_description Same as input image 
    * @output_type CvImage

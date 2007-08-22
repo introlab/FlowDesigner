@@ -55,7 +55,7 @@ namespace FD {
    * 
    * @output_name IMAGEOUT
    * @output_description The result image
-   * @output_type	CvImage
+   * @output_type CvImage
    *
    END*/
    

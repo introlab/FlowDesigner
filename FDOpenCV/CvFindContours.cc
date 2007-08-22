@@ -46,12 +46,12 @@ namespace FD {
    *
    * @output_name CONTOURS
    * @output_description Contain the pointer to the first outer contour
-   * @output_type	CvContours
-   * 
+   * @output_type CvContours
+   *
    * @output_name NBCONTOURS
    * @output_description Number of contours
-   * @output_type	int
-   * 
+   * @output_type int
+   *
    END*/
    
    

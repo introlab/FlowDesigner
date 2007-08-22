@@ -19,14 +19,14 @@ namespace FD {
    * @input_name VIDEO
    * @input_description Video capturing structure
    * @input_type CvVideo
-   * 
+   *
    * @output_name IMAGE
    * @output_description The result image
-   * @output_type	CvImage
+   * @output_type CvImage
    *
    * @output_name BOOL
    * @output_description True if the video isn't finish
-   * @output_type	bool 
+   * @output_type bool 
    *
    END*/
    

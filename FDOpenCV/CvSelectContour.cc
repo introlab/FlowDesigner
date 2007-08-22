@@ -27,16 +27,16 @@ namespace FD {
    *
    * @output_name CONTOURSOUT
    * @output_description The result contour
-   * @output_type	CvContours
+   * @output_type CvContours
    *
    * @output_name NBELEMENTS
    * @output_description Number of elemtents in the selected contour
-   * @output_type	int
-   * 
+   * @output_type int
+   *
    * @output_name BOOL
    * @output_description true if the next contour exist. If false, the first contour is return
-   * @output_type	bool   
-   *   
+   * @output_type bool
+   *
    END*/
    inline std::string CINT(int value)
    {

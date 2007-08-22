@@ -27,12 +27,12 @@ namespace FD {
    *
    * @input_name COLORMAX
    * @input_description Color which represents the maximal value for each channel.
-   * @input_type CvColor   
-   * 
+   * @input_type CvColor
+   *
    * @output_name IMAGEOUT
    * @output_description Result image
-   * @output_type	CvImage
-   * 
+   * @output_type CvImage
+   *
    END*/
    inline std::string CINT(int value)
    {
