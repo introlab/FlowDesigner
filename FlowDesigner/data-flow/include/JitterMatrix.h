@@ -43,7 +43,7 @@ namespace FD
       ~JitterMatrix();
       JitterMatrix(const JitterMatrix& jitterMatrix);
       
-      JitterMatrix::JitterMatrix(const long& width
+      JitterMatrix(const long& width
                               , const long& height
                               , const long& planeCount
                               , const double& time
