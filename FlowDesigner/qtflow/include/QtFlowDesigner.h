@@ -18,8 +18,10 @@
 #include <QtGui/QWidget>
 #include <QtGui/QTextEdit>
 #include <QtGui/QWorkspace>
-
+#include "UINetwork.h"
 #include <string>
+
+#include "QtDocument.h"
 
 namespace FD
 {
@@ -48,7 +50,8 @@ namespace FD
         void newIteratorNetworkClicked();
         void openDocumentClicked();               
         void saveDocumentClicked(); 
-        
+        void newNetwork(UINetwork::Type type);        
+        QtDocument *activeDocument();
         protected:
         
         void setupUi();

@@ -12,11 +12,13 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QTreeWidgetItem>
 #include "QtNodeTreeView.h"
+#include "QtDocument.h"
 
 #include <math.h>
 #include "QtTerminal.h"
 #include "UINetworkController.h"
 #include "UINodeController.h"
+#include "UILinkController.h"
 #include "UINodeRepository.h"
 #include "UIDocument.h"
 #include <iostream>
@@ -27,7 +29,7 @@ namespace FD
     
     using namespace std;
     
-    QtNetwork::QtNetwork(UINetwork *uiNetwork)
+    QtNetwork::QtNetwork(UINetworkController *uiNetwork)
     : m_uiNetwork(uiNetwork)
     {
         //Creating graphics scene
@@ -37,7 +39,7 @@ namespace FD
         setScene(scene);
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
-        
+        setDragMode( QGraphicsView::RubberBandDrag );
 		/*
         if (m_uiNetwork)
         {
@@ -89,7 +91,7 @@ namespace FD
             /*
         }
 		else {
-			cerr<<"No UINetwork defined"<<endl;
+			cerr<<"No UINetworkController defined"<<endl;
 		}
         */
         //setDragEnabled(true);
@@ -135,6 +137,27 @@ namespace FD
                     item->setPos(-150 + rand() % 300, -150 + rand() % 300);
             }
             break;
+            case Qt::Key_Delete:
+            {
+                int nbSelectedItems = scene()->selectedItems().size();                
+                while(scene()->selectedItems().size()!=0)
+                {
+                    QtNode * selectNode = qgraphicsitem_cast<QtNode *>(scene()->selectedItems()[0]);  
+                    if(selectNode)
+                        m_uiNetwork->removeNode( m_nodeMap[selectNode] );
+                    else
+                    {
+                        QtLink * selectLink = qgraphicsitem_cast<QtLink *>(scene()->selectedItems()[0]);                    
+                        if(selectLink)
+                        {
+                            cout<<"selectLink: "<<selectLink<<endl;
+                            m_uiNetwork->removeLink( m_linkMap[selectLink] );
+                        }
+                    }
+                    
+                }
+                break;
+            }
             default:
             QGraphicsView::keyPressEvent(event);
         }
@@ -164,22 +187,34 @@ namespace FD
     
     void QtNetwork::menuTriggered(QAction* action)
     {
+        
+        m_uiNetwork->updateView( dynamic_cast<QtDocument*>(this->parentWidget()) );
+        
         std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
-        for( unsigned int i=0 ; i< network.size(); i++ )
-        {
-            if( network[i]->getName() == action->text().toStdString())
-            {
-                QPointF pos = mapToScene(m_contextMenuEvent->pos());
-                UINode* node = m_uiNetwork->newNode(network[i]
-                , action->text().toStdString()
-                , action->text().toStdString()
-                , pos.x()
-                , pos.y()
-                , true);
-                m_uiNetwork->addNode(node);
-                 
-            }
-        }
+        QString name;
+        static int number = 0;
+        stringstream networkname;
+        
+        networkname << action->text().toStdString() << "_" << number++;
+        
+        
+        QPointF pos = mapToScene(m_contextMenuEvent->pos());
+        UINode* node = m_uiNetwork->newNode(m_uiNetwork
+        , networkname.str()
+        , action->text().toStdString()
+        , pos.x()
+        , pos.y()
+        , true);
+        m_uiNetwork->addNode(node);
+        
+    }
+    
+    bool QtNetwork::isNodeExist(const QString &name)
+    {
+        for(unsigned int i=0; i<m_uiNetwork->getNodes().size(); i++)
+            if(m_uiNetwork->getNodes()[i]->getName() == name.toStdString())
+                return true;
+        return false;
     }
     
     void QtNetwork::wheelEvent(QWheelEvent *event)
@@ -276,6 +311,7 @@ namespace FD
 				UINode* node = m_uiNetwork->newNode(m_uiNetwork,nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
 				m_uiNetwork->addNode(node);
                 
+                //cerr<<node->getInputs()[0]-><<end;;
                 
                 /*
 				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
@@ -315,34 +351,49 @@ namespace FD
             
 			if (link->getUILink() && m_uiNetwork)
 			{
-				m_uiNetwork->addLink(link->getUILink());
+                //m_uiNetwork->addLink(link->getUILink());
 				scene()->addItem(link);
-				m_linkMap.insert(make_pair(link->getUILink(),link));
+				//m_linkMap.insert(make_pair(link->getUILink(),link)); 
+                m_linkMap.insert(make_pair(link,link->getUILink()));
 			}		
 		}
 	}
 	
-    QtNode* QtNetwork::addNode(UINode* node)
+    QtNode* QtNetwork::addNode(UINodeController* node)
 	{
 		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);
         scene()->addItem(qtnode);
-        m_nodeMap.insert(make_pair(node,qtnode));              
+        node->setQtNode( qtnode );
+        //m_nodeMap.insert(make_pair(node,qtnode));   
+        m_nodeMap.insert(make_pair(qtnode,node)); 
         return qtnode;
 	}
 	
-    QtLink* QtNetwork::addLink(QtTerminal *source, QtTerminal *dest, UILink* link)
+    QtLink* QtNetwork::addLink(QtTerminal *source, QtTerminal *dest, UILinkController* link)
     {
         if (source && dest && link)
         {
             QtLink *qtlink = new QtLink(source,dest,link);
             scene()->addItem(qtlink);
-            m_linkMap.insert(make_pair(link,qtlink));
+            // m_linkMap.insert(make_pair(link,qtlink));
+            m_linkMap.insert(make_pair(qtlink,link));
             return qtlink;
         }
         else
         {
             return NULL;
         }
-    }	
+    }
+    void QtNetwork::removeNode(QtNode* node)
+    { 
+        cerr<<"QtNetwork::removeNode(QtNode* node)"<<endl;
+        scene()->removeItem(node);
+    }
+    
+    void QtNetwork::removeLink(QtLink* link)
+    { 
+        cerr<<"QtNetwork::removeLink(QtLink* link)"<<endl;
+        scene()->removeItem(link);
+    }
 } //namespace FD

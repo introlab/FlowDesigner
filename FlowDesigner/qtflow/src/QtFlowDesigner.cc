@@ -1,7 +1,6 @@
 //Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca)
 
 #include "QtFlowDesigner.h"
-#include "QtDocument.h"
 #include "QtNetwork.h"
 #include "QtNodeTreeView.h"
 #include <QFileDialog>
@@ -314,7 +313,7 @@ namespace FD
         
     } // retranslateUi
     
-    void QtFlowDesigner::newNetwork(const std::string name)
+    /*void QtFlowDesigner::newNetwork(const std::string name)
     {
         
         //tabWidget->addTab (new QtNetwork(), name.c_str());
@@ -330,59 +329,81 @@ namespace FD
         }
         
         
-    }
+    }*/
+    
+    void QtFlowDesigner::newNetwork(UINetwork::Type type)
+    {
+        QtDocument *doc =  new QtDocument(this,type,NULL);	   	  
+        QWidget *window = m_workspace->addWindow(doc);
+        window->setWindowTitle("QtDocument - untitled");
+        m_workspace->setActiveWindow(window);
+        window->show();
+    }   
     
     void QtFlowDesigner::newNetworkClicked()
     {
-        QWidget *window =  m_workspace->activeWindow ();      
-        QtDocument *doc = dynamic_cast<QtDocument*>(window);
-        if(doc==0)
-        {
-            QtDocument *doc =  new QtDocument(this,NULL);	   	  
-            QWidget *window = m_workspace->addWindow(doc);
-            window->setWindowTitle("QtDocument - untitled");
-            m_workspace->setActiveWindow(window);
-            window->show();
-        }
+        QtDocument* activeDoc = activeDocument();
+        if(activeDoc==0)
+            newNetwork(UINetwork::subnet);
         else
         {
             bool ok;
             QString name = QInputDialog::getText ( NULL,QString ( "New network" ),
-            QString ( "Network name : " ),QLineEdit::Normal, "NAME",&ok );         
-            doc->addSubnetNetwork(name);
+            QString ( "Network name : " ),QLineEdit::Normal, "subnet",&ok ); 
+            if(name=="")      
+            {
+                QMessageBox::critical( this
+                , tr("New Network ERROR")
+                , tr("Name NULL"));
+                return;
+            }
+            if(activeDoc->isNetworkExist(name))
+            {
+                QMessageBox::critical( this
+                , tr("New Network ERROR")
+                , tr("This name is already used"));
+                return;
+            }
+            activeDoc->addNetwork(name, UINetwork::subnet);
         }
     }
+    
+    
     
     void QtFlowDesigner::newIteratorNetworkClicked()
     {
-        QWidget *window =  m_workspace->activeWindow ();      
-        QtDocument *doc = dynamic_cast<QtDocument*>(window);
-        if(doc==0)
-        {
-            //create new document
-        }
+        QtDocument* activeDoc = activeDocument();
+        if(activeDoc==0)
+            newNetwork(UINetwork::iterator);
         else
         {
             bool ok;
-            QString name = QInputDialog::getText ( NULL,QString ( "New Iterator Network" ),
-            QString ( "Network Name : " ),QLineEdit::Normal, "NAME",&ok );  
-            
-            for(unsigned int i=0; i<doc->getNetworks().size(); i++)
+            QString name = QInputDialog::getText ( NULL,QString ( "New iterator network" ),
+            QString ( "Network name : " ),QLineEdit::Normal, "loop",&ok ); 
+            if(name=="")      
             {
-                if(doc->getNetworks()[i]->getName() == name.toStdString())
-                {
-                    QMessageBox::critical( this
-                    , tr("New Iterator Network ERROR")
-                    , tr("This name is already in used"));
-                    return;
-                }
-                
-            } 
-            doc->addIteratorNetwork(name);
+                QMessageBox::critical( this
+                , tr("New Network ERROR")
+                , tr("Name NULL"));
+                return;
+            }
+            else if(activeDoc->isNetworkExist(name))
+            {
+                QMessageBox::critical( this
+                , tr("New Network ERROR")
+                , tr("This name is already used"));
+                return;
+            }
+            activeDoc->addNetwork(name, UINetwork::iterator);
         }
-        
     }
     
+    QtDocument *QtFlowDesigner::activeDocument()
+    {
+        QWidget *window =  m_workspace->activeWindow ();      
+        QtDocument *doc = dynamic_cast<QtDocument*>(window);
+        return doc;    
+    }
     
     void QtFlowDesigner::openDocumentClicked()
     {

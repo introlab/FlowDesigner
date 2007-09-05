@@ -7,35 +7,38 @@
 
 namespace FD
 {
-
+    
 	class UITerminalController;
 	class QtNetwork;
 	class QtLink;
-
+    
 	class UILinkController : public QObject, public UILink
 	{
-			Q_OBJECT;
-
+        Q_OBJECT;
+        
 		public:
-
-			UILinkController ( UITerminalController *_from,
-			                   UITerminalController *_to,
-			                   const char *points_str=NULL );
-
+        
+        UILinkController ( UITerminalController *_from,
+        UITerminalController *_to,
+        const char *points_str=NULL );
+        
+        QtLink* getQtLink() {return m_QtLink;}
+        void setQtLink(QtLink *link) {m_QtLink = link;}
+        
 		public slots:
-			void positionChanged ( double x, double y );
-
-			void updateView ( QtNetwork *net );
-
-			QtLink* getQtLink() {return m_QtLink;}
-
+        void positionChanged ( double x, double y );
+        
+        void updateView ( QtNetwork *net );
+        
+        bool valid();
+        
 		protected:
-
-			QtLink *m_QtLink;
-
+        
+        QtLink *m_QtLink;
+        
 	};
-
-
+    
+    
 } //namespace FD
 
 

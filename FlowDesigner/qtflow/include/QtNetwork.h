@@ -16,10 +16,11 @@ namespace FD
     class QtNode;
     class QtLink;
     class QtTerminal;
-    class UINetwork;
+    class UINetworkController;
     class UINode;
-    class UINode;
+    class UINodeController;
     class UILink;
+    class UILinkController;
     
     class QtNetwork : public QGraphicsView
     {
@@ -27,15 +28,19 @@ namespace FD
         
         public:
         
-        QtNetwork(UINetwork *uiNetwork);
-        
-        void addQtLink(QtLink *link);
-        
-        QtNode* addNode(UINode* node);
-        
-        QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILink* link);
+        QtNetwork(UINetworkController *uiNetwork);
         const std::string getName() const;
-        protected:
+
+        //Node
+        QtNode* addNode(UINodeController* node);
+        void removeNode(QtNode* node);
+        
+        //Link
+        QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILinkController* link);
+        void addQtLink(QtLink *link);
+        void removeLink(QtLink* link);        
+        
+        protected: 
         
         void mouseMoveEvent ( QMouseEvent * e );
         void keyPressEvent(QKeyEvent *event);
@@ -49,12 +54,16 @@ namespace FD
         
         void scaleView(qreal scaleFactor);
         
-        UINetwork *m_uiNetwork;
+        UINetworkController *m_uiNetwork;
         
         //std::vector<QtNode*> m_nodes;
         //std::vector<QtLink*> m_links;
-        std::map<UINode*,QtNode*> m_nodeMap;
-        std::map<UILink*,QtLink*> m_linkMap;
+        //std::map<UINodeController*,QtNode*> m_nodeMap;
+        std::map<QtNode*, UINodeController*> m_nodeMap;
+        //std::map<UILink*,QtLink*> m_linkMap;
+        std::map<QtLink*, UILinkController*> m_linkMap;
+        
+        bool isNodeExist(const QString &name);
         
         //Drag & Drop
         void dragEnterEvent(QDragEnterEvent *event);
@@ -63,7 +72,6 @@ namespace FD
         
         protected slots:
         void menuTriggered(QAction* action);
-        
         
     };
 }//namespace FD

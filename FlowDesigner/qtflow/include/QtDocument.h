@@ -8,6 +8,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QButtonGroup>
+#include "UINetwork.h"
 
 
 
@@ -27,7 +28,7 @@ namespace FD
         public:
 		
         QtDocument(QWidget *parent, const std::string &name);
-        QtDocument(QWidget *parent, UIDocumentController *doc);
+        QtDocument(QWidget *parent, UINetwork::Type type, UIDocumentController *doc);
 		
         //QtDocument(QWidget *parent, const std::string &name = "Untitled");
         
@@ -35,14 +36,15 @@ namespace FD
         
         void save(const std::string &file);
         
-        QtNetwork* addNetwork(UINetworkController* net);   
-        void addSubnetNetwork(QString name);
-        void addIteratorNetwork(QString name);
+        QtNetwork* addNetwork(UINetworkController* net);
+        void addNetwork(const QString &name, UINetwork::Type type);   
         std::vector<QtNetwork*> getNetworks() { return m_networks; }
+        bool isNetworkExist(const QString &name);
         
 		public slots:
         
         void onRunDocument();
+        void tabWidgetChanged(int index);
         
         
         protected:
@@ -54,8 +56,7 @@ namespace FD
         UIDocumentController *m_doc;
         
         std::vector<QtNetwork*> m_networks;
-        
-        
+
     };
 } //namespace FD  
 #endif

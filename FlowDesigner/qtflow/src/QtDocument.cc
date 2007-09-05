@@ -38,8 +38,8 @@ namespace FD
 		
 		//create tab widget
         m_tabWidget = new QTabWidget(NULL);
-        m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        
+        m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));        
+        connect(m_tabWidget, SIGNAL(currentChanged(int)),this, SLOT(tabWidgetChanged(int)));   
         m_vboxLayout->addWidget(runButton);		
         m_vboxLayout->addWidget(m_tabWidget);
         
@@ -51,7 +51,9 @@ namespace FD
         
     }      
     
-	QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)
+    
+    
+	QtDocument::QtDocument(QWidget *parent, UINetwork::Type type, UIDocumentController* doc)
     : QDialog(parent), m_doc(doc)
 	{
 		cerr<<"QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)"<<__FILE__<<__LINE__<<endl;
@@ -78,7 +80,7 @@ namespace FD
 		//create tab widget
         m_tabWidget = new QTabWidget(NULL);
         m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        
+        connect(m_tabWidget, SIGNAL(currentChanged(int)),this, SLOT(tabWidgetChanged(int)));
 		m_vboxLayout->addWidget(runButton);		
 		m_vboxLayout->addWidget(m_tabWidget);
 		
@@ -91,7 +93,7 @@ namespace FD
 		{
 			//Create a new document with a MAIN network
 			m_doc = new UIDocumentController("Untitled",this);		
-			m_doc->addNetwork("MAIN",UINetwork::subnet);
+			m_doc->addNetwork("MAIN",type);
 		}
 		else
 		{
@@ -100,15 +102,14 @@ namespace FD
         
 	}
     
-    void QtDocument::addSubnetNetwork(QString name)
+    bool QtDocument::isNetworkExist(const QString &name)
     {
-        m_doc->addNetwork(name.toStdString(),UINetwork::subnet);
+        for(unsigned int i=0; i<m_networks.size(); i++)
+            if(m_networks[i]->getName() == name.toStdString())
+                return true;
+        return false;
     }
-    void QtDocument::addIteratorNetwork(QString name)
-    {
-        m_doc->addNetwork(name.toStdString(),UINetwork::iterator);
-    }
-	
+    
     void QtDocument::open(const std::string &fname) {
         
         int pos = fname.rfind("/");
@@ -179,14 +180,22 @@ namespace FD
 	}
 	
 	QtNetwork* QtDocument::addNetwork(UINetworkController* net)
-	{
-		QtNetwork *qtnet = new QtNetwork(net);
+	{		
+        QtNetwork *qtnet = new QtNetwork(net);
 		net->setQtNetwork(qtnet);
 		m_networks.push_back(qtnet);
 		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
         m_tabWidget->addTab(qtnet, net->getName().c_str());
 		return qtnet;	
 	}
-	
-	
+    
+	void QtDocument::addNetwork(const QString &name, UINetwork::Type type)
+	{	
+        m_doc->addNetwork(name.toStdString(),type);
+	}
+    
+    void QtDocument::tabWidgetChanged(int index)
+    {
+        m_doc->updateView();
+    }
 }//namespace FD

@@ -9,6 +9,7 @@ namespace FD
 
 	class UIDocumentController;
 	class UINodeController;
+    class UILinkController;
 	class QtNetwork;
     class QtDocument;
 
@@ -32,17 +33,22 @@ namespace FD
 
 
 		virtual UINode *newNode(UINetwork* _net, xmlNodePtr def);
-
+        
+        void removeNode(UINodeController* node);
 						   
 		virtual UILink *newLink (UITerminal *_from, UITerminal *_to,const char *str=NULL);
+        
+        void removeLink(UILinkController* link);
 		
 		virtual UINote* newNote(const std::string &text, double x, double y, bool visible);
 
 		virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name, 
 					  const std::string &_objType="any", const std::string &_description="No description available");
 		
+              
 	
 		void setQtNetwork(QtNetwork *network) {m_QtNetwork = network;}
+        
 		
 		QtNetwork* getQtNetwork(){return m_QtNetwork;}
 	
@@ -51,7 +57,7 @@ namespace FD
 		private:
 		
 		UINetworkController();
-		
+        
 		QtNetwork *m_QtNetwork;
 	
 	};

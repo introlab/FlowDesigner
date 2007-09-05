@@ -20,37 +20,37 @@ using namespace std;
 
 namespace FD
 {
-
+    
 	QtTerminal::QtTerminal ( QtNode *node, std::string name, int type, float x, float y )
-			: QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ),m_node ( node ), m_type ( type ),
-			m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false )
+    : QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ),m_node ( node ), m_type ( type ),
+    m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false )
 	{
 		setPos ( x,y );
 		m_label = new QGraphicsTextItem ( name.c_str(),this );
 		QRectF rect = m_label->boundingRect();
-
+        
 		float offset_x = 0;
 		float offset_y = -1 * rect.height() / 2.0 + 5.0 / 2.0;
-
+        
 		switch ( m_type )
 		{
 			case INPUT:
-				offset_x = -1 * rect.width();
-				break;
-
+            offset_x = -1 * rect.width();
+            break;
+            
 			case OUTPUT:
-				offset_x = 5.0;
-				break;
+            offset_x = 5.0;
+            break;
 		}
-
+        
 		m_label->setPos ( offset_x, offset_y );
 		setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
 	}
-
-
+    
+    
 	QtTerminal::QtTerminal ( QtNode *node, UITerminal *uiTerminal )
-			: QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ), m_node ( node ),
-			m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false ), m_uiTerminal ( uiTerminal ), m_netTerminal ( NULL )
+    : QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ), m_node ( node ),
+    m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false ), m_uiTerminal ( uiTerminal ), m_netTerminal ( NULL )
 	{
 		if ( m_uiTerminal )
 		{
@@ -58,43 +58,43 @@ namespace FD
 			//m_uiTerminal->getPos(posx,posy);
 			//cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<endl;
 			//setPos(posx,posy);
-
+            
 			m_label = new QGraphicsTextItem ( m_uiTerminal->getName().c_str(),this );
 			QRectF rect = m_label->boundingRect();
-
+            
 			float offset_x = 0;
 			float offset_y = 0;//-1 * rect.height() / 2.0 + 5.0 / 2.0;
-
+            
 			if ( m_uiTerminal->isInputTerminal() )
 			{
 				offset_x = 5;//-1 * rect.width();
 				cerr<<"terminal is input"<<endl;
-                                m_type = INPUT;
+                m_type = INPUT;
 			}
 			else
 			{
 				offset_x = -1 * rect.width();//5.0;
 				cerr<<"terminal is output"<<endl;
-                                m_type = OUTPUT;
+                m_type = OUTPUT;
 			}
 			m_label->setPos ( offset_x, offset_y );
 			setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
-
-
+            
+            
 		}
 	}
-
+    
 	void QtTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )
 	{
 		update();
 		if ( event->button() == Qt::LeftButton )
 		{
-
+            
 			if ( event->modifiers() == Qt::NoModifier )
 			{
-
+                
 				QGraphicsItem::mousePressEvent ( event );
-
+                
 				cerr<<"mousePressEvent on terminal "<<getName() <<" posx "<<pos().x() <<" posy "<<pos().y() <<endl;
 				//TODO CREATE LINK
 				m_virtualQtTerminal = new QtTerminal ( NULL,"VIRTUAL",QtTerminal::VIRTUAL );
@@ -111,17 +111,17 @@ namespace FD
 			{
 				if ( m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL )
 				{
-
+                    
 					//CREATING A NET TERMINAL
 					bool ok;
 					QString name = QInputDialog::getText ( NULL,QString ( "Network Terminal Name" ),
-					                                       QString ( "Terminal Name : " ),QLineEdit::Normal,
-					                                       QString ( m_uiTerminal->getName().c_str() ),&ok );
-
+                    QString ( "Terminal Name : " ),QLineEdit::Normal,
+                    QString ( m_uiTerminal->getName().c_str() ),&ok );
+                    
 					//TODO :  LOOK FOR DUPLICATED NAMES
 					if ( ok && !name.isEmpty() )
 					{
-
+                        
 						if ( m_uiTerminal )
 						{
 							UINode *myNode = m_uiTerminal->getNode();
@@ -138,146 +138,158 @@ namespace FD
 							}
 						}
 						/*
-
+                        
 						//CREATE NET TERMINAL
 						UINetTerminal *netTerminal = NULL;
-
-						  
-
-
+                        
+                        
+                        
+                        
 						if (m_uiTerminal->isInputTerminal())
 						{
-						netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::INPUT,name.toStdString());
+                            netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::INPUT,name.toStdString());
 						}
 						else
 						{
-						netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString());
+                            netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString());
 						}
-
+                        
 						//CONNECT NET TERMINAL
 						m_uiTerminal->connectNetTerminal(netTerminal);
-
+                        
 						//CREATE GUI PART
 						cerr << "QtTerminal Scene pos x :"<<scenePos ().x() << " y:"<< scenePos().y() <<endl;
-
+                        
 						m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());
 						scene()->addItem(m_netTerminal);
 						*/
-
+                        
 					}
-
+                    
 					m_linking = false;
 					event->accept();
 				}
 			}
-		}
-
-	}
-
-	void QtTerminal::mouseReleaseEvent ( QGraphicsSceneMouseEvent *event )
-	{
-		update();
-		if ( event->button() == Qt::LeftButton )
-		{
-			QGraphicsItem::mousePressEvent ( event );
-
-			cerr<<"mouseReleaseEvent on terminal "<<getName() <<endl;
-			QtTerminal* destinationQtTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
-
-			//TERMINAL NEAR BY?
-			if ( destinationQtTerminal )
+            else if ( event->modifiers() == Qt::ControlModifier )
 			{
-				cerr<<"found terminal"<<destinationQtTerminal->getName() <<endl;
-
-				//QtNode* destinationNode = destinationQtTerminal->getQtNode();
-
-				//QtNode* sourceNode = m_virtualQtLink->get
-
-                                 QtTerminal *sourceQtTerminal = m_virtualQtLink->sourceQtTerminal();
+				cerr<<"**** 1 ****"<<endl;
+                if ( m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL && !m_uiTerminal->isInputTerminal())
+				{
+                    cerr<<"**** 2 ****"<<endl;
+                    UINode *myNode = m_uiTerminal->getNode();
+                    if ( myNode )
+                    {                        
+                        cerr<<"**** 3 ****"<<endl;
+                        myNode->newNetTerminal( m_uiTerminal,UINetTerminal::CONDITION,"CONDITION");                        
+                    }
+                }
+                cerr<<"**** 4 ****"<<endl;
+                m_linking = false;
+                event->accept();
+            }
+        }
+    }
     
-                                 if (sourceQtTerminal->getType() !=
-                                     destinationQtTerminal->getType())
-                                 {
-
-                                    cerr<<"TODO : CALL MODEL"<<endl;
-                                    if (sourceQtTerminal->getType() == INPUT)
-                                    {
-                                        emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
-										m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
-										
-                                    }
-                                    else
-                                    {   
-                                        emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
-										m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
-										
-                                    }
-                                 }       
-
-
-				    
-
-			}
-
-			m_linking = false;
-			delete m_virtualQtTerminal;
-			m_virtualQtTerminal = NULL;
-			delete m_virtualQtLink;
-			m_virtualQtLink = NULL;
-		}
-	}
-
-	void QtTerminal::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
-	{
-		update();
-		cerr<<"mouseMoveEvent on terminal "<<getName() <<endl;
-		if ( m_linking )
-		{
-			m_virtualQtTerminal->setPos ( event->scenePos() );
-			m_virtualQtLink->adjust();
-		}
-		else
-		{
-			m_node->getQtNetwork()->ensureVisible ( this );
-			QGraphicsItem::mouseMoveEvent ( event );
-		}
-	}
-
-	std::string QtTerminal::getName()
-	{
-		return m_uiTerminal->getName();
-	}
-
-	QtNetTerminal* QtTerminal::addNetTerminal ( UINetTerminal *netTerminal )
-	{
-		QtNetTerminal* myNetTerminal = new QtNetTerminal ( this,netTerminal );
-		scene()->addItem ( myNetTerminal );
-		return myNetTerminal;
-	}
-
-
-	QVariant QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value )
-	{
-		cerr<<"QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value )"<<endl;
-
-		if ( change == ItemPositionChange && scene() )
-		{
-			// value is the new position.
-			QPointF newPos = value.toPointF();
-
-			emit positionChanged ( newPos.x(), newPos.y() );
-
-			//QRectF rect = scene()->sceneRect();
-			//if (!rect.contains(newPos)) {
-			// Keep the item inside the scene rect.
-			//    newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
-			//    newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
-			//    return newPos;
-			//}
-		}
-
-		return QGraphicsItem::itemChange ( change, value );
-	}
-
+    void QtTerminal::mouseReleaseEvent ( QGraphicsSceneMouseEvent *event )
+    {
+        update();
+        if ( event->button() == Qt::LeftButton && m_linking)
+        {
+            QGraphicsItem::mousePressEvent ( event );
+            
+            cerr<<"mouseReleaseEvent on terminal "<<getName() <<endl;
+            QtTerminal* destinationQtTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
+            
+            //TERMINAL NEAR BY?
+            if ( destinationQtTerminal )
+            {
+                cerr<<"found terminal"<<destinationQtTerminal->getName() <<endl;
+                
+                //QtNode* destinationNode = destinationQtTerminal->getQtNode();
+                
+                //QtNode* sourceNode = m_virtualQtLink->get
+                
+                QtTerminal *sourceQtTerminal = m_virtualQtLink->sourceQtTerminal();
+                
+                if (sourceQtTerminal->getType() !=
+                    destinationQtTerminal->getType())
+                {
+                    
+                    cerr<<"TODO : CALL MODEL"<<endl;
+                    if (sourceQtTerminal->getType() == INPUT)
+                    {
+                        emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
+                        m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
+                    }
+                    else
+                    {   
+                        emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
+                        m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
+                        
+                    }
+                    
+                }
+            }
+            
+            m_linking = false;
+            delete m_virtualQtTerminal;
+            m_virtualQtTerminal = NULL;
+            delete m_virtualQtLink;
+            m_virtualQtLink = NULL;
+        }
+    }
+    
+    void QtTerminal::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
+    {
+        update();
+        cerr<<"mouseMoveEvent on terminal "<<getName() <<endl;
+        if ( m_linking )
+        {
+            m_virtualQtTerminal->setPos ( event->scenePos() );
+            m_virtualQtLink->adjust();
+        }
+        else
+        {
+            m_node->getQtNetwork()->ensureVisible ( this );
+            QGraphicsItem::mouseMoveEvent ( event );
+        }
+    }
+    
+    std::string QtTerminal::getName()
+    {
+        return m_uiTerminal->getName();
+    }
+    
+    QtNetTerminal* QtTerminal::addNetTerminal ( UINetTerminal *netTerminal )
+    {
+        QtNetTerminal* myNetTerminal = new QtNetTerminal ( this,netTerminal );
+        scene()->addItem ( myNetTerminal );
+        return myNetTerminal;
+    }
+    
+    
+    QVariant QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value )
+    {
+        cerr<<"QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value )"<<endl;
+        
+        if ( change == ItemPositionChange && scene() )
+        {
+            // value is the new position.
+            QPointF newPos = value.toPointF();
+            
+            emit positionChanged ( newPos.x(), newPos.y() );
+            
+            //QRectF rect = scene()->sceneRect();
+            //if (!rect.contains(newPos)) {
+                // Keep the item inside the scene rect.
+                //    newPos.setX(qMin(rect.right(), qMax(newPos.x(), rect.left())));
+                //    newPos.setY(qMin(rect.bottom(), qMax(newPos.y(), rect.top())));
+                //    return newPos;
+            //}
+        }
+        
+        return QGraphicsItem::itemChange ( change, value );
+    }
+    
 } //namespace FD
 
