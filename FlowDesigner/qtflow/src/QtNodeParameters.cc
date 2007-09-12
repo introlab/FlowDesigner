@@ -289,6 +289,7 @@ namespace FD {
         else if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::Cancel ))
         {
             setView(m_params->get_textParams());
+            close();
         }
         else  if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::RestoreDefaults ))
         { 
