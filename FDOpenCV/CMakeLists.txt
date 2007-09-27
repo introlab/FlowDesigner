@@ -1,6 +1,29 @@
 
 find_package(OpenCV REQUIRED)
-	
+
+SET(FDOPENCV_DLL
+ "C:/Program Files/OpenCV/bin/highgui100.dll"
+ "C:/Program Files/OpenCV/bin/cxcore100.dll"
+ "C:/Program Files/OpenCV/bin/cv100.dll"
+ "C:/Program Files/OpenCV/bin/cvcam100.dll"
+ "C:/Program Files/OpenCV/bin/cvaux100.dll"
+ "C:/Program Files/OpenCV/bin/cxts001.dll"
+ "C:/Program Files/OpenCV/bin/libguide40.dll"
+ "C:/Program Files/OpenCV/bin/ml100.dll"
+ )
+ 
+SET(FDOPENCV_EXAMPLES
+ example/azimut.jpg
+ example/building.jpg
+ example/findContourRect.n
+ example/rectangle.bmp
+ example/selectContour.n
+ example/Transformation.n
+ example/webcamFindColor.n
+ example/webcamFindMouvement.n
+ example/webcamGravityCenter.n
+ )
+
 SET(FDOPENCV_SRCS
    CvImage.cc 
    CvStructuringElement.cc 
@@ -65,5 +88,7 @@ target_link_libraries(libopencv-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/s
 install(TARGETS libopencv-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDOPENCV)
   
 #INSTALLING .def file  
-INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/FDOpenCV OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/${FD_TOOLBOX_DIR}/FDOPENCV/libopencv.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDOPENCV_SRCS})" )  
-
+INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/FDOpenCV OUTPUT_FILE libopencv.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDOPENCV_SRCS})" )  
+INSTALL( FILES libopencv.def DESTINATION ${FD_TOOLBOX_DIR}/FDOPENCV)
+INSTALL( FILES ${FDOPENCV_DLL} DESTINATION bin)
+INSTALL( FILES ${FDOPENCV_EXAMPLES} DESTINATION examples/FDOPENCV)
