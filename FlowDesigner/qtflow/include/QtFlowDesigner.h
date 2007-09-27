@@ -18,6 +18,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QTextEdit>
 #include <QtGui/QWorkspace>
+#include <QtGui/QInputDialog>
 #include "UINetwork.h"
 #include <string>
 

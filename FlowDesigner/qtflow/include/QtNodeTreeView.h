@@ -6,7 +6,7 @@
 #include "UINodeRepository.h"
 #include <vector>
 #include <string>
-#include <QtGui>
+#include <QtGui/QtGui>
 
 namespace FD
 {
