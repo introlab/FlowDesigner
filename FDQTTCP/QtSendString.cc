@@ -97,7 +97,7 @@ namespace FD {
          
          if(!m_tcpClient.waitForBytesWritten(10))
          {            
-            cout << "WriteJitterMatrix -> ERROR"<< endl;
+            cout << "QtSendString -> Error to write bytes"<< endl;
             (*(outputs[m_boolWriteID].buffer))[count] = ObjectRef(Bool::alloc(false));
             return;
          }
