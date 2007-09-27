@@ -115,7 +115,7 @@ namespace FD {
                     combo->addItem("string");
                     combo->addItem("float");
                     combo->addItem("bool");
-                    combo->addItem("objects");
+                    combo->addItem("object");
                     combo->addItem("subnet_param");
                     int index = combo->findText( textParams[i]->type.c_str() );
                     if( index != -1)
@@ -233,7 +233,7 @@ namespace FD {
             doubleSpinBox->setAccessibleName("QDoubleSpinBox");
             //Maybe to change...
             doubleSpinBox->setRange( -1000000, 1000000 );
-            doubleSpinBox->setValue( QString(textParams[index]->value.c_str()).toInt()  ) ; 
+            doubleSpinBox->setValue( QString(textParams[index]->value.c_str()).toFloat()  ) ; 
             connect(doubleSpinBox, SIGNAL( valueChanged(double) ), this, SLOT( valueChanged() ) );
             m_valuesWidge.insert(index, doubleSpinBox);                    
         }
