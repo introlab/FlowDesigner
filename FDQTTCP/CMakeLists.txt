@@ -2,12 +2,19 @@
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})	
 
+SET(FDQTTCP_EXAMPLES
+ exemple/listenJitterMatrix.n
+ exemple/listenString.n
+ exemple/sendString.n
+ exemple/sendWebcam.n
+ )
+ 
 SET(FDQTTCP_SRCS
    QtSendJitterMatrix.cc
    QtListenJitterMatrix.cc
    QtSendString.cc
    QtListenString.cc
-)	
+)
 
 INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include 
      	./
@@ -25,5 +32,6 @@ target_link_libraries(libqttcp-dynamic -LC${QT_LIBRARIES} -L${FLOWDESIGNER_SOURC
 install(TARGETS libqttcp-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP)
   
 #INSTALLING .def file  
-INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/FDQtTCP OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/${FD_TOOLBOX_DIR}/FDQTTCP/libqttcp.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDQTTCP_SRCS})" )  
-
+INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/FDQtTCP OUTPUT_FILE libqttcp.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDQTTCP_SRCS})" )  
+INSTALL( FILES libqttcp.def DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP/)
+INSTALL( FILES ${FDQTTCP_EXAMPLES} DESTINATION examples/FDQTTCP/)
