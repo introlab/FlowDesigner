@@ -22,4 +22,5 @@ include_HEADERS = GUIDocument.h \
 	vflow.h \
 	GtkPlotProbe.h \
 	misc_gui.h \
-	GUINote.h
+	GUINote.h \
+	GUITreeView.h

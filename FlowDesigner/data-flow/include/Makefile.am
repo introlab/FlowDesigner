@@ -34,6 +34,7 @@ include_HEADERS = Array.h \
 	UILink.h \
 	UINetwork.h \
 	UINodeParameters.h \
+	UIProbeLink.h \
 	vec.h \
 	fmath.h \
 	ExceptionObject.h \

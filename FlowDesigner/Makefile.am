@@ -8,13 +8,13 @@
 
 bin_SCRIPTS = flowdesigner-config
 
-EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd FlowDesigner.pc.in
+EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd FlowDesigner.pc.in CMakeLists.txt
 
 #Fools KDevelop into finding all the files
 if COND_OPT
-SUBDIRS = data-flow @modules@ tools examples qtflow
+SUBDIRS = data-flow @modules@ tools examples
 else
-SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow octave vflow tools examples
+SUBDIRS = data-flow audio_blocks VQ HMM NNet qtflow FuzzyEngine effects lapackflow octave vflow tools examples
 endif
 
 DIST_SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow octave vflow qtflow tools examples

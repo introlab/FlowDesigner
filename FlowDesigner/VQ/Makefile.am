@@ -3,4 +3,6 @@
 # Disable automatic dependency tracking if using other tools than gcc and gmake
 #AUTOMAKE_OPTIONS = no-dependencies
 
+EXTRA_DIST = CMakeLists.txt src/CMakeLists.txt
+
 SUBDIRS = src include
