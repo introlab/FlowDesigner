@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script. -*-m4-*-
 
-AC_INIT(n-files/test.n)
+AC_INIT(src/OctaveParser.cc)
 
 FLOWDESIGNER_MAJOR_VERSION=0
 FLOWDESIGNER_MINOR_VERSION=9

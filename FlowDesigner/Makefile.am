@@ -8,7 +8,7 @@
 
 bin_SCRIPTS = flowdesigner-config
 
-EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd FlowDesigner.pc.in CMakeLists.txt
+EXTRA_DIST = FlowDesigner.spec FlowDesigner.spec.in nflow.dtd FlowDesigner.pc.in CMakeLists.txt COPYING.LGPL license.txt
 
 #Fools KDevelop into finding all the files
 if COND_OPT

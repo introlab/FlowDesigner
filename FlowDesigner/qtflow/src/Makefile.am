@@ -12,7 +12,7 @@ INCLUDES = @PACKAGE_CFLAGS@ \
 	-I../include
 
 
-bin_PROGRAMS = flowdesigner-qt 
+bin_PROGRAMS = flowdesigner-qt qtflow
 
 lib_LTLIBRARIES = libbaseProbeQt.la 
 
@@ -32,7 +32,61 @@ flowdesigner_qt_SOURCES = main.cc \
 	QtDocument.cc \
 	.moc/moc_QtDocument.cc \
 	QtNetTerminal.cc \
-	.moc/moc_QtNetTerminal.cc
+	.moc/moc_QtNetTerminal.cc \
+	QtNodeParameters.cc \
+	.moc/moc_QtNodeParameters.cc \
+	QtDLManager.cc \
+	.moc/moc_QtDLManager.cc \
+	QtRunContext.cc \
+	.moc/moc_QtRunContext.cc \
+	UILinkController.cc \
+	.moc/moc_UILinkController.cc \
+	UINodeController.cc \
+	.moc/moc_UINodeController.cc \
+	UINetTerminalController.cc \
+	.moc/moc_UINetTerminalController.cc \
+	UITerminalController.cc \
+	.moc/moc_UITerminalController.cc \
+	UIDocumentController.cc \
+	.moc/moc_UIDocumentController.cc \
+	UINetworkController.cc \
+	.moc/moc_UINetworkController.cc
+
+qtflow_SOURCES = qtflow.cc \
+	QtLink.cc  \
+	.moc/moc_QtLink.cc \
+	QtNetwork.cc  \
+	.moc/moc_QtNetwork.cc \
+	QtNode.cc  \
+	.moc/moc_QtNode.cc \
+	QtTerminal.cc \
+	.moc/moc_QtTerminal.cc \
+	QtFlowDesigner.cc \
+	.moc/moc_QtFlowDesigner.cc \
+	QtNodeTreeView.cc \
+	.moc/moc_QtNodeTreeView.cc \
+	QtDocument.cc \
+	.moc/moc_QtDocument.cc \
+	QtNetTerminal.cc \
+	.moc/moc_QtNetTerminal.cc \
+	QtNodeParameters.cc \
+	.moc/moc_QtNodeParameters.cc \
+	QtDLManager.cc \
+	.moc/moc_QtDLManager.cc \
+	QtRunContext.cc \
+	.moc/moc_QtRunContext.cc \
+	UILinkController.cc \
+	.moc/moc_UILinkController.cc \
+	UINodeController.cc \
+	.moc/moc_UINodeController.cc \
+	UINetTerminalController.cc \
+	.moc/moc_UINetTerminalController.cc \
+	UITerminalController.cc \
+	.moc/moc_UITerminalController.cc \
+	UIDocumentController.cc \
+	.moc/moc_UIDocumentController.cc \
+	UINetworkController.cc \
+	.moc/moc_UINetworkController.cc
 
 
 libbaseProbeQt_la_SOURCES = empty.cc 
@@ -55,14 +109,17 @@ libbaseProbeQt_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) \
 
 flowdesigner_qt_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS) $(PACKAGE_LIBS) $(top_srcdir)/../data-flow/src/libflow.la
 
+qtflow_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS) $(PACKAGE_LIBS) $(top_srcdir)/../data-flow/src/libflow.la
+
+
 # This rule lets GNU make create any moc_*.cc from the equivalent *.h
 .moc/moc_%.cc: ../include/%.h
 	mkdir -p .moc
-	moc $< -o $@
+	moc-qt4 $< -o $@
 
 %.ui.cc: %.ui
-	uic $< -o $<.h
-#	uic -impl $<.h $< -o $@
+	uic-qt4 $< -o $<.h
+#	uic-qt4 -impl $<.h $< -o $@
 
 # Adjust this line according to your resources.qrc
 # resources.cc : resources.qrc octave-gui.png
@@ -70,4 +127,4 @@ flowdesigner_qt_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS) $(PACKAGE_LIBS) $(to
 #
 # This line ensures that generated moc_*.cc and resources.cc files are
 # deleted when we make clean.
-CLEANFILES = $(filter moc_%.cc,$(flowdesigner_qt_SOURCES) $(libbaseProbeQt_la_SOURCES))
+CLEANFILES = $(filter .moc/moc_%.cc,$(flowdesigner_qt_SOURCES) $(libbaseProbeQt_la_SOURCES))
