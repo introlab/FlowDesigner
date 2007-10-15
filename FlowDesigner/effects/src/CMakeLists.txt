@@ -13,7 +13,7 @@ add_library(libeffects-dynamic SHARED ${EFFECTS_SRCS})
 	
 set_target_properties(libeffects-dynamic PROPERTIES OUTPUT_NAME libeffects.tlb)
 
-target_link_libraries(libeffects-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(libeffects-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS libeffects-dynamic DESTINATION ${FD_TOOLBOX_DIR}/EFFECTS)
   

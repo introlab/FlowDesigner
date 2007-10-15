@@ -89,7 +89,7 @@ add_library(libaudio-dynamic SHARED ${AUDIO_SRCS})
 	
 set_target_properties(libaudio-dynamic PROPERTIES OUTPUT_NAME libaudio.tlb)
 
-target_link_libraries(libaudio-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(libaudio-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS libaudio-dynamic DESTINATION ${FD_TOOLBOX_DIR}/AUDIO)
   

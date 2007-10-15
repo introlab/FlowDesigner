@@ -174,7 +174,7 @@ target_link_libraries(batchflow libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDI
 
 
 
-install(TARGETS libflow-dynamic DESTINATION bin)
+install(TARGETS libflow-dynamic DESTINATION lib)
 install(TARGETS batchflow DESTINATION bin
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib

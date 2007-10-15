@@ -30,7 +30,7 @@ add_library(libvq-dynamic SHARED ${VQ_SRCS})
 	
 set_target_properties(libvq-dynamic PROPERTIES OUTPUT_NAME libvq.tlb)
 
-target_link_libraries(libvq-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(libvq-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS libvq-dynamic DESTINATION ${FD_TOOLBOX_DIR}/VQ)
   

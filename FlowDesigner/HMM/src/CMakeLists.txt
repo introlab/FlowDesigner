@@ -30,7 +30,7 @@ add_library(libhmm-dynamic SHARED ${HMM_SRCS})
 	
 set_target_properties(libhmm-dynamic PROPERTIES OUTPUT_NAME libhmm.tlb)
 
-target_link_libraries(libhmm-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(libhmm-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS libhmm-dynamic DESTINATION ${FD_TOOLBOX_DIR}/HMM)
   

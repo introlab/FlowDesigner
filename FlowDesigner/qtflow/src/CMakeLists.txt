@@ -58,8 +58,8 @@ add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS})
 add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
 
 # Linking with libflow and Qt libraries
-target_link_libraries(flowdesigner  ${QT_LIBRARIES} -L../../data-flow/src -llibflow ${LIBXML2_LIBRARIES})
-target_link_libraries(qtflow  ${QT_LIBRARIES} -L../../data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(flowdesigner  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES})
+target_link_libraries(qtflow  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS flowdesigner DESTINATION bin)
 install(TARGETS qtflow DESTINATION bin)

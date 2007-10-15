@@ -22,7 +22,7 @@ add_library(libfuzzy-dynamic SHARED ${FUZZY_SRCS})
 	
 set_target_properties(libfuzzy-dynamic PROPERTIES OUTPUT_NAME libfuzzy.tlb)
 
-target_link_libraries(libfuzzy-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(libfuzzy-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS libfuzzy-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FUZZY)
   

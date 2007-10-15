@@ -24,7 +24,7 @@ add_library(libnnet-dynamic SHARED ${NNET_SRCS})
 	
 set_target_properties(libnnet-dynamic PROPERTIES OUTPUT_NAME libnnet.tlb)
 
-target_link_libraries(libnnet-dynamic -L${FLOWDESIGNER_SOURCE_DIR}/data-flow/src -llibflow ${LIBXML2_LIBRARIES})
+target_link_libraries(libnnet-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
 install(TARGETS libnnet-dynamic DESTINATION ${FD_TOOLBOX_DIR}/NNET)
   
