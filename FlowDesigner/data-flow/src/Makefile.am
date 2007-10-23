@@ -161,15 +161,13 @@ install-data-local:
 libflow_la_LDFLAGS = -release $(LT_RELEASE) $(CYGWIN_LDFLAGS) $(GNOME_XML_LIB)
 
 
-bin_PROGRAMS = batchflow docflow codeflow texflow cygwinTest
+bin_PROGRAMS = batchflow docflow codeflow texflow
 
 batchflow_SOURCES = batchflow.cc
 
 texflow_SOURCES = texflow.cc
 
 docflow_SOURCES = flowdoc.cc
-
-cygwinTest_SOURCES = cygwinTest.cc
 
 codeflow_SOURCES = codeflow.cc
 
@@ -181,8 +179,6 @@ docflow_LDADD = $(GNOME_XML_LIB) libflow.la
 
 codeflow_LDADD = $(GNOME_XML_LIB) libflow.la 
 
-cygwinTest_LDADD = $(GNOME_XML_LIB) libflow.la 
-
 batchflow_LDFLAGS = $(FFTW_LDFLAGS) $(CYGWIN_LDFLAGS)
 
 texflow_LDFLAGS = $(CYGWIN_LDFLAGS)
@@ -190,7 +186,5 @@ texflow_LDFLAGS = $(CYGWIN_LDFLAGS)
 docflow_LDFLAGS = $(CYGWIN_LDFLAGS)
 
 codeflow_LDFLAGS = $(CYGWIN_LDFLAGS)
-
-cygwinTest_LDFLAGS = $(CYGWIN_LDFLAGS) $(FFTW_LDFLAGS)
 
 INCLUDES = -I$(top_srcdir)/data-flow/include $(GNOME_XML_INCLUDE) 

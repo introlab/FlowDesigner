@@ -21,7 +21,25 @@ DIST_SUBDIRS = data-flow audio_blocks VQ HMM NNet FuzzyEngine effects lapackflow
 
 rpm: dist
 	rpmbuild -ta ${PACKAGE}-${VERSION}.tar.gz
-   
+
+DEB_PACKAGE=$(PWD)/deb_package
+
+deb_package: all
+	mkdir -p ${DEB_PACKAGE}
+	make prefix=${DEB_PACKAGE}/usr \
+        exec_prefix=${DEB_PACKAGE}/usr \
+        bindir=${DEB_PACKAGE}/usr/bin \
+        sbindir=${DEB_PACKAGE}/usr/sbin \
+        sysconfdir=${DEB_PACKAGE}/usr/etc \
+        datadir=${DEB_PACKAGE}/usr/share \
+        includedir=${DEB_PACKAGE}/usr/include \
+        libdir=${DEB_PACKAGE}/usr/lib \
+        libexecdir=${DEB_PACKAGE}/usr/libexec \
+        localstatedir=${DEB_PACKAGE}/usr/var \
+        sharedstatedir=${DEB_PACKAGE}/usr/com \
+        mandir=${DEB_PACKAGE}/usr/share/man \
+        infodir=${DEB_PACKAGE}/usr/share/info \
+   	install 
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = FlowDesigner.pc
