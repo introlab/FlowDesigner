@@ -1,0 +1,35 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="CvWebcam_0" type="CvWebcam" x="-217.000000" y="-54.000000">
+      <Parameter name="INDEX" type="int" value="-1" description="Index of the camera to be used. If there is only one camera or it does not matter what camera to use -1 may be passed."/>
+    </Node>
+    <Node name="LOOP0_0" type="LOOP0" x="-1.000000" y="-47.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <Link from="CvWebcam_0" output="VIDEO" to="LOOP0_0" input="VIDEO"/>
+    <NetOutput name="BOOLWRITE" node="LOOP0_0" terminal="BOOLWRITE" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner TESTING"/>
+  </Network>
+  <Network type="iterator" name="LOOP0">
+    <Node name="CvQueryFrame_1" type="CvQueryFrame" x="-405.656860" y="-179.730011"/>
+    <Node name="CvShowImage_0" type="CvShowImage" x="-118.402023" y="-174.073166">
+      <Parameter name="WINDOW_TITLE" type="string" value="BaseImage" description="Window title."/>
+      <Parameter name="FLAGS" type="int" value="1" description="If it is set to 1, window size is automatically adjusted to fit the displayed image, while user can not change the window size manually.&#10;   "/>
+    </Node>
+    <Node name="CvImageToJitterMatrix_0" type="CvImageToJitterMatrix" x="36.362488" y="-126.826950"/>
+    <Node name="QtSendJitterMatrix_0" type="QtSendJitterMatrix" x="407.000000" y="-129.000000">
+      <Parameter name="HOSTNAME" type="string" value="127.0.0.1" description="Hostname"/>
+      <Parameter name="PORT" type="int" value="7000" description="Port"/>
+      <Parameter name="WAITFORCONNECTED" type="int" value="1000" description="How ms that the node wait for connected"/>
+    </Node>
+    <Link from="CvQueryFrame_1" output="IMAGE" to="CvShowImage_0" input="IMAGEIN"/>
+    <Link from="CvShowImage_0" output="IMAGEOUT" to="CvImageToJitterMatrix_0" input="IMAGE"/>
+    <Link from="CvImageToJitterMatrix_0" output="JITTERMATRIX" to="QtSendJitterMatrix_0" input="JITTERMATRIX"/>
+    <NetInput name="VIDEO" node="CvQueryFrame_1" terminal="VIDEO" object_type="CvVideo" description="Video capturing structure"/>
+    <NetCondition name="CONDITION" node="CvQueryFrame_1" terminal="BOOL"/>
+    <NetOutput name="BOOLWRITE" node="QtSendJitterMatrix_0" terminal="BOOLWRITE" object_type="CvImage" description="Same as input image "/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.9.1"/>
+  </Network>
+</Document>

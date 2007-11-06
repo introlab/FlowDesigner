@@ -21,8 +21,8 @@ SET(DATATYPES_SRCS
 	stream_wrap.cc
 	variables.cc
 	CompositeType.cc
-        JitterMatrix.cc
-        VMethod.cc
+    JitterMatrix.cc
+    VMethod.cc
 )	
 
 SET(NODES_SRCS
@@ -174,7 +174,12 @@ target_link_libraries(batchflow libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDI
 
 
 
-install(TARGETS libflow-dynamic DESTINATION lib)
+install(TARGETS libflow-dynamic DESTINATION lib
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib 
+ )
+  
 install(TARGETS batchflow DESTINATION bin
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib

@@ -3,6 +3,8 @@
 # you can modify the behavior by setting some variables, e.g.
 #   set(QT_USE_OPENGL TRUE)
 # -> this will cause cmake to include and link against the OpenGL module
+SET(QT_USE_QTNETWORK TRUE)
+
 include(${QT_USE_FILE})
 
 SET(QTFLOW_SRCS 
@@ -23,6 +25,10 @@ SET(QTFLOW_SRCS
 	UITerminalController.cc
 	UINetTerminalController.cc
 	UILinkController.cc
+    QtSendJitterMatrix.cc
+    QtListenJitterMatrix.cc
+    QtSendString.cc
+    QtListenString.cc	
 )
 
 SET(QTFLOW_HEADERS 
