@@ -25,6 +25,8 @@ SET(QTFLOW_SRCS
 	UITerminalController.cc
 	UINetTerminalController.cc
 	UILinkController.cc
+)
+SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
     QtListenJitterMatrix.cc
     QtSendString.cc
@@ -66,6 +68,29 @@ add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
 # Linking with libflow and Qt libraries
 target_link_libraries(flowdesigner  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES})
 target_link_libraries(qtflow  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES})
+
+
+
+add_library(libfdqttcp-dynamic SHARED ${FDQTTCP_SRCS})
+	
+set_target_properties(libfdqttcp-dynamic PROPERTIES OUTPUT_NAME libfdqttcp.tlb)
+
+target_link_libraries(libfdqttcp-dynamic libflow-dynamic ${QT_LIBRARIES} ${LIBXML2_LIBRARIES})
+
+install(TARGETS libfdqttcp-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP)
+  
+#INSTALLING .def file  
+INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src OUTPUT_FILE libfdqttcp.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDQTTCP_SRCS})" )  
+INSTALL( FILES ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src/libfdqttcp.def DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP/)
+
+
+
+
+
+
+
+
+
 
 install(TARGETS flowdesigner DESTINATION bin)
 install(TARGETS qtflow DESTINATION bin)
