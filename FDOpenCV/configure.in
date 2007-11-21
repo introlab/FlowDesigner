@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 CFLAGS="-O2"
 CXXFLAGS="-O2"
 
-AC_INIT([Demo], [0.0.1], [demo@lists.sourceforge.net])
+AC_INIT([FDOpenCV], [0.0.1], [flowdesigner-devel@lists.sourceforge.net])
 
 
 AC_PREREQ(2.53)
@@ -91,11 +91,11 @@ AM_MAINTAINER_MODE
  
 dnl Additional includes & libraries
 
-FLOWDESIGNER_LIB=`$FLOWDESIGNER_CONFIG --libs libflow`
-FLOWDESIGNER_INCLUDE=`$FLOWDESIGNER_CONFIG --cflags config libflow | sed 's/\"/\\\"/g'`
+FLOWDESIGNER_LIB=`$FLOWDESIGNER_CONFIG --libs libflow audio_blocks`
+FLOWDESIGNER_INCLUDE=`$FLOWDESIGNER_CONFIG --cflags config libflow audio_blocks`
 FLOWDESIGNER_DATA=`$FLOWDESIGNER_CONFIG  --datadir`
 FLOWDESIGNER_BIN=`$FLOWDESIGNER_CONFIG --bindir`
-
+FLOWDESIGNER_PREFIX=`$FLOWDESIGNER_CONFIG --prefix`
 
 dnl OpenCV includes & libraries
 dnl detection of OpenCV image library
@@ -118,10 +118,7 @@ AC_SUBST(GDK_LIBS)
 
 dnl Look for prefix, if not specified, use FlowDesigner default toolbox prefix
 if test "x$prefix" = "xNONE"; then
-  prefix=$FLOWDESIGNER_DATA/$PACKAGE                      
-else
-  dnl this will work, but we should maybe change the variable name
-  FLOWDESIGNER_DATA=$prefix
+    prefix=$FLOWDESIGNER_PREFIX                    
 fi
 
 
@@ -132,7 +129,7 @@ AC_SUBST(FLOWDESIGNER_BIN)
 
 
 dnl Output Files (makefiles)
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile examples/Makefile)
 
 
 dnl Notification message for the user to know which flags will be used for compilation
