@@ -108,8 +108,9 @@ int main (int argc, char* argv[])
 		{
 			//Running document
 			QtRunContext *ctx = new QtRunContext(doc, params);		
-			ctx->run();
+			bool success = ctx->run();
 			delete ctx;
+			if (!success) return -1;
 		}		
 	}
 	catch (BaseException *e)

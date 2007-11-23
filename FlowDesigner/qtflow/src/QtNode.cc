@@ -165,6 +165,46 @@ namespace FD
         QGraphicsItem::mouseReleaseEvent(event);
     }
     
+    void QtNode::getMinMaxXAllTerminals(qreal &_min, qreal &_max)
+    {
+		//will return bounding box x pos
+		qreal x1,y1,x2,y2;
+		QRectF boundaries = boundingRect().unite(childrenBoundingRect());
+		boundaries.getCoords(&x1,&y1,&x2,&y2);
+    	
+    	if (m_inputTerminalsMap.empty() && m_outputTerminalsMap.empty())
+    	{
+    		//will return bounding box x pos
+    		_min = x1;
+    		_max = x2;
+    	}
+    	else
+    	{	
+    		//initializing variables
+    		_min = x2; 
+    		_max = x1;
+    		
+    		for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)
+    		{
+    			boundaries = (*iter).second->boundingRect().unite((*iter).second->childrenBoundingRect());
+    			boundaries.getCoords(&x1,&y1,&x2,&y2);
+    			_min = std::min(_min,x1);
+    			_max = std::max(_max,x2);
+    		}
+    		
+    		for (map<UITerminal*,QtTerminal*>::iterator iter = m_outputTerminalsMap.begin(); iter != m_outputTerminalsMap.end(); iter++)
+    		{
+    			boundaries = (*iter).second->boundingRect().unite((*iter).second->childrenBoundingRect());
+    			boundaries.getCoords(&x1,&y1,&x2,&y2);
+    			_min = std::min(_min,x1);
+    			_max = std::max(_max,x2);
+    		}
+    		
+    		
+    	}	
+    
+    }
+    
     
     QtTerminal* QtNode::addTerminal(UITerminal *uiTerminal)
     {
@@ -177,48 +217,57 @@ namespace FD
             
             qreal x1,y1,x2,y2;
             boundaries.getCoords(&x1,&y1,&x2,&y2);
-            cerr<<"nameItem boundaries "<<x1<<","<<y1<<" "<<x2<<","<<y2<<endl;
             
+            qreal xx1,yy1,xx2,yy2;
             
             if (uiTerminal->isInputTerminal())
-            {
-                
+            {             
                 terminal = new QtTerminal(this,uiTerminal);
-                
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
-                qreal xx1,yy1,xx2,yy2;
-                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);
-                
-                cerr<<"terminal boundaries "<<xx1<<","<<yy1<<" "<<xx2<<","<<yy2<<endl;            
-                scene()->addItem(terminal);
-                
+                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);            
+                scene()->addItem(terminal);                
                 terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 10 * (qreal) m_inputTerminalsMap.size());
-                //m_inputQtTerminals.push_back(terminal);
-                m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));
+                m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));         
             }
             else
             {
-                
                 terminal = new QtTerminal(this,uiTerminal);
                 scene()->addItem(terminal);
-                
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
-                qreal xx1,yy1,xx2,yy2;
-                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);
-                
-                cerr<<"terminal boundaries "<<xx1<<","<<yy1<<" "<<xx2<<","<<yy2<<endl;            
-                
+                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                
                 terminal->setPos(x2 + 2.5 + (xx2 - xx1),y1 + 10 * (qreal) m_outputTerminalsMap.size());
-                //m_outputQtTerminals.push_back(terminal);
                 m_outputTerminalsMap.insert(make_pair(uiTerminal,terminal));
             }
             
-            
+            //This will resize the node bounding rect
             boundaries = childrenBoundingRect().unite(boundingRect());
             boundaries.getCoords(&x1,&y1,&x2,&y2);
             setRect(boundaries);
             
-            //setRect(QRectF(x1,y1,x2,y1 + 10 * (qreal) std::max( m_inputQtTerminals.size(), m_outputQtTerminals.size())));
+            //Align inputs
+            for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)
+            {
+            	QPointF pos = (*iter).second->pos();
+                pos.setX(x1);
+                (*iter).second->setPos(pos);
+            }
+            
+            //Align outputs
+            for (map<UITerminal*,QtTerminal*>::iterator iter = m_outputTerminalsMap.begin(); iter != m_outputTerminalsMap.end(); iter++)
+            {
+            	QPointF pos = (*iter).second->pos();
+            	QRectF terminalBoundaries = (*iter).second->childrenBoundingRect().unite((*iter).second->boundingRect());
+            	terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);
+            	
+            	//coordinate change (to Parent node)
+            	QPointF lr = (*iter).second->mapToParent(xx2,yy2);
+            	
+                //Move by the offset 
+                (*iter).second->moveBy(x2 - lr.x(),0);
+            }
+            
+            
+            
         }
         return terminal;
     }
