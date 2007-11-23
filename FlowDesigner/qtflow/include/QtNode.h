@@ -59,7 +59,6 @@ namespace FD
         void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
-        void getMinMaxXAllTerminals(qreal &min, qreal &max);
         
         UINode *m_uiNode;
         QGraphicsTextItem *nameItem;

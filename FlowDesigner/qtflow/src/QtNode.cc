@@ -165,47 +165,6 @@ namespace FD
         QGraphicsItem::mouseReleaseEvent(event);
     }
     
-    void QtNode::getMinMaxXAllTerminals(qreal &_min, qreal &_max)
-    {
-		//will return bounding box x pos
-		qreal x1,y1,x2,y2;
-		QRectF boundaries = boundingRect().unite(childrenBoundingRect());
-		boundaries.getCoords(&x1,&y1,&x2,&y2);
-    	
-    	if (m_inputTerminalsMap.empty() && m_outputTerminalsMap.empty())
-    	{
-    		//will return bounding box x pos
-    		_min = x1;
-    		_max = x2;
-    	}
-    	else
-    	{	
-    		//initializing variables
-    		_min = x2; 
-    		_max = x1;
-    		
-    		for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)
-    		{
-    			boundaries = (*iter).second->boundingRect().unite((*iter).second->childrenBoundingRect());
-    			boundaries.getCoords(&x1,&y1,&x2,&y2);
-    			_min = std::min(_min,x1);
-    			_max = std::max(_max,x2);
-    		}
-    		
-    		for (map<UITerminal*,QtTerminal*>::iterator iter = m_outputTerminalsMap.begin(); iter != m_outputTerminalsMap.end(); iter++)
-    		{
-    			boundaries = (*iter).second->boundingRect().unite((*iter).second->childrenBoundingRect());
-    			boundaries.getCoords(&x1,&y1,&x2,&y2);
-    			_min = std::min(_min,x1);
-    			_max = std::max(_max,x2);
-    		}
-    		
-    		
-    	}	
-    
-    }
-    
-    
     QtTerminal* QtNode::addTerminal(UITerminal *uiTerminal)
     {
         QtTerminal *terminal = NULL;
