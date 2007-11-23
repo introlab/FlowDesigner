@@ -19,6 +19,7 @@ SET(QTFLOW_SRCS
 	QtDLManager.cc
 	QtRunContext.cc
 	QtNodeParameters.cc
+	QtProcessWindow.cc
 	UIDocumentController.cc
 	UINetworkController.cc
 	UINodeController.cc
@@ -45,6 +46,7 @@ SET(QTFLOW_HEADERS
 	../include/QtDLManager.h
 	../include/QtRunContext.h
 	../include/QtNodeParameters.h
+	../include/QtProcessWindow.h
 	../include/UIDocumentController.h
 	../include/UINetworkController.h
 	../include/UINodeController.h

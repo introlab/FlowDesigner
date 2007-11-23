@@ -41,8 +41,7 @@ namespace FD
         virtual ~QtFlowDesigner();
         
         void newNetwork(const std::string name);
-        
-        
+        void newProcess(UIDocument *doc);
         void newDocument(const std::string &name);
         void loadDocument(const std::string &path);      
         

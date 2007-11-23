@@ -74,14 +74,29 @@ int main (int argc, char* argv[])
 		*/
 		
 		//Loading document
-		UIDocument *doc;
+		UIDocument *doc = NULL;
 		
 		//ARE WE RECEIVING RAW DATA FROM FLOWDESIGNER
 		//IN XML FORMAT.
 		if (string(argv[1]) == "/dev/stdin")
-		{
-			//Initial version forks
-			//we will read from 
+		{	
+			
+			stringstream inputStream;
+			
+			//we will read from stdin
+			while(!cin.fail())
+			{
+				char data;
+				cin.read(&data,1);
+				inputStream.write(&data,1);
+			}
+			
+			//Run the network
+			doc = new UIDocument("untitled");
+			
+			doc->loadFromMemory(inputStream.str().c_str(),inputStream.str().size());
+			
+			
 		}
 		else
 		{
@@ -89,13 +104,13 @@ int main (int argc, char* argv[])
 			doc->load();
 		}
 		
-		//Running document
-		QtRunContext *ctx = new QtRunContext(doc, params);		
-		ctx->run();
-
-		
-		delete ctx;
-				
+		if (doc)
+		{
+			//Running document
+			QtRunContext *ctx = new QtRunContext(doc, params);		
+			ctx->run();
+			delete ctx;
+		}		
 	}
 	catch (BaseException *e)
 	{

@@ -19,6 +19,7 @@ namespace FD
     class QtNetwork;
     class UIDocumentController;
 	class UINetworkController;
+	class QtFlowDesigner;
 	
     class QtDocument : public QDialog
     {         
@@ -27,8 +28,8 @@ namespace FD
         
         public:
 		
-        QtDocument(QWidget *parent, const std::string &name);
-        QtDocument(QWidget *parent, UINetwork::Type type, UIDocumentController *doc);
+        QtDocument(QtFlowDesigner *parent, const std::string &name);
+        QtDocument(QtFlowDesigner *parent, UINetwork::Type type, UIDocumentController *doc);
 		
         //QtDocument(QWidget *parent, const std::string &name = "Untitled");
         
@@ -52,6 +53,7 @@ namespace FD
         std::string m_name;
         QTabWidget *m_tabWidget;         
         QButtonGroup *m_buttonGroup;
+        QtFlowDesigner *m_flowdesigner;
         
         UIDocumentController *m_doc;
         

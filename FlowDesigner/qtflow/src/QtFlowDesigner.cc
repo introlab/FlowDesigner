@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include "UINetworkController.h"
 #include <iostream>
-
+#include "QtProcessWindow.h"
 
 
 namespace FD
@@ -338,7 +338,16 @@ namespace FD
         window->setWindowTitle("QtDocument - untitled");
         m_workspace->setActiveWindow(window);
         window->show();
-    }   
+    } 
+    
+    void QtFlowDesigner::newProcess(UIDocument *doc)
+    {
+    	QtProcessWindow *processWindow = new QtProcessWindow(this,doc);
+    	QWidget *window = m_workspace->addWindow(processWindow);
+    	window->setWindowTitle("Process");
+    	m_workspace->setActiveWindow(window);
+    	window->show();
+    }
     
     void QtFlowDesigner::newNetworkClicked()
     {

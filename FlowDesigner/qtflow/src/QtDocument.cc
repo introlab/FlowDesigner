@@ -7,13 +7,15 @@
 
 #include "UIDocumentController.h"
 #include "UINetworkController.h"
+#include "QtFlowDesigner.h"
+#include <QProcess>
 
 namespace FD
 {
     using namespace std;
     
-    QtDocument::QtDocument(QWidget *parent, const std::string &name)
-    : QDialog(parent), m_doc(NULL), m_name(name)         
+    QtDocument::QtDocument(QtFlowDesigner *parent, const std::string &name)
+    : QDialog(parent), m_doc(NULL), m_name(name), m_flowdesigner(parent)
     {
         cerr<<"QtDocument created"<<endl;      
         
@@ -53,8 +55,8 @@ namespace FD
     
     
     
-	QtDocument::QtDocument(QWidget *parent, UINetwork::Type type, UIDocumentController* doc)
-    : QDialog(parent), m_doc(doc)
+	QtDocument::QtDocument(QtFlowDesigner *parent, UINetwork::Type type, UIDocumentController* doc)
+    : QDialog(parent), m_doc(doc), m_flowdesigner(parent)
 	{
 		cerr<<"QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)"<<__FILE__<<__LINE__<<endl;
         
@@ -172,9 +174,44 @@ namespace FD
         
 		if (m_doc)
 		{
-			ParameterSet params;
-			QtRunContext context(m_doc,params);
-			context.run();
+			
+			
+			
+			
+			if (m_flowdesigner)
+			{
+				m_flowdesigner->newProcess(m_doc);			
+			}
+			/*
+			//Wil launch a process with qtflow
+			QProcess *process = new QProcess(this);
+			process->setProcessChannelMode(QProcess::ForwardedChannels);
+			QStringList args;			
+			args.append("/dev/stdin");
+			
+			//save to memory
+			int size = 0;
+			char* mem = m_doc->saveToMemory(size);
+			
+			cerr<<"Got document saved in "<<size<<" bytes."<<endl;
+			
+			//Launch qtflow			
+			process->start("qtflow",args);
+			
+			cout<<"PID  :"<<process->pid();
+			cout<<"WRITING: "<<endl;
+			process->write(mem,size);
+			cout<<"CLOSING"<<endl;
+			process->closeWriteChannel();
+			
+			//write XML string to STDIN
+			
+			
+
+			
+			free(mem);
+			*/
+			
 		}
 		
 	}
