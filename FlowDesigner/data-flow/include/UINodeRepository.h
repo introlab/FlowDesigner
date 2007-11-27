@@ -24,7 +24,7 @@ class ItemInfo {
 	
 	///This will return a reference to the string
 	///Be careful
-	std::string operator[](const std::string &key)
+	std::string& operator[](const std::string &key)
 	{
 		return infomap[key];
 	}
