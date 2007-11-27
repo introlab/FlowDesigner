@@ -11,6 +11,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QGridLayout>
+
 namespace FD {
     
     using namespace std;
@@ -39,7 +40,7 @@ namespace FD {
         protected:
         void addValues(int index, string type);
         void validParameters();     
-        void setView(const std::vector<ParameterText *> &textParams);
+        void setView(const std::vector<ItemInfo *> &textParams);
         
         protected slots:
         void buttonClicked( QAbstractButton * button );

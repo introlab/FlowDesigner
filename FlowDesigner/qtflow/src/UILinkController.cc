@@ -10,7 +10,7 @@ namespace FD
     
     
 	UILinkController::UILinkController ( UITerminalController *_from,UITerminalController *_to,const char *points_str )
-    : UILink ( _from,_to,points_str ), m_QtLink ( NULL )
+    : UIProbeLink ( _from,_to,points_str ), m_QtLink ( NULL )
 	{
 	}
     

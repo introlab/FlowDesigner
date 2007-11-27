@@ -7,6 +7,7 @@
 #include <string>
 #include <libxml/tree.h>
 #include <map>
+#include <list>
 #include "UINetwork.h"
 #include "UINodeParameters.h"
 #include <set>
@@ -24,8 +25,43 @@ class ParameterSet;
    @author: Jean-Marc Valin
 */
 class UIDocument : public Object {
+	
+public:
+	
+	class UIDocumentObserverIF
+	{
+		public:
+			//Global event for changes
+			virtual void notifyChanged(const UIDocument* doc) {}
+			
+			//Network removed
+			virtual void notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net) {notifyChanged(doc);}
+			
+			//Network Added
+			virtual void notifyNetworkAdded(const UIDocument *doc, const UINetwork* net) {notifyChanged(doc);}
+						
+			//Parameters changed
+			virtual void notifyParametersChanged(const UIDocument *doc, const ItemInfo *param) {notifyChanged(doc);}
+			
+			//Name changed
+			virtual void notifyNameChanged(const UIDocument *doc, const std::string &name){notifyChanged(doc);}
+			
+			//Path changed
+			virtual void notifyPathChanged(const UIDocument *doc, const std::string path){notifyChanged(doc);}
+			
+			//Category changed
+			virtual void notifyCategoryChanged(const UIDocument *doc, const std::string &category){notifyChanged(doc);}
+			
+			//Comments changed
+			virtual void notifyCommentsChanged(const UIDocument *doc, const std::string &comments){notifyChanged(doc);}
+						
+			//Destroyed
+			virtual void notifyDestroyed(const UIDocument *doc) {notifyChanged(doc);}			
+	};
+	
    
 protected:
+	
    /**Pointers to all networks included (defined) in the document*/
    std::vector<UINetwork *> networks;
 
@@ -64,6 +100,8 @@ protected:
 
    /**Comments inserted in the document */
    std::string m_comments;
+   
+   std::list<UIDocumentObserverIF*> m_observers;
 
 public:
 
@@ -83,16 +121,16 @@ public:
    virtual void loadFromMemory(const char *mem, int size);
    
    /**Set the category of the document in the node menu */
-   void setCategory(const std::string &cat) {category = cat;}
+   void setCategory(const std::string &cat);
 
    /**Get the category of the document in the node menu */
-   const std::string &getCategory() {return category;}
+   const std::string &getCategory();
 
    /**Set comments for the document */
-   void setComments(const std::string &comments) {m_comments = comments;}
+   void setComments(const std::string &comments);
 
    /**Get comments from the document */
-   const std::string &getComments() {return m_comments;}
+   const std::string &getComments();
    
    /**Sets the 'modified' flag*/
    void setModified() {modified=true;}
@@ -142,9 +180,9 @@ public:
    /**A UIDocument can print itself*/
    void printOn(std::ostream &out=std::cout) const;
 
-   std::vector<UINetwork *> get_networks() {return networks;}
+   std::vector<UINetwork *> get_networks();
 
-   std::vector<ItemInfo *> get_textParams() {return textParams;}
+   std::vector<ItemInfo *> get_textParams();
 
    virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
    
@@ -189,7 +227,14 @@ public:
    virtual void updateAllSubnetTerminals(const std::string _nettype, const std::string _terminalname, 
 					 UINetTerminal::NetTermType _terminaltype, bool _remove); 
 
-   UINodeRepository &getRepository() {return subnetInfo;}
+   UINodeRepository &getRepository();
+   
+   /** Register an event observer */
+   void registerEvents(UIDocumentObserverIF *observer);
+   
+   /** Unregister for events */
+   void unregisterEvents(UIDocumentObserverIF *observer);
+   
    
  protected:
    

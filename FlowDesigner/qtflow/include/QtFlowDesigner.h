@@ -48,21 +48,29 @@ namespace FD
         public slots:
         void newNetworkClicked();
         void newIteratorNetworkClicked();
-        void openDocumentClicked();               
-        void saveDocumentClicked(); 
-        void newNetwork(UINetwork::Type type);        
-        QtDocument *activeDocument();
-        protected:
         
+        //FILE Menu actions
+        void newDocumentClicked();
+        void openDocumentClicked();               
+        void saveDocumentClicked();
+        void saveAsDocumentClicked();
+
+        protected:
+                	
+        QtDocument *activeDocument();	
         void setupUi();
-        void setupUiv2();
         void retranslateUi();
         
-        
+        QAction *actionNew_Document;
         QAction *actionLoad_Document;
         QAction *actionSave_Document;
+        QAction *actionSaveAs_Document;
+        
+        
         QAction *actionNewNetwork;
         QAction *actionNewIteratorNetwork;
+        
+        
         QWidget *centralwidget;
         QHBoxLayout *hboxLayout;
         QWidget *verticalLayout;

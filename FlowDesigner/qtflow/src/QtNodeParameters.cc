@@ -12,6 +12,7 @@
 
 
 #include "Object.h"
+#include "UINodeRepository.h"
 
 
 
@@ -62,17 +63,7 @@ namespace FD {
 		resize(640,480);
         
 	}
-    
-	/*
-	class ParameterText 
-    {
-        public:
-        std::string name;
-        std::string value;
-        std::string type;	
-        std::string description;
-    };
-	*/
+
 	
 	QWidget* QtNodeParameters::buildParametersTable()
 	{
@@ -94,7 +85,7 @@ namespace FD {
 		
 		if (m_params)
 		{
-			std::vector<ParameterText *> &textParams = m_params->get_textParams();
+			std::vector<ItemInfo *> &textParams = m_params->get_textParams();
             //m_typesWidge =  new QComboBox[textParams.size()];
             
             
@@ -168,7 +159,7 @@ namespace FD {
     {
         cerr<<"QtNodeParameters::addValues(int index) : ";
         cerr<<index<<endl;
-        std::vector<ParameterText *> &textParams = m_params->get_textParams(); 
+        std::vector<ItemInfo *> &textParams = m_params->get_textParams(); 
         if( index < m_valuesWidge.size() ) 
         {
             m_paramsLayout->removeWidget( m_valuesWidge[index] );
@@ -252,7 +243,7 @@ namespace FD {
         cerr<<"QtNodeParameters::validParameters()"<<endl;
         if (m_params)
 		{
-            std::vector<ParameterText *> &textParams = m_params->get_textParams();
+            std::vector<ItemInfo *> &textParams = m_params->get_textParams();
             //Valid Types
             for (unsigned int i = 0; i < m_typesWidge.size(); i++)
             {
@@ -302,7 +293,7 @@ namespace FD {
     }
     
     //Set the parameters view with parameters give 
-    void QtNodeParameters::setView(const std::vector<ParameterText *> &textParams)
+    void QtNodeParameters::setView(const std::vector<ItemInfo *> &textParams)
     {
         cerr<<"QtNodeParameters::setView()"<<endl;
         //set type
@@ -350,7 +341,7 @@ namespace FD {
     void QtNodeParameters::typeChanged()
     {
         cerr<<"QtNodeParameters::typeChanged()"<<endl;
-        std::vector<ParameterText *> &textParams = m_params->get_textParams();
+        std::vector<ItemInfo *> &textParams = m_params->get_textParams();
         for (unsigned int i = 0; i < m_typesWidge.size(); i++)
         {
             int paramsIndex = m_typesWidge[i]->accessibleName().toInt();

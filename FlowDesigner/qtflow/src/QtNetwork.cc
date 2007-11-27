@@ -285,6 +285,8 @@ namespace FD
     
     void QtNetwork::dropEvent(QDropEvent *event)
     {
+    	
+    	
         cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;	
 		cerr<<"Source is "<<event->source()<<endl;					
 		cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
@@ -297,12 +299,14 @@ namespace FD
 			//create this node
 			if (m_uiNetwork)
 			{
+				
+				static int number = m_uiNetwork->getNodes().size();
                 
 				QPointF pos = mapToScene(event->pos());
                 
 				//m_uiNetwork->createNode(event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
                 
-				static int number = 0;
+				
 				
 				stringstream nodename;
 				

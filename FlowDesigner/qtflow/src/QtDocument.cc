@@ -27,10 +27,7 @@ namespace FD
         //Create button group
         m_buttonGroup = new QButtonGroup(this);
         
-        
-        
-        //m_vboxLayout->insertLayout(0,m_buttonGroup);
-        
+             
         //Create run button
         QPushButton *runButton = new QPushButton("RUN", this);	
         m_buttonGroup->addButton(runButton);
@@ -49,60 +46,13 @@ namespace FD
         
         resize(800,600);
         
-        open(name);
+        //Create a new empty document 
+        m_doc = new UIDocumentController(name,this);	
         
+        //Register to document events
+        m_doc->registerEvents(this);
+               
     }      
-    
-    
-    
-	QtDocument::QtDocument(QtFlowDesigner *parent, UINetwork::Type type, UIDocumentController* doc)
-    : QDialog(parent), m_doc(doc), m_flowdesigner(parent)
-	{
-		cerr<<"QtDocument::QtDocument(QWidget *parent, UIDocumentController* doc)"<<__FILE__<<__LINE__<<endl;
-        
-        m_vboxLayout = new QVBoxLayout(this);
-        m_vboxLayout->setSpacing(6);
-        m_vboxLayout->setMargin(0);		
-        m_vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
-        
-		//Create button group
-		m_buttonGroup = new QButtonGroup(this);
-		
-		
-		
-		//m_vboxLayout->insertLayout(0,m_buttonGroup);
-		
-		//Create run button
-		QPushButton *runButton = new QPushButton("RUN", this);	
-		m_buttonGroup->addButton(runButton);
-		
-		//connect signal
-		connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
-		
-		//create tab widget
-        m_tabWidget = new QTabWidget(NULL);
-        m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        connect(m_tabWidget, SIGNAL(currentChanged(int)),this, SLOT(tabWidgetChanged(int)));
-		m_vboxLayout->addWidget(runButton);		
-		m_vboxLayout->addWidget(m_tabWidget);
-		
-		setLayout(m_vboxLayout);
-        
-        resize(800,600);	
-        
-		
-		if (m_doc == NULL)
-		{
-			//Create a new document with a MAIN network
-			m_doc = new UIDocumentController("Untitled",this);		
-			m_doc->addNetwork("MAIN",type);
-		}
-		else
-		{
-			//OPEN ALREADY EXISTING DOCUMENT
-		}
-        
-	}
     
     bool QtDocument::isNetworkExist(const QString &name)
     {
@@ -125,7 +75,7 @@ namespace FD
             doc_name = fname;
         }
         
-        m_doc = new UIDocumentController(doc_name,this);
+        //m_doc = new UIDocumentController(doc_name,this);
         m_doc->setFullPath(fname);
         
         try {
@@ -142,21 +92,9 @@ namespace FD
         }
         m_doc->resetModified();
         
-        /*
-        if (m_doc)
-        {         
-            //create Qt networks
-            std::vector<UINetwork *> nets = m_doc->get_networks();
-            cerr<<"networks found :"<<nets.size()<<endl;
-            for (unsigned int i = 0; i < nets.size(); i++)
-            {
-                m_networks.push_back(new QtNetwork(dynamic_cast<UINetworkController*>(nets[i])));
-                m_networks.back()->setObjectName(QString::fromUtf8(nets[i]->getName().c_str()));
-                m_tabWidget->addTab(m_networks.back(), nets[i]->getName().c_str());
-            }            
-        }
-        */
     }
+
+
     
 	void QtDocument::save(const std::string &file)
 	{
@@ -173,45 +111,11 @@ namespace FD
 		cerr<<"Run clicked..."<<endl;
         
 		if (m_doc)
-		{
-			
-			
-			
-			
+		{	
 			if (m_flowdesigner)
 			{
 				m_flowdesigner->newProcess(m_doc);			
-			}
-			/*
-			//Wil launch a process with qtflow
-			QProcess *process = new QProcess(this);
-			process->setProcessChannelMode(QProcess::ForwardedChannels);
-			QStringList args;			
-			args.append("/dev/stdin");
-			
-			//save to memory
-			int size = 0;
-			char* mem = m_doc->saveToMemory(size);
-			
-			cerr<<"Got document saved in "<<size<<" bytes."<<endl;
-			
-			//Launch qtflow			
-			process->start("qtflow",args);
-			
-			cout<<"PID  :"<<process->pid();
-			cout<<"WRITING: "<<endl;
-			process->write(mem,size);
-			cout<<"CLOSING"<<endl;
-			process->closeWriteChannel();
-			
-			//write XML string to STDIN
-			
-			
-
-			
-			free(mem);
-			*/
-			
+			}			
 		}
 		
 	}
@@ -219,6 +123,8 @@ namespace FD
 	QtNetwork* QtDocument::addNetwork(UINetworkController* net)
 	{		
         QtNetwork *qtnet = new QtNetwork(net);
+        
+        
 		net->setQtNetwork(qtnet);
 		m_networks.push_back(qtnet);
 		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
@@ -235,4 +141,57 @@ namespace FD
     {
         m_doc->updateView();
     }
+    
+    //Network removed
+    void QtDocument::notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net)
+    {
+    	cerr<<"QtDocument::notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net)"<<endl;
+    }
+
+    //Network Added
+    void QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)
+    {
+    	cerr<<"QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)"<<endl;
+    }
+    			
+    //Parameters changed
+    void QtDocument::notifyParametersChanged(const UIDocument *doc, const ItemInfo *param)
+    {
+    	cerr<<"QtDocument::notifyParametersChanged(const UIDocument *doc, const ItemInfo *param)"<<endl;
+    }
+
+    //Name changed
+    void QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)
+    {
+    	cerr<<"QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)"<<endl;
+    	
+    	
+    	
+    }
+
+    //Path changed
+    void QtDocument::notifyPathChanged(const UIDocument *doc, const std::string path)
+    {
+    	cerr<<"QtDocument::notifyPathChanged(const UIDocument *doc, const std::string path)"<<endl;
+    	setWindowTitle(path.c_str());
+    }
+
+    //Category changed
+    void QtDocument::notifyCategoryChanged(const UIDocument *doc, const std::string &category)
+    {
+    	cerr<<"QtDocument::notifyCategoryChanged(const UIDocument *doc, const std::string &category)"<<endl;
+    }
+
+    //Comments changed
+    void QtDocument::notifyCommentsChanged(const UIDocument *doc, const std::string &comments)
+    {
+    	cerr<<"QtDocument::notifyCommentsChanged(const UIDocument *doc, const std::string &comments)"<<endl;
+    }
+    			
+    //Destroyed
+    void QtDocument::notifyDestroyed(const UIDocument *doc)
+    {
+    	cerr<<"QtDocument::notifyDestroyed(const UIDocument *doc)"<<endl;
+    }
+    
 }//namespace FD

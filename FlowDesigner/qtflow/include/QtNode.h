@@ -22,16 +22,32 @@ namespace FD
     class UITerminal;
     class UINode;
     
-    class QtNode : public QObject, public QGraphicsRectItem
+    class QtNode : public QObject, public QGraphicsRectItem, public UINode::UINodeObserverIF
     {
         
         Q_OBJECT;
         
         public:
         
-        QtNode(QtNetwork *graphWidget, std::string name = "");
+        //QtNode(QtNetwork *graphWidget, std::string name = "");
         
-        QtNode(QtNetwork *graphWidget, UINode *uiNode);   
+        QtNode(QtNetwork *graphWidget, UINode *uiNode);
+        		
+		//Terminal removed
+		virtual void notifyTerminalRemoved(const UINode *node, const UITerminal* terminal);
+		
+		//Terminal Added
+		virtual void notifyTerminalAdded(const UINode *node, const UITerminal* terminal);
+					
+		//Parameters changed
+		virtual void notifyParametersChanged(const UINode *node, const UINodeParameters *params);
+		
+		//Destroyed
+		virtual void notifyDestroyed(const UINode *node);
+		
+		//Position changed
+		virtual void notifyPositionChanged(const UINode* node, double x, double y);
+        
         
         void addQtLink(QtLink *edge);
         void removeQtLink(QtLink *edge);

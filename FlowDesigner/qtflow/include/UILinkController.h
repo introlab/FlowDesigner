@@ -12,7 +12,7 @@ namespace FD
 	class QtNetwork;
 	class QtLink;
     
-	class UILinkController : public QObject, public UILink
+	class UILinkController : public QObject, public UIProbeLink
 	{
         Q_OBJECT;
         

@@ -60,6 +60,14 @@ UIDocument::~UIDocument()
       for (unsigned int i=0;i<docParams.size();i++)
          delete docParams[i];
       destroyed=true;
+     
+	  	//Notify observers
+	  	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	  	{
+	  		(*iter)->notifyDestroyed(this);
+	  	}
+      
+      
    }
 }
 
@@ -121,6 +129,13 @@ void UIDocument::addParameterText(string name, string value, string type)
     textInfo->value = value;
     textInfo->type = type;
     textParams.insert(textParams.end(), textInfo);
+    
+	//Notify observers
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		(*iter)->notifyParametersChanged(this,textInfo);
+	}
+    
 }
 
 void UIDocument::printOn(ostream &out) const
@@ -370,6 +385,13 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
       newNet->newNetNotify("Subnet",networks[i]->getName());
    }
    networks.insert(networks.end(), newNet);
+   
+	//Notify observers
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		(*iter)->notifyNetworkAdded(this,newNet);
+	}
+   
    modified = true;
    return newNet;
 }
@@ -395,12 +417,18 @@ UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
   //cerr << "network created in UIDocument::addNetwork\n";
   
   for (unsigned int i=0;i<networks.size();i++)
-    {
+  {
       networks[i]->newNetNotify("Subnet",newNet->getName());
       newNet->newNetNotify("Subnet",networks[i]->getName());
-    }
+  }
   //cerr << "newNet = " << newNet << endl;
   networks.insert(networks.end(), newNet);
+  
+	//Notify observers
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		(*iter)->notifyNetworkAdded(this,newNet);
+	}
   
   modified = true;
   return newNet;
@@ -410,16 +438,22 @@ UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
 void UIDocument::removeNetwork(UINetwork *toRemove)
 {
    vector<UINetwork *>::iterator i=networks.begin();
-      while (i != networks.end())
-      {
-         if (*i == toRemove)
+   while (i != networks.end())
+   {
+     if (*i == toRemove)
 	 {
+    	//Notify observers
+    	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    	{
+    		(*iter)->notifyNetworkRemoved(this,*i);
+    	} 
+    	 	 
 	    delete (*i);
-            networks.erase(i);
+        networks.erase(i);
 	    break;
 	 }
 	 ++i;
-      }
+   }
 
    setModified();
 }
@@ -763,6 +797,13 @@ void UIDocument::setFullPath(const string &fullpath)
    //cerr << "path is: \"" << path << "\"" << endl;
    //cerr << "name is: \"" << name << "\"" << endl;
    untitled=false; 
+   
+	//Notify observers
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		(*iter)->notifyPathChanged(this,path);
+		(*iter)->notifyNameChanged(this,docName);
+	}
 }
 
 void UIDocument::updateNetInfo(UINetwork *net) {
@@ -966,5 +1007,79 @@ void UIDocument::importNetwork(const std::string &fileName) {
     throw new GeneralException(string("File does not exist : ") + fileName,__FILE__,__LINE__);
   }
 }
+
+
+/**Set the category of the document in the node menu */
+void UIDocument::setCategory(const std::string &cat) 
+{
+	category = cat;
+	
+	//Notify observers
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		(*iter)->notifyCategoryChanged(this,category);
+	}
+}
+
+/**Get the category of the document in the node menu */
+const std::string& UIDocument::getCategory() 
+{
+	return category;
+}
+
+/**Set comments for the document */
+void UIDocument::setComments(const std::string &comments) 
+{
+	m_comments = comments;
+	
+	//Notify observers
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		(*iter)->notifyCommentsChanged(this,m_comments);
+	}
+}
+
+/**Get comments from the document */
+const std::string& UIDocument::getComments() 
+{
+	return m_comments;
+}
+
+std::vector<UINetwork *> UIDocument::get_networks() 
+{
+	return networks;
+}
+
+std::vector<ItemInfo *> UIDocument::get_textParams() 
+{
+	return textParams;
+}
+
+UINodeRepository& UIDocument::getRepository() 
+{
+	return subnetInfo;
+}
+
+
+void UIDocument::registerEvents(UIDocumentObserverIF *observer)
+{
+	m_observers.push_back(observer);
+}
+
+
+void UIDocument::unregisterEvents(UIDocumentObserverIF *observer)
+{
+	for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		if (*iter == observer)
+		{
+			m_observers.erase(iter);
+			break;
+		}
+	}
+}
+
+
+
 
 }

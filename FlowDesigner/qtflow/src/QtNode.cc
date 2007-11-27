@@ -1,4 +1,4 @@
-//Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca)
+//Copyright (C) 2006-2007 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca)
 #include "QtLink.h"
 #include "QtNode.h"
 #include "QtNetwork.h"
@@ -22,7 +22,7 @@
 namespace FD
 {
     using namespace std;
-    
+ /*   
     QtNode::QtNode(QtNetwork *graphWidget, std::string name)
     : QGraphicsRectItem(0,0,50,25),graph(graphWidget),
     m_linking(false)
@@ -34,12 +34,16 @@ namespace FD
         setBrush(QBrush(QColor(0,128,0,128)));
         setZValue(1);
     }
+   */
     
     QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
     : QGraphicsRectItem(0,0,50,25), graph(graphWidget), m_uiNode(uiNode), m_linking(false)
     {
         if (m_uiNode)
         {
+        	//register to events
+        	m_uiNode->registerEvents(this);
+        	
             double posx, posy;
             m_uiNode->getPos(posx,posy);
             setPos(posx,posy);
@@ -236,32 +240,36 @@ namespace FD
         scene()->removeItem(terminal);    
     }
     
-    /*   
-    QtTerminal* QtNode::getQtTerminal(UITerminal *terminal) 
-    {
-        if (terminal->isInputTerminal())
-        {
-            if (m_inputTerminalsMap.find(terminal) != m_inputTerminalsMap.end())
-            {
-                return m_inputTerminalsMap[terminal];                     
-            }
-            else
-            {
-                return NULL;                                    
-            }            
-        }
-        else
-        {
-            if (m_outputTerminalsMap.find(terminal) != m_outputTerminalsMap.end())
-            {
-                return m_outputTerminalsMap[terminal];
-            }
-            else
-            {
-                return NULL;
-            }                
-        }
-        return NULL;
-    }      
-    */
+	//Terminal removed
+	void QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)
+	{
+		cerr<<"QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)"<<endl;
+	}
+	
+	//Terminal Added
+	void QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal)
+	{
+		cerr<<"QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal)"<<endl;
+	}
+				
+	//Parameters changed
+	void QtNode::notifyParametersChanged(const UINode *node, const UINodeParameters *params)
+	{
+		cerr<<"QtNode::notifyParametersChanged(const UINode *node, const UINodeParameters *params)"<<endl;
+	}
+	
+	//Destroyed
+	void QtNode::notifyDestroyed(const UINode *node)
+	{
+		cerr<<"QtNode::notifyDestroyed(const UINode *node)"<<endl;
+	}
+	
+	//Position changed
+	void QtNode::notifyPositionChanged(const UINode* node, double x, double y)
+	{
+		cerr<<"QtNode::notifyPositionChanged(const UINode* node, double x, double y)"<<endl;
+		setPos(x,y);
+	}
+    
+
 }//namespace FD
