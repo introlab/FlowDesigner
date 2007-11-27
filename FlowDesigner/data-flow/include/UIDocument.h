@@ -19,14 +19,6 @@ class UINodeMenu;
 class Network;
 class ParameterSet;
 
-//FIXME: Should replace with ItemInfo
-class DocParameterDataText {
-  public:
-   std::string name;
-   std::string value;
-   std::string type;
-};
-
 /**
    GUI-independent memory representation for an XML FlowDesigner document
    @author: Jean-Marc Valin
@@ -44,16 +36,16 @@ protected:
    UINodeRepository subnetInfo;
 
    /**Document parameters (should be re-written)*/
-   std::vector<DocParameterDataText *> textParams;
+   std::vector<ItemInfo *> textParams;
 
    /**Input for the document if used as an external node*/
-   std::vector<ParameterText *> docInputs;
+   std::vector<ItemInfo *> docInputs;
 
    /**Output for the document if used as an external node*/
-   std::vector<ParameterText *> docOutputs;
+   std::vector<ItemInfo *> docOutputs;
 
    /**Parameters for the document if used as an external node*/
-   std::vector<ParameterText *> docParams;
+   std::vector<ItemInfo *> docParams;
 
    /**File name (no path)*/
    std::string docName;
@@ -152,7 +144,7 @@ public:
 
    std::vector<UINetwork *> get_networks() {return networks;}
 
-   std::vector<DocParameterDataText *> get_textParams() {return textParams;}
+   std::vector<ItemInfo *> get_textParams() {return textParams;}
 
    virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
    

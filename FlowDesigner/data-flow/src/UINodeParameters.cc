@@ -28,7 +28,7 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
    vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
    for (unsigned int i=0;i<tmp.size();i++)
    {
-      ParameterText *newText = new ParameterText;      
+      ItemInfo *newText = new ItemInfo;      
       newText->name = tmp[i]->name;
       //FIXME: This is just a temporary kludge
       if (tmp[i]->type == "any")
@@ -39,7 +39,7 @@ UINodeParameters::UINodeParameters(UINode *_node, string type)
       newText->description = tmp[i]->description;
       textParams.insert(textParams.end(), newText);
       
-      ParameterText *newText1 = new ParameterText(*newText);
+      ItemInfo *newText1 = new ItemInfo(*newText);
       newText1->type = tmp[i]->type;
       defaultTextParams.insert(defaultTextParams.end(), newText1);
    }
@@ -53,7 +53,7 @@ UINodeParameters::~UINodeParameters()
       delete defaultTextParams[i];
 }
 
-void UINodeParameters::insertLoadedParam(ParameterText *param, string type, string value)
+void UINodeParameters::insertLoadedParam(ItemInfo *param, string type, string value)
 {
   //cerr<<"UINodeParameters::insertLoadedParam"<<endl;
 }
@@ -97,7 +97,7 @@ void UINodeParameters::load(xmlNodePtr xml_node)
 	 if (str_description)
 	   free(str_description);
 	          
-         ParameterText *param = getParamNamed(name);
+         ItemInfo *param = getParamNamed(name);
 	 if (param)
 	 {
 	    param->type = type;
@@ -169,7 +169,7 @@ void UINodeParameters::export2net(ostream &out)
    }
 }
 
-ParameterText *UINodeParameters::getParamNamed(string n)
+ItemInfo *UINodeParameters::getParamNamed(string n)
 {
    for (unsigned int i=0;i<textParams.size();i++)
       if (textParams[i]->name == n)
@@ -253,10 +253,10 @@ void UINodeParameters::updateNetParams(vector<ItemInfo *> &par) {
 }
 
 
-ParameterText *UINodeParameters::addParameterText(string name, string type,
+ItemInfo *UINodeParameters::addParameterText(string name, string type,
 						  string value, string descr)
 {
-    ParameterText *textInfo = new ParameterText;
+    ItemInfo *textInfo = new ItemInfo;
     textInfo->name = name;
     textInfo->value = value;
     textInfo->type = type;
@@ -269,7 +269,7 @@ ParameterText *UINodeParameters::addParameterText(string name, string type,
 void UINodeParameters::removeParameterText(string nameToRemove)
 {
    //ANSI C++ fix
-   vector<ParameterText *>::iterator i=textParams.begin();
+   vector<ItemInfo *>::iterator i=textParams.begin();
       while (i != textParams.end())
       {
          if ((*i)->name == nameToRemove)
@@ -291,7 +291,7 @@ ParameterSet *UINodeParameters::build(const ParameterSet &par)
 
    for (unsigned int i=0;i<textParams.size();i++)
    {
-      ParameterText *curr = textParams[i];
+      ItemInfo *curr = textParams[i];
 
       //FIXME: Shouldn't have to use const_cast
       if (curr->value != "")
@@ -311,7 +311,7 @@ void UINodeParameters::genCode(ostream &out)
    out << "   ObjectRef value;\n";
    for (unsigned int i=0;i<textParams.size();i++)
    {
-      ParameterText *curr = textParams[i];
+      ItemInfo *curr = textParams[i];
       if (curr->value != "")
       {
 	 out << "   value = ObjectParam::stringParam(\"" << curr->type << "\", \"" 
@@ -333,7 +333,7 @@ void UINodeParameters::copyParameterText(UINodeParameters *cpy) {
   textParams.resize(0);
 
   //copying all textParameters
-  vector<ParameterText *> &text_params = cpy->get_textParams();
+  vector<ItemInfo *> &text_params = cpy->get_textParams();
   
   for (unsigned int i = 0; i < text_params.size(); i++) {
     

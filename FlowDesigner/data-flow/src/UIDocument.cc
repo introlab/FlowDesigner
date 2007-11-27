@@ -116,7 +116,7 @@ string UIDocument::getDescription(const string &type)
 
 void UIDocument::addParameterText(string name, string value, string type)
 {
-    DocParameterDataText *textInfo = new DocParameterDataText;
+    ItemInfo *textInfo = new ItemInfo;
     textInfo->name = name;
     textInfo->value = value;
     textInfo->type = type;
@@ -286,7 +286,7 @@ void UIDocument::loadXML(xmlNodePtr root)
    //textParams.resize(tmp.size());
    for (unsigned int i=0;i<tmp.size();i++)
      {   
-        DocParameterDataText *newParam = new DocParameterDataText;
+        ItemInfo *newParam = new ItemInfo;
         newParam->name = string (tmp[i]->name);
         textParams.insert(textParams.end(), newParam);
         //textParams[i]->name=tmp[i];

@@ -6,6 +6,7 @@
 #include "UITerminal.h"
 #include <libxml/tree.h>
 #include "UILink.h"
+#include "UIProbeLink.h"
 #include "Node.h"
 #include "UINetTerminal.h"
 #include "UINote.h"
@@ -96,7 +97,7 @@ void UINetwork::load (xmlNodePtr net)
    node = net->children;
    while (node != NULL)
    {
-      if (string((char*)node->name) == "Link")
+      if (string((char*)node->name) == "Link" || string((char*)node->name) == "ProbeLink")
       {
 	 char *str_fromnode = (char *)xmlGetProp(node, (xmlChar *)"from");
 	 char *str_out = (char *)xmlGetProp(node, (xmlChar *)"output");
@@ -491,7 +492,7 @@ UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
 UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str)
 {
    //cerr << "UINetwork::newLink\n";
-   return new UILink (_from, _to, str);
+   return new UIProbeLink (_from, _to, str);
 }
 
 UINote *UINetwork::newNote(const std::string &text, double x, double y, bool visible) {

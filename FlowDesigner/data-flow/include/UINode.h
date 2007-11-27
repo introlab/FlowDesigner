@@ -11,27 +11,56 @@
 #include <fstream>
 #include "UINetTerminal.h"
 #include <set>
+#include <list>
 
 namespace FD {
 
+///Forward declarations
 class UINetwork;
-//class GUINetwork;
 class UINodeParameters;
 class UILink;
 class ItemInfo;
-
 class UINetTerminal;
 class UITerminal;
-
 class Node;
 class ParameterSet;
 
 /** UINode is the represantation used to store data for any node, 
     either in the GUI or in batch mode. A UINode cannot perform any
     operation but can be used to build a real Node.
-    @author Jean-Marc Valin
+    @author Jean-Marc Valin, Dominic Letourneau
 */
 class UINode {
+	
+public:
+	
+	/**Observer interface, event aggregator
+	   Default implementation will call global handler
+	*/
+	class UINodeObserverIF 
+	{
+		public:
+			//Global event for changes
+			virtual void notifyChanged(const UINode* node) {}
+			
+			//Terminal removed
+			virtual void notifyTerminalRemoved(const UINode *node, const UITerminal* terminal) {notifyChanged(node);}
+			
+			//Terminal Added
+			virtual void notifyTerminalAdded(const UINode *node, const UITerminal* terminal) {notifyChanged(node);}
+						
+			//Parameters changed
+			virtual void notifyParametersChanged(const UINode *node, const UINodeParameters *params) {notifyChanged(node);}
+			
+			//Destroyed
+			virtual void notifyDestroyed(const UINode *node) {notifyChanged(node);}
+			
+			//Position changed
+			virtual void notifyPositionChanged(const UINode* node, double x, double y) {notifyChanged(node);}
+	};
+	
+	
+	
 protected:
    /**Not too sure what I was thinking when I wrote that*/
    bool destroyed;
@@ -59,10 +88,12 @@ protected:
 
    /**Pointers to all the outputs*/
    std::vector <UITerminal *> outputs;
+   
+   /** Event observers */
+   std::list<UINodeObserverIF*> m_observers;
 
    /**All the node parameters*/
    UINodeParameters *parameters;
-
 
 public:
 
@@ -84,7 +115,12 @@ public:
    /**Returns the corresponding network*/
    UINetwork * getNetwork() {return net;}
 
-
+   /** Register an event observer */
+   void registerEvents(UINodeObserverIF *observer);
+   
+   /** Unregister for events */
+   void unregisterEvents(UINodeObserverIF *observer);
+   
    /**Rename a node (when network included as a subnet)*/
    virtual void rename (const std::string &newName);
 
@@ -108,20 +144,10 @@ public:
    UITerminal *getOutputNamed(std::string n);
 
    /**Returns the node position*/
-   void getPos (double &xx, double &yy)
-   {
-      xx=x;
-      yy=y;
-   }
+   void getPos (double &xx, double &yy);
    
    /**Changes the position (not too sure it should be used*/
-   void setPos (double new_x, double new_y)
-   {
-      x = new_x;
-      y = new_y;
-   }
-
-  
+   void setPos (double new_x, double new_y);
 
    void setNodeParameters(UINodeParameters *params);   
    
@@ -129,19 +155,16 @@ public:
 
    void updateNetParams(std::vector<ItemInfo *> &params);
 
-//   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
-
-   virtual void notifyError(const std::string &message) {}
-
-   virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
+   //virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
    
    virtual UITerminal* newTerminal(ItemInfo *_info, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
-					  const std::string &_objType="any", const std::string &_description="No description available");
+   				  const std::string &_objType="any", const std::string &_description="No description available");
 
    virtual UINodeParameters *newNodeParameters (UINode *_node, std::string type);
  
+   //TODO : This should not be here, keeping it temporarily for the GNOME GUI
    virtual void redraw() {}
 
    Node *build(const ParameterSet &params);
@@ -149,14 +172,14 @@ public:
    /**Generate C++ code for building the document, instead of using XML*/
    void genCode(std::ostream &out, int &id, std::set<std::string> &nodeList);
 
-   std::vector<UITerminal *> getInputs() {return inputs;}
-   std::vector <UITerminal *> getOutputs() {return outputs;}
-   UINodeParameters * getParameters() {return parameters;}
-   std::string getDescription() {return description;}
+   std::vector<UITerminal *> getInputs();
+   std::vector <UITerminal *> getOutputs();
+   UINodeParameters * getParameters();
+   std::string getDescription();
    std::string getComments() const;
 
    friend class UINetwork;
-//   friend GUINetwork;
+
 };
 
 }//namespace FD

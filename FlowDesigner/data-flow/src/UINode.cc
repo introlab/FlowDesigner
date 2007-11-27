@@ -124,11 +124,19 @@ UINode::~UINode()
    if (!destroyed)
    {
       for (unsigned int i=0;i<inputs.size();i++)
-	 delete inputs[i];
+    	  delete inputs[i];
       for (unsigned int i=0;i<outputs.size();i++)
-	 delete outputs[i];
+    	  delete outputs[i];
+      
       delete parameters;
       net->removeNode(this);
+      
+      //Notify observers
+      for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+      {
+    	  (*iter)->notifyDestroyed(this);
+      }
+      
    }
 }
 
@@ -165,29 +173,52 @@ UITerminal *UINode::getOutputNamed(string n)
 void UINode::setNodeParameters(UINodeParameters *params)
 {
     parameters = params;
+    
+    //Notify observers
+    for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    {
+  	  (*iter)->notifyParametersChanged(this,parameters);
+    }
 }
 
 void UINode::insertNetParams(vector<ItemInfo *> &params)
 {
    parameters->insertNetParams(params);
+   
+   //Notify observers
+   for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+   {
+ 	  (*iter)->notifyParametersChanged(this,parameters);
+   }
 }
 
 void UINode::updateNetParams(vector<ItemInfo *> &params) {
+	
   parameters->updateNetParams(params);
+  
+  //Notify observers
+  for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+  {
+	  (*iter)->notifyParametersChanged(this,parameters);
+  }
+  
 }
 
+/*
 UILink *UINode::newLink (UITerminal *_from, UITerminal *_to)
 {
 
   //cerr<<"UINode::newLink\n";
   return new UILink (_from, _to);
 }
+*/
 
 UINetTerminal *UINode::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name,
 				       const string &_objType, const string &_description) {
   //cerr<<"UINode::newNetTerminal\n";
   return new UINetTerminal (_terminal, _type, _name, _objType, _description);
 }
+
 
 UINodeParameters *UINode::newNodeParameters (UINode *_node, string type)
 {
@@ -248,19 +279,18 @@ void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
    info.name = _name;
    info.type = _objType;
    info.description = _description;
+   UITerminal *terminal = NULL;
    
    switch (_type) {
 
    case UINetTerminal::INPUT:
-
-      inputs.insert(inputs.end(), newTerminal (&info, this, true, x1, y1));
-    
+	  terminal = newTerminal (&info, this, true, x1, y1);
+      inputs.insert(inputs.end(), terminal);
       break;
 
    case UINetTerminal::OUTPUT:
-
-      outputs.insert(outputs.end(), newTerminal (&info, this, false, x2,y2 ));
-    
+	  terminal = newTerminal (&info, this, false, x2,y2);
+      outputs.insert(outputs.end(), terminal);  
       break;
 
    default:
@@ -268,6 +298,15 @@ void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
 
    }
   
+   //Notify observers
+   if (terminal)
+   {
+	   for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+   	   {
+   		   (*iter)->notifyTerminalAdded(this,terminal);
+   	   }
+   }
+   
    redraw();
 }
 
@@ -275,6 +314,9 @@ void UINode::addTerminal(const string &_name, UINetTerminal::NetTermType _type, 
 void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _type)
 {
    vector<UITerminal*>::iterator term;
+   
+   UITerminal *terminal = NULL;
+   
    switch (_type) {
       
    case UINetTerminal::INPUT:
@@ -282,7 +324,7 @@ void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _typ
       term = find(inputs.begin(), inputs.end(), getInputNamed(_name));
       if (term!=inputs.end())
       {
-         delete *term;
+         terminal = *term;
          inputs.erase(term);
       }
 
@@ -293,7 +335,7 @@ void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _typ
       term = find(outputs.begin(), outputs.end(), getOutputNamed(_name));
       if (term!=outputs.end())
       {
-         delete *term;
+         terminal = *term;
          outputs.erase(term);
       }
 
@@ -303,6 +345,18 @@ void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _typ
       break;
       
    }
+   
+   //Notify terminal deleted and delete it
+   if (terminal)
+   {
+	   for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	   {
+		   (*iter)->notifyTerminalRemoved(this,terminal);
+	   }
+	   
+	   delete terminal;
+   }
+   
    redraw();
 }
 
@@ -372,5 +426,64 @@ UITerminal* UINode::newTerminal(ItemInfo *_info, UINode *_node, bool _isInput, d
 {
 	return new UITerminal(_info,_node,_isInput,_x,_y);
 }
+
+
+void UINode::registerEvents(UINodeObserverIF *observer)
+{
+	m_observers.push_back(observer);
+}
+
+void UINode::unregisterEvents(UINodeObserverIF *observer)
+{
+	for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		if (*iter == observer)
+		{
+			m_observers.erase(iter);
+			break;
+		}
+	}
+}
+
+/**Returns the node position*/
+void UINode::getPos (double &xx, double &yy)
+{
+   xx=x;
+   yy=y;
+}
+
+/**Changes the position (not too sure it should be used*/
+void UINode::setPos (double new_x, double new_y)
+{
+   x = new_x;
+   y = new_y;
+   
+   //Notify observers for position change
+   for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+   {
+	   (*iter)->notifyPositionChanged(this,x,y);
+   }   
+}
+
+std::vector<UITerminal *> UINode::getInputs() 
+{
+	return inputs;
+}
+
+std::vector <UITerminal *> UINode::getOutputs() 
+{
+	return outputs;
+}
+
+UINodeParameters * UINode::getParameters() 
+{
+	return parameters;
+}
+
+std::string UINode::getDescription() 
+{
+	return description;
+}
+
 
 }//namespace FD

@@ -15,10 +15,26 @@ class UINetwork;
 
 class ItemInfo {
   public:
-        std::string name;
+	  
+	//TODO : those fields should be merged in the map.
+    std::string name;
 	std::string type;
 	std::string value;
 	std::string description;
+	
+	///This will return a reference to the string
+	///Be careful
+	std::string operator[](const std::string &key)
+	{
+		return infomap[key];
+	}
+	
+	bool keyExists(const std::string &key)
+	{
+		return (infomap.find(key) != infomap.end());
+	}
+	
+	std::map<std::string,std::string> infomap;
 	
 	ItemInfo() : type("any"), value(""), description("No description available") {}
 };

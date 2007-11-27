@@ -42,7 +42,7 @@ namespace FD
 		void calculate(int output_id, int count, Buffer &out)
    		{
 			//GET INPUT
-      			ObjectRef ReturnValue = getInput(m_inputID, count);
+      		ObjectRef ReturnValue = getInput(m_inputID, count);
 			
 			//NOTIFY OBSERVERS
 			for (unsigned int i = 0; i < m_observers.size(); i++)
@@ -74,10 +74,8 @@ namespace FD
 			}
 
 			//INPUT = OUTPUT
-      			out[count] = ReturnValue;
+      		out[count] = ReturnValue;
   		 }
-
-
 	}; 
 
 
@@ -144,22 +142,20 @@ namespace FD
 		{
 			probeNode->registerIF(m_observers[i]);
 		}
-		
-
+	
 		//CONNECT NODES PROPERLY
 		if (!to || !from)
-		throw new GeneralException("Link is not connected at both endes", __FILE__, __LINE__);
+			throw new GeneralException("Link is not connected at both ends", __FILE__, __LINE__);
+		
 		if (!to->getNode() || !from->getNode())
-		throw new GeneralException("Cannot find node associated with link", __FILE__, __LINE__);
-
+			throw new GeneralException("Cannot find node associated with link", __FILE__, __LINE__);
+		
 		//ADD PROBE IN THE MIDDLE OF STANDARD NODES!!!
 		net->connect(to->getNode()->getName(), to->getName(), 
-			"OUTPUT", nodename.str());		
+			nodename.str(),"OUTPUT");		
 
 		net->connect(nodename.str(), "INPUT", 
 			from->getNode()->getName(), from->getName());
-		
-	
 	}	
 
 
