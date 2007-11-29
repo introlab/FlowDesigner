@@ -3,12 +3,10 @@
 #ifndef UITERMINAL_H
 #define UITERMINAL_H
 
-
-
 #include <vector>
 #include <string>
 #include <fstream>
-
+#include <list>
 
 namespace FD {
 
@@ -45,6 +43,7 @@ protected:
    UINetTerminal *netTerminal;
 
 public:
+	
    UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual ~UITerminal();
@@ -55,14 +54,6 @@ public:
 
    /**returns the position in world coord*/
    virtual void getPos(double &wx, double &wy) const
-   {
-      wx=x;
-      wy=y;
-      //gnome_canvas_item_i2w(item->parent, &wx, &wy);
-   }
-
-   /**returns the position in item coord*/
-   void getItemPos(double &wx, double &wy) const 
    {
       wx=x;
       wy=y;

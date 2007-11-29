@@ -20,12 +20,6 @@ SET(QTFLOW_SRCS
 	QtRunContext.cc
 	QtNodeParameters.cc
 	QtProcessWindow.cc
-	UIDocumentController.cc
-	UINetworkController.cc
-	UINodeController.cc
-	UITerminalController.cc
-	UINetTerminalController.cc
-	UILinkController.cc
 )
 SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
@@ -47,12 +41,6 @@ SET(QTFLOW_HEADERS
 	../include/QtRunContext.h
 	../include/QtNodeParameters.h
 	../include/QtProcessWindow.h
-	../include/UIDocumentController.h
-	../include/UINetworkController.h
-	../include/UINodeController.h
-	../include/UITerminalController.h
-	../include/UINetTerminalController.h
-	../include/UILinkController.h
 )
 
 #This will generate moc_* for Qt
@@ -84,14 +72,6 @@ install(TARGETS libfdqttcp-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP)
 #INSTALLING .def file  
 INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src OUTPUT_FILE libfdqttcp.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDQTTCP_SRCS})" )  
 INSTALL( FILES ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src/libfdqttcp.def DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP/)
-
-
-
-
-
-
-
-
 
 
 install(TARGETS flowdesigner DESTINATION bin)

@@ -31,6 +31,8 @@ namespace FD
 	    QtTerminal(QtNode *node, std::string name="", int type = INPUT ,float x = 0, float y = 0);
 	    
 	    QtTerminal(QtNode *node, UITerminal *uiTerminal);
+	    
+	    virtual ~QtTerminal();
         
 	    int getType(){return m_type;}
 	    

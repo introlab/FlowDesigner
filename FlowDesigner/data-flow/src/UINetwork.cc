@@ -294,16 +294,21 @@ UINetwork::~UINetwork()
 	delete terminals[i];
       for (unsigned int i=0;i<m_notes.size();i++)
 	delete m_notes[i];
+      
+      //send signal
+      for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+      {
+    	  (*iter)->notifyDestroyed(this);
+      }
+      
    }
 }
 
 UINode *UINetwork::loadNode (xmlNodePtr node)
 {
-   //return NULL;
    //cerr << "adding node in UINetwork::loadNode\n";
    UINode *theNewNode = newNode (this, node);
-   //cerr << "node created\n";
-   nodes.insert(nodes.end(), theNewNode);
+   addNode(theNewNode);   
    return theNewNode;
 }
 
@@ -318,6 +323,12 @@ UINode *UINetwork::getNodeNamed(string n)
 void UINetwork::addNode(UINode *node)
 {
     nodes.insert(nodes.end(), node);
+    
+    //send signal
+    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    {
+  	  (*iter)->notifyNodeAdded(this,node);
+    }
 }
 
 
@@ -331,8 +342,15 @@ void UINetwork::removeNode(UINode *node)
    {
       if (*i == node)
       {
-	 nodes.erase(i);
-	 break;
+    	  nodes.erase(i);
+	 
+	    //send signal
+	    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	    {
+	  	  (*iter)->notifyNodeRemoved(this,node);
+	    }
+	    
+	    break;
       }
       ++i;
    }
@@ -347,8 +365,15 @@ void UINetwork::removeNode(UINode *node)
 
 void UINetwork::addLink(UILink *link)
 {
-   links.insert(links.end(), link);
+   links.insert(links.end(), link); 
    doc->setModified();
+   
+   //send signal
+   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+   {
+ 	  (*iter)->notifyLinkAdded(this,link);
+   }
+   
 }
 
 void UINetwork::removeLink(UILink *link) 
@@ -359,8 +384,13 @@ void UINetwork::removeLink(UILink *link)
    {
       if (*i == link)
       {
-	 links.erase(i);
-	 break;
+    	   //send signal
+    	   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    	   {
+    	 	  (*iter)->notifyLinkRemoved(this,link);
+    	   }
+    	  links.erase(i);
+    	  break;
       }
       ++i;
    }
@@ -808,8 +838,14 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 void UINetwork::addTerminal(UINetTerminal *term) 
 {
    terminals.insert(terminals.end(), term);
+   
+   //send signal
+   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+   {
+ 	  (*iter)->notifyNetTerminalAdded(this,term);
+   }
    //Shouldn't do it here because at this point of the netTerminal creation, there's no name assigned yet.
-   //interfaceChangeNotify();
+   //();
 }
 
 void UINetwork::removeTerminal(UINetTerminal *term) 
@@ -819,8 +855,13 @@ void UINetwork::removeTerminal(UINetTerminal *term)
    {
       if (*i == term)
       {
-	 terminals.erase(i);
-	 break;
+    	   //send signal
+    	   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    	   {
+    	 	  (*iter)->notifyNetTerminalRemoved(this,term);
+    	   }
+    	  terminals.erase(i);
+    	  break;
       }
       ++i;
    }
@@ -872,6 +913,12 @@ void UINetwork::rename(string newName)
 	
       }
     }
+  }
+  
+  //send signal
+  for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+  {
+	  (*iter)->notifyNameChanged(this,newName);
   }
 
 }
@@ -936,6 +983,13 @@ void UINetwork::addNote(UINote *note) {
 
   if (note) {
     m_notes.push_back(note);
+    
+    //send signal
+    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+    {
+  	  (*iter)->notifyNoteAdded(this,note);
+    }
+    
   }
 }
 
@@ -956,6 +1010,13 @@ void UINetwork::removeNote(UINote *note) {
       }    
     }
     if (found) {
+    	
+	   //send signal
+	   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	   {
+	 	  (*iter)->notifyNoteRemoved(this,note);
+	   }	
+    	
       delete note;
     }
     else {
@@ -966,9 +1027,82 @@ void UINetwork::removeNote(UINote *note) {
     //update the note vector
     m_notes = temp_vect;
   }
+}
+
+std::string UINetwork::getName() const
+{
+	return name;
+}
+
+std::string UINetwork::getDescription() const
+{
+	return m_description;
+}
+
+void UINetwork::setDescription(const std::string & description)
+{
+	m_description = description;
+	
+   //send signal
+   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+   {
+ 	  (*iter)->notifyDescriptionChanged(this,m_description);
+   }
+	
+}
+
+UINetwork::Type UINetwork::getType() const
+{
+	return type;
+}
+
+UIDocument* UINetwork::getDocument() 
+{
+	return doc;
+}
+
+bool UINetwork::isIter() 
+{
+	return type==iterator;
+}
+
+std::vector<UINode *> UINetwork::getNodes() 
+{
+	return nodes;
+}
+
+std::vector<UILink *> UINetwork::getLinks() 
+{
+	return links;
+}
+
+std::vector<UINetTerminal *> UINetwork::getTerminals() 
+{
+	return terminals;
+}
+
+///Direct access to the note vector
+std::vector<UINote*> UINetwork::getNotes() 
+{
+	return m_notes;
+}
 
 
+void UINetwork::registerEvents(UINetworkObserverIF *observer)
+{
+	m_observers.push_back(observer);
+}
 
+void UINetwork::unregisterEvents(UINetworkObserverIF *observer)
+{
+	for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+	{
+		if (*iter == observer)
+		{
+			m_observers.erase(iter);
+			break;
+		}
+	}
 }
    
 }//namespace FD

@@ -16,10 +16,12 @@ namespace FD
         public:
             
             QtNetTerminal(QtTerminal* parent, UINetTerminal *uiNetTerminal);
+            virtual ~QtNetTerminal();
+      
                                                                       
         protected:
         
-        
+        	virtual void mousePressEvent ( QGraphicsSceneMouseEvent *event );
             UINetTerminal *m_uiNetTerminal;
     };    
 

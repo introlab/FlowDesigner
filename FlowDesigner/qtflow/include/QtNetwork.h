@@ -5,9 +5,8 @@
 
 
 #include <QtGui/QGraphicsView>
-
+#include "UINetwork.h"
 #include <map>
-
 #include <QMenu>
 
 namespace FD
@@ -16,29 +15,68 @@ namespace FD
     class QtNode;
     class QtLink;
     class QtTerminal;
-    class UINetworkController;
+    class QtDocument;
+    class UINetwork;
     class UINode;
-    class UINodeController;
     class UILink;
-    class UILinkController;
+
     
-    class QtNetwork : public QGraphicsView
+    class QtNetwork : public QGraphicsView, public UINetwork::UINetworkObserverIF
     {
         Q_OBJECT;
         
         public:
         
-        QtNetwork(UINetworkController *uiNetwork);
+        QtNetwork(QtDocument *parent, UINetwork *uiNetwork);
         const std::string getName() const;
 
         //Node
-        QtNode* addNode(UINodeController* node);
+        QtNode* addNode(UINode* node);
         void removeNode(QtNode* node);
         
         //Link
-        QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILinkController* link);
+        QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILink* link);
+        QtLink* addLink(UILink* uiLink);
+        
+        
+        
         void addQtLink(QtLink *link);
-        void removeLink(QtLink* link);        
+        void removeLink(QtLink* link);  
+        
+        //Events
+		
+		//Node removed
+		virtual void notifyNodeRemoved(const UINetwork *net, const UINode* node);
+		
+		//Node added
+		virtual void notifyNodeAdded(const UINetwork *net, const UINode* node);
+		
+		//Link removed
+		virtual void notifyLinkRemoved(const UINetwork *net, const UILink* link);
+		
+		//Link added
+		virtual void notifyLinkAdded(const UINetwork *net, const UILink* link);
+
+		//Note removed
+		virtual void notifyNoteRemoved(const UINetwork *net, const UINote* note);
+		
+		//Note added
+		virtual void notifyNoteAdded(const UINetwork *net, const UINote* note);
+		
+		//NetTerminal removed
+		virtual void notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal);
+		
+		//NetTerminal added
+		virtual void notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal) ;
+		
+		//Name changed
+		virtual void notifyNameChanged(const UINetwork *net, const std::string &name);
+		
+		//Description changed
+		virtual void notifyDescriptionChanged(const UINetwork *net, const std::string &description);
+		
+		//Destroyed
+		virtual void notifyDestroyed(const UINetwork *net);
         
         protected: 
         
@@ -54,14 +92,13 @@ namespace FD
         
         void scaleView(qreal scaleFactor);
         
-        UINetworkController *m_uiNetwork;
+        QtDocument *m_doc;
         
-        //std::vector<QtNode*> m_nodes;
-        //std::vector<QtLink*> m_links;
-        //std::map<UINodeController*,QtNode*> m_nodeMap;
-        std::map<QtNode*, UINodeController*> m_nodeMap;
-        //std::map<UILink*,QtLink*> m_linkMap;
-        std::map<QtLink*, UILinkController*> m_linkMap;
+        UINetwork *m_uiNetwork;
+        
+        std::map<UINode*, QtNode*> m_nodeMap;
+        
+        std::map<UILink*, QtLink*> m_linkMap;
         
         bool isNodeExist(const QString &name);
         

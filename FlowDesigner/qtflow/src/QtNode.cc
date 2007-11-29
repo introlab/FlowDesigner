@@ -4,20 +4,16 @@
 #include "QtNetwork.h"
 #include "QtTerminal.h"
 #include "QtNodeParameters.h"
-
 #include <QRectF>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
 #include <QtGui/QGraphicsView>
-
 #include <iostream>
 #include <algorithm>
-
-
-#include "UINodeController.h"
-#include "UITerminalController.h"
+#include "UINode.h"
+#include "UITerminal.h"
 
 namespace FD
 {
@@ -59,44 +55,35 @@ namespace FD
             //boundaries.setCoords(x1-20,y1-20,x2+20,y2+20);         
             
             setRect(boundaries);
-            
-            
-            
+
             setFlag(ItemIsMovable);
             setFlag(ItemIsSelectable);
             setBrush(QBrush(QColor(0,128,0,128)));
             setZValue(1);                                   
             
-            //cerr<<"QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)"<<endl;
-            /*         
-            
-            std::vector<UITerminal *> inputs = m_uiNode->getInputs();
-            //cerr<<"inputs size : "<<inputs.size()<<endl;
-            
+            //Add input terminal
+            std::vector<UITerminal *> inputs = m_uiNode->getInputs();            
             for (unsigned int i = 0; i < inputs.size(); i++)
             {            
-                //QtTerminal *term = new QtTerminal(this,inputs[i]);                             
-                //m_inputQtTerminals.push_back(term);
-                addQtTerminal(inputs[i]);
+                addTerminal(inputs[i]);
             }                  
             
+            //Add output terminal
             std::vector <UITerminal *> outputs = m_uiNode->getOutputs();
-            //cerr<<"outputs size : "<<outputs.size()<<endl;
             for (unsigned int i =0; i< outputs.size(); i++)
             {
-                //QtTerminal *term = new QtTerminal(this,outputs[i]);
-                //m_outputQtTerminals.push_back(term);
-                addQtTerminal(outputs[i]);
-            }   
-            */      
-        } //if m_uiNode        
-        
+                addTerminal(outputs[i]);
+            }
+            
+            
+        } //if m_uiNode            
     }
     
     void QtNode::addQtLink(QtLink *edge)
     {
         edgeList << edge;
-        edge->adjust();
+        edge->adjust();   
+        connect(this,SIGNAL(positionChanged(float,float)),edge,SLOT(nodePositionChanged(float,float)));
     }
     
     void QtNode::removeQtLink(QtLink *edge)
@@ -110,8 +97,6 @@ namespace FD
         return edgeList;
     }
     
-    
-    
     QVariant QtNode::itemChange(GraphicsItemChange change, const QVariant &value)
     {
         
@@ -121,9 +106,11 @@ namespace FD
          	QPointF newPos = value.toPointF();
             
             //emit position changed signal
-            cerr<<"(EMIT) positionChanged(newPos.x(),newPos.y())"<<endl;
-            emit positionChanged(newPos.x(),newPos.y());
-            
+         	if (m_uiNode)
+         	{	
+         		m_uiNode->setPos(newPos.x(),newPos.y());
+         		emit positionChanged(newPos.x(),newPos.y());
+         	}
      	}
         
         if (change == ItemSelectedChange && scene()) 
@@ -187,19 +174,27 @@ namespace FD
             {             
                 terminal = new QtTerminal(this,uiTerminal);
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
-                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);            
-                scene()->addItem(terminal);                
+                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                            
                 terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 10 * (qreal) m_inputTerminalsMap.size());
-                m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));         
+                m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));     
+                
+                if(scene())
+                {
+                	scene()->addItem(terminal);
+                }
             }
             else
             {
                 terminal = new QtTerminal(this,uiTerminal);
-                scene()->addItem(terminal);
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
                 terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                
                 terminal->setPos(x2 + 2.5 + (xx2 - xx1),y1 + 10 * (qreal) m_outputTerminalsMap.size());
                 m_outputTerminalsMap.insert(make_pair(uiTerminal,terminal));
+
+                if(scene())
+                {
+                	scene()->addItem(terminal);
+                }
             }
             
             //This will resize the node bounding rect
@@ -235,21 +230,47 @@ namespace FD
         return terminal;
     }
     
+    /*
     void QtNode::removeTerminal(QtTerminal* terminal)
     {
         scene()->removeItem(terminal);    
     }
+    */
+    
+    void QtNode::removeTerminal(UITerminal* terminal)
+    {
+    	
+    	std::map<UITerminal*, QtTerminal*>::iterator iter;
+    	
+    	if ((iter = m_inputTerminalsMap.find(terminal)) != m_inputTerminalsMap.end())
+    	{
+    		delete iter->second;
+    		m_inputTerminalsMap.erase(iter);
+    		
+    	}
+    	else if ((iter = m_outputTerminalsMap.find(terminal)) != m_outputTerminalsMap.end())
+    	{
+    		delete iter->second;
+    		m_outputTerminalsMap.erase(iter);
+    	}
+    	
+    }
+    
     
 	//Terminal removed
 	void QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)
 	{
 		cerr<<"QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)"<<endl;
+		removeTerminal(const_cast<UITerminal*>(terminal));
+		
+		
 	}
 	
 	//Terminal Added
 	void QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal)
 	{
 		cerr<<"QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal)"<<endl;
+		addTerminal(const_cast<UITerminal*>(terminal));
 	}
 				
 	//Parameters changed
@@ -268,8 +289,31 @@ namespace FD
 	void QtNode::notifyPositionChanged(const UINode* node, double x, double y)
 	{
 		cerr<<"QtNode::notifyPositionChanged(const UINode* node, double x, double y)"<<endl;
-		setPos(x,y);
 	}
+	
+    QtTerminal* QtNode::getQtTerminal(UITerminal *term)
+    {
+    	if(term)
+    	{
+    		if (term->isInputTerminal() )
+    		{
+		    	if (m_inputTerminalsMap.find(term) != m_inputTerminalsMap.end())
+		    	{
+		    		return m_inputTerminalsMap[term];
+		    	}
+    		}
+    		else
+    		{
+    	    	if (m_outputTerminalsMap.find(term) != m_outputTerminalsMap.end())
+		    	{
+		    		return m_outputTerminalsMap[term];
+		    	}
+    		}
+    	}
+    	return NULL;
+    }
+    
+
     
 
 }//namespace FD

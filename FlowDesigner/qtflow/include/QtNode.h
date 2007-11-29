@@ -58,16 +58,16 @@ namespace FD
         
         
         QtTerminal* addTerminal(UITerminal *terminal);
-        void removeTerminal(QtTerminal* terminal);
+        void removeTerminal(UITerminal* terminal);
         
         QtNetwork* getQtNetwork() { return graph;}   
         
-        //QtTerminal* getQtTerminal(UITerminal *terminal);   
+        QtTerminal* getQtTerminal(UITerminal *term);
         
         signals:
         
         void positionChanged(float x, float y);
-        
+
         protected:
         
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);

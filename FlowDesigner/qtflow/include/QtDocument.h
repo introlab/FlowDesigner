@@ -8,7 +8,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QButtonGroup>
-#include "UINetworkController.h"
+#include "UINetwork.h"
 #include "UIDocument.h"
 
 
@@ -18,7 +18,7 @@ namespace FD
     
     //forward declaration
     class QtNetwork;
-    class UIDocumentController;
+    class UIDocument;
 	class UINetwork;
 	class QtFlowDesigner;
 	
@@ -35,7 +35,7 @@ namespace FD
         
         void save(const std::string &file);
         
-        QtNetwork* addNetwork(UINetworkController* net);
+        QtNetwork* addNetwork(UINetwork* net);
 
         void addNetwork(const QString &name, UINetwork::Type type);   
         
@@ -81,7 +81,7 @@ namespace FD
         QButtonGroup *m_buttonGroup;
         QtFlowDesigner *m_flowdesigner;
         
-        UIDocumentController *m_doc;
+        UIDocument *m_uiDoc;
         
         std::vector<QtNetwork*> m_networks;
 

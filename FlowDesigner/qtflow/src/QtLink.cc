@@ -5,7 +5,7 @@
 #include "QtNode.h"
 #include "QtTerminal.h"
 #include "UIProbeLink.h"
-#include "UILinkController.h"
+#include "UILink.h"
 #include <cmath>
 #include <iostream>
 
@@ -17,7 +17,7 @@ namespace FD
     static const double Pi = 3.14159265358979323846264338327950288419717;
     static double TwoPi = 2.0 * Pi;
     
-    QtLink::QtLink(QtTerminal * source, QtTerminal * dest, UILinkController* uiLink)
+    QtLink::QtLink(QtTerminal * source, QtTerminal * dest, UILink* uiLink)
     : m_source(source), m_dest(dest), arrowSize(10), m_uiLink(uiLink), m_penWidth(1)
     {
         //setAcceptedMouseButtons(0);
@@ -67,16 +67,8 @@ namespace FD
     {
         if (!m_source || !m_dest)
             return;
-        QPen pen;
-        if(getUILink())
-        {
-            if(getUILink()->valid())
-                pen = QPen(Qt::black, m_penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-            else
-                pen = QPen(Qt::red, m_penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        }
-        else
-            pen = QPen(Qt::darkGray, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen = QPen(Qt::black, m_penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+
         // Draw the line itself
         QLineF line(m_sourcePoint, m_destPoint);
         painter->setPen(pen);
@@ -117,5 +109,11 @@ namespace FD
         }
         return QGraphicsItem::itemChange(change, value);
     }
+    
+    void QtLink::nodePositionChanged(float x, float y)
+    {
+    	adjust();	
+    }
+    
     
 }//namespace FD

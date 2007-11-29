@@ -5,8 +5,8 @@
 #include <QtGui/QPushButton>
 #include "QtRunContext.h"
 
-#include "UIDocumentController.h"
-#include "UINetworkController.h"
+#include "UIDocument.h"
+#include "UINetwork.h"
 #include "QtFlowDesigner.h"
 #include <QProcess>
 
@@ -15,7 +15,7 @@ namespace FD
     using namespace std;
     
     QtDocument::QtDocument(QtFlowDesigner *parent, const std::string &name)
-    : QDialog(parent), m_doc(NULL), m_name(name), m_flowdesigner(parent)
+    : QDialog(parent), m_uiDoc(NULL), m_name(name), m_flowdesigner(parent)
     {
         cerr<<"QtDocument created"<<endl;      
         
@@ -47,10 +47,10 @@ namespace FD
         resize(800,600);
         
         //Create a new empty document 
-        m_doc = new UIDocumentController(name,this);	
+        m_uiDoc = new UIDocument(name);	
         
         //Register to document events
-        m_doc->registerEvents(this);
+        m_uiDoc->registerEvents(this);
                
     }      
     
@@ -75,12 +75,11 @@ namespace FD
             doc_name = fname;
         }
         
-        //m_doc = new UIDocumentController(doc_name,this);
-        m_doc->setFullPath(fname);
+        //m_uiDoc = new UIDocumentController(doc_name,this);
+        m_uiDoc->setFullPath(fname);
         
         try {
-            m_doc->load();
-            m_doc->updateView();
+            m_uiDoc->load();
             cerr<<"loading document : "<<fname<<endl;         
         } catch (BaseException *e) {
             //stringstream except;
@@ -90,7 +89,7 @@ namespace FD
             //doc->less_print ("Unknown exception caught while loading document");
             
         }
-        m_doc->resetModified();
+        m_uiDoc->resetModified();
         
     }
 
@@ -98,10 +97,10 @@ namespace FD
     
 	void QtDocument::save(const std::string &file)
 	{
-		if (m_doc)
+		if (m_uiDoc)
 		{
-			m_doc->setFullPath(file);
-			m_doc->save();
+			m_uiDoc->setFullPath(file);
+			m_uiDoc->save();
 		}
 	}
 	
@@ -110,22 +109,19 @@ namespace FD
 	{
 		cerr<<"Run clicked..."<<endl;
         
-		if (m_doc)
+		if (m_uiDoc)
 		{	
 			if (m_flowdesigner)
 			{
-				m_flowdesigner->newProcess(m_doc);			
+				m_flowdesigner->newProcess(m_uiDoc);			
 			}			
 		}
 		
 	}
 	
-	QtNetwork* QtDocument::addNetwork(UINetworkController* net)
+	QtNetwork* QtDocument::addNetwork(UINetwork* net)
 	{		
-        QtNetwork *qtnet = new QtNetwork(net);
-        
-        
-		net->setQtNetwork(qtnet);
+        QtNetwork *qtnet = new QtNetwork(this,net);
 		m_networks.push_back(qtnet);
 		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
         m_tabWidget->addTab(qtnet, net->getName().c_str());
@@ -134,12 +130,12 @@ namespace FD
     
 	void QtDocument::addNetwork(const QString &name, UINetwork::Type type)
 	{	
-        m_doc->addNetwork(name.toStdString(),type);
+        m_uiDoc->addNetwork(name.toStdString(),type);
 	}
     
     void QtDocument::tabWidgetChanged(int index)
     {
-        m_doc->updateView();
+       // m_uiDoc->updateView();
     }
     
     //Network removed
@@ -152,6 +148,9 @@ namespace FD
     void QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)
     {
     	cerr<<"QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)"<<endl;
+    	
+    	//add this network
+    	addNetwork(const_cast<UINetwork*>(net));   	
     }
     			
     //Parameters changed
@@ -164,9 +163,6 @@ namespace FD
     void QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)
     {
     	cerr<<"QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)"<<endl;
-    	
-    	
-    	
     }
 
     //Path changed

@@ -21,6 +21,7 @@ using namespace std;
 namespace FD
 {
     
+
 	QtTerminal::QtTerminal ( QtNode *node, std::string name, int type, float x, float y )
     : QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ),m_node ( node ), m_type ( type ),
     m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false )
@@ -46,6 +47,7 @@ namespace FD
 		m_label->setPos ( offset_x, offset_y );
 		setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
 	}
+	
     
     
 	QtTerminal::QtTerminal ( QtNode *node, UITerminal *uiTerminal )
@@ -80,8 +82,18 @@ namespace FD
 			m_label->setPos ( offset_x, offset_y );
 			setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
             
+			if (m_uiTerminal->getNetTerminal())
+			{
+				addNetTerminal(m_uiTerminal->getNetTerminal());
+			}
             
 		}
+	}
+	
+	QtTerminal::~QtTerminal()
+	{
+	
+		
 	}
     
 	void QtTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )
@@ -98,7 +110,7 @@ namespace FD
 				cerr<<"mousePressEvent on terminal "<<getName() <<" posx "<<pos().x() <<" posy "<<pos().y() <<endl;
 				//TODO CREATE LINK
 				m_virtualQtTerminal = new QtTerminal ( NULL,"VIRTUAL",QtTerminal::VIRTUAL );
-				//m_virtualQtTerminal->hide();
+				m_virtualQtTerminal->hide();
 				m_virtualQtTerminal->setPos ( event->scenePos() );
 				m_virtualQtLink = new QtLink ( this,m_virtualQtTerminal,NULL );
 				scene()->addItem ( m_virtualQtLink );
@@ -120,50 +132,17 @@ namespace FD
                     
 					//TODO :  LOOK FOR DUPLICATED NAMES
 					if ( ok && !name.isEmpty() )
-					{
-                        
-						if ( m_uiTerminal )
+					{  
+						if ( m_uiTerminal->isInputTerminal() )
 						{
-							UINode *myNode = m_uiTerminal->getNode();
-							if ( myNode )
-							{
-								if ( m_uiTerminal->isInputTerminal() )
-								{
-									myNode->newNetTerminal ( m_uiTerminal,UINetTerminal::INPUT,name.toStdString() );
-								}
-								else
-								{
-									myNode->newNetTerminal ( m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString() );
-								}
-							}
-						}
-						/*
-                        
-						//CREATE NET TERMINAL
-						UINetTerminal *netTerminal = NULL;
-                        
-                        
-                        
-                        
-						if (m_uiTerminal->isInputTerminal())
-						{
-                            netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::INPUT,name.toStdString());
+							UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::INPUT,name.toStdString() );
+							addNetTerminal(term);
 						}
 						else
 						{
-                            netTerminal = new UINetTerminal(m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString());
-						}
-                        
-						//CONNECT NET TERMINAL
-						m_uiTerminal->connectNetTerminal(netTerminal);
-                        
-						//CREATE GUI PART
-						cerr << "QtTerminal Scene pos x :"<<scenePos ().x() << " y:"<< scenePos().y() <<endl;
-                        
-						m_netTerminal = new QtNetTerminal(this,m_uiTerminal->getNetTerminal());
-						scene()->addItem(m_netTerminal);
-						*/
-                        
+							UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString() );
+							addNetTerminal(term);
+						}									                       
 					}
                     
 					m_linking = false;
@@ -172,18 +151,12 @@ namespace FD
 			}
             else if ( event->modifiers() == Qt::ControlModifier )
 			{
-				cerr<<"**** 1 ****"<<endl;
                 if ( m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL && !m_uiTerminal->isInputTerminal())
-				{
-                    cerr<<"**** 2 ****"<<endl;
-                    UINode *myNode = m_uiTerminal->getNode();
-                    if ( myNode )
-                    {                        
-                        cerr<<"**** 3 ****"<<endl;
-                        myNode->newNetTerminal( m_uiTerminal,UINetTerminal::CONDITION,"CONDITION");                        
-                    }
+				{              
+                	UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::CONDITION,"CONDITION");  
+                	addNetTerminal(term);
                 }
-                cerr<<"**** 4 ****"<<endl;
+ 
                 m_linking = false;
                 event->accept();
             }
@@ -202,32 +175,28 @@ namespace FD
             
             //TERMINAL NEAR BY?
             if ( destinationQtTerminal )
-            {
-                cerr<<"found terminal"<<destinationQtTerminal->getName() <<endl;
-                
-                //QtNode* destinationNode = destinationQtTerminal->getQtNode();
-                
-                //QtNode* sourceNode = m_virtualQtLink->get
-                
+            {                
                 QtTerminal *sourceQtTerminal = m_virtualQtLink->sourceQtTerminal();
                 
                 if (sourceQtTerminal->getType() !=
                     destinationQtTerminal->getType())
                 {
-                    
-                    cerr<<"TODO : CALL MODEL"<<endl;
                     if (sourceQtTerminal->getType() == INPUT)
                     {
-                        emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
-                        m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
+                    	
+                    	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
+                    	m_uiTerminal->getNode()->getNetwork()->addLink(link);
+                        //emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
+                        //m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
                     }
                     else
                     {   
-                        emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
-                        m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
+                    	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
+                    	m_uiTerminal->getNode()->getNetwork()->addLink(link);
+                        //emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
+                        //m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
                         
                     }
-                    
                 }
             }
             
@@ -263,7 +232,11 @@ namespace FD
     QtNetTerminal* QtTerminal::addNetTerminal ( UINetTerminal *netTerminal )
     {
         QtNetTerminal* myNetTerminal = new QtNetTerminal ( this,netTerminal );
-        scene()->addItem ( myNetTerminal );
+        if (scene())
+        {
+        	scene()->addItem ( myNetTerminal );
+        }
+        
         return myNetTerminal;
     }
     

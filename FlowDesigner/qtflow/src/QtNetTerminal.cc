@@ -15,10 +15,7 @@ namespace FD
     {
 
         if (m_uiNetTerminal)
-        {
-		
-			cerr << "valid net terminal  : "<<m_uiNetTerminal<<endl;
-		
+        {		
             setPlainText(m_uiNetTerminal->getName().c_str());
             //QFont myfont(font());
                         
@@ -26,19 +23,19 @@ namespace FD
             
             float width = boundaries.width();
 			
-			cerr <<"width :  "<<boundaries.width()<<" height : "<<boundaries.height()<<endl;
+			//cerr <<"width :  "<<boundaries.width()<<" height : "<<boundaries.height()<<endl;
             
 			
 			//QGraphicsRectItem *item = new QGraphicsRectItem(QRectF(0,0,500.0,500.0),parent);
 			//item->setBrush(QBrush(QColor(255,0,0,128)));
 			
-			cerr << "QtNetTerminal Scene pos x :"<<scenePos ().x() << " y:"<< scenePos().y() <<endl;
+			//cerr << "QtNetTerminal Scene pos x :"<<scenePos ().x() << " y:"<< scenePos().y() <<endl;
 			
 			
             switch(m_uiNetTerminal->getType())
             {
                 case UINetTerminal::INPUT :
-                    setDefaultTextColor( QColor(0,0,0));
+                    setDefaultTextColor( QColor(255,0,0,255));
                     setPos(-width -10,0);
                     break;
                                                            
@@ -53,11 +50,31 @@ namespace FD
                     setPos(10,0);               
                     break;                              
             }
-			cerr << "IS VISIBLE :"<<isVisible()<<endl;
+			
             //setFont(myfont);     
              
         }         
 
     }
+    
+    QtNetTerminal::~QtNetTerminal()
+    {
+    	if (m_uiNetTerminal)
+    	{
+    		delete m_uiNetTerminal;
+    	}
+    }
+    
+	void QtNetTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )
+	{
+		if ( event->button() == Qt::LeftButton)
+		{
+			if ( event->modifiers() == Qt::ShiftModifier )
+			{
+				event->accept();
+				delete this;	
+			}
+		}
+	}
 
 }//namespace FD

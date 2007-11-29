@@ -13,13 +13,15 @@ namespace FD
     
     class QtNode;
     class QtTerminal;
-    class UILinkController;
+    class UILink;
     
-    class QtLink : public QGraphicsItem
+    class QtLink : public QObject, public QGraphicsItem
     {
         
+    	Q_OBJECT;
+    	
         public:
-        QtLink(QtTerminal *source, QtTerminal *dest, UILinkController* uiLink);
+        QtLink(QtTerminal *source, QtTerminal *dest, UILink* uiLink);
         ~QtLink();
         
         QtTerminal *sourceQtTerminal() const {return m_source;}
@@ -30,10 +32,15 @@ namespace FD
         
         void adjust();
         
-        UILinkController* getUILink() {return m_uiLink;}
+        UILink* getUILink() {return m_uiLink;}
         
         enum { Type = UserType + 2 };
         int type() const { return Type; }
+        
+        
+        public slots:
+        
+        void nodePositionChanged(float x, float y);
         
         protected:
         QRectF boundingRect() const;
@@ -46,7 +53,7 @@ namespace FD
         QPointF m_destPoint;      
         QtTerminal *m_source;
         QtTerminal *m_dest;
-        UILinkController *m_uiLink;
+        UILink *m_uiLink;
         qreal arrowSize;
         
         qreal m_penWidth;

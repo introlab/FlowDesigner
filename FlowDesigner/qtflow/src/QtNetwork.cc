@@ -16,9 +16,9 @@
 
 #include <math.h>
 #include "QtTerminal.h"
-#include "UINetworkController.h"
-#include "UINodeController.h"
-#include "UILinkController.h"
+#include "UINetwork.h"
+#include "UINode.h"
+#include "UILink.h"
 #include "UINodeRepository.h"
 #include "UIDocument.h"
 #include <iostream>
@@ -29,8 +29,8 @@ namespace FD
     
     using namespace std;
     
-    QtNetwork::QtNetwork(UINetworkController *uiNetwork)
-    : m_uiNetwork(uiNetwork)
+    QtNetwork::QtNetwork(QtDocument *doc, UINetwork *uiNetwork)
+    : m_doc(doc), m_uiNetwork(uiNetwork)
     {
         //Creating graphics scene
         QGraphicsScene* scene = new QGraphicsScene(this);
@@ -40,26 +40,24 @@ namespace FD
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
         setDragMode( QGraphicsView::RubberBandDrag );
-		/*
+		
         if (m_uiNetwork)
         {
             
-            //PROCESS NODES
+            //ADD NODES
             std::vector<UINode *> nodes = m_uiNetwork->getNodes();
-            cerr<<"QtNetwork::QtNetwork  nodes found : "<<nodes.size()<<endl;
             for (unsigned int i = 0; i < nodes.size(); i++)
             {
-                QtNode *node = new QtNode(this,nodes[i]);
-                scene->addItem(node);
-                m_nodeMap.insert(make_pair(nodes[i],node));
-                //m_nodes.push_back(node);
+            	addNode(nodes[i]);
             }
-            
+
             //PROCESS LINKS
             std::vector<UILink *> links = m_uiNetwork->getLinks();
-            cerr<<"QtNetwork::QtNetwork  links found : "<<links.size()<<endl;
             for (unsigned int i = 0; i < links.size(); i++)
             {
+
+            	addLink(links[i]);
+            	/*
                 //CAN WE DO BETTER?
                 UINode *fromNode = links[i]->getFromTerminal()->getNode();
                 UINode *destNode = links[i]->getToTerminal()->getNode();
@@ -74,29 +72,29 @@ namespace FD
                 dest->addQtLink(link);
                 scene->addItem(link);
                 m_linkMap.insert(make_pair(links[i],link));
+				*/
             }
             
             
-            //TODO PROCCESS PARAMETERS
+            //TODO PROCCESS NETWORK PARAMETERS
             
-            */
+           
             
-            //UPDATE SCENE RECT
-            /*QRectF bbox = scene->itemsBoundingRect();
-            qreal x1,y1,x2,y2;
-            bbox.getCoords(&x1,&y1,&x2,&y2);
-            bbox.setCoords(x1 - 100, y1 - 100, x2 + 100, y2 + 100);
-            scene->setSceneRect(bbox);
-            */
-            /*
+            
+            //register events
+            m_uiNetwork->registerEvents(this);
+
         }
 		else {
 			cerr<<"No UINetworkController defined"<<endl;
 		}
-        */
+        
         //setDragEnabled(true);
         //setAcceptDrops(true);
         //setDropIndicatorShown(true)
+        
+        
+        
         
         scale(1.0, 1.0);
         setMinimumSize(400, 400);
@@ -142,6 +140,7 @@ namespace FD
                 int nbSelectedItems = scene()->selectedItems().size();                
                 while(scene()->selectedItems().size()!=0)
                 {
+                	/*
                     QtNode * selectNode = qgraphicsitem_cast<QtNode *>(scene()->selectedItems()[0]);  
                     if(selectNode)
                         m_uiNetwork->removeNode( m_nodeMap[selectNode] );
@@ -154,7 +153,7 @@ namespace FD
                             m_uiNetwork->removeLink( m_linkMap[selectLink] );
                         }
                     }
-                    
+                    */
                 }
                 break;
             }
@@ -172,8 +171,10 @@ namespace FD
         menu->setTitle(tr("SubNetwork")); 
         for( unsigned int i=0; i < network.size(); i++ )            
         {
-            menu->addAction( new QAction(network[i]->getName().c_str(), this) );
-            
+        	if (network[i]->getName() != m_uiNetwork->getName())
+        	{
+        		menu->addAction( new QAction(network[i]->getName().c_str(), this) );
+        	}
         }
         
         connect(menu, SIGNAL(triggered(QAction*)) ,this, SLOT( menuTriggered(QAction*) ) ); 
@@ -187,9 +188,7 @@ namespace FD
     
     void QtNetwork::menuTriggered(QAction* action)
     {
-        
-        m_uiNetwork->updateView( dynamic_cast<QtDocument*>(this->parentWidget()) );
-        
+     
         std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
         QString name;
         static int number = 0;
@@ -272,14 +271,14 @@ namespace FD
     //Drag & Drop
     void QtNetwork::dragEnterEvent(QDragEnterEvent *event)
     {
-        cerr<<"QtNetwork::dragEnterEvent(QDragEnterEvent *event)"<<endl;      
+        //cerr<<"QtNetwork::dragEnterEvent(QDragEnterEvent *event)"<<endl;      
         event->accept();         
     }
     
     void QtNetwork::dragMoveEvent(QDragMoveEvent *event)
     {
-        cerr<<"QtNetwork::dragMoveEvent(QDragMoveEvent *event)";
-		cerr<<" x: "<<event->pos().x()<<" y:"<<event->pos().y()<<endl;
+        //cerr<<"QtNetwork::dragMoveEvent(QDragMoveEvent *event)";
+		//cerr<<" x: "<<event->pos().x()<<" y:"<<event->pos().y()<<endl;
         event->accept();         
     }
     
@@ -287,9 +286,9 @@ namespace FD
     {
     	
     	
-        cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;	
-		cerr<<"Source is "<<event->source()<<endl;					
-		cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
+        //cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;	
+		//cerr<<"Source is "<<event->source()<<endl;					
+		//cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
 		
 		if (event->mimeData()->hasText())
 		{
@@ -298,43 +297,21 @@ namespace FD
 			
 			//create this node
 			if (m_uiNetwork)
-			{
-				
+			{		
 				static int number = m_uiNetwork->getNodes().size();
                 
 				QPointF pos = mapToScene(event->pos());
-                
-				//m_uiNetwork->createNode(event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
-                
-				
-				
+               
 				stringstream nodename;
 				
+				//TODO : Find a better way for node names?
 				nodename << event->mimeData()->text().toStdString() << "_" << number++;
                 
 				UINode* node = m_uiNetwork->newNode(m_uiNetwork,nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
-				m_uiNetwork->addNode(node);
-                
-                //cerr<<node->getInputs()[0]-><<end;;
-                
-                /*
-				UINode* uiNode = m_uiNetwork->newNode(m_uiNetwork,"NAME",event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
-                
-				if (uiNode)
-				{
-					m_uiNetwork->addNode(uiNode);
-					QtNode *node = new QtNode(this,uiNode);														
-					scene()->addItem(node);
-					
-					cerr<<"DROPPED ITEM POS X:"<<node->pos().x()<<" Y:"<<node->pos().y()<<endl;
-					
-					m_nodeMap.insert(make_pair(uiNode,node));
-					//scene()->update();
-				}
 				
-                */	
-			}
-			
+				//This will generate an event, we will then display the node properly
+				m_uiNetwork->addNode(node);
+			}		
 		}
 		else
 		{
@@ -357,31 +334,55 @@ namespace FD
 			{
                 //m_uiNetwork->addLink(link->getUILink());
 				scene()->addItem(link);
-				//m_linkMap.insert(make_pair(link->getUILink(),link)); 
-                m_linkMap.insert(make_pair(link,link->getUILink()));
+                m_linkMap.insert(make_pair(link->getUILink(),link));
 			}		
 		}
 	}
 	
-    QtNode* QtNetwork::addNode(UINodeController* node)
+    QtNode* QtNetwork::addNode(UINode* node)
 	{
-		cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
+		//cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);
-        scene()->addItem(qtnode);
-        node->setQtNode( qtnode );
-        //m_nodeMap.insert(make_pair(node,qtnode));   
-        m_nodeMap.insert(make_pair(qtnode,node)); 
+        scene()->addItem(qtnode); 
+        m_nodeMap.insert(make_pair(node,qtnode)); 
         return qtnode;
 	}
 	
-    QtLink* QtNetwork::addLink(QtTerminal *source, QtTerminal *dest, UILinkController* link)
+    QtLink* QtNetwork::addLink(UILink* uiLink)
+    {
+    	if (uiLink)
+    	{
+    		//TODO CAN WE DO BETTER?
+    		UINode *fromNode = uiLink->getFromTerminal()->getNode();
+    		UINode *destNode = uiLink->getToTerminal()->getNode();
+    		QtNode *source = m_nodeMap[fromNode];
+    		QtNode *dest = m_nodeMap[destNode];
+    		
+    		if (source && dest)
+    		{	
+    			QtTerminal *sourceTerminal = source->getQtTerminal(uiLink->getFromTerminal());
+    			QtTerminal *destTerminal = dest->getQtTerminal(uiLink->getToTerminal());
+    			
+    			if (sourceTerminal && destTerminal)
+    			{
+    				QtLink *link = new QtLink(sourceTerminal,destTerminal,uiLink);
+    		        source->addQtLink(link);
+    		        dest->addQtLink(link);
+    				scene()->addItem(link);
+    				m_linkMap.insert(make_pair(uiLink,link));
+    			}
+    		}
+    	}
+    }
+    
+    
+    QtLink* QtNetwork::addLink(QtTerminal *source, QtTerminal *dest, UILink* link)
     {
         if (source && dest && link)
         {
             QtLink *qtlink = new QtLink(source,dest,link);
             scene()->addItem(qtlink);
-            // m_linkMap.insert(make_pair(link,qtlink));
-            m_linkMap.insert(make_pair(qtlink,link));
+            m_linkMap.insert(make_pair(link,qtlink));
             return qtlink;
         }
         else
@@ -400,4 +401,91 @@ namespace FD
         cerr<<"QtNetwork::removeLink(QtLink* link)"<<endl;
         scene()->removeItem(link);
     }
+    
+	//Node removed
+	void QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)
+	{
+		cerr<<"QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)"<<endl;
+	}
+	
+	//Node added
+	void QtNetwork::notifyNodeAdded(const UINetwork *net, const UINode* node)
+	{
+		cerr<<"QtNetwork::notifyNodeAdded(const UINetwork *net, const UINode* node)"<<endl;
+		addNode(const_cast<UINode*>(node));
+	}
+	
+	//Link removed
+	void QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)
+	{
+		cerr<<"QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)"<<endl;
+	}
+	
+	//Link added
+	void QtNetwork::notifyLinkAdded(const UINetwork *net, const UILink* link)
+	{
+		cerr<<"QtNetwork::notifyLinkAdded(const UINetwork *net, const UILink* link)"<<endl;
+		addLink(const_cast<UILink*>(link));
+	}
+
+	//Note removed
+	void QtNetwork::notifyNoteRemoved(const UINetwork *net, const UINote* note)
+	{
+		cerr<<"QtNetwork::notifyNoteRemoved(const UINetwork *net, const UINote* note)"<<endl;
+	}
+	
+	//Note added
+	void QtNetwork::notifyNoteAdded(const UINetwork *net, const UINote* note)
+	{
+		cerr<<"QtNetwork::notifyNoteAdded(const UINetwork *net, const UINote* note)"<<endl;
+	}
+	
+	//NetTerminal removed
+	void QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)
+	{
+		m_uiNetwork->interfaceChangeNotify();
+		
+		vector<UINetwork*> allNets = m_uiNetwork->getDocument()->get_networks();
+		
+		for (unsigned int i = 0; i < allNets.size(); i++)
+		{
+			allNets[i]->updateAllSubnetTerminals(m_uiNetwork->getName(), terminal->getName(), terminal->getType(),true);			
+		}
+
+		cerr<<"QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
+	}
+	
+	//NetTerminal added
+	void QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)
+	{
+		m_uiNetwork->interfaceChangeNotify();
+		
+		vector<UINetwork*> allNets = m_uiNetwork->getDocument()->get_networks();
+		
+		for (unsigned int i = 0; i < allNets.size(); i++)
+		{
+			allNets[i]->updateAllSubnetTerminals(m_uiNetwork->getName(), terminal->getName(), terminal->getType(),false);			
+		}
+
+		cerr<<"QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
+	}
+	
+	//Name changed
+	void QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &name)
+	{
+		cerr<<"QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &name)"<<endl;
+	}
+	
+	//Description changed
+	void QtNetwork::notifyDescriptionChanged(const UINetwork *net, const std::string &description)
+	{
+		cerr<<"QtNetwork::notifyDescriptionChanged(const UINetwork *net, const std::string &description)"<<endl;
+	}
+	
+	//Destroyed
+	void QtNetwork::notifyDestroyed(const UINetwork *net)
+	{
+		cerr<<"QtNetwork::notifyDestroyed(const UINetwork *net)"<<endl;
+	}
+    
 } //namespace FD

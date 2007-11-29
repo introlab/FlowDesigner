@@ -37,16 +37,16 @@ public:
    virtual ~UINetTerminal();
 
    void setName(const std::string &_name) {name = _name;}
-   std::string getName() {return name;}
+   std::string getName() const {return name;}
 
    void setObjectType(const std::string &_objType) {m_objectType = _objType;}
    std::string  getObjectType(){return m_objectType;}
 
    void setDescription(const std::string &description) {m_description = description;}
-   std::string getDescription(){return m_description;}
+   std::string getDescription() const {return m_description;}
 
    void saveXML(xmlNode *root);
-   NetTermType getType() {return type;}
+   NetTermType getType() const {return type;}
    UITerminal *getTerminal() {return terminal;}
 
 };

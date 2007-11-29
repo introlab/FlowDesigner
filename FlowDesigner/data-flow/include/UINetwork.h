@@ -13,6 +13,7 @@
 #include "UINodeParameters.h"
 #include "UINodeRepository.h"
 #include <set>
+#include <list>
 
 namespace FD {
 //struct xmlNode;
@@ -31,10 +32,54 @@ class ParameterSet;
 /** UINetwork is the represantation used to store data for any network, 
     either in the GUI or in batch mode. A UINetwork cannot perform any
     operation but can be used to build a real Network.
-    @author Jean-Marc Valin
+    @author Jean-Marc Valin, Dominic Letourneau
 */
 class UINetwork {
   public:
+	  
+	class UINetworkObserverIF
+	{
+		public:
+			
+		//Global event for changes
+		virtual void notifyChanged(const UINetwork* net) {}
+		
+		//Node removed
+		virtual void notifyNodeRemoved(const UINetwork *net, const UINode* node) {notifyChanged(net);}
+		
+		//Node added
+		virtual void notifyNodeAdded(const UINetwork *net, const UINode* node) {notifyChanged(net);}
+		
+		//Link removed
+		virtual void notifyLinkRemoved(const UINetwork *net, const UILink* link) {notifyChanged(net);}
+		
+		//Link added
+		virtual void notifyLinkAdded(const UINetwork *net, const UILink* link) {notifyChanged(net);}
+
+		//Note removed
+		virtual void notifyNoteRemoved(const UINetwork *net, const UINote* note) {notifyChanged(net);}
+		
+		//Note added
+		virtual void notifyNoteAdded(const UINetwork *net, const UINote* note) {notifyChanged(net);}
+		
+		//NetTerminal removed
+		virtual void notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal) {notifyChanged(net);}
+		
+		//NetTerminal added
+		virtual void notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal) {notifyChanged(net);}
+		
+		//Name changed
+		virtual void notifyNameChanged(const UINetwork *net, const std::string &name) {notifyChanged(net);}
+		
+		//Description changed
+		virtual void notifyDescriptionChanged(const UINetwork *net, const std::string &description) {notifyChanged(net);}
+		
+		//Destroyed
+		virtual void notifyDestroyed(const UINetwork *net) {notifyChanged(net);}
+	};
+	  
+	  
+	  
    /**Available network types*/
    enum Type {subnet=0, iterator=1, threaded=2};
 protected:
@@ -65,6 +110,9 @@ protected:
 
    /**All the notes in the network*/
    std::vector <UINote*> m_notes;
+   
+   /** List of network observers */
+   std::list<UINetworkObserverIF*> m_observers;
 
    ///The condition node of the iterator (no meaning for subnets)
    //UINode *conditionNode;
@@ -100,18 +148,17 @@ public:
 
    void removeLink (UILink *link);
 
-   const std::string &getName() {return name;}
+   std::string getName() const;
 
-   std::string getDescription() {return m_description;}
+   std::string getDescription() const;
 
-   void setDescription(const std::string & _description){m_description = _description;}
+   void setDescription(const std::string & description);
 
-   
-   Type getType() {return type;}
+   Type getType() const;
 
-   UIDocument *getDocument() {return doc;}
+   UIDocument *getDocument();
 
-   bool isIter() {return type==iterator;}
+   bool isIter();
 
 
    void saveXML(xmlNode *root);
@@ -155,18 +202,18 @@ public:
    /**Generate C++ code for building the document, instead of using XML*/
    void genCode(std::ostream &out, int &id, std::set<std::string> &nodeList);
  
-   std::vector<UINode *> getNodes() {return nodes;}
-   std::vector<UILink *> getLinks() {return links;}
-   std::vector<UINetTerminal *> getTerminals() {return terminals;}
+   std::vector<UINode *> getNodes();
+   
+   std::vector<UILink *> getLinks();
+   
+   std::vector<UINetTerminal *> getTerminals();
 
    ///Direct access to the note vector
-   std::vector<UINote*> getNotes() {return m_notes;}
-
+   std::vector<UINote*> getNotes();
+   
    void addNote(UINote *note);
 
-
    void removeNote(UINote *note);
-   
    
    virtual void rename(std::string newName);
 
@@ -177,6 +224,12 @@ public:
 
 
    virtual void updateAllSubnetParameters(const std::string _nettype, NodeInfo* _info);
+   
+   /** Register an event observer */
+   void registerEvents(UINetworkObserverIF *observer);
+   
+   /** Unregister for events */
+   void unregisterEvents(UINetworkObserverIF *observer);
 
 };
 

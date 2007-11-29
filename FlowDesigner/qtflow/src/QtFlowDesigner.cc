@@ -5,7 +5,7 @@
 #include "QtNodeTreeView.h"
 #include <QFileDialog>
 #include <QMessageBox>
-#include "UINetworkController.h"
+#include "UINetwork.h"
 #include <iostream>
 #include "QtProcessWindow.h"
 
