@@ -14,6 +14,7 @@
 #include <algorithm>
 #include "UINode.h"
 #include "UITerminal.h"
+#include <QGraphicsSvgItem>
 
 namespace FD
 {
@@ -33,7 +34,7 @@ namespace FD
    */
     
     QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
-    : QGraphicsRectItem(0,0,50,25), graph(graphWidget), m_uiNode(uiNode), m_linking(false)
+    : QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/test.svg"),NULL), graph(graphWidget), m_uiNode(uiNode), m_linking(false)
     {
         if (m_uiNode)
         {
@@ -48,17 +49,19 @@ namespace FD
             
             nameItem = new QGraphicsTextItem(m_uiNode->getType().c_str(),this);
             
-            QRectF boundaries = nameItem->boundingRect();
+            QRectF boundaries = boundingRect();
             
             qreal x1,y1,x2,y2;
             boundaries.getCoords(&x1,&y1,&x2,&y2);
             //boundaries.setCoords(x1-20,y1-20,x2+20,y2+20);         
             
-            setRect(boundaries);
+			nameItem->setPos(x1,y2);
+			
+            //setRect(boundaries);
 
             setFlag(ItemIsMovable);
             setFlag(ItemIsSelectable);
-            setBrush(QBrush(QColor(0,128,0,128)));
+            //setBrush(QBrush(QColor(0,128,0,128)));
             setZValue(1);                                   
             
             //Add input terminal
@@ -75,6 +78,9 @@ namespace FD
                 addTerminal(outputs[i]);
             }
             
+			
+			//Svg Test			
+			//QGraphicsSvgItem *svg = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/test.svg"), this);
             
         } //if m_uiNode            
     }
@@ -83,7 +89,7 @@ namespace FD
     {
         edgeList << edge;
         edge->adjust();   
-        connect(this,SIGNAL(positionChanged(float,float)),edge,SLOT(nodePositionChanged(float,float)));
+        //connect(this,SIGNAL(positionChanged(float,float)),edge,SLOT(nodePositionChanged(float,float)));
     }
     
     void QtNode::removeQtLink(QtLink *edge)
@@ -109,16 +115,18 @@ namespace FD
          	if (m_uiNode)
          	{	
          		m_uiNode->setPos(newPos.x(),newPos.y());
-         		emit positionChanged(newPos.x(),newPos.y());
+         		//emit positionChanged(newPos.x(),newPos.y());
          	}
      	}
         
         if (change == ItemSelectedChange && scene()) 
         {
+		/*
        		if(value.toBool())
                 setBrush(QBrush(QColor(0,90,0,128))); 
             else
                 setBrush(QBrush(QColor(0,128,0,128)));             
+				*/
      	}
         
         return QGraphicsItem::itemChange(change, value);
@@ -200,7 +208,7 @@ namespace FD
             //This will resize the node bounding rect
             boundaries = childrenBoundingRect().unite(boundingRect());
             boundaries.getCoords(&x1,&y1,&x2,&y2);
-            setRect(boundaries);
+            //setRect(boundaries);
             
             //Align inputs
             for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)

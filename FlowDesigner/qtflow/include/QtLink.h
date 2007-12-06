@@ -5,6 +5,7 @@
 
 #include <QPen>
 #include <QGraphicsItem>
+#include <QGraphicsPathItem>
 #include <string>
 
 

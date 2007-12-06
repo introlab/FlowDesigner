@@ -7,3 +7,4 @@ include_directories(${QT_INCLUDE_DIR})
 
 #Adding src subdirectory
 add_subdirectory(src)
+add_subdirectory(icons)

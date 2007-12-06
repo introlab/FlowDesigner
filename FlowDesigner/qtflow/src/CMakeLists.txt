@@ -4,6 +4,7 @@
 #   set(QT_USE_OPENGL TRUE)
 # -> this will cause cmake to include and link against the OpenGL module
 SET(QT_USE_QTNETWORK TRUE)
+SET(QT_USE_QTSVG TRUE)
 
 include(${QT_USE_FILE})
 

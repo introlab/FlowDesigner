@@ -7,6 +7,7 @@
 #include <QList>
 #include <QGraphicsTextItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSvgItem>
 #include <string>
 #include <vector>
 #include <map>
@@ -22,10 +23,8 @@ namespace FD
     class UITerminal;
     class UINode;
     
-    class QtNode : public QObject, public QGraphicsRectItem, public UINode::UINodeObserverIF
+    class QtNode : public QGraphicsSvgItem, public UINode::UINodeObserverIF
     {
-        
-        Q_OBJECT;
         
         public:
         
@@ -64,7 +63,7 @@ namespace FD
         
         QtTerminal* getQtTerminal(UITerminal *term);
         
-        signals:
+ 
         
         void positionChanged(float x, float y);
 
