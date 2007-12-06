@@ -30,8 +30,10 @@ sub hash_copy {
 }
 
 
-
-
+if (@ARGV <= 0)
+{
+	die "No input file specified, exiting.\n";
+}
 
 print "<?xml version=\"1.0\"?>\n";
 print "<Definitions>\n";
@@ -75,6 +77,7 @@ $default_param =
   (name => "No Name", 
    category => "No Category", 
    description => "No Description Available", 
+   icon => "",
    inputs => [], 
    outputs => [], 
    params => []);
@@ -100,6 +103,9 @@ $base_filename =~ s/.*\///;
 # read through the file
 while (<>)
   {
+  
+
+  
     if ($next_filename ne $ARGV[0])
       {
 	$curr_filename = $next_filename;
@@ -128,6 +134,9 @@ while (<>)
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	elsif ($pname eq '@description') {
+	  $node_info{substr($pname, 1)} = $pval;
+	}
+	elsif ($pname eq '@icon') {
 	  $node_info{substr($pname, 1)} = $pval;
 	}
 	# start of a new input
@@ -212,6 +221,9 @@ while (<>)
 	print " source=\"$base_filename\"";
 	if ($node_info{require} ne "") {
 	  print " require=\"$node_info{require}\"";
+	}
+	if ($node_info{icon} ne "") {
+	  print " icon=\"$node_info{icon}\"";
 	}
 	print ">\n";
 
