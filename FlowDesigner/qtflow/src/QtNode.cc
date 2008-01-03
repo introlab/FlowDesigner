@@ -15,6 +15,7 @@
 #include "UINode.h"
 #include "UITerminal.h"
 #include <QGraphicsSvgItem>
+#include <QGraphicsRectItem>
 
 namespace FD
 {
@@ -34,10 +35,12 @@ namespace FD
    */
     
     QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
-    : QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/test.svg"),NULL), graph(graphWidget), m_uiNode(uiNode), m_linking(false)
+    :  graph(graphWidget), m_uiNode(uiNode), m_linking(false)
     {
         if (m_uiNode)
         {
+        	setHandlesChildEvents(false);
+        	
         	//register to events
         	m_uiNode->registerEvents(this);
         	
@@ -45,19 +48,44 @@ namespace FD
             m_uiNode->getPos(posx,posy);
             setPos(posx,posy);
             
+                       
+            //Svg icon loading
+            NodeInfo *nInfo = UINodeRepository::Find(m_uiNode->getType());
+            
+            if (nInfo)
+            {
+            	cerr<<"Found icon : "<<nInfo->icon<<endl;
+            	
+            	if (nInfo->icon != "")
+            	{
+					QGraphicsSvgItem *svg = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/") + QString(nInfo->icon.c_str()), this);
+					
+					
+            	}
+            	else
+            	{
+            		//Simple rectangle...
+            		QGraphicsRectItem *rect = new QGraphicsRectItem(0,0,30,30,this);
+            		
+            		//TODO Change color and stuff...
+            		rect->setBrush(QBrush(Qt::green));            		
+            	                        			
+            	}
+            }
+            
             //cerr<<"inserting node "<<m_uiNode->getName()<<" at position " << posx<<","<<posy<<endl;         
             
             nameItem = new QGraphicsTextItem(m_uiNode->getType().c_str(),this);
             
-            QRectF boundaries = boundingRect();
+            QRectF boundaries = childrenBoundingRect();
             
             qreal x1,y1,x2,y2;
             boundaries.getCoords(&x1,&y1,&x2,&y2);
-            //boundaries.setCoords(x1-20,y1-20,x2+20,y2+20);         
+            boundaries.setCoords(x1-20,y1-20,x2+20,y2+20);         
             
 			nameItem->setPos(x1,y2);
 			
-            //setRect(boundaries);
+            setRect(boundaries);
 
             setFlag(ItemIsMovable);
             setFlag(ItemIsSelectable);
@@ -79,8 +107,7 @@ namespace FD
             }
             
 			
-			//Svg Test			
-			//QGraphicsSvgItem *svg = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/test.svg"), this);
+			
             
         } //if m_uiNode            
     }
@@ -134,7 +161,8 @@ namespace FD
     
     void QtNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
-        QGraphicsItem::mousePressEvent(event);
+    	cerr<<"QtNode::mousePressEvent(QGraphicsSceneMouseEvent *event)"<<endl;
+        QGraphicsItem::mousePressEvent(event);        
     }
     
 	void QtNode::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event)
@@ -232,7 +260,9 @@ namespace FD
                 (*iter).second->moveBy(x2 - lr.x(),0);
             }
             
-            
+            boundaries = childrenBoundingRect().unite(boundingRect());
+            boundaries.getCoords(&x1,&y1,&x2,&y2);
+            setRect(boundaries);
             
         }
         return terminal;

@@ -49,6 +49,7 @@ class NodeInfo {
    std::string description;
    std::string sourceFile;
    std::string requireList;
+   std::string icon;
    NodeKind kind;
   public:
    NodeInfo() : category("Unknown"), description("No description available") {}

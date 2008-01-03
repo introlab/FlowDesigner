@@ -7,7 +7,8 @@
 #include <QList>
 #include <QGraphicsTextItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSvgItem>
+#include <QGraphicsItemGroup>
+#include <QGraphicsRectItem>
 #include <string>
 #include <vector>
 #include <map>
@@ -23,7 +24,7 @@ namespace FD
     class UITerminal;
     class UINode;
     
-    class QtNode : public QGraphicsSvgItem, public UINode::UINodeObserverIF
+    class QtNode : public QGraphicsRectItem, public UINode::UINodeObserverIF
     {
         
         public:
@@ -83,8 +84,6 @@ namespace FD
         QtNode* m_virtualQtNode;
         QtLink* m_virtualQtLink;
         bool m_linking;
-        //std::vector<QtTerminal*> m_inputQtTerminals;
-        //std::vector<QtTerminal*> m_outputQtTerminals;
         std::map<UITerminal*,QtTerminal*> m_inputTerminalsMap;
         std::map<UITerminal*,QtTerminal*> m_outputTerminalsMap;
         

@@ -56,6 +56,7 @@ ostream& operator<< (ostream & out, const NodeInfo &nInfo) {
   out<<"SOURCEFILE:"<<nInfo.sourceFile<<endl;
   out<<"REQUIRELIST:"<<nInfo.requireList<<endl;
   out<<"KIND:"<<nInfo.kind<<endl;
+  out<<"ICON:"<<nInfo.icon<<endl;
   return out;
 }
 
@@ -95,7 +96,7 @@ map<string, set<string> > &UINodeRepository::HeaderDepend()
 void UINodeRepository::Scan()
 {
 
-  cerr<<"UINodeRepository::Scan()"<<endl;
+  //cerr<<"UINodeRepository::Scan()"<<endl;
 
   //(DL) 06/02/2004
   vector<string> dirs  = envList("FLOWDESIGNER_PATH");
@@ -103,11 +104,11 @@ void UINodeRepository::Scan()
   
    for (unsigned int i=0;i<dirs.size();i++) 
    {
-	  cerr<<"Scanning def "<<dirs[i]<<endl;
+	  //cerr<<"Scanning def "<<dirs[i]<<endl;
       LoadAllInfoRecursive(dirs[i]);
    }
    
-   cerr<<"done loading def files"<<endl;
+   //cerr<<"done loading def files"<<endl;
 
  /*  
    cerr<<"+++repository contains after loading: "<<endl;
@@ -238,6 +239,13 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	 if (req)
 	    my_info->requireList = string(req);
 	 free(req);
+	 
+	 char *icon = (char*)xmlGetProp(node, (xmlChar * )"icon");
+	 if (icon)
+	 	my_info->icon = string(icon);
+	 free(icon); 
+	 
+	 
 	 //cerr << my_info->sourceFile << ":" << my_info->requireList << endl;
 	 nodeName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
 	 //cerr<<"inserting into global repository  :"<<nodeName<<endl;
