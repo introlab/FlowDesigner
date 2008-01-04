@@ -177,6 +177,13 @@ namespace FD
 				params.exec();
                 
 				event->accept();
+				
+				//TODO Can we do that better?
+				//get network for possible interface change
+				UINetwork* net = m_uiNode->getNetwork();
+				if (net)
+					net->interfaceChangeNotify();
+				
 			}
 		}
         
@@ -327,6 +334,12 @@ namespace FD
 	void QtNode::notifyPositionChanged(const UINode* node, double x, double y)
 	{
 		cerr<<"QtNode::notifyPositionChanged(const UINode* node, double x, double y)"<<endl;
+		
+		//Update Links
+		for (QList<QtLink*>::iterator iter = edgeList.begin(); iter != edgeList.end(); iter++)
+		{			
+			(*iter)->adjust();
+		}		
 	}
 	
     QtTerminal* QtNode::getQtTerminal(UITerminal *term)

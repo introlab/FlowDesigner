@@ -18,8 +18,10 @@ namespace FD
     {
         
         m_root = new QTreeWidgetItem(this);
-        m_root->setText(0,"Nodes");
+        m_root->setText(0,"Nodes");        	
         scanNodeRepository();
+        setSortingEnabled(true);
+		sortByColumn(0,Qt::AscendingOrder);
         setDragEnabled(true);
     }
 

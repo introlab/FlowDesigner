@@ -13,7 +13,7 @@
 
 #include "Object.h"
 #include "UINodeRepository.h"
-
+#include <QInputDialog>
 
 
 namespace FD {
@@ -97,7 +97,8 @@ namespace FD {
 				
                 //ADD TYPE
 				
-                if(m_params->get_defaultTextParams()[i]->type == "any")
+                if(m_params->get_defaultTextParams()[i]->type == "any" ||
+                   m_params->get_defaultTextParams()[i]->type == "subnet_param")
                 {                                   
                     //Fill combo for "any" types
                     std::vector<std::string> typeVect = QtNodeParameters::getObjectTypes();
@@ -262,6 +263,9 @@ namespace FD {
                 else if(m_valuesWidge[i]->accessibleName() == "QDoubleSpinBox")
                     textParams[i]->value = dynamic_cast<QDoubleSpinBox *>(m_valuesWidge[i])->text().toStdString(); 
             }
+            
+            //Tell repository the parameters have changed.
+            m_params->updateNetParams(textParams);
         }
     }
     
@@ -275,6 +279,13 @@ namespace FD {
         }
         else if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::Ok ))
         {
+        	//TODO ASK FOR PARAMETERS UPDATE IF REQUIRED
+        	if (m_buttonBox->button(QDialogButtonBox::Apply)->isEnabled())
+        	{
+        		validParameters();
+            	m_buttonBox->button(QDialogButtonBox::Apply)->setDisabled(true);
+        	}
+             
             close();
         }
         else if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::Cancel ))
