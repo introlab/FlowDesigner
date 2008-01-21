@@ -22,27 +22,31 @@ public:
    
 };
 
-UINodeParameters::UINodeParameters(UINode *_node, string type)
-   : node(_node)
-{
-   vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
-   for (unsigned int i=0;i<tmp.size();i++)
-   {
-      ItemInfo *newText = new ItemInfo;      
-      newText->name = tmp[i]->name;
-      //FIXME: This is just a temporary kludge
-      if (tmp[i]->type == "any")
-	 newText->type = "int";
-      else
-	 newText->type = tmp[i]->type;
-      newText->value = tmp[i]->value;
-      newText->description = tmp[i]->description;
-      textParams.insert(textParams.end(), newText);
-      
-      ItemInfo *newText1 = new ItemInfo(*newText);
-      newText1->type = tmp[i]->type;
-      defaultTextParams.insert(defaultTextParams.end(), newText1);
-   }
+UINodeParameters::UINodeParameters(UINode *_node, string type) :
+	node(_node) {
+	vector<ItemInfo *> tmp = node->getNetwork()->getDocument()->getNetParams(type);
+	for (unsigned int i=0; i<tmp.size(); i++) {
+		ItemInfo *newText = new ItemInfo;
+		newText->name = tmp[i]->name;
+		//FIXME: This is just a temporary kludge
+		if (tmp[i]->type == "any")
+		{
+			newText->type = "string";
+			newText->value = "undefined";
+		}
+		else
+		{
+			newText->type = tmp[i]->type;
+			newText->value = tmp[i]->value;
+		}
+		
+		newText->description = tmp[i]->description;
+		textParams.insert(textParams.end(), newText);
+
+		ItemInfo *newText1 = new ItemInfo(*newText);
+		newText1->type = tmp[i]->type;
+		defaultTextParams.insert(defaultTextParams.end(), newText1);
+	}
 }
 
 UINodeParameters::~UINodeParameters()
