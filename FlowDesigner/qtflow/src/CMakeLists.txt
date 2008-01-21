@@ -5,6 +5,7 @@
 # -> this will cause cmake to include and link against the OpenGL module
 SET(QT_USE_QTNETWORK TRUE)
 SET(QT_USE_QTSVG TRUE)
+SET(QT_USE_QTXML TRUE)
 
 include(${QT_USE_FILE})
 
@@ -26,7 +27,8 @@ SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
     QtListenJitterMatrix.cc
     QtSendString.cc
-    QtListenString.cc	
+    QtListenString.cc
+    TextProbe.cc	
 )
 
 SET(QTFLOW_HEADERS 
