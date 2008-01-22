@@ -192,11 +192,17 @@ namespace FD
     void QtNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     {
         QGraphicsItem::mouseMoveEvent(event);
+		
+		//graph->resizeSceneView();
+		
     }
     
     void QtNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsItem::mouseReleaseEvent(event);
+		
+		graph->resizeSceneView();
+		
     }
     
     QtTerminal* QtNode::addTerminal(UITerminal *uiTerminal)

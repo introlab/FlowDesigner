@@ -98,15 +98,13 @@ namespace FD
     
 	void QtTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )
 	{
+		QGraphicsItem::mousePressEvent ( event );
 		update();
 		if ( event->button() == Qt::LeftButton )
 		{
             
 			if ( event->modifiers() == Qt::NoModifier )
 			{
-                
-				QGraphicsItem::mousePressEvent ( event );
-                
 				cerr<<"mousePressEvent on terminal "<<getName() <<" posx "<<pos().x() <<" posy "<<pos().y() <<endl;
 				//TODO CREATE LINK
 				m_virtualQtTerminal = new QtTerminal ( NULL,"VIRTUAL",QtTerminal::VIRTUAL );
@@ -165,12 +163,15 @@ namespace FD
     
     void QtTerminal::mouseReleaseEvent ( QGraphicsSceneMouseEvent *event )
     {
+	
+		QGraphicsItem::mouseReleaseEvent ( event );
+		
         update();
         if ( event->button() == Qt::LeftButton && m_linking)
         {
-            QGraphicsItem::mousePressEvent ( event );
             
-            cerr<<"mouseReleaseEvent on terminal "<<getName() <<endl;
+            
+            cerr<<"mouseReleaseEvent on terminal (linking)"<<getName() <<endl;
             QtTerminal* destinationQtTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
             
             //TERMINAL NEAR BY?
@@ -178,6 +179,7 @@ namespace FD
             {                
                 QtTerminal *sourceQtTerminal = m_virtualQtLink->sourceQtTerminal();
                 
+				//MAKE SURE WI LINK AN OUTPOUT WITH AN INPUT
                 if (sourceQtTerminal->getType() !=
                     destinationQtTerminal->getType())
                 {
@@ -185,14 +187,14 @@ namespace FD
                     {
                     	
                     	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
-                    	m_uiTerminal->getNode()->getNetwork()->addLink(link);
+                    	//m_uiTerminal->getNode()->getNetwork()->addLink(link);
                         //emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
                         //m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
                     }
                     else
                     {   
                     	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
-                    	m_uiTerminal->getNode()->getNetwork()->addLink(link);
+                    	//m_uiTerminal->getNode()->getNetwork()->addLink(link);
                         //emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
                         //m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
                         
@@ -206,6 +208,11 @@ namespace FD
             delete m_virtualQtLink;
             m_virtualQtLink = NULL;
         }
+		else
+		{
+			cerr<<"mouseReleaseEvent on terminal (NOT linking)"<<getName() <<endl;
+			m_linking = false;
+		}
     }
     
     void QtTerminal::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )

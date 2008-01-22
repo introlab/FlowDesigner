@@ -91,6 +91,7 @@ class TextProbe : public BufferedNode {
       Each class will call its subclass initialize() method*/
    virtual void initialize()
    {
+	   cout<<"virtual void TextProbe::virtual void initialize()"<<endl;
 	   BufferedNode::initialize();
 	   
 	   m_mainWindow = new QMainWindow(NULL);
@@ -98,7 +99,7 @@ class TextProbe : public BufferedNode {
 
    virtual void calculate(int output_id, int count, Buffer &out)
    {
-	   
+	   cout<<"virtual void TextProbe::calculate(int output_id, int count, Buffer &out)"<<endl;
 	   ObjectRef inputValue = getInput(m_inputID,count);
 	   
 	   stringstream outStream;

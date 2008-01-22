@@ -3,12 +3,11 @@
 #include <iostream>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
-#include "QtRunContext.h"
-
 #include "UIDocument.h"
 #include "UINetwork.h"
 #include "QtFlowDesigner.h"
 #include <QProcess>
+#include <QMessageBox>
 
 namespace FD
 {
@@ -31,9 +30,13 @@ namespace FD
         //Create run button
         QPushButton *runButton = new QPushButton("RUN", this);	
         m_buttonGroup->addButton(runButton);
+		
+		QPushButton *viewSource = new QPushButton("VIEW SOURCE",this);
+		m_buttonGroup->addButton(viewSource);
         
         //connect signal
         connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
+		connect(viewSource,SIGNAL(clicked()),this,SLOT(onViewSourceDocument()));
 		
 		//create tab widget
         m_tabWidget = new QTabWidget(NULL);
@@ -119,9 +122,28 @@ namespace FD
 		
 	}
 	
+	void QtDocument::onViewSourceDocument()
+	{
+		if (m_uiDoc)
+		{
+			int size = 0;
+			char *data = m_uiDoc->saveToMemory(size);
+			
+			QMessageBox message(this);
+			message.resize(800,600);
+			message.setText(QString(data));			
+			free(data);
+			
+			message.exec();
+		}	
+	
+	}
+	
 	QtNetwork* QtDocument::addNetwork(UINetwork* net)
 	{		
         QtNetwork *qtnet = new QtNetwork(this,net);
+		qtnet->fitInView(qtnet->scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+		qtnet->centerOn(qtnet->scene()->itemsBoundingRect().topLeft());
 		m_networks.push_back(qtnet);
 		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
         m_tabWidget->addTab(qtnet, net->getName().c_str());

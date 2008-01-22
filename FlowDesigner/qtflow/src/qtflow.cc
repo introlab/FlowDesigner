@@ -11,6 +11,7 @@
 #include "iextensions.h"
 #include <QApplication>
 #include <QThread>
+#include <QTimer>
 
 using namespace FD;
 using namespace std;
@@ -18,10 +19,38 @@ using namespace std;
 
 class QtFlowApp : public QApplication
 {
+	public:
+	
+	class QtFlowProcessingThread : public QThread
+	{
+		protected:
+			QtFlowApp &m_app;
+			
+		virtual void run() 
+		{
+				cerr<<"QtFlowProcessingThread::run()"<<endl;
+				m_app.run();
+				exec();
+		}	
+		
+		public:
+	
+		QtFlowProcessingThread(QtFlowApp &app)
+			: m_app(app)
+		{
+		
+		
+		}
+	};
+
+
 	protected:
 	
 		UIDocument *doc;
+		QTimer *m_timer;
 		ParameterSet params;
+		int m_timerId;
+		QtFlowProcessingThread *m_thread;
 		
 	public:
 		
@@ -39,13 +68,13 @@ class QtFlowApp : public QApplication
 		//Loading libraries
 		try
 		{
+
 			//Scan for toolboxes (dll)
 			QtDLManager::scanDL();
 			//Scan for toolboxes (def)
 			UINodeRepository::Scan();
 			//Useful?
 			IExtensions::detect();	
-			
 			
 			//Loading document
 			doc = NULL;
@@ -78,8 +107,36 @@ class QtFlowApp : public QApplication
 				doc->load();
 			}
 			
-			if (doc)
-			{
+			//Start Thread timer
+			m_timerId = startTimer(5000);
+	
+		}
+		catch (BaseException *e)
+		{
+			e->print(cerr);
+			delete e;
+			//terminate application
+			QApplication::exit(-1);
+		}
+		
+	}
+	void timerEvent(QTimerEvent *event)
+	{
+		killTimer(m_timerId);
+		
+		//start processing thread
+		//m_thread = new QtFlowProcessingThread(*this);
+		
+		//m_thread->start();
+		run();
+	
+	}
+	
+	void run()
+	{
+		if (doc)
+		{
+			try {
 				//Running document
 				QtRunContext *ctx = new QtRunContext(doc, params);		
 				bool success = ctx->run();
@@ -89,16 +146,18 @@ class QtFlowApp : public QApplication
 					QApplication::exit(0);
 				else
 					QApplication::exit(-1);
+			}	
+			catch (BaseException *e)
+			{
+				e->print(cerr);
+				delete e;
+				QApplication::exit(-1);
 			}
-	
+			catch (...)
+			{
+				QApplication::exit(-1);
+			}
 		}
-		catch (BaseException *e)
-		{
-			e->print(cerr);
-			delete e;
-			//terminate application
-		}
-		
 	}
 
 };
@@ -109,7 +168,9 @@ int main (int argc, char* argv[])
 
 		
 		//Parse command line parameters
+		cerr<<"QtFlow starting..."<<endl;
 		
+
 		
 		//TODO
 		//PARSING ADDITIONAL ARGUMENTS
@@ -151,7 +212,7 @@ int main (int argc, char* argv[])
 		
 	QtFlowApp app(argc,argv);
 
-	
+	app.exec();
 	
 	return 0;
 }

@@ -46,6 +46,7 @@ namespace FD
 		public slots:
         
         void onRunDocument();
+		void onViewSourceDocument();
         
         void tabWidgetChanged(int index);
         

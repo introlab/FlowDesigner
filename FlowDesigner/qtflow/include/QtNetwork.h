@@ -37,9 +37,6 @@ namespace FD
         //Link
         QtLink* addLink(QtTerminal *source, QtTerminal *dest, UILink* link);
         QtLink* addLink(UILink* uiLink);
-        
-        
-        
         void addQtLink(QtLink *link);
         void removeLink(QtLink* link);  
         
@@ -78,6 +75,10 @@ namespace FD
 		//Destroyed
 		virtual void notifyDestroyed(const UINetwork *net);
         
+		void resizeSceneView();
+		
+		void scaleView(qreal scaleFactor);
+		
         protected: 
         
         void mouseMoveEvent ( QMouseEvent * e );
@@ -89,9 +90,7 @@ namespace FD
 
         // void mouseReleaseEvent(QMouseEvent *event);
         // void drawBackground(QPainter *painter, const QRectF &rect);
-        
-        void scaleView(qreal scaleFactor);
-        
+    
         QtDocument *m_doc;
         
         UINetwork *m_uiNetwork;
@@ -109,6 +108,8 @@ namespace FD
         
         protected slots:
         void menuTriggered(QAction* action);
+		
+		
         
     };
 }//namespace FD

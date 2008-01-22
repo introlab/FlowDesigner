@@ -282,6 +282,13 @@ namespace FD
         event->accept();         
     }
     
+	void QtNetwork::resizeSceneView()
+	{
+	
+		QRectF sceneRect = scene()->itemsBoundingRect();
+		ensureVisible(sceneRect,300,300);
+	}
+	
     void QtNetwork::dropEvent(QDropEvent *event)
     {
     	
@@ -334,6 +341,7 @@ namespace FD
 			{
                 //m_uiNetwork->addLink(link->getUILink());
 				scene()->addItem(link);
+				resizeSceneView();			
                 m_linkMap.insert(make_pair(link->getUILink(),link));
 			}		
 		}
@@ -344,7 +352,14 @@ namespace FD
 		//cerr<<"QtNode* QtNetwork::addNode(UINodeController* node)"<<endl;
 		QtNode *qtnode = new QtNode(this,node);
         scene()->addItem(qtnode); 
+		resizeSceneView();
         m_nodeMap.insert(make_pair(node,qtnode)); 
+		
+		
+		//resize view if required
+		
+		
+		
         return qtnode;
 	}
 	
@@ -369,7 +384,8 @@ namespace FD
     		        source->addQtLink(link);
     		        dest->addQtLink(link);
     				scene()->addItem(link);
-    				m_linkMap.insert(make_pair(uiLink,link));
+					resizeSceneView();
+    				m_linkMap.insert(make_pair(uiLink,link));					
     			}
     		}
     	}
@@ -382,6 +398,7 @@ namespace FD
         {
             QtLink *qtlink = new QtLink(source,dest,link);
             scene()->addItem(qtlink);
+			
             m_linkMap.insert(make_pair(link,qtlink));
             return qtlink;
         }
@@ -394,12 +411,14 @@ namespace FD
     { 
         cerr<<"QtNetwork::removeNode(QtNode* node)"<<endl;
         scene()->removeItem(node);
+		resizeSceneView();
     }
     
     void QtNetwork::removeLink(QtLink* link)
     { 
         cerr<<"QtNetwork::removeLink(QtLink* link)"<<endl;
         scene()->removeItem(link);
+		resizeSceneView();
     }
     
 	//Node removed
