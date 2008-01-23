@@ -8,6 +8,7 @@
 #include "QtFlowDesigner.h"
 #include <QProcess>
 #include <QMessageBox>
+#include <QGraphicsScene>
 
 namespace FD
 {
