@@ -100,6 +100,16 @@ namespace FD
         setMinimumSize(400, 400);
         
     }
+    
+    QtNetwork::~QtNetwork()
+    {
+    	if (m_uiNetwork)
+    	{
+    		m_uiNetwork->unregisterEvents(this);
+    	}
+    }
+    
+    
     const std::string QtNetwork::getName() const
     {
         return m_uiNetwork->getName();
@@ -146,6 +156,17 @@ namespace FD
                     {	
                         delete selectNode->getUINode();
                     }
+                    else 
+                    {
+                    
+	                    
+	                    QtLink *selectLink = qgraphicsitem_cast<QtLink *>(scene()->selectedItems()[0]); 
+	                    if (selectLink)
+	                    {
+	                    	delete selectLink->getUILink();
+	                    }
+	                    
+                    }	
                     
                 }
                 break;
@@ -404,6 +425,7 @@ namespace FD
     { 
         cerr<<"QtNetwork::removeNode(QtNode* node)"<<endl;
         scene()->removeItem(node);
+        delete node;
 		resizeSceneView();
     }
     
@@ -411,6 +433,7 @@ namespace FD
     { 
         cerr<<"QtNetwork::removeLink(QtLink* link)"<<endl;
         scene()->removeItem(link);
+        delete link;
 		resizeSceneView();
     }
     
@@ -419,6 +442,7 @@ namespace FD
 	{
 		cerr<<"QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)"<<endl;
 		removeNode( m_nodeMap[const_cast<UINode*>(node)]);
+		m_nodeMap.erase(const_cast<UINode*>(node));
 	}
 	
 	//Node added
@@ -433,6 +457,7 @@ namespace FD
 	{
 		cerr<<"QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)"<<endl;
 		removeLink(m_linkMap[const_cast<UILink*>(link)]);
+		m_linkMap.erase(const_cast<UILink*>(link));
 	}
 	
 	//Link added
@@ -500,6 +525,7 @@ namespace FD
 	void QtNetwork::notifyDestroyed(const UINetwork *net)
 	{
 		cerr<<"QtNetwork::notifyDestroyed(const UINetwork *net)"<<endl;
+		m_uiNetwork = NULL;
 	}
     
 } //namespace FD

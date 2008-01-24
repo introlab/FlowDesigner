@@ -32,6 +32,8 @@ namespace FD
         //QtNode(QtNetwork *graphWidget, std::string name = "");
         
         QtNode(QtNetwork *graphWidget, UINode *uiNode);
+        
+        ~QtNode();
         		
 		//Terminal removed
 		virtual void notifyTerminalRemoved(const UINode *node, const UITerminal* terminal);

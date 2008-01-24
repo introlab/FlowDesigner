@@ -28,6 +28,9 @@ namespace FD
         public:
         
         QtNetwork(QtDocument *parent, UINetwork *uiNetwork);
+        
+        ~QtNetwork();
+        
         const std::string getName() const;
 
         //Node

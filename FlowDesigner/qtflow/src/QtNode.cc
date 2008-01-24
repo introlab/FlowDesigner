@@ -20,19 +20,15 @@
 namespace FD
 {
     using namespace std;
- /*   
-    QtNode::QtNode(QtNetwork *graphWidget, std::string name)
-    : QGraphicsRectItem(0,0,50,25),graph(graphWidget),
-    m_linking(false)
-    {
-        
-        nameItem = new QGraphicsTextItem(name.c_str(),this);
-        setFlag(ItemIsMovable);
-        setFlag(ItemIsSelectable);
-        setBrush(QBrush(QColor(0,128,0,128)));
-        setZValue(1);
-    }
-   */
+
+    
+   QtNode::~QtNode()
+   {
+	   if (m_uiNode)
+	   {
+		   m_uiNode->unregisterEvents(this);
+	   }
+   }
     
     QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
     :  graph(graphWidget), m_uiNode(uiNode), m_linking(false)
@@ -334,6 +330,7 @@ namespace FD
 	void QtNode::notifyDestroyed(const UINode *node)
 	{
 		cerr<<"QtNode::notifyDestroyed(const UINode *node)"<<endl;
+		m_uiNode = NULL;
 	}
 	
 	//Position changed

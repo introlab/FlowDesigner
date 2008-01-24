@@ -27,8 +27,11 @@ namespace FD
     
     QtLink::~QtLink()
     {
-        //source->removeQtLink(this);
-        //dest->removeQtLink(this);
+    	if (m_source)
+    		m_source->getQtNode()->removeQtLink(this);    
+    	
+    	if (m_dest)
+    		m_dest->getQtNode()->removeQtLink(this);
     }
     
     void QtLink::adjust()
