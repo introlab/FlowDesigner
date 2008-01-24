@@ -599,6 +599,7 @@ bool UIDocument::findExternalRecursive(const string &basePath, const string &pat
 
 Network *UIDocument::buildExternal(const string &type, const string &_name, const ParameterSet &params)
 {
+   cout<<"Building external ... : "<<type<<endl;
    string fullname = findExternal(type + ".n");
    if (fullname == "")
       return NULL;
@@ -644,8 +645,10 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
 	  myParams.add(textParams[i]->name,param_value);	
 	}
       }
-
+      
+      cout<<"uinet build : "<<_name<<endl;
       net = uinet->build(_name, myParams);
+      cout<<"uinet build done"<<endl;
       net->verifyConnect();
       return net;
    } catch (BaseException *e)

@@ -533,7 +533,7 @@ UINote *UINetwork::newNote(const std::string &text, double x, double y, bool vis
 UINetTerminal *UINetwork::newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const string &_name, const string &_objType, const string &_description)
 {
    //BUG HERE
-  //cerr << "UINetwork::newNetTerminal "<<_name<<" "<<_objType<<" "<<_description<<endl;
+  cerr << "UINetwork::newNetTerminal "<<_name<<" "<<_objType<<" "<<_description<<endl;
   
   return new UINetTerminal (_terminal, _type, _name, _objType, _description);
 }
@@ -572,7 +572,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
 
       for (unsigned int i=0;i<nodes.size();i++)
       {
-	 //cerr << "building node " << nodes[i]->getName() << endl;
+	 cerr << "building node " << nodes[i]->getName() << endl;
 	 
 	 buildRecurs=true;
 	 try {
@@ -591,7 +591,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
    }
    
    try {
-   //cerr << "nodes built\n";
+   cerr << "nodes built\n";
    
    //insert links
    for (unsigned int i=0;i<links.size();i++)
@@ -608,7 +608,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
       }
    }
 
-   //cerr << "links built\n";
+   cerr << "links built\n";
    
    bool inputExist=false;
    for (unsigned int i=0;i<terminals.size();i++)
@@ -650,7 +650,7 @@ Network *UINetwork::build(const string &netName, const ParameterSet &params)
       dynamic_cast<Iterator *>(net)->setConditionNode(node);
    }
 
-   //cerr << "collector built\n";
+   cerr << "collector built\n";
 
    bool found_output=false;
    bool found_condition=false;

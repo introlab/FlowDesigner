@@ -103,8 +103,11 @@ class QtFlowApp : public QApplication
 			}
 			else
 			{
+				
+				cout<<"QtFlow loading document "<<argv[1]<<endl;
 				doc = new UIDocument(argv[1]);
 				doc->load();
+				cout<<"QtFlow done loading..."<<endl;
 			}
 			
 			//Start Thread timer
@@ -126,7 +129,7 @@ class QtFlowApp : public QApplication
 		
 		//start processing thread
 		//m_thread = new QtFlowProcessingThread(*this);
-		
+		cout<<"Calling run"<<endl;
 		//m_thread->start();
 		run();
 	

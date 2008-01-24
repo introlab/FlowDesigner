@@ -478,94 +478,145 @@ void UINodeRepository::LoadExtDocInfo(const string &path, const string &name)
    GlobalRepository().loadDocInfo(doc, basename);
 }
 
-void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename)
-{
+void UINodeRepository::loadDocInfo(xmlDocPtr doc, const string &basename) {
 
-   map<string, NodeInfo *> &externalDocInfo = GlobalRepository().info;
+	map<string, NodeInfo *> &externalDocInfo = GlobalRepository().info;
 
-   if (externalDocInfo.find(basename) != externalDocInfo.end())
-   {
-      cerr << "error: net " << basename << " already existed\n";
-      return;
-   }
-   //cerr << "new subnet info with name: " << netName << "\n";
-   NodeInfo *my_info = new NodeInfo;
-   my_info->kind = NodeInfo::external;
+	if (externalDocInfo.find(basename) != externalDocInfo.end()) {
+		cerr << "Error: external net " << basename << " already existed\n";
+		return;
+	}
+	
+	//cerr << "new subnet info with name: " << netName << "\n";
+	NodeInfo *my_info = new NodeInfo;
+	my_info->kind = NodeInfo::external;
 
-   //cerr<<"Inserting external info : "<<basename<<endl;
-   externalDocInfo[basename] = my_info;
-   
+	//cerr<<"Inserting external info : "<<basename<<endl;
+	externalDocInfo[basename] = my_info;
 
-   xmlNodePtr root=doc->children;
+	xmlNodePtr root=doc->children;
 
-   xmlChar *category = xmlGetProp(root, (xmlChar *)"category");
-   if (category)
-   {
-      my_info->category = string((char *)category);
-      free (category);
-   }
+	xmlChar *category = xmlGetProp(root, (xmlChar *)"category");
+	if (category) {
+		my_info->category = string((char *)category);
+		free(category);
+	}
 
-   xmlNodePtr net = root->children;
-   
-   while (net != NULL)
-   {
-      //cerr << "scanning networks...\n";
-      if (string((char*)net->name) == "Network")
-      {
-	 //cerr << "scanning a net\n";
-	 string netName = string((char *)xmlGetProp(net, (xmlChar *)"name"));
-	 if (netName == "MAIN")
-	 {
-	    
+	xmlNodePtr net = root->children;
 
-	    //loadNetInfo(net, externalDocInfo, basename);
-	   
- 
-	    xmlNodePtr node = net->children;
-	    while (node != NULL)
-	    {
-	       if (string((char*)node->name) == "NetInput")
-	       {
-		  string termName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
-		  ItemInfo *newInfo = new ItemInfo;
-		  newInfo->name = termName;
-		  my_info->inputs.insert (my_info->inputs.end(), newInfo);
-	 
-	       } else if (string((char*)node->name) == "NetOutput")
-	       {
-		  string termName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
-		  ItemInfo *newInfo = new ItemInfo;
-		  newInfo->name = termName;
-		  my_info->outputs.insert (my_info->outputs.end(), newInfo);
-	 
-	       }
-	       node = node->next;
-	    }
+	while (net != NULL) {
+		//cerr << "scanning networks...\n";
+		if (string((char*)net->name) == "Network") {
+			//cerr << "scanning a net\n";
+			string netName = string((char *)xmlGetProp(net, (xmlChar *)"name"));
+			if (netName == "MAIN") {
+
+				//loadNetInfo(net, externalDocInfo, basename);
 
 
-	 }
-      } else if (string((char*)net->name) == "Parameter")
-      {
-	 char *param_name = (char *)xmlGetProp(net, (xmlChar *)"name");
-	 char *param_type = (char *)xmlGetProp(net, (xmlChar *)"type");
-	 char *param_value = (char *)xmlGetProp(net, (xmlChar *)"value");
-	 if (param_name && param_type)
-	 {
-	    ItemInfo *newInfo = new ItemInfo;
-	    newInfo->name = param_name;
-	    if (string(param_type)=="")
-	       newInfo->type = "int";
-	    else
-	       newInfo->type = param_type;
-	    if (string(param_value)!="")
-	       newInfo->value = param_value;
-	    my_info->params.insert (my_info->params.end(), newInfo);
-	 }
-	 //cerr << "param\n";
-      }
-      net = net->next;
-   }
-   xmlFreeDoc(doc);
+				xmlNodePtr node = net->children;
+				while (node != NULL) {
+					if (string((char*)node->name) == "NetInput") {
+						
+						char* termNamePtr = (char*) xmlGetProp(node,
+								(xmlChar *)"name");
+						
+						
+						string termName = string(termNamePtr);
+						free(termNamePtr);
+						
+						char* termTypePtr = (char*) xmlGetProp(node,
+								(xmlChar *)"object_type");
+						
+						string termType = "any";
+						
+						if (termTypePtr)
+						{
+							termType = string(termTypePtr);
+							free(termTypePtr);
+						}	
+			
+						
+						char* termDescriptionPtr = (char*) xmlGetProp(node,
+														(xmlChar *)"description");
+						
+						string termDescription = "No desription available";
+						if (termDescriptionPtr)
+						{
+							termDescription = string(termDescriptionPtr);
+							free(termDescriptionPtr);
+						}
+						
+						
+						ItemInfo *newInfo = new ItemInfo;
+						newInfo->name = termName;
+						newInfo->type = termType;
+						newInfo->description = termDescription;
+						my_info->inputs.insert(my_info->inputs.end(), newInfo);
+
+					} else if (string((char*)node->name) == "NetOutput") {
+						
+							char* termNamePtr = (char*) xmlGetProp(node,
+								(xmlChar *)"name");
+							
+							
+							string termName = string(termNamePtr);
+							free(termNamePtr);
+							
+							char* termTypePtr = (char*) xmlGetProp(node,
+									(xmlChar *)"object_type");
+							
+							string termType = "any";
+							
+							if (termTypePtr)
+							{
+								termType = string(termTypePtr);
+								free(termTypePtr);
+							}	
+				
+							
+							char* termDescriptionPtr = (char*) xmlGetProp(node,
+															(xmlChar *)"description");
+							
+							string termDescription = "No desription available";
+							if (termDescriptionPtr)
+							{
+								termDescription = string(termDescriptionPtr);
+								free(termDescriptionPtr);
+							}
+							
+							
+							ItemInfo *newInfo = new ItemInfo;
+							newInfo->name = termName;
+							newInfo->type = termType;
+							newInfo->description = termDescription;
+							my_info->outputs.insert(my_info->outputs.end(), newInfo);
+
+					}
+					node = node->next;
+				}
+
+			}
+		} else if (string((char*)net->name) == "Parameter") {
+			char *param_name = (char *)xmlGetProp(net, (xmlChar *)"name");
+			char *param_type = (char *)xmlGetProp(net, (xmlChar *)"type");
+			char *param_value = (char *)xmlGetProp(net, (xmlChar *)"value");
+			if (param_name && param_type) {
+				ItemInfo *newInfo = new ItemInfo;
+				newInfo->name = param_name;
+				if (string(param_type)=="")
+					newInfo->type = "int";
+				else
+					newInfo->type = param_type;
+				if (string(param_value)!="")
+					newInfo->value = param_value;
+				my_info->params.insert(my_info->params.end(), newInfo);
+			}
+			//cerr << "param\n";
+		}
+		net = net->next;
+	}
+	xmlFreeDoc(doc);
 
 }
 
@@ -788,7 +839,12 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 	 newInfo->name = termName;
 	 newInfo->type = termType;
 	 newInfo->description = termDescription;
-
+	 
+	 cout << "Adding INPUT iteminfo to network "<<netName<<endl;
+	 cout << "name: "<<newInfo->name<<endl;
+	 cout << "type: "<<newInfo->type<<endl;
+	 cout << "description: "<<newInfo->description<<endl;
+	 
 	 ninfo->inputs.insert (ninfo->inputs.end(), newInfo);
 	 
       } else if (string((char*)node->name) == "NetOutput")
@@ -816,6 +872,12 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 	 newInfo->type = termType;
 	 newInfo->description = termDescription;
 
+	 cout << "Adding OUTPUT iteminfo to network "<<netName<<endl;
+	 cout << "name: "<<newInfo->name<<endl;
+	 cout << "type: "<<newInfo->type<<endl;
+	 cout << "description: "<<newInfo->description<<endl;
+	 
+	 
 	 ninfo->outputs.insert (ninfo->outputs.end(), newInfo);
 	 
       }

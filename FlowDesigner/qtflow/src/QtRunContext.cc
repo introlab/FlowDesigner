@@ -25,6 +25,8 @@ namespace FD
 
 	bool QtRunContext::run()
 	{	
+		cout<<"QtRunContext::run()"<<endl;
+		
 		bool success = false;
 	
 		if (m_document)
@@ -32,13 +34,28 @@ namespace FD
 			//build document
 			try 
 			{
+				cout<<"QtRunContext::building()"<<endl;
 				m_network = m_document->build("MAIN", m_parameters);
+				cout<<"QtRunContext::build done()"<<endl;
+				
 				
 				//MAIN SHOULD NOT HAVE INPUT NODES
 				if (m_network->getInputNode())
 				{
 					throw new GeneralException ("QtRunContext::run() - main network has input node", __FILE__, __LINE__);
 				}
+				
+				std::vector<ItemInfo *> outputs = m_document->getNetOutputs("MAIN");
+				
+				for (unsigned int i = 0; i < outputs.size(); i++)
+				{
+					cout << "outputs name "<<outputs[i]->name << endl;
+					cout << "outputs type "<<outputs[i]->type << endl;
+					cout << "outputs value "<<outputs[i]->value<< endl;
+					cout << "outputs description "<<outputs[i]->description<< endl;
+					
+				}
+				
 				
 				//processing buffer requests
 				for (int i = 0; ;i++) 
