@@ -64,6 +64,7 @@ namespace FD
         
         QtTerminal* getQtTerminal(UITerminal *term);
         
+        UINode* getUINode(){return m_uiNode;}
  
         
         void positionChanged(float x, float y);

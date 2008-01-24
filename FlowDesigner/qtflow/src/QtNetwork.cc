@@ -140,20 +140,13 @@ namespace FD
                 int nbSelectedItems = scene()->selectedItems().size();                
                 while(scene()->selectedItems().size()!=0)
                 {
-                	/*
+                	
                     QtNode * selectNode = qgraphicsitem_cast<QtNode *>(scene()->selectedItems()[0]);  
                     if(selectNode)
-                        m_uiNetwork->removeNode( m_nodeMap[selectNode] );
-                    else
-                    {
-                        QtLink * selectLink = qgraphicsitem_cast<QtLink *>(scene()->selectedItems()[0]);                    
-                        if(selectLink)
-                        {
-                            cout<<"selectLink: "<<selectLink<<endl;
-                            m_uiNetwork->removeLink( m_linkMap[selectLink] );
-                        }
+                    {	
+                        delete selectNode->getUINode();
                     }
-                    */
+                    
                 }
                 break;
             }
@@ -425,6 +418,7 @@ namespace FD
 	void QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)
 	{
 		cerr<<"QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)"<<endl;
+		removeNode( m_nodeMap[const_cast<UINode*>(node)]);
 	}
 	
 	//Node added
@@ -438,6 +432,7 @@ namespace FD
 	void QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)
 	{
 		cerr<<"QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)"<<endl;
+		removeLink(m_linkMap[const_cast<UILink*>(link)]);
 	}
 	
 	//Link added
