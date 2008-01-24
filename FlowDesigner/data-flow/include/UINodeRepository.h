@@ -105,6 +105,8 @@ class UINodeRepository {
    void updateNetInfo(UINetwork *net);
 
    void clean();
+   
+   void Print(std::ostream &out);
 
    static iterator Begin() {return GlobalRepository().info.begin();}
 

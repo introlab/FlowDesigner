@@ -108,6 +108,7 @@ void UINodeRepository::Scan()
       LoadAllInfoRecursive(dirs[i]);
    }
    
+   //GlobalRepository().Print(cerr);
    //cerr<<"done loading def files"<<endl;
 
  /*  
@@ -641,8 +642,6 @@ void UINodeRepository::LoadAllInfoRecursive(const string &path) {
     string fullpath = path + string("/") + name;
 #else
 	string fullpath = path + string("\\") + name;
-#warning Please remove this debug line.
-	cerr<<"UINodeRepository::LoadAllInfoRecursive with full path : "<<fullpath<<endl;
 #endif
 
 
@@ -673,10 +672,7 @@ void UINodeRepository::LoadAllInfoRecursive(const string &path) {
        //loading toolbox
        if (len > 4 && strcmp(".def", current_entry->d_name + len-4)==0)
        {
-#ifdef WIN32       	
-#warning Please remove this debug line.
-	  cerr<<"Loading toolbox : "<<fullpath<<endl;
-#endif
+
 	  LoadNodeDefInfo(path, name);
        }
        
@@ -839,12 +835,12 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 	 newInfo->name = termName;
 	 newInfo->type = termType;
 	 newInfo->description = termDescription;
-	 
-	 cout << "Adding INPUT iteminfo to network "<<netName<<endl;
-	 cout << "name: "<<newInfo->name<<endl;
-	 cout << "type: "<<newInfo->type<<endl;
-	 cout << "description: "<<newInfo->description<<endl;
-	 
+	 /*
+	 cerr << "Adding INPUT iteminfo to network "<<netName<<endl;
+	 cerr << "name: "<<newInfo->name<<endl;
+	 cerr << "type: "<<newInfo->type<<endl;
+	 cerr << "description: "<<newInfo->description<<endl;
+	 */
 	 ninfo->inputs.insert (ninfo->inputs.end(), newInfo);
 	 
       } else if (string((char*)node->name) == "NetOutput")
@@ -871,19 +867,23 @@ void UINodeRepository::loadNetInfo(xmlNodePtr net)
 	 newInfo->name = termName;
 	 newInfo->type = termType;
 	 newInfo->description = termDescription;
-
-	 cout << "Adding OUTPUT iteminfo to network "<<netName<<endl;
-	 cout << "name: "<<newInfo->name<<endl;
-	 cout << "type: "<<newInfo->type<<endl;
-	 cout << "description: "<<newInfo->description<<endl;
-	 
+	 /*
+	 cerr << "Adding OUTPUT iteminfo to network "<<netName<<endl;
+	 cerr << "name: "<<newInfo->name<<endl;
+	 cerr << "type: "<<newInfo->type<<endl;
+	 cerr << "description: "<<newInfo->description<<endl;
+	 */
 	 
 	 ninfo->outputs.insert (ninfo->outputs.end(), newInfo);
 	 
       }
       node = node->next;
    }
- 
+   
+   /*
+   cerr << "result for netname "<<netName<<endl;
+   cerr << *(info[netName]) << endl;
+   */
 }
 
 
@@ -966,59 +966,70 @@ void UINodeRepository::ProcessDependencies(set<string> &initial_files, bool topl
 }
 
 
-void UINodeRepository::updateNetInfo(UINetwork *net)
-{
-  iterator inet = info.find(net->getName());
-  if (inet!=info.end())
-   {
-     //cerr<<"UINodeRepository deleting network info:"<<net->getName()<<endl;
-     delete inet->second;
-   }
+void UINodeRepository::updateNetInfo(UINetwork *net) {
 
-   NodeInfo *ninfo = new NodeInfo;
-   vector<UINetTerminal *> my_terminals = net->getTerminals();
+	//cerr<<"void UINodeRepository::updateNetInfo(UINetwork *net)"<<endl;
 
-   //updating inputs & outputs
-   //new implementation using name + type + description for all UINetTerminals
-   //(DL) 15/12/203
-   for (unsigned int i = 0; i < my_terminals.size(); i++)
-   {
-      
-      ItemInfo *newInfo = new ItemInfo;
-
-      if (my_terminals[i]) {
-
-	//input name
-	newInfo->name = my_terminals[i]->getName();
-
-	//input type
-	newInfo->type = my_terminals[i]->getType();
-	  
-	//input description 
-	newInfo->description = my_terminals[i]->getDescription();
-	  	  	  
-	//input our output?
-	if (my_terminals[i]->getType() == UINetTerminal::INPUT) {
-	  ninfo->inputs.push_back(newInfo);
+	iterator inet = info.find(net->getName());
+	if (inet!=info.end()) {
+		//cerr<<"UINodeRepository deleting network info:"<<net->getName()<<endl;
+		delete inet->second;
 	}
-	else if (my_terminals[i]->getType() == UINetTerminal::OUTPUT) {
-	  ninfo->outputs.push_back(newInfo);
+
+	NodeInfo *ninfo = new NodeInfo;
+	vector<UINetTerminal *> my_terminals = net->getTerminals();
+
+	//updating inputs & outputs
+	//new implementation using name + type + description for all UINetTerminals
+	//(DL) 15/12/2003
+	for (unsigned int i = 0; i < my_terminals.size(); i++) {
+
+		ItemInfo *newInfo = new ItemInfo;
+
+		if (my_terminals[i]) {
+
+			//input name
+			newInfo->name = my_terminals[i]->getName();
+
+			//input type
+			newInfo->type = my_terminals[i]->getObjectType();
+			
+			//input description 
+			newInfo->description = my_terminals[i]->getDescription();
+			
+			//input our output?
+			if (my_terminals[i]->getType() == UINetTerminal::INPUT) {
+				ninfo->inputs.push_back(newInfo);
+			} 
+			else if (my_terminals[i]->getType() == UINetTerminal::OUTPUT) {
+				ninfo->outputs.push_back(newInfo);
+			}
+
+		}
 	}
-	
-      }
-   }
 
-   //cerr<<"insertingNetParams"<<endl;
-   net->insertNetParams(ninfo->params);
+	//cerr<<"insertingNetParams"<<endl;
+	net->insertNetParams(ninfo->params);
 
-   ninfo->category = "Subnet";
+	ninfo->category = "Subnet";
 
-   //Description is now stored in a network definition
-   ninfo->description = net->getDescription();
-   
-   //cerr<<"updated network info for "<<net->getName()<<endl;
-   //we are dealing with a local repository, in a document
-   info[net->getName()] = ninfo;
+	//Description is now stored in a network definition
+	ninfo->description = net->getDescription();
+
+	//cerr<<"updated network info for "<<net->getName()<<endl;
+	//we are dealing with a local repository, in a document
+	info[net->getName()] = ninfo;
 }
+
+void UINodeRepository::Print(std::ostream &out)
+{
+	for (UINodeRepository::iterator iter = info.begin(); iter != info.end(); iter++)
+	{
+		out << "info."<<iter->first<<endl;
+		out << *(iter->second) << endl;
+		
+	}
+}
+
 
 }//namespace FD

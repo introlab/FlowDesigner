@@ -61,9 +61,6 @@ std::vector<std::string> envList(const char *envName, bool include_home)
 void recursiveScanDL(const std::string &path, std::vector<std::string> &libList, bool debug)
 {
   
-  if (debug)
-    cerr<<"recursive DL scan with path : "<<path<<endl;
-  
   DIR *my_directory = opendir (path.c_str());
   
   if (!my_directory) {

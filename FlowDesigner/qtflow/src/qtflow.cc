@@ -104,14 +104,14 @@ class QtFlowApp : public QApplication
 			else
 			{
 				
-				cout<<"QtFlow loading document "<<argv[1]<<endl;
+				
 				doc = new UIDocument(argv[1]);
 				doc->load();
-				cout<<"QtFlow done loading..."<<endl;
+				
 			}
 			
 			//Start Thread timer
-			m_timerId = startTimer(5000);
+			m_timerId = startTimer(1);
 	
 		}
 		catch (BaseException *e)
@@ -126,11 +126,6 @@ class QtFlowApp : public QApplication
 	void timerEvent(QTimerEvent *event)
 	{
 		killTimer(m_timerId);
-		
-		//start processing thread
-		//m_thread = new QtFlowProcessingThread(*this);
-		cout<<"Calling run"<<endl;
-		//m_thread->start();
 		run();
 	
 	}

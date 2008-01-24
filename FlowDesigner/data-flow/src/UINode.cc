@@ -228,45 +228,45 @@ UINodeParameters *UINode::newNodeParameters (UINode *_node, string type)
 
 Node *UINode::build(const ParameterSet &params)
 {
-   //for all params, it will perform substitution in parameters (process subnet_params)
+	//for all params, it will perform substitution in parameters (process subnet_params)
 
-   Node *node=NULL;
-   _NodeFactory *factory = NULL;
-   ParameterSet *par=NULL;
-   factory = Node::getFactoryNamed(type);
-   try {
-      par = parameters->build(params);
-      //This is only true if type is in the dictionary
-      if (factory) 
-      {
-	 node = factory->Create(name, *par);
-      } else {
-	 UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
-	 if (buildNet)
-	    node = buildNet->build(name, *par);
-	 else
-	 { 
-	    node = UIDocument::buildExternal(type, name, *par);
-	    if (!node)
-	    {
-	       throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
-	    }
-	 }
-      }
-   } catch (BaseException *e)
-   {
-      if (par)
-         delete par;
-      if (node)
-	 delete node;
-      throw e->add (new GeneralException(string("Exception caught while creating ")+name 
-					 + " (type " + type + ")", __FILE__, __LINE__));
-   }
-   
-   node->setUINode(this);
+	Node *node=NULL;
+	_NodeFactory *factory= NULL;
+	ParameterSet *par=NULL;
+	factory = Node::getFactoryNamed(type);
+	try {
+		par = parameters->build(params);
+		//This is only true if type is in the dictionary
+		if (factory)
+		{
+			node = factory->Create(name, *par);
+		} else {
+			UINetwork *buildNet = net->getDocument()->getNetworkNamed(type);
+			if (buildNet)
+			node = buildNet->build(name, *par);
+			else
+			{
+				node = UIDocument::buildExternal(type, name, *par);
+				if (!node)
+				{
+					throw new GeneralException(string("Node not found: ")+type, __FILE__, __LINE__);
+				}
+			}
+		}
+	} catch (BaseException *e)
+	{
+		if (par)
+		delete par;
+		if (node)
+		delete node;
+		throw e->add (new GeneralException(string("Exception caught while creating ")+name
+						+ " (type " + type + ")", __FILE__, __LINE__));
+	}
 
-   delete par;
-   return node;
+	node->setUINode(this);
+
+	delete par;
+	return node;
    
 }
 
