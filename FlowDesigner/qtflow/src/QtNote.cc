@@ -94,6 +94,23 @@ namespace FD
 							
 			}
 	}
+	
+	QVariant QtNote::itemChange(GraphicsItemChange change, const QVariant &value)
+	{
+	        
+	        if (change == ItemPositionChange && scene()) 
+	        {
+	       		//value is the new position.
+	         	QPointF newPos = value.toPointF();
+	            
+	            //emit position changed signal
+	         	if (m_uiNote)
+	         	{	
+	         		m_uiNote->setPos(newPos.x(),newPos.y());
+	         	}
+	     	}
+	}
+	        
 } //namespace FD
 
 

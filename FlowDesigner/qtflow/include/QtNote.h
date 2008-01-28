@@ -18,6 +18,7 @@ namespace FD
 		UINote *m_uiNote;
 		QGraphicsTextItem *m_textItem;
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
+		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 		void update();
 	public:
 		QtNote(QtNetwork *parent, UINote *note);
