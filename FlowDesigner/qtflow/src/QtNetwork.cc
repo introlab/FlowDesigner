@@ -323,15 +323,19 @@ namespace FD
                 
 				QPointF pos = mapToScene(event->pos());
                
-				stringstream nodename;
-				
-				//TODO : Find a better way for node names?
-				nodename << event->mimeData()->text().toStdString() << "_" << number++;
-                
-				UINode* node = m_uiNetwork->newNode(m_uiNetwork,nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
-				
-				//This will generate an event, we will then display the node properly
-				m_uiNetwork->addNode(node);
+				if (UINodeRepository::Find(event->mimeData()->text().toStdString()))
+				{
+			
+					stringstream nodename;
+									
+					//TODO : Find a better way for node names?
+					nodename << event->mimeData()->text().toStdString() << "_" << number++;
+									
+					UINode* node = m_uiNetwork->newNode(m_uiNetwork,nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
+					
+					//This will generate an event, we will then display the node properly
+					m_uiNetwork->addNode(node);
+				}
 			}		
 		}
 		else
