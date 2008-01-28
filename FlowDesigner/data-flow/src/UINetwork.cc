@@ -38,7 +38,7 @@ UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
 
   //(DL 04/08/2004)
   //Adding version to newly created network, could be improved
-  addNote(newNote(string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
+  addNote(newNote(string("Automatic-note"), string("Created with FlowDesigner ") + string(FLOWDESIGNER_VERSION),0,0,false));
 
 }
 
@@ -243,18 +243,29 @@ void UINetwork::load (xmlNodePtr net)
       else if (string((char*)node->name) == "Note")
       {
 	//(DL 04/08/2004) Added Note (Post-It like) in the network description	
+    char *str_noteLabel = (char *) xmlGetProp(node,(xmlChar*)"label");
 	char *str_noteText = (char *) xmlGetProp(node,(xmlChar*)"text");
 	char *str_noteX = (char*) xmlGetProp(node,(xmlChar*)"x");
 	char *str_noteY = (char*) xmlGetProp(node,(xmlChar*)"y");
 	char *str_noteVisible = (char*) xmlGetProp(node,(xmlChar*)"visible");
 
 	//convert that into strings
+	
+	
+	string noteLabel = "No Label";
+	if (str_noteLabel)
+		noteLabel = string(str_noteLabel);
+	
 	string noteText(str_noteText);
 	string noteX(str_noteX);
 	string noteY(str_noteY);
 	string noteVisible(str_noteVisible);
 
 	//Must absolutely free memory to avoid leaks
+	
+	if (str_noteLabel)
+		free(str_noteLabel);
+	
 	free(str_noteText);
 	free(str_noteX);
 	free(str_noteY);
@@ -270,8 +281,10 @@ void UINetwork::load (xmlNodePtr net)
 	bool visible;
 	noteVisibleStream>>visible;
 	
+
+	
 	//Creating / Adding new note
-	m_notes.push_back(newNote(noteText,x,y,visible));
+	m_notes.push_back(newNote(noteLabel,noteText,x,y,visible));
       }
       node = node->next;
    }
@@ -525,8 +538,8 @@ UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str)
    return new UILink (_from, _to, str);
 }
 
-UINote *UINetwork::newNote(const std::string &text, double x, double y, bool visible) {
-  return new UINote(text,x,y,visible);
+UINote *UINetwork::newNote(const std::string &label, const std::string &text, double x, double y, bool visible) {
+  return new UINote(label,text,x,y,visible);
 }
 
 

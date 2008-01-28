@@ -17,7 +17,8 @@ namespace FD {
 class UINote {
 
  protected:
-  
+  ///Label of the note
+  std::string m_label;
   ///Text of the note
   std::string m_text;  
   ///X position on the canvas
@@ -30,11 +31,12 @@ class UINote {
   
   /**
     UINote Constructor
-    \param test The text of the note
+    \param label the label of the note
+    \param text the text of the note
     \param x the x position of the note on the canvas
     \param y the y position of the note on the canvas
   */
-  UINote(const std::string &text, double x, double y, bool visible = true);
+  UINote(const std::string &label, const std::string &text, double x, double y, bool visible = true);
   
   ///UINote destructor
   virtual ~UINote();
@@ -67,7 +69,33 @@ class UINote {
      \param visible True if the note should be visible, else false
   */
   void setVisible(bool visible) {m_visible = visible;}
+  
+  /**
+  	Get the position of the note
+  	\param x The returned x position
+  	\param y The returned y position
+  */
+  void getPos(double &x, double &y) {x = m_x; y = m_y;}
 
+  /**
+   * Set the position of the note
+   * \param x the new x position
+   * \param y the new y position
+   */
+  void setPos(double x, double y) {m_x = x; m_y = y;}
+  
+  /**
+   * Set the note label
+   *\param label The new label
+   */
+  void setLabel(const std::string &label) {m_label = label;}
+  
+  /**
+   * Get the label
+   * \return the label
+   */
+  std::string getLabel() {return m_label;}
+  
 };
 
 }//namespace FD

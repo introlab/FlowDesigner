@@ -8,6 +8,7 @@
 #include "UINetwork.h"
 #include <map>
 #include <QMenu>
+#include "QtNote.h"
 
 namespace FD
 {
@@ -42,6 +43,10 @@ namespace FD
         QtLink* addLink(UILink* uiLink);
         void addQtLink(QtLink *link);
         void removeLink(QtLink* link);  
+        
+        //Notes
+        QtNote* addNote(UINote* uinote);
+        void removeNote(QtNote *note);
         
         //Events
 		
@@ -101,6 +106,8 @@ namespace FD
         std::map<UINode*, QtNode*> m_nodeMap;
         
         std::map<UILink*, QtLink*> m_linkMap;
+        
+        std::map<UINote*, QtNote*> m_noteMap;
         
         bool isNodeExist(const QString &name);
         

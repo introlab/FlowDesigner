@@ -13,6 +13,7 @@
 #include <QTreeWidgetItem>
 #include "QtNodeTreeView.h"
 #include "QtDocument.h"
+#include "QtNote.h"
 
 #include <math.h>
 #include "QtTerminal.h"
@@ -55,30 +56,18 @@ namespace FD
             std::vector<UILink *> links = m_uiNetwork->getLinks();
             for (unsigned int i = 0; i < links.size(); i++)
             {
-
             	addLink(links[i]);
-            	/*
-                //CAN WE DO BETTER?
-                UINode *fromNode = links[i]->getFromTerminal()->getNode();
-                UINode *destNode = links[i]->getToTerminal()->getNode();
-                QtNode *source = m_nodeMap[fromNode];
-                QtNode *dest = m_nodeMap[destNode];
-                QtTerminal *sourceTerminal = source->getQtTerminal(links[i]->getFromTerminal());
-                QtTerminal *destTerminal = dest->getQtTerminal(links[i]->getToTerminal());
-                QtLink *link = new QtLink(sourceTerminal,destTerminal,links[i]);
-                
-                link->adjust();
-                source->addQtLink(link);
-                dest->addQtLink(link);
-                scene->addItem(link);
-                m_linkMap.insert(make_pair(links[i],link));
-				*/
             }
             
             
             //TODO PROCCESS NETWORK PARAMETERS
             
-           
+            //ADD NOTES
+            std::vector<UINote*> notes = m_uiNetwork->getNotes();
+            for (unsigned int i = 0; i < notes.size(); i++)
+            {
+            	addNote(notes[i]);
+            }
             
             
             //register events
@@ -319,7 +308,7 @@ namespace FD
 			//create this node
 			if (m_uiNetwork)
 			{		
-				static int number = m_uiNetwork->getNodes().size();
+				int number = m_uiNetwork->getNodes().size();
                 
 				QPointF pos = mapToScene(event->pos());
                
@@ -329,7 +318,7 @@ namespace FD
 					stringstream nodename;
 									
 					//TODO : Find a better way for node names?
-					nodename << event->mimeData()->text().toStdString() << "_" << number++;
+					nodename << event->mimeData()->text().toStdString() << "_" << number;
 									
 					UINode* node = m_uiNetwork->newNode(m_uiNetwork,nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y(),true);
 					
@@ -481,6 +470,7 @@ namespace FD
 	void QtNetwork::notifyNoteAdded(const UINetwork *net, const UINote* note)
 	{
 		cerr<<"QtNetwork::notifyNoteAdded(const UINetwork *net, const UINote* note)"<<endl;
+		//addNote(const_cast<UINote*>(note));
 	}
 	
 	//NetTerminal removed
@@ -531,5 +521,19 @@ namespace FD
 		cerr<<"QtNetwork::notifyDestroyed(const UINetwork *net)"<<endl;
 		m_uiNetwork = NULL;
 	}
+	
+    QtNote* QtNetwork::addNote(UINote* uinote)
+    {
+    	cerr<<"QtNote* QtNetwork::addNote(UINote* uinote) "<<uinote<<endl;
+    	QtNote *note = new QtNote(this,uinote);
+    	scene()->addItem(note);
+    	m_noteMap[uinote] = note;
+    	return note;
+    }
+    
+    void QtNetwork::removeNote(QtNote *note)
+    {
+    	
+    }
     
 } //namespace FD

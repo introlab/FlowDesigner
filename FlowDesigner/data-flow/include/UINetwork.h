@@ -185,13 +185,14 @@ public:
 
    /**
       Create a new UINote
+      \param label the label of the note
       \param text the text of the note
       \param x the x position of the note (useful for GUINote)
       \param y the y position of the note (usfeul for GUINote)
       \param visible true if the note is visible (useful for GUINote)
       \return UINote *the pointer to the newly created note
    */
-   virtual UINote* newNote(const std::string &text, double x, double y, bool visible);
+   virtual UINote* newNote(const std::string &label, const std::string &text, double x, double y, bool visible);
 
 
    virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name, 
