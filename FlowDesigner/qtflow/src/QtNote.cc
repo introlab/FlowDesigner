@@ -5,8 +5,9 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 #include <QLineEdit>
-
+#include <QPushButton>
 #include <iostream>
+#include <QObject>
 
 namespace FD
 {
@@ -24,13 +25,9 @@ namespace FD
 			m_uiNote->getPos(x,y);
 			setPos(x,y);
 			
-			cerr<<"pos is "<<x<<","<<y<<endl;
-			cerr<<"label is "<<m_uiNote->getLabel()<<endl;
-			
 			//Create a label
 			m_textItem = new QGraphicsTextItem(m_uiNote->getLabel().c_str(),this);
 
-			//cerr << "textItem "<<m_textItem<<endl;
 			//Resize Rect
 			QRectF rect = m_textItem->boundingRect();
 			setRect(rect);
@@ -39,7 +36,6 @@ namespace FD
 			QPen myPen= pen();
 			QBrush myBrush = myPen.brush();
 			myBrush.setColor(Qt::yellow);
-			//myBrush.setStyle(Qt::RadialGradientPattern);
 			myPen.setBrush(myBrush);
 			setPen(myPen);
 			setBrush(myBrush);
@@ -50,8 +46,6 @@ namespace FD
 	        setFlag(ItemIsSelectable);
 			
 		}
-		cerr<<"ctor end"<<endl;
-
 	}
 	
 	void QtNote::update()
@@ -82,6 +76,13 @@ namespace FD
 				vlayout->addWidget(myTextEdit);
 				myTextEdit->setText(m_uiNote->getText().c_str());
 				
+				QPushButton *myButton = new QPushButton("OK",myDialog);
+				vlayout->addWidget(myButton);
+				
+				//Clicking on OK will close the dialog
+				QObject::connect(myButton,SIGNAL(clicked()), myDialog, SLOT(accept()));
+				
+				
 				//Exec dialog
 				myDialog->exec();
 				
@@ -103,8 +104,6 @@ namespace FD
 	
 	QVariant QtNote::itemChange(GraphicsItemChange change, const QVariant &value)
 	{
-		
-	        cerr<<"QVariant QtNote::itemChange(GraphicsItemChange change, const QVariant &value)"<<endl;
 	        if (change == ItemPositionChange && scene()) 
 	        {
 	       		//value is the new position.
