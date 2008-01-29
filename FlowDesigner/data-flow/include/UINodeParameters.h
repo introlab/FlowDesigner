@@ -14,17 +14,7 @@ class UINode;
 class ParameterSet;
 class ItemInfo;
 
-//FIXME: Should replace with ItemInfo
-/*
-class ParameterText 
-{
-   public:
-      std::string name;
-      std::string value;
-      std::string type;	
-      std::string description;
-};
-*/
+
 
 class UINodeParameters 
 {

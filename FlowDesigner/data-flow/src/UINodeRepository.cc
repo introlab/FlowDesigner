@@ -29,39 +29,6 @@ using namespace std;
 namespace FD {
 
 
-ostream& operator<< (ostream &out, const ItemInfo &iInfo) {
-	out<<"\tname:  "<<iInfo.name<<endl;
-	out<<"\ttype:  "<<iInfo.type<<endl;
-	out<<"\tvalue: "<<iInfo.value<<endl;
-	out<<"\tdesc:  "<<iInfo.description<<endl;
-	return out;
-}
-
-ostream& operator<< (ostream & out, const NodeInfo &nInfo) {
- 
-  out<<"INPUTS:"<<endl;
-  for (unsigned int i = 0; i < nInfo.inputs.size(); i++) {
-    out<<*(nInfo.inputs[i]);
-  }
-  out<<"OUTPUTS:"<<endl;
-  for (unsigned int i = 0; i < nInfo.outputs.size(); i++) {
-    out<<*(nInfo.outputs[i]);
-  }
-  out<<"PARAMETERS:"<<endl;
-  for (unsigned int i = 0; i < nInfo.params.size(); i++) {
-    out<<*(nInfo.params[i]);
-  }
-  out<<"CATEGORY:"<<nInfo.category<<endl;
-  out<<"DESCRIPTION:"<<nInfo.description<<endl;
-  out<<"SOURCEFILE:"<<nInfo.sourceFile<<endl;
-  out<<"REQUIRELIST:"<<nInfo.requireList<<endl;
-  out<<"KIND:"<<nInfo.kind<<endl;
-  out<<"ICON:"<<nInfo.icon<<endl;
-  return out;
-}
-
-
-
 UINodeRepository::UINodeRepository(const UINodeRepository &)
 {
    throw new GeneralException("I wouldn't try copying a UINodeRepository if I were you", __FILE__, __LINE__);

@@ -14,13 +14,11 @@ namespace FD
 	using namespace std;
 
 	QtNote::QtNote(QtNetwork *parent, UINote *note)
-		: m_uiNote(note), m_textItem(NULL)
+		: m_qtNetwork(parent), m_uiNote(note), m_textItem(NULL)
 	{
 		
 		if (m_uiNote)
 		{
-			
-			
 			double x,y;	
 			m_uiNote->getPos(x,y);
 			setPos(x,y);
@@ -44,7 +42,10 @@ namespace FD
 			//Notes can be moved and selected.
 	        setFlag(ItemIsMovable);
 	        setFlag(ItemIsSelectable);
-			
+	    	if (!m_uiNote->isVisible())
+	        {
+	    		hide();
+	        }
 		}
 	}
 	
@@ -114,6 +115,8 @@ namespace FD
 	         	{	
 	         		m_uiNote->setPos(newPos.x(),newPos.y());
 	         	}
+	         	
+	         	m_qtNetwork->resizeSceneView();
 	     	}
 	        return QGraphicsRectItem::itemChange(change, value);
 	}

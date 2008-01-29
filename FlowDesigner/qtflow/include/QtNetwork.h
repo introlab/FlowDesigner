@@ -89,6 +89,7 @@ namespace FD
 		
         protected: 
         
+        void drawBackground(QPainter *painter, const QRectF &rect);
         void mouseMoveEvent ( QMouseEvent * e );
         void keyPressEvent(QKeyEvent *event);
         void wheelEvent(QWheelEvent *event);

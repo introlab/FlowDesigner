@@ -17,6 +17,7 @@ namespace FD
 	protected:
 		UINote *m_uiNote;
 		QGraphicsTextItem *m_textItem;
+		QtNetwork *m_qtNetwork;
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
 		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 		void update();

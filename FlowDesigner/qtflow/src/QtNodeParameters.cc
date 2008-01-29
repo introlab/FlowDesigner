@@ -14,7 +14,7 @@
 #include "Object.h"
 #include "UINodeRepository.h"
 #include <QInputDialog>
-
+#include <sstream>
 
 namespace FD {
     
@@ -45,6 +45,21 @@ namespace FD {
   		m_tabWidget->addTab(buildParametersTable(), "Parameters");
 		m_tabWidget->addTab(new QTextEdit(this),"Comments");
 		m_tabWidget->addTab(new QTextEdit(this),"Inputs/Outputs");
+		
+	    QTextEdit *nodeInfo = new QTextEdit(this);
+		m_tabWidget->addTab(nodeInfo,"Node Info");
+		
+		std::stringstream outStream;
+		
+		NodeInfo* info = UINodeRepository::Find(m_node->getType());
+		
+		if (info)
+		{
+			outStream << (*info);
+		}
+		nodeInfo->setText(outStream.str().c_str());
+		
+		nodeInfo->setReadOnly(true);
         
 		m_vLayout->addWidget(m_tabWidget);
         
@@ -81,6 +96,7 @@ namespace FD {
 		m_paramsLayout->addWidget(new QLabel("<b>TYPE</b>",this),0,1,Qt::AlignLeft | Qt::AlignTop);
 		m_paramsLayout->addWidget(new QLabel("<b>DESCRIPTION</b>",this),0,2,Qt::AlignLeft | Qt::AlignTop);
 		m_paramsLayout->addWidget(new QLabel("<b>VALUE</b>",this),0,3,Qt::AlignLeft | Qt::AlignTop);
+		
 		
 		
 		if (m_params)

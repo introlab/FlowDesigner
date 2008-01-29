@@ -39,14 +39,13 @@ namespace FD
 
         void addNetwork(const QString &name, UINetwork::Type type);   
         
-        std::vector<QtNetwork*> getNetworks() { return m_networks; }
-        
         bool isNetworkExist(const QString &name);
         
 		public slots:
         
         void onRunDocument();
 		void onViewSourceDocument();
+		void onAddNoteDocument();
         
         void tabWidgetChanged(int index);
         
@@ -77,6 +76,7 @@ namespace FD
         protected:
         
         QVBoxLayout *m_vboxLayout;
+        QHBoxLayout *m_hboxLayout;
         std::string m_name;
         QTabWidget *m_tabWidget;         
         QButtonGroup *m_buttonGroup;
@@ -84,7 +84,7 @@ namespace FD
         
         UIDocument *m_uiDoc;
         
-        std::vector<QtNetwork*> m_networks;
+        std::map<UINetwork*, QtNetwork*> m_networkMap;
 
     };
 } //namespace FD  

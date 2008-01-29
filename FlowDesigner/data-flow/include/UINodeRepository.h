@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include <libxml/tree.h>
+#include <iostream>
 
 namespace FD {
 
@@ -60,6 +61,8 @@ class NodeInfo {
    NodeInfo(const NodeInfo&) {}
 
 };
+
+
 
 class UINodeRepository {
   public:
@@ -126,6 +129,39 @@ class UINodeRepository {
 
    static void ProcessDependencies(std::set<std::string> &initial_files, bool toplevel=true);
 };
+
+inline std::ostream& operator<< (std::ostream &out, const ItemInfo &iInfo) {
+	out<<"  name:  "<<iInfo.name<<std::endl;
+	out<<"  type:  "<<iInfo.type<<std::endl;
+	out<<"  value: "<<iInfo.value<<std::endl;
+	out<<"  desc:  "<<iInfo.description<<std::endl;
+	return out;
+}
+
+inline std::ostream& operator<< (std::ostream & out, const NodeInfo &nInfo) {
+ 
+  out<<"INPUTS: "<<std::endl;
+  for (unsigned int i = 0; i < nInfo.inputs.size(); i++) {
+    out<<*(nInfo.inputs[i]);
+  }
+  out<<"OUTPUTS: "<<std::endl;
+  for (unsigned int i = 0; i < nInfo.outputs.size(); i++) {
+    out<<*(nInfo.outputs[i]);
+  }
+  out<<"PARAMETERS: "<<std::endl;
+  for (unsigned int i = 0; i < nInfo.params.size(); i++) {
+    out<<*(nInfo.params[i]);
+  }
+  out<<"CATEGORY: "<<nInfo.category<<std::endl;
+  out<<"DESCRIPTION: "<<nInfo.description<<std::endl;
+  out<<"SOURCEFILE: "<<nInfo.sourceFile<<std::endl;
+  out<<"REQUIRELIST: "<<nInfo.requireList<<std::endl;
+  out<<"KIND: "<<nInfo.kind<<std::endl;
+  out<<"ICON: "<<nInfo.icon<<std::endl;
+  return out;
+}
+
+
 }//namespace FD
 
 #endif

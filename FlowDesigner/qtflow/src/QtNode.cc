@@ -140,6 +140,8 @@ namespace FD
          		m_uiNode->setPos(newPos.x(),newPos.y());
          		//emit positionChanged(newPos.x(),newPos.y());
          	}
+         	
+         	graph->resizeSceneView();
      	}
         
         if (change == ItemSelectedChange && scene()) 
@@ -187,18 +189,12 @@ namespace FD
 	
     void QtNode::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     {
-        QGraphicsItem::mouseMoveEvent(event);
-		
-		//graph->resizeSceneView();
-		
+        QGraphicsItem::mouseMoveEvent(event);		
     }
     
     void QtNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
         QGraphicsItem::mouseReleaseEvent(event);
-		
-		graph->resizeSceneView();
-		
     }
     
     QtTerminal* QtNode::addTerminal(UITerminal *uiTerminal)
