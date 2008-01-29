@@ -6,8 +6,11 @@
 #include <QVBoxLayout>
 #include <QLineEdit>
 
+#include <iostream>
+
 namespace FD
 {
+	using namespace std;
 
 	QtNote::QtNote(QtNetwork *parent, UINote *note)
 		: m_uiNote(note), m_textItem(NULL)
@@ -15,14 +18,19 @@ namespace FD
 		
 		if (m_uiNote)
 		{
+			
+			
 			double x,y;	
 			m_uiNote->getPos(x,y);
 			setPos(x,y);
 			
+			cerr<<"pos is "<<x<<","<<y<<endl;
+			cerr<<"label is "<<m_uiNote->getLabel()<<endl;
 			
 			//Create a label
 			m_textItem = new QGraphicsTextItem(m_uiNote->getLabel().c_str(),this);
 
+			//cerr << "textItem "<<m_textItem<<endl;
 			//Resize Rect
 			QRectF rect = m_textItem->boundingRect();
 			setRect(rect);
@@ -31,22 +39,18 @@ namespace FD
 			QPen myPen= pen();
 			QBrush myBrush = myPen.brush();
 			myBrush.setColor(Qt::yellow);
-			myBrush.setStyle(Qt::RadialGradientPattern);
+			//myBrush.setStyle(Qt::RadialGradientPattern);
 			myPen.setBrush(myBrush);
 			setPen(myPen);
 			setBrush(myBrush);
 			setToolTip(m_uiNote->getText().c_str());
 			
-			//Test if visible
-			if (!m_uiNote->isVisible())
-			{
-				hide();
-			}
 			//Notes can be moved and selected.
 	        setFlag(ItemIsMovable);
 	        setFlag(ItemIsSelectable);
 			
 		}
+		cerr<<"ctor end"<<endl;
 
 	}
 	
@@ -95,9 +99,12 @@ namespace FD
 			}
 	}
 	
+	
+	
 	QVariant QtNote::itemChange(GraphicsItemChange change, const QVariant &value)
 	{
-	        
+		
+	        cerr<<"QVariant QtNote::itemChange(GraphicsItemChange change, const QVariant &value)"<<endl;
 	        if (change == ItemPositionChange && scene()) 
 	        {
 	       		//value is the new position.
@@ -109,7 +116,9 @@ namespace FD
 	         		m_uiNote->setPos(newPos.x(),newPos.y());
 	         	}
 	     	}
+	        return QGraphicsRectItem::itemChange(change, value);
 	}
+	
 	        
 } //namespace FD
 

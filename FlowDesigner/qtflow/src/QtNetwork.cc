@@ -525,10 +525,17 @@ namespace FD
     QtNote* QtNetwork::addNote(UINote* uinote)
     {
     	cerr<<"QtNote* QtNetwork::addNote(UINote* uinote) "<<uinote<<endl;
-    	QtNote *note = new QtNote(this,uinote);
-    	scene()->addItem(note);
-    	m_noteMap[uinote] = note;
-    	return note;
+    	if (uinote->isVisible())
+    	{	
+    		QtNote *note = new QtNote(this,uinote);
+    		scene()->addItem(note);
+    		m_noteMap.insert(make_pair(uinote,note));
+    		return note;
+    	}
+    	else
+    	{
+    		return NULL;
+    	}
     }
     
     void QtNetwork::removeNote(QtNote *note)
