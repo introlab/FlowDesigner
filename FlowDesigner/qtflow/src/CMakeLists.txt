@@ -54,8 +54,13 @@ QT4_WRAP_CPP(QTFLOW_MOC_SRCS ${QTFLOW_HEADERS})
 #include files
 INCLUDE_DIRECTORIES(../include ${FLOWDESIGNER_SOURCE_DIR}/data-flow/include ${QT_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
-# create an executable file named "flowdesigner" from the source files 
-add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS})
+# create an executable file named "flowdesigner" from the source files
+IF(APPLE)
+    SET(MACOSX_BUNDLE_INFO_STRING "FlowDesigner App")
+    add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
+ELSE(APPLE)
+    add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
+ENDIF(APPLE)
 
 # create an executable file named "qtflow" from the source files 
 add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
@@ -63,8 +68,6 @@ add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
 # Linking with libflow and Qt libraries
 target_link_libraries(flowdesigner  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES})
 target_link_libraries(qtflow  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES})
-
-
 
 add_library(libfdqttcp-dynamic SHARED ${FDQTTCP_SRCS})
 	
@@ -78,6 +81,10 @@ install(TARGETS libfdqttcp-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP)
 INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src OUTPUT_FILE libfdqttcp.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDQTTCP_SRCS})" )  
 INSTALL( FILES ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src/libfdqttcp.def DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP/)
 
+IF(APPLE)
+    install(TARGETS flowdesigner DESTINATION "/Applications")
+ELSE(APPLE)
+    install(TARGETS flowdesigner DESTINATION bin)
+ENDIF(APPLE)
 
-install(TARGETS flowdesigner DESTINATION bin)
 install(TARGETS qtflow DESTINATION bin)

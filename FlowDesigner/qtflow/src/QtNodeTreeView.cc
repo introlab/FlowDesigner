@@ -28,6 +28,12 @@ namespace FD
     
     void QtNodeTreeView::insert(const QTreeWidgetItem* root, const std::vector<std::string> &path, int level)
     {
+    	
+    	/*
+    	for(unsigned int i = 0; i < path.size(); i++)
+    		cerr<<":"<<path[i];
+    	cerr<<endl;
+    	 */                
         if (root)
         {
             bool found = false;         
@@ -74,27 +80,28 @@ namespace FD
     
     void QtNodeTreeView::scanNodeRepository()
     {
-        cerr<<"QtNodeTreeView::scanNodeRepository()"<<endl;
+      
 
         //Getting all categories (first pass)
         UINodeRepository::iterator info = UINodeRepository::Begin();
         //set<string> strCategories;
         while (info != UINodeRepository::End())
         {
-            //strCategories.insert(info->second->category);                    
-            //addType(info->second->category,info->first);
-            
             vector<string> categories = extractCategory(info->second->category);
                  
             switch(info->second->kind)
             {					
 				case NodeInfo::builtin:
 				    if (Node::getFactoryNamed(info->first))
-                    {
+                    {				    	
                         //add node name at the end                  
                         categories.push_back(info->first);
                         insert(m_root,categories,0);                                                   
-                    }                  
+                    }    
+				    else
+				    {
+				    	cerr<<"****** ERROR Unknown factory named :" << info->first << endl;
+				    }
 				break;
 				
 				case NodeInfo::subnet:
@@ -143,26 +150,26 @@ namespace FD
     
     void QtNodeTreeView::dragEnterEvent(QDragEnterEvent *event)
     {
-        cerr<<"QtNodeTreeView::dragEnterEvent(QDragEnterEvent *event)"<<endl;
+        //cerr<<"QtNodeTreeView::dragEnterEvent(QDragEnterEvent *event)"<<endl;
         event->accept();
     }
 
     void QtNodeTreeView::dragMoveEvent(QDragMoveEvent *event)
     {
-        cerr<<"QtNodeTreeView::dragMoveEvent(QDragMoveEvent *event)"<<endl;
+        //cerr<<"QtNodeTreeView::dragMoveEvent(QDragMoveEvent *event)"<<endl;
         event->accept();
     }
 
     void QtNodeTreeView::dropEvent(QDropEvent *event)
     {
-        cerr<<"tNodeTreeView::dropEvent(QDropEvent *event)"<<endl;
+        //cerr<<"tNodeTreeView::dropEvent(QDropEvent *event)"<<endl;
         event->accept();
     }   
     
 	bool QtNodeTreeView::dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data, Qt::DropAction action)
 	{
 	
-		cerr<<"QtNodeTreeView::dropMimeData"<<endl;
+		//cerr<<"QtNodeTreeView::dropMimeData"<<endl;
 	}
 	
 	QStringList QtNodeTreeView::mimeTypes () const

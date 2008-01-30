@@ -7,13 +7,40 @@ cmake_minimum_required(VERSION 2.4.0)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/macros)
 SET(FLOWDESIGNER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
-SET(CMAKE_BUILD_TYPE Debug )
+SET(CMAKE_BUILD_TYPE Release )
+
+
+
+
 
 IF(WIN32)
 	SET(CMAKE_INSTALL_PREFIX "C:/Progra~1/FlowDesigner")
 ELSE(WIN32)
-	SET(CMAKE_INSTALL_PREFIX "/usr")
+	IF(APPLE)
+		#SET(CMAKE_INSTALL_PREFIX "/Applications/FlowDesigner.app")
+	ELSE(APPLE)
+		SET(CMAKE_INSTALL_PREFIX "/usr")
+	ENDIF(APPLE)
 ENDIF(WIN32)
+
+SET(PEDANTIC TRUE)
+
+
+# skip the full RPATH for the build tree
+#SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+
+# when building, use the install RPATH already
+# (so it doesn't need to relink when installing)
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
+
+# the RPATH to be used when installing
+SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+
+# add the automatically determined parts of the RPATH
+# which point to directories outside the build tree to the install RPATH
+#SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+
+
 
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 SET(FD_TOOLBOX_DIR lib/flowdesigner/toolbox)

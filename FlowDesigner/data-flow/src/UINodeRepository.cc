@@ -19,6 +19,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "Node.h"
 
 
 
@@ -175,7 +176,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 {
 
    string fullname = path + "/" + name;
-   //cerr<<"Loading def :"<<fullname<<endl;
+   cerr<<"Loading def :"<<fullname<<endl;
    xmlDocPtr doc = xmlParseFile(fullname.c_str());
    
    if (!doc || !doc->children || !doc->children->name)
@@ -216,7 +217,7 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
 	 
 	 //cerr << my_info->sourceFile << ":" << my_info->requireList << endl;
 	 nodeName = string((char *)xmlGetProp(node, (xmlChar *)"name"));
-	 //cerr<<"inserting into global repository  :"<<nodeName<<endl;
+	 
 	 GlobalRepository().info[nodeName] = my_info;
 	 
 	 xmlNodePtr data = node->children;
@@ -385,7 +386,6 @@ void UINodeRepository::LoadNodeDefInfo(const string &path, const string &name)
       node = node->next;
    }
    xmlFreeDoc(doc);
-   
 }
 
 void UINodeRepository::LoadExtDocInfo(const string &path, const string &name)
