@@ -203,10 +203,10 @@ namespace FD
             }
             
             m_linking = false;
-            delete m_virtualQtTerminal;
-            m_virtualQtTerminal = NULL;
             delete m_virtualQtLink;
             m_virtualQtLink = NULL;
+            delete m_virtualQtTerminal;
+            m_virtualQtTerminal = NULL;
         }
 		else
 		{

@@ -27,10 +27,10 @@ namespace FD
     
     QtLink::~QtLink()
     {
-    	if (m_source)
+    	if (m_source && m_source->getQtNode())
     		m_source->getQtNode()->removeQtLink(this);    
     	
-    	if (m_dest)
+    	if (m_dest && m_dest->getQtNode())
     		m_dest->getQtNode()->removeQtLink(this);
     }
     
