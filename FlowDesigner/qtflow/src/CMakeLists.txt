@@ -56,8 +56,15 @@ INCLUDE_DIRECTORIES(../include ${FLOWDESIGNER_SOURCE_DIR}/data-flow/include ${QT
 
 # create an executable file named "flowdesigner" from the source files
 IF(APPLE)
-    SET(MACOSX_BUNDLE_INFO_STRING "FlowDesigner App")
-    add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
+     SET(MACOSX_BUNDLE_INFO_STRING "FlowDesigner App")
+     SET(MACOSX_BUNDLE_ICON_FILE "icon")
+     SET(MACOSX_BUNDLE_GUI_IDENTIFIER "flowdesigner")
+     SET(MACOSX_BUNDLE_LONG_VERSION_STRING "flowdesigner 0.9.1")
+     SET(MACOSX_BUNDLE_BUNDLE_NAME "flowdesigner")
+     SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "0.9.1")
+     SET(MACOSX_BUNDLE_BUNDLE_VERSION "0.9.1")
+     SET(MACOSX_BUNDLE_COPYRIGHT "Dominic Letourneau, Jean-Marc Valin") 
+     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
 ELSE(APPLE)
     add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
 ENDIF(APPLE)
