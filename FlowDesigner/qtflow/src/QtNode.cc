@@ -216,7 +216,7 @@ namespace FD
                 terminal = new QtTerminal(this,uiTerminal);
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
                 terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                            
-                terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 10 * (qreal) m_inputTerminalsMap.size());
+                terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 15 * (qreal) m_inputTerminalsMap.size());
                 m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));     
                 
                 if(scene())
@@ -229,7 +229,7 @@ namespace FD
                 terminal = new QtTerminal(this,uiTerminal);
                 QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
                 terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                
-                terminal->setPos(x2 + 2.5 + (xx2 - xx1),y1 + 10 * (qreal) m_outputTerminalsMap.size());
+                terminal->setPos(x2 + 2.5 + (xx2 - xx1),y1 + 15 * (qreal) m_outputTerminalsMap.size());
                 m_outputTerminalsMap.insert(make_pair(uiTerminal,terminal));
 
                 if(scene())

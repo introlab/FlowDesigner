@@ -94,6 +94,7 @@ namespace FD
         void keyPressEvent(QKeyEvent *event);
         void wheelEvent(QWheelEvent *event);
         void contextMenuEvent(QContextMenuEvent *event);
+        virtual void mouseDoubleClickEvent ( QMouseEvent * e );
         QContextMenuEvent *m_contextMenuEvent;
         QMenu* menu;
 

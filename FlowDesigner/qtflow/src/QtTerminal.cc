@@ -23,7 +23,7 @@ namespace FD
     
 
 	QtTerminal::QtTerminal ( QtNode *node, std::string name, int type, float x, float y )
-    : QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ),m_node ( node ), m_type ( type ),
+    : QGraphicsRectItem ( QRectF ( 0,0,10.0,10.0 ),node ),m_node ( node ), m_type ( type ),
     m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false )
 	{
 		setPos ( x,y );
@@ -31,7 +31,7 @@ namespace FD
 		QRectF rect = m_label->boundingRect();
         
 		float offset_x = 0;
-		float offset_y = -1 * rect.height() / 2.0 + 5.0 / 2.0;
+		float offset_y = -3;
         
 		switch ( m_type )
 		{
@@ -40,18 +40,18 @@ namespace FD
             break;
             
 			case OUTPUT:
-            offset_x = 5.0;
+            offset_x = 10.0;
             break;
 		}
         
-		m_label->setPos ( offset_x, offset_y );
+		//m_label->setPos ( offset_x, offset_y );
 		setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
 	}
 	
     
     
 	QtTerminal::QtTerminal ( QtNode *node, UITerminal *uiTerminal )
-    : QGraphicsRectItem ( QRectF ( 0,0,5.0,5.0 ),node ), m_node ( node ),
+    : QGraphicsRectItem ( QRectF ( 0,0,10.0,10.0 ),node ), m_node ( node ),
     m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false ), m_uiTerminal ( uiTerminal ), m_netTerminal ( NULL )
 	{
 		if ( m_uiTerminal )
@@ -62,21 +62,21 @@ namespace FD
 			//setPos(posx,posy);
             
 			m_label = new QGraphicsTextItem ( m_uiTerminal->getName().c_str(),this );
+			
+			
 			QRectF rect = m_label->boundingRect();
             
 			float offset_x = 0;
-			float offset_y = 0;//-1 * rect.height() / 2.0 + 5.0 / 2.0;
+			float offset_y = -3;
             
 			if ( m_uiTerminal->isInputTerminal() )
 			{
-				offset_x = 5;//-1 * rect.width();
-				cerr<<"terminal is input"<<endl;
+				offset_x = 10;
                 m_type = INPUT;
 			}
 			else
 			{
-				offset_x = -1 * rect.width();//5.0;
-				cerr<<"terminal is output"<<endl;
+				offset_x = -1 * rect.width();
                 m_type = OUTPUT;
 			}
 			m_label->setPos ( offset_x, offset_y );
@@ -86,6 +86,8 @@ namespace FD
 			{
 				addNetTerminal(m_uiTerminal->getNetTerminal());
 			}
+			
+			setToolTip( m_uiTerminal->getName().c_str());
             
 		}
 	}

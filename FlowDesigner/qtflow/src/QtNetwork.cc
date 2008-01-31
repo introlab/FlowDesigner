@@ -40,7 +40,7 @@ namespace FD
         setScene(scene);
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
-        setDragMode(QGraphicsView::ScrollHandDrag);
+        setDragMode(QGraphicsView::RubberBandDrag);
 		
         if (m_uiNetwork)
         {
@@ -83,7 +83,7 @@ namespace FD
         //setDropIndicatorShown(true)
         
         
-        
+        setSceneRect(0,0,1000,1000);
         
         scale(1.0, 1.0);
         resizeSceneView();
@@ -290,10 +290,12 @@ namespace FD
     
 	void QtNetwork::resizeSceneView()
 	{
-	
-		QRectF sceneRect = scene()->itemsBoundingRect();
-		setSceneRect(sceneRect);
-		ensureVisible(sceneRect);
+	 
+		QRectF myRect = sceneRect();
+		QRectF boundingRect = scene()->itemsBoundingRect();
+		QRectF newRect = myRect.unite(boundingRect);
+		setSceneRect(newRect);
+		ensureVisible(newRect);
 	}
 	
     void QtNetwork::dropEvent(QDropEvent *event)
@@ -541,6 +543,14 @@ namespace FD
     void QtNetwork::removeNote(QtNote *note)
     {
     	
+    }
+    
+    void QtNetwork::mouseDoubleClickEvent ( QMouseEvent * e )
+    {
+		
+		QRectF boundingRect = scene()->itemsBoundingRect();
+		setSceneRect(boundingRect);
+    	fitInView(boundingRect,Qt::KeepAspectRatio);
     }
     
 } //namespace FD

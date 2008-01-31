@@ -36,18 +36,17 @@ namespace FD
             {
                 case UINetTerminal::INPUT :
                     setDefaultTextColor( QColor(255,0,0,255));
-                    setPos(-width -10,0);
+                    setPos(-width -15,-5);
                     break;
                                                            
                 case UINetTerminal::OUTPUT :
-					cerr<<"Creating TEXT FOR NET OUTPUT : "<<m_uiNetTerminal->getName().c_str()<<endl;
                     setDefaultTextColor( QColor(255,0,0,255));
-                    setPos(10,0);
+                    setPos(15,-5);
                     break;
                                                      
                 case UINetTerminal::CONDITION :
                     setDefaultTextColor( QColor(0,0,0));
-                    setPos(10,0);               
+                    setPos(15,-5);               
                     break;                              
             }
 			
