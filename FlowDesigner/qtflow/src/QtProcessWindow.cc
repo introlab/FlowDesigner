@@ -25,6 +25,17 @@ namespace FD
 		{
 			//Wil launch a process with qtflow
 			m_process = new QProcess(this);
+			
+			
+			//QStringList env = QProcess::systemEnvironment();
+			
+			//env.replaceInStrings(QRegExp("^PATH=(.*)", Qt::CaseInsensitive), "PATH=\\1:/usr/local/bin");
+			
+			//m_process->setEnvironment(env);
+			
+			//for (QStringList::iterator iter = env.begin(); iter != env.end(); iter++)
+			//	m_textEdit->append(*iter);
+			
 			//m_process->setProcessChannelMode(QProcess::ForwardedChannels);
 					
 			//Connect QProcess signals
@@ -44,7 +55,7 @@ namespace FD
 			char* mem = m_document->saveToMemory(size);
 			
 			//Launch qtflow			
-			m_process->start("qtflow",args);
+			m_process->start(QString(INSTALL_PREFIX) + "/bin/qtflow",args);
 			m_process->write(mem,size);
 			
 			//This will close stdin, enabling to exit
@@ -59,7 +70,36 @@ namespace FD
     void QtProcessWindow::error ( QProcess::ProcessError error )
     {
     	
+    	switch(error)
+    	{
+    	case QProcess::FailedToStart:
+    		m_textEdit->append("<b>Process error : FailedToStart</b>");
+    		break;
+    		
+    	case QProcess::Crashed:
+    		m_textEdit->append("<b>Process error : Crashed</b>");
+    		break;
+    		
+    	case QProcess::Timedout:
+    		m_textEdit->append("<b>Process error : Timedout</b>");
+    		break;
     	
+    	case QProcess::WriteError:
+    		m_textEdit->append("<b>Process error : Write Error</b>");
+    		break;
+    	
+    	case QProcess::ReadError:
+    		m_textEdit->append("<b>Process error : ReadError</b>");
+    		break;
+    	
+    	case QProcess::UnknownError:
+    		m_textEdit->append("<b>Process error : UnknownError</b>");
+    		break;
+
+    	default:
+    		m_textEdit->append("<b>Process error, unknown cause.</b>");
+    		break;
+    	}
     }
     
     void QtProcessWindow::finished ( int exitCode, QProcess::ExitStatus exitStatus )
