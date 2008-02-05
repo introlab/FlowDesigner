@@ -551,6 +551,7 @@ namespace FD
 		QRectF boundingRect = scene()->itemsBoundingRect();
 		setSceneRect(boundingRect);
     	fitInView(boundingRect,Qt::KeepAspectRatio);
+    	QGraphicsView::mouseDoubleClickEvent(e);
     }
     
 } //namespace FD

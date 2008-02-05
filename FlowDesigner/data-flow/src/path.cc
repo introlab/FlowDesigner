@@ -124,11 +124,8 @@ void scanDL(bool debug)
       cerr << "FlowDesigner loading all toolbox code (DL)" << endl;
    }
 
-#ifdef PIC
-   vector<string> dirs=envList("FLOWDESIGNER_PATH");
-#else
-   vector<string> dirs=envList("FLOWDESIGNER_PATH", false);
-#endif
+   vector<string> dirs=envList("FLOWDESIGNER_PATH",true);
+
 
    if (dirs.size() == 0)
    {

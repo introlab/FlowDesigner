@@ -23,6 +23,7 @@ SET(QTFLOW_SRCS
 	QtNodeParameters.cc
 	QtProcessWindow.cc
 	QtNote.cc
+	QtDocumentParameters.cc
 )
 SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
@@ -46,6 +47,7 @@ SET(QTFLOW_HEADERS
 	../include/QtNodeParameters.h
 	../include/QtProcessWindow.h
 	../include/QtNote.h
+	../include/QtDocumentParameters.h
 )
 
 #This will generate moc_* for Qt

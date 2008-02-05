@@ -46,6 +46,7 @@ namespace FD
         void onRunDocument();
 		void onViewSourceDocument();
 		void onAddNoteDocument();
+		void onDocumentProperties();
         
         void tabWidgetChanged(int index);
         

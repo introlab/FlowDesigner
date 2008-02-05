@@ -165,7 +165,7 @@ public:
    /**Convert document to an XML string in memory*/
    char *saveToMemory(int &size);
    
-   void addParameterText(std::string name, std::string value, std::string type);
+   void addParameterText(const std::string &name, const std::string &value, const std::string &type, const std::string &description);
    
    UINetwork *getNetworkNamed(const std::string &n);
    

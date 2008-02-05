@@ -122,12 +122,13 @@ string UIDocument::getDescription(const string &type)
 }
 
 
-void UIDocument::addParameterText(string name, string value, string type)
+void UIDocument::addParameterText(const string &name, const string &value, const string &type, const string &description)
 {
     ItemInfo *textInfo = new ItemInfo;
     textInfo->name = name;
     textInfo->value = value;
     textInfo->type = type;
+    textInfo->description = description;
     textParams.insert(textParams.end(), textInfo);
     
 	//Notify observers

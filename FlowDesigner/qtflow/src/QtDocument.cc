@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QObject>
 #include <QScrollBar>
+#include "QtDocumentParameters.h"
 
 namespace FD
 {
@@ -53,11 +54,17 @@ namespace FD
 		m_buttonGroup->addButton(addNote);
 		m_buttonGroup->setId(addNote,2);
 		m_hboxLayout->addWidget(addNote);
+		
+		QPushButton *docProperties = new QPushButton("Document Properties",this);
+		m_buttonGroup->addButton(docProperties);
+		m_buttonGroup->setId(docProperties,3);
+		m_hboxLayout->addWidget(docProperties);
         
         //connect signal
         connect(runButton,SIGNAL(clicked()),this, SLOT(onRunDocument()));
 		connect(viewSource,SIGNAL(clicked()),this,SLOT(onViewSourceDocument()));
 		connect(addNote,SIGNAL(clicked()), this, SLOT(onAddNoteDocument()));
+		connect(docProperties,SIGNAL(clicked()), this, SLOT(onDocumentProperties()));
 		
 		//create tab widget
         m_tabWidget = new QTabWidget(NULL);
@@ -228,6 +235,13 @@ namespace FD
 				}
 			}
 		}
+	}
+	
+	void QtDocument::onDocumentProperties()
+	{
+		QtDocumentParameters myParams(m_uiDoc);
+		
+		myParams.exec();
 	}
 	
 	QtNetwork* QtDocument::addNetwork(UINetwork* net)
