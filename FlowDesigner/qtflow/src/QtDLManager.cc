@@ -2,6 +2,7 @@
 #include <vector>
 #include "path.h"
 #include <iostream>
+#include <QApplication>
 
 namespace FD
 {
@@ -11,6 +12,11 @@ namespace FD
 	{
 		static std::list<QLibrary*> m_libraries;
 		return m_libraries;
+	}
+	
+	QtDLManager::QtDLManager()
+	{
+		//Nothing to do?
 	}
 	
 	void QtDLManager::scanDL(std::string path)
@@ -33,6 +39,13 @@ namespace FD
 				{
 					cerr<<" ... OK"<<endl;
 					QtDLManager::getLoadedLibraries().push_back(mylib);
+					emit newLoadedLibrary(QString(libs[i].c_str()));
+					
+					//Process events
+					if (qApp)
+					{
+						qApp->processEvents();
+					}
 				}
 				else
 				{

@@ -24,6 +24,7 @@ SET(QTFLOW_SRCS
 	QtProcessWindow.cc
 	QtNote.cc
 	QtDocumentParameters.cc
+	QtFlowDesignerSplash.cc
 )
 SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
@@ -48,6 +49,7 @@ SET(QTFLOW_HEADERS
 	../include/QtProcessWindow.h
 	../include/QtNote.h
 	../include/QtDocumentParameters.h
+	../include/QtFlowDesignerSplash.h
 )
 
 #This will generate moc_* for Qt
@@ -90,6 +92,9 @@ install(TARGETS libfdqttcp-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP)
 #INSTALLING .def file  
 INSTALL( CODE "EXECUTE_PROCESS(WORKING_DIRECTORY ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src OUTPUT_FILE libfdqttcp.def COMMAND ${PERL} ${FLOWDESIGNER_SOURCE_DIR}/tools/src/info2def.pl ${FDQTTCP_SRCS})" )  
 INSTALL( FILES ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src/libfdqttcp.def DESTINATION ${FD_TOOLBOX_DIR}/FDQTTCP/)
+
+INSTALL( FILES "FlowDesignerSplashScreen.jpg" DESTINATION "share/flowdesigner")
+
 
 IF(APPLE)
     install(TARGETS flowdesigner DESTINATION "/Applications")

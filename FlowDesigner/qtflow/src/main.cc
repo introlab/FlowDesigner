@@ -6,6 +6,8 @@
 #include "path.h"
 #include "BaseException.h"
 #include "UINodeRepository.h"
+#include "QtFlowDesignerSplash.h"
+#include <QObject>
 //#include "iextensions.h"
 
 using namespace FD;
@@ -16,23 +18,40 @@ int main(int argc, char* argv[])
 
 	try 
 	{
-		//IExtensions::detect();
-		QtDLManager::scanDL();
+		//Main application
+        QApplication app(argc, argv);
+        
+        //The dynamic library loader
+        QtDLManager dlManager;
+       
+		//Show splash screen
+		QtFlowDesignerSplash splash;
 		
+		//Connect signals
+		QObject::connect(&dlManager,SIGNAL(newLoadedLibrary(QString)), &splash, SLOT(displayMessage(QString)));
+		
+		splash.show();
+		splash.showMessage("Starting FlowDesigner...");
+		
+		//IExtensions::detect();
+		
+		//Load dynamic libraries
+		dlManager.scanDL();
+		
+		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
         
-        QApplication app(argc, argv);
-        QtFlowDesigner fd;
-
+		QtFlowDesigner fd;
+        
         for (int i = 1; i < argc; i++)
         {
             fd.loadDocument(argv[i]);
         }
        
         fd.show();
-		cerr<<"App.exec()"<<endl;
+		
         return app.exec();      
-		cerr<<"App.exec() done"<<endl;
+		
    	} 
 	catch (BaseException *e)
    	{

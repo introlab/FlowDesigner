@@ -333,7 +333,6 @@ namespace FD {
 
     	if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::Ok ))
         {
-        	//TODO ASK FOR PARAMETERS UPDATE IF REQUIRED  
         	validParameters();
             close();
         }

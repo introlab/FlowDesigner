@@ -3,20 +3,31 @@
 
 #include <QLibrary>
 #include <list>
+#include <QObject>
+#include <QString>
 
 namespace FD {
 
-	class QtDLManager 
+	class QtDLManager : public QObject
 	{
+		
+		Q_OBJECT;
+		
 		public:
 		
+		QtDLManager();	
+			
 		static std::list<QLibrary*> &getLoadedLibraries();
 		
-		static void scanDL(std::string path=std::string(INSTALL_PREFIX) + "/lib/flowdesigner/toolbox");
+		void scanDL(std::string path=std::string(INSTALL_PREFIX) + "/lib/flowdesigner/toolbox");
+		
+		signals:
+		
+		void newLoadedLibrary(QString path);
 		
 		private:
 		
-		QtDLManager();
+		
 				
 	};
 

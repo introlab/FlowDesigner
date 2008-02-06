@@ -37,13 +37,14 @@ namespace FD
         public:
         
         QtFlowDesigner (QWidget* parent = NULL);
-        
         virtual ~QtFlowDesigner();
         
         void newNetwork(const std::string name);
         void newProcess(UIDocument *doc);
         void newDocument(const std::string &name);
-        void loadDocument(const std::string &path);      
+        void loadDocument(const std::string &path);
+        
+        QWorkspace* workspace() {return m_workspace;}
         
         public slots:
         void newNetworkClicked();
