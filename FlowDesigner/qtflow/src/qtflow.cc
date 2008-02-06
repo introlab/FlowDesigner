@@ -70,9 +70,8 @@ class QtFlowApp : public QApplication
 		{
 
 			//Scan for toolboxes (dll)
-			QtDLManager dlManager;
 			
-			dlManager.scanDL();
+			QtDLManager::instance()->scanDL();
 			//Scan for toolboxes (def)
 			UINodeRepository::Scan();
 			//Useful?

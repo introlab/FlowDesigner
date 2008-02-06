@@ -32,7 +32,7 @@ namespace FD
     
     class QtFlowDesigner : public QMainWindow
     {
-        Q_OBJECT
+        Q_OBJECT;
         
         public:
         
@@ -55,6 +55,7 @@ namespace FD
         void openDocumentClicked();               
         void saveDocumentClicked();
         void saveAsDocumentClicked();
+        void onInfoFlowDesignerClicked();
 
         protected:
                 	
@@ -71,6 +72,7 @@ namespace FD
         QAction *actionNewNetwork;
         QAction *actionNewIteratorNetwork;
         
+        QAction *actionFlowDesignerInfo;
         
         QWidget *centralwidget;
         QHBoxLayout *hboxLayout;
@@ -84,13 +86,12 @@ namespace FD
         QWidget *tab;
         QWidget *tab_2;
         QMenuBar *menubar;
-        QMenu *menu_About;
+        QMenu *menuAbout;
         QMenu *menuFile;
         QMenu *menuPreferences;
         QMenu *menuNetwork;
         QStatusBar *statusbar;
         QtNodeTreeView *m_treeView;
-        QTextEdit *m_textEdit;
         QWorkspace *m_workspace;      
     };
     

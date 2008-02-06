@@ -8,6 +8,31 @@ namespace FD
 {
 	using namespace std;
 	
+	//Initialize static instance pointer (singleton) to NULL
+	QtDLManager* QtDLManager::m_instance = NULL;
+	
+	QtDLManager* QtDLManager::instance()
+	{
+		if (QtDLManager::m_instance)
+		{
+			return QtDLManager::m_instance;
+		}
+		else
+		{
+			return new QtDLManager();
+		}
+	}
+	
+	void QtDLManager::destroy()
+	{
+		if (QtDLManager::m_instance)
+		{
+			delete QtDLManager::m_instance;
+			QtDLManager::m_instance = NULL;
+		}
+	}
+	
+	
 	std::list<QLibrary*> & QtDLManager::getLoadedLibraries()
 	{
 		static std::list<QLibrary*> m_LoadedLibraries;
@@ -23,7 +48,23 @@ namespace FD
 	
 	QtDLManager::QtDLManager()
 	{
-		//Nothing to do?
+
+	}
+	
+	QtDLManager::~QtDLManager()
+	{
+		//Memory cleanup
+		while(!QtDLManager::getLoadedLibraries().empty())
+		{
+			delete QtDLManager::getLoadedLibraries().front();
+			QtDLManager::getLoadedLibraries().pop_front();
+		}
+		
+		while(!QtDLManager::getFailedLibraries().empty())
+		{
+			delete QtDLManager::getFailedLibraries().front();
+			QtDLManager::getFailedLibraries().pop_front();
+		}
 	}
 	
 	void QtDLManager::scanDL(std::string path)

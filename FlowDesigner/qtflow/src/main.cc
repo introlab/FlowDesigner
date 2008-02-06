@@ -20,15 +20,12 @@ int main(int argc, char* argv[])
 	{
 		//Main application
         QApplication app(argc, argv);
-        
-        //The dynamic library loader
-        QtDLManager dlManager;
-       
+            
 		//Show splash screen
 		QtFlowDesignerSplash splash;
 		
 		//Connect signals
-		QObject::connect(&dlManager,SIGNAL(newLoadedLibrary(QString)), &splash, SLOT(displayMessage(QString)));
+		QObject::connect(QtDLManager::instance(),SIGNAL(newLoadedLibrary(QString)), &splash, SLOT(displayMessage(QString)));
 		
 		splash.show();
 		splash.showMessage("Starting FlowDesigner...");
@@ -36,7 +33,7 @@ int main(int argc, char* argv[])
 		//IExtensions::detect();
 		
 		//Load dynamic libraries
-		dlManager.scanDL();
+		QtDLManager::instance()->scanDL();
 		
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();

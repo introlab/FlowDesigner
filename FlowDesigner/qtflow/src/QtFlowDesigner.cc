@@ -8,7 +8,7 @@
 #include "UINetwork.h"
 #include <iostream>
 #include "QtProcessWindow.h"
-
+#include "QtDLManager.h"
 
 namespace FD
 {
@@ -26,6 +26,7 @@ namespace FD
         connect(actionLoad_Document, SIGNAL(triggered()),this,SLOT(openDocumentClicked()));
 		connect(actionSave_Document, SIGNAL(triggered()),this,SLOT(saveDocumentClicked()));
 		connect(actionSaveAs_Document, SIGNAL(triggered()),this,SLOT(saveAsDocumentClicked()));
+		connect(actionFlowDesignerInfo, SIGNAL(triggered()), this, SLOT(onInfoFlowDesignerClicked()));
     }
     
     QtFlowDesigner::~QtFlowDesigner()
@@ -47,7 +48,8 @@ namespace FD
         actionSaveAs_Document->setObjectName(QString::fromUtf8("actionSaveAs_Document"));
         
         
-        
+        actionFlowDesignerInfo = new QAction(this);
+        actionFlowDesignerInfo->setObjectName(QString::fromUtf8("actionFlowDesigner_Info"));
         
         
         actionNewNetwork = new QAction(this);
@@ -76,15 +78,7 @@ namespace FD
         
         
         
-        //Text edit
-        m_textEdit = new QTextEdit(this);
-        m_textEdit->setLineWrapMode (QTextEdit::NoWrap);
-        m_textEdit->setReadOnly(true);
-        m_textEdit->setText(QString("<b> FlowDesigner ") + QString("FLOWDESIGNER_VERSION") +
-        QString(" by Jean-Marc Valin & Dominic Letourneau <br>") +
-        QString("(C) Copyright 1999-2007 <b><br>----<br>"));
-        QWidget *window = m_workspace->addWindow(m_textEdit);
-        window->show();
+ 
         
         /*
         verticalLayout = new QWidget(centralwidget);
@@ -143,8 +137,8 @@ namespace FD
         menubar = new QMenuBar(this);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 26));
-        menu_About = new QMenu(menubar);
-        menu_About->setObjectName(QString::fromUtf8("menu_About"));
+        menuAbout = new QMenu(menubar);
+        menuAbout->setObjectName(QString::fromUtf8("menuAbout"));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuPreferences = new QMenu(menubar);
@@ -159,17 +153,21 @@ namespace FD
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuNetwork->menuAction());
         menubar->addAction(menuPreferences->menuAction());
-        menubar->addAction(menu_About->menuAction());
+        menubar->addAction(menuAbout->menuAction());
         
         menuFile->addAction(actionNew_Document);
         menuFile->addAction(actionLoad_Document);
 		menuFile->addAction(actionSave_Document);
 		menuFile->addAction(actionSaveAs_Document);
 		
+		
+		
 		menuNetwork->addAction(actionNewNetwork);      
         menuNetwork->addAction(actionNewIteratorNetwork);
         //menuNetwork->addSeparator();
 
+        menuAbout->addAction(actionFlowDesignerInfo);
+        
         retranslateUi();
         
         QSize size(1024, 768);
@@ -192,11 +190,11 @@ namespace FD
         actionNewIteratorNetwork->setText(QApplication::translate("QtFlowDesigner", "newIteratorNetwork", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QtFlowDesigner", "Tab 1", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QtFlowDesigner", "Tab 2", 0, QApplication::UnicodeUTF8));
-        menu_About->setTitle(QApplication::translate("QtFlowDesigner", "&About", 0, QApplication::UnicodeUTF8));
+        menuAbout->setTitle(QApplication::translate("QtFlowDesigner", "&About", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("QtFlowDesigner", "&File", 0, QApplication::UnicodeUTF8));
         menuPreferences->setTitle(QApplication::translate("QtFlowDesigner", "&Preferences", 0, QApplication::UnicodeUTF8));
         menuNetwork->setTitle(QApplication::translate("QtFlowDesigner", "Network", 0, QApplication::UnicodeUTF8));
-        
+        actionFlowDesignerInfo->setText(QApplication::translate("QtFlowDesigner", "FlowDesigner Info", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
      
     void QtFlowDesigner::newProcess(UIDocument *doc)
@@ -385,6 +383,65 @@ namespace FD
         window->setWindowTitle(path.c_str());
         m_workspace->setActiveWindow(window);
         window->show();              
-    }      
+    }     
+    
+    void QtFlowDesigner::onInfoFlowDesignerClicked()
+    {
+    	cerr<<" void QtFlowDesigner::onInfoFlowDesignerClicked()"<<endl;
+
+		QDialog *myDialog = new QDialog(this);
+		QVBoxLayout *vlayout = new QVBoxLayout(myDialog);
+		myDialog->resize(640,480);
+		
+		
+		//Create text edit
+		QTextEdit *myTextEdit = new QTextEdit(myDialog);
+		
+		vlayout->addWidget(myTextEdit);
+		
+		//Append FlowDesigner information
+        myTextEdit->append(QString("<b> FlowDesigner ") + QString(FLOWDESIGNER_VERSION) +
+        QString(" by Jean-Marc Valin & Dominic Letourneau <br>") +
+        QString("(C) Copyright 1999-2008 <b><br>") +
+        QString("<a href='http://flowdesigner.sourceforge.net'>http://flowdesigner.sourceforge.net.</a><br>----<br>"));
+	        
+		
+		
+		
+		
+		
+		//Append libraries loaded
+		myTextEdit->append("<b>Loaded Toolboxes :</b>");
+		std::list<QLibrary*> &libsList = QtDLManager::getLoadedLibraries();
+		
+		for (std::list<QLibrary*>::iterator iter = libsList.begin(); iter != libsList.end(); iter++)
+		{
+			myTextEdit->append((*iter)->fileName() + QString(" [OK]"));
+		}
+		libsList =  QtDLManager::getFailedLibraries();
+		for (std::list<QLibrary*>::iterator iter = libsList.begin(); iter != libsList.end(); iter++)
+		{
+			myTextEdit->append((*iter)->fileName() + QString(" [") + (*iter)->errorString() + QString("]"));
+		}
+		
+		//Get nodes count
+		myTextEdit->append("<br>----<br>");
+		myTextEdit->append(QString::number(UINodeRepository::Available().size()) + QString(" Nodes available."));
+		
+		myTextEdit->setReadOnly(true);
+		
+		QPushButton *myButton = new QPushButton("OK",myDialog);
+		vlayout->addWidget(myButton);
+		
+		//Clicking on OK will close the dialog
+		QObject::connect(myButton,SIGNAL(clicked()), myDialog, SLOT(accept()));
+		
+		
+		//Exec dialog
+		myDialog->exec();
+    	
+		delete myDialog;
+    	
+    }
     
 }//namespace FD

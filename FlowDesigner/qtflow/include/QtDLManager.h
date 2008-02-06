@@ -13,23 +13,25 @@ namespace FD {
 		
 		Q_OBJECT;
 		
-		public:
-		
-		QtDLManager();	
-			
+	public:
+
+
+		~QtDLManager();
+		static QtDLManager* instance();
+		static void destroy();
 		static std::list<QLibrary*> &getLoadedLibraries();
 		static std::list<QLibrary*> &getFailedLibraries();
-		
 		void scanDL(std::string path=std::string(INSTALL_PREFIX) + "/lib/flowdesigner/toolbox");
 		
 		signals:
 		
-		void newLoadedLibrary(QString path);
+		void newLoadedLibrary(QString path);		
 		void newFailedLibrary(QString path);
 		
 		private:
 		
-		
+		QtDLManager();
+		static QtDLManager* m_instance;
 				
 	};
 
