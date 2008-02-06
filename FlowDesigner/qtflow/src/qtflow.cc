@@ -12,6 +12,7 @@
 #include <QApplication>
 #include <QThread>
 #include <QTimer>
+#include "QtProbeManager.h"
 
 using namespace FD;
 using namespace std;
@@ -51,76 +52,79 @@ class QtFlowApp : public QApplication
 		ParameterSet params;
 		int m_timerId;
 		QtFlowProcessingThread *m_thread;
+		QtProbeManager *m_probeManager;
 		
 	public:
 		
 	QtFlowApp(int argc, char* argv[])
 		: QApplication(argc,argv)
 	{
+		m_probeManager = new QtProbeManager();
+		
 		if (argc < 2) 
 		{
-			cout<<"Usage : "<<argv[0]<<" <document> [arguments]"<<endl;
+			cout<<"Usage : "<<argv[0]<<" <document> [arguments] if you want to run a document"<<endl;
+			cout<<"Will now run in server mode"<<endl;
 			//terminate application
-			QApplication::exit(-1);
+			//QApplication::exit(-1);
 		}
-		
-		
-		//Loading libraries
-		try
+		else
 		{
-
-			//Scan for toolboxes (dll)
-			
-			QtDLManager::instance()->scanDL();
-			//Scan for toolboxes (def)
-			UINodeRepository::Scan();
-			//Useful?
-			IExtensions::detect();	
-			
-			//Loading document
-			doc = NULL;
-			
-			//ARE WE RECEIVING RAW DATA FROM FLOWDESIGNER
-			//IN XML FORMAT.
-			if (string(argv[1]) == "/dev/stdin")
-			{	
+			//Loading libraries
+			try
+			{
+				//Scan for toolboxes (dll)
+				QtDLManager::instance()->scanDL();
+				//Scan for toolboxes (def)
+				UINodeRepository::Scan();
+				//Useful?
+				IExtensions::detect();	
 				
-				stringstream inputStream;
+				//Loading document
+				doc = NULL;
 				
-				//we will read from stdin
-				while(!cin.fail())
+				//ARE WE RECEIVING RAW DATA FROM FLOWDESIGNER
+				//IN XML FORMAT.
+				if (string(argv[1]) == "/dev/stdin")
+				{	
+					
+					stringstream inputStream;
+					
+					//we will read from stdin
+					while(!cin.fail())
+					{
+						char data;
+						cin.read(&data,1);
+						inputStream.write(&data,1);
+					}
+					
+					//Run the network
+					doc = new UIDocument("untitled");
+					
+					doc->loadFromMemory(inputStream.str().c_str(),inputStream.str().size());
+					
+					
+				}
+				else
 				{
-					char data;
-					cin.read(&data,1);
-					inputStream.write(&data,1);
+					
+					
+					doc = new UIDocument(argv[1]);
+					doc->load();
+					
 				}
 				
-				//Run the network
-				doc = new UIDocument("untitled");
-				
-				doc->loadFromMemory(inputStream.str().c_str(),inputStream.str().size());
-				
-				
+				//Start Thread timer
+				m_timerId = startTimer(1);
+		
 			}
-			else
+			catch (BaseException *e)
 			{
-				
-				
-				doc = new UIDocument(argv[1]);
-				doc->load();
-				
+				e->print(cerr);
+				delete e;
+				//terminate application
+				QApplication::exit(-1);
 			}
-			
-			//Start Thread timer
-			m_timerId = startTimer(1);
-	
-		}
-		catch (BaseException *e)
-		{
-			e->print(cerr);
-			delete e;
-			//terminate application
-			QApplication::exit(-1);
 		}
 		
 	}

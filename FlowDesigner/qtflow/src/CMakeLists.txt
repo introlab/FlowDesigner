@@ -25,6 +25,7 @@ SET(QTFLOW_SRCS
 	QtNote.cc
 	QtDocumentParameters.cc
 	QtFlowDesignerSplash.cc
+	QtProbeManager.cc
 )
 SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
@@ -50,6 +51,7 @@ SET(QTFLOW_HEADERS
 	../include/QtNote.h
 	../include/QtDocumentParameters.h
 	../include/QtFlowDesignerSplash.h
+	../include/QtProbeManager.h
 )
 
 #This will generate moc_* for Qt
