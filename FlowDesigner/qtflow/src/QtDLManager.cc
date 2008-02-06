@@ -10,9 +10,16 @@ namespace FD
 	
 	std::list<QLibrary*> & QtDLManager::getLoadedLibraries()
 	{
-		static std::list<QLibrary*> m_libraries;
-		return m_libraries;
+		static std::list<QLibrary*> m_LoadedLibraries;
+		return m_LoadedLibraries;
 	}
+	
+	std::list<QLibrary*> & QtDLManager::getFailedLibraries()
+	{
+		static std::list<QLibrary*> m_FailedLibraries;
+		return m_FailedLibraries;
+	}
+	
 	
 	QtDLManager::QtDLManager()
 	{
@@ -50,7 +57,14 @@ namespace FD
 				else
 				{
 					cerr<<"... FAILED. "<<"Error message : "<<mylib->errorString().toStdString()<<endl;
-					delete mylib;
+					QtDLManager::getFailedLibraries().push_back(mylib);
+					emit newFailedLibrary(QString(libs[i].c_str()));
+										
+					//Process events
+					if (qApp)
+					{
+						qApp->processEvents();
+					}
 				}
 			}
 			catch(...)
