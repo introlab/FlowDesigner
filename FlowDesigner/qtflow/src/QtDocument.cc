@@ -80,6 +80,8 @@ namespace FD
         //Create a new empty document 
         m_uiDoc = new UIDocument(name);	
         
+        setWindowTitle(m_uiDoc->getName().c_str());
+        
         //Register to document events
         m_uiDoc->registerEvents(this);
                
@@ -292,6 +294,8 @@ namespace FD
     void QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)
     {
     	cerr<<"QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)"<<endl;
+    	
+    	setWindowTitle(name.c_str());
     }
 
     //Path changed

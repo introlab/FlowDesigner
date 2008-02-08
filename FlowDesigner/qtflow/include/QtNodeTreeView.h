@@ -34,7 +34,7 @@ class QtNodeTreeView : public  QTreeWidget
 	
 	//Mouse events
 	void mouseMoveEvent(QMouseEvent *event);
-	
+	void closeEvent ( QCloseEvent * event );
 	//Root ITEM
     QTreeWidgetItem *m_root;   
 

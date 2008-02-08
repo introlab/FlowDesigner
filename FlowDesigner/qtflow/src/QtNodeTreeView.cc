@@ -209,7 +209,10 @@ namespace FD
 	}
 	
 	
-	
+	void QtNodeTreeView::closeEvent ( QCloseEvent * event )
+	{
+		event->ignore();
+	}
 	
 	
 	

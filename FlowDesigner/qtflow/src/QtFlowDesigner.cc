@@ -103,7 +103,10 @@ namespace FD
         //tree view
         treeView = new QtNodeTreeView(this);
         treeView->setObjectName(QString::fromUtf8("treeView"));
-        m_workspace->addWindow(treeView);
+        
+        QWidget*window = m_workspace->addWindow(treeView);
+        
+        
         //hboxLayout->addWidget(treeView);
         
         //tab widget
