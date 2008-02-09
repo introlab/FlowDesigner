@@ -93,7 +93,7 @@ IF (WIN32)
 	SET(DEVCPP_DLL
  	C:/Dev-Cpp/bin/libxml2.dll
  	C:/Dev-Cpp/bin/iconv.dll
- 	C:/Dev-Cpp/bin/charset.dll
+ 	#C:/Dev-Cpp/bin/charset.dll
  	C:/Dev-Cpp/bin/mingwm10.dll
  	C:/Dev-Cpp/bin/zlib1.dll
 	)

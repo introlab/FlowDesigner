@@ -37,7 +37,7 @@ namespace FD {
     :	m_doc(doc)
   	{
         
-		assert(m_doc);
+		//assert(m_doc);
 		
 		UINetwork *net = m_doc->getNetworkNamed("MAIN");
 		

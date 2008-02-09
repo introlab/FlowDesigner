@@ -9,7 +9,7 @@ namespace FD
 	FlowDesignerTCPServerClient::FlowDesignerTCPServerClient(FlowDesignerTCPServer &server, QTcpSocket *socket)
 	: m_server(server), m_socket(socket) {
 		
-		assert(m_socket);
+		//assert(m_socket);
 		
 		//Connect signals
 		connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
