@@ -44,7 +44,13 @@ namespace FD
         //cerr<<"Map from parent x "<<testPoint.x()<<" y "<<testPoint.y()<<endl;
         
         //QLineF line(mapFromItem(m_source, 0, 0), mapFromItem(m_dest, 0, 0));
-        QLineF line(m_source->scenePos(), m_dest->scenePos());
+        
+        QPointF sourcePoint = m_source->scenePos();
+        sourcePoint += QPointF(5.0,5.0);
+        QPointF destPoint = m_dest->scenePos();
+        destPoint += QPointF(5.0,5.0);
+        QLineF line(sourcePoint, destPoint);
+        
         //QLineF line(m_source->mapToScene(0,0), m_dest->mapToScene(0,0));
         removeFromIndex();
         m_sourcePoint = line.p1();

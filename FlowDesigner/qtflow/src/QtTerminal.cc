@@ -27,6 +27,8 @@ namespace FD
     m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false )
 	{
 		setPos ( x,y );
+		
+		/*
 		m_label = new QGraphicsTextItem ( name.c_str(),this );
 		QRectF rect = m_label->boundingRect();
         
@@ -45,6 +47,7 @@ namespace FD
 		}
         
 		//m_label->setPos ( offset_x, offset_y );
+		*/
 		setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
 	}
 	
@@ -60,7 +63,7 @@ namespace FD
 			//m_uiTerminal->getPos(posx,posy);
 			//cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<endl;
 			//setPos(posx,posy);
-            
+            /*
 			m_label = new QGraphicsTextItem ( m_uiTerminal->getName().c_str(),this );
 			
 			
@@ -80,6 +83,8 @@ namespace FD
                 m_type = OUTPUT;
 			}
 			m_label->setPos ( offset_x, offset_y );
+			*/
+			
 			setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
             
 			if (m_uiTerminal->getNetTerminal())
@@ -201,6 +206,8 @@ namespace FD
                         //m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
                         
                     }
+                    if (m_node)
+                    	m_node->redrawNode();
                 }
             }
             

@@ -26,6 +26,7 @@ namespace FD
     
     class QtNode : public QGraphicsRectItem, public UINode::UINodeObserverIF
     {
+      
         
         public:
         
@@ -67,11 +68,13 @@ namespace FD
         QtTerminal* getQtTerminal(UITerminal *term);
         
         UINode* getUINode(){return m_uiNode;}
- 
         
         void positionChanged(float x, float y);
+        
+        void redrawNode();
 
         protected:
+        
         
         QVariant itemChange(GraphicsItemChange change, const QVariant &value);
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -80,12 +83,13 @@ namespace FD
         void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
         
         UINode *m_uiNode;
-        QGraphicsTextItem *nameItem;
+        QGraphicsTextItem *m_nameItem;
         QList<QtLink *> edgeList;
         QPointF newPos;
         QtNetwork *graph;
         QtNode* m_virtualQtNode;
         QtLink* m_virtualQtLink;
+        QGraphicsItem *m_internalItem;
         bool m_linking;
         std::map<UITerminal*,QtTerminal*> m_inputTerminalsMap;
         std::map<UITerminal*,QtTerminal*> m_outputTerminalsMap;

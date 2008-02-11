@@ -61,7 +61,7 @@ namespace FD
         virtual QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
         
         
-        QGraphicsTextItem *m_label;
+        //QGraphicsTextItem *m_label;
         QtNode *m_node;            
         int m_type;
         QtTerminal* m_virtualQtTerminal;

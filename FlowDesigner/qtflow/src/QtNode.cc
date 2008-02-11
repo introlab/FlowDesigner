@@ -31,7 +31,7 @@ namespace FD
    }
     
     QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
-    :  graph(graphWidget), m_uiNode(uiNode), m_linking(false)
+    :  graph(graphWidget), m_uiNode(uiNode), m_linking(false), m_internalItem(NULL)
     {
         if (m_uiNode)
         {
@@ -54,34 +54,24 @@ namespace FD
             	
             	if (nInfo->icon != "")
             	{
-					QGraphicsSvgItem *svg = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/") + QString(nInfo->icon.c_str()), this);
-					
-					
+            		m_internalItem = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/") + QString(nInfo->icon.c_str()), this);
             	}
             	else
             	{
             		//Simple rectangle...
-            		QGraphicsRectItem *rect = new QGraphicsRectItem(0,0,30,30,this);
+            		m_internalItem = new QGraphicsRectItem(0,0,30,30,this);
             		
             		//TODO Change color and stuff...
-            		rect->setBrush(QBrush(Qt::green));            		
+            		dynamic_cast<QGraphicsRectItem*>(m_internalItem)->setBrush(QBrush(Qt::green));            		
             	                        			
             	}
             }
             
             //cerr<<"inserting node "<<m_uiNode->getName()<<" at position " << posx<<","<<posy<<endl;         
             
-            nameItem = new QGraphicsTextItem(m_uiNode->getType().c_str(),this);
+            m_nameItem = new QGraphicsTextItem(
+            		QString(m_uiNode->getName().c_str()) + QString("<br>[<b>") + QString(m_uiNode->getType().c_str()) + QString("</b>]"),this);
             
-            QRectF boundaries = childrenBoundingRect();
-            
-            qreal x1,y1,x2,y2;
-            boundaries.getCoords(&x1,&y1,&x2,&y2);
-            boundaries.setCoords(x1-20,y1-20,x2+20,y2+20);         
-            
-			nameItem->setPos(x1,y2);
-			
-            setRect(boundaries);
 
             setFlag(ItemIsMovable);
             setFlag(ItemIsSelectable);
@@ -102,10 +92,87 @@ namespace FD
                 addTerminal(outputs[i]);
             }
             
+            //invisible pen
+			QPen myPen = pen();
+			myPen.setStyle(Qt::NoPen);
+			setPen(myPen);
 			
-			
-            
+            redrawNode();
         } //if m_uiNode            
+    }
+    
+    void QtNode::redrawNode()
+    {
+
+    	 //update text
+    	 m_nameItem->setHtml(
+    	            		QString(m_uiNode->getName().c_str()) 
+    	            		+ QString("<br>[<b>") + QString(m_uiNode->getType().c_str()) + QString("</b>]"));
+    	            
+    	
+    	qreal name_width = m_nameItem->boundingRect().width();
+    	qreal internal_item_width = m_internalItem->boundingRect().width();
+    	
+    	qreal input_max_width = 0;
+    	//Getting max length for input
+    	for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)
+    	{
+    		input_max_width = max(input_max_width,(iter->second->boundingRect().width()));
+    	}
+    	
+    	qreal output_max_width = 0;
+     	//Getting max length for input
+    	for (map<UITerminal*,QtTerminal*>::iterator iter = m_outputTerminalsMap.begin(); iter != m_outputTerminalsMap.end(); iter++)
+    	{
+    		output_max_width = max(output_max_width,(iter->second->boundingRect().width()));
+    	}
+    	
+    	
+    	
+      	//Redraw inputs
+    	//left aligned inputs
+    	qreal input_offset_x = 0;
+    	qreal input_offset_y = 0;	
+        for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)
+        {
+        		qreal current_width = iter->second->boundingRect().width();
+        		input_offset_x = current_width - input_max_width;
+        		iter->second->setPos(input_offset_x,input_offset_y - (15.0 * m_inputTerminalsMap.size() - m_nameItem->boundingRect().height()) / 2.0);
+        		input_offset_y += 15.0;
+        }
+        
+        
+        //Redraw outputs
+        //right aligned output
+        qreal output_offset_x = 0;
+        qreal output_offset_y = 0;
+    	for (map<UITerminal*,QtTerminal*>::iterator iter = m_outputTerminalsMap.begin(); iter != m_outputTerminalsMap.end(); iter++)
+    	{
+    		qreal current_width = iter->second->boundingRect().width();
+    		output_offset_x = internal_item_width + input_max_width + output_max_width - current_width;
+    		iter->second->setPos(output_offset_x,output_offset_y - (15.0 * m_outputTerminalsMap.size() - m_nameItem->boundingRect().height()) / 2.0);
+    		output_offset_y += 15.0;
+    	}
+    	
+    	//draw internal item
+    	m_internalItem->setPos(input_max_width,0);
+    	
+    	//draw text item
+    	m_nameItem->setPos((internal_item_width + input_max_width + output_max_width - name_width) / 2.0 ,max(m_internalItem->boundingRect().height(),max(input_offset_y ,output_offset_y)));
+        
+    	
+    	//update bounding box
+        QRectF boundaries = childrenBoundingRect();
+  
+        qreal x1,y1,x2,y2;
+        boundaries.getCoords(&x1,&y1,&x2,&y2);
+        boundaries.setCoords(x1-5,y1-5,x2+5,y2+5);
+        setRect(boundaries);
+    	
+    	//Adjust links
+        for (QList<QtLink*>::iterator iter = edgeList.begin(); iter != edgeList.end(); iter++)
+        	(*iter)->adjust();
+    	
     }
     
     void QtNode::addQtLink(QtLink *edge)
@@ -204,19 +271,19 @@ namespace FD
         if (uiTerminal)
         {
             //get boundaries
-            QRectF boundaries = nameItem->boundingRect();
+            //QRectF boundaries = nameItem->boundingRect();
             
-            qreal x1,y1,x2,y2;
-            boundaries.getCoords(&x1,&y1,&x2,&y2);
+            //qreal x1,y1,x2,y2;
+            //boundaries.getCoords(&x1,&y1,&x2,&y2);
             
-            qreal xx1,yy1,xx2,yy2;
+            //qreal xx1,yy1,xx2,yy2;
             
             if (uiTerminal->isInputTerminal())
             {             
                 terminal = new QtTerminal(this,uiTerminal);
-                QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
-                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                            
-                terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 15 * (qreal) m_inputTerminalsMap.size());
+                //QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
+                //terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                            
+                //terminal->setPos(x1 - 2.5 - (xx2 - xx1),y1 + 15 * (qreal) m_inputTerminalsMap.size());
                 m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));     
                 
                 if(scene())
@@ -227,9 +294,9 @@ namespace FD
             else
             {
                 terminal = new QtTerminal(this,uiTerminal);
-                QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
-                terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                
-                terminal->setPos(x2 + 2.5 + (xx2 - xx1),y1 + 15 * (qreal) m_outputTerminalsMap.size());
+                //QRectF terminalBoundaries = terminal->childrenBoundingRect().unite(terminal->boundingRect());
+                //terminalBoundaries.getCoords(&xx1,&yy1, &xx2, &yy2);                
+                //terminal->setPos(x2 + 2.5 + (xx2 - xx1),y1 + 15 * (qreal) m_outputTerminalsMap.size());
                 m_outputTerminalsMap.insert(make_pair(uiTerminal,terminal));
 
                 if(scene())
@@ -239,11 +306,12 @@ namespace FD
             }
             
             //This will resize the node bounding rect
-            boundaries = childrenBoundingRect().unite(boundingRect());
-            boundaries.getCoords(&x1,&y1,&x2,&y2);
+            //boundaries = childrenBoundingRect().unite(boundingRect());
+            //boundaries.getCoords(&x1,&y1,&x2,&y2);
             //setRect(boundaries);
             
             //Align inputs
+            /*
             for (map<UITerminal*,QtTerminal*>::iterator iter = m_inputTerminalsMap.begin(); iter != m_inputTerminalsMap.end(); iter++)
             {
             	QPointF pos = (*iter).second->pos();
@@ -268,8 +336,9 @@ namespace FD
             boundaries = childrenBoundingRect().unite(boundingRect());
             boundaries.getCoords(&x1,&y1,&x2,&y2);
             setRect(boundaries);
-            
+            */
         }
+        redrawNode();
         return terminal;
     }
     
