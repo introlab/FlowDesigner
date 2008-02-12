@@ -96,6 +96,19 @@ IF (WIN32)
  	#C:/Dev-Cpp/bin/charset.dll
  	C:/Dev-Cpp/bin/mingwm10.dll
  	C:/Dev-Cpp/bin/zlib1.dll
+	C:/Qt/4.3.2/bin/Qt3Support4.dll
+	C:/Qt/4.3.2/bin/QtAssistantClient4.dll
+	C:/Qt/4.3.2/bin/QtCore4.dll
+	C:/Qt/4.3.2/bin/QtDesigner4.dll
+	C:/Qt/4.3.2/bin/QtDesignerComponents4.dll
+	C:/Qt/4.3.2/bin/QtGui4.dll
+	C:/Qt/4.3.2/bin/QtNetwork4.dll
+	C:/Qt/4.3.2/bin/QtOpenGL4.dll
+	C:/Qt/4.3.2/bin/QtScript4.dll
+	C:/Qt/4.3.2/bin/QtSql4.dll
+	C:/Qt/4.3.2/bin/QtSvg4.dll
+	C:/Qt/4.3.2/bin/QtTest4.dll
+	C:/Qt/4.3.2/bin/QtXml4.dll
 	)
 	INSTALL(FILES ${DEVCPP_DLL} DESTINATION bin)
 ENDIF(WIN32)
