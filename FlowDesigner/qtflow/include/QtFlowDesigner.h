@@ -21,7 +21,7 @@
 #include <QtGui/QInputDialog>
 #include "UINetwork.h"
 #include <string>
-
+#include "QtIORedirector.h"
 #include "QtDocument.h"
 
 namespace FD
@@ -49,6 +49,8 @@ namespace FD
         public slots:
         void newNetworkClicked();
         void newIteratorNetworkClicked();
+        void newStderrOutput(const char * s, std::streamsize n );
+        void newStdoutOutput(const char * s, std::streamsize n );
         
         //FILE Menu actions
         void newDocumentClicked();
@@ -92,7 +94,10 @@ namespace FD
         QMenu *menuNetwork;
         QStatusBar *statusbar;
         QtNodeTreeView *m_treeView;
-        QWorkspace *m_workspace;      
+        QWorkspace *m_workspace; 
+        
+        QTextEdit *m_coutTextEdit;
+        QTextEdit *m_cerrTextEdit;
     };
     
 }//namespace FD

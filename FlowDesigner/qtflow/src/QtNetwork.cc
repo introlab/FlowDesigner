@@ -46,6 +46,7 @@ namespace FD
         {
             
             //ADD NODES
+        	cerr<<"add nodes..."<<endl;
             std::vector<UINode *> nodes = m_uiNetwork->getNodes();
             for (unsigned int i = 0; i < nodes.size(); i++)
             {
@@ -53,6 +54,7 @@ namespace FD
             }
 
             //PROCESS LINKS
+            cerr<<"add links..."<<endl;
             std::vector<UILink *> links = m_uiNetwork->getLinks();
             for (unsigned int i = 0; i < links.size(); i++)
             {
@@ -63,6 +65,7 @@ namespace FD
             //TODO PROCCESS NETWORK PARAMETERS
             
             //ADD NOTES
+            cerr<<"add notes..."<<endl;
             std::vector<UINote*> notes = m_uiNetwork->getNotes();
             for (unsigned int i = 0; i < notes.size(); i++)
             {
@@ -71,6 +74,7 @@ namespace FD
             
             
             //register events
+            cerr<<"register events"<<endl;
             m_uiNetwork->registerEvents(this);
 
         }
@@ -140,23 +144,37 @@ namespace FD
                 int nbSelectedItems = scene()->selectedItems().size();                
                 while(scene()->selectedItems().size()!=0)
                 {
+                	bool removedSomething = false;
                 	
-                    QtNode * selectNode = qgraphicsitem_cast<QtNode *>(scene()->selectedItems()[0]);  
-                    if(selectNode)
+                	//DELETE NODE
+                    QtNode * selectedNode = qgraphicsitem_cast<QtNode *>(scene()->selectedItems()[0]);  
+                    if(selectedNode)
                     {	
-                        delete selectNode->getUINode();
+                        m_uiNetwork->removeNode(selectedNode->getUINode());
+                        removedSomething = true;
                     }
-                    else 
-                    {
                     
+	                //DELETE LINK    
+                    QtLink *selectedLink = qgraphicsitem_cast<QtLink *>(scene()->selectedItems()[0]); 
+                    if (selectedLink)
+                    {
+                    	//delete selectLink->getUILink();
+                    	//removeLink(selectedLink);
+                    	removedSomething = true;
+                    }
 	                    
-	                    QtLink *selectLink = qgraphicsitem_cast<QtLink *>(scene()->selectedItems()[0]); 
-	                    if (selectLink)
-	                    {
-	                    	delete selectLink->getUILink();
-	                    }
-	                    
-                    }	
+                    //DELETE NOTE
+                    QtNote *selectedNote = qgraphicsitem_cast<QtNote *>(scene()->selectedItems()[0]);
+                    if (selectedNote)
+                    {
+                    	//removeNote(selectedNote);
+                    	removedSomething = true;
+                    }
+                    if (!removedSomething)
+                    {
+                    	cerr<<"Error removing selected items"<<endl;
+                    	break;
+                    }
                     
                 }
                 break;
@@ -470,6 +488,8 @@ namespace FD
 	void QtNetwork::notifyNoteRemoved(const UINetwork *net, const UINote* note)
 	{
 		cerr<<"QtNetwork::notifyNoteRemoved(const UINetwork *net, const UINote* note)"<<endl;
+		removeNote(m_noteMap[const_cast<UINote*>(note)]);
+		m_noteMap.erase(const_cast<UINote*>(note));
 	}
 	
 	//Note added
@@ -542,7 +562,11 @@ namespace FD
     
     void QtNetwork::removeNote(QtNote *note)
     {
-    	
+        cerr<<"QtNetwork::removeNote(QtNote* note)"<<endl;
+        scene()->removeItem(note);
+        delete note;
+        resizeSceneView();
+        cerr<<"Remove note done"<<endl;
     }
     
     void QtNetwork::mouseDoubleClickEvent ( QMouseEvent * e )

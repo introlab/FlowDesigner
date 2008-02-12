@@ -59,9 +59,9 @@ namespace FD
 	{
 		if ( m_uiTerminal )
 		{
-			//double posx, posy;
-			//m_uiTerminal->getPos(posx,posy);
-			//cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<endl;
+			double posx, posy;
+			m_uiTerminal->getPos(posx,posy);
+			cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<" ptr:"<<this<<endl;
 			//setPos(posx,posy);
             /*
 			m_label = new QGraphicsTextItem ( m_uiTerminal->getName().c_str(),this );
@@ -256,10 +256,12 @@ namespace FD
         return myNetTerminal;
     }
     
-    
+  /*  
     QVariant QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value )
     {
-        cerr<<"QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value )"<<endl;
+        cerr<<"QtTerminal::itemChange ( GraphicsItemChange change, const QVariant & value ) ptr:"<<this<<endl;
+        if (m_uiTerminal)
+        	cerr<<"Terminal Name : "<<m_uiTerminal->getName()<<endl;
         
         if ( change == ItemPositionChange && scene() )
         {
@@ -279,6 +281,7 @@ namespace FD
         
         return QGraphicsItem::itemChange ( change, value );
     }
+    */
     
 } //namespace FD
 

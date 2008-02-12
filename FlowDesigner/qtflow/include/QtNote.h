@@ -21,8 +21,10 @@ namespace FD
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
 		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 		void update();
+		
 	public:
 		QtNote(QtNetwork *parent, UINote *note);
+		UINote* getUINote(){return m_uiNote;}
 	};
 
 

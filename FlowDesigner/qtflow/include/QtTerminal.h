@@ -46,10 +46,10 @@ namespace FD
         
         QtNetTerminal* addNetTerminal(UINetTerminal *netTerminal);
         
-        signals:
+        //signals:
         
-        void positionChanged(float x, float y);
-        void newLinkCreated(UITerminal* from, UITerminal* to);
+        //void positionChanged(float x, float y);
+        //void newLinkCreated(UITerminal* from, UITerminal* to);
         
         protected:
         
@@ -58,7 +58,7 @@ namespace FD
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
         
-        virtual QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
+        //virtual QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
         
         
         //QGraphicsTextItem *m_label;

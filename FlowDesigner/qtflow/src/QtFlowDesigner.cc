@@ -107,6 +107,26 @@ namespace FD
         QWidget*window = m_workspace->addWindow(treeView);
         
         
+        //SETUP IO REDIRECTORS
+
+        /*
+        QMainWindow *coutWindow = new QMainWindow(this);
+        coutWindow->setWindowTitle("Standard output");
+        coutWindow->resize(640,480);
+        m_coutTextEdit = new QTextEdit(coutWindow);
+        coutWindow->setCentralWidget(m_coutTextEdit);
+        m_workspace->addWindow(coutWindow);
+        
+        QMainWindow *cerrWindow = new QMainWindow(this);
+        cerrWindow->setWindowTitle("Standard error");
+        cerrWindow->resize(640,480);
+        m_cerrTextEdit = new QTextEdit(cerrWindow);
+        cerrWindow->setCentralWidget(m_cerrTextEdit);
+        m_workspace->addWindow(cerrWindow);
+        */
+        m_cerrTextEdit = NULL;
+        m_coutTextEdit = NULL;
+        
         //hboxLayout->addWidget(treeView);
         
         //tab widget
@@ -130,7 +150,7 @@ namespace FD
         this->setCentralWidget(m_workspace);
         
         
-        
+
         
         
         
@@ -177,7 +197,7 @@ namespace FD
         size = size.expandedTo(this->minimumSizeHint());
         resize(size);
         
-        QMetaObject::connectSlotsByName(this);   
+        //QMetaObject::connectSlotsByName(this);   
     }
     
 
@@ -446,5 +466,18 @@ namespace FD
 		delete myDialog;
     	
     }
+    
+    void QtFlowDesigner::newStderrOutput(const char * s, std::streamsize n )
+    {
+    	if (m_cerrTextEdit)
+    		m_cerrTextEdit->append(QString(s));
+    }
+    
+    void QtFlowDesigner::newStdoutOutput(const char * s, std::streamsize n )
+    {
+    	if (m_coutTextEdit)
+    		m_coutTextEdit->append(QString(s));
+    }
+    
     
 }//namespace FD

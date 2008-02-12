@@ -52,6 +52,7 @@ SET(QTFLOW_HEADERS
 	../include/QtDocumentParameters.h
 	../include/QtFlowDesignerSplash.h
 	../include/QtProbeManager.h
+	../include/QtIORedirector.h
 )
 
 #This will generate moc_* for Qt
