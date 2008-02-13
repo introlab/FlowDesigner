@@ -372,6 +372,9 @@ namespace FD
             cerr<<"ACTIVE DOCUMENT FOUND"<<endl;
             QFileDialog dialog(this);
             dialog.setFileMode(QFileDialog::AnyFile);
+			
+			dialog.setDirectory(activeDocument->getFullPath());
+			dialog.selectFile(activeDocument->getDocName());
             
             QStringList filters;
             filters << "FlowDesigner Document (*.n)"

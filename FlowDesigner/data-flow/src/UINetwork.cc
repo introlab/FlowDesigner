@@ -363,6 +363,8 @@ void UINetwork::removeNode(UINode *node)
 	  	  (*iter)->notifyNodeRemoved(this,node);
 	    }
 	    
+	    
+	    
 	    break;
       }
       ++i;
@@ -402,8 +404,10 @@ void UINetwork::removeLink(UILink *link)
     	   {
     	 	  (*iter)->notifyLinkRemoved(this,link);
     	   }
-    	  links.erase(i);
-    	  break;
+    	   
+    	   links.erase(i);
+    	   
+    	   break;
       }
       ++i;
    }

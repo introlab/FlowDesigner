@@ -49,6 +49,10 @@ namespace FD
 		//m_label->setPos ( offset_x, offset_y );
 		*/
 		setBrush ( QBrush ( QColor ( 255,0,0,128 ) ) );
+		
+		m_infoItem = new QGraphicsTextItem("VIRTUAL", NULL);
+		m_infoItem->moveBy(15,0);
+		m_infoItem->hide();
 	}
 	
     
@@ -93,6 +97,12 @@ namespace FD
 			}
 			
 			setToolTip( m_uiTerminal->getName().c_str());
+			
+			
+			m_infoItem = new QGraphicsTextItem(QString(m_uiTerminal->getName().c_str()) + QString("\ntype=") + QString(m_uiTerminal->getType().c_str()) , NULL);
+			m_infoItem->hide();
+			
+			
             
 		}
 	}
@@ -181,34 +191,59 @@ namespace FD
             cerr<<"mouseReleaseEvent on terminal (linking)"<<getName() <<endl;
             QtTerminal* destinationQtTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
             
+            //Go back to old brush for all terminals
+           	QList<QGraphicsItem *> allItems = scene()->items();
+                	
+        	for(QList<QGraphicsItem*>::iterator iter = allItems.begin(); iter != allItems.end(); iter++)
+        	{
+        		QtTerminal *myTerminal = dynamic_cast<QtTerminal*>(*iter);
+        		if (myTerminal && myTerminal != this)
+        		{
+        			myTerminal->setBrush(this->brush());
+        			myTerminal->showTerminalInfo(false);
+        		}	
+        	}
+            
             //TERMINAL NEAR BY?
-            if ( destinationQtTerminal )
-            {                
-                QtTerminal *sourceQtTerminal = m_virtualQtLink->sourceQtTerminal();
-                
-				//MAKE SURE WI LINK AN OUTPOUT WITH AN INPUT
-                if (sourceQtTerminal->getType() !=
-                    destinationQtTerminal->getType())
-                {
-                    if (sourceQtTerminal->getType() == INPUT)
-                    {
-                    	
-                    	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
-                    	//m_uiTerminal->getNode()->getNetwork()->addLink(link);
-                        //emit newLinkCreated(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal());
-                        //m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal(),NULL);
-                    }
-                    else
-                    {   
-                    	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
-                    	//m_uiTerminal->getNode()->getNetwork()->addLink(link);
-                        //emit newLinkCreated(destinationQtTerminal->getUITerminal(),sourceQtTerminal->getUITerminal());
-                        //m_uiTerminal->getNode()->getNetwork()->newLink(sourceQtTerminal->getUITerminal(),destinationQtTerminal->getUITerminal(),NULL);
-                        
-                    }
-                    if (m_node)
-                    	m_node->redrawNode();
-                }
+            if ( destinationQtTerminal && destinationQtTerminal != this)
+            {                            	
+            	if (m_uiTerminal->getNode() != destinationQtTerminal->getUITerminal()->getNode())
+            	{
+            		
+            		//Look for already existing links
+            		//TODO : This should be done in UINetwork
+            		UINetwork *myNetwork = m_uiTerminal->getNode()->getNetwork();
+            		std::vector<UILink *> allLinks = myNetwork->getLinks(); 
+            		
+            		bool found = false;
+            		
+            		for (unsigned int i = 0; i<allLinks.size(); i++ )
+            		{
+            			if(allLinks[i]->getFromTerminal() == m_uiTerminal)
+            			{
+            				if (allLinks[i]->getToTerminal() == destinationQtTerminal->getUITerminal())
+            					found = true;
+            			}
+            			else if (allLinks[i]->getToTerminal() == m_uiTerminal)
+            			{
+            				if (allLinks[i]->getFromTerminal() == destinationQtTerminal->getUITerminal())
+            					found = true;
+            			}		
+            		}
+            		
+            		if (!found)
+            		{
+		                if (m_uiTerminal->isInputTerminal() && !destinationQtTerminal->getUITerminal()->isInputTerminal())
+		                {
+		                	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),m_uiTerminal,NULL);
+		                }
+		                else if (!m_uiTerminal->isInputTerminal() && destinationQtTerminal->getUITerminal()->isInputTerminal())
+		                {   
+		                	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(m_uiTerminal,destinationQtTerminal->getUITerminal(),NULL);
+		                }
+            		}
+            	}    
+
             }
             
             m_linking = false;
@@ -230,14 +265,76 @@ namespace FD
         cerr<<"mouseMoveEvent on terminal "<<getName() <<endl;
         if ( m_linking )
         {
-            m_virtualQtTerminal->setPos ( event->scenePos() );
+            m_virtualQtTerminal->setPos ( event->scenePos() + QPointF(-5.0,-5.0));
             m_virtualQtLink->adjust();
+            
+            QtTerminal* nearTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
+            
+            if (nearTerminal && nearTerminal != this)
+            {
+            	QBrush brush = nearTerminal->brush();
+       
+            	brush.setColor(Qt::green);
+            	nearTerminal->setBrush(brush);
+            	
+            	nearTerminal->showTerminalInfo(true);
+            	
+            }
+            
+          	//Get all other items
+            //Put them back to normal color
+        	QList<QGraphicsItem *> allItems = scene()->items();
+        	
+        	for(QList<QGraphicsItem*>::iterator iter = allItems.begin(); iter != allItems.end(); iter++)
+        	{
+        		
+        		QtTerminal *myTerminal = dynamic_cast<QtTerminal*>(*iter);
+        		if (myTerminal && myTerminal != nearTerminal)
+        		{
+        			myTerminal->setBrush(this->brush());
+        			myTerminal->showTerminalInfo(false);
+        		}
+        		
+        		
+        		
+        	}
+            
+            
+            event->accept();
         }
         else
         {
             m_node->getQtNetwork()->ensureVisible ( this );
             QGraphicsItem::mouseMoveEvent ( event );
         }
+    }
+    
+    void QtTerminal::showTerminalInfo(bool visible)
+    {
+    	if (!m_infoItem->scene())
+    	{
+    		if (scene())
+    			scene()->addItem(m_infoItem);
+    	}
+    		
+    	if (visible)  	
+    	{
+    		
+    		m_infoItem->show();	
+    		m_infoItem->setPos(scenePos());
+			if (m_uiTerminal->isInputTerminal())
+			{
+				m_infoItem->moveBy(-15 -m_infoItem->boundingRect().width(),5);
+			}
+			else
+			{
+				m_infoItem->moveBy(15,5);
+			}
+    	}
+    	else
+    	{
+    		m_infoItem->hide();
+    	}
     }
     
     std::string QtTerminal::getName()
@@ -248,12 +345,20 @@ namespace FD
     QtNetTerminal* QtTerminal::addNetTerminal ( UINetTerminal *netTerminal )
     {
         QtNetTerminal* myNetTerminal = new QtNetTerminal ( this,netTerminal );
-        if (scene())
-        {
-        	scene()->addItem ( myNetTerminal );
-        }
+    
         
         return myNetTerminal;
+    }
+    
+    void QtTerminal::hoverEnterEvent ( QGraphicsSceneHoverEvent * event )
+    {
+    	cerr<<" void QtTerminal::hoverEnterEvent ( QGraphicsSceneHoverEvent * event )"<<endl;
+    	QGraphicsItem::hoverEnterEvent(event);
+    }
+    
+    void QtTerminal::focusInEvent ( QFocusEvent * event )
+    {
+    	cerr<<"void QtTerminal::focusInEvent ( QFocusEvent * event )"<<endl;
     }
     
   /*  

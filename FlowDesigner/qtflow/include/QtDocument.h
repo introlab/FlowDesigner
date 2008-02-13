@@ -35,6 +35,11 @@ namespace FD
         
         void save(const std::string &file);
         
+		QString getFullPath(){return m_uiDoc->getPath().c_str();}
+		
+		QString getDocName(){return m_uiDoc->getName().c_str();}
+		
+		
         QtNetwork* addNetwork(UINetwork* net);
 
         void addNetwork(const QString &name, UINetwork::Type type);   

@@ -24,6 +24,7 @@ namespace FD
 		
 	public:
 		QtNote(QtNetwork *parent, UINote *note);
+		
 		UINote* getUINote(){return m_uiNote;}
 	};
 

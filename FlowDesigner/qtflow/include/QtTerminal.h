@@ -10,6 +10,7 @@
 #include <string>
 #include "UITerminal.h"
 
+
 namespace FD
 {
     
@@ -36,6 +37,8 @@ namespace FD
         
 	    int getType(){return m_type;}
 	    
+	    void showTerminalInfo(bool visible);
+	    
 	    void setType(int type) {m_type = type;}
 	    
 	    QtNode* getQtNode(){return m_node;}
@@ -57,8 +60,9 @@ namespace FD
         virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-        
-        //virtual QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
+        virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
+        virtual void focusInEvent ( QFocusEvent * event );
+    
         
         
         //QGraphicsTextItem *m_label;
@@ -71,6 +75,8 @@ namespace FD
         UITerminal *m_uiTerminal;
         
         QtNetTerminal* m_netTerminal;
+        QGraphicsTextItem *m_infoItem;
+
     };   
     
     

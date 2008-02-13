@@ -62,7 +62,7 @@ namespace FD
             }
             
             
-            //TODO PROCCESS NETWORK PARAMETERS
+            //TODO PROCCESS NETWORK PARAMETERS?
             
             //ADD NOTES
             cerr<<"add notes..."<<endl;
@@ -141,40 +141,38 @@ namespace FD
             break;
             case Qt::Key_Delete:
             {
-                int nbSelectedItems = scene()->selectedItems().size();                
-                while(scene()->selectedItems().size()!=0)
+          
+               
+                
+                while (scene()->selectedItems().size() > 0)
                 {
-                	bool removedSomething = false;
                 	
-                	//DELETE NODE
-                    QtNode * selectedNode = qgraphicsitem_cast<QtNode *>(scene()->selectedItems()[0]);  
-                    if(selectedNode)
+                    QtNode * selectedNode = dynamic_cast<QtNode *>(scene()->selectedItems()[0]);    
+                    QtLink *selectedLink = dynamic_cast<QtLink *>(scene()->selectedItems()[0]); 
+                    QtNote *selectedNote = dynamic_cast<QtNote *>(scene()->selectedItems()[0]);
+                    
+                    //TODO FIX MEMORY LEAKS
+                    //MAKE SURE WE ARE MAKING THE RIGHT THING...
+                   
+                    if(selectedNode)  //DELETE NODE
                     {	
                         m_uiNetwork->removeNode(selectedNode->getUINode());
-                        removedSomething = true;
                     }
-                    
-	                //DELETE LINK    
-                    QtLink *selectedLink = qgraphicsitem_cast<QtLink *>(scene()->selectedItems()[0]); 
-                    if (selectedLink)
+                    else if (selectedLink) //DELETE LINK 
                     {
-                    	//delete selectLink->getUILink();
-                    	//removeLink(selectedLink);
-                    	removedSomething = true;
+                    	m_uiNetwork->removeLink(selectedLink->getUILink());
                     }
-	                    
-                    //DELETE NOTE
-                    QtNote *selectedNote = qgraphicsitem_cast<QtNote *>(scene()->selectedItems()[0]);
-                    if (selectedNote)
+                    else if (selectedNote) //DELETE NOTE
                     {
-                    	//removeNote(selectedNote);
-                    	removedSomething = true;
+                    	m_uiNetwork->removeNote(selectedNote->getUINote());
                     }
-                    if (!removedSomething)
+                    else
                     {
-                    	cerr<<"Error removing selected items"<<endl;
+                    	cerr<<"Unknown item to delete..."<<endl;
                     	break;
                     }
+                    
+                
                     
                 }
                 break;

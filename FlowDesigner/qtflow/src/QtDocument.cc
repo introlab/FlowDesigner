@@ -33,7 +33,7 @@ namespace FD
         m_vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
         
         //Create horizontal layout for buttons
-        m_hboxLayout = new QHBoxLayout(this); 
+        m_hboxLayout = new QHBoxLayout(NULL); 
         m_vboxLayout->addLayout(m_hboxLayout);
         
         //Create button group
