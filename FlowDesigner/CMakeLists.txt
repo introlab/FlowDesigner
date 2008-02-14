@@ -90,25 +90,26 @@ INCLUDE(InstallRequiredSystemLibraries)
 
 IF (WIN32)
 	#copy libxml
+	SET(QTBIN_DIR ${QT_LIBRARY_DIR}/../bin)
+	
 	SET(DEVCPP_DLL
  	C:/Dev-Cpp/bin/libxml2.dll
  	C:/Dev-Cpp/bin/iconv.dll
- 	#C:/Dev-Cpp/bin/charset.dll
  	C:/Dev-Cpp/bin/mingwm10.dll
  	C:/Dev-Cpp/bin/zlib1.dll
-	C:/Qt/4.3.2/bin/Qt3Support4.dll
-	C:/Qt/4.3.2/bin/QtAssistantClient4.dll
-	C:/Qt/4.3.2/bin/QtCore4.dll
-	C:/Qt/4.3.2/bin/QtDesigner4.dll
-	C:/Qt/4.3.2/bin/QtDesignerComponents4.dll
-	C:/Qt/4.3.2/bin/QtGui4.dll
-	C:/Qt/4.3.2/bin/QtNetwork4.dll
-	C:/Qt/4.3.2/bin/QtOpenGL4.dll
-	C:/Qt/4.3.2/bin/QtScript4.dll
-	C:/Qt/4.3.2/bin/QtSql4.dll
-	C:/Qt/4.3.2/bin/QtSvg4.dll
-	C:/Qt/4.3.2/bin/QtTest4.dll
-	C:/Qt/4.3.2/bin/QtXml4.dll
+	${QTBIN_DIR}/Qt3Support4.dll
+	${QTBIN_DIR}/QtAssistantClient4.dll
+	${QTBIN_DIR}/QtCore4.dll
+	${QTBIN_DIR}/QtDesigner4.dll
+	${QTBIN_DIR}/QtDesignerComponents4.dll
+	${QTBIN_DIR}/QtGui4.dll
+	${QTBIN_DIR}/QtNetwork4.dll
+	${QTBIN_DIR}/QtOpenGL4.dll
+	${QTBIN_DIR}/QtScript4.dll
+	${QTBIN_DIR}/QtSql4.dll
+	${QTBIN_DIR}/QtSvg4.dll
+	${QTBIN_DIR}/QtTest4.dll
+	${QTBIN_DIR}/QtXml4.dll
 	)
 	INSTALL(FILES ${DEVCPP_DLL} DESTINATION bin)
 ENDIF(WIN32)
