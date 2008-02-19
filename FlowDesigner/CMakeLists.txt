@@ -31,7 +31,7 @@ SET(PEDANTIC TRUE)
 
 # when building, use the install RPATH already
 # (so it doesn't need to relink when installing)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
+SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
 
 # the RPATH to be used when installing
 SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
