@@ -114,10 +114,8 @@ IF (WIN32)
 	INSTALL(FILES ${DEVCPP_DLL} DESTINATION bin)
 ENDIF(WIN32)
 
-SET(CPACK_PACKAGE_NAME "FlowDesigner")
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FlowDesigner")
-SET(CPACK_PACKAGE_VENDOR "Dominic Letourneau, Jean-Marc Valin")
-SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+
+
 
 IF(APPLE)
 	SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/license.txt")
@@ -125,11 +123,17 @@ ELSE(APPLE)
 	SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING.LGPL")
 ENDIF(APPLE)
 
-SET(CPACK_PACKAGE_VERSION_MAJOR "0")
-SET(CPACK_PACKAGE_VERSION_MINOR "9")
-SET(CPACK_PACKAGE_VERSION_PATCH "1")
-SET(CPACK_PACKAGE_INSTALL_DIRECTORY "FlowDesigner")
+
+    SET(CPACK_PACKAGE_VERSION_MAJOR "0")
+    SET(CPACK_PACKAGE_VERSION_MINOR "9")
+    SET(CPACK_PACKAGE_VERSION_PATCH "1")
+    SET(CPACK_PACKAGE_NAME "FlowDesigner")
+    SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FlowDesigner")
+    SET(CPACK_PACKAGE_VENDOR "Dominic Letourneau, Jean-Marc Valin")
+    SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
+
 IF(WIN32 AND NOT UNIX)
+  SET(CPACK_PACKAGE_INSTALL_DIRECTORY "FlowDesigner")
   # There is a bug in NSI that does not handle full unix paths properly. Make
   # sure there is at least one set of four (4) backlasshes.
   # SET(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}/Utilities/Release\\\\InstallIcon.bmp")
@@ -145,4 +149,19 @@ SET(CPACK_PACKAGE_EXECUTABLES "flowdesigner" "FlowDesigner" "batchflow" "batchfl
 
 INSTALL( FILES ${INSTALLED_EXAMPLES} DESTINATION share/flowdesigner/examples)
 
+SET(DEBIAN_PACKAGE_NAME "flowdesigner")
+SET(DEBIAN_PACKAGE_VERSION "snapshot-19_02_2008")
+SET(DEBIAN_ARCHITECTURE i386)
+SET(DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.6-1), libfontconfig1 (>= 2.4.0), libfreetype6 (>= 2.3.5), libgcc1 (>= 1:4.2.1), libice6 (>= 1:1.0.0), libpng12-0 (>= 1.2.13-4), libqt4-core (>= 4.3.2), libqt4-gui (>= 4.3.2), libsm6, libstdc++6 (>= 4.2.1), libx11-6, libxcursor1 (>> 1.1.2), libxext6, libxi6, libxinerama1, libxml2 (>= 2.6.29), libxrandr2 (>= 2:1.2.0), libxrender1, zlib1g (>= 1:1.2.3.3.dfsg-1)")
+SET(DEBIAN_PACKAGE_MAINTAINER "flowdesigner-devel@lists.sourceforge.net")
+SET(DEBIAN_PACKAGE_DESCRIPTION "FlowDesigner description not available right now.")
+SET(DEBIAN_PACKAGE_SECTION "devel")
+SET(DEBIAN_PACKAGE_PRIORITY "optional")
+SET(DEBIAN_PACKAGE_RECOMMENDS "")
+
 INCLUDE(CPack)
+INCLUDE(UseDebian)
+ IF(DEBIAN_FOUND)
+  ADD_DEBIAN_TARGETS(GDCM)
+ENDIF(DEBIAN_FOUND)
+
