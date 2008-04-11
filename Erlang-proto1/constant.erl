@@ -1,0 +1,2 @@
+-module(constant).
+-compile(export_all).
