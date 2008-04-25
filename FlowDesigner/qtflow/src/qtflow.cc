@@ -131,8 +131,13 @@ class QtFlowApp : public QApplication
 	void timerEvent(QTimerEvent *event)
 	{
 		killTimer(m_timerId);
-		run();
+		
+		
+		//Start Thread
+		m_thread = new  QtFlowProcessingThread(*this);
 	
+		m_thread->start();
+		
 	}
 	
 	void run()

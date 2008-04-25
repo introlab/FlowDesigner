@@ -83,14 +83,12 @@ namespace FD
 	
 	void FlowDesignerTCPServer::incomingConnection ( int socketDescriptor )
 	{
-		QTcpServer::incomingConnection(socketDescriptor);
 		
-		cerr<<"FlowDesignerTCPServer::incomingConnection ( int socketDescriptor )"<<endl;
-		
-		QTcpSocket *socket =  nextPendingConnection();
+		cerr<<"FlowDesignerTCPServer::incomingConnection ( int socketDescriptor )"<<endl;		
+		QTcpSocket *socket = new QTcpSocket(this);
 		
 		//Create client
-		if (socket)
+		if (socket->setSocketDescriptor(socketDescriptor))
 		{
 			FlowDesignerTCPServerClient *client = new FlowDesignerTCPServerClient(*this,socket);
 			m_clients.push_back(client);
