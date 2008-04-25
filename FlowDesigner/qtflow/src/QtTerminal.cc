@@ -209,7 +209,6 @@ namespace FD
             {                            	
             	if (m_uiTerminal->getNode() != destinationQtTerminal->getUITerminal()->getNode())
             	{
-            		
             		//Look for already existing links
             		//TODO : This should be done in UINetwork
             		UINetwork *myNetwork = m_uiTerminal->getNode()->getNetwork();

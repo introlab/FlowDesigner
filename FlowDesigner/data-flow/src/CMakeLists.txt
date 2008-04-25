@@ -145,6 +145,9 @@ IF(UNIX)
          ThreadJoin.cc
          SerialThread.cc
          ParallelThread.cc
+	 ExecStream.cc
+	 USleep.cc
+	 Timer.cc
       )
 
       SET (UTILS_SRCS
