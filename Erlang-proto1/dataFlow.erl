@@ -1,10 +1,10 @@
 -module(dataFlow).
 -compile(export_all).
 
-make_output(Count, Name, Value) ->
+generic_make_output(Count, Name, Value) ->
     {Name,Count,Value}.
 
-make_input(NodeName, InputName) ->
+generic_make_input(NodeName, InputName) ->
     %We should look in a global repository the
     %PID associated with the node, since each node have
     %a unique PID.
