@@ -20,78 +20,51 @@ add_list([]) -> 0.
 
 	
 add_loop(NodeName, InputNames, OutputNames, Inputs, Outputs, Parameters) ->
-	receive
-        
-        %Real Calculate will fetch inputs 
-        %From another process (node)
-        {From, {calculate, OutputName, Count}} ->
+    
+        io:format("+++generic Node handling start : ~p~n",[NodeName]),
+
+        %Generic node handling
+        Ret = dataFlow:generic_node_message_handler(NodeName, InputNames, OutputNames, Inputs, Outputs, Parameters),
+
+        io:format("+++generic Node handling done : ~p~n",[NodeName]),
+
+	receive 
             
-            %Already calculated?
-            PreFetch = dataFlow:generic_prefetch(OutputName,Count,Outputs),
+        {From, {handled,Result}}->
+            io:format("+++Message handled: ~p : ~p~n",[NodeName,Result]),
+            From ! {self(), Result},
+            add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters);
         
-            %output Prefetch for debug
-            io:format("+++debug+++ Prefetch = ~p~n",[PreFetch]),
+        {From, {calculateNode, OutputName, Count} } ->
             
-            case PreFetch of
-                    {notFound} -> 
-                
-                        %Get our inputs
-                        L = dataFlow:generic_get_all_inputs(Inputs),
+            io:format("+++calculateNode called for Node : ~p~n",[NodeName]),
         
-                        %Store value 
-                        Result = dataFlow:generic_make_output(Count,OutputName,add_list(L)),
-                
-                        %Put it in the Output Buffer
-                        %Buffer should be managed according to 
-                        %N lookback / lookahead values
-                        NewOutputs = Outputs ++ [Result],
+            %Get our inputs
+            L = dataFlow:generic_get_all_inputs(Inputs),
         
-                        From ! {self(), {ok, Result} };
-                        
-                     {_,_,_} -> 
-                        NewOutputs = Outputs, 
-                        From ! {self(), {ok, PreFetch} }
-                end,
-                        
-                add_loop(NodeName,InputNames,OutputNames,Inputs,NewOutputs,Parameters);
-               
-               
-        {From, {inputNames}} ->
-                From ! {self(), {inputNames, InputNames}},
-                add_loop(NodeName,InputNames,OutputNames,Inputs,Outputs,Parameters);       
-        
-        {From, {outputNames}} ->
-                From ! {self(), {outputNames, OutputNames}},
-                add_loop(NodeName,InputNames,OutputNames,Inputs,Outputs,Parameters);         
-                           
-        {From, {inputs}} ->
-                From ! {self(), {inputs, Inputs}},
-                add_loop(NodeName,InputNames,OutputNames,Inputs,Outputs,Parameters);
-        
-        {From, {outputs}} ->
-                From ! {self(), {outputs, Outputs}},
-                add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters);
-                
-        {From, {parameters}} ->
-                From ! {self(), {parameters, Parameters}},
-                add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters); 
-                
-        {From, {connect, NodeName, OutputName, InputName,Pid}} ->
-                NewInputs = Inputs ++ [{NodeName,OutputName,InputName,Pid}],
-                From ! {self(), {connect, ok}},
-                add_loop(NodeName,InputNames, OutputNames, NewInputs,Outputs,Parameters);
-                
+            %DO SOMETHING!!!
+            
+            %Return result
+            From ! {self(), {calculate,[]} },
+            add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters);
+                                       
         {From, Other} ->
-		From ! {self(), {error, Other} } ,
-		add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters)
+            From ! {self(), {doesNotUnderstand, Other} },
+            add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters);
+            
+         Other ->
+            io:format("+++Unexpected message: ~p : ~p~n",[NodeName,Other]), 
+            add_loop(NodeName,InputNames, OutputNames, Inputs,Outputs,Parameters)
 	end.
-	
+        
+       
+        
 test() ->
 	{Pid1,State1} = add:start(add1,[],[],[]), 
         io:format("+++Node Started+++ Info = ~p~p~n",[Pid1,State1]),
         {Pid2, State2} = add:start(add2,[],[],[]),
         io:format("+++Node Started+++ Info = ~p~p~n",[Pid2,State2]),
-        add:rpc(whereis(add1),{inputNames}).
-        
- 
+        add:rpc(Pid1,{inputNames}),
+        add:rpc(Pid1,{outputNames}),
+        add:rpc(Pid1,{calculate,"OUTPUT",0}).
 	
