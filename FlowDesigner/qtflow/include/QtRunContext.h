@@ -10,14 +10,16 @@
 namespace FD 
 {
 
-	class QtRunContext
+	class QtRunContext : public QObject
 	{
+		Q_OBJECT;
 		
 		public:
 		
 		QtRunContext(UIDocument *doc, ParameterSet &params);
 		~QtRunContext();
 		
+		UIDocument* getDocument(){return m_document;}
 		bool run();
 		
 		private:

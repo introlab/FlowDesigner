@@ -10,6 +10,7 @@ namespace FD
 {
 
 	class FlowDesignerTCPServer;
+	class QtRunContext;
 	
 	class FlowDesignerTCPServerClient : public QThread
 	{
@@ -17,35 +18,39 @@ namespace FD
 		
 	public:
 		
-		FlowDesignerTCPServerClient(FlowDesignerTCPServer &server, QTcpSocket *socket);
+		FlowDesignerTCPServerClient(FlowDesignerTCPServer *server, int socketDescriptor);
 		virtual void run ();
 		
-	public slots:
-		void readyRead();
 	protected:
 		
-		FlowDesignerTCPServer &m_server;
-		QTcpSocket *m_socket;
+		int m_socketDescriptor;
+		FlowDesignerTCPServer *m_server;
 	};
 
-
+	
+	class QtProbeManager;
+	
 	class FlowDesignerTCPServer : public QTcpServer
 	{
 	
 		Q_OBJECT;
 	public:
-		FlowDesignerTCPServer(QObject *parent=NULL, unsigned int port = 2938);
+		FlowDesignerTCPServer(QtProbeManager *manager, unsigned int port = 2938);
+		
 		~FlowDesignerTCPServer();
+		
+		QtProbeManager* getProbeManager() {return m_manager;}
+		
 		bool running() {return m_running;}
 		
 	protected:
+		QtProbeManager *m_manager;
 		virtual void incomingConnection ( int socketDescriptor );
 		bool m_running;
 		std::vector<FlowDesignerTCPServerClient*> m_clients;
 	};
 
 
-	class QtRunContext;
 	
 	class QtProbeManager : public QObject
 	{
@@ -53,11 +58,12 @@ namespace FD
 		
 	public:
 		
-		QtProbeManager(QtRunContext &context);
+		QtProbeManager(QtRunContext *context);
+		QtRunContext* getContext();
 		
 	protected:
 		FlowDesignerTCPServer *m_server;
-		QtRunContext &m_runContext;
+		QtRunContext *m_context;
 	};
 
 } //namespace FD

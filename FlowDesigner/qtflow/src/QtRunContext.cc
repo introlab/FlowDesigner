@@ -19,7 +19,7 @@ namespace FD
 
 		//THIS WILL CREATE A SOCKET SERVER
 		//FOR PROBES
-		m_probeManager = new QtProbeManager(*this);
+		m_probeManager = new QtProbeManager(this);
 
 		
 
