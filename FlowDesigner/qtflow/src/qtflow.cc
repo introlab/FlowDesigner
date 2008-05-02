@@ -26,41 +26,62 @@ class QtFlowApp : public QApplication
 	{
 		protected:
 			QtFlowApp &m_app;
+			QtRunContext *m_context;
 			
 		virtual void run() 
 		{
 				cerr<<"QtFlowProcessingThread::run()"<<endl;
-				m_app.run();
+				
+				if (m_context)
+				{
+					bool success = m_context->run();
+					
+					//TODO BETTER HANDLING OF THREADS & SERVERS
+					if (success)
+					{
+						QApplication::exit(0);
+					}
+					else
+					{	
+						QApplication::exit(-1);
+					}
+				}
+				
 				exec();
 		}	
 		
 		public:
 	
-		QtFlowProcessingThread(QtFlowApp &app)
+		QtFlowProcessingThread(QtFlowApp &app, UIDocument *doc, ParameterSet &params)
 			: m_app(app)
 		{
-		
-		
+			if (doc)
+			{	
+				//Create run context
+				//The context will "own" the document
+				m_context = new QtRunContext(doc,params);
+			}
 		}
+		
+		~QtFlowProcessingThread()
+		{
+			//TODO STOP CONTEXT IF REQUIRED
+			delete m_context;
+		}
+		
 	};
 
 
 	protected:
-	
-		UIDocument *doc;
-		QTimer *m_timer;
-		ParameterSet params;
-		int m_timerId;
+
 		QtFlowProcessingThread *m_thread;
-		QtProbeManager *m_probeManager;
+		
 		
 	public:
 		
 	QtFlowApp(int argc, char* argv[])
-		: QApplication(argc,argv)
-	{
-		m_probeManager = new QtProbeManager();
-		
+		: QApplication(argc,argv, false)
+	{	
 		if (argc < 2) 
 		{
 			cout<<"Usage : "<<argv[0]<<" <document> [arguments] if you want to run a document"<<endl;
@@ -81,7 +102,7 @@ class QtFlowApp : public QApplication
 				IExtensions::detect();	
 				
 				//Loading document
-				doc = NULL;
+				UIDocument *doc = NULL;
 				
 				//ARE WE RECEIVING RAW DATA FROM FLOWDESIGNER
 				//IN XML FORMAT.
@@ -98,24 +119,21 @@ class QtFlowApp : public QApplication
 						inputStream.write(&data,1);
 					}
 					
-					//Run the network
-					doc = new UIDocument("untitled");
-					
-					doc->loadFromMemory(inputStream.str().c_str(),inputStream.str().size());
-					
-					
+					//Load the network from RAM
+					doc = new UIDocument("untitled");			
+					doc->loadFromMemory(inputStream.str().c_str(),inputStream.str().size());			
 				}
 				else
-				{
-					
-					
+				{	
+					//Load the document from file
 					doc = new UIDocument(argv[1]);
-					doc->load();
-					
+					doc->load();	
 				}
 				
-				//Start Thread timer
-				m_timerId = startTimer(1);
+				//Start the working thread
+				ParameterSet params;
+				m_thread = new  QtFlowProcessingThread(*this,doc,params);
+				m_thread->start();
 		
 			}
 			catch (BaseException *e)
@@ -128,46 +146,6 @@ class QtFlowApp : public QApplication
 		}
 		
 	}
-	void timerEvent(QTimerEvent *event)
-	{
-		killTimer(m_timerId);
-		
-		
-		//Start Thread
-		m_thread = new  QtFlowProcessingThread(*this);
-	
-		m_thread->start();
-		
-	}
-	
-	void run()
-	{
-		if (doc)
-		{
-			try {
-				//Running document
-				QtRunContext *ctx = new QtRunContext(doc, params);		
-				bool success = ctx->run();
-				delete ctx;
-				
-				if (success)
-					QApplication::exit(0);
-				else
-					QApplication::exit(-1);
-			}	
-			catch (BaseException *e)
-			{
-				e->print(cerr);
-				delete e;
-				QApplication::exit(-1);
-			}
-			catch (...)
-			{
-				QApplication::exit(-1);
-			}
-		}
-	}
-
 };
 
 

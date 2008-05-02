@@ -5,7 +5,9 @@
 #include "flow_pref.h"
 #include <unistd.h>
 #include "UserException.h"
+#include "QtProbeManager.h"
 
+//ALL RUNNING INFORMATION WILL BE HELD HERE!
 namespace FD 
 {
 
@@ -15,13 +17,31 @@ namespace FD
 		: m_document(doc), m_parameters(params), m_network(NULL)
 	{
 
-		//Create GUI
-		
+		//THIS WILL CREATE A SOCKET SERVER
+		//FOR PROBES
+		m_probeManager = new QtProbeManager(*this);
 
 		
 
 	}
 
+	QtRunContext::~QtRunContext()
+	{
+		
+		//STOP AND DELETE PROBE MANAGER
+		
+		
+		
+		//MEMORY CLEANUP
+		if (m_document)
+		{
+			delete m_document;
+		}
+		
+		
+		
+		
+	}
 
 	bool QtRunContext::run()
 	{	
@@ -35,9 +55,7 @@ namespace FD
 			try 
 			{
 				
-				m_network = m_document->build("MAIN", m_parameters);
-				
-				
+				m_network = m_document->build("MAIN", m_parameters);	
 				
 				//MAIN SHOULD NOT HAVE INPUT NODES
 				if (m_network->getInputNode())
@@ -89,28 +107,14 @@ namespace FD
 						m_network->getOutput(i,0);
 					}
 				}
-				
-				//cerr << "Deleting in run()" << endl;
-				//gdk_threads_enter();
-				//less_print("Network ended normally");
+
 				cout << "Network ended normally" << endl;
-				success = true;
-				//gdk_threads_leave();
-	    
-		
-				
+				success = true;				
 			} 
 			catch (BaseException *e)
 			{
 				cerr << "Base Exception" << endl;
-				stringstream excOut;
-      
-				e->print (excOut);
-				//gdk_threads_enter();
-				//less_print(excOut.str());
-				cerr << excOut.str() <<endl;
-				//gdk_threads_leave();
-      
+				e->print (cerr);
 				delete e;				
 				success = false;
 			} 
@@ -122,9 +126,6 @@ namespace FD
 			} 
 			catch (...)
 			{
-				//gdk_threads_enter();
-				//less_print("Unknown exception caught");
-				//gdk_threads_leave();
 				cerr << "Unknown exception caught "<<endl;
 				success = false;
 			}

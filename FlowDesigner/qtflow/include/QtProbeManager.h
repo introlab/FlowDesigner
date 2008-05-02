@@ -44,15 +44,20 @@ namespace FD
 		std::vector<FlowDesignerTCPServerClient*> m_clients;
 	};
 
+
+	class QtRunContext;
+	
 	class QtProbeManager : public QObject
 	{
 		Q_OBJECT;
 		
 	public:
-		QtProbeManager(QObject* parent=NULL);
+		
+		QtProbeManager(QtRunContext &context);
 		
 	protected:
 		FlowDesignerTCPServer *m_server;
+		QtRunContext &m_runContext;
 	};
 
 } //namespace FD

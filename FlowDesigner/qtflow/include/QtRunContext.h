@@ -5,6 +5,7 @@
 #include "UINodeParameters.h"
 #include "ParameterSet.h"
 #include "Network.h"
+#include "QtProbeManager.h"
 
 namespace FD 
 {
@@ -15,6 +16,7 @@ namespace FD
 		public:
 		
 		QtRunContext(UIDocument *doc, ParameterSet &params);
+		~QtRunContext();
 		
 		bool run();
 		
@@ -23,6 +25,7 @@ namespace FD
 		UIDocument *m_document;
 		Network  *m_network;
 		ParameterSet m_parameters;
+		QtProbeManager *m_probeManager;
 	};
 
 } //namespace FD

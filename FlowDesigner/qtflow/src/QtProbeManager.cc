@@ -1,5 +1,6 @@
 #include "QtProbeManager.h"
 #include <iostream>
+#include "QtRunContext.h"
 
 namespace FD
 {
@@ -19,6 +20,10 @@ namespace FD
 		
 		
 	}
+	
+	
+	
+	
 	
 	void FlowDesignerTCPServerClient::readyRead()
 	{
@@ -95,14 +100,13 @@ namespace FD
 			client->start();
 		}
 	}
-
 	
-	
-	QtProbeManager::QtProbeManager(QObject* parent)
-		: QObject(parent)
+	QtProbeManager::QtProbeManager(QtRunContext &context)
+		: m_runContext(context)
 	{
 		m_server = new FlowDesignerTCPServer(this);
 	}
+	
 	
 } //namespace FD
 
