@@ -35,6 +35,8 @@ public:
    ///Returns the value
    T &val() {return value;}
    
+  
+   
    /**default constructor*/
    GenericType() {
       //value = (T) 0;
@@ -237,6 +239,8 @@ public:
    ///Destroy object from the pool
    void destroy() {ObjectPool<NetCType<T> >::release(this);}
 
+   /** Deep copy */
+   virtual ObjectRef clone() {return ObjectRef(NetCType<T>::alloc(GenericType<T>::value));} 
 };
 
 ///Char which is a NetCType<char>
@@ -254,7 +258,7 @@ typedef NetCType<double> Double;
 ///Bool which is a NetCType<double>
 typedef NetCType<bool> Bool;
 
-//typedef NetCType<FILE *> FILEPTR;
+
 /** FILE* wrapper */
 class FILEPTR : public GenericType<FILE *> {
   public: 
@@ -265,7 +269,7 @@ class FILEPTR : public GenericType<FILE *> {
 
 #ifndef WIN32
 
-//typedef NetCType<FILE *> FILEPTR;
+
 /** File descriptor wrapper */
 class FILEDES : public GenericType<int> {
   public: 
@@ -340,6 +344,9 @@ class String : public std::string, public Object
    
    /** return the string value */
    const std::string& val() { return *this;}
+   
+   /** Deep copy */
+   virtual ObjectRef clone() { return ObjectRef(new String(*this));}
 };
 
 ///operator >> for String

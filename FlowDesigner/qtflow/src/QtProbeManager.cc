@@ -26,6 +26,8 @@ namespace FD
 			
 			object->printOn(output);
 			
+			output <<endl;
+			
 			//Add it to the list
 			m_tcpSocket->write(output.str().c_str(),output.str().size());
 			m_tcpSocket->flush();

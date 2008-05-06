@@ -94,8 +94,8 @@ class Object
       /**Makes a (deep) copy of the object*/
       virtual ObjectRef clone()
       {
-	 std::string message = "Method clone() not implemented for this object : ";
-	 message += typeid(this).name();
+    	  std::string message = "Method clone() not implemented for this object : ";
+    	  message += typeid(this).name();
          throw new GeneralException(message, __FILE__, __LINE__);
       }
 
