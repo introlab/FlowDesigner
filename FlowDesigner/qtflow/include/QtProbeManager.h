@@ -22,7 +22,7 @@ namespace FD
 		
 		FlowDesignerTCPServerClient(FlowDesignerTCPServer *server, int socketDescriptor);
 		virtual void run ();
-		virtual void notify (ObjectRef object);
+		virtual void notify (ObjectRef object, int count);
 	protected:
 		
 		int m_socketDescriptor;

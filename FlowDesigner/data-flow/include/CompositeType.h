@@ -4,6 +4,7 @@
 #define COMPOSITE_TYPE_H
 
 #include "Object.h"
+#include "net_types.h"
 #include <map>
 
 namespace FD {
@@ -11,11 +12,14 @@ namespace FD {
 /**Allows user-defined types (analog to structs in C/C++)*/
 class CompositeType : public Object {
   public:
-   typedef std::map<std::string, ObjectRef> map_type;
-   typedef std::pair<std::string, ObjectRef> map_element_type;
+   typedef std::map<String, ObjectRef> map_type;
+   typedef std::pair<String, ObjectRef> map_element_type;
    CompositeType() {}
    void printOn(std::ostream &out) const;
    void readFrom(std::istream &in);
+   void serialize(std::ostream &out) const;
+   void unserialize(std::istream &in);
+   
    void addField(const std::string &name, ObjectRef obj) {fields[name]=obj;}
    void conservativeAddField(const std::string &name, ObjectRef obj);
    ObjectRef get(const std::string &name) const

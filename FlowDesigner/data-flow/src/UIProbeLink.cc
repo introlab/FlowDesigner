@@ -48,7 +48,7 @@ namespace FD
 			try 
 			{
 				std::cerr<<"UIProbeLinkNode::calculate -- will notify"<<std::endl;
-				(*iter)->notify(ReturnValue->clone());
+				(*iter)->notify(ReturnValue->clone(),count);
 				std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
 			}
 			catch(BaseException *e)
@@ -57,7 +57,7 @@ namespace FD
 				delete e;
 				try 
 				{
-					(*iter)->notify(ReturnValue);
+					(*iter)->notify(ReturnValue,count);
 
 					std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
 				}

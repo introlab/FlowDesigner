@@ -17,7 +17,7 @@ namespace FD {
 	{
 		public:
 
-		virtual void notify (ObjectRef object) = 0;
+		virtual void notify (ObjectRef object, int count) = 0;
 	};
 
 	

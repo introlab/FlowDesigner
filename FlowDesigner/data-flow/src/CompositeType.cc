@@ -3,7 +3,7 @@
 #include "CompositeType.h"
 #include <iostream>
 #include "ObjectParser.h"
-
+#include "binio.h"
 using namespace std;
 
 namespace FD {
@@ -43,6 +43,50 @@ void CompositeType::readFrom(istream &in)
    }
 
 }
+
+
+void CompositeType::serialize(std::ostream &out) const
+{
+	 //Write header
+	 out << "{" << "CompositeType" << std::endl;
+	 out << "|";
+	 
+	 //Write size
+	 int tmp = fields.size();
+	 BinIO::write(out, &tmp, 1);
+	 
+	 //Serialize all internal objects
+	 for (CompositeType::map_type::const_iterator iter = fields.begin(); iter != fields.end(); iter++)
+	 {
+		 //Key
+		 iter->first.serialize(out);
+		 
+		 //Value
+		 iter->second->serialize(out);
+	 }
+	 
+	 out << "}";
+}
+
+void CompositeType::unserialize(std::istream &in) 
+{
+	 int size; 
+	 BinIO::read(in, &size, 1);
+	
+	 for (int i = 0; i < size; i++)
+	 {
+		 ObjectRef key;
+		 ObjectRef value;
+		 in >> key >> value;
+		 RCPtr<String> keyPtr = key;
+		 addField(*keyPtr,value);
+	 }
+	 //Should get the last "}"	
+	 char ch;
+	 in >> ch;
+}
+
+
 
 void CompositeType::conservativeAddField(const std::string &name, ObjectRef obj)
 {

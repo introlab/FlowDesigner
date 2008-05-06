@@ -4,6 +4,7 @@
 #include "UIProbeLink.h"
 #include "UITerminal.h"
 #include <map>
+#include "CompositeType.h"
 
 namespace FD
 {
@@ -15,7 +16,7 @@ namespace FD
 				
 	}
 	
-	void FlowDesignerTCPServerClient::notify (ObjectRef object)
+	void FlowDesignerTCPServerClient::notify (ObjectRef object, int count)
 	{
 		cerr<<"FlowDesignerTCPServerClient::notify (ObjectRef object)"<<endl;
 		
@@ -24,7 +25,13 @@ namespace FD
 			//serialize object
 			stringstream output;
 			
-			object->printOn(output);
+			CompositeType composite;
+			
+			composite.addField("count",ObjectRef(Int::alloc(count)));
+			composite.addField("object", object);
+			
+			//composite.printOn(output);
+			composite.serialize(output);
 			
 			output <<endl;
 			
