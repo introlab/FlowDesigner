@@ -539,7 +539,7 @@ UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
 UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str)
 {
    //cerr << "UINetwork::newLink\n";
-   return new UILink (_from, _to, str);
+   return new UIProbeLink (_from, _to, str);
 }
 
 UINote *UINetwork::newNote(const std::string &label, const std::string &text, double x, double y, bool visible) {

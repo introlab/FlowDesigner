@@ -25,7 +25,7 @@ class QtFlowApp : public QApplication
 	class QtFlowProcessingThread : public QThread
 	{
 		protected:
-			QtFlowApp &m_app;
+			QtFlowApp *m_app;
 			QtRunContext *m_context;
 			
 		virtual void run() 
@@ -52,7 +52,7 @@ class QtFlowApp : public QApplication
 		
 		public:
 	
-		QtFlowProcessingThread(QtFlowApp &app, UIDocument *doc, ParameterSet &params)
+		QtFlowProcessingThread(QtFlowApp *app, UIDocument *doc, ParameterSet &params)
 			: m_app(app)
 		{
 			if (doc)
@@ -132,7 +132,7 @@ class QtFlowApp : public QApplication
 				
 				//Start the working thread
 				ParameterSet params;
-				m_thread = new  QtFlowProcessingThread(*this,doc,params);
+				m_thread = new  QtFlowProcessingThread(this,doc,params);
 				m_thread->start();
 		
 			}

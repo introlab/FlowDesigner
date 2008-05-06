@@ -8,75 +8,71 @@ namespace FD
 {
 	using namespace std;
 
-	class UIProbeLinkNode;
+
 	DECLARE_NODE(UIProbeLinkNode);
 
-	//WE HAVE CHOSEN A BUFFERED NODE TO AVOID
-	//NOTIFYING EVERY TIME GETOUTPUT IS CALLED.
-	//IS IT THE RIGHT CHOICE ?
-	class UIProbeLinkNode : public BufferedNode
+	void UIProbeLinkNode::registerIF(UIObserverIF* client)
 	{
-		protected:
-		int m_inputID;
-		int m_outputID;
-
-		std::vector<UIObserverIF*> m_observers;	
-
-		public:
-
-		void registerIF(UIObserverIF* client)
+		if (client)
 		{
-			if (client)
-			{
-				m_observers.push_back(client);
-			}
+			m_observers.push_back(client);
 		}
-
-		UIProbeLinkNode(std::string nodeName, ParameterSet params)
-   			: BufferedNode(nodeName, params)
+	}
+	
+	void UIProbeLinkNode::unregisterIF(UIObserverIF* client)
+	{
+		if (client)
 		{
-			m_inputID = addInput("INPUT");
-			m_outputID = addOutput("OUTPUT");
+			m_observers.remove(client);
 		}
-
-		void calculate(int output_id, int count, Buffer &out)
-   		{
-			//GET INPUT
-      		ObjectRef ReturnValue = getInput(m_inputID, count);
 			
-			//NOTIFY OBSERVERS
-			for (unsigned int i = 0; i < m_observers.size(); i++)
+	}
+
+	UIProbeLinkNode::UIProbeLinkNode(std::string nodeName, ParameterSet params)
+		: BufferedNode(nodeName, params)
+	{
+		m_inputID = addInput("INPUT");
+		m_outputID = addOutput("OUTPUT");
+	}
+
+	void UIProbeLinkNode::calculate(int output_id, int count, Buffer &out)
+	{
+		//GET INPUT
+  		ObjectRef ReturnValue = getInput(m_inputID, count);
+		
+		//NOTIFY OBSERVERS
+  		for(list<UIObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+		{
+			//CLONING THE OBJET IS SAFER, BUT WILL THROW AN EXCEPTION
+			//IF NOT IMPLEMENTED RIGHT NOW.
+			try 
 			{
-				//CLONING THE OBJET IS SAFER, BUT WILL THROW AN EXCEPTION
-				//IF NOT IMPLEMENTED.
+				std::cerr<<"UIProbeLinkNode::calculate -- will notify"<<std::endl;
+				(*iter)->notify(ReturnValue->clone());
+				std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
+			}
+			catch(BaseException *e)
+			{
+				e->print(std::cerr);
+				delete e;
 				try 
 				{
-					std::cerr<<"UIProbeLinkNode::calculate -- will notify"<<std::endl;
-					m_observers[i]->notify(ReturnValue->clone());
+					(*iter)->notify(ReturnValue);
+
 					std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
 				}
-				catch(BaseException *e)
-				{
+				catch (BaseException *e)
+				{						
 					e->print(std::cerr);
-					delete e;
-					try 
-					{
-						m_observers[i]->notify(ReturnValue);
-
-						std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
-					}
-					catch (BaseException *e)
-					{						
-						e->print(std::cerr);
-						throw e->add(new GeneralException("Not working properly",__FILE__,__LINE__));
-					}
+					throw e->add(new GeneralException("Not working properly",__FILE__,__LINE__));
 				}
 			}
+		}
 
-			//INPUT = OUTPUT
-      		out[count] = ReturnValue;
-  		 }
-	}; 
+		//INPUT = OUTPUT
+  		out[count] = ReturnValue;
+	 }
+	
 
 
 	UIProbeLink::UIProbeLink(UITerminal *_from, UITerminal *_to, const char *points_str)
@@ -135,14 +131,7 @@ namespace FD
 
 		//ADD NODE TO NETWORK
 		net->addNode(*probeNode);
-		
-
-		//COPY REGISTERED LISTENER(S)
-		for (unsigned int i = 0; i < m_observers.size(); i++)
-		{
-			probeNode->registerIF(m_observers[i]);
-		}
-	
+			
 		//CONNECT NODES PROPERLY
 		if (!to || !from)
 			throw new GeneralException("Link is not connected at both ends", __FILE__, __LINE__);
@@ -156,16 +145,34 @@ namespace FD
 
 		net->connect(nodename.str(), "INPUT", 
 			from->getNode()->getName(), from->getName());
+		
+		//REGISTER THIS NODE, THIS WILL BE USEFUL TO GET 
+		//REGISTER OBSERVERS LATER AT RUN TIME
+		UIProbeLink::getProbeDictionary().insert(make_pair(this,probeNode));
 	}	
 
 
 	void UIProbeLink::registerIF(UIObserverIF* client)
 	{
-		if (client)
+		if (client && UIProbeLink::getProbeDictionary().find(this) != UIProbeLink::getProbeDictionary().end())
 		{
-			m_observers.push_back(client);
+			UIProbeLink::getProbeDictionary()[this]->registerIF(client);
 		}
 	}
+	
+	void UIProbeLink::unregisterIF(UIObserverIF* client)
+	{
+		if (client && UIProbeLink::getProbeDictionary().find(this) != UIProbeLink::getProbeDictionary().end())
+		{
+			UIProbeLink::getProbeDictionary()[this]->unregisterIF(client);
+		}
+	}
+	
+	std::map<UIProbeLink*, UIProbeLinkNode*> & UIProbeLink::getProbeDictionary()
+	{
+		static std::map<UIProbeLink*, UIProbeLinkNode*> probeMap;
+		return probeMap;
+	}	
 
 } //namespace FD
 

@@ -5,6 +5,8 @@
 #include <QThread>
 #include <QTcpSocket>
 #include <vector>
+#include "UIProbeLink.h"
+#include <list>
 
 namespace FD 
 {
@@ -12,7 +14,7 @@ namespace FD
 	class FlowDesignerTCPServer;
 	class QtRunContext;
 	
-	class FlowDesignerTCPServerClient : public QThread
+	class FlowDesignerTCPServerClient : public QThread, public UIObserverIF
 	{
 		Q_OBJECT;
 		
@@ -20,11 +22,13 @@ namespace FD
 		
 		FlowDesignerTCPServerClient(FlowDesignerTCPServer *server, int socketDescriptor);
 		virtual void run ();
-		
+		virtual void notify (ObjectRef object);
 	protected:
 		
 		int m_socketDescriptor;
 		FlowDesignerTCPServer *m_server;
+		std::list<std::string> m_messageList;
+		QTcpSocket *m_tcpSocket; 
 	};
 
 	
