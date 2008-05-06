@@ -195,7 +195,7 @@ namespace FD
 	
 	
 	FlowDesignerTCPServer::FlowDesignerTCPServer(QtProbeManager *manager, unsigned int port)
-		: QTcpServer(this), m_manager(manager), m_running(true)
+		: QTcpServer(manager), m_manager(manager), m_running(true)
 	{
 		
 		setMaxPendingConnections(100);

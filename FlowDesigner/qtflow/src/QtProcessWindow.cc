@@ -31,6 +31,17 @@ namespace FD
 		start();
 	}
 
+	QtProcessWindow::~QtProcessWindow()
+	{
+		if (m_process)
+		{
+			m_process->close();
+			m_process->terminate();
+			m_process->kill();
+			delete m_process;
+		}
+	}
+	
 	void QtProcessWindow::probesButtonClicked()
 	{
 		QtProbesDialog *dialog = new QtProbesDialog(this);
@@ -180,15 +191,15 @@ namespace FD
     	
     	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
     	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
-    	
-    	
-    	m_textEdit->append("Hello World!");
     }
     
    QtProbesDialog::~QtProbesDialog()
    {
 	   if (m_socket)
+	   {
+		   m_socket->close();
 		   delete m_socket;
+	   }
    }
     
    void QtProbesDialog::readyRead ()

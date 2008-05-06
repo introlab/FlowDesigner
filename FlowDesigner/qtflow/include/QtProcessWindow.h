@@ -23,6 +23,7 @@ namespace FD
         public:
         	
     	QtProcessWindow(QtFlowDesigner *parent, UIDocument *doc);
+    	~QtProcessWindow();
     	void start();
         int getProcessPort() {return 2938;}
     	
