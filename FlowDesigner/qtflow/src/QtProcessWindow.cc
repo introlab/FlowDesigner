@@ -1,7 +1,9 @@
 #include "QtProcessWindow.h"
 #include "QtFlowDesigner.h"
+#include <QPushButton>
 #include "UIDocument.h"
 #include <QTextEdit>
+#include <QDialog>
 
 namespace FD 
 {
@@ -10,7 +12,18 @@ namespace FD
 	 : QDialog(parent), m_flowdesigner(parent), m_document(doc), m_process(NULL)
 	{
 		m_mainLayout = new QVBoxLayout(this);
-		setLayout(m_mainLayout);
+		
+		
+		//Add button layout
+		m_buttonLayout = new QHBoxLayout(this);
+		m_mainLayout->addLayout(m_buttonLayout);
+		
+		//Add "Probes" Button
+		m_probesButton = new QPushButton("Probes",this);
+		m_buttonLayout->addWidget(m_probesButton);
+		connect(m_probesButton,SIGNAL(clicked()),this,SLOT(probesButtonClicked()));
+		
+		
 		m_textEdit = new QTextEdit(this);
 		m_textEdit->setReadOnly(true);
 		m_mainLayout->addWidget(m_textEdit);
@@ -18,6 +31,13 @@ namespace FD
 		start();
 	}
 
+	void QtProcessWindow::probesButtonClicked()
+	{
+		QtProbesDialog *dialog = new QtProbesDialog(this);
+		dialog->exec();
+		delete dialog;
+	}
+	
 	void QtProcessWindow::start()
 	{
 		
@@ -148,6 +168,46 @@ namespace FD
     }
 	
 	
+    QtProbesDialog::QtProbesDialog(QtProcessWindow *parent)
+    	: QDialog(parent), m_processWindow(parent), m_socket(NULL)
+    {
+    	m_mainLayout = new QVBoxLayout(this);
+    	m_textEdit = new QTextEdit(this);
+    	m_mainLayout->addWidget(m_textEdit);
+    	
+    	m_socket = new QTcpSocket(this);
+    	m_socket->connectToHost("localhost",m_processWindow->getProcessPort());
+    	
+    	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
+    	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
+    	
+    	
+    	m_textEdit->append("Hello World!");
+    }
+    
+   QtProbesDialog::~QtProbesDialog()
+   {
+	   if (m_socket)
+		   delete m_socket;
+   }
+    
+   void QtProbesDialog::readyRead ()
+   {
+	    //Try to read lines
+	    while (m_socket->canReadLine())
+	    {
+			QByteArray data = m_socket->readLine();			
+			QString info(data);
+			m_textEdit->append(info);
+	    }
+   }
+    
+    void QtProbesDialog::connected()
+    {
+    	m_textEdit->append("Connected");   	
+    	m_socket->write("list\n\r",6);
+    }
+    
 	
 } //namespace FD
 
