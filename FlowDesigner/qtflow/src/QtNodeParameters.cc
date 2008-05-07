@@ -1,16 +1,11 @@
 #include "QtNodeParameters.h"
 #include <QTextEdit>
-
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QLabel>
-
-
 #include <QPushButton>
 #include <vector>
 #include <map>
-
-
 #include "Object.h"
 #include "UINodeRepository.h"
 #include <QInputDialog>
@@ -46,6 +41,11 @@ namespace FD {
   		m_tabWidget->addTab(buildParametersTable(), "Parameters");
 		m_tabWidget->addTab(new QTextEdit(this),"Comments");
 		m_tabWidget->addTab(new QTextEdit(this),"Inputs/Outputs");
+		
+		QWebView *view = new QWebView(this);
+		view->load(QUrl(QString("http://flowdesigner.sourceforge.net/phpwiki/index.php?") + QString(m_node->getType().c_str())));
+		view->show();
+		m_tabWidget->addTab(view,"Community Wiki");
 		
 	    QTextEdit *nodeInfo = new QTextEdit(this);
 		m_tabWidget->addTab(nodeInfo,"Node Info");
