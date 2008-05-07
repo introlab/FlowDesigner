@@ -138,16 +138,16 @@ SET (UTILS_SRCS
 
 
 IF(UNIX)
-      #ADDITIONNAL FILES FOR COMPILATION UNDER UNIX/LINUX
+      #ADDITIONNAL FILES FOR COMPILATION UNDER UNIX/LINUX/OSX
       SET(NETWORK_SRCS 
          ${NETWORK_SRCS}
          ThreadedIterator.cc
          ThreadJoin.cc
          SerialThread.cc
          ParallelThread.cc
-	 ExecStream.cc
-	 USleep.cc
-	 Timer.cc
+	     ExecStream.cc
+	     USleep.cc
+	     Timer.cc
       )
 
       SET (UTILS_SRCS

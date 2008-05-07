@@ -15,6 +15,7 @@
 #include "UINodeRepository.h"
 #include <QInputDialog>
 #include <sstream>
+#include <QtWebKit> 
 
 namespace FD {
     
