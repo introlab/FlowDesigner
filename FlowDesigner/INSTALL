@@ -1,1 +1,25 @@
-read the README file.
+
+Since Version 0.10.0... for older version, see README
+
+What tou need :
+   cmake - minimum version 2.6.0
+   fftw - optional
+
+If you want to change the default install directory :
+   Edit CMakeLists.txt in the root directory of FlowDesigner and change the path...
+   Default (in order : Windows, Mac, Linux):
+      IF(WIN32)
+         SET(CMAKE_INSTALL_PREFIX "C:/Progra~1/FlowDesigner")
+      ELSE(WIN32)
+         IF(APPLE)
+            SET(CMAKE_INSTALL_PREFIX "/usr/local")
+         ELSE(APPLE)
+            SET(CMAKE_INSTALL_PREFIX "/usr")
+         ENDIF(APPLE)
+     ENDIF(WIN32)
+
+To compile :
+   % cd <path to the root of FlowDesigner>
+   % cmake .
+   % make
+   % make install

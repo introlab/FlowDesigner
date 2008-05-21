@@ -168,7 +168,7 @@ set(FULL_SRCS ${DATATYPES_SRCS} ${NODES_SRCS} ${NETWORK_SRCS} ${UI_SRCS} ${UTILS
 
 add_library(libflow-dynamic SHARED ${FULL_SRCS})
 	
-set_target_properties(libflow-dynamic PROPERTIES OUTPUT_NAME libflow)
+set_target_properties(libflow-dynamic PROPERTIES VERSION ${CPACK_PACKAGE_VERSION} SOVERSION ${CPACK_PACKAGE_VERSION} OUTPUT_NAME flow)
 
 target_link_libraries(libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES})
 

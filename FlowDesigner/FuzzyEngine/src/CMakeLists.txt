@@ -20,7 +20,7 @@ INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	
 add_library(libfuzzy-dynamic SHARED ${FUZZY_SRCS})
 	
-set_target_properties(libfuzzy-dynamic PROPERTIES OUTPUT_NAME libfuzzy.tlb)
+set_target_properties(libfuzzy-dynamic PROPERTIES OUTPUT_NAME fuzzy.tlb)
 
 target_link_libraries(libfuzzy-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 

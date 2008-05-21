@@ -87,7 +87,7 @@ target_link_libraries(qtflow  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIE
 
 add_library(libfdqttcp-dynamic SHARED ${FDQTTCP_SRCS})
 	
-set_target_properties(libfdqttcp-dynamic PROPERTIES OUTPUT_NAME libfdqttcp.tlb)
+set_target_properties(libfdqttcp-dynamic PROPERTIES OUTPUT_NAME fdqttcp.tlb)
 
 target_link_libraries(libfdqttcp-dynamic libflow-dynamic ${QT_LIBRARIES} ${LIBXML2_LIBRARIES})
 

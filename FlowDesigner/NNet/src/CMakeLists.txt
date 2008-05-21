@@ -22,7 +22,7 @@ INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	
 add_library(libnnet-dynamic SHARED ${NNET_SRCS})
 	
-set_target_properties(libnnet-dynamic PROPERTIES OUTPUT_NAME libnnet.tlb)
+set_target_properties(libnnet-dynamic PROPERTIES OUTPUT_NAME nnet.tlb)
 
 target_link_libraries(libnnet-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 

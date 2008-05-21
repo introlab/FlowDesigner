@@ -28,7 +28,7 @@ INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	
 add_library(libvq-dynamic SHARED ${VQ_SRCS})
 	
-set_target_properties(libvq-dynamic PROPERTIES OUTPUT_NAME libvq.tlb)
+set_target_properties(libvq-dynamic PROPERTIES OUTPUT_NAME vq.tlb)
 
 target_link_libraries(libvq-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 

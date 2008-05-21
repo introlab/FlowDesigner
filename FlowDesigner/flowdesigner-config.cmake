@@ -18,10 +18,10 @@ infodir=${prefix}/share/info
 mandir=${prefix}/share/man
 includedir=${prefix}/include/flowdesigner
 toolboxdir=${exec_prefix}/lib/flowdesigner/toolbox
-pkgdatadir=${datadir}/@PACKAGE@
-pkglibdir=${libdir}/@PACKAGE@
-pkgincludedir=${includedir}/@PACKAGE@
-MODULE_VERSION=@PACKAGE@-@VERSION@
+pkgdatadir=${datadir}/@CPACK_PACKAGE_NAME@
+pkglibdir=${libdir}/@CPACK_PACKAGE_NAME@
+pkgincludedir=${includedir}/@CPACK_PACKAGE_NAME@
+MODULE_VERSION=@CPACK_PACKAGE_NAME@-@CPACK_PACKAGE_VERSION@
 module_dirs="$libdir"
 
 DEFS="-DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DPROTOTYPES=1 -D__PROTOTYPES=1 -DFLOWDESIGNER_VERSION=\"@VERSION@\" -DHAVE_STRING_H=1 -DHAVE_DLFCN_H=1 -DHAVE_FLOAT_H=1 -DHAVE_VALUES_H=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_SYS_SOUNDCARD_H=1 -DHAVE_LINUX_RTC_H=1 -DHAVE_EXT_HASH_MAP=1 -DHAVE_LIBM=1 -DHAVE_LIBDL=1 -D_REENTRANT=1 -DHAVE_FFTW=1 -DINSTALL_PREFIX=\"@CMAKE_INSTALL_PREFIX@\" -DTOOLBOX_PATH=\"@CMAKE_INSTALL_PREFIX@/lib/flowdesigner/toolbox\""
@@ -96,7 +96,7 @@ while test $# -gt 0; do
 
     case $1 in
     --version)
-	echo @PACKAGE@ @VERSION@
+	echo @CPACK_PACKAGE_NAME@ @CPACK_PACKAGE_VERSION@
 	exit 0
 	;;
     --exec-prefix)

@@ -1,4 +1,4 @@
-To compile:
+To compile (older version... for newer >= 0.10.0, see INSTALL file):
 
 % ./configure --prefix=<some prefix> <other options>
 % make

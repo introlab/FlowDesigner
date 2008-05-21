@@ -11,7 +11,7 @@ INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	
 add_library(libeffects-dynamic SHARED ${EFFECTS_SRCS})
 	
-set_target_properties(libeffects-dynamic PROPERTIES OUTPUT_NAME libeffects.tlb)
+set_target_properties(libeffects-dynamic PROPERTIES OUTPUT_NAME effects.tlb)
 
 target_link_libraries(libeffects-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 

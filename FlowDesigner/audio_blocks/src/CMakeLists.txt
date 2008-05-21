@@ -87,7 +87,7 @@ INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	
 add_library(libaudio-dynamic SHARED ${AUDIO_SRCS})
 	
-set_target_properties(libaudio-dynamic PROPERTIES OUTPUT_NAME libaudio.tlb)
+set_target_properties(libaudio-dynamic PROPERTIES OUTPUT_NAME audio.tlb)
 
 target_link_libraries(libaudio-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
 
