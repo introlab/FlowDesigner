@@ -1,0 +1,179 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="node_CvLoadImage_1" type="CvLoadImage" x="-752.000000" y="-299.000000">
+      <Parameter name="ISCOLOR" type="int" value="-1" description="Specifies colorness of the loaded image   "/>
+    </Node>
+    <Node name="node_Constant_1" type="Constant" x="-886.000000" y="-299.000000">
+      <Parameter name="VALUE" type="string" value="azimut.jpg" description="The value"/>
+    </Node>
+    <Node name="node_LOOP0_1" type="LOOP0" x="-625.000000" y="-299.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <Link from="node_Constant_1" output="VALUE" to="node_CvLoadImage_1" input="FILENAME"/>
+    <Link from="node_CvLoadImage_1" output="IMAGE" to="node_LOOP0_1" input="IMAGEIN"/>
+    <NetOutput name="IMAGEOUT" node="node_LOOP0_1" terminal="IMAGEOUT" object_type="" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_1" node="node_LOOP0_1" terminal="IMAGEOUT_1" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_2" node="node_LOOP0_1" terminal="IMAGEOUT_2" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_3" node="node_LOOP0_1" terminal="IMAGEOUT_3" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_4" node="node_LOOP0_1" terminal="IMAGEOUT_4" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_5" node="node_LOOP0_1" terminal="IMAGEOUT_5" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_6" node="node_LOOP0_1" terminal="IMAGEOUT_6" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_7" node="node_LOOP0_1" terminal="IMAGEOUT_7" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_8" node="node_LOOP0_1" terminal="IMAGEOUT_8" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_9" node="node_LOOP0_1" terminal="IMAGEOUT_9" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_10" node="node_LOOP0_1" terminal="IMAGEOUT_10" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_11" node="node_LOOP0_1" terminal="IMAGEOUT_11" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_12" node="node_LOOP0_1" terminal="IMAGEOUT_12" object_type="CvImage" description="Same as input image "/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner FLOWDESIGNER_VERSION"/>
+  </Network>
+  <Network type="iterator" name="LOOP0">
+    <Node name="node_CvShowImage_1" type="CvShowImage" x="-236.000000" y="-100.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Base Image" description="Window title."/>
+    </Node>
+    <Node name="node_NOP_1" type="NOP" x="-958.000000" y="53.000000"/>
+    <Node name="node_Constant_1" type="Constant" x="-492.000000" y="-211.000000">
+      <Parameter name="VALUE" type="bool" value="true" description="The value"/>
+    </Node>
+    <Node name="node_CvCanny_1" type="CvCanny" x="-412.000000" y="56.000000">
+      <Parameter name="THRESHOLD1" type="float" value="50" description="The first threshold"/>
+      <Parameter name="THRESHOLD2" type="float" value="200" description="The second threshold   "/>
+      <Parameter name="APERTURE_SIZE" type="int" value="3" description="Aperture parameter for Sobel operator"/>
+    </Node>
+    <Node name="node_CvDilate_1" type="CvDilate" x="-406.000000" y="135.000000">
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times dilation is applied"/>
+    </Node>
+    <Node name="node_CvErode_1" type="CvErode" x="-406.000000" y="204.000000">
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times dilation is applied"/>
+    </Node>
+    <Node name="node_CvGray_1" type="CvGray" x="-706.000000" y="56.000000"/>
+    <Node name="node_CvMorphology_1" type="CvMorphology" x="-423.000000" y="277.000000">
+      <Parameter name="OPERATION" type="string" value="CV_MOP_OPEN" description="Type of morphological operation"/>
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times erosion and dilation are applied"/>
+    </Node>
+    <Node name="node_CvSobel_1" type="CvSobel" x="-480.000000" y="666.000000">
+      <Parameter name="XORDER" type="int" value="1" description="The first threshold"/>
+      <Parameter name="YORDER" type="int" value="0" description="The second threshold   "/>
+      <Parameter name="APERTURE_SIZE" type="int" value="3" description="Aperture parameter for Sobel operator"/>
+    </Node>
+    <Node name="node_CvThreshold_1" type="CvThreshold" x="-566.000000" y="57.000000">
+      <Parameter name="THRESHOLD" type="float" value="150" description="Threshold value"/>
+      <Parameter name="MAX_VALUE" type="float" value="255" description="Maximum value to use with CV_THRESH_BINARY and CV_THRESH_BINARY_INV thresholding types"/>
+      <Parameter name="THRESHOLD_TYPE" type="string" value="CV_THRESH_BINARY" description="Thresholding type"/>
+    </Node>
+    <Node name="node_CvCreateStructuringElement_1" type="CvCreateStructuringElement" x="-999.000000" y="271.000000">
+      <Parameter name="COLS" type="int" value="3" description="Number of columns in the structuring element"/>
+      <Parameter name="ROWS" type="int" value="3" description="Number of rows in the structuring element"/>
+      <Parameter name="ANCHOR_X" type="int" value="1" description="Relative horizontal offset of the anchor point"/>
+      <Parameter name="ANCHORY_y" type="int" value="1" description="Relative vertical offset of the anchor point "/>
+      <Parameter name="SHAPE" type="string" value="CV_SHAPE_RECT" description="Shape of the structuring element      &#10;  "/>
+    </Node>
+    <Node name="node_CvShowImage_2" type="CvShowImage" x="-233.000000" y="-50.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Gray" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_3" type="CvShowImage" x="-234.000000" y="1.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Threshold" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_4" type="CvShowImage" x="-233.000000" y="55.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Canny" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_5" type="CvShowImage" x="-235.000000" y="135.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Dilate" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_6" type="CvShowImage" x="-235.000000" y="203.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Erode" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_7" type="CvShowImage" x="-234.000000" y="276.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Morphology - Open" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_8" type="CvShowImage" x="-246.000000" y="600.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Smooth" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_9" type="CvShowImage" x="-247.000000" y="667.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Sobel" description="Window title."/>
+    </Node>
+    <Node name="node_CvSmooth_1" type="CvSmooth" x="-482.000000" y="601.000000">
+      <Parameter name="SMOOTH_TYPE" type="string" value="CV_GAUSSIAN" description="Type of the smoothing"/>
+      <Parameter name="PARAM1" type="int" value="3" description="The first parameter of smoothing operation"/>
+      <Parameter name="PARAM2" type="int" value="3" description="The second parameter of smoothing operation. In case of simple scaled/non-scaled and Gaussian blur if param2 is zero, it is set to param1"/>
+      <Parameter name="PARAM3" type="int" value="0" description="In case of Gaussian parameter this parameter may specify Gaussian sigma (standard deviation). If it is zero, it is calculated from the kernel size"/>
+    </Node>
+    <Node name="node_CvMorphology_2" type="CvMorphology" x="-425.000000" y="337.000000">
+      <Parameter name="OPERATION" type="string" value="CV_MOP_CLOSE" description="Type of morphological operation"/>
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times erosion and dilation are applied"/>
+    </Node>
+    <Node name="node_CvMorphology_3" type="CvMorphology" x="-427.000000" y="392.000000">
+      <Parameter name="OPERATION" type="string" value="CV_MOP_GRADIENT" description="Type of morphological operation"/>
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times erosion and dilation are applied"/>
+    </Node>
+    <Node name="node_CvMorphology_4" type="CvMorphology" x="-423.000000" y="457.000000">
+      <Parameter name="OPERATION" type="string" value="CV_MOP_TOPHAT" description="Type of morphological operation"/>
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times erosion and dilation are applied"/>
+    </Node>
+    <Node name="node_CvMorphology_5" type="CvMorphology" x="-421.000000" y="528.000000">
+      <Parameter name="OPERATION" type="string" value="CV_MOP_BLACKHAT" description="Type of morphological operation"/>
+      <Parameter name="ITERATIONS" type="int" value="1" description="Number of times erosion and dilation are applied"/>
+    </Node>
+    <Node name="node_CvShowImage_10" type="CvShowImage" x="-244.000000" y="529.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Morphology - BlackHat" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_11" type="CvShowImage" x="-238.000000" y="458.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Morphology - TopHat" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_12" type="CvShowImage" x="-234.000000" y="337.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Morphology - Close" description="Window title."/>
+    </Node>
+    <Node name="node_CvShowImage_13" type="CvShowImage" x="-238.000000" y="393.000000">
+      <Parameter name="WINDOW_TITLE" type="string" value="Morphology - Gradient" description="Window title."/>
+    </Node>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvShowImage_1" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvDilate_1" input="IMAGEIN"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvDilate_1" input="ELEMENT"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvErode_1" input="ELEMENT"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvMorphology_1" input="ELEMENT"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvGray_1" input="IMAGEIN"/>
+    <Link from="node_CvGray_1" output="IMAGEOUT" to="node_CvThreshold_1" input="IMAGEIN"/>
+    <Link from="node_CvGray_1" output="IMAGEOUT" to="node_CvShowImage_2" input="IMAGEIN"/>
+    <Link from="node_CvThreshold_1" output="IMAGEOUT" to="node_CvShowImage_3" input="IMAGEIN"/>
+    <Link from="node_CvCanny_1" output="OUTPUT" to="node_CvShowImage_4" input="IMAGEIN"/>
+    <Link from="node_CvDilate_1" output="IMAGEOUT" to="node_CvShowImage_5" input="IMAGEIN"/>
+    <Link from="node_CvErode_1" output="IMAGEOUT" to="node_CvShowImage_6" input="IMAGEIN"/>
+    <Link from="node_CvMorphology_1" output="IMAGEOUT" to="node_CvShowImage_7" input="IMAGEIN"/>
+    <Link from="node_CvSobel_1" output="IMAGEOUT" to="node_CvShowImage_9" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvErode_1" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvMorphology_1" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvSobel_1" input="IMAGEIN"/>
+    <Link from="node_CvSmooth_1" output="IMAGEOUT" to="node_CvShowImage_8" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvSmooth_1" input="IMAGEIN"/>
+    <Link from="node_CvThreshold_1" output="IMAGEOUT" to="node_CvCanny_1" input="INPUT"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvMorphology_2" input="ELEMENT"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvMorphology_3" input="ELEMENT"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvMorphology_4" input="ELEMENT"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvMorphology_2" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvMorphology_3" input="IMAGEIN"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvMorphology_4" input="IMAGEIN"/>
+    <Link from="node_CvCreateStructuringElement_1" output="STRUCTURINGELEMENT" to="node_CvMorphology_5" input="ELEMENT"/>
+    <Link from="node_NOP_1" output="OUTPUT" to="node_CvMorphology_5" input="IMAGEIN"/>
+    <Link from="node_CvMorphology_2" output="IMAGEOUT" to="node_CvShowImage_12" input="IMAGEIN"/>
+    <Link from="node_CvMorphology_3" output="IMAGEOUT" to="node_CvShowImage_13" input="IMAGEIN"/>
+    <Link from="node_CvMorphology_4" output="IMAGEOUT" to="node_CvShowImage_11" input="IMAGEIN"/>
+    <Link from="node_CvMorphology_5" output="IMAGEOUT" to="node_CvShowImage_10" input="IMAGEIN"/>
+    <NetInput name="IMAGEIN" node="node_NOP_1" terminal="INPUT" object_type="any" description="The input"/>
+    <NetOutput name="IMAGEOUT" node="node_CvShowImage_1" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetCondition name="CONDITION" node="node_Constant_1" terminal="VALUE"/>
+    <NetOutput name="IMAGEOUT_1" node="node_CvShowImage_2" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_2" node="node_CvShowImage_3" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_3" node="node_CvShowImage_4" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_4" node="node_CvShowImage_5" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_5" node="node_CvShowImage_6" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_6" node="node_CvShowImage_7" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_7" node="node_CvShowImage_12" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_8" node="node_CvShowImage_13" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_9" node="node_CvShowImage_11" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_10" node="node_CvShowImage_10" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_11" node="node_CvShowImage_8" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <NetOutput name="IMAGEOUT_12" node="node_CvShowImage_9" terminal="IMAGEOUT" object_type="CvImage" description="Same as input image "/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner FLOWDESIGNER_VERSION"/>
+  </Network>
+</Document>
