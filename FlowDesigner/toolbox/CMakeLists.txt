@@ -26,3 +26,11 @@ IF (HAVE_LAPACK)
 ELSE (HAVE_LAPACK)
     MESSAGE (STATUS "LAPACK library wasn't found, it won't be compiled.")
 ENDIF (HAVE_LAPACK)
+
+### octave toolbox ###
+find_package(Octave)
+IF (HAVE_OCTAVE)
+    ADD_SUBDIRECTORY(octave)
+ELSE (HAVE_OCTAVE)
+    MESSAGE (STATUS "OCTAVE library wasn't found, it won't be compiled.")
+ENDIF (HAVE_OCTAVE)
