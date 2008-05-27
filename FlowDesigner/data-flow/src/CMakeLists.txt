@@ -148,6 +148,9 @@ IF(UNIX)
 	     ExecStream.cc
 	     USleep.cc
 	     Timer.cc
+         URLHandler.cc
+         URLStream.cc
+         TCPConnect.cc
       )
 
       SET (UTILS_SRCS

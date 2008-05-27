@@ -160,7 +160,7 @@ CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/flowdesigner-config.cmake ${CMAKE_BINARY_DIR}
 INSTALL( FILES ${CMAKE_BINARY_DIR}/flowdesigner-config DESTINATION ${CMAKE_INSTALL_PREFIX}/bin PERMISSIONS OWNER_READ GROUP_READ WORLD_READ WORLD_EXECUTE)
 
 SET(CPACK_DEBIAN_PACKAGE_NAME "flowdesigner")
-SET(CPACK_DEBIAN_PACKAGE_VERSION "snapshot-19_02_2008")
+SET(CPACK_DEBIAN_PACKAGE_VERSION "snapshot-23_05_2008")
 SET(CPACK_DEBIAN_ARCHITECTURE i386)
 SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.6-1), libfontconfig1 (>= 2.4.0), libfreetype6 (>= 2.3.5), libgcc1 (>= 1:4.2.1), libice6 (>= 1:1.0.0), libpng12-0 (>= 1.2.13-4), libqt4-core (>= 4.3.2), libqt4-gui (>= 4.3.2), libsm6, libstdc++6 (>= 4.2.1), libx11-6, libxcursor1 (>> 1.1.2), libxext6, libxi6, libxinerama1, libxml2 (>= 2.6.29), libxrandr2 (>= 2:1.2.0), libxrender1, zlib1g (>= 1:1.2.3.3.dfsg-1)")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "flowdesigner-devel@lists.sourceforge.net")
