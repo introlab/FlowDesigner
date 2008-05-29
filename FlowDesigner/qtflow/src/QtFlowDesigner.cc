@@ -101,10 +101,20 @@ namespace FD
         */
         
         //tree view
+        QDockWidget *dock = new QDockWidget(tr("Toolbox"), this);
+        dock->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+        dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+        
         treeView = new QtNodeTreeView(this);
         treeView->setObjectName(QString::fromUtf8("treeView"));
+
+        dock->setWidget(treeView);
+        addDockWidget(Qt::LeftDockWidgetArea, dock);
+
+
         
-        QWidget*window = m_workspace->addWindow(treeView);
+        
+        //QWidget*window = m_workspace->addWindow(treeView);
         
         
         //SETUP IO REDIRECTORS
@@ -239,7 +249,7 @@ namespace FD
         QWidget *window = m_workspace->addWindow(doc);
         window->setWindowTitle("QtDocument - Untitled");
         m_workspace->setActiveWindow(window);
-        window->show();	
+        window->showMaximized();	
     }
     
     void QtFlowDesigner::saveAsDocumentClicked()

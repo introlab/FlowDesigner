@@ -40,7 +40,7 @@ namespace FD
         setScene(scene);
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
-        setDragMode(QGraphicsView::RubberBandDrag);
+        setDragMode(QGraphicsView::ScrollHandDrag);
 		
         if (m_uiNetwork)
         {
@@ -310,8 +310,9 @@ namespace FD
 		QRectF myRect = sceneRect();
 		QRectF boundingRect = scene()->itemsBoundingRect();
 		QRectF newRect = myRect.unite(boundingRect);
+        
 		setSceneRect(newRect);
-		ensureVisible(newRect);
+		//ensureVisible(newRect);
 	}
 	
     void QtNetwork::dropEvent(QDropEvent *event)
