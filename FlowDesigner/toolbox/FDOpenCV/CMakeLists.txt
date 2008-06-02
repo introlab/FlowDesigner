@@ -81,10 +81,9 @@ set_target_properties(libopencv-dynamic PROPERTIES OUTPUT_NAME opencv.tlb)
 
 #target_link_libraries(libopencv-dynamic libflow-dynamic ${LIBXML2_LIBRARIES}
 #	-LC:/PROGRA~1/OpenCV/bin -lcv100 -lcvaux100 -lcvcam100 -lcxcore100 -lcxts001 -lhighgui100 -lml100
-target_link_libraries(libopencv-dynamic libflow-dynamic ${LIBXML2_LIBRARIES}
-	-LC:/PROGRA~1/OpenCV/bin -lcv -lcvaux -lcxcore -lhighgui -lml
 
-)
+target_link_libraries(libopencv-dynamic libflow-dynamic ${LIBXML2_LIBRARIES} ${OpenCV_LIBRARIES})
+
 
 install(TARGETS libopencv-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDOPENCV/lib)
   

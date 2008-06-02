@@ -21,11 +21,11 @@ ADD_SUBDIRECTORY(FDOpenCV)
 
 ### lapackflow toolbox ###
 find_package(LAPACK)
-IF (HAVE_LAPACK)
+IF (HAVE_LAPACK AND NOT APPLE)
     ADD_SUBDIRECTORY(lapackflow)
-ELSE (HAVE_LAPACK)
+ELSE (HAVE_LAPACK AND NOT APPLE)
     MESSAGE (STATUS "LAPACK library wasn't found, it won't be compiled.")
-ENDIF (HAVE_LAPACK)
+ENDIF (HAVE_LAPACK AND NOT APPLE)
 
 ### octave toolbox ###
 find_package(Octave)
