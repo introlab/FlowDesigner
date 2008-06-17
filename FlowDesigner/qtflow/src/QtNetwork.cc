@@ -133,11 +133,7 @@ namespace FD
             break;
             case Qt::Key_Space:
             case Qt::Key_Enter:
-            foreach (QGraphicsItem *item, scene()->items())
-            {
-                if (qgraphicsitem_cast<QtNode *>(item))
-                    item->setPos(-150 + rand() % 300, -150 + rand() % 300);
-            }
+            resizeView();
             break;
             case Qt::Key_Delete:
             {
@@ -570,11 +566,14 @@ namespace FD
     
     void QtNetwork::mouseDoubleClickEvent ( QMouseEvent * e )
     {
-		
-		QRectF boundingRect = scene()->itemsBoundingRect();
-		setSceneRect(boundingRect);
+        QGraphicsView::mouseDoubleClickEvent(e);
+    }
+
+    void QtNetwork::resizeView()
+    {
+        QRectF boundingRect = scene()->itemsBoundingRect();
+	    setSceneRect(boundingRect);
     	fitInView(boundingRect,Qt::KeepAspectRatio);
-    	QGraphicsView::mouseDoubleClickEvent(e);
     }
     
 } //namespace FD

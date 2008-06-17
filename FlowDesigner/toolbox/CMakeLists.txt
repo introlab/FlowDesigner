@@ -17,7 +17,13 @@ ADD_SUBDIRECTORY(audio_blocks)
 ADD_SUBDIRECTORY(effects)
 
 ### FDOpenCV toolbox ###
-ADD_SUBDIRECTORY(FDOpenCV)
+find_package(OpenCV)
+IF (OpenCV_FOUND)
+    ADD_SUBDIRECTORY(FDOpenCV)
+ELSE (OpenCV_FOUND)
+    MESSAGE (STATUS "OpenCV library wasn't found, it won't be compiled.")
+ENDIF (OpenCV_FOUND)
+
 
 ### lapackflow toolbox ###
 find_package(LAPACK)

@@ -1,0 +1,58 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document>
+  <Network type="subnet" name="MAIN">
+    <Node name="WavInputSound_2" type="WavInputSound" x="178,000000" y="138,000000">
+      <Parameter name="FILENAME" type="string" value="/localhome/mathieu/workspace/SphinxManyears/smy/10001-90210-01803.wav" description="String for file name (*.wav)"/>
+    </Node>
+    <Node name="TCPConnect_2" type="TCPConnect" x="205,000000" y="284,000000">
+      <Parameter name="HOST" type="string" value="localhost" description="Hostname"/>
+      <Parameter name="PORT" type="int" value="7000" description="Port number"/>
+      <Parameter name="BLOCKING" type="bool" value="true" description="Whether to make the socket blocking"/>
+    </Node>
+    <Node name="loop2_0" type="loop2" x="391,000000" y="188,000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <ProbeLink from="WavInputSound_2" output="OUTPUT" to="loop2_0" input="INPUT"/>
+    <ProbeLink from="TCPConnect_2" output="OUTPUT" to="loop2_0" input="DEVICE"/>
+    <NetOutput name="OUTPUT" node="loop2_0" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="AudioStream_1" type="AudioStream" x="156,000000" y="162,000000">
+      <Parameter name="LENGTH" type="int" value="1024" description="Length of the frames (in samples)"/>
+      <Parameter name="ADVANCE" type="int" value="0" description="Offset beween frames (in samples)"/>
+      <Parameter name="ENCODING" type="string" value="LIN16" description="Type of encoding (LIN16, ULAW, ALAW, LIN8, SPHERE)"/>
+      <Parameter name="STREAM_TYPE" type="string" value="" description="Type of stream (stream, fd, FILE)"/>
+      <Parameter name="REWIND" type="bool" value="" description="If true, the stream rewinds to the beginning of the file when EOF is met"/>
+    </Node>
+    <Node name="WriteAudio_2" type="WriteAudio" x="397,000000" y="182,000000">
+      <Parameter name="SAMPLE_SIZE" type="int" value="16" description="Number of bytes/sample (2 = 16 bits/sample)"/>
+      <Parameter name="LEAD_IN" type="int" value="0" description="Number of zero frames to send before starting (for synchronization)"/>
+    </Node>
+    <ProbeLink from="AudioStream_1" output="AUDIO" to="WriteAudio_2" input="OBJECT"/>
+    <NetInput name="INPUT" node="AudioStream_1" terminal="INPUT" object_type="any" description="No description available"/>
+    <NetInput name="DEVICE" node="WriteAudio_2" terminal="DEVICE" object_type="any" description="No description available"/>
+    <NetOutput name="OUTPUT" node="WriteAudio_2" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop2">
+    <Node name="AudioStream_0" type="AudioStream" x="146,000000" y="171,000000">
+      <Parameter name="LENGTH" type="int" value="1024" description="Length of the frames (in samples)"/>
+      <Parameter name="ADVANCE" type="int" value="1024" description="Offset beween frames (in samples)"/>
+      <Parameter name="ENCODING" type="string" value="LIN16" description="Type of encoding (LIN16, ULAW, ALAW, LIN8, SPHERE)"/>
+      <Parameter name="STREAM_TYPE" type="string" value="" description="Type of stream (stream, fd, FILE)"/>
+      <Parameter name="REWIND" type="bool" value="" description="If true, the stream rewinds to the beginning of the file when EOF is met"/>
+    </Node>
+    <Node name="WriteAudio_1" type="WriteAudio" x="416,000000" y="239,000000">
+      <Parameter name="SAMPLE_SIZE" type="int" value="16" description="Number of bits/sample"/>
+      <Parameter name="LEAD_IN" type="int" value="" description="Number of zero frames to send before starting (for synchronization)"/>
+    </Node>
+    <ProbeLink from="AudioStream_0" output="AUDIO" to="WriteAudio_1" input="OBJECT"/>
+    <NetInput name="DEVICE" node="WriteAudio_1" terminal="DEVICE" object_type="any" description="No description available"/>
+    <NetCondition name="CONDITION" node="AudioStream_0" terminal="NOT_EOF"/>
+    <NetInput name="INPUT" node="AudioStream_0" terminal="INPUT" object_type="any" description="No description available"/>
+    <NetOutput name="OUTPUT" node="WriteAudio_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

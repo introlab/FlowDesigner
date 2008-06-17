@@ -79,17 +79,41 @@ SET(AUDIO_SRCS
 	lsp.c
 	LSP2LPC.cc
 	LPC2LSP.cc
+    Sound.cc
+    WavInputSound.cc
 )	
 
-INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include 
-	../include 
-	${LIBXML2_INCLUDE} )
+IF(UNIX)
+    find_package(Alsa)
+    IF(LIBALSA_FOUND)
+        SET(AUDIO_SRCS ${AUDIO_SRCS}
+            ALSASound.cc
+        )
+    ENDIF(LIBALSA_FOUND)
+ENDIF(UNIX)
+
+IF(LIBALSA_FOUND)
+    INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include 
+	    ../include 
+	    ${LIBXML2_INCLUDE} 
+        ${LIBALSA_INCLUDE}
+    )
+ELSE(LIBALSA_FOUND)
+    INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include 
+	    ../include 
+	    ${LIBXML2_INCLUDE}
+    )
+ENDIF(LIBALSA_FOUND)
 	
 add_library(libaudio-dynamic SHARED ${AUDIO_SRCS})
 	
 set_target_properties(libaudio-dynamic PROPERTIES OUTPUT_NAME audio.tlb)
 
-target_link_libraries(libaudio-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
+IF(LIBALSA_FOUND)
+    target_link_libraries(libaudio-dynamic libflow-dynamic ${LIBXML2_LIBRARIES} ${LIBALSA_LIBRARIES})
+ELSE(LIBALSA_FOUND)
+    target_link_libraries(libaudio-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
+ENDIF(LIBALSA_FOUND)
 
 install(TARGETS libaudio-dynamic DESTINATION ${FD_TOOLBOX_DIR}/AUDIO)
   

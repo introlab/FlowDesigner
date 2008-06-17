@@ -249,7 +249,7 @@ namespace FD
 	QtNetwork* QtDocument::addNetwork(UINetwork* net)
 	{		
         QtNetwork *qtnet = new QtNetwork(this,net);
-		qtnet->fitInView(qtnet->scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+		//qtnet->fitInView(qtnet->scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
 		qtnet->centerOn(qtnet->scene()->itemsBoundingRect().topLeft());
 		
 		m_networkMap.insert(make_pair(net,qtnet));

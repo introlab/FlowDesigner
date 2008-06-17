@@ -418,7 +418,7 @@ std::streamsize alsa_streambuf::xsputn(const char *s, std::streamsize n)
          //fprintf(stderr, "error %d, EPIPE = %d\n", err, EPIPE);
          if (err == -EPIPE)
          {
-            fprintf (stderr, "An underrun has occured, reseting playback, len=%d\n", nsamples);
+            fprintf (stderr, "An underrun has occured, reseting playback, nSamples=%d, n=%d, channels=%d\n", nsamples, n, channels);
          } else
          {
             fprintf (stderr, "write to audio interface failed (%s)\n",

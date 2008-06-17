@@ -231,7 +231,7 @@ namespace FD {
             QSpinBox* spinBox =  new QSpinBox(this);
             spinBox->setAccessibleName("QSpinBox");       
             //Maybe to change... extremum value of int generate a warning
-            spinBox->setRange ( -1000000, 1000000 );
+            spinBox->setRange ( -10000000, 10000000 );
             spinBox->setValue( QString(textParams[index]->value.c_str()).toInt()  ) ; 
             connect(spinBox, SIGNAL( valueChanged(int) ), this, SLOT( valueChanged() ) );
             m_valuesWidge.insert(index, spinBox);                    

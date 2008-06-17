@@ -33,6 +33,11 @@ DECLARE_NODE(WriteAudio)
  * @output_type Vector<float>
  * @output_description Returning the input audio frames
  *
+ * @parameter_name SAMPLE_SIZE
+ * @parameter_type int
+ * @parameter_value 16
+ * @parameter_description Number of bits/sample
+ *
  * @parameter_name LEAD_IN
  * @parameter_type int
  * @parameter_description Number of zero frames to send before starting (for synchronization)
@@ -53,6 +58,7 @@ protected:
    /**The ID of the 'object' input*/
    int objectInputID;
 
+   int sampleSize; // in bytes/sample
    int lead;
 public:
    /**Constructor, takes the name of the node and a set of parameters*/
@@ -63,6 +69,11 @@ public:
       streamInputID = addInput("DEVICE");
       objectInputID = addInput("OBJECT");
       inOrder = true;
+      sampleSize = dereference_cast<int> (parameters.get("SAMPLE_SIZE")) / 8; // bits/sample to bytes/sample
+      if(sampleSize == 0) {
+        sampleSize = 1;
+        std::cerr << "WriteAudio : SAMPLE_SIZE must be greater than 7. Using 8 instead..." << std::endl;
+      }
       if (parameters.exist("LEAD_IN"))
 	 lead = dereference_cast<int> (parameters.get("LEAD_IN"));
       else
@@ -81,20 +92,35 @@ public:
       OStream &stream = object_cast<OStream> (streamValue);
 
       Vector<float> &vec = object_cast<Vector<float> > (inputValue);
-      short buff[vec.size()];
+      char buff[sampleSize*vec.size()];
       
       if (count == 0)
       {
 	 
-	 for (int i=0;i<vec.size();i++)
+	 for (int i=0;i<sampleSize*vec.size();i++)
 	    buff[i]=0;
 	 for (int i=0;i<lead;i++)
-	    stream.write((const char *)buff, sizeof(short)*vec.size());
+	    stream.write((const char *)buff, sampleSize*vec.size());
       }
-      
-      for (int i=0;i<vec.size();i++)
-	 buff[i]= short(rint(vec[i]));
-      stream.write((const char *)buff, sizeof(short)*vec.size());
+
+     char cVal;
+     short sVal;
+     int iVal;        
+     for (int i=0;i<vec.size();i++) {
+        iVal = rint(vec[i]);
+        if(sampleSize == 1) {
+            cVal = char(iVal);
+            memcpy(buff + (i*sampleSize), &cVal, sampleSize);
+        }
+        else if(sampleSize == 2) {
+            sVal = short(iVal);
+            memcpy(buff + (i*sampleSize), &sVal, sampleSize);
+        }
+        else if(sampleSize == 4) {
+            memcpy(buff + (i*sampleSize), &iVal, sampleSize);
+        }
+     }
+      stream.write((const char *)buff, sampleSize*vec.size());
 
       out[count] = inputValue;
    }
