@@ -91,7 +91,9 @@ namespace FD
         
         void resizeView();
         void drawBackground(QPainter *painter, const QRectF &rect);
-        void mouseMoveEvent ( QMouseEvent * e );
+        virtual void mouseMoveEvent ( QMouseEvent * e );
+        virtual void mousePressEvent (QMouseEvent * e);
+        virtual void mouseReleaseEvent (QMouseEvent * e);
         void keyPressEvent(QKeyEvent *event);
         void wheelEvent(QWheelEvent *event);
         void contextMenuEvent(QContextMenuEvent *event);

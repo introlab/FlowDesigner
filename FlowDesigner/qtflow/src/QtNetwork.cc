@@ -40,7 +40,7 @@ namespace FD
         setScene(scene);
         setCacheMode(CacheBackground);
         setRenderHint(QPainter::Antialiasing);
-        setDragMode(QGraphicsView::ScrollHandDrag);
+        setDragMode(QGraphicsView::RubberBandDrag);
 		
         if (m_uiNetwork)
         {
@@ -352,10 +352,44 @@ namespace FD
 		}
     }      
     
+    static QPoint lastCursorPos;
 	void QtNetwork::mouseMoveEvent ( QMouseEvent * e )
 	{
+        if(e->buttons() & Qt::MidButton)
+        {
+            QScrollBar *hBar = horizontalScrollBar();
+            QScrollBar *vBar = verticalScrollBar();
+            QPoint delta = e->pos() - lastCursorPos;
+            hBar->setValue(hBar->value() + (isRightToLeft() ? delta.x() : -delta.x()));
+            vBar->setValue(vBar->value() - delta.y());
+            lastCursorPos = e->pos();
+            return; 
+        }
 		QGraphicsView::mouseMoveEvent(e);
 	}
+
+    void QtNetwork::mousePressEvent (QMouseEvent * e)
+    {
+        if(e->button() == Qt::MidButton)
+        {
+            lastCursorPos = e->pos();
+            setDragMode(QGraphicsView::NoDrag);
+            QApplication::setOverrideCursor( QCursor(Qt::ClosedHandCursor) );
+            return;
+        }
+        QGraphicsView::mousePressEvent(e);
+    }
+
+    void QtNetwork::mouseReleaseEvent (QMouseEvent * e)
+    {
+        if(e->button() == Qt::MidButton)
+        {
+            QApplication::restoreOverrideCursor();
+            setDragMode(QGraphicsView::RubberBandDrag);
+            return;
+        }
+        QGraphicsView::mouseReleaseEvent(e);
+    }
 	
 	void QtNetwork::addQtLink(QtLink *link)
 	{
