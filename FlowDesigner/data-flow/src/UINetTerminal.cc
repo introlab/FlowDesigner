@@ -24,6 +24,7 @@ UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const str
 
 UINetTerminal::~UINetTerminal()
 {
+  cerr << "UINetTerminal::~UINetTerminal()" << endl;
   terminal->getNode()->getNetwork()->removeTerminal(this);
   terminal->disconnectNetTerminal();
 }

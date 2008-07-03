@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTcpSocket>
+#include <QCloseEvent>
 
 namespace FD
 {
@@ -20,6 +21,10 @@ namespace FD
     {         
         Q_OBJECT;
         
+        protected: 
+
+        void closeEvent(QCloseEvent *event);
+
         public:
         	
     	QtProcessWindow(QtFlowDesigner *parent, UIDocument *doc);
@@ -30,13 +35,14 @@ namespace FD
         public slots:
         
         void probesButtonClicked();
+       	void stopButtonClicked();
         void error ( QProcess::ProcessError error );
         void finished ( int exitCode, QProcess::ExitStatus exitStatus );
         void readyReadStandardError ();
         void readyReadStandardOutput ();
         void started ();
         void stateChanged ( QProcess::ProcessState newState );
-        	
+
         protected:
         	
     	QtFlowDesigner *m_flowdesigner;
@@ -46,6 +52,7 @@ namespace FD
     	QVBoxLayout *m_mainLayout;
     	QHBoxLayout *m_buttonLayout;
     	QPushButton *m_probesButton;
+        QPushButton *m_stopButton;
         	
     };
     
@@ -73,3 +80,4 @@ namespace FD
     
 }
 #endif /*QTPROCESSWINDOW_H_*/
+

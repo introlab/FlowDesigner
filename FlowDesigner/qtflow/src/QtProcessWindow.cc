@@ -4,6 +4,7 @@
 #include "UIDocument.h"
 #include <QTextEdit>
 #include <QDialog>
+#include <QMessageBox>
 
 namespace FD 
 {
@@ -23,6 +24,11 @@ namespace FD
 		m_buttonLayout->addWidget(m_probesButton);
 		connect(m_probesButton,SIGNAL(clicked()),this,SLOT(probesButtonClicked()));
 		
+		//Add "Stop" Button
+		m_stopButton = new QPushButton("Stop",this);
+		m_buttonLayout->addWidget(m_stopButton);
+		connect(m_stopButton,SIGNAL(clicked()),this,SLOT(stopButtonClicked()));
+		
 		
 		m_textEdit = new QTextEdit(this);
 		m_textEdit->setReadOnly(true);
@@ -41,12 +47,43 @@ namespace FD
 			delete m_process;
 		}
 	}
+
+    void QtProcessWindow::closeEvent(QCloseEvent *event)
+    {
+        if (m_process)
+    	{
+    		int ret = QMessageBox::warning(this, tr("QtFlow"),
+                           tr("A process is still running.\n"
+                              "Do you want to terminate the process?"),
+                           QMessageBox::Yes | QMessageBox::Cancel,
+                           QMessageBox::Cancel);
+            if(ret == QMessageBox::Yes) {
+                m_process->terminate();
+                event->accept();
+            }
+            else {
+                event->ignore();
+            }
+    	}
+        else
+        {
+            event->accept();
+        }
+    }
 	
 	void QtProcessWindow::probesButtonClicked()
 	{
 		QtProbesDialog *dialog = new QtProbesDialog(this);
 		dialog->exec();
 		delete dialog;
+	}
+	
+	void QtProcessWindow::stopButtonClicked()
+	{
+		if (m_process)
+    	{
+    		m_process->terminate();
+    	}
 	}
 	
 	void QtProcessWindow::start()
@@ -76,7 +113,6 @@ namespace FD
 			connect(m_process,SIGNAL(readyReadStandardOutput()),this,SLOT(readyReadStandardOutput()));
 			connect(m_process,SIGNAL(started()),this,SLOT(started()));
 			connect(m_process,SIGNAL(stateChanged ( QProcess::ProcessState)),this,SLOT(stateChanged ( QProcess::ProcessState)));
-			
 			
 			QStringList args;			
 			args.append("/dev/stdin");
@@ -221,5 +257,6 @@ namespace FD
     
 	
 } //namespace FD
+
 
 

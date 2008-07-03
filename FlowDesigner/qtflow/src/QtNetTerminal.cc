@@ -58,10 +58,11 @@ namespace FD
     
     QtNetTerminal::~QtNetTerminal()
     {
-    	if (m_uiNetTerminal)
+        cerr << "QtNetTerminal::~QtNetTerminal()" << endl;
+    	/*if (m_uiNetTerminal)
     	{
     		delete m_uiNetTerminal;
-    	}
+    	}*///Already deleted, see destructor of UITerminal
     }
     
 	void QtNetTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )

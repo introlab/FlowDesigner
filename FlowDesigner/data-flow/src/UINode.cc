@@ -369,12 +369,12 @@ void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _typ
    //Notify terminal deleted and delete it
    if (terminal)
    {
+       delete terminal;
+
 	   for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 	   {
 		   (*iter)->notifyTerminalRemoved(this,terminal);
-	   }
-	   
-	   delete terminal;
+	   } 
    }
    
    redraw();
