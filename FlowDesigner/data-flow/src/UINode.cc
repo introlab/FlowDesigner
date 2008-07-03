@@ -121,23 +121,43 @@ void UINode::loadXML(xmlNodePtr def)
 
 UINode::~UINode()
 {
-   if (!destroyed)
-   {
-      for (unsigned int i=0;i<inputs.size();i++)
-    	  delete inputs[i];
-      for (unsigned int i=0;i<outputs.size();i++)
-    	  delete outputs[i];
+    cerr << "UINode::~UINode()" << endl;
+    if (!destroyed)
+    {
+        std::vector<UILink *> links;
+        for (unsigned int i=0;i<inputs.size();i++) {
+
+            // Remove input links
+            links = inputs[i]->getConnections();
+            for(unsigned int j=0; j<links.size(); j++) {
+                net->removeLink(links[j]);
+            }
+
+            // Remove inputs
+            delete inputs[i];
+        }
+        for (unsigned int i=0;i<outputs.size();i++) {
+
+            // Remove output links
+            links = outputs[i]->getConnections();
+            for(unsigned int j=0; j<links.size(); j++) {
+                net->removeLink(links[j]);
+            }
+
+            // Remove outputs
+            delete outputs[i];
+        }
+
+        delete parameters;
+        /*net->removeNode(this);*/
+
+        //Notify observers
+        for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+        {
+            (*iter)->notifyDestroyed(this);
+        }
       
-      delete parameters;
-      net->removeNode(this);
-      
-      //Notify observers
-      for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
-      {
-    	  (*iter)->notifyDestroyed(this);
-      }
-      
-   }
+    }
 }
 
 void UINode::saveXML(xmlNode *root)

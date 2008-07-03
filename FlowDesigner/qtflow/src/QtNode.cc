@@ -24,6 +24,7 @@ namespace FD
     
    QtNode::~QtNode()
    {
+       cerr << "QtNode::~QtNode()" << endl;
 	   if (m_uiNode)
 	   {
 		   m_uiNode->unregisterEvents(this);

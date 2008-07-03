@@ -27,6 +27,7 @@ namespace FD
     
     QtLink::~QtLink()
     {
+        cerr << "QtLink::~QtLink()" << endl;
     	if (m_source && m_source->getQtNode())
     		m_source->getQtNode()->removeQtLink(this);    
     	

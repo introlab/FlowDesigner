@@ -29,6 +29,7 @@ UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 
 UITerminal::~UITerminal() 
 {
+    cerr << "UITerminal::~UITerminal()" << endl;
 /*   for (int i=0;i<connections.size();i++)
       delete connections[i];
 */

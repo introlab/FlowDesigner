@@ -109,7 +109,7 @@ namespace FD
 	
 	QtTerminal::~QtTerminal()
 	{
-	
+	    cerr << "QtTerminal::~QtTerminal()" << endl;
 		
 	}
     

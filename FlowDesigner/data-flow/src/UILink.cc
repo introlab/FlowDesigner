@@ -67,6 +67,7 @@ UILink::UILink(UITerminal *_from, UITerminal *_to, const char *points_str)
 
 UILink::~UILink()
 {
+   cerr << "UILink::~UILink()" << endl;
    list<GUILinkPoint*>::iterator it = m_points.begin();
    while (it != m_points.end())
    {
@@ -77,8 +78,8 @@ UILink::~UILink()
       to->disconnect(this);
    if (from) 
       from->disconnect(this);
-   if (complete)
-      net->removeLink(this);
+   /*if (complete)
+      net->removeLink(this);*/
 }
 
 

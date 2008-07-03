@@ -152,14 +152,17 @@ namespace FD
                    
                     if(selectedNode)  //DELETE NODE
                     {	
+                        cerr << "Deleting a node" << endl;
                         m_uiNetwork->removeNode(selectedNode->getUINode());
                     }
                     else if (selectedLink) //DELETE LINK 
                     {
+                        cerr << "Deleting a link" << endl;
                     	m_uiNetwork->removeLink(selectedLink->getUILink());
                     }
                     else if (selectedNote) //DELETE NOTE
                     {
+                        cerr << "Deleting a note" << endl;
                     	m_uiNetwork->removeNote(selectedNote->getUINote());
                     }
                     else
@@ -531,6 +534,8 @@ namespace FD
 	//NetTerminal removed
 	void QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)
 	{
+        cerr<<"QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
+
 		m_uiNetwork->interfaceChangeNotify();
 		
 		vector<UINetwork*> allNets = m_uiNetwork->getDocument()->get_networks();
@@ -539,13 +544,13 @@ namespace FD
 		{
 			allNets[i]->updateAllSubnetTerminals(m_uiNetwork->getName(), terminal->getName(), terminal->getType(),true);			
 		}
-
-		cerr<<"QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
 	}
 	
 	//NetTerminal added
 	void QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)
 	{
+        cerr<<"QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
+
 		m_uiNetwork->interfaceChangeNotify();
 		
 		vector<UINetwork*> allNets = m_uiNetwork->getDocument()->get_networks();
@@ -554,8 +559,6 @@ namespace FD
 		{
 			allNets[i]->updateAllSubnetTerminals(m_uiNetwork->getName(), terminal->getName(), terminal->getType(),false);			
 		}
-
-		cerr<<"QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
 	}
 	
 	//Name changed

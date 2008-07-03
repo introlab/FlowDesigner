@@ -355,16 +355,16 @@ void UINetwork::removeNode(UINode *node)
    {
       if (*i == node)
       {
-    	  nodes.erase(i);
-	 
-	    //send signal
+
+        delete node;
+        nodes.erase(i);
+
+        //send signal
 	    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 	    {
 	  	  (*iter)->notifyNodeRemoved(this,node);
 	    }
-	    
-	    
-	    
+
 	    break;
       }
       ++i;
@@ -399,15 +399,16 @@ void UINetwork::removeLink(UILink *link)
    {
       if (*i == link)
       {
-    	   //send signal
-    	   for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
-    	   {
-    	 	  (*iter)->notifyLinkRemoved(this,link);
-    	   }
-    	   
-    	   links.erase(i);
-    	   
-    	   break;
+        delete link;
+        links.erase(i);
+
+        //send signal
+        for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+        {
+          (*iter)->notifyLinkRemoved(this,link);
+        }
+
+        break;
       }
       ++i;
    }
