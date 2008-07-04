@@ -340,7 +340,7 @@ namespace FD
             setRect(boundaries);
             */
         }
-        //redrawNode();
+        redrawNode();
         return terminal;
     }
     

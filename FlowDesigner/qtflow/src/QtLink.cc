@@ -89,17 +89,18 @@ namespace FD
         if (line.dy() >= 0)
             angle = TwoPi - angle;
         
-        QPointF sourceArrowP1 = m_sourcePoint + QPointF(sin(angle + Pi / 3) * arrowSize,
+        /*QPointF sourceArrowP1 = m_sourcePoint + QPointF(sin(angle + Pi / 3) * arrowSize,
         cos(angle + Pi / 3) * arrowSize);
         QPointF sourceArrowP2 = m_sourcePoint + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-        cos(angle + Pi - Pi / 3) * arrowSize);
+        cos(angle + Pi - Pi / 3) * arrowSize);*/
         QPointF destArrowP1 = m_destPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
         cos(angle - Pi / 3) * arrowSize);
         QPointF destArrowP2 = m_destPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
         cos(angle - Pi + Pi / 3) * arrowSize);
         
         painter->setBrush(pen.color());
-        painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);
+       /* painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);*/
+        painter->drawEllipse(m_sourcePoint, m_penWidth*2, m_penWidth*2);
         painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
     }
     

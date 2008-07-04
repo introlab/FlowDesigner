@@ -127,7 +127,12 @@ namespace FD
 				m_virtualQtTerminal = new QtTerminal ( NULL,"VIRTUAL",QtTerminal::VIRTUAL );
 				m_virtualQtTerminal->hide();
 				m_virtualQtTerminal->setPos ( event->scenePos() );
-				m_virtualQtLink = new QtLink ( this,m_virtualQtTerminal,NULL );
+				if(m_uiTerminal && m_uiTerminal->isInputTerminal()) {
+					m_virtualQtLink = new QtLink ( m_virtualQtTerminal, this, NULL );
+				}
+				else {
+					m_virtualQtLink = new QtLink ( this, m_virtualQtTerminal, NULL );
+				}
 				scene()->addItem ( m_virtualQtLink );
 				scene()->addItem ( m_virtualQtTerminal );
 				m_virtualQtLink->adjust();
