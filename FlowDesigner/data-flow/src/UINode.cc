@@ -124,27 +124,12 @@ UINode::~UINode()
     cerr << "UINode::~UINode()" << endl;
     if (!destroyed)
     {
-        std::vector<UILink *> links;
+        // Remove inputs
         for (unsigned int i=0;i<inputs.size();i++) {
-
-            // Remove input links
-            links = inputs[i]->getConnections();
-            for(unsigned int j=0; j<links.size(); j++) {
-                net->removeLink(links[j]);
-            }
-
-            // Remove inputs
             delete inputs[i];
         }
+        // Remove outputs
         for (unsigned int i=0;i<outputs.size();i++) {
-
-            // Remove output links
-            links = outputs[i]->getConnections();
-            for(unsigned int j=0; j<links.size(); j++) {
-                net->removeLink(links[j]);
-            }
-
-            // Remove outputs
             delete outputs[i];
         }
 

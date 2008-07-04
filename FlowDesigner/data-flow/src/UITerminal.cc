@@ -35,8 +35,10 @@ UITerminal::~UITerminal()
 */
    //although this is wierd, it has to be like that since the destroyed link removes 
    //itself from the connection list
-   while (connections.size())
-      delete connections[0];
+   while (connections.size()) {
+   	  node->getNetwork()->removeLink(connections[0]);
+      /*delete connections[0];*/
+   }
 
    if (netTerminal)
       delete netTerminal;
