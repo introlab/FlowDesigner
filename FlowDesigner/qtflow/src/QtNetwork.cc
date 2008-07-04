@@ -152,17 +152,14 @@ namespace FD
                    
                     if(selectedNode)  //DELETE NODE
                     {	
-                        cerr << "Deleting a node" << endl;
                         m_uiNetwork->removeNode(selectedNode->getUINode());
                     }
                     else if (selectedLink) //DELETE LINK 
                     {
-                        cerr << "Deleting a link" << endl;
                     	m_uiNetwork->removeLink(selectedLink->getUILink());
                     }
                     else if (selectedNote) //DELETE NOTE
                     {
-                        cerr << "Deleting a note" << endl;
                     	m_uiNetwork->removeNote(selectedNote->getUINote());
                     }
                     else

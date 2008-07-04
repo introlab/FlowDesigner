@@ -962,6 +962,9 @@ void UINetwork::updateAllSubnetTerminals(const string _nettype, const string _te
 	    if (!nodes[i]->getOutputNamed(_terminalname))
 	      nodes[i]->addTerminal(_terminalname,_terminaltype);
 	    break;
+	  case UINetTerminal::CONDITION:
+	    // do nothing
+	    break;
 	  default:
 	    throw new GeneralException("Invalid terminal type",__FILE__,__LINE__);
 	    break;
