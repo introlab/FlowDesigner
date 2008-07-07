@@ -160,7 +160,7 @@ void UIDocument::load()
       error("Error: cannot open file");
       cerr << "load: error loading " << fullpath << "\n";
       addNetwork("MAIN", UINetwork::subnet);
-      resetModified();
+      setModified(false);
       return;
    }
    char ch;
@@ -174,7 +174,7 @@ void UIDocument::load()
 	 {
 	    error("Error: this doesn't look like an FlowDesigner document");
 	    addNetwork("MAIN", UINetwork::subnet);
-	    resetModified();
+	    setModified(false);
 	    return;
 	 }
       }
@@ -182,7 +182,7 @@ void UIDocument::load()
    {
       error("Error: this doesn't look like an FlowDesigner document");
       addNetwork("MAIN", UINetwork::subnet);
-      resetModified();
+      setModified(false);
       return;
    }
    string xmlStr;
@@ -191,7 +191,7 @@ void UIDocument::load()
    {
       error("Error: this doesn't look like an FlowDesigner document");
       addNetwork("MAIN", UINetwork::subnet);
-      resetModified();
+      setModified(false);
       return;      
    }
    //docFile.putback(ch);
@@ -226,7 +226,7 @@ void UIDocument::loadFromMemory(const char *mem, int size)
    {
       error("Error: corrupted XML in file");
       addNetwork("MAIN", UINetwork::subnet);
-      resetModified();      
+      setModified(false);    
       return;
    }
    xmlNodePtr root=doc->children;
@@ -339,7 +339,7 @@ void UIDocument::loadXML(xmlNodePtr root)
    }
 
 
-   modified = false;
+   setModified(false);
 
    //updating all networks
    updateAllNetworks();
@@ -394,7 +394,7 @@ UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
 		(*iter)->notifyNetworkAdded(this,newNet);
 	}
    
-   modified = true;
+   setModified(true);
    return newNet;
 }
 
@@ -432,7 +432,7 @@ UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
 		(*iter)->notifyNetworkAdded(this,newNet);
 	}
   
-  modified = true;
+  setModified(true);
   return newNet;
 }
 
@@ -457,7 +457,7 @@ void UIDocument::removeNetwork(UINetwork *toRemove)
 	 ++i;
    }
 
-   setModified();
+   setModified(true);
 }
 
 void UIDocument::error(const char *err)
@@ -494,7 +494,7 @@ void UIDocument::save()
    }
    
    free(mem);
-   resetModified();
+   setModified(false);
 
 }
 
@@ -920,14 +920,14 @@ void UIDocument::importNetwork(const std::string &fileName) {
 	  if (inputFile.fail())
 	  {
 	    error("Error: this doesn't look like an FlowDesigner document");
-	    resetModified();
+	    setModified(false);
 	    return;
 	  }
         }
    } else if (ch!='<')
    {
       error("Error: this doesn't look like an FlowDesigner document");
-      resetModified();
+      setModified(false);
       return;
    }
    string xmlStr;
@@ -935,7 +935,7 @@ void UIDocument::importNetwork(const std::string &fileName) {
    if (xmlStr != "?xml")
    {
       error("Error: this doesn't look like an FlowDesigner document");
-      resetModified();
+      setModified(false);
       return;      
    }
 
@@ -1002,7 +1002,7 @@ void UIDocument::importNetwork(const std::string &fileName) {
       xmlFreeDoc(doc);
       
       //the network is modified
-      setModified();
+      setModified(true);
     }
     catch (BaseException *e) {
        throw e->add(new GeneralException(string("Unable to import from file ") + fileName,__FILE__,__LINE__));
@@ -1013,6 +1013,19 @@ void UIDocument::importNetwork(const std::string &fileName) {
   }
 }
 
+/**Sets the 'modified' flag*/
+void UIDocument::setModified(bool flag)
+{
+	// Only notify if modified is changed
+	if((flag && !modified) || (!flag && modified)) {
+		modified = flag;
+		//Notify observers
+		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+		{
+			(*iter)->notifyChanged(this);
+		}
+	}
+}
 
 /**Set the category of the document in the node menu */
 void UIDocument::setCategory(const std::string &cat) 

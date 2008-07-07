@@ -133,10 +133,7 @@ public:
    const std::string &getComments();
    
    /**Sets the 'modified' flag*/
-   void setModified() {modified=true;}
-   
-   /**Resets the 'modified' flag*/
-   void resetModified() {modified=false;}
+   void setModified(bool flag);
    
    /**Has the document been modified since last saved?*/
    bool isModified() {return modified;}

@@ -16,6 +16,8 @@
 #include <QPushButton>
 #include <QObject>
 #include <QScrollBar>
+#include <QCloseEvent>
+#include <QString>
 #include "QtDocumentParameters.h"
 
 namespace FD
@@ -80,7 +82,7 @@ namespace FD
         //Create a new empty document 
         m_uiDoc = new UIDocument(name);	
         
-        setWindowTitle(m_uiDoc->getName().c_str());
+        setWindowTitle(QString("[*]").append(m_uiDoc->getName().c_str()));
         
         //Register to document events
         m_uiDoc->registerEvents(this);
@@ -132,7 +134,7 @@ namespace FD
             //doc->less_print ("Unknown exception caught while loading document");
             
         }
-        m_uiDoc->resetModified();
+        m_uiDoc->setModified(false);
         
     }
 
@@ -144,6 +146,7 @@ namespace FD
 		{
 			m_uiDoc->setFullPath(file);
 			m_uiDoc->save();
+			setWindowModified(m_uiDoc->isModified());
 		}
 	}
 	
@@ -269,6 +272,13 @@ namespace FD
        // m_uiDoc->updateView();
     }
     
+    //Global event for changes
+    void QtDocument::notifyChanged(const UIDocument* doc)
+    {
+    	cerr<<"QtDocument::notifyChanged(const UIDocument *doc)"<<endl;
+    	setWindowModified(m_uiDoc->isModified());
+    }
+    
     //Network removed
     void QtDocument::notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net)
     {
@@ -295,14 +305,14 @@ namespace FD
     {
     	cerr<<"QtDocument::notifyNameChanged(const UIDocument *doc, const std::string &name)"<<endl;
     	
-    	setWindowTitle(name.c_str());
+    	setWindowTitle(QString("[*]").append(name.c_str()));
     }
 
     //Path changed
     void QtDocument::notifyPathChanged(const UIDocument *doc, const std::string path)
     {
     	cerr<<"QtDocument::notifyPathChanged(const UIDocument *doc, const std::string path)"<<endl;
-    	setWindowTitle(path.c_str());
+    	setWindowTitle(QString("[*]").append(path.c_str()));
     }
 
     //Category changed
@@ -322,5 +332,35 @@ namespace FD
     {
     	cerr<<"QtDocument::notifyDestroyed(const UIDocument *doc)"<<endl;
     }
+    
+    void QtDocument::closeEvent(QCloseEvent *event)
+ 	{
+ 		//maybe save...
+ 		if(maybeSave()) {
+ 			event->accept();
+ 		}
+ 		else {
+ 			event->ignore();	
+ 		}
+	}
+	
+	bool QtDocument::maybeSave()
+	{
+		bool close = true;
+		if(m_uiDoc && m_uiDoc->isModified())
+ 		{
+			int ret = QMessageBox::warning(this, tr("QtDocument"),
+	                       tr(QString("The document : '%1' was modified.\nDo you want to save the changes?").arg(m_name.c_str()).toStdString().c_str()),
+	                       QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+	                       QMessageBox::Cancel);
+	        if(ret == QMessageBox::Yes && m_flowdesigner) {
+	            close = m_flowdesigner->saveDocumentClicked();	
+	        }
+			else if(ret == QMessageBox::Cancel){
+				close = false;	
+			}
+ 		}
+		return close;
+	}
     
 }//namespace FD

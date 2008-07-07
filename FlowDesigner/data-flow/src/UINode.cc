@@ -468,6 +468,7 @@ void UINode::setPos (double new_x, double new_y)
    {
 	   (*iter)->notifyPositionChanged(this,x,y);
    }   
+   net->setModified();
 }
 
 std::vector<UITerminal *> UINode::getInputs() 

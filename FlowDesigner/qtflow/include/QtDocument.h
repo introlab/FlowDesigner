@@ -55,6 +55,9 @@ namespace FD
         
         void tabWidgetChanged(int index);
         
+        //Global event for changes
+		virtual void notifyChanged(const UIDocument* doc);
+			
 		//Network removed
 		virtual void notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net);
 		
@@ -80,6 +83,9 @@ namespace FD
 		virtual void notifyDestroyed(const UIDocument *doc);	
               
         protected:
+        
+        virtual void closeEvent ( QCloseEvent * event );
+        bool maybeSave();
         
         QVBoxLayout *m_vboxLayout;
         QHBoxLayout *m_hboxLayout;

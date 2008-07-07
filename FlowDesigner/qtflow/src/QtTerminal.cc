@@ -158,12 +158,12 @@ namespace FD
         else if ( event->button() == Qt::RightButton )
         {
         	QMenu popupMenu;
-        	QAction* inputAction = popupMenu.addAction(QString("Add network input"));
-        	QAction* ouputAction = popupMenu.addAction(QString("Add network output"));
+        	QAction* inputAction = popupMenu.addAction(QString(tr("Add network input")));
+        	QAction* ouputAction = popupMenu.addAction(QString(tr("Add network output")));
         	popupMenu.addSeparator();
-        	QAction* conditionAction = popupMenu.addAction(QString("Add condition output"));
+        	QAction* conditionAction = popupMenu.addAction(QString(tr("Add condition output")));
         	popupMenu.addSeparator();
-        	QAction* removeAction = popupMenu.addAction(QString("Remove input/output"));
+        	QAction* removeAction = popupMenu.addAction(QString(tr("Remove input/output")));
         	
         	inputAction->setEnabled(false);
     		ouputAction->setEnabled(false);

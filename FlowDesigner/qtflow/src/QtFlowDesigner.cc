@@ -247,12 +247,11 @@ namespace FD
     	doc->addNetwork("MAIN", UINetwork::subnet);
     	
         QWidget *window = m_workspace->addWindow(doc);
-        window->setWindowTitle("QtDocument - Untitled");
         m_workspace->setActiveWindow(window);
         window->showMaximized();	
     }
     
-    void QtFlowDesigner::saveAsDocumentClicked()
+    bool QtFlowDesigner::saveAsDocumentClicked()
     {	
 		QtDocument *activeDocument =
 				dynamic_cast<QtDocument*>(m_workspace->activeWindow());
@@ -276,8 +275,10 @@ namespace FD
 				{
 					activeDocument->save((*iter).toStdString());
 				}
+				return true; // save accepted
 			}
 		} 
+		return false; //save cancelled
     }
     
     
@@ -371,7 +372,7 @@ namespace FD
     }
     
     
-    void QtFlowDesigner::saveDocumentClicked()
+    bool QtFlowDesigner::saveDocumentClicked()
     {
         cerr<<"Save document clicked"<<endl;
         
@@ -401,12 +402,14 @@ namespace FD
                 {
                     activeDocument->save((*iter).toStdString());                                 
                 }
+                return true; // save accepted
             }
         }
         else
         {
             cerr<<"ACTIVE DOCUMENT NOT FOUND"<<endl;
 		}
+		return false; // save cancelled
         
         
     }
@@ -416,7 +419,6 @@ namespace FD
         QtDocument *doc =  new QtDocument(this,path);
         doc->open(path);
         QWidget *window = m_workspace->addWindow(doc);
-        window->setWindowTitle(path.c_str());
         m_workspace->setActiveWindow(window);
         window->show();              
     }     
@@ -492,5 +494,15 @@ namespace FD
     		m_coutTextEdit->append(QString(s));
     }
     
+	void QtFlowDesigner::closeEvent(QCloseEvent *event)
+	{
+		m_workspace->closeAllWindows();
+		if (activeDocument()) {
+			event->ignore();
+		} else {
+			//write settings before quit?
+			event->accept();
+		}
+	}
     
 }//namespace FD

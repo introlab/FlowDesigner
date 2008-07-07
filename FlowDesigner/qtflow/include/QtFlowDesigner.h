@@ -55,12 +55,14 @@ namespace FD
         //FILE Menu actions
         void newDocumentClicked();
         void openDocumentClicked();               
-        void saveDocumentClicked();
-        void saveAsDocumentClicked();
+        bool saveDocumentClicked();
+        bool saveAsDocumentClicked();
         void onInfoFlowDesignerClicked();
 
         protected:
-                	
+        
+        virtual void closeEvent ( QCloseEvent * event );
+
         QtDocument *activeDocument();	
         void setupUi();
         void retranslateUi();

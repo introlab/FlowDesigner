@@ -313,6 +313,7 @@ UINetwork::~UINetwork()
       {
     	  (*iter)->notifyDestroyed(this);
       }
+      doc->setModified(true);
       
    }
 }
@@ -336,6 +337,7 @@ UINode *UINetwork::getNodeNamed(string n)
 void UINetwork::addNode(UINode *node)
 {
     nodes.insert(nodes.end(), node);
+    doc->setModified(true);
     
     //send signal
     for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -372,7 +374,7 @@ void UINetwork::removeNode(UINode *node)
    /*for (int i=0;i<nodes.size();i++)
       if (nodes[i]==node)
          nodes.erase(&nodes[i]);*/
-   doc->setModified();
+   doc->setModified(true);
    interfaceChangeNotify();
    /*if (node == conditionNode)
      conditionNode = NULL;*/
@@ -381,7 +383,7 @@ void UINetwork::removeNode(UINode *node)
 void UINetwork::addLink(UILink *link)
 {
    links.insert(links.end(), link); 
-   doc->setModified();
+   doc->setModified(true);
    
    //send signal
    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -415,7 +417,7 @@ void UINetwork::removeLink(UILink *link)
    /*for (int i=0;i<links.size();i++)
       if (links[i]==link)
          links.erase(&links[i]);*/
-   doc->setModified();
+   doc->setModified(true);
 }
 
 
@@ -469,7 +471,7 @@ void UINetwork::saveXML(xmlNode *root)
 
 void UINetwork::setModified() 
 {
-   doc->setModified();
+   doc->setModified(true);
    //Not a good idea at all... 
    //interfaceChangeNotify();
 }
@@ -853,6 +855,7 @@ void UINetwork::genCode(ostream &out, int &id, set<string> &nodeList)
 void UINetwork::addTerminal(UINetTerminal *term) 
 {
    terminals.insert(terminals.end(), term);
+   doc->setModified(true);
    
    //send signal
    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -882,6 +885,7 @@ void UINetwork::removeTerminal(UINetTerminal *term)
    }
 
    //cerr<<"UINetwork::interfaceChangeNotify"<<endl;
+   doc->setModified(true);
    interfaceChangeNotify();
 }
 
@@ -935,6 +939,7 @@ void UINetwork::rename(string newName)
   {
 	  (*iter)->notifyNameChanged(this,newName);
   }
+  doc->setModified(true);
 
 }
 
@@ -1001,6 +1006,7 @@ void UINetwork::addNote(UINote *note) {
 
   if (note) {
     m_notes.push_back(note);
+    doc->setModified(true);
     
     //send signal
     for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -1044,6 +1050,7 @@ void UINetwork::removeNote(UINote *note) {
     
     //update the note vector
     m_notes = temp_vect;
+    doc->setModified(true);
   }
 }
 
@@ -1060,6 +1067,7 @@ std::string UINetwork::getDescription() const
 void UINetwork::setDescription(const std::string & description)
 {
 	m_description = description;
+	doc->setModified(true);
 	
    //send signal
    for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
