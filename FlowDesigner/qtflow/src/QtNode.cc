@@ -368,16 +368,13 @@ namespace FD
     		m_outputTerminalsMap.erase(iter);
     	}
     	
-    }
-    
+    }  
     
 	//Terminal removed
 	void QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)
 	{
 		cerr<<"QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)"<<endl;
 		removeTerminal(const_cast<UITerminal*>(terminal));
-		
-		
 	}
 	
 	//Terminal Added

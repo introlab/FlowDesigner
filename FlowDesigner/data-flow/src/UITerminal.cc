@@ -30,18 +30,15 @@ UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 UITerminal::~UITerminal() 
 {
     cerr << "UITerminal::~UITerminal()" << endl;
-/*   for (int i=0;i<connections.size();i++)
-      delete connections[i];
-*/
+
    //although this is wierd, it has to be like that since the destroyed link removes 
    //itself from the connection list
    while (connections.size()) {
    	  node->getNetwork()->removeLink(connections[0]);
-      /*delete connections[0];*/
    }
 
-   if (netTerminal)
-      delete netTerminal;
+   //Remove the net terminal
+   removeNetTerminal();
 }
 
 
@@ -56,6 +53,14 @@ void UITerminal::disconnectNetTerminal()
 {
    netTerminal = NULL;
    node->getNetwork()->setModified();
+}
+
+void UITerminal::removeNetTerminal()
+{
+   	if (netTerminal) {
+      delete netTerminal;
+      netTerminal = NULL;
+   	}
 }
 
 }//namespace FD

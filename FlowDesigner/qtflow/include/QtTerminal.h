@@ -63,7 +63,9 @@ namespace FD
         virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
         virtual void focusInEvent ( QFocusEvent * event );
     
-        
+        void createIONetTerminal();
+        void createCondNetTerminal();
+        void removeNetTerminal();
         
         //QGraphicsTextItem *m_label;
         QtNode *m_node;            
@@ -74,7 +76,7 @@ namespace FD
 		
         UITerminal *m_uiTerminal;
         
-        QtNetTerminal* m_netTerminal;
+        QtNetTerminal* m_qtNetTerminal;
         QGraphicsTextItem *m_infoItem;
 
     };   

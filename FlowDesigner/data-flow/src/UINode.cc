@@ -336,7 +336,7 @@ void UINode::removeTerminal(const string &_name, UINetTerminal::NetTermType _typ
       break;
       
    case UINetTerminal::OUTPUT:
-
+   case UINetTerminal::CONDITION:
       term = find(outputs.begin(), outputs.end(), getOutputNamed(_name));
       if (term!=outputs.end())
       {

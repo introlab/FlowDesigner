@@ -8,6 +8,7 @@
 #include <QGraphicsScene>
 #include <QBrush>
 #include <QInputDialog>
+#include <QMenu>
 #include <iostream>
 #include <string>
 
@@ -59,7 +60,7 @@ namespace FD
     
 	QtTerminal::QtTerminal ( QtNode *node, UITerminal *uiTerminal )
     : QGraphicsRectItem ( QRectF ( 0,0,10.0,10.0 ),node ), m_node ( node ),
-    m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false ), m_uiTerminal ( uiTerminal ), m_netTerminal ( NULL )
+    m_virtualQtTerminal ( NULL ), m_virtualQtLink ( NULL ), m_linking ( false ), m_uiTerminal ( uiTerminal ), m_qtNetTerminal ( NULL )
 	{
 		if ( m_uiTerminal )
 		{
@@ -143,43 +144,56 @@ namespace FD
 			{
 				if ( m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL )
 				{
-                    
 					//CREATING A NET TERMINAL
-					bool ok;
-					QString name = QInputDialog::getText ( NULL,QString ( "Network Terminal Name" ),
-                    QString ( "Terminal Name : " ),QLineEdit::Normal,
-                    QString ( m_uiTerminal->getName().c_str() ),&ok );
-                    
-					//TODO :  LOOK FOR DUPLICATED NAMES
-					if ( ok && !name.isEmpty() )
-					{  
-						if ( m_uiTerminal->isInputTerminal() )
-						{
-							UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::INPUT,name.toStdString() );
-							addNetTerminal(term);
-						}
-						else
-						{
-							UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString() );
-							addNetTerminal(term);
-						}									                       
-					}
-                    
-					m_linking = false;
+					createIONetTerminal();
 					event->accept();
 				}
 			}
             else if ( event->modifiers() == Qt::ControlModifier )
 			{
-                if ( m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL && !m_uiTerminal->isInputTerminal())
-				{              
-                	UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::CONDITION,"CONDITION");  
-                	addNetTerminal(term);
-                }
- 
-                m_linking = false;
+				createCondNetTerminal();
                 event->accept();
             }
+        }
+        else if ( event->button() == Qt::RightButton )
+        {
+        	QMenu popupMenu;
+        	QAction* inputAction = popupMenu.addAction(QString("Add network input"));
+        	QAction* ouputAction = popupMenu.addAction(QString("Add network output"));
+        	popupMenu.addSeparator();
+        	QAction* conditionAction = popupMenu.addAction(QString("Add condition output"));
+        	popupMenu.addSeparator();
+        	QAction* removeAction = popupMenu.addAction(QString("Remove input/output"));
+        	
+        	inputAction->setEnabled(false);
+    		ouputAction->setEnabled(false);
+    		conditionAction->setEnabled(false);
+    		removeAction->setEnabled(false);
+        	
+        	if(m_uiTerminal && m_uiTerminal->isInputTerminal() && m_uiTerminal->getNetTerminal() == NULL) {
+        		inputAction->setEnabled(true);
+        	}
+        	else if(m_uiTerminal && !m_uiTerminal->isInputTerminal() && m_uiTerminal->getNetTerminal() == NULL) {
+        		ouputAction->setEnabled(true);
+        		conditionAction->setEnabled(true);
+        	}
+        	else if(m_uiTerminal && m_uiTerminal->getNetTerminal() != NULL) {
+        		removeAction->setEnabled(true);
+        	}
+        	
+        	QAction* action = popupMenu.exec(QCursor::pos());
+        	if(action) {
+        		if(action == conditionAction) {
+        			createCondNetTerminal();
+        		}
+        		else if(action == inputAction || action == ouputAction) {
+        			createIONetTerminal();
+        		}
+        		else if(action == removeAction) {
+        			removeNetTerminal();
+        		}
+        	}
+        	event->accept();
         }
     }
     
@@ -341,6 +355,56 @@ namespace FD
     	}
     }
     
+    void QtTerminal::createIONetTerminal()
+    {
+    	bool ok;
+		QString name = QInputDialog::getText ( NULL,QString ( "Network Terminal Name" ),
+        QString ( "Terminal Name : " ),QLineEdit::Normal,
+        QString ( m_uiTerminal->getName().c_str() ),&ok );
+        
+		//TODO :  LOOK FOR DUPLICATED NAMES
+		if ( ok && !name.isEmpty() )
+		{  
+			if ( m_uiTerminal->isInputTerminal() )
+			{
+				UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::INPUT,name.toStdString() );
+				addNetTerminal(term);
+			}
+			else
+			{
+				UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::OUTPUT,name.toStdString() );
+				addNetTerminal(term);
+			}									                       
+		}
+        
+		m_linking = false;
+    }
+    
+    void QtTerminal::createCondNetTerminal()
+    {
+    	if ( m_uiTerminal && m_uiTerminal->getNetTerminal() == NULL && !m_uiTerminal->isInputTerminal())
+		{              
+        	UINetTerminal *term = new UINetTerminal( m_uiTerminal,UINetTerminal::CONDITION,"CONDITION");  
+        	addNetTerminal(term);
+        }
+ 
+        m_linking = false;
+    }
+    
+    void QtTerminal::removeNetTerminal()
+    {
+    	if ( m_uiTerminal && m_uiTerminal->getNetTerminal() != NULL)
+		{         
+			m_uiTerminal->removeNetTerminal();
+			if(m_qtNetTerminal) {     
+				delete m_qtNetTerminal;
+				m_qtNetTerminal = 0;
+			}
+        }
+ 
+        m_linking = false;
+    }
+    
     std::string QtTerminal::getName()
     {
         return m_uiTerminal->getName();
@@ -348,10 +412,13 @@ namespace FD
     
     QtNetTerminal* QtTerminal::addNetTerminal ( UINetTerminal *netTerminal )
     {
-        QtNetTerminal* myNetTerminal = new QtNetTerminal ( this,netTerminal );
-    
-        
-        return myNetTerminal;
+    	if(m_qtNetTerminal) {     
+			delete m_qtNetTerminal;
+			m_qtNetTerminal = 0;
+		}
+        m_qtNetTerminal = new QtNetTerminal ( this,netTerminal );
+
+        return m_qtNetTerminal;
     }
     
     void QtTerminal::hoverEnterEvent ( QGraphicsSceneHoverEvent * event )

@@ -98,6 +98,7 @@ public:
    std::vector<UILink *> getConnections() const {return connections;}
 
    UINetTerminal* getNetTerminal() {return netTerminal;}
+   void removeNetTerminal();
 
 };
 
