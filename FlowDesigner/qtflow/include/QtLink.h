@@ -7,6 +7,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsPathItem>
 #include <string>
+#include <QContextMenuEvent>
 
 
 namespace FD 
@@ -22,42 +23,49 @@ namespace FD
     	Q_OBJECT;
     	
         public:
-        QtLink(QtTerminal *source, QtTerminal *dest, UILink* uiLink);
-        ~QtLink();
+	        QtLink(QtTerminal *source, QtTerminal *dest, UILink* uiLink);
+	        ~QtLink();
+	        
+	        QtTerminal *sourceQtTerminal() const {return m_source;}
+	        void setSourceQtTerminal(QtTerminal *source) {m_source = source; adjust();}
+	        
+	        QtTerminal *destQtTerminal() const {return m_dest;}
+	        void setDestQtTerminal(QtTerminal* dest) {m_dest = dest; adjust();}
+	        
+	        void adjust();
+	        
+	        UILink* getUILink() {return m_uiLink;}
+	        
+	        enum { Type = UserType + 2 };
+	        int type() const { return Type; }
         
-        QtTerminal *sourceQtTerminal() const {return m_source;}
-        void setSourceQtTerminal(QtTerminal *source) {m_source = source; adjust();}
+        signals:
         
-        QtTerminal *destQtTerminal() const {return m_dest;}
-        void setDestQtTerminal(QtTerminal* dest) {m_dest = dest; adjust();}
-        
-        void adjust();
-        
-        UILink* getUILink() {return m_uiLink;}
-        
-        enum { Type = UserType + 2 };
-        int type() const { return Type; }
-        
+        	void signalLinkProbed(int);
         
         public slots:
         
-        void nodePositionChanged(float x, float y);
-        
-        protected:
-        QRectF boundingRect() const;
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-        QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	        void nodePositionChanged(float x, float y);
+	        
+	        protected:
+	        QRectF boundingRect() const;
+	        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	        QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	        
+	        virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
+	        virtual void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
+	        virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event );
         
         private:
         
-        QPointF m_sourcePoint;
-        QPointF m_destPoint;      
-        QtTerminal *m_source;
-        QtTerminal *m_dest;
-        UILink *m_uiLink;
-        qreal arrowSize;
-        
-        qreal m_penWidth;
+	        QPointF m_sourcePoint;
+	        QPointF m_destPoint;      
+	        QtTerminal *m_source;
+	        QtTerminal *m_dest;
+	        UILink *m_uiLink;
+	        qreal arrowSize;
+	        
+	        qreal m_penWidth;
     };
     
 }//namespace FD

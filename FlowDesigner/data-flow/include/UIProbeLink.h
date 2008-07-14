@@ -57,11 +57,11 @@ namespace FD {
 	{
 		public:
 
- 		UIProbeLink(UITerminal *_from, UITerminal *_to, const char *points_str=NULL);
+ 		UIProbeLink(UITerminal *_from, UITerminal *_to, const char *points_str=NULL, int _id=0);
 	
 		virtual ~UIProbeLink();
 
-		virtual void saveXML(xmlNode *root);
+		virtual void saveXML(xmlNode *root, int newId);
 
    		virtual void build(Network *net);
    		

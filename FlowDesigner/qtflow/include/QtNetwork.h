@@ -121,8 +121,15 @@ namespace FD
         void dragMoveEvent(QDragMoveEvent *event);
         void dropEvent(QDropEvent *event);        
         
+        signals:
+        void signalLinkProbed(int);
+        
+        public slots:
+        void linkProbed(int linkId) {emit signalLinkProbed(linkId);}
+        
         protected slots:
         void menuTriggered(QAction* action);
+        
 		
 		
         

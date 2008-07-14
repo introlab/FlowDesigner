@@ -31,6 +31,7 @@ namespace FD {
 
 UIDocument::UIDocument(string _name)
    : modified(false)
+   , editable(true)
    , docName(_name)
    , untitled(true)
    , destroyed(false)
@@ -42,10 +43,12 @@ UIDocument::~UIDocument()
    if (!destroyed)
    {
       //cerr << "destroying UIDocument " << name << endl;
-      for (unsigned int i=0;i<networks.size();i++)
+      std::vector<UINetwork *>::iterator netIt = networks.begin();
+      while(netIt != networks.end())
       {
-         delete networks[i];
-         networks[i]=NULL;
+      	 delete (*netIt);
+      	 networks.erase(netIt);
+      	 netIt = networks.begin();
       }
       
       for (unsigned int i=0;i<textParams.size();i++)
@@ -515,10 +518,10 @@ char *UIDocument::saveToMemory(int &size)
      xmlSetProp(doc->children, (xmlChar *)"comments", (xmlChar *)m_comments.c_str());
    }
 
-
+   int incId = 1;
    for (unsigned int i=0;i<networks.size();i++)
    {
-      networks[i]->saveXML(doc->children);
+      networks[i]->saveXML(doc->children, incId);
    }
 
    for (unsigned int i=0;i<textParams.size();i++)
@@ -869,7 +872,8 @@ void UIDocument::exportNetwork(const std::string &networkName, const std::string
     
 
     //Export network  
-    net->saveXML(doc->children);
+    int startId = 1;
+    net->saveXML(doc->children, startId);
 
     char *mem = NULL;
     int size = 0;

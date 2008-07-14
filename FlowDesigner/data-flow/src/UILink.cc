@@ -14,9 +14,10 @@ using namespace std;
 
 namespace FD {
 
-UILink::UILink(UITerminal *_from, UITerminal *_to, const char *points_str)
+UILink::UILink(UITerminal *_from, UITerminal *_to, const char *points_str, int _id)
    : from(_from)
    , to(_to)
+   , id(_id)
 {
    complete = from != NULL && to != NULL;
    if (from)
@@ -63,11 +64,18 @@ UILink::UILink(UITerminal *_from, UITerminal *_to, const char *points_str)
       m_points.push_back(new GUILinkPoint(x1,y1));
       m_points.push_back(new GUILinkPoint(x2,y2));
    }
+   
+   static int newId = 1;
+   if(!id) {
+  	 id = newId++;
+   }
+   else if(id >= newId){
+   	 newId = id + 1;
+   }
 }
 
 UILink::~UILink()
 {
-   cerr << "UILink::~UILink()" << endl;
    list<GUILinkPoint*>::iterator it = m_points.begin();
    while (it != m_points.end())
    {
@@ -84,7 +92,7 @@ UILink::~UILink()
 
 
 
-void UILink::saveXML(xmlNode *root)
+void UILink::saveXML(xmlNode *root, int newId)
 {
    xmlNodePtr tree;
    if (m_points.size()<=2)
@@ -100,6 +108,10 @@ void UILink::saveXML(xmlNode *root)
       tree = xmlNewChild(root, NULL, (xmlChar *)"Link", (xmlChar*)str.str().c_str());
    }
        
+   this->id = newId;
+   char idBuf[10] = {0};
+   sprintf(idBuf,"%d", this->id);
+   xmlSetProp(tree, (xmlChar *)"id", (xmlChar *)idBuf);
    xmlSetProp(tree, (xmlChar *)"from", (xmlChar *)from->getNode()->getName().c_str());
    xmlSetProp(tree, (xmlChar *)"output", (xmlChar *)from->getName().c_str());
    xmlSetProp(tree, (xmlChar *)"to", (xmlChar *)to->getNode()->getName().c_str());
@@ -125,6 +137,14 @@ void UILink::genCode(ostream &out)
    //No need for run-time check, I think
    out << "   net->connect(\"" << to->getNode()->getName() << "\", \"" << to->getName()
        << "\", \"" << from->getNode()->getName() << "\", \"" << from->getName() << "\");\n\n";
+}
+
+UINetwork *UILink::getNetwork()
+{
+	if(from && from->getNode()) {
+		return from->getNode()->getNetwork();
+	}
+	return 0;
 }
 
 }//namespace FD

@@ -121,7 +121,6 @@ void UINode::loadXML(xmlNodePtr def)
 
 UINode::~UINode()
 {
-    cerr << "UINode::~UINode()" << endl;
     if (!destroyed)
     {
         // Remove inputs

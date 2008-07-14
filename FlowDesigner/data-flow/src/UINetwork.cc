@@ -95,14 +95,22 @@ void UINetwork::load (xmlNodePtr net)
    }
    //cerr << "parsing links\n";
    node = net->children;
+   
    while (node != NULL)
    {
       if (string((char*)node->name) == "Link" || string((char*)node->name) == "ProbeLink")
       {
+      	
+     char *str_id = (char *)xmlGetProp(node, (xmlChar *)"id");
+     
 	 char *str_fromnode = (char *)xmlGetProp(node, (xmlChar *)"from");
 	 char *str_out = (char *)xmlGetProp(node, (xmlChar *)"output");
 	 char *str_tonode = (char *)xmlGetProp(node, (xmlChar *)"to");
 	 char *str_in = (char *)xmlGetProp(node, (xmlChar *)"input");
+	 int id = 0;
+	 if(str_id) {
+	 	id = atoi(str_id);
+	 }
          string fromnode = string(str_fromnode);
          string out = string(str_out);
          string tonode = string(str_tonode);
@@ -111,7 +119,14 @@ void UINetwork::load (xmlNodePtr net)
          /*cerr << fromnode << ":" << out << " -> " << tonode << ":" << in << endl;
          cerr << getNodeNamed(fromnode)->getOutputNamed(out) << " "
          << getNodeNamed(tonode)->getInputNamed(in) << endl;*/
-	 free(str_fromnode); free(str_out); free(str_tonode); free(str_in);
+     // Free memory
+	 if(str_id) // Older version don't have id properties 
+	 	free(str_id);
+	 free(str_fromnode); 
+	 free(str_out); 
+	 free(str_tonode); 
+	 free(str_in);
+	 
 	 char *points=NULL;
 	 if (node->children)
 	    points = (char *)node->children->content;
@@ -123,7 +138,7 @@ void UINetwork::load (xmlNodePtr net)
                getNodeNamed(fromnode)->addTerminal(string(out), UINetTerminal::OUTPUT);
 
 	    newLink(getNodeNamed(fromnode)->getOutputNamed(out),
-	        getNodeNamed(tonode)->getInputNamed(in), points);
+	        getNodeNamed(tonode)->getInputNamed(in), points, id);
 	 } else {
 	    cerr << "Invalid link from " << fromnode << ":" << out << " to "
 		 << tonode << ":" << in << endl;
@@ -422,7 +437,7 @@ void UINetwork::removeLink(UILink *link)
 
 
 
-void UINetwork::saveXML(xmlNode *root)
+void UINetwork::saveXML(xmlNode *root, int &incId)
 {
    xmlNodePtr tree;
    //tree = xmlNewChild(root, NULL, (xmlChar *)"",  (xmlChar*)"toto");
@@ -455,7 +470,7 @@ void UINetwork::saveXML(xmlNode *root)
    }
    for (unsigned int i=0;i<links.size();i++)
    {
-      links[i]->saveXML(tree);
+      links[i]->saveXML(tree, incId++);
    }
    for (unsigned int i=0;i<terminals.size();i++)
    {
@@ -539,10 +554,10 @@ UINode *UINetwork::newNode(UINetwork* _net, xmlNodePtr def)
    return new UITerminal (_name, _node, _isInput, _x, _y);
 }*/
 
-UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str)
+UILink *UINetwork::newLink (UITerminal *_from, UITerminal *_to, const char *str, int _id)
 {
    //cerr << "UINetwork::newLink\n";
-   return new UIProbeLink (_from, _to, str);
+   return new UIProbeLink (_from, _to, str, _id);
 }
 
 UINote *UINetwork::newNote(const std::string &label, const std::string &text, double x, double y, bool visible) {

@@ -1,13 +1,17 @@
 //Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
 
 #include <QPainter>
+#include <QMenu>
 #include "QtLink.h"
 #include "QtNode.h"
 #include "QtTerminal.h"
 #include "UIProbeLink.h"
 #include "UILink.h"
+#include "UINetwork.h"
+#include "UIDocument.h"
 #include <cmath>
 #include <iostream>
+
 
 using namespace std;
 
@@ -23,11 +27,11 @@ namespace FD
         //setAcceptedMouseButtons(0);
         setFlag(ItemIsSelectable);
         adjust();
+        setAcceptsHoverEvents(true);
     }
     
     QtLink::~QtLink()
     {
-        cerr << "QtLink::~QtLink()" << endl;
     	if (m_source && m_source->getQtNode())
     		m_source->getQtNode()->removeQtLink(this);    
     	
@@ -106,7 +110,6 @@ namespace FD
     
     QVariant QtLink::itemChange(GraphicsItemChange change, const QVariant &value)
     {
-        cerr<<"QVariant QtLink::itemChange(GraphicsItemChange change, const QVariant &value)"<<endl;
         if(change == ItemSelectedChange && scene())
         {   
             if(value.toBool())
@@ -124,6 +127,42 @@ namespace FD
     void QtLink::nodePositionChanged(float x, float y)
     {
     	adjust();	
+    }
+    
+    void QtLink::hoverEnterEvent ( QGraphicsSceneHoverEvent * event ) 
+    {
+    	if(!isSelected())
+    	{
+	    	m_penWidth = 2;
+	    	this->update();
+    	}
+    }
+    
+    void QtLink::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) 
+    {
+    	if(!isSelected()) {
+	    	m_penWidth = 1;
+	    	this->update();
+    	}
+    }
+    
+    void QtLink::contextMenuEvent( QGraphicsSceneContextMenuEvent *event )
+    {
+    	// QtFlow is running
+    	if(m_uiLink && m_uiLink->getNetwork() && !m_uiLink->getNetwork()->getDocument()->isEditable()) {
+	    	QMenu popupMenu(tr("Probing"));
+	    	QAction* probeItAction = popupMenu.addAction(QString(tr("Probe it!")));
+	        
+	        QAction* action = popupMenu.exec(QCursor::pos());
+	        if(action) {
+        		if(action == probeItAction) {
+        			// Signal that link is probed
+        			emit signalLinkProbed(m_uiLink->getId());
+        		}
+        	}
+	        
+	        event->accept();
+    	}
     }
     
     

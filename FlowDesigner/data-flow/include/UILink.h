@@ -92,14 +92,15 @@ protected:
    bool complete;
    UINetwork *net;
    std::list<GUILinkPoint*> m_points;
+   int id;
 
 public:
    //UILink(UITerminal *_from, UITerminal *_to, double _x1, double _y1, double _x2, double _y2);
-   UILink(UITerminal *_from, UITerminal *_to, const char *points_str=NULL);
+   UILink(UITerminal *_from, UITerminal *_to, const char *points_str=NULL, int _id = 0);
 
    virtual ~UILink();
 
-   virtual void saveXML(xmlNode *root);
+   virtual void saveXML(xmlNode *root, int newId);
 
    virtual void build(Network *net);
 
@@ -111,6 +112,10 @@ public:
    
    UITerminal *getFromTerminal() {return from;}
    UITerminal *getToTerminal() {return to;}
+   
+   UINetwork *getNetwork();
+   
+   int getId() const {return id;}
 };
 
 }//namespace FD

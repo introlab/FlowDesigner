@@ -47,9 +47,7 @@ namespace FD
 			//IF NOT IMPLEMENTED RIGHT NOW.
 			try 
 			{
-				std::cerr<<"UIProbeLinkNode::calculate -- will notify"<<std::endl;
 				(*iter)->notify(ReturnValue->clone(),count);
-				std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
 			}
 			catch(BaseException *e)
 			{
@@ -58,8 +56,6 @@ namespace FD
 				try 
 				{
 					(*iter)->notify(ReturnValue,count);
-
-					std::cerr<<"UIProbeLinkNode::calculate --notify complete"<<std::endl;
 				}
 				catch (BaseException *e)
 				{						
@@ -75,8 +71,8 @@ namespace FD
 	
 
 
-	UIProbeLink::UIProbeLink(UITerminal *_from, UITerminal *_to, const char *points_str)
-	 : UILink(_from, _to, points_str)
+	UIProbeLink::UIProbeLink(UITerminal *_from, UITerminal *_to, const char *points_str, int _id)
+	 : UILink(_from, _to, points_str, _id)
 	{
 		//SOMETHING TO DO ?
 	}
@@ -87,7 +83,7 @@ namespace FD
 		//SOMETHING TO DO ?
 	}
 	
-	void UIProbeLink::saveXML(xmlNode *root)
+	void UIProbeLink::saveXML(xmlNode *root, int newId)
 	{
 		xmlNodePtr tree;
 		if (m_points.size()<=2)
@@ -107,6 +103,10 @@ namespace FD
 			tree = xmlNewChild(root, NULL, (xmlChar *)"ProbeLink", (xmlChar*)str.str().c_str());
 		}
 		
+		this->id = newId;
+		char idBuf[10] = {0};
+		sprintf(idBuf,"%d", this->id);
+		xmlSetProp(tree, (xmlChar *)"id", (xmlChar *)idBuf);
 		xmlSetProp(tree, (xmlChar *)"from", (xmlChar *)from->getNode()->getName().c_str());
 		xmlSetProp(tree, (xmlChar *)"output", (xmlChar *)from->getName().c_str());
 		xmlSetProp(tree, (xmlChar *)"to", (xmlChar *)to->getNode()->getName().c_str());

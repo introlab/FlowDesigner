@@ -46,7 +46,6 @@ namespace FD
         {
             
             //ADD NODES
-        	cerr<<"add nodes..."<<endl;
             std::vector<UINode *> nodes = m_uiNetwork->getNodes();
             for (unsigned int i = 0; i < nodes.size(); i++)
             {
@@ -54,7 +53,6 @@ namespace FD
             }
 
             //PROCESS LINKS
-            cerr<<"add links..."<<endl;
             std::vector<UILink *> links = m_uiNetwork->getLinks();
             for (unsigned int i = 0; i < links.size(); i++)
             {
@@ -65,7 +63,6 @@ namespace FD
             //TODO PROCCESS NETWORK PARAMETERS?
             
             //ADD NOTES
-            cerr<<"add notes..."<<endl;
             std::vector<UINote*> notes = m_uiNetwork->getNotes();
             for (unsigned int i = 0; i < notes.size(); i++)
             {
@@ -74,7 +71,6 @@ namespace FD
             
             
             //register events
-            cerr<<"register events"<<endl;
             m_uiNetwork->registerEvents(this);
 
         }
@@ -86,12 +82,12 @@ namespace FD
         //setAcceptDrops(true);
         //setDropIndicatorShown(true)
         
-        
         setSceneRect(0,0,1000,1000);
         
         scale(1.0, 1.0);
         resizeSceneView();
         update();
+        resizeView();
         
     }
     
@@ -180,26 +176,32 @@ namespace FD
     
     void QtNetwork::contextMenuEvent(QContextMenuEvent *event)
     {
-        cerr<<"QtNetwork::contextMenuEvent(QContextMenuEvent *event)"<<endl;        
-        m_contextMenuEvent = event;
-        std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
-        menu = new QMenu(this);
-        menu->setTitle(tr("SubNetwork")); 
-        for( unsigned int i=0; i < network.size(); i++ )            
-        {
-        	if (network[i]->getName() != m_uiNetwork->getName())
-        	{
-        		menu->addAction( new QAction(network[i]->getName().c_str(), this) );
-        	}
+        if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+        	event->ignore();
         }
-        
-        connect(menu, SIGNAL(triggered(QAction*)) ,this, SLOT( menuTriggered(QAction*) ) ); 
-        
-        menu->exec(event->globalPos());
-        
-        //QtNode* newQtNode = new QtNode(this);
-        //scene()->addItem(newQtNode);
-        //newQtNode->setPos(mapToScene(event->pos()));
+        else {
+	        m_contextMenuEvent = event;
+	        std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
+	        menu = new QMenu(this);
+	        menu->setTitle(tr("SubNetwork")); 
+	        for( unsigned int i=0; i < network.size(); i++ )            
+	        {
+	        	if (network[i]->getName() != m_uiNetwork->getName())
+	        	{
+	        		menu->addAction( new QAction(network[i]->getName().c_str(), this) );
+	        	}
+	        }
+	        
+	        connect(menu, SIGNAL(triggered(QAction*)) ,this, SLOT( menuTriggered(QAction*) ) ); 
+	        
+	        menu->exec(event->globalPos());
+	        
+	        //QtNode* newQtNode = new QtNode(this);
+	        //scene()->addItem(newQtNode);
+	        //newQtNode->setPos(mapToScene(event->pos()));
+	        event->accept();
+        }
+        QGraphicsView::contextMenuEvent(event);
     }
     
     void QtNetwork::menuTriggered(QAction* action)
@@ -253,7 +255,12 @@ namespace FD
         // Fill
         QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
         gradient.setColorAt(0, Qt::white);
-        gradient.setColorAt(1, QColor(Qt::lightGray).lighter(130));
+        if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+        	gradient.setColorAt(1, QColor(Qt::lightGray));	
+    	}
+    	else {
+    		gradient.setColorAt(1, QColor(Qt::lightGray).lighter(130));
+    	}
         painter->fillRect(rect.intersect(sceneRect), gradient);
         painter->setBrush(Qt::NoBrush);
         painter->setBrush(QColor(Qt::lightGray).lighter(130));
@@ -289,15 +296,25 @@ namespace FD
     //Drag & Drop
     void QtNetwork::dragEnterEvent(QDragEnterEvent *event)
     {
-        //cerr<<"QtNetwork::dragEnterEvent(QDragEnterEvent *event)"<<endl;      
-        event->accept();         
+        //cerr<<"QtNetwork::dragEnterEvent(QDragEnterEvent *event)"<<endl;
+        if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+        	event->ignore();
+        }
+        else {
+        	event->accept();
+        }
     }
     
     void QtNetwork::dragMoveEvent(QDragMoveEvent *event)
     {
         //cerr<<"QtNetwork::dragMoveEvent(QDragMoveEvent *event)";
 		//cerr<<" x: "<<event->pos().x()<<" y:"<<event->pos().y()<<endl;
-        event->accept();         
+        if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+        	event->ignore();
+        }
+        else {
+        	event->accept();
+        }
     }
     
 	void QtNetwork::resizeSceneView()
@@ -318,8 +335,10 @@ namespace FD
         //cerr<<"QtNetwork::dropEvent(QDropEvent *event)"<<endl;	
 		//cerr<<"Source is "<<event->source()<<endl;					
 		//cerr<<"Mime data "<<event->mimeData()->text().toStdString()<<endl;
-		
-		if (event->mimeData()->hasText())
+		if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+        	event->ignore();
+        }
+        else if (event->mimeData()->hasText())
 		{
 			//We received a node type name
 			event->accept();         		
@@ -369,7 +388,7 @@ namespace FD
 	}
 
     void QtNetwork::mousePressEvent (QMouseEvent * e)
-    {
+    {   	
         if(e->button() == Qt::MidButton)
         {
             lastCursorPos = e->pos();
@@ -377,6 +396,9 @@ namespace FD
             QApplication::setOverrideCursor( QCursor(Qt::ClosedHandCursor) );
             return;
         }
+        else if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+    		return;
+    	}
         QGraphicsView::mousePressEvent(e);
     }
 
@@ -388,6 +410,9 @@ namespace FD
             setDragMode(QGraphicsView::RubberBandDrag);
             return;
         }
+        else if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+    		return;
+    	}
         QGraphicsView::mouseReleaseEvent(e);
     }
 	
@@ -445,7 +470,9 @@ namespace FD
     		        dest->addQtLink(link);
     				scene()->addItem(link);
 					resizeSceneView();
-    				m_linkMap.insert(make_pair(uiLink,link));					
+    				m_linkMap.insert(make_pair(uiLink,link));	
+    				
+    				connect(link, SIGNAL(signalLinkProbed(int)), this, SLOT(linkProbed(int)));
     			}
     		}
     	}
@@ -458,7 +485,7 @@ namespace FD
         {
             QtLink *qtlink = new QtLink(source,dest,link);
             scene()->addItem(qtlink);
-			
+
             m_linkMap.insert(make_pair(link,qtlink));
             return qtlink;
         }
@@ -469,7 +496,6 @@ namespace FD
     }
     void QtNetwork::removeNode(QtNode* node)
     { 
-        cerr<<"QtNetwork::removeNode(QtNode* node)"<<endl;
         scene()->removeItem(node);
         delete node;
 		resizeSceneView();
@@ -477,7 +503,6 @@ namespace FD
     
     void QtNetwork::removeLink(QtLink* link)
     { 
-        cerr<<"QtNetwork::removeLink(QtLink* link)"<<endl;
         scene()->removeItem(link);
         delete link;
 		resizeSceneView();
@@ -579,7 +604,6 @@ namespace FD
 	
     QtNote* QtNetwork::addNote(UINote* uinote)
     {
-    	cerr<<"QtNote* QtNetwork::addNote(UINote* uinote) "<<uinote<<endl;
 		QtNote *note = new QtNote(this,uinote);
 		
 		scene()->addItem(note);
@@ -591,15 +615,16 @@ namespace FD
     
     void QtNetwork::removeNote(QtNote *note)
     {
-        cerr<<"QtNetwork::removeNote(QtNote* note)"<<endl;
         scene()->removeItem(note);
         delete note;
         resizeSceneView();
-        cerr<<"Remove note done"<<endl;
     }
     
     void QtNetwork::mouseDoubleClickEvent ( QMouseEvent * e )
     {
+    	if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
+    		return;
+    	}
         QGraphicsView::mouseDoubleClickEvent(e);
     }
 

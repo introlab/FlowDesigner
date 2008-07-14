@@ -58,7 +58,6 @@ namespace FD
     
     QtNetTerminal::~QtNetTerminal()
     {
-        cerr << "QtNetTerminal::~QtNetTerminal()" << endl;
     	/*if (m_uiNetTerminal)
     	{
     		delete m_uiNetTerminal;

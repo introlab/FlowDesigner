@@ -27,8 +27,6 @@ namespace FD
     QtDocument::QtDocument(QtFlowDesigner *parent, const std::string &name)
     : QDialog(parent), m_uiDoc(NULL), m_name(name), m_flowdesigner(parent)
     {
-        cerr<<"QtDocument created"<<endl;      
-        
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
         m_vboxLayout->setMargin(0);		
@@ -153,8 +151,6 @@ namespace FD
 	
 	void QtDocument::onRunDocument()
 	{
-		cerr<<"Run clicked..."<<endl;
-        
 		if (m_uiDoc)
 		{	
 			if (m_flowdesigner)
@@ -212,15 +208,12 @@ namespace FD
 		//Get active view
 		int index = m_tabWidget->currentIndex();
 		
-		cerr<<"Current index  :"<<index<<endl;
-		
 		if (index >= 0)
 		{
 			QString netName = m_tabWidget->tabText(index);
 			if (m_uiDoc)
 			{
 				UINetwork *net = m_uiDoc->getNetworkNamed(netName.toStdString());
-				cerr<<"network named "<<netName.toStdString()<<endl;
 				if (net)
 				{
 					QtNetwork *qtNet = m_networkMap[net];
@@ -233,7 +226,6 @@ namespace FD
 						double x = sceneRect.topLeft().x();
 						double y = sceneRect.topLeft().y();
 						
-						cerr<<"Creating note"<<endl;
 						UINote* note = net->newNote("New Note","Type description here",x,y,true);
 						net->addNote(note);
 					}
@@ -360,6 +352,14 @@ namespace FD
 				close = false;	
 			}
  		}
+ 		if(close) {
+ 			if(m_uiDoc) {
+				m_uiDoc->unregisterEvents(this);
+				delete m_uiDoc;
+				m_uiDoc = NULL;
+			}
+ 		}
+ 		
 		return close;
 	}
     

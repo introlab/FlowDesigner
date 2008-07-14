@@ -24,7 +24,6 @@ namespace FD
     
    QtNode::~QtNode()
    {
-       cerr << "QtNode::~QtNode()" << endl;
 	   if (m_uiNode)
 	   {
 		   m_uiNode->unregisterEvents(this);
@@ -51,7 +50,7 @@ namespace FD
             if (nInfo && nInfo->icon != "")
             {
             	//SVG ICON
-        		cerr<<"Found icon : "<<nInfo->icon<<endl;
+        		//cerr<<"Found icon : "<<nInfo->icon<<endl;
         		m_internalItem = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/") + QString(nInfo->icon.c_str()), this);
             }
             else
@@ -186,7 +185,6 @@ namespace FD
     
     void QtNode::removeQtLink(QtLink *edge)
     {
-        cerr<<"removeQtLink(QtLink *edge)"<<endl;
         edgeList.removeAll(edge);
     }
     
@@ -228,8 +226,7 @@ namespace FD
     
     void QtNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
-    	cerr<<"QtNode::mousePressEvent(QGraphicsSceneMouseEvent *event)"<<endl;
-        QGraphicsItem::mousePressEvent(event);        
+    	QGraphicsItem::mousePressEvent(event);        
     }
     
 	void QtNode::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event)

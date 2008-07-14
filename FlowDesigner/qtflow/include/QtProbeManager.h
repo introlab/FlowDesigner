@@ -7,13 +7,15 @@
 #include <vector>
 #include "UIProbeLink.h"
 #include <list>
+#include <QList>
+#include <QEvent>
 
 namespace FD 
 {
 
 	class FlowDesignerTCPServer;
 	class QtRunContext;
-	
+
 	class FlowDesignerTCPServerClient : public QThread, public UIObserverIF
 	{
 		Q_OBJECT;
@@ -21,6 +23,7 @@ namespace FD
 	public:
 		
 		FlowDesignerTCPServerClient(FlowDesignerTCPServer *server, int socketDescriptor);
+		~FlowDesignerTCPServerClient();
 		virtual void run ();
 		virtual void notify (ObjectRef object, int count);
 	protected:
@@ -29,6 +32,18 @@ namespace FD
 		FlowDesignerTCPServer *m_server;
 		std::list<std::string> m_messageList;
 		QTcpSocket *m_tcpSocket; 
+	};
+	
+	class ClientEvent : public QEvent
+	{
+		public:
+			ClientEvent(FlowDesignerTCPServerClient *client) : m_client(client), QEvent(QEvent::User) {};
+		
+		public:
+			FlowDesignerTCPServerClient* getClient() {return m_client;}	
+			
+		private:
+			FlowDesignerTCPServerClient *m_client;
 	};
 
 	
@@ -46,12 +61,13 @@ namespace FD
 		QtProbeManager* getProbeManager() {return m_manager;}
 		
 		bool running() {return m_running;}
+		bool event(QEvent *e);
 		
 	protected:
 		QtProbeManager *m_manager;
 		virtual void incomingConnection ( int socketDescriptor );
 		bool m_running;
-		std::vector<FlowDesignerTCPServerClient*> m_clients;
+		QList<FlowDesignerTCPServerClient*> m_clients;
 	};
 
 

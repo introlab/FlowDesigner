@@ -29,8 +29,6 @@ UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 
 UITerminal::~UITerminal() 
 {
-    cerr << "UITerminal::~UITerminal()" << endl;
-
    //although this is wierd, it has to be like that since the destroyed link removes 
    //itself from the connection list
    while (connections.size()) {

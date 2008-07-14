@@ -161,7 +161,7 @@ public:
    bool isIter();
 
 
-   void saveXML(xmlNode *root);
+   void saveXML(xmlNode *root, int &incId);
 
    virtual void newNetNotify(const std::string &cat, const std::string &type);
 
@@ -180,7 +180,7 @@ public:
 
 //   virtual UITerminal *newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y);
 
-   virtual UILink *newLink (UITerminal *_from, UITerminal *_to,const char *str=NULL);
+   virtual UILink *newLink (UITerminal *_from, UITerminal *_to,const char *str=NULL, int _id=0);
 
 
    /**

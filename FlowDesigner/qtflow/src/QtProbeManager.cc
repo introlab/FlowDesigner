@@ -5,6 +5,7 @@
 #include "UITerminal.h"
 #include <map>
 #include "CompositeType.h"
+#include <QApplication>
 
 namespace FD
 {
@@ -12,28 +13,28 @@ namespace FD
 
 	
 	FlowDesignerTCPServerClient::FlowDesignerTCPServerClient(FlowDesignerTCPServer *server, int socketDescriptor)
-	: m_server(server), m_socketDescriptor(socketDescriptor), m_tcpSocket(NULL) {
-				
+	: m_server(server), m_socketDescriptor(socketDescriptor), m_tcpSocket(NULL) 
+	{			
+	}
+	
+	FlowDesignerTCPServerClient::~FlowDesignerTCPServerClient()
+	{
+		if (m_tcpSocket)
+		{
+			delete m_tcpSocket;
+		}
 	}
 	
 	void FlowDesignerTCPServerClient::notify (ObjectRef object, int count)
 	{
-		cerr<<"FlowDesignerTCPServerClient::notify (ObjectRef object)"<<endl;
-		
 		if (m_tcpSocket)
 		{
 			//serialize object
 			stringstream output;
+
+			Object &objectValue = *object;
 			
-			CompositeType composite;
-			
-			composite.addField("count",ObjectRef(Int::alloc(count)));
-			composite.addField("object", object);
-			
-			//composite.printOn(output);
-			composite.serialize(output);
-			
-			output <<endl;
+			output << objectValue << endl;
 			
 			//Add it to the list
 			m_tcpSocket->write(output.str().c_str(),output.str().size());
@@ -43,8 +44,6 @@ namespace FD
 	
 	void FlowDesignerTCPServerClient::run ()
 	{
-		cerr<<"void FlowDesignerTCPServerClient::run ()"<<endl;
-		
 		//Socket will be associated to this thread
 		m_tcpSocket = new QTcpSocket();
 		
@@ -60,22 +59,21 @@ namespace FD
 		{
 			
 			//TODO Can we do better with event loop and signals?
-			
-			if (!m_tcpSocket->isValid()) break;
 
-			//Will wait for 1000ms for input data on socket
-			m_tcpSocket->waitForReadyRead(1000);
+			if(!m_tcpSocket->waitForReadyRead(-1)) {
+				break;
+			}
 	
 			//Try to read line
 			QByteArray data = m_tcpSocket->readLine();
 			
 			//DEBUG OUTPUT
-			cerr<<"FlowDesignerTCPServerClient::run got bytes : "<<data.size()<<endl;
+			/*cerr<<"FlowDesignerTCPServerClient::run got bytes : "<<data.size()<<endl;
 			for(unsigned int i = 0; i<data.size(); i++)
 			{
 				cerr << data[i];
 			}
-			cerr<<endl;
+			cerr<<endl;*/
 			
 			if (data.size() > 0)
 			{	
@@ -99,8 +97,7 @@ namespace FD
 				}
 				else if (command.contains("disconnect"))
 				{
-					cerr << "disconnect"<<endl;
-					
+					cerr << "QtProbeManager::disconnect" << endl;
 					stringstream input(command.toStdString());
 					stringstream output;
 					
@@ -109,26 +106,30 @@ namespace FD
 					
 					input >> cmd >> id;
 					
-					cerr<<"Trying to disconnect to id : "<<id<<endl;
+					//cerr<<"Trying to disconnect to id : "<<id<<endl;
 					map<UIProbeLink*,UIProbeLinkNode*> linkMap = UIProbeLink::getProbeDictionary();
 					
-					if (linkMap.find((UIProbeLink*)id) != linkMap.end())
+					bool found = false;
+					for(map<UIProbeLink*,UIProbeLinkNode*>::iterator it = linkMap.begin(); it != linkMap.end(); it++)
 					{
-						UIProbeLink* link = (UIProbeLink*) id;
-						link->unregisterIF(this);
+						if((*it).first->getId() == id)
+						{
+							(*it).first->unregisterIF(this);
+							found = true;
+							break;
+						}
+					}
+					if(found) {
 						output<<"disconnect ok "<<id<<endl;
 					}
-					else
-					{
+					else {
 						output<<"disconnect failed "<<id<<endl;
 					}
-					
+					cerr << output.str().c_str() << endl;
 					m_tcpSocket->write(output.str().c_str(),output.str().size());
 				}
 				else if (command.contains("connect"))
 				{
-					cerr << "connect"<<endl;
-					
 					stringstream input(command.toStdString());
 					stringstream output;
 					
@@ -137,25 +138,31 @@ namespace FD
 					
 					input >> cmd >> id;
 					
-					cerr<<"Trying to connect to id : "<<id<<endl;
+					//cerr<<"Trying to connect to id : "<<id<<endl;
 					map<UIProbeLink*,UIProbeLinkNode*> linkMap = UIProbeLink::getProbeDictionary();
 					
-					if (linkMap.find((UIProbeLink*)id) != linkMap.end())
+					bool found = false;
+					for(map<UIProbeLink*,UIProbeLinkNode*>::iterator it = linkMap.begin(); it != linkMap.end(); it++)
 					{
-						UIProbeLink* link = (UIProbeLink*) id;
-						link->registerIF(this);
+						if((*it).first->getId() == id)
+						{
+							(*it).first->registerIF(this);
+							found = true;
+							break;
+						}
+					}
+					if(found) {
 						output<<"connect ok "<<id<<endl;
 					}
-					else
-					{
+					else {
 						output<<"connect failed "<<id<<endl;
 					}
+					
 					
 					m_tcpSocket->write(output.str().c_str(),output.str().size());
 				}
 				else if (command.contains("list"))
 				{
-					cerr<<"list" <<endl;				
 					//This will make a copy of actual map.
 					//Is this what we want?
 					map<UIProbeLink*,UIProbeLinkNode*> linkMap = UIProbeLink::getProbeDictionary();
@@ -169,7 +176,7 @@ namespace FD
 						UITerminal *from = link->getFromTerminal();
 						UITerminal *to = link->getToTerminal();
 						
-						output << (unsigned int)link << " "<<from->getName()<<" "<<from->getType()
+						output << (unsigned int)link << " " << link->getId() << " "<<from->getName()<<" "<<from->getType()
 							   <<" "<<to->getName()<<" "<<to->getType()<<endl;
 						
 					}
@@ -189,8 +196,7 @@ namespace FD
 			}
 		}
 		
-		//Execute event loop
-		exec();	
+		QApplication::postEvent(m_server, new ClientEvent(this));
 	}
 	
 	
@@ -202,7 +208,7 @@ namespace FD
 		
 		if (listen(QHostAddress::Any, port))
 		{
-			cerr<<"FlowDesignerTCPServer starting on port : "<<port<<endl;
+			//cerr<<"FlowDesignerTCPServer starting on port : "<<port<<endl;
 		}
 	}
 	
@@ -212,20 +218,16 @@ namespace FD
 	{
 		m_running = false;
 		
-		//wait for clients
-		for (unsigned int i = 0; i <m_clients.size(); i++)
+		for(int i=0; i<m_clients.size(); i++)
 		{
-			m_clients[i]->exit();
-			m_clients[i]->wait();
 			delete m_clients[i];
 		}
+		m_clients.clear();
 	}
 	
 	
 	void FlowDesignerTCPServer::incomingConnection ( int socketDescriptor )
-	{
-		
-		cerr<<"FlowDesignerTCPServer::incomingConnection ( int socketDescriptor )"<<endl;			
+	{	
 		//Create client that will handle this connection
 		FlowDesignerTCPServerClient *client = new FlowDesignerTCPServerClient(this,socketDescriptor);
 		//Make sure the thread is deleted when finished
@@ -234,6 +236,33 @@ namespace FD
 		client->start();
 		
 	}
+	
+	bool FlowDesignerTCPServer::event(QEvent *e)
+	{
+		
+		if (e->type() == QEvent::User)
+		{
+			ClientEvent *pEvent = (ClientEvent *) e;
+			
+			int index = -1;
+			for(int i=0; i<m_clients.size(); i++)
+			{
+				if(m_clients[i] == pEvent->getClient()) {
+					delete m_clients[i];
+					index = i;
+				}
+			}
+			// Client is found?
+			if(index >= 0) {
+				m_clients.removeAt(index);
+			}
+
+			return true;
+		}
+	
+		return QTcpServer::event(e);
+	}
+	
 	
 	QtProbeManager::QtProbeManager(QtRunContext *context)
 		: m_context(context)

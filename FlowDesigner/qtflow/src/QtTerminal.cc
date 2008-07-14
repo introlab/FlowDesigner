@@ -66,7 +66,7 @@ namespace FD
 		{
 			double posx, posy;
 			m_uiTerminal->getPos(posx,posy);
-			cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<" ptr:"<<this<<endl;
+			//cerr<<"Terminal name "<<m_uiTerminal->getName()<<" pos "<<posx<<","<<posy<<" ptr:"<<this<<endl;
 			//setPos(posx,posy);
             /*
 			m_label = new QGraphicsTextItem ( m_uiTerminal->getName().c_str(),this );
@@ -110,8 +110,6 @@ namespace FD
 	
 	QtTerminal::~QtTerminal()
 	{
-	    cerr << "QtTerminal::~QtTerminal()" << endl;
-		
 	}
     
 	void QtTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )
@@ -123,7 +121,7 @@ namespace FD
             
 			if ( event->modifiers() == Qt::NoModifier )
 			{
-				cerr<<"mousePressEvent on terminal "<<getName() <<" posx "<<pos().x() <<" posy "<<pos().y() <<endl;
+				//cerr<<"mousePressEvent on terminal "<<getName() <<" posx "<<pos().x() <<" posy "<<pos().y() <<endl;
 				//TODO CREATE LINK
 				m_virtualQtTerminal = new QtTerminal ( NULL,"VIRTUAL",QtTerminal::VIRTUAL );
 				m_virtualQtTerminal->hide();
@@ -205,9 +203,6 @@ namespace FD
         update();
         if ( event->button() == Qt::LeftButton && m_linking)
         {
-            
-            
-            cerr<<"mouseReleaseEvent on terminal (linking)"<<getName() <<endl;
             QtTerminal* destinationQtTerminal = dynamic_cast<QtTerminal*> ( scene()->itemAt ( event->scenePos() ) );
             
             //Go back to old brush for all terminals
@@ -280,7 +275,6 @@ namespace FD
     void QtTerminal::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
     {
         update();
-        cerr<<"mouseMoveEvent on terminal "<<getName() <<endl;
         if ( m_linking )
         {
             m_virtualQtTerminal->setPos ( event->scenePos() + QPointF(-5.0,-5.0));
@@ -423,13 +417,11 @@ namespace FD
     
     void QtTerminal::hoverEnterEvent ( QGraphicsSceneHoverEvent * event )
     {
-    	cerr<<" void QtTerminal::hoverEnterEvent ( QGraphicsSceneHoverEvent * event )"<<endl;
     	QGraphicsItem::hoverEnterEvent(event);
     }
     
     void QtTerminal::focusInEvent ( QFocusEvent * event )
     {
-    	cerr<<"void QtTerminal::focusInEvent ( QFocusEvent * event )"<<endl;
     }
     
   /*  

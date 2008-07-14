@@ -68,6 +68,9 @@ protected:
    /**Flag is set to true anytime there's a change that hasn't been saved*/
    bool modified;
    
+   /**Flag is set to true if the document can be modified*/
+   bool editable;
+   
    /**Info about all internal networks that can be included as nodes - I think (should be cleaned up)*/
    UINodeRepository subnetInfo;
 
@@ -137,6 +140,12 @@ public:
    
    /**Has the document been modified since last saved?*/
    bool isModified() {return modified;}
+   
+   /**Set the 'editable' flag*/
+   void setEditable(bool flag) {editable = flag;}
+   
+   /**Is the document editable?*/
+   bool isEditable() {return editable;}
    
    /**Add a network to the document*/
    UINetwork *addNetwork(std::string name, UINetwork::Type type);

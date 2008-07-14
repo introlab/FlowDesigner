@@ -62,7 +62,6 @@ namespace FD
         m_workspace = new QWorkspace(this);
         m_workspace->setObjectName(QString::fromUtf8("workspace"));
         
-        std::cerr<<"workspace created"<<std::endl;
         //vboxMainLayout = new QVBoxLayout(centralwidget);
         //vboxMainLayout->setObjectName(QString::fromUtf8("vboxMainLayout"));
         //vboxMainLayout->setSpacing(6);
@@ -233,10 +232,7 @@ namespace FD
     void QtFlowDesigner::newProcess(UIDocument *doc)
     {
     	QtProcessWindow *processWindow = new QtProcessWindow(this,doc);
-    	QWidget *window = m_workspace->addWindow(processWindow);
-    	window->setWindowTitle("Process");
-    	m_workspace->setActiveWindow(window);
-    	window->show();
+    	processWindow->show();   	
     }
     
     void QtFlowDesigner::newDocumentClicked()
@@ -348,7 +344,6 @@ namespace FD
     
     void QtFlowDesigner::openDocumentClicked()
     {
-        cerr<<"Open document clicked"<<endl;
         QFileDialog dialog(this);
         dialog.setFileMode(QFileDialog::ExistingFiles);
         
@@ -374,8 +369,6 @@ namespace FD
     
     bool QtFlowDesigner::saveDocumentClicked()
     {
-        cerr<<"Save document clicked"<<endl;
-        
         QtDocument *activeDocument = dynamic_cast<QtDocument*>(m_workspace->activeWindow());
         
         if (activeDocument)
@@ -425,8 +418,6 @@ namespace FD
     
     void QtFlowDesigner::onInfoFlowDesignerClicked()
     {
-    	cerr<<" void QtFlowDesigner::onInfoFlowDesignerClicked()"<<endl;
-
 		QDialog *myDialog = new QDialog(this);
 		QVBoxLayout *vlayout = new QVBoxLayout(myDialog);
 		myDialog->resize(640,480);
@@ -496,13 +487,27 @@ namespace FD
     
 	void QtFlowDesigner::closeEvent(QCloseEvent *event)
 	{
-		m_workspace->closeAllWindows();
-		if (activeDocument()) {
-			event->ignore();
-		} else {
-			//write settings before quit?
-			event->accept();
+		// Close process windows
+		bool close = true;
+		QList<QtProcessWindow *> processWindows = this->findChildren<QtProcessWindow *>();
+		for(int i=0; i<processWindows.size(); i++) {
+			if(!processWindows[i]->close()) {
+				close = false;
+				break;	
+			}	
 		}
+		
+		// Close documents
+		if(close) {
+			m_workspace->closeAllWindows();
+			if (activeDocument()) {
+				close = false;
+			}
+		}
+		
+		//write settings before quit?
+
+		event->setAccepted(close);
 	}
     
 }//namespace FD

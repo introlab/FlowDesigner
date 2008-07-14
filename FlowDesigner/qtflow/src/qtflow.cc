@@ -46,7 +46,6 @@ class QtFlowApp : public QApplication
 						QApplication::exit(-1);
 					}
 				}
-				
 				exec();
 		}	
 		

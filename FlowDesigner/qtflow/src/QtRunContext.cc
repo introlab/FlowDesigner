@@ -44,9 +44,7 @@ namespace FD
 	}
 
 	bool QtRunContext::run()
-	{	
-		
-		
+	{		
 		bool success = false;
 	
 		if (m_document)
@@ -75,7 +73,6 @@ namespace FD
 					
 				}
 				*/
-				
 				//processing buffer requests
 				for (int i = 0; ;i++) 
 				{
@@ -108,7 +105,6 @@ namespace FD
 					}
 				}
 
-				cout << "Network ended normally" << endl;
 				success = true;				
 			} 
 			catch (BaseException *e)
@@ -139,7 +135,6 @@ namespace FD
 			}
 			
 		} //if m_document
-		
 		return success;
 	}
 

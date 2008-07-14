@@ -6,34 +6,27 @@
 #include <QDialog>
 #include <QMessageBox>
 
+
 namespace FD 
 {
 
 	QtProcessWindow::QtProcessWindow(QtFlowDesigner *parent, UIDocument *doc)
-	 : QDialog(parent), m_flowdesigner(parent), m_document(doc), m_process(NULL)
+	 : QMainWindow(parent), m_flowdesigner(parent), m_document(doc), m_uiDocView(NULL), m_process(NULL)
 	{
-		m_mainLayout = new QVBoxLayout(this);
+		// Delete on close
+		setAttribute(Qt::WA_DeleteOnClose);		
 		
+		setupUi(this);
 		
-		//Add button layout
-		m_buttonLayout = new QHBoxLayout(this);
-		m_mainLayout->addLayout(m_buttonLayout);
+		//Create a new empty document
+		m_uiDocView = new UIDocument("testName");
 		
-		//Add "Probes" Button
-		m_probesButton = new QPushButton("Probes",this);
-		m_buttonLayout->addWidget(m_probesButton);
-		connect(m_probesButton,SIGNAL(clicked()),this,SLOT(probesButtonClicked()));
-		
-		//Add "Stop" Button
-		m_stopButton = new QPushButton("Stop",this);
-		m_buttonLayout->addWidget(m_stopButton);
-		connect(m_stopButton,SIGNAL(clicked()),this,SLOT(stopButtonClicked()));
-		
-		
-		m_textEdit = new QTextEdit(this);
-		m_textEdit->setReadOnly(true);
-		m_mainLayout->addWidget(m_textEdit);
-		resize(640,480);
+		//Register to document events
+        m_uiDocView->registerEvents(this);
+        
+        //Disable dock animation
+        setAnimated(false);
+
 		start();
 	}
 
@@ -41,16 +34,73 @@ namespace FD
 	{
 		if (m_process)
 		{
-			m_process->close();
-			m_process->terminate();
-			m_process->kill();
-			delete m_process;
+			if(m_process->state() != QProcess::NotRunning) {
+				m_process->terminate();
+				if(!m_process->waitForFinished())
+				{
+					m_process->kill();
+				}
+			}
+			
+    		delete m_process;
+    		m_process = NULL;
+		}
+		if(m_uiDocView) {
+			m_uiDocView->unregisterEvents(this);
+			delete m_uiDocView;
+			m_uiDocView = NULL;
 		}
 	}
+	
+	void QtProcessWindow::setupUi(QMainWindow *MainWindow)
+    {
+	    MainWindow->setWindowTitle(tr("QtProcessWindow"));
+	    MainWindow->resize(700, 600);
+	    
+	    QWidget* centralwidget = new QWidget(MainWindow);   
+	    MainWindow->setCentralWidget(centralwidget);
+	    QVBoxLayout* mainLayout = new QVBoxLayout(centralwidget);
+	    
+	    QGroupBox* buttonGroupBox = new QGroupBox(centralwidget);
+	    buttonGroupBox->setTitle(tr("Controls"));	    
+	    QHBoxLayout* buttonLayout = new QHBoxLayout(buttonGroupBox);
+	    //Add "Probes" Button
+		QPushButton* probesButton = new QPushButton("Probes",this);
+		buttonLayout->addWidget(probesButton);
+		connect(probesButton,SIGNAL(clicked()),this,SLOT(probesButtonClicked()));
+		//Add "Stop" Button
+		QPushButton* stopButton = new QPushButton("Stop",this);
+		buttonLayout->addWidget(stopButton);
+		connect(stopButton,SIGNAL(clicked()),this,SLOT(stopButtonClicked()));
+		mainLayout->addWidget(buttonGroupBox);
+	
+	    QGroupBox* groupBox = new QGroupBox(centralwidget);
+	    groupBox->setTitle(tr("Network"));
+	    QGridLayout* gridLayout_4 = new QGridLayout(groupBox);
+	    m_tabWidget = new QTabWidget(groupBox);
+	    gridLayout_4->addWidget(m_tabWidget, 0, 0, 1, 1);
+	    mainLayout->addWidget(groupBox);
+
+	    m_mainOutputDockWidget = new QDockWidget(MainWindow);
+	    m_mainOutputDockWidget->setWindowTitle(tr("Main output"));
+	    m_mainOutputDockWidget->setGeometry(QRect(0, 252, 251, 150));
+	    m_mainOutputDockWidget->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable);
+	    QWidget* dockWidgetContents = new QWidget();
+	    dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
+	    QGridLayout* gridLayout_3 = new QGridLayout(dockWidgetContents);
+	    gridLayout_3->setObjectName(QString::fromUtf8("gridLayout_3"));
+	    m_textBrowser = new QTextBrowser(dockWidgetContents);
+	    m_textBrowser->setObjectName(QString::fromUtf8("textBrowser"));
+	    m_textBrowser->setReadOnly(false);
+	    gridLayout_3->addWidget(m_textBrowser, 1, 0, 1, 1);
+	    m_mainOutputDockWidget->setWidget(dockWidgetContents);
+	    MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), m_mainOutputDockWidget);
+
+    } // setupUi
 
     void QtProcessWindow::closeEvent(QCloseEvent *event)
     {
-        if (m_process)
+        if (m_process && m_process->state() != QProcess::NotRunning)
     	{
     		int ret = QMessageBox::warning(this, tr("QtFlow"),
                            tr("A process is still running.\n"
@@ -121,6 +171,10 @@ namespace FD
 			int size = 0;
 			char* mem = m_document->saveToMemory(size);
 			
+			//Add networks to the view
+			m_uiDocView->loadFromMemory(mem,size);
+			m_uiDocView->setEditable(false);
+			
 			//Launch qtflow			
 			m_process->start(QString(INSTALL_PREFIX) + "/bin/qtflow",args);
 			m_process->write(mem,size);
@@ -140,55 +194,49 @@ namespace FD
     	switch(error)
     	{
     	case QProcess::FailedToStart:
-    		m_textEdit->append("<b>Process error : FailedToStart</b>");
+    		m_textBrowser->append("<b>Process error : FailedToStart</b>");
     		break;
     		
     	case QProcess::Crashed:
-    		m_textEdit->append("<b>Process error : Crashed</b>");
+    		m_textBrowser->append("<b>Process error : Crashed</b>");
     		break;
     		
     	case QProcess::Timedout:
-    		m_textEdit->append("<b>Process error : Timedout</b>");
+    		m_textBrowser->append("<b>Process error : Timedout</b>");
     		break;
     	
     	case QProcess::WriteError:
-    		m_textEdit->append("<b>Process error : Write Error</b>");
+    		m_textBrowser->append("<b>Process error : Write Error</b>");
     		break;
     	
     	case QProcess::ReadError:
-    		m_textEdit->append("<b>Process error : ReadError</b>");
+    		m_textBrowser->append("<b>Process error : ReadError</b>");
     		break;
     	
     	case QProcess::UnknownError:
-    		m_textEdit->append("<b>Process error : UnknownError</b>");
+    		m_textBrowser->append("<b>Process error : UnknownError</b>");
     		break;
 
     	default:
-    		m_textEdit->append("<b>Process error, unknown cause.</b>");
+    		m_textBrowser->append("<b>Process error, unknown cause.</b>");
     		break;
     	}
     }
     
     void QtProcessWindow::finished ( int exitCode, QProcess::ExitStatus exitStatus )
     {
-    	m_textEdit->append(QString("<b>Finished wih exit code :") + QString::number(exitCode) + QString("</b>"));
-    	
-    	if (m_process)
-    	{
-    		delete m_process;
-    		m_process = NULL;
-    	}
+    	m_textBrowser->append(QString("<b>Finished wih exit code :") + QString::number(exitCode) + QString("</b>"));
     }
     
     void QtProcessWindow::readyReadStandardError ()
     {
     	if (m_process)
     	{
-    		QColor oldColor = m_textEdit->textColor();
-    		m_textEdit->setTextColor(Qt::red);
+    		QColor oldColor = m_textBrowser->textColor();
+    		m_textBrowser->setTextColor(Qt::red);
     		QByteArray output = m_process->readAllStandardError();
-    		m_textEdit->append(output);
-    		m_textEdit->setTextColor(oldColor);
+    		m_textBrowser->append(output);
+    		m_textBrowser->setTextColor(oldColor);
     	}
     }
     	
@@ -196,17 +244,17 @@ namespace FD
     {
     	if (m_process)
     	{
-    		QColor oldColor = m_textEdit->textColor();
-    		m_textEdit->setTextColor(Qt::green);
+    		QColor oldColor = m_textBrowser->textColor();
+    		m_textBrowser->setTextColor(Qt::green);
     		QByteArray output = m_process->readAllStandardOutput();
-    		m_textEdit->append(output);
-    		m_textEdit->setTextColor(oldColor);
+    		m_textBrowser->append(output);
+    		m_textBrowser->setTextColor(oldColor);
     	}
     }
     
     void QtProcessWindow::started ()
     {
-    	m_textEdit->append("<b>Process started</b>");
+    	m_textBrowser->append("<b>Process started</b>");
     }
     
     void QtProcessWindow::stateChanged ( QProcess::ProcessState newState )
@@ -214,7 +262,42 @@ namespace FD
     	//m_textEdit->append("State Changed");
     }
 	
+	QtNetwork* QtProcessWindow::addNetwork(UINetwork* net)
+	{		
+        QtNetwork *qtnet = new QtNetwork(0,net);
+		//qtnet->fitInView(qtnet->scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+		qtnet->centerOn(qtnet->scene()->itemsBoundingRect().topLeft());
+		
+		//m_networkMap.insert(make_pair(net,qtnet));
+		
+		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
+        m_tabWidget->addTab(qtnet, net->getName().c_str());
+        
+        connect(qtnet, SIGNAL(signalLinkProbed(int)), this, SLOT(linkProbed(int)));
+        
+		return qtnet;	
+	}
 	
+	void QtProcessWindow::linkProbed(int linkId)
+	{
+		QtProbeConsole *console = new QtProbeConsole(this, linkId);
+		this->addDockWidget(Qt::BottomDockWidgetArea, console);
+		console->setFloating(true);
+		console->move(QCursor::pos());
+	}
+	
+    //Network Added
+    void QtProcessWindow::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)
+    {
+    	std::cerr<<"QtProcessWindow::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)"<<std::endl;
+    	
+    	//add this network
+    	addNetwork(const_cast<UINetwork*>(net));   	
+    }
+	
+	//========================================
+	// QtProbesDialog stuff
+	//========================================
     QtProbesDialog::QtProbesDialog(QtProcessWindow *parent)
     	: QDialog(parent), m_processWindow(parent), m_socket(NULL)
     {
@@ -255,6 +338,61 @@ namespace FD
     	m_socket->write("list\n\r",6);
     }
     
+    //================================
+    // QtProbeConsole stuff
+	//================================
+	QtProbeConsole::QtProbeConsole(QtProcessWindow *parent, int linkId)
+    	: QDockWidget(parent), m_processWindow(parent), m_socket(NULL), m_linkId(linkId)
+    {
+    	this->setWindowTitle(QString(tr("Link %1")).arg(linkId));
+	    this->setGeometry(QRect(0, 252, 251, 150));
+	    this->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetClosable);
+	    this->setAttribute(Qt::WA_DeleteOnClose);
+	    
+	    QWidget* dockWidgetContents = new QWidget(this);
+    	QVBoxLayout* dockLayout = new QVBoxLayout(dockWidgetContents);
+    	m_textBrowser = new QTextBrowser(dockWidgetContents);
+    	dockLayout->addWidget(m_textBrowser);
+    	this->setWidget(dockWidgetContents);
+    	
+    	m_socket = new QTcpSocket(this);
+    	m_socket->connectToHost("localhost",m_processWindow->getProcessPort());
+    	
+    	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
+    	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
+    }
+    
+   QtProbeConsole::~QtProbeConsole()
+   {
+	   if (m_socket)
+	   {
+	   		if(m_socket->state() == QAbstractSocket::ConnectedState) {
+		   	    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
+	    	    m_socket->write(buf.toStdString().c_str(), buf.size());
+	    	    m_socket->waitForBytesWritten();
+	   		}
+		   m_socket->close();
+		   delete m_socket;
+	   }
+   }
+    
+   void QtProbeConsole::readyRead ()
+   {
+	    //Try to read lines
+	    while (m_socket->canReadLine())
+	    {
+			QByteArray data = m_socket->readLine();			
+			QString info(data);
+			m_textBrowser->append(info);
+	    }
+   }
+    
+    void QtProbeConsole::connected()
+    {
+    	m_textBrowser->append("Connected");
+    	QString buf = QString("connect %1\n").arg(m_linkId);     	
+    	m_socket->write(buf.toStdString().c_str(), buf.size());
+    }
 	
 } //namespace FD
 
