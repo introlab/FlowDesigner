@@ -46,10 +46,12 @@ namespace FD {
         QList<QWidget*> m_valuesWidge;
         QList<QComboBox*> m_typesWidge;
         
+        QLineEdit* m_lineEdit_port;
+        
         protected:
         
         void addValues(int index, string type);
-        void validParameters();     
+        bool validParameters();     
         void setView(const std::vector<ItemInfo *> &textParams);
         void synchronizeParams(bool writeback);
         

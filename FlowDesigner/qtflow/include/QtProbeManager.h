@@ -54,7 +54,7 @@ namespace FD
 	
 		Q_OBJECT;
 	public:
-		FlowDesignerTCPServer(QtProbeManager *manager, unsigned int port = 2938);
+		FlowDesignerTCPServer(QtProbeManager *manager, unsigned int port);
 		
 		~FlowDesignerTCPServer();
 		

@@ -26,6 +26,7 @@ namespace FD
         connect(actionLoad_Document, SIGNAL(triggered()),this,SLOT(openDocumentClicked()));
 		connect(actionSave_Document, SIGNAL(triggered()),this,SLOT(saveDocumentClicked()));
 		connect(actionSaveAs_Document, SIGNAL(triggered()),this,SLOT(saveAsDocumentClicked()));
+		connect(actionConnect_Document, SIGNAL(triggered()), this, SLOT(connectDocumentClicked()));
 		connect(actionFlowDesignerInfo, SIGNAL(triggered()), this, SLOT(onInfoFlowDesignerClicked()));
     }
     
@@ -46,6 +47,8 @@ namespace FD
         actionSave_Document->setObjectName(QString::fromUtf8("actionSave_Document"));       
         actionSaveAs_Document = new QAction(this);		
         actionSaveAs_Document->setObjectName(QString::fromUtf8("actionSaveAs_Document"));
+        actionConnect_Document = new QAction(this);		
+        actionConnect_Document->setObjectName(QString::fromUtf8("actionConnect_Document"));
         
         
         actionFlowDesignerInfo = new QAction(this);
@@ -191,6 +194,8 @@ namespace FD
         menuFile->addAction(actionLoad_Document);
 		menuFile->addAction(actionSave_Document);
 		menuFile->addAction(actionSaveAs_Document);
+		menuFile->addSeparator();
+		menuFile->addAction(actionConnect_Document);
 		
 		
 		
@@ -206,6 +211,9 @@ namespace FD
         size = size.expandedTo(this->minimumSizeHint());
         resize(size);
         
+        //Create the Connect to a document dialog
+        m_connectDialog = new QtConnectDialog(this);
+        
         //QMetaObject::connectSlotsByName(this);   
     }
     
@@ -218,6 +226,7 @@ namespace FD
         actionLoad_Document->setText(QApplication::translate("QtFlowDesigner", "Load Document", 0, QApplication::UnicodeUTF8));
 		actionSave_Document->setText(QApplication::translate("QtFlowDesigner", "Save Document", 0, QApplication::UnicodeUTF8));
 		actionSaveAs_Document->setText(QApplication::translate("QtFlowDesigner", "Save Document As", 0, QApplication::UnicodeUTF8));
+		actionConnect_Document->setText(QApplication::translate("QtFlowDesigner", "Connect to a remote process", 0, QApplication::UnicodeUTF8));
 		actionNewNetwork->setText(QApplication::translate("QtFlowDesigner", "newNetwork", 0, QApplication::UnicodeUTF8));
         actionNewIteratorNetwork->setText(QApplication::translate("QtFlowDesigner", "newIteratorNetwork", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QtFlowDesigner", "Tab 1", 0, QApplication::UnicodeUTF8));
@@ -232,7 +241,7 @@ namespace FD
     void QtFlowDesigner::newProcess(UIDocument *doc)
     {
     	QtProcessWindow *processWindow = new QtProcessWindow(this,doc);
-    	processWindow->show();   	
+    	processWindow->show();
     }
     
     void QtFlowDesigner::newDocumentClicked()
@@ -276,6 +285,17 @@ namespace FD
 		} 
 		return false; //save cancelled
     }
+    
+    void QtFlowDesigner::connectDocumentClicked()
+    {
+    	if(m_connectDialog && m_connectDialog->exec())
+    	{
+    		QString host = m_connectDialog->getHost();
+    		int port = m_connectDialog->getPort();
+    		QtProcessWindow *processWindow = new QtProcessWindow(this, host, port);
+    		processWindow->show();
+    	}
+	}
     
     
     void QtFlowDesigner::newNetworkClicked()

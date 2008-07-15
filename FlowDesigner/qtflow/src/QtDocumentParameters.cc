@@ -4,7 +4,9 @@
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QLabel>
-
+#include <QGroupBox>
+#include <QMessageBox>
+#include <QSpacerItem>
 
 #include <QPushButton>
 #include <vector>
@@ -41,51 +43,68 @@ namespace FD {
 		
 		UINetwork *net = m_doc->getNetworkNamed("MAIN");
 		
-		
+		QVBoxLayout* mainLayout = new QVBoxLayout(this);
 		
 		if (net)
 		{
-
+			QGroupBox* groupNet = new QGroupBox(tr("Network"), this);
 			//This will copy MAIN parameters into m_params
 			net->insertNetParams(m_params);
 			
 			synchronizeParams(false);
 			
 			//Creating layout
-			m_vLayout = new QVBoxLayout(this);
-			m_tabWidget = new QTabWidget(this);
+			m_vLayout = new QVBoxLayout(groupNet);
+			m_tabWidget = new QTabWidget(groupNet);
 			
 			//TODO ADD CATEGORY
-			m_vLayout->addWidget(new QLabel("Category",this));
-			m_docCategory = new QLineEdit(this);
+			m_vLayout->addWidget(new QLabel("Category",groupNet));
+			m_docCategory = new QLineEdit(groupNet);
 			m_docCategory->setText(m_doc->getCategory().c_str());
 			m_vLayout->addWidget(m_docCategory);
         
 			//Tab widget
 			m_tabWidget->addTab(buildParametersTable(), "Document Parameters");
 			
-			m_docComments = new QTextEdit(this);
+			m_docComments = new QTextEdit(groupNet);
 			m_tabWidget->addTab(m_docComments,"Document Comments");
 			m_vLayout->addWidget(m_tabWidget);
         
-			
 			//Set Document comments
 			m_docComments->setText(m_doc->getComments().c_str());
-			
-			//Creating butons
-			m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel 
-					| QDialogButtonBox::Ok, Qt::Horizontal, this);
-        
-		
-			//Adding buttons to layout
-			m_vLayout->addWidget(m_buttonBox);
-        
-			connect(m_buttonBox, SIGNAL( clicked(QAbstractButton*) ), this, SLOT(buttonClicked( QAbstractButton*)) );
-        
-			//set layout & resize dialog
-			setLayout(m_vLayout);
-			resize(640,480);
+
+        	groupNet->setLayout(m_vLayout);
+        	mainLayout->addWidget(groupNet);
 		}
+		
+		QGroupBox* groupDoc = new QGroupBox(tr("Document"), this);
+		QHBoxLayout *hbox = new QHBoxLayout(groupDoc);
+		QLabel* label_port = new QLabel(tr("Port used for remotes connections and for probing : "), groupDoc);
+		hbox->addWidget(label_port);
+		m_lineEdit_port = new QLineEdit(groupDoc);
+		m_lineEdit_port->setText(QString("%1").arg(doc->getConnectionPort()));
+		m_lineEdit_port->setMaxLength(5);
+		m_lineEdit_port->setMinimumWidth(60);
+		m_lineEdit_port->setMaximumWidth(60);
+		hbox->addWidget(m_lineEdit_port);
+		QLabel* label_portRange = new QLabel(tr("(49152 through 65535)"), groupDoc);
+		hbox->addWidget(label_portRange);
+		hbox->addItem(new QSpacerItem(0,0,QSizePolicy::Expanding));
+		groupDoc->setLayout(hbox);
+		mainLayout->addWidget(groupDoc);
+		
+		//Creating butons
+		m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Cancel 
+				| QDialogButtonBox::Ok, Qt::Horizontal, this);
+	
+		//Adding buttons to layout
+		mainLayout->addWidget(m_buttonBox);
+			
+		//set layout & resize dialog
+		setLayout(mainLayout);
+		resize(640,480);
+		
+		connect(m_buttonBox, SIGNAL( clicked(QAbstractButton*) ), this, SLOT(buttonClicked( QAbstractButton*)) );
 	}
 
 	void QtDocumentParameters::synchronizeParams(bool writeback)
@@ -295,7 +314,7 @@ namespace FD {
         m_paramsLayout->addWidget(m_valuesWidge[index],index+1,3,Qt::AlignLeft | Qt::AlignTop);
     }
     
-    void QtDocumentParameters::validParameters()
+    bool QtDocumentParameters::validParameters()
     {
  
         //Valid Types
@@ -326,6 +345,21 @@ namespace FD {
         //UPDATE COMMENTS
         m_doc->setComments(m_docComments->toPlainText().toStdString());
         
+        //UPDATE CONNECTION PORT
+        int port = m_lineEdit_port->text().toInt();
+        if(port >= 49152 && port <= 65535) {
+        	if(port != m_doc->getConnectionPort()) {
+        		m_doc->setConnectionPort(port);
+        		m_doc->setModified(true);
+        	}
+        }
+        else {
+			QMessageBox::warning(this, tr("Error"), tr("-The port is invalid."), QMessageBox::Ok);
+			return false;
+        }
+        
+        return true;
+        
     }
     
     void QtDocumentParameters::buttonClicked (QAbstractButton * button )
@@ -333,8 +367,9 @@ namespace FD {
 
     	if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::Ok ))
         {
-        	validParameters();
-            close();
+        	if(validParameters()) {
+            	close();
+        	}
         }
         else if(button == (QAbstractButton*)m_buttonBox->button( QDialogButtonBox::Cancel ))
         {

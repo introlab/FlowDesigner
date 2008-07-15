@@ -267,7 +267,7 @@ namespace FD
 	QtProbeManager::QtProbeManager(QtRunContext *context)
 		: m_context(context)
 	{
-		m_server = new FlowDesignerTCPServer(this);
+		m_server = new FlowDesignerTCPServer(this, m_context->getDocument()->getConnectionPort());
 	}
 	
 	QtRunContext* QtProbeManager::getContext()

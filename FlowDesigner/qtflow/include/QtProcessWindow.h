@@ -37,38 +37,49 @@ namespace FD
         public:
         	
 	    	QtProcessWindow(QtFlowDesigner *parent, UIDocument *doc);
+	    	QtProcessWindow(QtFlowDesigner *parent, QString host, int port);
 	    	~QtProcessWindow();
-	    	void start();
-	        int getProcessPort() {return 2938;}
+	    	void start(char *mem, int size);
+	    	QString getProcessHost() const {return m_processHost;}
+	        int getProcessPort() const {return m_processPort;}
     	
         public slots:
         
+        	//Window slots
 	        void probesButtonClicked();
 	       	void stopButtonClicked();
+	       	
+	       	//Process slots
 	        void error ( QProcess::ProcessError error );
 	        void finished ( int exitCode, QProcess::ExitStatus exitStatus );
 	        void readyReadStandardError ();
 	        void readyReadStandardOutput ();
 	        void started ();
 	        void stateChanged ( QProcess::ProcessState newState );
-	        void linkProbed(int linkId);
+	        
+	        //Socket
+	        void remoteDisconnected();
 	        
 	        //Network Added
 	        void notifyNetworkAdded(const UIDocument *doc, const UINetwork* net);
+	        
+	        void linkProbed(int linkId);
 
         protected:
         	
 	    	QtFlowDesigner *m_flowdesigner;
-	    	UIDocument *m_document;
 	    	QProcess *m_process;
 	    	QTextEdit *m_textBrowser;
 	    	QTabWidget *m_tabWidget;
 	    	QDockWidget* m_mainOutputDockWidget;
         
         private:
-        	void setupUi(QMainWindow *MainWindow);
+        	void setupUi();
         	QtNetwork* addNetwork(UINetwork* net);
+        	
         	UIDocument* m_uiDocView;
+        	QString m_processHost;
+        	int m_processPort;
                	
     };
     
@@ -102,11 +113,14 @@ namespace FD
 		
 		QtProbeConsole(QtProcessWindow *parent, int linkId);
 		~QtProbeConsole();
+		void stop();
 		
 	public slots:
 	
 	 	void connected();
-	 	void readyRead ();
+	 	void readyRead();
+	 	void error(QAbstractSocket::SocketError socketError);
+	 	
 	protected:
 		
 		QtProcessWindow *m_processWindow;

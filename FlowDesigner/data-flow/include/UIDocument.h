@@ -27,6 +27,7 @@ class ParameterSet;
 class UIDocument : public Object {
 	
 public:
+	static const int DEFAULT_CONNECTION_PORT = 51115;
 	
 	class UIDocumentObserverIF
 	{
@@ -105,9 +106,11 @@ protected:
    std::string m_comments;
    
    std::list<UIDocumentObserverIF*> m_observers;
+   
+   /**Port used for remote connection and for probing*/
+   int m_connectionPort;
 
 public:
-
    /**Document constructor with name, DOES NOT load the document (document created as untitled)*/
    UIDocument(std::string _name);
 
@@ -146,6 +149,12 @@ public:
    
    /**Is the document editable?*/
    bool isEditable() {return editable;}
+   
+   /**Get the connection port*/
+   int getConnectionPort() const {return m_connectionPort;}
+   
+   /**Set the connection port*/
+   void setConnectionPort(int port) {m_connectionPort = port;}
    
    /**Add a network to the document*/
    UINetwork *addNetwork(std::string name, UINetwork::Type type);

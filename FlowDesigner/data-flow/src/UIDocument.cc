@@ -35,6 +35,7 @@ UIDocument::UIDocument(string _name)
    , docName(_name)
    , untitled(true)
    , destroyed(false)
+   , m_connectionPort(DEFAULT_CONNECTION_PORT)
 {
 }
 
@@ -251,12 +252,28 @@ void UIDocument::loadXML(xmlNodePtr root)
       category = string((char *)cat);
       free (cat);
    }
+   
+   //loading name if it exists
+   xmlChar *name = xmlGetProp(root, (xmlChar *)"docName");
+   if (name)
+   {
+   	  docName = string((char *)name);
+      free (name);
+   }
 
    //loading comments if they exists
    xmlChar *comments = xmlGetProp(root, (xmlChar *)"comments");
    if (comments)
    {
       m_comments = string((char *)comments);
+      free (comments);
+   }
+   
+   //loading port if it exists
+   xmlChar *port = xmlGetProp(root, (xmlChar *)"connectionPort");
+   if (port)
+   {
+   	  m_connectionPort = std::atoi((char *)port);
       free (comments);
    }
 
@@ -508,6 +525,9 @@ char *UIDocument::saveToMemory(int &size)
    doc = xmlNewDoc((xmlChar *)"1.0");
    doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
 
+   //saving the document name
+   xmlSetProp(doc->children, (xmlChar *)"docName", (xmlChar *)docName.c_str());
+
    //saving category if defined
    if (category!="") {
       xmlSetProp(doc->children, (xmlChar *)"category", (xmlChar *)category.c_str());
@@ -517,6 +537,11 @@ char *UIDocument::saveToMemory(int &size)
    if (m_comments!="") {
      xmlSetProp(doc->children, (xmlChar *)"comments", (xmlChar *)m_comments.c_str());
    }
+   
+   //saving the port
+   char bufPort[6] = {0};
+   sprintf(bufPort, "%d", m_connectionPort);
+   xmlSetProp(doc->children, (xmlChar *)"connectionPort", (xmlChar *)bufPort);
 
    int incId = 1;
    for (unsigned int i=0;i<networks.size();i++)

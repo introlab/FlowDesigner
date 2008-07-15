@@ -6,28 +6,81 @@
 #include <QDialog>
 #include <QMessageBox>
 
-
 namespace FD 
 {
 
 	QtProcessWindow::QtProcessWindow(QtFlowDesigner *parent, UIDocument *doc)
-	 : QMainWindow(parent), m_flowdesigner(parent), m_document(doc), m_uiDocView(NULL), m_process(NULL)
+	 : QMainWindow(parent), 
+	   m_flowdesigner(parent), 
+	   m_uiDocView(NULL), 
+	   m_process(NULL),
+	   m_processHost("localhost"), // default
+	   m_processPort(2938) // default
 	{
-		// Delete on close
-		setAttribute(Qt::WA_DeleteOnClose);		
-		
-		setupUi(this);
-		
-		//Create a new empty document
-		m_uiDocView = new UIDocument("testName");
-		
-		//Register to document events
-        m_uiDocView->registerEvents(this);
-        
-        //Disable dock animation
-        setAnimated(false);
+		// Initialize the window in process mode
+		setupUi();
 
-		start();
+		if(doc) {
+			//save to memory
+			int size = 0;
+			char* mem = doc->saveToMemory(size);
+			
+			//Add networks to the view
+			m_uiDocView->loadFromMemory(mem, size);
+			m_uiDocView->setEditable(false);
+			
+			// Get the connection port for probing
+			m_processPort = m_uiDocView->getConnectionPort();
+			
+			// Start a QtFlow process with the document
+			start(mem, size);
+			
+			this->setWindowTitle(tr("Process \"%1\"").arg(m_uiDocView->getName().c_str()));
+
+			//Free the memory
+			free(mem);
+		}
+	}
+	
+	QtProcessWindow::QtProcessWindow(QtFlowDesigner *parent, QString host, int port)
+	 : QMainWindow(parent), 
+	   m_flowdesigner(parent), 
+	   m_uiDocView(NULL), 
+	   m_process(NULL),
+	   m_processHost(host),
+	   m_processPort(port)
+	{
+		// Initialize the window
+		setupUi();
+        
+		//Get the UIDocument from the host
+		QTcpSocket* socket = new QTcpSocket(this);
+    	socket->connectToHost(m_processHost, m_processPort);
+    	if (socket->waitForConnected(3000))
+    	{
+    		connect(socket, SIGNAL(disconnected()), this, SLOT(remoteDisconnected()));
+    		m_textBrowser->append(tr("Connected."));
+	    	QString buf = QString("which\n");     	
+	    	socket->write(buf.toStdString().c_str(), buf.size());
+	    	socket->waitForBytesWritten(3000);
+	    	if(socket->waitForReadyRead(3000))
+	    	{
+	    		m_textBrowser->append(tr("UIDocument downloaded."));
+				int size = socket->bytesAvailable();
+				char* mem = new char[size];
+				socket->read(mem, size);
+				m_uiDocView->loadFromMemory(mem,size);
+				m_uiDocView->setEditable(false);
+				
+				this->setWindowTitle(tr("Remote process \"%1\"").arg(m_uiDocView->getName().c_str()));
+				
+				free(mem);
+	    	}
+    	}
+    	else
+    	{
+    		m_textBrowser->append(tr("Can't connect to host : %1:%2").arg(host).arg(port));
+    	}
 	}
 
 	QtProcessWindow::~QtProcessWindow()
@@ -52,13 +105,16 @@ namespace FD
 		}
 	}
 	
-	void QtProcessWindow::setupUi(QMainWindow *MainWindow)
+	void QtProcessWindow::setupUi()
     {
-	    MainWindow->setWindowTitle(tr("QtProcessWindow"));
-	    MainWindow->resize(700, 600);
+    	// Delete on close
+		this->setAttribute(Qt::WA_DeleteOnClose);		
+		
+	    this->setWindowTitle(tr("QtProcessWindow"));
+	    this->resize(700, 600);
 	    
-	    QWidget* centralwidget = new QWidget(MainWindow);   
-	    MainWindow->setCentralWidget(centralwidget);
+	    QWidget* centralwidget = new QWidget(this);   
+	    this->setCentralWidget(centralwidget);
 	    QVBoxLayout* mainLayout = new QVBoxLayout(centralwidget);
 	    
 	    QGroupBox* buttonGroupBox = new QGroupBox(centralwidget);
@@ -81,7 +137,7 @@ namespace FD
 	    gridLayout_4->addWidget(m_tabWidget, 0, 0, 1, 1);
 	    mainLayout->addWidget(groupBox);
 
-	    m_mainOutputDockWidget = new QDockWidget(MainWindow);
+	    m_mainOutputDockWidget = new QDockWidget(this);
 	    m_mainOutputDockWidget->setWindowTitle(tr("Main output"));
 	    m_mainOutputDockWidget->setGeometry(QRect(0, 252, 251, 150));
 	    m_mainOutputDockWidget->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable);
@@ -94,8 +150,15 @@ namespace FD
 	    m_textBrowser->setReadOnly(false);
 	    gridLayout_3->addWidget(m_textBrowser, 1, 0, 1, 1);
 	    m_mainOutputDockWidget->setWidget(dockWidgetContents);
-	    MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(8), m_mainOutputDockWidget);
-
+	    this->addDockWidget(static_cast<Qt::DockWidgetArea>(8), m_mainOutputDockWidget);
+	    
+	    //Disable dock animation
+        this->setAnimated(false);
+        
+	    //Create a new empty document
+		m_uiDocView = new UIDocument("");
+		//Register to document events
+        m_uiDocView->registerEvents(this);
     } // setupUi
 
     void QtProcessWindow::closeEvent(QCloseEvent *event)
@@ -134,12 +197,21 @@ namespace FD
     	{
     		m_process->terminate();
     	}
+    	QList<QtProbeConsole *> consoles = this->findChildren<QtProbeConsole *>();
+		for(int i=0; i<consoles.size(); i++) {
+			consoles[i]->stop();
+		}
 	}
 	
-	void QtProcessWindow::start()
+	void QtProcessWindow::remoteDisconnected()
+	{
+    	m_textBrowser->append(tr("Connection lost with the host : %1:%2").arg(m_processHost).arg(m_processPort));
+	}
+	
+	void QtProcessWindow::start(char *mem, int size)
 	{
 		
-		if (m_document)
+		if (mem && size>0)
 		{
 			//Wil launch a process with qtflow
 			m_process = new QProcess(this);
@@ -166,15 +238,7 @@ namespace FD
 			
 			QStringList args;			
 			args.append("/dev/stdin");
-			
-			//save to memory
-			int size = 0;
-			char* mem = m_document->saveToMemory(size);
-			
-			//Add networks to the view
-			m_uiDocView->loadFromMemory(mem,size);
-			m_uiDocView->setEditable(false);
-			
+
 			//Launch qtflow			
 			m_process->start(QString(INSTALL_PREFIX) + "/bin/qtflow",args);
 			m_process->write(mem,size);
@@ -182,9 +246,6 @@ namespace FD
 			//This will close stdin, enabling to exit
 			//read loop in qtflow
 			m_process->closeWriteChannel();
-			
-			//The memory was allocated in libXML (C)
-			free(mem);
 		}
 	}
 
@@ -194,38 +255,38 @@ namespace FD
     	switch(error)
     	{
     	case QProcess::FailedToStart:
-    		m_textBrowser->append("<b>Process error : FailedToStart</b>");
+    		m_textBrowser->append(tr("<b>Process error : FailedToStart</b>"));
     		break;
     		
     	case QProcess::Crashed:
-    		m_textBrowser->append("<b>Process error : Crashed</b>");
+    		m_textBrowser->append(tr("<b>Process error : Crashed</b>"));
     		break;
     		
     	case QProcess::Timedout:
-    		m_textBrowser->append("<b>Process error : Timedout</b>");
+    		m_textBrowser->append(tr("<b>Process error : Timedout</b>"));
     		break;
     	
     	case QProcess::WriteError:
-    		m_textBrowser->append("<b>Process error : Write Error</b>");
+    		m_textBrowser->append(tr("<b>Process error : Write Error</b>"));
     		break;
     	
     	case QProcess::ReadError:
-    		m_textBrowser->append("<b>Process error : ReadError</b>");
+    		m_textBrowser->append(tr("<b>Process error : ReadError</b>"));
     		break;
     	
     	case QProcess::UnknownError:
-    		m_textBrowser->append("<b>Process error : UnknownError</b>");
+    		m_textBrowser->append(tr("<b>Process error : UnknownError</b>"));
     		break;
 
     	default:
-    		m_textBrowser->append("<b>Process error, unknown cause.</b>");
+    		m_textBrowser->append(tr("<b>Process error, unknown cause.</b>"));
     		break;
     	}
     }
     
     void QtProcessWindow::finished ( int exitCode, QProcess::ExitStatus exitStatus )
     {
-    	m_textBrowser->append(QString("<b>Finished wih exit code :") + QString::number(exitCode) + QString("</b>"));
+    	m_textBrowser->append(tr("<b>Finished wih exit code : %1</b>").arg(exitCode));
     }
     
     void QtProcessWindow::readyReadStandardError ()
@@ -254,7 +315,7 @@ namespace FD
     
     void QtProcessWindow::started ()
     {
-    	m_textBrowser->append("<b>Process started</b>");
+    	m_textBrowser->append(tr("<b>Process started</b>"));
     }
     
     void QtProcessWindow::stateChanged ( QProcess::ProcessState newState )
@@ -293,7 +354,7 @@ namespace FD
     	
     	//add this network
     	addNetwork(const_cast<UINetwork*>(net));   	
-    }
+    }   
 	
 	//========================================
 	// QtProbesDialog stuff
@@ -306,7 +367,7 @@ namespace FD
     	m_mainLayout->addWidget(m_textEdit);
     	
     	m_socket = new QTcpSocket(this);
-    	m_socket->connectToHost("localhost",m_processWindow->getProcessPort());
+    	m_socket->connectToHost(m_processWindow->getProcessHost(),m_processWindow->getProcessPort());
     	
     	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
     	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
@@ -334,7 +395,7 @@ namespace FD
     
     void QtProbesDialog::connected()
     {
-    	m_textEdit->append("Connected");   	
+    	m_textEdit->append(tr("Connected"));   	
     	m_socket->write("list\n\r",6);
     }
     
@@ -344,7 +405,7 @@ namespace FD
 	QtProbeConsole::QtProbeConsole(QtProcessWindow *parent, int linkId)
     	: QDockWidget(parent), m_processWindow(parent), m_socket(NULL), m_linkId(linkId)
     {
-    	this->setWindowTitle(QString(tr("Link %1")).arg(linkId));
+    	this->setWindowTitle(tr("Link %1").arg(linkId));
 	    this->setGeometry(QRect(0, 252, 251, 150));
 	    this->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetClosable);
 	    this->setAttribute(Qt::WA_DeleteOnClose);
@@ -356,42 +417,78 @@ namespace FD
     	this->setWidget(dockWidgetContents);
     	
     	m_socket = new QTcpSocket(this);
-    	m_socket->connectToHost("localhost",m_processWindow->getProcessPort());
+    	m_socket->connectToHost(m_processWindow->getProcessHost(),m_processWindow->getProcessPort());
     	
     	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
     	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
+    	connect(m_socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(error(QAbstractSocket::SocketError)));
     }
     
-   QtProbeConsole::~QtProbeConsole()
-   {
-	   if (m_socket)
-	   {
-	   		if(m_socket->state() == QAbstractSocket::ConnectedState) {
-		   	    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
-	    	    m_socket->write(buf.toStdString().c_str(), buf.size());
-	    	    m_socket->waitForBytesWritten();
-	   		}
-		   m_socket->close();
-		   delete m_socket;
-	   }
-   }
+    QtProbeConsole::~QtProbeConsole()
+    {
+		if (m_socket)
+	    {
+			if(m_socket->state() == QAbstractSocket::ConnectedState) {
+			    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
+			    m_socket->write(buf.toStdString().c_str(), buf.size());
+			    m_socket->waitForBytesWritten();
+			}
+		    m_socket->close();
+		    delete m_socket;
+	    }
+    }
+   
+    void QtProbeConsole::stop()
+    {
+    	m_textBrowser->append(tr("Stopped."));
+		if(m_socket->state() == QAbstractSocket::ConnectedState) {
+	   	    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
+    	    m_socket->write(buf.toStdString().c_str(), buf.size());
+    	    m_socket->waitForBytesWritten();
+   		}
+   		m_socket->close();
+    }
     
-   void QtProbeConsole::readyRead ()
-   {
-	    //Try to read lines
+    void QtProbeConsole::readyRead ()
+    {
+		//Try to read lines
 	    while (m_socket->canReadLine())
 	    {
 			QByteArray data = m_socket->readLine();			
 			QString info(data);
 			m_textBrowser->append(info);
 	    }
-   }
+    }
     
     void QtProbeConsole::connected()
     {
-    	m_textBrowser->append("Connected");
+    	m_textBrowser->append(tr("Connected"));
     	QString buf = QString("connect %1\n").arg(m_linkId);     	
     	m_socket->write(buf.toStdString().c_str(), buf.size());
+    }
+    
+    void QtProbeConsole::error(QAbstractSocket::SocketError socketError)
+    {
+    	switch(socketError)
+    	{
+	    	case QAbstractSocket::ConnectionRefusedError:
+	    		m_textBrowser->append(tr("Host unavailable."));
+	    		break;
+	    	case QAbstractSocket::RemoteHostClosedError:
+	    		m_textBrowser->append(tr("Connection lost."));
+	    		break;
+	    	case QAbstractSocket::HostNotFoundError:
+	    		m_textBrowser->append(tr("Host not found."));
+	    		break;
+	    	default:
+	    		m_textBrowser->append(tr("QTcpSocket: Unknown error occured!"));
+	    		break;
+    	}
+    	
+    	if(m_socket)
+    	{
+	    	m_socket->close();
+    	}
     }
 	
 } //namespace FD

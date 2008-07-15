@@ -23,6 +23,7 @@
 #include <string>
 #include "QtIORedirector.h"
 #include "QtDocument.h"
+#include "QtConnectDialog.h"
 
 namespace FD
 {
@@ -57,6 +58,7 @@ namespace FD
         void openDocumentClicked();               
         bool saveDocumentClicked();
         bool saveAsDocumentClicked();
+        void connectDocumentClicked();
         void onInfoFlowDesignerClicked();
 
         protected:
@@ -71,6 +73,7 @@ namespace FD
         QAction *actionLoad_Document;
         QAction *actionSave_Document;
         QAction *actionSaveAs_Document;
+        QAction *actionConnect_Document;
         
         
         QAction *actionNewNetwork;
@@ -97,6 +100,8 @@ namespace FD
         QStatusBar *statusbar;
         QtNodeTreeView *m_treeView;
         QWorkspace *m_workspace; 
+        
+        QtConnectDialog *m_connectDialog;
         
         QTextEdit *m_coutTextEdit;
         QTextEdit *m_cerrTextEdit;

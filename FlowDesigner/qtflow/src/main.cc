@@ -1,16 +1,18 @@
 //Copyright (C) 2006 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca) 
 
+#include <streambuf>
+#include <QApplication>
+#include <QThread>
+#include <QObject>
+#include <QMessageBox>
 #include "QtFlowDesigner.h"
 #include "QtDLManager.h"
-#include <QApplication>
+#include "QtFlowDesignerSplash.h"
+#include "QtIORedirector.h"
 #include "path.h"
 #include "BaseException.h"
 #include "UINodeRepository.h"
-#include "QtFlowDesignerSplash.h"
-#include <QObject>
-#include <QMessageBox>
-#include "QtIORedirector.h"
-#include <streambuf>
+
 //#include "iextensions.h"
 
 using namespace FD;
@@ -68,6 +70,7 @@ int main(int argc, char* argv[])
 		splash.show();
 		splash.showMessage("Starting FlowDesigner...");
 		
+		
 		//IExtensions::detect();
 		
 		//Load dynamic libraries
@@ -76,6 +79,7 @@ int main(int argc, char* argv[])
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
         
+		//Main window
 		QtFlowDesigner fd;
 		
 		//QObject::connect(&redirector_cerr,SIGNAL(newOutput(const char*, std::streamsize)),&fd,SLOT(newStderrOutput(const char *, std::streamsize)));
@@ -85,9 +89,9 @@ int main(int argc, char* argv[])
         {
             fd.loadDocument(argv[i]);
         }
-       
+
         fd.show();
-		
+		splash.finish(&fd);
         return app.exec();      
 		
    	} 

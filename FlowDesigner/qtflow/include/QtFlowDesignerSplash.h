@@ -18,9 +18,6 @@ namespace FD
 		
 	public slots:
 		void displayMessage(QString message);
-	
-	protected:
-		void timerEvent(QTimerEvent *event);
 	};
 
 }

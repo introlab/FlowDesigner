@@ -54,6 +54,7 @@ SET(QTFLOW_HEADERS
 	../include/QtFlowDesignerSplash.h
 	../include/QtProbeManager.h
 	../include/QtIORedirector.h
+    ../include/QtConnectDialog.h
 )
 
 #This will generate moc_* for Qt
