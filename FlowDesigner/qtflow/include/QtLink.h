@@ -17,7 +17,7 @@ namespace FD
     class QtTerminal;
     class UILink;
     
-    class QtLink : public QObject, public QGraphicsItem
+    class QtLink : public QObject, public QGraphicsLineItem
     {
         
     	Q_OBJECT;
@@ -47,8 +47,9 @@ namespace FD
         
 	        void nodePositionChanged(float x, float y);
 	        
-	        protected:
-	        QRectF boundingRect() const;
+	    protected:
+	        virtual QRectF boundingRect() const;
+	        virtual QPainterPath shape() const;
 	        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 	        QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 	        
@@ -64,8 +65,7 @@ namespace FD
 	        QtTerminal *m_dest;
 	        UILink *m_uiLink;
 	        qreal arrowSize;
-	        
-	        qreal m_penWidth;
+	        QPolygonF m_arrowHead;
     };
     
 }//namespace FD

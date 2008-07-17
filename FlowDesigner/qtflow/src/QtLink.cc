@@ -22,12 +22,13 @@ namespace FD
     static double TwoPi = 2.0 * Pi;
     
     QtLink::QtLink(QtTerminal * source, QtTerminal * dest, UILink* uiLink)
-    : m_source(source), m_dest(dest), arrowSize(10), m_uiLink(uiLink), m_penWidth(1)
+    : m_source(source), m_dest(dest), arrowSize(10), m_uiLink(uiLink)
     {
         //setAcceptedMouseButtons(0);
         setFlag(ItemIsSelectable);
         adjust();
         setAcceptsHoverEvents(true);
+        setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     }
     
     QtLink::~QtLink()
@@ -68,8 +69,7 @@ namespace FD
         if (!m_source || !m_dest)
             return QRectF();
         
-        qreal penWidth = 1;
-        qreal extra = (penWidth + arrowSize)/2;
+        qreal extra = (pen().width() + arrowSize)/2;
         
         return QRectF(m_sourcePoint, QSizeF(m_destPoint.x() - m_sourcePoint.x(),
         m_destPoint.y() - m_sourcePoint.y()))
@@ -77,35 +77,44 @@ namespace FD
         .adjusted(-extra, -extra, extra, extra);
     }
     
+    QPainterPath QtLink::shape() const
+    {
+    	QPainterPath path = QGraphicsLineItem::shape();
+     	path.addPolygon(m_arrowHead);
+     	path.addEllipse(m_sourcePoint.x(), m_sourcePoint.y(), pen().width()*2, pen().width()*2);
+     	return path;
+    }
+    
     void QtLink::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     {
         if (!m_source || !m_dest)
             return;
-        QPen pen = QPen(Qt::black, m_penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
-        // Draw the line itself
-        QLineF line(m_sourcePoint, m_destPoint);
-        painter->setPen(pen);
-        painter->drawLine(line);
+		//Set Line
+		QLineF lineBuf(m_sourcePoint, m_destPoint);
+		setLine(lineBuf);
+		
+		//Set painter pen and brush color
+        painter->setPen(pen());
+        painter->setBrush(pen().color());
         
-        // Draw the arrows if there's enough room
-        double angle = ::acos(line.dx() / line.length());
-        if (line.dy() >= 0)
+        // Make an arrow head
+        double angle = ::acos(line().dx() / line().length());
+        if (line().dy() >= 0)
             angle = TwoPi - angle;
         
-        /*QPointF sourceArrowP1 = m_sourcePoint + QPointF(sin(angle + Pi / 3) * arrowSize,
-        cos(angle + Pi / 3) * arrowSize);
-        QPointF sourceArrowP2 = m_sourcePoint + QPointF(sin(angle + Pi - Pi / 3) * arrowSize,
-        cos(angle + Pi - Pi / 3) * arrowSize);*/
-        QPointF destArrowP1 = m_destPoint + QPointF(sin(angle - Pi / 3) * arrowSize,
+        QPointF destArrowP1 = line().p2() + QPointF(sin(angle - Pi / 3) * arrowSize,
         cos(angle - Pi / 3) * arrowSize);
-        QPointF destArrowP2 = m_destPoint + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
+        QPointF destArrowP2 = line().p2() + QPointF(sin(angle - Pi + Pi / 3) * arrowSize,
         cos(angle - Pi + Pi / 3) * arrowSize);
         
-        painter->setBrush(pen.color());
-       /* painter->drawPolygon(QPolygonF() << line.p1() << sourceArrowP1 << sourceArrowP2);*/
-        painter->drawEllipse(m_sourcePoint, m_penWidth*2, m_penWidth*2);
-        painter->drawPolygon(QPolygonF() << line.p2() << destArrowP1 << destArrowP2);
+        m_arrowHead.clear();
+        m_arrowHead << line().p2() << destArrowP1 << destArrowP2;
+
+		// Draw the arrow
+        painter->drawLine(line()); 
+        painter->drawEllipse(line().p1(), pen().width()*2, pen().width()*2);
+        painter->drawPolygon(m_arrowHead);
     }
     
     QVariant QtLink::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -114,11 +123,15 @@ namespace FD
         {   
             if(value.toBool())
             {
-                m_penWidth = 3;
+                QPen aPen = pen();
+    			aPen.setWidth(3);
+	    		setPen(aPen);
             }               
             else
             {
-                m_penWidth = 1;
+                QPen aPen = pen();
+    			aPen.setWidth(1);
+	    		setPen(aPen);
             }
         }
         return QGraphicsItem::itemChange(change, value);
@@ -133,7 +146,9 @@ namespace FD
     {
     	if(!isSelected())
     	{
-	    	m_penWidth = 2;
+	    	QPen aPen = pen();
+    		aPen.setWidth(2);
+	    	setPen(aPen);
 	    	this->update();
     	}
     }
@@ -141,7 +156,9 @@ namespace FD
     void QtLink::hoverLeaveEvent ( QGraphicsSceneHoverEvent * event ) 
     {
     	if(!isSelected()) {
-	    	m_penWidth = 1;
+    		QPen aPen = pen();
+    		aPen.setWidth(1);
+	    	setPen(aPen);
 	    	this->update();
     	}
     }
