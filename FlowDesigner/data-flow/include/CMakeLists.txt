@@ -74,6 +74,7 @@ SET(DATAFLOW_HEADERS
 	Power.h
 	UINote.h
       JitterMatrix.h
+	PosixMutexLocker.h
 )
 
 INSTALL(FILES ${DATAFLOW_HEADERS} DESTINATION include/flowdesigner)

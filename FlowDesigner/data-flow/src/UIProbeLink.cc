@@ -3,6 +3,7 @@
 #include "Network.h"
 #include "BufferedNode.h"
 #include <sstream>
+#include "PosixMutexLocker.h"
 
 namespace FD
 {
@@ -15,6 +16,8 @@ namespace FD
 	{
 		if (client)
 		{
+			//LOCK THE OBSERVERS LIST, WILL BE UNLOCKED IN PosixMutexLocker DESTRUCTOR
+			PosixMutexLocker locker(&m_mutex);
 			m_observers.push_back(client);
 		}
 	}
@@ -22,7 +25,9 @@ namespace FD
 	void UIProbeLinkNode::unregisterIF(UIObserverIF* client)
 	{
 		if (client)
-		{
+		{	
+			//LOCK THE OBSERVERS LIST, WILL BE UNLOCKED IN PosixMutexLocker DESTRUCTOR
+			PosixMutexLocker locker(&m_mutex);
 			m_observers.remove(client);
 		}
 			
@@ -33,12 +38,24 @@ namespace FD
 	{
 		m_inputID = addInput("INPUT");
 		m_outputID = addOutput("OUTPUT");
+
+		//Mutex init
+		pthread_mutex_init(&m_mutex,NULL);
+	}
+
+	UIProbeLinkNode::~UIProbeLinkNode()
+	{
+		//Mutex destroy
+		pthread_mutex_destroy(&m_mutex);
 	}
 
 	void UIProbeLinkNode::calculate(int output_id, int count, Buffer &out)
 	{
 		//GET INPUT
   		ObjectRef ReturnValue = getInput(m_inputID, count);
+		
+		//LOCK THE OBSERVERS LIST, WILL BE UNLOCKED IN PosixMutexLocker DESTRUCTOR
+		PosixMutexLocker locker(&m_mutex);
 		
 		//NOTIFY OBSERVERS
   		for(list<UIObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -80,7 +97,6 @@ namespace FD
 
 	UIProbeLink::~UIProbeLink()
 	{
-		//SOMETHING TO DO ?
 	}
 	
 	void UIProbeLink::saveXML(xmlNode *root, int newId)

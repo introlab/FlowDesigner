@@ -9,6 +9,7 @@
 #include "BufferedNode.h"
 #include <list>
 #include <map>
+#include <pthread.h>
 
 namespace FD {
 
@@ -41,6 +42,12 @@ namespace FD {
 		void unregisterIF(UIObserverIF* client);
 	
 		UIProbeLinkNode(std::string nodeName, ParameterSet params);
+		
+		~UIProbeLinkNode();
+		
+		private:
+		
+		pthread_mutex_t m_mutex;
 	
 	}; 
 
