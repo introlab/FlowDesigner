@@ -164,6 +164,11 @@ IF(UNIX)
 
 ENDIF(UNIX)
 
+IF (WIN32)
+	SET (WIN32_ADDITIONAL_LIBRARIES
+		-LC:/Dev-Cpp/lib -lpthreadGC2
+	)
+ENDIF (WIN32)
 
 INCLUDE_DIRECTORIES(../include ${LIBXML2_INCLUDE_DIR})
 	
@@ -173,10 +178,10 @@ add_library(libflow-dynamic SHARED ${FULL_SRCS})
 	
 set_target_properties(libflow-dynamic PROPERTIES VERSION ${CPACK_PACKAGE_VERSION} SOVERSION ${CPACK_PACKAGE_VERSION} OUTPUT_NAME flow)
 
-target_link_libraries(libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES})
+target_link_libraries(libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES} ${WIN32_ADDITIONAL_LIBRARIES})
 
 add_executable(batchflow batchflow.cc)
-target_link_libraries(batchflow libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES})
+target_link_libraries(batchflow libflow-dynamic ${LIBXML2_LIBRARIES} ${UNIX_ADDITIONAL_LIBRARIES} ${WIN32_ADDITIONAL_LIBRARIES})
 
 
 
