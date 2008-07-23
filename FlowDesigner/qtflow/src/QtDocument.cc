@@ -342,7 +342,7 @@ namespace FD
 		if(m_uiDoc && m_uiDoc->isModified())
  		{
 			int ret = QMessageBox::warning(this, tr("QtDocument"),
-	                       tr(QString("The document : '%1' was modified.\nDo you want to save the changes?").arg(m_name.c_str()).toStdString().c_str()),
+	                       tr("The document : '%1' was modified.\nDo you want to save the changes?").arg(m_name.c_str()),
 	                       QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
 	                       QMessageBox::Cancel);
 	        if(ret == QMessageBox::Yes && m_flowdesigner) {

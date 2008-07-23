@@ -43,6 +43,9 @@ void FDMsgHandler(QtMsgType type, const char *msg)
 
 int main(int argc, char* argv[])
 {
+	// Init resource
+    Q_INIT_RESOURCE(flowdesigner);
+    
 	//This will popup messages if required
 	qInstallMsgHandler(FDMsgHandler);
 	

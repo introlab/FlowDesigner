@@ -12,7 +12,8 @@ include(${QT_USE_FILE})
 
 SET(QTFLOW_SRCS 
 	QtLink.cc  
-	QtNetwork.cc  
+	QtNetwork.cc
+    QtNetworkScene.cc  
 	QtNode.cc 
 	QtTerminal.cc
 	QtFlowDesigner.cc
@@ -27,7 +28,16 @@ SET(QTFLOW_SRCS
 	QtDocumentParameters.cc
 	QtFlowDesignerSplash.cc
 	QtProbeManager.cc
+    ./iconeditor/QtIconEditor.cc
+    ./iconeditor/QtIconItem.cc
+    ./iconeditor/QtIconScene.cc
+    ./iconeditor/QtRectItem.cc
+    ./iconeditor/QtLineItem.cc
+    ./iconeditor/QtEllipseItem.cc
+    ./iconeditor/QtPolygonItem.cc
+    ./iconeditor/QtVertex.cc
 )
+
 SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
     QtListenJitterMatrix.cc
@@ -39,6 +49,7 @@ SET(FDQTTCP_SRCS
 SET(QTFLOW_HEADERS 
 	../include/QtLink.h
 	../include/QtNetwork.h
+    ../include/QtNetworkScene.h
 	../include/QtNode.h
 	../include/QtTerminal.h
 	../include/QtFlowDesigner.h
@@ -55,7 +66,20 @@ SET(QTFLOW_HEADERS
 	../include/QtProbeManager.h
 	../include/QtIORedirector.h
     ../include/QtConnectDialog.h
+    ../include/iconeditor/QtIconEditor.h
+    ../include/iconeditor/QtIconItem.h
+    ../include/iconeditor/QtIconScene.h
+    ../include/iconeditor/QtRectItem.h
+    ../include/iconeditor/QtLineItem.h
+    ../include/iconeditor/QtEllipseItem.h
+    ../include/iconeditor/QtPolygonItem.h
+    ../include/iconeditor/QtVertex.h
 )
+
+SET(QTFLOW_RCCS ../flowdesigner.qrc)
+
+# generate rules for building source files from the resources
+QT4_ADD_RESOURCES(QTFLOW_RCC_SRCS ${QTFLOW_RCCS})
 
 #This will generate moc_* for Qt
 QT4_WRAP_CPP(QTFLOW_MOC_SRCS ${QTFLOW_HEADERS})
@@ -73,10 +97,10 @@ IF(APPLE)
      SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "0.9.1")
      SET(MACOSX_BUNDLE_BUNDLE_VERSION "0.9.1")
      SET(MACOSX_BUNDLE_COPYRIGHT "Dominic Letourneau, Jean-Marc Valin") 
-     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
+     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS})
     #install( FILES ../icons/FlowDesignerIcon.icns DESTINATION /Applications/flowdesigner.app/Contents/Resources)
 ELSE(APPLE)
-    add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} )
+    add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS})
 ENDIF(APPLE)
 
 # create an executable file named "qtflow" from the source files 

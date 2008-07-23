@@ -4,16 +4,20 @@
 #include "QtNetwork.h"
 #include "QtTerminal.h"
 #include "QtNodeParameters.h"
+#include "iconeditor/QtIconEditor.h"
 #include <QRectF>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
 #include <QtGui/QGraphicsView>
+#include <QDir>
+#include <QFile>
 #include <iostream>
 #include <algorithm>
 #include "UINode.h"
 #include "UITerminal.h"
+#include "UIDocument.h"
 #include <QGraphicsSvgItem>
 #include <QGraphicsRectItem>
 
@@ -46,12 +50,17 @@ namespace FD
                        
             //Svg icon loading
             NodeInfo *nInfo = UINodeRepository::Find(m_uiNode->getType());
-            
+            // TODO set it in user preference
+            QString userIcon = QDir::homePath() + QDir::separator() + QString(".flowdesigner") + QDir::separator() + "icons" + QDir::separator() + m_uiNode->getType().c_str() + ".svg";
             if (nInfo && nInfo->icon != "")
             {
             	//SVG ICON
         		//cerr<<"Found icon : "<<nInfo->icon<<endl;
         		m_internalItem = new QGraphicsSvgItem(QString(FD_ICONS_PATH) + QString("/") + QString(nInfo->icon.c_str()), this);
+            }
+            else if(QFile::exists(userIcon))
+            {
+            	m_internalItem = new QGraphicsSvgItem(userIcon, this);
             }
             else
             {
@@ -428,7 +437,56 @@ namespace FD
     	return NULL;
     }
     
-
+    void QtNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event )
+    {
+    	if(m_uiNode && m_uiNode->getNetwork()->getDocument()->isEditable()) {
+	    	QMenu popupMenu(tr("Node edit"));
+	    	QAction* editProperties = popupMenu.addAction(QString(tr("Edit properties")));
+	    	QAction* editIcon = popupMenu.addAction(QString(tr("Edit icon")));
+	        
+	        QAction* action = popupMenu.exec(QCursor::pos());
+	        if(action) {
+        		if(action == editProperties) {
+        			if (m_uiNode) {
+						QtNodeParameters params(m_uiNode);
+		                
+						params.exec();
+		                
+						event->accept();
+						
+						//TODO Can we do that better?
+						//get network for possible interface change
+						UINetwork* net = m_uiNode->getNetwork();
+						if (net)
+							net->interfaceChangeNotify();
+						
+					}
+        		}
+        		else if(action == editIcon) {
+        			QString iconName(m_uiNode->getType().c_str());
+        			//Create svgeditor
+        			QtIconEditor* iconEditor = new QtIconEditor(iconName, graph);
+        			connect(iconEditor, SIGNAL(iconSaved(QString)), this, SLOT(iconSaved(QString)));
+        			iconEditor->show();
+        		}
+        	}
+	        
+	        event->accept();
+    	}
+    }
     
-
+    void QtNode::iconSaved(QString path)
+    {
+    	if(m_internalItem) {
+    		delete m_internalItem;
+    	}
+    	if(path.isEmpty()) {
+    		m_internalItem = new QGraphicsRectItem(0,0,30,30,this);
+        	dynamic_cast<QGraphicsRectItem*>(m_internalItem)->setBrush(QBrush(Qt::green));
+    	}
+    	else {
+    		m_internalItem = new QGraphicsSvgItem(path, this);
+    	}
+    	m_internalItem->update();
+    }
 }//namespace FD

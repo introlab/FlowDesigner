@@ -33,6 +33,9 @@ namespace FD
         ~QtNetwork();
         
         const std::string getName() const;
+        
+        //Network
+        UINetwork* getUINetWork() {return m_uiNetwork;}
 
         //Node
         QtNode* addNode(UINode* node);
@@ -96,7 +99,6 @@ namespace FD
         virtual void mouseReleaseEvent (QMouseEvent * e);
         void keyPressEvent(QKeyEvent *event);
         void wheelEvent(QWheelEvent *event);
-        void contextMenuEvent(QContextMenuEvent *event);
         virtual void mouseDoubleClickEvent ( QMouseEvent * e );
         QContextMenuEvent *m_contextMenuEvent;
         QMenu* menu;
@@ -126,9 +128,8 @@ namespace FD
         
         public slots:
         void linkProbed(int linkId) {emit signalLinkProbed(linkId);}
+        void menuTriggered(QAction* action, const QPointF &pos);
         
-        protected slots:
-        void menuTriggered(QAction* action);
         
 		
 		

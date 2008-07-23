@@ -15,7 +15,7 @@ namespace FD
 	   m_uiDocView(NULL), 
 	   m_process(NULL),
 	   m_processHost("localhost"), // default
-	   m_processPort(2938) // default
+	   m_processPort(51115) // default
 	{
 		// Initialize the window in process mode
 		setupUi();

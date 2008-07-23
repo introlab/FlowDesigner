@@ -1,4 +1,5 @@
-#finding qt
+#finding qt (last version from CVS)
+INCLUDE (  ${FLOWDESIGNER_SOURCE_DIR}/macros/FindQt4.cmake  )
 find_package(Qt4 REQUIRED)
 
 

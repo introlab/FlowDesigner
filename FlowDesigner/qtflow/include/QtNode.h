@@ -24,9 +24,9 @@ namespace FD
     class UITerminal;
     class UINode;
     
-    class QtNode : public QGraphicsRectItem, public UINode::UINodeObserverIF
+    class QtNode : public QObject, public QGraphicsRectItem, public UINode::UINodeObserverIF
     {
-      
+    	Q_OBJECT;
         
         public:
         
@@ -72,6 +72,9 @@ namespace FD
         void positionChanged(float x, float y);
         
         void redrawNode();
+        
+        public slots:
+        	void iconSaved(QString path);
 
         protected:
         
@@ -80,7 +83,8 @@ namespace FD
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
         void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-        void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event);
+        void mouseDoubleClickEvent (QGraphicsSceneMouseEvent * event);
+        void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
         
         UINode *m_uiNode;
         QGraphicsTextItem *m_nameItem;

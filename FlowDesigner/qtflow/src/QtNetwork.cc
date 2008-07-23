@@ -4,6 +4,7 @@
 #include "QtLink.h"
 #include "QtNode.h"
 #include "UILink.h"
+#include "QtNetworkScene.h"
 
 #include <QDebug>
 #include <QGraphicsScene>
@@ -34,7 +35,7 @@ namespace FD
     : m_doc(doc), m_uiNetwork(uiNetwork)
     {
         //Creating graphics scene
-        QGraphicsScene* scene = new QGraphicsScene(this);
+        QtNetworkScene* scene = new QtNetworkScene(this);
         scene->setItemIndexMethod(QGraphicsScene::NoIndex);
         //scene->setSceneRect(-400, -400, 400, 400);
         setScene(scene);
@@ -174,37 +175,7 @@ namespace FD
         }
     }
     
-    void QtNetwork::contextMenuEvent(QContextMenuEvent *event)
-    {
-        if(m_uiNetwork && !m_uiNetwork->getDocument()->isEditable()) {
-        	event->ignore();
-        }
-        else {
-	        m_contextMenuEvent = event;
-	        std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
-	        menu = new QMenu(this);
-	        menu->setTitle(tr("SubNetwork")); 
-	        for( unsigned int i=0; i < network.size(); i++ )            
-	        {
-	        	if (network[i]->getName() != m_uiNetwork->getName())
-	        	{
-	        		menu->addAction( new QAction(network[i]->getName().c_str(), this) );
-	        	}
-	        }
-	        
-	        connect(menu, SIGNAL(triggered(QAction*)) ,this, SLOT( menuTriggered(QAction*) ) ); 
-	        
-	        menu->exec(event->globalPos());
-	        
-	        //QtNode* newQtNode = new QtNode(this);
-	        //scene()->addItem(newQtNode);
-	        //newQtNode->setPos(mapToScene(event->pos()));
-	        event->accept();
-        }
-        QGraphicsView::contextMenuEvent(event);
-    }
-    
-    void QtNetwork::menuTriggered(QAction* action)
+    void QtNetwork::menuTriggered(QAction* action, const QPointF &pos)
     {
      
         std::vector<UINetwork *> network = m_uiNetwork->getDocument()->get_networks();
@@ -214,8 +185,6 @@ namespace FD
         
         networkname << action->text().toStdString() << "_" << number++;
         
-        
-        QPointF pos = mapToScene(m_contextMenuEvent->pos());
         UINode* node = m_uiNetwork->newNode(m_uiNetwork
         , networkname.str()
         , action->text().toStdString()
