@@ -431,7 +431,7 @@ namespace FD
 			if(m_socket->state() == QAbstractSocket::ConnectedState) {
 			    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
 			    m_socket->write(buf.toStdString().c_str(), buf.size());
-			    m_socket->waitForBytesWritten();
+			    m_socket->flush();
 			}
 		    m_socket->close();
 		    delete m_socket;
@@ -444,7 +444,7 @@ namespace FD
 		if(m_socket->state() == QAbstractSocket::ConnectedState) {
 	   	    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
     	    m_socket->write(buf.toStdString().c_str(), buf.size());
-    	    m_socket->waitForBytesWritten();
+    	    m_socket->flush();
    		}
    		m_socket->close();
     }
