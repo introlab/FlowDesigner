@@ -13,7 +13,7 @@ include(${QT_USE_FILE})
 SET(QTFLOW_SRCS 
 	QtLink.cc  
 	QtNetwork.cc
-    QtNetworkScene.cc  
+    	QtNetworkScene.cc  
 	QtNode.cc 
 	QtTerminal.cc
 	QtFlowDesigner.cc
@@ -49,7 +49,7 @@ SET(FDQTTCP_SRCS
 SET(QTFLOW_HEADERS 
 	../include/QtLink.h
 	../include/QtNetwork.h
-    ../include/QtNetworkScene.h
+    	../include/QtNetworkScene.h
 	../include/QtNode.h
 	../include/QtTerminal.h
 	../include/QtFlowDesigner.h
@@ -65,15 +65,16 @@ SET(QTFLOW_HEADERS
 	../include/QtFlowDesignerSplash.h
 	../include/QtProbeManager.h
 	../include/QtIORedirector.h
-    ../include/QtConnectDialog.h
-    ../include/iconeditor/QtIconEditor.h
-    ../include/iconeditor/QtIconItem.h
-    ../include/iconeditor/QtIconScene.h
-    ../include/iconeditor/QtRectItem.h
-    ../include/iconeditor/QtLineItem.h
-    ../include/iconeditor/QtEllipseItem.h
-    ../include/iconeditor/QtPolygonItem.h
-    ../include/iconeditor/QtVertex.h
+    	../include/QtConnectDialog.h
+    	../include/iconeditor/QtIconEditor.h
+    	../include/iconeditor/QtIconItem.h
+    	../include/iconeditor/QtIconScene.h
+    	../include/iconeditor/QtRectItem.h
+    	../include/iconeditor/QtLineItem.h
+    	../include/iconeditor/QtEllipseItem.h
+    	../include/iconeditor/QtPolygonItem.h
+    	../include/iconeditor/QtVertex.h
+	../include/QtProbeRegistry.h
 )
 
 SET(QTFLOW_RCCS ../flowdesigner.qrc)

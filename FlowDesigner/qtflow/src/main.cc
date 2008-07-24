@@ -12,7 +12,7 @@
 #include "path.h"
 #include "BaseException.h"
 #include "UINodeRepository.h"
-
+#include "QtProbeRegistry.h"
 //#include "iextensions.h"
 
 using namespace FD;
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 	try 
 	{
 		//Main application
-        QApplication app(argc, argv);
+		QApplication app(argc, argv);
             
 		//Show splash screen
 		QtFlowDesignerSplash splash;
@@ -72,8 +72,8 @@ int main(int argc, char* argv[])
 		
 		splash.show();
 		splash.showMessage("Starting FlowDesigner...");
-		
-		
+				
+		QtProbeRegistry reg;
 		//IExtensions::detect();
 		
 		//Load dynamic libraries
@@ -81,7 +81,8 @@ int main(int argc, char* argv[])
 		
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
-        
+       
+ 
 		//Main window
 		QtFlowDesigner fd;
 		
