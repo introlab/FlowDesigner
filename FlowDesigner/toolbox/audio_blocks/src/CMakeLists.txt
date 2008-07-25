@@ -79,7 +79,6 @@ SET(AUDIO_SRCS
 	lsp.c
 	LSP2LPC.cc
 	LPC2LSP.cc
-    Sound.cc
     WavInputSound.cc
 )	
 
@@ -90,6 +89,11 @@ IF(UNIX)
             ALSASound.cc
         )
     ENDIF(LIBALSA_FOUND)
+
+	#ONLY ON UNIX
+	SET(AUDIO_SRCS ${AUDIO_SRCS}
+		Sound.cc
+	)
 ENDIF(UNIX)
 
 IF(LIBALSA_FOUND)
