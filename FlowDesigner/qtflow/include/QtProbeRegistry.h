@@ -255,12 +255,14 @@ namespace FD
 		}
 	};
 		
+
 	#define DECLARE_PROBE(ProbeClass) static int dummy_probe_initializer_for_ ## ProbeClass = \
 		QtProbeRegistry::registerFactory(# ProbeClass, new QtProbeFactory<ProbeClass>());
 	
-	static int count = 0; // Used to generate unique dummy initializer name
-	#define DECLARE_PROBE_ALLOWED_DATA_TYPE(ProbeClass, DataType) static int dummy_probe_initializer_for_ ## ProbeClass ## count = \
-		QtProbeRegistry::addAllowedDataType(# ProbeClass, DataType) + count++;
+	extern int probe_id_count;
+	
+	#define DECLARE_PROBE_ALLOWED_DATA_TYPE(ProbeClass, DataType) static int dummy_probe_initializer_data_type_for_ ## ProbeClass ## probe_id_count = \
+		QtProbeRegistry::addAllowedDataType(# ProbeClass, DataType) + probe_id_count++;
 }
 #endif
 
