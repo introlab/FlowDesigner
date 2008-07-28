@@ -68,8 +68,9 @@ namespace FD
 	    	socket->write(buf.toStdString().c_str(), buf.size());
 	    	socket->waitForBytesWritten(3000);
 	    	if(socket->waitForReadyRead(3000))
-	    	{
+	    	{	
 	    		QByteArray data;
+	    		
 				int bytesReceived = socket->bytesAvailable();
 				if(bytesReceived<4) {
 					//TODO
@@ -77,7 +78,7 @@ namespace FD
 				}
 				unsigned int dataSize;
 				socket->read((char*)(&dataSize), 4);
-								
+				
 				while(data.size() < dataSize) {
 					if(!socket->bytesAvailable()) {
 						if(!socket->waitForReadyRead(3000)) {
@@ -86,19 +87,16 @@ namespace FD
 						}
 					}
 					bytesReceived = socket->bytesAvailable();
-					char* mem = new char[bytesReceived];
-					socket->read(mem, bytesReceived);
-					data.append(mem);
-					delete mem;
+					data.append(socket->read(dataSize - data.size()));
 				}
 				
 				//For debug
-				//std::cerr << "data.size() = " << data.size() << std::endl;
-				//std::cerr << "dataSize = " << dataSize << std::endl;
-				//std::cerr.write(data.data(), dataSize);
+				std::cerr << "data.size() = " << data.size() << std::endl;
+				std::cerr << "dataSize = " << dataSize << std::endl;
+				std::cerr.write(data.data(), dataSize);
 				
-				m_textBrowser->append(tr("UIDocument downloaded (size = %1").arg(dataSize));
-				m_uiDocView->loadFromMemory(data.data(), dataSize);
+				m_textBrowser->append(tr("UIDocument downloaded (size = %1).").arg(data.size()));
+				m_uiDocView->loadFromMemory(data.data(), data.size());
 				m_uiDocView->setEditable(false);
 				
 				this->setWindowTitle(tr("Remote process \"%1\"").arg(m_uiDocView->getName().c_str()));
