@@ -97,7 +97,7 @@ namespace FD
 				//std::cerr << "dataSize = " << dataSize << std::endl;
 				//std::cerr.write(data.data(), dataSize);
 				
-				m_textBrowser->append(tr("UIDocument downloaded (size = %1").).arg(dataSize));
+				m_textBrowser->append(tr("UIDocument downloaded (size = %1").arg(dataSize));
 				m_uiDocView->loadFromMemory(data.data(), dataSize);
 				m_uiDocView->setEditable(false);
 				
