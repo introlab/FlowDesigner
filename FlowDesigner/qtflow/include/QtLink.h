@@ -41,7 +41,7 @@ namespace FD
         
         signals:
         
-        	void signalLinkProbed(int);
+        	void signalLinkProbed(int, const QString &);
         
         public slots:
         

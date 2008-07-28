@@ -5,6 +5,7 @@
 #include "QtLink.h"
 #include "QtNode.h"
 #include "QtTerminal.h"
+#include "QtProbeRegistry.h"
 #include "UIProbeLink.h"
 #include "UILink.h"
 #include "UINetwork.h"
@@ -168,14 +169,23 @@ namespace FD
     	// QtFlow is running
     	if(m_uiLink && m_uiLink->getNetwork() && !m_uiLink->getNetwork()->getDocument()->isEditable()) {
 	    	QMenu popupMenu(tr("Probing"));
-	    	QAction* probeItAction = popupMenu.addAction(QString(tr("Probe it!")));
+	        QMenu* probeMenu = popupMenu.addMenu(tr("Probe it!"));
+	        
+	        QVector<QString> probeTypes = QtProbeRegistry::getAllowedProbe(m_uiLink->getFromTerminal()->getType().c_str());
+	        
+	        QVector<QAction*> actions(probeTypes.size());
+	        for(int i=0; i<probeTypes.size(); i++) {
+	        	actions[i] = probeMenu->addAction(probeTypes[i]);
+	        }
 	        
 	        QAction* action = popupMenu.exec(QCursor::pos());
 	        if(action) {
-        		if(action == probeItAction) {
-        			// Signal that link is probed
-        			emit signalLinkProbed(m_uiLink->getId());
-        		}
+	        	for(int i=0; i<actions.size(); i++) {
+	        		if(action == actions[i]) {
+	        			// Signal that link is probed
+	        			emit signalLinkProbed(m_uiLink->getId(), probeTypes[i]);
+	        		}
+		        }
         	}
 	        
 	        event->accept();

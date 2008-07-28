@@ -124,10 +124,10 @@ namespace FD
         void dropEvent(QDropEvent *event);        
         
         signals:
-        void signalLinkProbed(int);
+        void signalLinkProbed(int, const QString &);
         
         public slots:
-        void linkProbed(int linkId) {emit signalLinkProbed(linkId);}
+        void linkProbed(int linkId, const QString &probeType) {emit signalLinkProbed(linkId, probeType);}
         void menuTriggered(QAction* action, const QPointF &pos);
         
         

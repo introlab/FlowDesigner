@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QVector>
 #include <map>
 #include <sys/types.h>
 #include <dirent.h>
@@ -16,29 +17,50 @@
 namespace FD
 {
 
-	//TODO BASIC IMPLEMENTATION
-	class QtProbe : public QObject
-	{
-		Q_OBJECT;
+	//Forward delaration
+	class QtProbe;
 		
-	public:
-	};
-	
-	
 	class QtProbeBaseFactory
 	{
 		public:
+			void addAllowedDataType(const QString &dataType)
+			{
+				if(!m_dataTypes.contains(dataType)) {
+					m_dataTypes.append(dataType);
+				}
+			}
+			
+			bool canProbe(const QString &dataType)
+			{
+				// All data types allowed
+				if(m_dataTypes.size() == 0) {
+					return true;
+				}
+				
+				for(int i=0; i<m_dataTypes.size(); i++) {
+					if(m_dataTypes[i].compare(dataType) == 0) {
+						return true;
+					}
+				}
+				return false;
+			}
+			
+			virtual QtProbe* create(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId) = 0;
 		
-		virtual QtProbe* create() = 0;
+		private:
+			QVector<QString> m_dataTypes;
 	};
 	
 	template <class T>
 	class QtProbeFactory : public QtProbeBaseFactory
 	{
-		virtual QtProbe* create()
-		{
-			return dynamic_cast<QtProbe*>(new T);
-		}
+		public:
+			QtProbeFactory() {}
+			~QtProbeFactory() {}
+			virtual QtProbe* create(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId)
+			{
+				return dynamic_cast<QtProbe*>(new T(parent, processHost, processPort, linkId));
+			}
 	};
 	
 	
@@ -49,7 +71,6 @@ namespace FD
 		
 		QtProbeRegistry()
 		{
-			std::cerr<<"QtProbeRegistry()"<<std::endl;
 			QtProbeRegistry::Scan(QString(INSTALL_PREFIX) + QString("/lib/flowdesigner/toolbox"),true);
 		}
 		
@@ -70,18 +91,50 @@ namespace FD
 			}
 			loadedLibraries.resize(0);
 			
+			//Delete factories
+			std::map<QString, QtProbeBaseFactory*>::iterator iter = getFactoryMap().begin();
+			while (iter != getFactoryMap().end()) {
+				if(iter->second) {
+	            	delete iter->second;
+	         	}
+	            iter++;
+			}
+			getFactoryMap().clear();
 		}	
 		
-		static void registerFactory(const QString &probeName, QtProbeBaseFactory *factory)
+		static int registerFactory(const QString &probeName, QtProbeBaseFactory *factory)
 		{
 			getFactoryMap().insert(std::make_pair(probeName,factory));
+			return 0;
 		}
 		
-		static QtProbe* createProbe(const QString &probeName)
+		static int addAllowedDataType(const QString &probeName, const QString &dataType)
 		{
 			if (getFactoryMap().find(probeName) != getFactoryMap().end())
 			{
-				return getFactoryMap()[probeName]->create();
+				getFactoryMap()[probeName]->addAllowedDataType(dataType);
+			}
+			return 0;
+		}
+		
+		static QVector<QString> getAllowedProbe(const QString &dataType)
+		{
+			QVector<QString> probes;
+			std::map<QString, QtProbeBaseFactory*>::iterator iter = getFactoryMap().begin();
+			while (iter != getFactoryMap().end()) {
+				if(iter->second->canProbe(dataType)) {
+	            	probes.append(iter->first);
+	         	}
+	            iter++;
+			}
+			return probes;
+		}
+		
+		static QtProbe* createProbe(const QString &probeName, QWidget *parent, const QString &processHost, const int &processPort, const int &linkId)
+		{
+			if (getFactoryMap().find(probeName) != getFactoryMap().end())
+			{
+				return getFactoryMap()[probeName]->create(parent, processHost, processPort, linkId);
 			}
 			else
 			{
@@ -201,8 +254,12 @@ namespace FD
 		}
 	};
 		
+	#define DECLARE_PROBE(ProbeClass) static int dummy_probe_initializer_for_ ## ProbeClass = \
+		QtProbeRegistry::registerFactory(# ProbeClass, new QtProbeFactory<ProbeClass>());
 	
-
+	static int count = 0; // Used to generate unique dummy initializer name
+	#define DECLARE_PROBE_ALLOWED_DATA_TYPE(ProbeClass, DataType) static int dummy_probe_initializer_for_ ## ProbeClass ## count = \
+		QtProbeRegistry::addAllowedDataType(# ProbeClass, DataType) + count++;
 }
 #endif
 

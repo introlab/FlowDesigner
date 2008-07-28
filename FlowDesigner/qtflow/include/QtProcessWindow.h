@@ -63,7 +63,7 @@ namespace FD
 	        //Network Added
 	        void notifyNetworkAdded(const UIDocument *doc, const UINetwork* net);
 	        
-	        void linkProbed(int linkId);
+	        void linkProbed(int linkId, const QString &probeType);
 
         protected:
         	
@@ -102,31 +102,6 @@ namespace FD
 		QTcpSocket *m_socket;
 		QTextEdit *m_textEdit;
 		QVBoxLayout *m_mainLayout;
-		
-	};
-	
-	class QtProbeConsole : public QDockWidget
-	{
-		Q_OBJECT;
-		
-	public:
-		
-		QtProbeConsole(QtProcessWindow *parent, int linkId);
-		~QtProbeConsole();
-		void stop();
-		
-	public slots:
-	
-	 	void connected();
-	 	void readyRead();
-	 	void error(QAbstractSocket::SocketError socketError);
-	 	
-	protected:
-		
-		QtProcessWindow *m_processWindow;
-		QTcpSocket *m_socket;
-		QTextBrowser *m_textBrowser;
-		int m_linkId;
 		
 	};
     

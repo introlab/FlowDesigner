@@ -97,7 +97,6 @@ namespace FD
 				}
 				else if (command.contains("disconnect"))
 				{
-					cerr << "QtProbeManager::disconnect" << endl;
 					stringstream input(command.toStdString());
 					stringstream output;
 					
@@ -158,7 +157,7 @@ namespace FD
 						output<<"connect failed "<<id<<endl;
 					}
 					
-					
+					cerr << output.str().c_str() << endl;
 					m_tcpSocket->write(output.str().c_str(),output.str().size());
 				}
 				else if (command.contains("list"))
@@ -181,7 +180,7 @@ namespace FD
 						
 					}
 						
-					
+					cerr << output.str().c_str() << endl;
 					m_tcpSocket->write(output.str().c_str(),output.str().size());
 
 					

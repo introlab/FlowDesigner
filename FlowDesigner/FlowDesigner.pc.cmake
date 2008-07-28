@@ -4,6 +4,6 @@ Name: @CPACK_PACKAGE_NAME@
 Description: FlowDesigner
 Version: @CPACK_PACKAGE_VERSION@
 Requires:
-Libs: -L${prefix}/lib -lflow
+Libs: -L${prefix}/lib -lflow -lqtflow
 Cflags: -I${prefix}/include/flowdesigner
 

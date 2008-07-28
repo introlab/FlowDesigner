@@ -441,7 +441,7 @@ namespace FD
 					resizeSceneView();
     				m_linkMap.insert(make_pair(uiLink,link));	
     				
-    				connect(link, SIGNAL(signalLinkProbed(int)), this, SLOT(linkProbed(int)));
+    				connect(link, SIGNAL(signalLinkProbed(int, const QString &)), this, SLOT(linkProbed(int, const QString &)));
     			}
     		}
     	}

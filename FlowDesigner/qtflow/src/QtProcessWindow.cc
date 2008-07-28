@@ -1,7 +1,11 @@
 #include "QtProcessWindow.h"
 #include "QtFlowDesigner.h"
-#include <QPushButton>
+#include "QtProbeRegistry.h"
+#include "QtProbe.h"
+
 #include "UIDocument.h"
+
+#include <QPushButton>
 #include <QTextEdit>
 #include <QDialog>
 #include <QMessageBox>
@@ -197,9 +201,9 @@ namespace FD
     	{
     		m_process->terminate();
     	}
-    	QList<QtProbeConsole *> consoles = this->findChildren<QtProbeConsole *>();
-		for(int i=0; i<consoles.size(); i++) {
-			consoles[i]->stop();
+    	QList<QtProbe*> probes = this->findChildren<QtProbe*>();
+		for(int i=0; i<probes.size(); i++) {
+			probes[i]->stop();
 		}
 	}
 	
@@ -334,17 +338,25 @@ namespace FD
 		qtnet->setObjectName(QString::fromUtf8(net->getName().c_str()));
         m_tabWidget->addTab(qtnet, net->getName().c_str());
         
-        connect(qtnet, SIGNAL(signalLinkProbed(int)), this, SLOT(linkProbed(int)));
+        connect(qtnet, SIGNAL(signalLinkProbed(int, const QString &)), this, SLOT(linkProbed(int, const QString &)));
         
 		return qtnet;	
 	}
 	
-	void QtProcessWindow::linkProbed(int linkId)
+	void QtProcessWindow::linkProbed(int linkId, const QString &probeType)
 	{
-		QtProbeConsole *console = new QtProbeConsole(this, linkId);
-		this->addDockWidget(Qt::BottomDockWidgetArea, console);
-		console->setFloating(true);
-		console->move(QCursor::pos());
+		QtProbe* probe = QtProbeRegistry::createProbe(probeType, this, this->getProcessHost(), this->getProcessPort(), linkId);
+		if(probe)
+		{
+			probe->init();
+			probe->move(QCursor::pos());
+			probe->show();
+		}
+		else {
+			QMessageBox::warning(this, tr("QtFlow"),
+            	tr("The probe '%1' is unavailable.").arg(probeType),
+           		QMessageBox::Ok, QMessageBox::Ok);
+		}
 	}
 	
     //Network Added
@@ -399,97 +411,7 @@ namespace FD
     	m_socket->write("list\n\r",6);
     }
     
-    //================================
-    // QtProbeConsole stuff
-	//================================
-	QtProbeConsole::QtProbeConsole(QtProcessWindow *parent, int linkId)
-    	: QDockWidget(parent), m_processWindow(parent), m_socket(NULL), m_linkId(linkId)
-    {
-    	this->setWindowTitle(tr("Link %1").arg(linkId));
-	    this->setGeometry(QRect(0, 252, 251, 150));
-	    this->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetClosable);
-	    this->setAttribute(Qt::WA_DeleteOnClose);
-	    
-	    QWidget* dockWidgetContents = new QWidget(this);
-    	QVBoxLayout* dockLayout = new QVBoxLayout(dockWidgetContents);
-    	m_textBrowser = new QTextBrowser(dockWidgetContents);
-    	dockLayout->addWidget(m_textBrowser);
-    	this->setWidget(dockWidgetContents);
-    	
-    	m_socket = new QTcpSocket(this);
-    	m_socket->connectToHost(m_processWindow->getProcessHost(),m_processWindow->getProcessPort());
-    	
-    	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
-    	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
-    	connect(m_socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(error(QAbstractSocket::SocketError)));
-    }
     
-    QtProbeConsole::~QtProbeConsole()
-    {
-		if (m_socket)
-	    {
-			if(m_socket->state() == QAbstractSocket::ConnectedState) {
-			    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
-			    m_socket->write(buf.toStdString().c_str(), buf.size());
-			    m_socket->flush();
-			}
-		    m_socket->close();
-		    delete m_socket;
-	    }
-    }
-   
-    void QtProbeConsole::stop()
-    {
-    	m_textBrowser->append(tr("Stopped."));
-		if(m_socket->state() == QAbstractSocket::ConnectedState) {
-	   	    QString buf = QString("disconnect %1\n").arg(m_linkId);     	
-    	    m_socket->write(buf.toStdString().c_str(), buf.size());
-    	    m_socket->flush();
-   		}
-   		m_socket->close();
-    }
-    
-    void QtProbeConsole::readyRead ()
-    {
-		//Try to read lines
-	    while (m_socket->canReadLine())
-	    {
-			QByteArray data = m_socket->readLine();			
-			QString info(data);
-			m_textBrowser->append(info);
-	    }
-    }
-    
-    void QtProbeConsole::connected()
-    {
-    	m_textBrowser->append(tr("Connected"));
-    	QString buf = QString("connect %1\n").arg(m_linkId);     	
-    	m_socket->write(buf.toStdString().c_str(), buf.size());
-    }
-    
-    void QtProbeConsole::error(QAbstractSocket::SocketError socketError)
-    {
-    	switch(socketError)
-    	{
-	    	case QAbstractSocket::ConnectionRefusedError:
-	    		m_textBrowser->append(tr("Host unavailable."));
-	    		break;
-	    	case QAbstractSocket::RemoteHostClosedError:
-	    		m_textBrowser->append(tr("Connection lost."));
-	    		break;
-	    	case QAbstractSocket::HostNotFoundError:
-	    		m_textBrowser->append(tr("Host not found."));
-	    		break;
-	    	default:
-	    		m_textBrowser->append(tr("QTcpSocket: Unknown error occured!"));
-	    		break;
-    	}
-    	
-    	if(m_socket)
-    	{
-	    	m_socket->close();
-    	}
-    }
 	
 } //namespace FD
 
