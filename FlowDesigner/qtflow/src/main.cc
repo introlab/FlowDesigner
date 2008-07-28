@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 		splash.show();
 		splash.showMessage("Starting FlowDesigner...");
 				
-		QtProbeRegistry reg;
+		
 		//IExtensions::detect();
 		
 		//Load dynamic libraries
@@ -82,6 +82,9 @@ int main(int argc, char* argv[])
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
        
+		
+		//Look for probes
+		QtProbeRegistry reg;
  
 		//Main window
 		QtFlowDesigner fd;

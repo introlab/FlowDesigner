@@ -7,8 +7,7 @@
 
 namespace FD
 {
-	class QtProbeConsole;
-	DECLARE_PROBE(QtProbeConsole)
+
 
 	class QtProbeConsole : public QtProbe
 	{

@@ -104,6 +104,7 @@ namespace FD
 		
 		static int registerFactory(const QString &probeName, QtProbeBaseFactory *factory)
 		{
+			std::cerr<<"Registering probe factory : "<<probeName.toStdString()<<std::endl;
 			getFactoryMap().insert(std::make_pair(probeName,factory));
 			return 0;
 		}

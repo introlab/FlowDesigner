@@ -6,6 +6,9 @@
 
 namespace FD
 {
+
+
+DECLARE_PROBE(QtProbeConsole)
 		
 QtProbeConsole::QtProbeConsole(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId)
 	: QtProbe(parent, processHost, processPort, linkId)
