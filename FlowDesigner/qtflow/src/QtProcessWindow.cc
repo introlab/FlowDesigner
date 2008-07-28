@@ -69,16 +69,39 @@ namespace FD
 	    	socket->waitForBytesWritten(3000);
 	    	if(socket->waitForReadyRead(3000))
 	    	{
-	    		m_textBrowser->append(tr("UIDocument downloaded."));
-				int size = socket->bytesAvailable();
-				char* mem = new char[size];
-				socket->read(mem, size);
-				m_uiDocView->loadFromMemory(mem,size);
+	    		QByteArray data;
+				int bytesReceived = socket->bytesAvailable();
+				if(bytesReceived<4) {
+					//TODO
+					return;
+				}
+				unsigned int dataSize;
+				socket->read((char*)(&dataSize), 4);
+								
+				while(data.size() < dataSize) {
+					if(!socket->bytesAvailable()) {
+						if(!socket->waitForReadyRead(3000)) {
+							//Prob here
+							return;
+						}
+					}
+					bytesReceived = socket->bytesAvailable();
+					char* mem = new char[bytesReceived];
+					socket->read(mem, bytesReceived);
+					data.append(mem);
+					delete mem;
+				}
+				
+				//For debug
+				//std::cerr << "data.size() = " << data.size() << std::endl;
+				//std::cerr << "dataSize = " << dataSize << std::endl;
+				//std::cerr.write(data.data(), dataSize);
+				
+				m_textBrowser->append(tr("UIDocument downloaded (size = %1").).arg(dataSize));
+				m_uiDocView->loadFromMemory(data.data(), dataSize);
 				m_uiDocView->setEditable(false);
 				
 				this->setWindowTitle(tr("Remote process \"%1\"").arg(m_uiDocView->getName().c_str()));
-				
-				free(mem);
 	    	}
     	}
     	else
@@ -379,7 +402,7 @@ namespace FD
     	m_mainLayout->addWidget(m_textEdit);
     	
     	m_socket = new QTcpSocket(this);
-    	m_socket->connectToHost(m_processWindow->getProcessHost(),m_processWindow->getProcessPort());
+    	m_socket->connectToHost(m_processWindow->getProcessHost(), m_processWindow->getProcessPort());
     	
     	connect(m_socket,SIGNAL(connected()),this,SLOT(connected()));
     	connect(m_socket,SIGNAL(readyRead()),this,SLOT(readyRead()));

@@ -59,6 +59,7 @@ SET(QTFLOW_HEADERS
 	../include/QtProbeManager.h
     ../include/QtProbeConsole.h
 	../include/QtIORedirector.h
+	../include/QtFlowIpBroadcaster.h
     	../include/QtConnectDialog.h
     	../include/iconeditor/QtIconEditor.h
     	../include/iconeditor/QtIconItem.h

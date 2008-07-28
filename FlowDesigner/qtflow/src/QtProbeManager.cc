@@ -89,6 +89,7 @@ namespace FD
 					//WRITE XML TO A STREAM
 					int size;
 					char *xmldata = doc->saveToMemory(size);
+					m_tcpSocket->write((const char*)&size,4); //4 bytes
 					m_tcpSocket->write(xmldata,size);
 
 					
