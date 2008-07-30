@@ -9,6 +9,7 @@
 #include <QTextEdit>
 #include <QDialog>
 #include <QMessageBox>
+#include <QTcpServer>
 
 namespace FD 
 {
@@ -19,15 +20,44 @@ namespace FD
 	   m_uiDocView(NULL), 
 	   m_process(NULL),
 	   m_processHost("localhost"), // default
-	   m_processPort(51115) // default
+	   m_processPort(0) // default
 	{
-		// Initialize the window in process mode
+		// Initialize the window in local process mode
 		setupUi();
 
 		if(doc) {
+			// Test if the port is not used. If it is used, 
+			// get automaticaly a port.
+			int newPort = 0;
+			bool portChanged = false;
+			QTcpServer tmpServer;
+			if (doc->getConnectionPort() == 0 || !tmpServer.listen(QHostAddress::Any, doc->getConnectionPort()))
+			{
+				tmpServer.listen(QHostAddress::Any, 0);
+				newPort = tmpServer.serverPort();
+				portChanged = true;
+				
+				if(doc->getConnectionPort() != 0) {
+					QMessageBox::warning(this, tr("Warning"), tr("Port '%1' is already used. The port '%2' was chosen automatically.").arg(doc->getConnectionPort()).arg(newPort), QMessageBox::Ok);
+				}
+			}
+			tmpServer.close();
+			
+			//Change temporary the port
+			int tmpPort;
+			if(portChanged) {
+				tmpPort = newPort;
+				doc->setConnectionPort(newPort);	
+			}
+			
 			//save to memory
 			int size = 0;
 			char* mem = doc->saveToMemory(size);
+			
+			//Restore the port
+			if(portChanged) {
+				doc->setConnectionPort(tmpPort);	
+			}
 			
 			//Add networks to the view
 			m_uiDocView->loadFromMemory(mem, size);
@@ -38,11 +68,11 @@ namespace FD
 			
 			// Start a QtFlow process with the document
 			start(mem, size);
-			
-			this->setWindowTitle(tr("Process \"%1\"").arg(m_uiDocView->getName().c_str()));
 
 			//Free the memory
 			free(mem);
+			
+			this->setWindowTitle(tr("Process \"%1\" - port %2").arg(m_uiDocView->getName().c_str()).arg(m_uiDocView->getConnectionPort()));
 		}
 	}
 	
@@ -54,20 +84,20 @@ namespace FD
 	   m_processHost(host),
 	   m_processPort(port)
 	{
-		// Initialize the window
+		// Initialize the window in remote mode
 		setupUi();
         
 		//Get the UIDocument from the host
 		QTcpSocket* socket = new QTcpSocket(this);
     	socket->connectToHost(m_processHost, m_processPort);
-    	if (socket->waitForConnected(3000))
+    	if (socket->waitForConnected(DEFAULT_WAIT_TIME_MS))
     	{
     		connect(socket, SIGNAL(disconnected()), this, SLOT(remoteDisconnected()));
-    		m_textBrowser->append(tr("Connected."));
+    		m_textBrowser->append(tr("Connected on %1:%2.").arg(host).arg(port));
 	    	QString buf = QString("which\n");     	
 	    	socket->write(buf.toStdString().c_str(), buf.size());
-	    	socket->waitForBytesWritten(3000);
-	    	if(socket->waitForReadyRead(3000))
+	    	socket->waitForBytesWritten(DEFAULT_WAIT_TIME_MS);
+	    	if(socket->waitForReadyRead(DEFAULT_WAIT_TIME_MS))
 	    	{	
 	    		QByteArray data;
 	    		
@@ -81,7 +111,7 @@ namespace FD
 				
 				while(data.size() < dataSize) {
 					if(!socket->bytesAvailable()) {
-						if(!socket->waitForReadyRead(3000)) {
+						if(!socket->waitForReadyRead(DEFAULT_WAIT_TIME_MS)) {
 							//Prob here
 							return;
 						}
@@ -91,15 +121,16 @@ namespace FD
 				}
 				
 				//For debug
-				std::cerr << "data.size() = " << data.size() << std::endl;
-				std::cerr << "dataSize = " << dataSize << std::endl;
-				std::cerr.write(data.data(), dataSize);
-				
-				m_textBrowser->append(tr("UIDocument downloaded (size = %1).").arg(data.size()));
+				//std::cerr << "data.size() = " << data.size() << std::endl;
+				//std::cerr << "dataSize = " << dataSize << std::endl;
+				//std::cerr.write(data.data(), dataSize);
+
 				m_uiDocView->loadFromMemory(data.data(), data.size());
 				m_uiDocView->setEditable(false);
 				
-				this->setWindowTitle(tr("Remote process \"%1\"").arg(m_uiDocView->getName().c_str()));
+				m_textBrowser->append(tr("Document \'%1\' downloaded (size = %2).").arg(m_uiDocView->getName().c_str()).arg(data.size()));
+				
+				this->setWindowTitle(tr("Remote \"%1\" - host \"%2\" - port %3").arg(m_uiDocView->getName().c_str()).arg(host).arg(port));
 	    	}
     	}
     	else

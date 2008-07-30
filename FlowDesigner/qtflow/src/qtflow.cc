@@ -13,7 +13,6 @@
 #include <QThread>
 #include <QTimer>
 #include "QtProbeManager.h"
-#include "QtFlowIpBroadcaster.h"
 
 using namespace FD;
 using namespace std;
@@ -74,7 +73,6 @@ class QtFlowApp : public QApplication
 	protected:
 
 		QtFlowProcessingThread *m_thread;
-		QtFlowIpBroadcaster* m_qtFlowIpBroadcaster;
 		
 		
 	public:
@@ -129,9 +127,6 @@ class QtFlowApp : public QApplication
 					doc = new UIDocument(argv[1]);
 					doc->load();	
 				}
-				
-				//Start broadcasting the process ip
-				m_qtFlowIpBroadcaster = new QtFlowIpBroadcaster(this, doc->getConnectionPort());
 				
 				//Start the working thread
 				ParameterSet params;

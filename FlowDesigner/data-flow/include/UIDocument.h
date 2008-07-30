@@ -27,7 +27,7 @@ class ParameterSet;
 class UIDocument : public Object {
 	
 public:
-	static const int DEFAULT_CONNECTION_PORT = 51115;
+	static const int DEFAULT_CONNECTION_PORT = 0; // if 0, a port is chosen automatically 
 	
 	class UIDocumentObserverIF
 	{

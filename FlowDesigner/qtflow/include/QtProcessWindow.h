@@ -30,6 +30,9 @@ namespace FD
     {         
         Q_OBJECT;
         
+        private:
+        	static const int DEFAULT_WAIT_TIME_MS = 3000; //3 sec
+        
         protected: 
 
        		void closeEvent(QCloseEvent *event);

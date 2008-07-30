@@ -29,6 +29,7 @@ SET(QTFLOW_SRCS
 	QtNote.cc
 	QtDocumentParameters.cc
 	QtFlowDesignerSplash.cc
+	QtConnectDialog.cc
     ./iconeditor/QtIconEditor.cc
     ./iconeditor/QtIconItem.cc
     ./iconeditor/QtIconScene.cc

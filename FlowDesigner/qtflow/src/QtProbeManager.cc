@@ -1,6 +1,7 @@
 #include "QtProbeManager.h"
 #include <iostream>
 #include "QtRunContext.h"
+#include "QtFlowIpBroadcaster.h"
 #include "UIProbeLink.h"
 #include "UITerminal.h"
 #include <map>
@@ -206,10 +207,15 @@ namespace FD
 		
 		setMaxPendingConnections(100);
 		
-		if (listen(QHostAddress::Any, port))
+		if (!listen(QHostAddress::Any, port))
 		{
-			//cerr<<"FlowDesignerTCPServer starting on port : "<<port<<endl;
+			listen(QHostAddress::Any, 0);
 		}
+		
+		cerr<<"FlowDesignerTCPServer starting on port : "<<this->serverPort()<<endl;
+		
+		//Start broadcasting the process ip
+		QtFlowIpBroadcaster* qtFlowIpBroadcaster = new QtFlowIpBroadcaster(this, QString(m_manager->getContext()->getDocument()->getName().c_str()), this->serverPort());
 	}
 	
 
