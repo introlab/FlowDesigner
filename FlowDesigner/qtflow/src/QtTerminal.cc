@@ -171,6 +171,9 @@ namespace FD
         }
         else if ( event->button() == Qt::RightButton )
         {
+        	/*
+        	 * Add a popup menu with some actions.
+        	 */
         	QMenu popupMenu;
         	QAction* inputAction = popupMenu.addAction(QString(tr("Add network input")));
         	QAction* ouputAction = popupMenu.addAction(QString(tr("Add network output")));

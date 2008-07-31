@@ -74,11 +74,27 @@ namespace FD
         void openDocumentClicked();               
         bool saveDocumentClicked();
         bool saveAsDocumentClicked();
-        void connectDocumentClicked();
         void onInfoFlowDesignerClicked();
+        
+        /**
+         * Called when the action "Connect to a document" 
+         * from the "File" menu is selected. This method 
+         * opens a QtConectDialog.
+         * @author Mathieu Labbe
+         */
+        void connectDocumentClicked();
 
         protected:
         
+        /**
+         * Called before the application is closed. The event can 
+         * be accepted or rejected. FlowDesigner will try to close 
+         * all documents and process windows. If one window can't 
+         * be closed (a user cancelled the closing of a document), 
+         * the event is rejected and the application doesn't close.
+         * @author Mathieu Labbe
+         * @param event the close event
+         */
         virtual void closeEvent ( QCloseEvent * event );
 
         QtDocument *activeDocument();	

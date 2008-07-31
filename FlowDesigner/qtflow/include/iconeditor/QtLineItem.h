@@ -1,3 +1,21 @@
+/***********************************************************************************
+** Copyright (C) 2006-2008 Laborius (http://www.gel.usherbrooke.ca/laborius/). 
+** All rights reserved. 
+**
+** This program is free software; you can redistribute it and/or
+** modify it under the terms of the GNU General Public License
+** as published by the Free Software Foundation; either version 2
+** of the License, or (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+***********************************************************************************/
 #ifndef QTLINEITEM_H_
 #define QTLINEITEM_H_
 
@@ -7,33 +25,71 @@
 #include <QPainter>
 #include "QtVertex.h"
 
+/**
+ * A line item.
+ * @author Mathieu Labbe
+ */
 class QtLineItem : public QObject, public QGraphicsLineItem
 {
 	Q_OBJECT;
 
 private:
-	QtVertex* m_vertexSelected;
+	/**
+	 * The vertexes of the item.
+	 */
 	QtVertex* m_vertexes[2];
 	
 public:
-	QtLineItem(QPointF pos, QGraphicsScene * scene);
+	/**
+	 * The constructor.
+	 * @param scene the graphics scene of this item
+	 * @param pos the position where to insert the item
+	 */
+	QtLineItem(QGraphicsScene* scene, const QPointF &pos);
+	
+	/**
+	 * The destructor.
+	 */
 	~QtLineItem();
 	
+	/**
+	 * Resize the size of the item.
+	 * @param startPos the starting position of the line
+	 * @param mousePos the position of the mouse (end of the line)
+	 */
 	void resize(const QPointF &startPos, const QPointF &mousePos);
 
 public slots:
-	void vertexSelected(bool selected, QtVertex* vertex);
+	/**
+	 * Resize the item with the new position of the vertex.
+	 * @param vertex the vertex moved
+	 * @param newPos the new position of the vertex
+	 */
 	void vertexMoved(QtVertex* vertex, const QPointF &newPos);
 
 protected:
+	/**
+	 * Show vertexes on mouse hover enter.
+	 * @param event the hover event
+	 */
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+	
+	/**
+	 * Hide vertexes on mouse hover leave.
+	 * @param event the hover event
+	 */
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 	
 private:
+	/**
+	 * Update vertexes's position.
+	 */
 	void updateVertexes();
+	
+	/**
+	 * Show vertexes.
+	 * @param show true or false
+	 */
 	void showVertexes(bool show);
 };
 

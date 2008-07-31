@@ -29,31 +29,91 @@
 
 namespace FD
 {
+	/**
+	 * An abstract class representing a probe. It provides 
+	 * basic features for the connection with a QtFlow process. 
+	 * At least, the methods dataReceived(...) and setupUi must 
+	 * be redefined. Some methods are virtual to provide an easy 
+	 * way to add custom actions (like adding a message in the 
+	 * GUI to say that the probe is connected or the process has 
+	 * stopped) but inherited methods must call their parent's 
+	 * method at the end.
+	 * @author Mathieu Labbe
+	 */
 	class QtProbe : public QMainWindow
 	{
 		Q_OBJECT;
 		
 		public:
+			/**
+			 * The constructor.
+			 * @param parent the QWidget parent
+			 * @param processHost the host name of the running QtFlow process
+			 * @param processPort the port of the process
+			 * @param linkId the link ID used to probe it
+			 */
 			QtProbe(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId);
+			
+			/**
+			 * The destructor.
+			 */
 			~QtProbe();
 			
-			// inherited class must calls QtProbe::init() at the end of this method
+			/**
+			 * Initialize the probe. The base implementation 
+			 * calls SetupUi(), creates a socket.
+			 * IMPORTANT: Inherited class must calls QtProbe::init()
+			 *            at the end of this method
+			 */
 			virtual void init();
-			// inherited class must calls QtProbe::stop() at the end of this method
+			
+			/**
+			 * Stop probing. The base implementation 
+			 * sends "disconnect" command to the process 
+			 * and closes the socket.
+			 * IMPORTANT: Inherited class must calls QtProbe::stop() 
+			 *            at the end of this method.
+			 */
 			virtual void stop();
 		
 		public slots:
-			// inherited class must calls QtProbe::connected() at the end of this method
+			/**
+			 * Called when a connection with the 
+			 * server is established. The base implementation 
+			 * sends "connect" command with the link id.
+			 * IMPORTANT: Inherited class must calls 
+			 *            QtProbe::connected() at the end 
+			 *            of this method.
+			 */ 
 		 	virtual void connected();
-		 	// inherited class must calls QtProbe::error(socketError) at the end of this method
+		 	
+		 	/**
+			 * Called when an error occurs with the socket. 
+			 * The base implementation closes the socket.
+			 * IMPORTANT: Inherited class must calls 
+			 *            QtProbe::error(socketError) at the end 
+			 *            of this method.
+			 * @param socketError the socket error
+			 */ 
 		 	virtual void error(QAbstractSocket::SocketError socketError);
+		 	
+		 	/**
+		 	 * Called when data is received from the process.
+		 	 */
 		 	void readyRead();
 		
 		protected:
+			/**
+			 * Called when data from the link is received.
+			 * @param data the data
+			 */
 			virtual void dataReceived(const QByteArray &data) = 0;
 		
 		private:
-			// Redefine this to setup the GUI
+			/**
+			 * Setup the interface of the probe.
+			 * Redefine this to setup the GUI.
+			 */
 			virtual void setupUi() = 0;
 		 	
 		protected:

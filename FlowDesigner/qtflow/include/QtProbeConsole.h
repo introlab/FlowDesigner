@@ -25,29 +25,61 @@
 
 namespace FD
 {
-
+	/**
+	 * A probe console. It shows the raw 
+	 * data received from a link. It works 
+	 * with all link types.
+	 */
 	class QtProbeConsole : public QtProbe
 	{
 		Q_OBJECT;
 		
 		public:
+			/**
+			 * The constructor.
+			 * @param parent the QWidget parent
+			 * @param processHost the host name of the running QtFlow process
+			 * @param processPort the port of the process
+			 * @param linkId the link ID used to probe it
+			 */
 			QtProbeConsole(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId);
+			
+			/**
+			 * The destructor.
+			 */
 			~QtProbeConsole();
 			
-			// inherited class must calls QtProbe::stop() at the end of this method
+			/**
+			 * Add a message that the process is 
+			 * stopped in the console.
+			 */
 			virtual void stop();
 			
 		public slots:
-			// inherited class must calls QtProbe::connected() at the end of this method
+			/**
+			 * Add a message that the probe is 
+			 * connected in the console.
+			 */
 		 	virtual void connected(); 
-		 	// inherited class must calls QtProbe::error(socketError) at the end of this method
+		 	
+		 	/**
+			 * Add an error message to the console.
+			 */
 		 	virtual void error(QAbstractSocket::SocketError socketError);
 		 	
 		protected:
+			/**
+			 * Just append the data to the console.
+			 */
 			virtual void dataReceived(const QByteArray &data);
 			
 		private:
+			/**
+			 * Setup the interface of the probe.
+			 */
 			virtual void setupUi();
+			
+		private:
 			QTextBrowser *m_textBrowser;
 	};
 	

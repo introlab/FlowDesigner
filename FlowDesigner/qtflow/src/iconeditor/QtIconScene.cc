@@ -1,3 +1,21 @@
+/***********************************************************************************
+** Copyright (C) 2006-2008 Laborius (http://www.gel.usherbrooke.ca/laborius/). 
+** All rights reserved. 
+**
+** This program is free software; you can redistribute it and/or
+** modify it under the terms of the GNU General Public License
+** as published by the Free Software Foundation; either version 2
+** of the License, or (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+***********************************************************************************/
 #include <QtGui>
 
 #include "iconeditor/QtIconScene.h"
@@ -61,34 +79,33 @@ void QtIconScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
         
 	    if(m_insertingPolygon) {
 	    	m_tmpPolygonItem->addVertex(mouseEvent->scenePos());
-	    	QtLineItem* newLine = new QtLineItem(mouseEvent->scenePos(), this);
+	    	QtLineItem* newLine = new QtLineItem(this, mouseEvent->scenePos());
 	    	m_tmpPolygonTmpLines.append(newLine);
 		    newLine->setPen(myLineColor);
 	    }
 	    else {
-		    QtIconItem *item;
 		    switch (myMode) {
 		    	case InsertRectItem:
-		    		m_tmpRectItem = new QtRectItem(mouseEvent->scenePos(), this);
+		    		m_tmpRectItem = new QtRectItem(this, mouseEvent->scenePos());
 		    		m_tmpRectItem->setPen(myLineColor);
 		            m_tmpRectItem->setBrush(myItemColor);
 		            break;
 		        case InsertLineItem:
-		        	m_tmpLineItem = new QtLineItem(mouseEvent->scenePos(), this);
+		        	m_tmpLineItem = new QtLineItem(this, mouseEvent->scenePos());
 		            m_tmpLineItem->setPen(myLineColor);
 		            break;
 		        case InsertEllipseItem:
-		        	m_tmpEllipseItem = new QtEllipseItem(mouseEvent->scenePos(), this);
+		        	m_tmpEllipseItem = new QtEllipseItem(this, mouseEvent->scenePos());
 		            m_tmpEllipseItem->setPen(myLineColor);
 		            m_tmpEllipseItem->setBrush(myItemColor);
 		            break;
 		        case InsertPolygonItem:
-		        	m_tmpPolygonItem = new QtPolygonItem(mouseEvent->scenePos(), 0);
+		        	m_tmpPolygonItem = new QtPolygonItem(NULL, mouseEvent->scenePos());
 		            m_tmpPolygonItem->setPen(myLineColor);
 		            m_tmpPolygonItem->setBrush(myItemColor);
 		            m_insertingPolygon = true;
 		            
-	    			m_tmpPolygonTmpLines.append(new QtLineItem(mouseEvent->scenePos(), this));
+	    			m_tmpPolygonTmpLines.append(new QtLineItem(this, mouseEvent->scenePos()));
 		    		m_tmpPolygonTmpLines.last()->setPen(myLineColor);
 		            break;
 		    	default:

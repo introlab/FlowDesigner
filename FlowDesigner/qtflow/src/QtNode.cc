@@ -482,7 +482,7 @@ namespace FD
         		else if(action == editIcon) {
         			QString iconName(m_uiNode->getType().c_str());
         			//Create svgeditor
-        			QtIconEditor* iconEditor = new QtIconEditor(iconName, graph);
+        			QtIconEditor* iconEditor = new QtIconEditor(graph, iconName);
         			connect(iconEditor, SIGNAL(iconSaved(QString)), this, SLOT(iconSaved(QString)));
         			iconEditor->show();
         		}
@@ -505,5 +505,6 @@ namespace FD
     		m_internalItem = new QGraphicsSvgItem(path, this);
     	}
     	m_internalItem->update();
+    	this->redrawNode();
     }
 }//namespace FD

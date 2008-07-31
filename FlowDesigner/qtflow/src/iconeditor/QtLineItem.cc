@@ -1,3 +1,21 @@
+/***********************************************************************************
+** Copyright (C) 2006-2008 Laborius (http://www.gel.usherbrooke.ca/laborius/). 
+** All rights reserved. 
+**
+** This program is free software; you can redistribute it and/or
+** modify it under the terms of the GNU General Public License
+** as published by the Free Software Foundation; either version 2
+** of the License, or (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+***********************************************************************************/
 #include "iconeditor/QtLineItem.h"
 #include <QPen>
 
@@ -6,7 +24,7 @@
 //===============================
 // public
 //===============================
-QtLineItem::QtLineItem(QPointF pos, QGraphicsScene * scene) : QGraphicsLineItem(NULL, scene), m_vertexSelected(NULL)
+QtLineItem::QtLineItem(QGraphicsScene* scene, const QPointF &pos) : QGraphicsLineItem(NULL, scene)
 {
 	setAcceptsHoverEvents(true);
 	setFlag(ItemIsMovable);
@@ -18,11 +36,6 @@ QtLineItem::QtLineItem(QPointF pos, QGraphicsScene * scene) : QGraphicsLineItem(
 		m_vertexes[i] = new QtVertex(this, scene);
 	}
 	showVertexes(false);
-	
-	// Connect signals vertexSelected
-	for(int i=0 ; i<2; i++) {
-		connect(m_vertexes[i], SIGNAL(vertexSelected(bool, QtVertex*)), this, SLOT(vertexSelected(bool, QtVertex*)));
-	}
 
 	// Connect signals vertexMoved
 	for(int i=0 ; i<2; i++) {
@@ -44,21 +57,6 @@ void QtLineItem::resize(const QPointF &startPos, const QPointF &mousePos)
 //===============================
 // public slots
 //===============================
-void QtLineItem::vertexSelected(bool selected, QtVertex* vertex)
-{
-	if(selected) {
-		for(int i=0; i<2; i++) {
-			if(m_vertexes[i] == vertex) {
-				m_vertexSelected = vertex;
-				break;	
-			}
-		}
-	}
-	else {
-		m_vertexSelected = NULL;
-	}
-}
-
 void QtLineItem::vertexMoved(QtVertex* vertex, const QPointF &newPos)
 {
 	if(vertex == m_vertexes[0]) {
@@ -85,21 +83,6 @@ void QtLineItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 		showVertexes(false);
 	//}
 	QGraphicsLineItem::hoverLeaveEvent(event);
-}
-
-void QtLineItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
-{
-	QGraphicsLineItem::mousePressEvent(event);
-}
-
-void QtLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
-{
-	QGraphicsLineItem::mouseMoveEvent(event);
-}
-
-QVariant QtLineItem::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    return QGraphicsLineItem::itemChange(change, value);
 }
 
 //==========================

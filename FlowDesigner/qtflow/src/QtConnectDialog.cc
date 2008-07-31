@@ -25,16 +25,19 @@
 
 #include "UIDocument.h"
 
-//public:
+
+/////////////////////////////////////////////////////
+/// Public methods
+/////////////////////////////////////////////////////
 QtConnectDialog::QtConnectDialog(QWidget* parent) : 
 	QDialog(parent),
 	m_udpSocket(NULL),
 	m_host("localhost"), 
 	m_port(FD::UIDocument::DEFAULT_CONNECTION_PORT)
 {
-	setupUi(this);
+	setupUi();
 	setupModel();
-	retranslateUi(this);
+	retranslateUi();
 }
 
 QtConnectDialog::~QtConnectDialog() 
@@ -51,7 +54,9 @@ int QtConnectDialog::getPort() const
 	return m_port;
 }
 
-//public slots:
+/////////////////////////////////////////////////////
+/// Public slots
+/////////////////////////////////////////////////////
 void QtConnectDialog::accept()
 {
 	if(validateForm()) {
@@ -62,12 +67,14 @@ void QtConnectDialog::accept()
 
 void QtConnectDialog::reject()
 {
-	lineEdit_host->setText(m_host);
-	lineEdit_port->setText(QString("%1").arg(m_port));
+	m_lineEdit_host->setText(m_host);
+	m_lineEdit_port->setText(QString("%1").arg(m_port));
 	QDialog::reject();
 }
 
-//protected:
+/////////////////////////////////////////////////////
+/// Protected methods
+/////////////////////////////////////////////////////
 void QtConnectDialog::hideEvent(QHideEvent* event)
 {
 	enableSocket(false);
@@ -80,7 +87,9 @@ void QtConnectDialog::showEvent(QShowEvent* event)
 	QDialog::showEvent(event);
 }
    
-//private slots:
+/////////////////////////////////////////////////////
+/// Private slots
+/////////////////////////////////////////////////////
 void QtConnectDialog::processPendingDatagrams()
 {
 	while (m_udpSocket->hasPendingDatagrams()) {
@@ -121,14 +130,16 @@ void QtConnectDialog::updateModelTime()
 	}
 }
  
-//private:
-void QtConnectDialog::setupUi(QDialog *Dialog)
+/////////////////////////////////////////////////////
+/// Private methods
+/////////////////////////////////////////////////////
+void QtConnectDialog::setupUi()
 {
-    if (Dialog->objectName().isEmpty())
-        Dialog->setObjectName(QString::fromUtf8("Dialog"));
-    Dialog->resize(350, 300);
+    if (this->objectName().isEmpty())
+        this->setObjectName(QString::fromUtf8("QtConnectDialog"));
+    this->resize(350, 300);
     
-    QWidget* centralWidget = new QWidget(Dialog);
+    QWidget* centralWidget = new QWidget(this);
     
     QVBoxLayout* mainLayout = new QVBoxLayout();
     centralWidget->setLayout(mainLayout);
@@ -147,37 +158,37 @@ void QtConnectDialog::setupUi(QDialog *Dialog)
     m_tabWidget->addTab(tab1, tr("Select a document"));
     
     QWidget* tab2 = new QWidget();
-    lineEdit_host = new QLineEdit(tab2);
-    lineEdit_host->setObjectName(QString::fromUtf8("lineEdit_host"));
-    lineEdit_host->setGeometry(QRect(60, 30, 158, 28));
+    m_lineEdit_host = new QLineEdit(tab2);
+    m_lineEdit_host->setObjectName(QString::fromUtf8("lineEdit_host"));
+    m_lineEdit_host->setGeometry(QRect(60, 30, 158, 28));
     
     //Set the default host text
-    lineEdit_host->setText(m_host);
+    m_lineEdit_host->setText(m_host);
     
-    lineEdit_port = new QLineEdit(tab2);
-    lineEdit_port->setObjectName(QString::fromUtf8("lineEdit_port"));
-    lineEdit_port->setGeometry(QRect(60, 70, 61, 28));
+    m_lineEdit_port = new QLineEdit(tab2);
+    m_lineEdit_port->setObjectName(QString::fromUtf8("lineEdit_port"));
+    m_lineEdit_port->setGeometry(QRect(60, 70, 61, 28));
     
     //Set the default port text
-    lineEdit_port->setText(QString("%1").arg(m_port));
+    m_lineEdit_port->setText(QString("%1").arg(m_port));
     
-    lineEdit_port->setMaxLength(5);
-    label = new QLabel(tab2);
-    label->setObjectName(QString::fromUtf8("label"));
-    label->setGeometry(QRect(20, 30, 31, 28));
-    label_2 = new QLabel(tab2);
-    label_2->setObjectName(QString::fromUtf8("label_2"));
-    label_2->setGeometry(QRect(20, 70, 28, 28));
-    label_3 = new QLabel(tab2);
-    label_3->setObjectName(QString::fromUtf8("label_3"));
-    label_3->setGeometry(QRect(130, 70, 150, 28));
+    m_lineEdit_port->setMaxLength(5);
+    m_label = new QLabel(tab2);
+    m_label->setObjectName(QString::fromUtf8("label"));
+    m_label->setGeometry(QRect(20, 30, 31, 28));
+    m_label_2 = new QLabel(tab2);
+    m_label_2->setObjectName(QString::fromUtf8("label_2"));
+    m_label_2->setGeometry(QRect(20, 70, 28, 28));
+    m_label_3 = new QLabel(tab2);
+    m_label_3->setObjectName(QString::fromUtf8("label_3"));
+    m_label_3->setGeometry(QRect(130, 70, 150, 28));
     
     //Add tab 2
     m_tabWidget->addTab(tab2, tr("Connect to..."));
     
     mainLayout->addWidget(m_tabWidget);
 
-	buttonBox = new QDialogButtonBox(centralWidget);
+	QDialogButtonBox* buttonBox = new QDialogButtonBox(centralWidget);
     buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -185,12 +196,10 @@ void QtConnectDialog::setupUi(QDialog *Dialog)
     
     mainLayout->addWidget(buttonBox);
 
-    retranslateUi(Dialog);
+    retranslateUi();
     
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-
-    QMetaObject::connectSlotsByName(Dialog);
 } // setupUi
 
 void QtConnectDialog::setupModel()
@@ -221,6 +230,15 @@ void QtConnectDialog::setupModel()
     timer->start(UPDATE_INTERVAL_MS);
 }
 
+void QtConnectDialog::retranslateUi()
+{
+    this->setWindowTitle(QApplication::translate("QtConnectDialog", "Remote document", 0, QApplication::UnicodeUTF8));
+    m_label->setText(QApplication::translate("QtConnectDialog", "Host :", 0, QApplication::UnicodeUTF8));
+    m_label_2->setText(QApplication::translate("QtConnectDialog", "Port :", 0, QApplication::UnicodeUTF8));
+    m_label_3->setText(QApplication::translate("QtConnectDialog", "(49152 through 65535)", 0, QApplication::UnicodeUTF8));
+    Q_UNUSED(this);
+} // retranslateUi
+
 void QtConnectDialog::enableSocket(bool enable)
 {
 	if(!m_udpSocket) {
@@ -239,15 +257,6 @@ void QtConnectDialog::enableSocket(bool enable)
 	}
 }
 
-void QtConnectDialog::retranslateUi(QDialog *Dialog)
-{
-    Dialog->setWindowTitle(QApplication::translate("Dialog", "Remote document", 0, QApplication::UnicodeUTF8));
-    label->setText(QApplication::translate("Dialog", "Host :", 0, QApplication::UnicodeUTF8));
-    label_2->setText(QApplication::translate("Dialog", "Port :", 0, QApplication::UnicodeUTF8));
-    label_3->setText(QApplication::translate("Dialog", "(49152 through 65535)", 0, QApplication::UnicodeUTF8));
-    Q_UNUSED(Dialog);
-} // retranslateUi
-
 bool QtConnectDialog::validateForm()
 {
 	if(m_tabWidget->currentIndex() == 0) {
@@ -264,8 +273,8 @@ bool QtConnectDialog::validateForm()
 		}
 	}
 	else if(m_tabWidget->currentIndex() == 1) {
-		QString host = lineEdit_host->text();
-		int port = lineEdit_port->text().toInt();
+		QString host = m_lineEdit_host->text();
+		int port = m_lineEdit_port->text().toInt();
 		if(host.isEmpty() || port < 49152 || port > 65535)
 		{
 			QString msg;

@@ -56,7 +56,12 @@ namespace FD
 	        int type() const { return Type; }
         
         signals:
-        
+        	/**
+        	 * Emmited when a link is probed.
+        	 * @author Mathieu Labbe
+        	 * @param int the link id
+        	 * @param QString the probe type
+        	 */
         	void signalLinkProbed(int, const QString &);
         
         public slots:
@@ -71,6 +76,12 @@ namespace FD
 	        
 	        virtual void hoverEnterEvent ( QGraphicsSceneHoverEvent * event );
 	        virtual void hoverLeaveEvent ( QGraphicsSceneHoverEvent * event );
+	        
+	        /**
+	         * Open a probing menu in running mode.
+	         * @author Mathieu Labbe
+	         * @param event the menu event
+	         */
 	        virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event );
         
         private:

@@ -90,7 +90,13 @@ namespace FD
         void redrawNode();
         
         public slots:
-        	void iconSaved(QString path);
+        /**
+         * Called when an icon is saved by the icon 
+         * editor.
+         * @author Mathieu Labbe
+         * @param path the full path of the icon
+         */
+        void iconSaved(QString path);
 
         protected:
         
@@ -100,6 +106,14 @@ namespace FD
         void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
         void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
         void mouseDoubleClickEvent (QGraphicsSceneMouseEvent * event);
+        
+        /**
+         * Open a popup menu with some options like 
+         * editing parameters or editing the icon of 
+         * the node.
+         * @author Mathieu Labbe
+         * @param event the menu event
+         */
         void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
         
         UINode *m_uiNode;

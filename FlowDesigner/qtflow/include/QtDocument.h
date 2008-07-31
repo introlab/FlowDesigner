@@ -102,7 +102,22 @@ namespace FD
               
         protected:
         
+        /**
+         * Called before the document is closed. The event can 
+         * be accepted or rejected. This method is used 
+         * to ask to user to save the document before it 
+         * closes. 
+         * @author Mathieu Labbe
+         * @param event the close event
+         */
         virtual void closeEvent ( QCloseEvent * event );
+        
+        /**
+         * Ask to user if he wants to save or not the document 
+         * when it is closed.
+         * @author Mathieu Labbe
+         * @return true if the document can be closed, otherwise false
+         */
         bool maybeSave();
         
         QVBoxLayout *m_vboxLayout;

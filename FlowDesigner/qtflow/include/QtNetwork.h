@@ -140,9 +140,21 @@ namespace FD
         void dropEvent(QDropEvent *event);        
         
         signals:
+        /**
+    	 * Emmited when a link is probed.
+    	 * @author Mathieu Labbe
+    	 * @param int the link id
+    	 * @param QString the probe type
+    	 */
         void signalLinkProbed(int, const QString &);
         
         public slots:
+        /**
+    	 * Called when a link is probed.
+    	 * @author Mathieu Labbe
+    	 * @param linkId the link id
+    	 * @param probeType the probe type
+    	 */
         void linkProbed(int linkId, const QString &probeType) {emit signalLinkProbed(linkId, probeType);}
         void menuTriggered(QAction* action, const QPointF &pos);
         

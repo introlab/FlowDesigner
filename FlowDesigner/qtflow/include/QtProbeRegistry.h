@@ -37,10 +37,19 @@ namespace FD
 
 	//Forward delaration
 	class QtProbe;
-		
+	
+	/**
+	 * An abstract probe factory.
+	 */
 	class QtProbeBaseFactory
 	{
 		public:
+			/**
+			 * Add a data type allowed to be probed 
+			 * by this specific probe.
+			 * @author Mathieu Labbe
+			 * @param dataType an allowed data type
+			 */
 			void addAllowedDataType(const QString &dataType)
 			{
 				if(!m_dataTypes.contains(dataType)) {
@@ -48,6 +57,12 @@ namespace FD
 				}
 			}
 			
+			/**
+			 * Determine if this probe can probe the data type.
+			 * @author Mathieu Labbe
+			 * @param dataType a data type
+			 * @return true if the data type can be probed, otherwise false
+			 */
 			bool canProbe(const QString &dataType)
 			{
 				// All data types allowed
@@ -63,18 +78,43 @@ namespace FD
 				return false;
 			}
 			
+			/**
+			 * Create a probe.
+			 * @param parent the QWidget parent
+			 * @param processHost the host name of the running QtFlow process
+			 * @param processPort the port of the process
+			 * @param linkId the link ID used to probe it
+			 */
 			virtual QtProbe* create(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId) = 0;
 		
 		private:
 			QVector<QString> m_dataTypes;
 	};
 	
+	/**
+	 * A concrete templated probe factory
+	 */
 	template <class T>
 	class QtProbeFactory : public QtProbeBaseFactory
 	{
 		public:
+			/**
+			 * The constructor.
+			 */
 			QtProbeFactory() {}
+			
+			/**
+			 * The destructor.
+			 */
 			~QtProbeFactory() {}
+			
+			/**
+			 * Create a probe.
+			 * @param parent the QWidget parent
+			 * @param processHost the host name of the running QtFlow process
+			 * @param processPort the port of the process
+			 * @param linkId the link ID used to probe it
+			 */
 			virtual QtProbe* create(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId)
 			{
 				return dynamic_cast<QtProbe*>(new T(parent, processHost, processPort, linkId));
@@ -273,12 +313,22 @@ namespace FD
 		}
 	};
 		
-
+	/**
+	 * Macro used to register a new probe factory with the probe class.
+	 */
 	#define DECLARE_PROBE(ProbeClass) static int dummy_probe_initializer_for_ ## ProbeClass = \
 		QtProbeRegistry::registerFactory(# ProbeClass, new QtProbeFactory<ProbeClass>());
 	
+	/**
+	 * Global probe id count used to give a unique name for the
+	 * "dummy_probe_initializer_data_type_for_" in the 
+	 * DECLARE_PROBE_ALLOWED_DATA_TYPE macro.
+	 */
 	extern int probe_id_count;
 	
+	/**
+	 * Macro used to add an allowed data type to a specific probe class.
+	 */
 	#define DECLARE_PROBE_ALLOWED_DATA_TYPE(ProbeClass, DataType) static int dummy_probe_initializer_data_type_for_ ## ProbeClass ## probe_id_count = \
 		QtProbeRegistry::addAllowedDataType(# ProbeClass, DataType) + probe_id_count++;
 }
