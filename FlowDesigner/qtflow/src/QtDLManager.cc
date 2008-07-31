@@ -31,14 +31,11 @@ namespace FD
 	
 	QtDLManager* QtDLManager::instance()
 	{
-		if (QtDLManager::m_instance)
+		if (!QtDLManager::m_instance)
 		{
-			return QtDLManager::m_instance;
+			QtDLManager::m_instance = new QtDLManager();
 		}
-		else
-		{
-			return new QtDLManager();
-		}
+		return QtDLManager::m_instance;
 	}
 	
 	void QtDLManager::destroy()

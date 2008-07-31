@@ -35,7 +35,6 @@ namespace FD
 
 	void QtFlowDesignerSplash::displayMessage(QString message)
 	{
-		cerr<<"Got QtFlowDesignerSplash::displayMessage(QString message)"<<endl;
 		showMessage(QString("Loading : ") + message);
 	}
 	

@@ -115,18 +115,32 @@ int main(int argc, char* argv[])
 
         fd.show();
 		splash.finish(&fd);
-        return app.exec();      
 		
+		// Enter the main loop of the QApplication
+		int result = app.exec();
+		
+		// Destroy the singleton
+		QtDLManager::destroy();
+		
+		return result;      
    	} 
 	catch (BaseException *e)
    	{
       		e->print();
       		delete e;
+      		
+      		// Destroy the singleton
+      		QtDLManager::destroy();
+      		
       		exit(-1);
    	}
     catch (...)
     {
         std::cerr<<"Unknown exception caught"<<std::endl;
+        
+        // Destroy the singleton
+        QtDLManager::destroy();
+        
         exit(-1);                     
     }      
 
