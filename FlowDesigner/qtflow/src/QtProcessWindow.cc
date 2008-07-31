@@ -64,7 +64,7 @@ namespace FD
 			//Change temporary the port
 			int tmpPort;
 			if(portChanged) {
-				tmpPort = newPort;
+				tmpPort = doc->getConnectionPort();
 				doc->setConnectionPort(newPort);	
 			}
 			

@@ -105,7 +105,7 @@ namespace FD {
 		m_lineEdit_port->setMinimumWidth(60);
 		m_lineEdit_port->setMaximumWidth(60);
 		hbox->addWidget(m_lineEdit_port);
-		QLabel* label_portRange = new QLabel(tr("(49152 through 65535)"), groupDoc);
+		QLabel* label_portRange = new QLabel(tr("(49152 through 65535, 0 mean any)"), groupDoc);
 		hbox->addWidget(label_portRange);
 		hbox->addItem(new QSpacerItem(0,0,QSizePolicy::Expanding));
 		groupDoc->setLayout(hbox);
@@ -365,7 +365,7 @@ namespace FD {
         
         //UPDATE CONNECTION PORT
         int port = m_lineEdit_port->text().toInt();
-        if(port >= 49152 && port <= 65535) {
+        if(port == 0 || port >= 49152 && port <= 65535) {
         	if(port != m_doc->getConnectionPort()) {
         		m_doc->setConnectionPort(port);
         		m_doc->setModified(true);
