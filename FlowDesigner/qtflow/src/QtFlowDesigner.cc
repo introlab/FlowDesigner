@@ -45,6 +45,7 @@ namespace FD
 		connect(actionSaveAs_Document, SIGNAL(triggered()),this,SLOT(saveAsDocumentClicked()));
 		connect(actionConnect_Document, SIGNAL(triggered()), this, SLOT(connectDocumentClicked()));
 		connect(actionFlowDesignerInfo, SIGNAL(triggered()), this, SLOT(onInfoFlowDesignerClicked()));
+		connect(actionFlowDesignerAuthors,SIGNAL(triggered()), this, SLOT(onAuthorsFlowDesignerClicked()));
     }
 
     QtFlowDesigner::~QtFlowDesigner()
@@ -70,6 +71,9 @@ namespace FD
 
         actionFlowDesignerInfo = new QAction(this);
         actionFlowDesignerInfo->setObjectName(QString::fromUtf8("actionFlowDesigner_Info"));
+
+        actionFlowDesignerAuthors = new QAction(this);
+        actionFlowDesignerAuthors->setObjectName(QString::fromUtf8("actionFlowDesigner_Authors"));
 
 
         actionNewNetwork = new QAction(this);
@@ -221,6 +225,7 @@ namespace FD
         //menuNetwork->addSeparator();
 
         menuAbout->addAction(actionFlowDesignerInfo);
+        menuAbout->addAction(actionFlowDesignerAuthors);
 
         retranslateUi();
 
@@ -253,6 +258,7 @@ namespace FD
         menuPreferences->setTitle(QApplication::translate("QtFlowDesigner", "&Preferences", 0, QApplication::UnicodeUTF8));
         menuNetwork->setTitle(QApplication::translate("QtFlowDesigner", "Network", 0, QApplication::UnicodeUTF8));
         actionFlowDesignerInfo->setText(QApplication::translate("QtFlowDesigner", "FlowDesigner Info", 0, QApplication::UnicodeUTF8));
+        actionFlowDesignerAuthors->setText(QApplication::translate("QtFlowDesigner", "FlowDesigner Authors", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
     void QtFlowDesigner::newProcess(UIDocument *doc)
@@ -451,6 +457,53 @@ namespace FD
         QWidget *window = m_workspace->addWindow(doc);
         m_workspace->setActiveWindow(window);
         window->show();
+    }
+
+    void QtFlowDesigner::onAuthorsFlowDesignerClicked()
+    {
+		QDialog *myDialog = new QDialog(this);
+		QVBoxLayout *vlayout = new QVBoxLayout(myDialog);
+		myDialog->resize(640,480);
+
+
+		//Create text edit
+		QTextEdit *myTextEdit = new QTextEdit(myDialog);
+
+		vlayout->addWidget(myTextEdit);
+
+
+		myTextEdit->append(QString("<b>Lead Developpers :</b> "));
+		myTextEdit->append(QString("Dominic Letourneau (maestro@users.sourceforge.net)"));
+		myTextEdit->append(QString("Jean-Marc Valin (jmvalin@users.sourceforge.net)"));
+
+		myTextEdit->append(QString("<br><b>Contributors :</b> "));
+		myTextEdit->append(QString("Francois Michaud"));
+		myTextEdit->append(QString("Julien D'Ascenzio"));
+		myTextEdit->append(QString("Mathieu Labbe"));
+		myTextEdit->append(QString("Carle Cote"));
+		myTextEdit->append(QString("Pierre Lepage"));
+		myTextEdit->append(QString("Mathieu Lemay"));
+		myTextEdit->append(QString("Victor Bao-Long Tran"));
+		myTextEdit->append(QString("Yannick Brosseau"));
+		myTextEdit->append(QString("Etienne Robichaud"));
+		myTextEdit->append(QString("Pierre Moisan"));
+		myTextEdit->append(QString("Nynon Gagne"));
+		myTextEdit->append(QString("Brad Chapman"));
+		myTextEdit->append(QString("Andre Charbonneau"));
+
+		myTextEdit->setReadOnly(true);
+
+		QPushButton *myButton = new QPushButton("Thank you!",myDialog);
+		vlayout->addWidget(myButton);
+
+		//Clicking on OK will close the dialog
+		QObject::connect(myButton,SIGNAL(clicked()), myDialog, SLOT(accept()));
+
+
+		//Exec dialog
+		myDialog->exec();
+
+		delete myDialog;
     }
 
     void QtFlowDesigner::onInfoFlowDesignerClicked()
