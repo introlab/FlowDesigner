@@ -99,13 +99,14 @@ namespace FD
         //setAcceptDrops(true);
         //setDropIndicatorShown(true)
         
-        setSceneRect(0,0,1000,1000);
+        setSceneRect(0,0,500,500);
         
         scale(1.0, 1.0);
-        resizeSceneView();
+        //resize only if the scene isn't empty.
+        if(scene->items().size() > 2) {
+        	resizeSceneView();
+        }
         update();
-        resizeView();
-        
     }
     
     QtNetwork::~QtNetwork()
@@ -146,7 +147,10 @@ namespace FD
             break;
             case Qt::Key_Space:
             case Qt::Key_Enter:
-            resizeView();
+            //resize only if the scene isn't empty.
+            if(scene()->items().size() > 2) {
+            	fitInView(scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+            }
             break;
             case Qt::Key_Delete:
             {
@@ -304,13 +308,8 @@ namespace FD
     
 	void QtNetwork::resizeSceneView()
 	{
-	 
-		QRectF myRect = sceneRect();
-		QRectF boundingRect = scene()->itemsBoundingRect();
-		QRectF newRect = myRect.unite(boundingRect);
-        
-		setSceneRect(newRect);
-		//ensureVisible(newRect);
+	 	QRectF boundingRect = scene()->itemsBoundingRect();
+	    setSceneRect(boundingRect);
 	}
 	
     void QtNetwork::dropEvent(QDropEvent *event)
@@ -612,12 +611,5 @@ namespace FD
     	}
         QGraphicsView::mouseDoubleClickEvent(e);
     }
-
-    void QtNetwork::resizeView()
-    {
-        QRectF boundingRect = scene()->itemsBoundingRect();
-	    setSceneRect(boundingRect);
-    	fitInView(boundingRect,Qt::KeepAspectRatio);
-    }
-    
+        
 } //namespace FD

@@ -108,7 +108,6 @@ namespace FD
 		
         protected: 
         
-        void resizeView();
         void drawBackground(QPainter *painter, const QRectF &rect);
         virtual void mouseMoveEvent ( QMouseEvent * e );
         virtual void mousePressEvent (QMouseEvent * e);

@@ -139,12 +139,10 @@ void QtConnectDialog::setupUi()
         this->setObjectName(QString::fromUtf8("QtConnectDialog"));
     this->resize(350, 300);
     
-    QWidget* centralWidget = new QWidget(this);
-    
     QVBoxLayout* mainLayout = new QVBoxLayout();
-    centralWidget->setLayout(mainLayout);
+    this->setLayout(mainLayout);
     
-    m_tabWidget = new QTabWidget(centralWidget);
+    m_tabWidget = new QTabWidget(this);
     
     QWidget* tab1 = new QWidget();
     QHBoxLayout* layout1 = new QHBoxLayout();
@@ -188,7 +186,7 @@ void QtConnectDialog::setupUi()
     
     mainLayout->addWidget(m_tabWidget);
 
-	QDialogButtonBox* buttonBox = new QDialogButtonBox(centralWidget);
+	QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
     buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -261,14 +259,14 @@ bool QtConnectDialog::validateForm()
 {
 	if(m_tabWidget->currentIndex() == 0) {
 		QItemSelectionModel* selection = m_listView->selectionModel();
-		if(selection) {
-			QModelIndexList indexes = selection->selectedIndexes();
-		    //Normally, only one row can be selected
-		    m_host = indexes[1].data().toString();
-		    m_port = indexes[2].data().toInt();
-		}
-		else {
-			QMessageBox::warning(this, tr("Error"), tr("Select an address first."), QMessageBox::Ok);
+		QModelIndexList indexes = selection->selectedIndexes();
+	    //Normally, only one row can be selected
+	    if(indexes.size()>=3) {
+	    	m_host = indexes[1].data().toString();
+	    	m_port = indexes[2].data().toInt();
+	    }
+	    else {
+			QMessageBox::warning(this, tr("Error"), tr("No address selected."), QMessageBox::Ok);
 			return false;
 		}
 	}
