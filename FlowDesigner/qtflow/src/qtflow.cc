@@ -50,6 +50,16 @@ class QtFlowApp : public QApplication
 		{
 				cerr<<"QtFlowProcessingThread::run()"<<endl;
 				
+				//Make sure the main event loop is launched 
+				//before doing something. 
+				// The problem is when a program ends before 
+				// the main loop of Qt is running, a call to 
+				// QApplication::exit() does nothing and the 
+				// application never ends when it enters its 
+				// event loop. (This thread is launched before 
+				// app.exec() in the main method)
+				msleep(100);
+				
 				if (m_context)
 				{
 					bool success = m_context->run();
@@ -64,7 +74,6 @@ class QtFlowApp : public QApplication
 						QApplication::exit(-1);
 					}
 				}
-				exec();
 		}	
 		
 		public:
