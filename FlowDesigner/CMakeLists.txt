@@ -22,11 +22,11 @@ ELSE(WIN32)
 	ENDIF(APPLE)
 ENDIF(WIN32)
 
-SET(VERSION 0.10.1)
+SET(VERSION 0.10.0)
 SET(CPACK_PACKAGE_VERSION "${VERSION}")
 SET(CPACK_PACKAGE_VERSION_MAJOR "0")
 SET(CPACK_PACKAGE_VERSION_MINOR "10")
-SET(CPACK_PACKAGE_VERSION_PATCH "1")
+SET(CPACK_PACKAGE_VERSION_PATCH "0")
 
 SET(PEDANTIC TRUE)
 
@@ -88,6 +88,12 @@ SET(INSTALLED_EXAMPLES
  examples/listenString.n
  examples/sendString.n
  examples/sendWebcam.n
+)
+
+SET(INSTALLED_TUTORIALS
+ examples/tutorials/HelloWorld.n
+ examples/tutorials/HelloWorldLoop.n
+ examples/tutorials/Probing.n
 )
 
 SET( ENV{FLOWDESIGNER_HOME} ${INSTALL_PREFIX} )
@@ -153,6 +159,7 @@ ENDIF(WIN32 AND NOT UNIX)
 SET(CPACK_PACKAGE_EXECUTABLES "flowdesigner" "FlowDesigner" "batchflow" "batchflow" "qtflow" "qtflow")
 
 INSTALL( FILES ${INSTALLED_EXAMPLES} DESTINATION share/flowdesigner/examples)
+INSTALL( FILES ${INSTALLED_TUTORIALS} DESTINATION share/flowdesigner/examples/tutorials)
 
 MESSAGE(STATUS "Writing pkg-config file...")
 CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/FlowDesigner.pc.cmake ${CMAKE_BINARY_DIR}/FlowDesigner.pc @ONLY)
