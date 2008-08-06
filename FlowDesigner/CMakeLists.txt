@@ -88,6 +88,7 @@ SET(INSTALLED_EXAMPLES
  examples/listenString.n
  examples/sendString.n
  examples/sendWebcam.n
+ examples/sendWavOverTcp.n
 )
 
 SET(INSTALLED_TUTORIALS
