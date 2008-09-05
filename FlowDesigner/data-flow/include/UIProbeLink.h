@@ -9,8 +9,13 @@
 #include "BufferedNode.h"
 #include <list>
 #include <map>
-#include <pthread.h>
 
+#ifdef WIN32
+	#include <QMutex>
+	#include <QMutexLocker>
+#else	
+	#include <pthread.h>
+#endif
 namespace FD {
 
 
@@ -47,8 +52,11 @@ namespace FD {
 		
 		private:
 		
+		#ifdef WIN32
+		QMutex m_mutex;
+		#else
 		pthread_mutex_t m_mutex;
-	
+		#endif
 	}; 
 
 	

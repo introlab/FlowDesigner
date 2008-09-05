@@ -40,13 +40,17 @@ namespace FD
 		m_outputID = addOutput("OUTPUT");
 
 		//Mutex init
+		#ifndef WIN32
 		pthread_mutex_init(&m_mutex,NULL);
+		#endif
 	}
 
 	UIProbeLinkNode::~UIProbeLinkNode()
 	{
 		//Mutex destroy
+		#ifndef WIN32
 		pthread_mutex_destroy(&m_mutex);
+		#endif
 	}
 
 	void UIProbeLinkNode::calculate(int output_id, int count, Buffer &out)

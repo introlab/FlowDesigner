@@ -1,6 +1,15 @@
 #ifndef _POSIX_MUTEX_LOCKER_H_
 #define _POSIX_MUTEX_LOCKER_H_
 
+#ifdef WIN32
+
+#include <QMutex>
+#include <QMutexLocker>
+
+typedef QMutexLocker PosixMutexLocker;
+
+#else
+
 #include <pthread.h>
 
 namespace FD
@@ -33,6 +42,8 @@ namespace FD
 	};
 
 }	
+
+#endif
 	
 #endif
 
