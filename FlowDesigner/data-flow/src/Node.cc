@@ -317,7 +317,11 @@ int Node::addXPM (const string &nodeName, char **XPMData) {
 int Node::addFactory (const string &factoryName, _NodeFactory* const factory) {
    if (!getFactoryNamed(factoryName)) {
       //the factory doesn't exist inserting it...
-      if (factory != NULL) { 			 	 
+      if (factory != NULL) { 
+	  
+#ifdef DEBUG	  
+		 cerr << " Node::addFactory : "<<factoryName<<endl;
+#endif
          factoryDictionary().insert (factoryEntry(factoryName,factory));
       }
       else {

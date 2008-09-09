@@ -185,7 +185,7 @@ INCLUDE_DIRECTORIES(../include ${LIBXML2_INCLUDE_DIR})
 	
 set(FULL_SRCS ${DATATYPES_SRCS} ${NODES_SRCS} ${NETWORK_SRCS} ${UI_SRCS} ${UTILS_SRCS} )
 
-add_library(libflow-dynamic SHARED ${FULL_SRCS})
+add_library(libflow-dynamic SHARED ${FULL_SRCS} DLLMain.cc )
 	
 set_target_properties(libflow-dynamic PROPERTIES VERSION ${CPACK_PACKAGE_VERSION} SOVERSION ${CPACK_PACKAGE_VERSION} OUTPUT_NAME flow)
 

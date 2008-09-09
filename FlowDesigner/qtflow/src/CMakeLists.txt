@@ -13,7 +13,7 @@ include(${QT_USE_FILE})
 SET(QTFLOW_SRCS 
 	QtLink.cc  
 	QtNetwork.cc
-    	QtNetworkScene.cc  
+    QtNetworkScene.cc  
 	QtNode.cc 
 	QtTerminal.cc
 	QtFlowDesigner.cc
@@ -25,7 +25,6 @@ SET(QTFLOW_SRCS
 	QtNodeParameters.cc
 	QtProcessWindow.cc
 	QtProbeManager.cc
-    QtProbeConsole.cc
 	QtNote.cc
 	QtDocumentParameters.cc
 	QtFlowDesignerSplash.cc
@@ -43,7 +42,7 @@ SET(QTFLOW_SRCS
 SET(QTFLOW_HEADERS 
 	../include/QtLink.h
 	../include/QtNetwork.h
-    	../include/QtNetworkScene.h
+    ../include/QtNetworkScene.h
 	../include/QtNode.h
 	../include/QtTerminal.h
 	../include/QtFlowDesigner.h
@@ -58,33 +57,33 @@ SET(QTFLOW_HEADERS
 	../include/QtDocumentParameters.h
 	../include/QtFlowDesignerSplash.h
 	../include/QtProbeManager.h
-    ../include/QtProbeConsole.h
 	../include/QtIORedirector.h
 	../include/QtFlowIpBroadcaster.h
-    	../include/QtConnectDialog.h
-    	../include/iconeditor/QtIconEditor.h
-    	../include/iconeditor/QtIconItem.h
-    	../include/iconeditor/QtIconScene.h
-    	../include/iconeditor/QtRectItem.h
-    	../include/iconeditor/QtLineItem.h
-    	../include/iconeditor/QtEllipseItem.h
-    	../include/iconeditor/QtPolygonItem.h
-    	../include/iconeditor/QtVertex.h
+    ../include/QtConnectDialog.h
+    ../include/iconeditor/QtIconEditor.h
+    ../include/iconeditor/QtIconItem.h
+    ../include/iconeditor/QtIconScene.h
+    ../include/iconeditor/QtRectItem.h
+    ../include/iconeditor/QtLineItem.h
+    ../include/iconeditor/QtEllipseItem.h
+    ../include/iconeditor/QtPolygonItem.h
+    ../include/iconeditor/QtVertex.h
 )
 
 SET(FDQTTCP_SRCS
     QtSendJitterMatrix.cc
     QtListenJitterMatrix.cc
     QtSendString.cc
-    QtListenString.cc
-    TextProbe.cc	
+    QtListenString.cc	
 )
 
 SET(QTFLOWLIB_SRCS
     QtProbe.cc
+	QtProbeConsole.cc
 )
 
 SET(QTFLOWLIB_HEADERS
+    ../include/QtProbeConsole.h
 	../include/QtProbeRegistry.h
     ../include/QtProbe.h
 )
@@ -137,6 +136,8 @@ add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
 # Linking with libflow and Qt libraries
 target_link_libraries(flowdesigner  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES} libqtflow-dynamic)
 target_link_libraries(qtflow  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES} libqtflow-dynamic)
+
+
 
 # Add FDQTTCP library
 add_library(libfdqttcp-dynamic SHARED ${FDQTTCP_SRCS})

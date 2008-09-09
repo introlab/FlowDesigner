@@ -109,22 +109,23 @@ class Object
       template<class T>
       static int addObjectType(const std::string &objType, _ObjectFactory *factory)
       {
-	 if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
-	 {
-		 std::cerr<< "Duplicated object type found : "
-			  << objType << ", it not be inserted in the ObjectFactoryDictionary."<<std::endl;
+		 if (ObjectFactoryDictionary().find(objType) != ObjectFactoryDictionary().end())
+		 {
+			 std::cerr<< "Duplicated object type found : "
+				  << objType << ", it not be inserted in the ObjectFactoryDictionary."<<std::endl;
+			 
+			 return -1;
+		 }
+		 else
+		 {
+				#ifdef DEBUG
+				std::cerr<<"Adding object type : "<<objType<<std::endl;
+				#endif
+	         	ObjectFactoryDictionary()[objType] = factory;
+	         	TypeidDictionary()[&typeid(T)] = factory;
+	         	return 0;
+		 }
 		 
-		 return -1;
-	 }
-	 else
-	 {
-			#ifdef WIN32
-			std::cerr<<"Adding object type : "<<objType<<std::endl;
-			#endif
-         	ObjectFactoryDictionary()[objType] = factory;
-         	TypeidDictionary()[&typeid(T)] = factory;
-         	return 0;
-	 }
       }
 
       static std::map<std::string, _ObjectFactory*>& ObjectFactoryDictionary();

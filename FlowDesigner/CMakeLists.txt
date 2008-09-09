@@ -106,7 +106,7 @@ IF (WIN32)
 	SET(QTBIN_DIR ${QT_LIBRARY_DIR}/../bin)
 	
 	SET(DEVCPP_DLL
- 	C:/Dev-Cpp/bin/libxml2.dll
+	C:/Dev-Cpp/bin/libxml2.dll
  	C:/Dev-Cpp/bin/iconv.dll
  	C:/MinGW/bin/mingwm10.dll
  	C:/Dev-Cpp/bin/zlib1.dll
