@@ -19,7 +19,7 @@ void DiagonalCovariance::processMean(RCPtr<Mean> mean)
 
    Mean &v=*mean;
    double accum_1 = 1.0/(.001+v.getAccum());
-   for(int i = 0; i < dimension; i++ )
+   for(size_t i = 0; i < dimension; i++ )
       data[i] -= sqr(v[i])*accum_1;
 }
 
@@ -28,7 +28,7 @@ void DiagonalCovariance::invert()
    if (mode == inverted) return;
    if (mode != accum) throw string("DiagonalCovariance::invert");
    double accum_1 = 1.0/(.001+accum_count);
-for(int i = 0; i < data.size(); i++ )
+for(size_t i = 0; i < data.size(); i++ )
    {
       data[i] = 1.0 / (.001 + data[i] * accum_1);
    }
@@ -39,7 +39,7 @@ double DiagonalCovariance::mahalanobisDistance(const float *x1, const double *x2
 {
    if (mode != inverted) throw string ("DiagonalCovariance::mahalanobisDistance");
    double dist=0;
-   for (int i=0;i<dimension;i++)
+   for (size_t i=0;i<dimension;i++)
       dist += sqr(x1[i]-x2[i]) * data[i];
    return dist-getDeterminant();
 }
@@ -72,7 +72,7 @@ void DiagonalCovariance::printOn(ostream &out) const
    if (mode == accum)
       out << "<accum_count " << accum_count << "> " << endl;
    out << "<data";
-   for (int i=0;i<dimension;i++)
+   for (size_t i=0;i<dimension;i++)
       out << " " << data[i];
    out << ">\n";
    out << ">\n";
@@ -81,7 +81,7 @@ void DiagonalCovariance::printOn(ostream &out) const
 
 void DiagonalCovariance::readFrom (istream &in)
 {
-   dimension=-1;
+   bool dimension_found=false;
    string tag;
    while (1)
    {
@@ -93,15 +93,16 @@ void DiagonalCovariance::readFrom (istream &in)
       {
          in >> dimension;
          data.resize(dimension);
+		  dimension_found = true;
       } else if (tag == "mode")
          in >> mode;
             else if (tag == "accum_count")
          in >> accum_count;
       else if (tag == "data")
       {
-         if (dimension==-1)
+         if (!dimension_found)
             throw new ParsingException("DiagonalCovariance::readFrom : dimension must be specified before data");
-         for (int i=0;i<dimension;i++)
+         for (size_t i=0;i<dimension;i++)
             in >> data[i];
       } else 
          throw new ParsingException ("DiagonalCovariance::readFrom : unknown argument: " + tag);

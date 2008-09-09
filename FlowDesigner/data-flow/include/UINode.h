@@ -57,6 +57,8 @@ public:
 			
 			//Position changed
 			virtual void notifyPositionChanged(const UINode* node, double x, double y) {notifyChanged(node);}
+		
+			virtual ~UINodeObserverIF() {;}
 	};
 	
 	

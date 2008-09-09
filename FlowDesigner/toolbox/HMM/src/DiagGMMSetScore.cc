@@ -60,12 +60,12 @@ public:
 
       //DiagGMM &gmm = object_cast<DiagGMM> (gmmValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
+      size_t inputLength = in.size();
 
       Vector<float> &output = *Vector<float>::alloc(gmms.size());
       out[count] = &output;
 
-      for (int i=0;i<gmms.size();i++)
+      for (size_t i=0;i<gmms.size();i++)
       {
 	 //cerr << "a\n";
 	 DiagGMM &gmm = object_cast<DiagGMM> (gmms[i]);

@@ -73,7 +73,7 @@ public:
       if (parameters.exist("NB_CHANNELS"))
       {
          outputID.resize(dereference_cast<int> (parameters.get("NB_CHANNELS")));
-         for (int i=0;i<outputID.size();i++)
+         for (size_t i=0;i<outputID.size();i++)
          {
             char inStr[9] = "CHANNELX";
             inStr[7] = '1'+i;
@@ -98,10 +98,10 @@ public:
       out[count] = &output;
       
       int channel;
-      for (int i=0;i<outputID.size();i++)
+      for (size_t i=0;i<outputID.size();i++)
          if (output_id == outputID[i])
             channel = i;
-      if (channel>=outputID.size())
+      if (channel>=(int)outputID.size())
          throw new NodeException(this, "Sound copy constructor should not be called",__FILE__,__LINE__);
       for (int i=0;i<outputLength;i++)
       {

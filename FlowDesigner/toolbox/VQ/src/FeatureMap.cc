@@ -32,7 +32,7 @@ void FeatureMap::recursiveSplit (const vector<float *> &inData, const vector<flo
       for (int i=0;i<outDimension;i++)
 	 mean[i]=0;
          //mapData[i]=0;
-      for (int k=0;k<outData.size();k++)
+      for (size_t k=0;k<outData.size();k++)
 	 for (int i=0;i<outDimension;i++)
 	    mean[i]+=outData[k][i];
 	    //mapData[i]+=outData[k][i];
@@ -46,7 +46,7 @@ void FeatureMap::recursiveSplit (const vector<float *> &inData, const vector<flo
       
 	 float mindist = FLT_MAX;
 	 int closest = 0;
-	 for (int k=0;k<outData.size();k++)
+	 for (size_t k=0;k<outData.size();k++)
 	 {
 	    float dist=0;
 	    for (int i=0;i<outDimension;i++)
@@ -81,7 +81,7 @@ void FeatureMap::recursiveSplit (const vector<float *> &inData, const vector<flo
    vector<float *> secondInData;
    vector<float *> firstOutData;
    vector<float *> secondOutData;
-   for (int i=0;i<inData.size();i++)
+   for (size_t i=0;i<inData.size();i++)
    {
       bool less=false;
       if (inData[i][dim] < thresh)
@@ -148,16 +148,13 @@ void FeatureMap::split(const vector<float *> &inData, const vector<float *> &out
 }
 
 
-static int float_less(const void *a, const void *b)
-{
-   return *((float *)a) < *((float *)b);
-}
+
 
 //find threshold using split at median and mutual information
 void FeatureMap::findThreshold(const vector<float *> &inData, const vector<float *> &outData, int dim, float &thresh, float &score)
 {
-   float sum = 0;
-   int i,k;
+
+
    if (inData.size()==0) thresh=0; 
    else {
       //FIXME: Allocation for sorted should be done faster, but with risk of 
@@ -165,7 +162,7 @@ void FeatureMap::findThreshold(const vector<float *> &inData, const vector<float
       //float sorted[inData.size()];
       float *sorted = new float [inData.size()];
 
-      for (i=0;i<inData.size();i++)
+      for (size_t i=0;i<inData.size();i++)
          sorted[i] = inData[i][dim];
       //qsort(sorted,data.size(),sizeof(float), float_less);
       sort (sorted,sorted+inData.size());
@@ -182,12 +179,12 @@ void FeatureMap::findThreshold(const vector<float *> &inData, const vector<float
    DYN_VEC(float, outDimension, s2A);
    DYN_VEC(float, outDimension, s2B);
 
-   for (i=0;i<outDimension;i++)
+   for (int i=0;i<outDimension;i++)
    {
       sumA[i]=sumB[i]=s2A[i]=s2B[i]=0;
    }
 
-   for (k=0;k<inData.size();k++)
+   for (size_t k=0;k<inData.size();k++)
    {
       bool greater=false;
       if (inData[k][dim] > thresh)
@@ -196,13 +193,13 @@ void FeatureMap::findThreshold(const vector<float *> &inData, const vector<float
 	 greater=rand()&1;
       if (greater)
       {
-	 for (i=0;i<outDimension;i++)
+	 for (int i=0;i<outDimension;i++)
 	 {
 	    sumA[i]+=outData[k][i];
 	    s2A[i]+=outData[k][i]*outData[k][i];
 	 }
       } else {
-	 for (i=0;i<outDimension;i++)
+	 for (int i=0;i<outDimension;i++)
 	 {
 	    sumB[i]+=outData[k][i];
 	    s2B[i]+=outData[k][i]*outData[k][i];
@@ -211,7 +208,7 @@ void FeatureMap::findThreshold(const vector<float *> &inData, const vector<float
    }
    
    score = 0;
-   for (i=0;i<outDimension;i++)
+   for (int i=0;i<outDimension;i++)
    {
       score += s2A[i] - (sumA[i]*sumA[i]/inData.size());
       score += s2B[i] - (sumB[i]*sumB[i]/inData.size());

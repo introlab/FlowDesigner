@@ -60,7 +60,7 @@ public:
       
       GMM &gmm = object_cast<GMM> (gmmValue);
       vector <float *> data(mat.size());
-      for (int i=0;i<mat.size();i++)
+      for (size_t i=0;i<mat.size();i++)
 	 data[i]= &object_cast <Vector<float> > (mat[i])[0];
 
       gmm.adaptMAP(data,&gmm);

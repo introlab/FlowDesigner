@@ -89,13 +89,13 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
+   
 
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;
 
       autocorr(&in[0], &r[0], outputLength-1, in.size());
-      float er=0;
+      
       for (int i=0;i<outputLength;i++)
 	 r[i] *= lag_window[i];
       r[0] *= 1.0001;

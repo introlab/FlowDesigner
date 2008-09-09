@@ -33,7 +33,7 @@ void Cell::recursiveSplit (const vector<pair<int, float *> > &data, int level)
    //cerr << "bb\n";
    vector<pair<int, float *> > firstData;
    vector<pair<int, float *> > secondData;
-   for (int i=0;i<data.size();i++)
+   for (size_t i=0;i<data.size();i++)
       if (data[i].second[dim] < thresh)
       {
          //cerr << i << "(" << data[i].second[0] << "," << data[i].second[1] << ") goes to first\n";
@@ -221,24 +221,25 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    }
    
 }
-*/
+
 
 
 static int float_less(const void *a, const void *b)
 {
    return *((float *)a) < *((float *)b);
 }
-
+*/
+ 
 //find threshold using split at median and mutual information
 void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float &thresh, float &score)
 {
-   float sum = 0;
-   int i,k;
+
+
    if (data.size()==0) thresh=0; 
    else {
       //float sorted[data.size()];
       float *sorted = new float [data.size()];
-      for (i=0;i<data.size();i++)
+      for (size_t i=0;i<data.size();i++)
          sorted[i] = data[i].second[dim];
       //qsort(sorted,data.size(),sizeof(float), float_less);
       sort (sorted,sorted+data.size());
@@ -249,7 +250,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    int sumAi = 0, sumBi = 0;
    vector<int> Ai (numberClasses, 0);
    vector<int> Bi (numberClasses, 0);
-   for (k=0;k<data.size();k++)
+   for (size_t k=0;k<data.size();k++)
    {
       if (data[k].second[dim] >= thresh) 
       {
@@ -262,7 +263,7 @@ void Cell::findThreshold(const vector<pair<int, float *> > &data, int dim, float
    }
    double weight = double(sumAi)/data.size();
    score = 0.0;
-   for (i = 0;i<numberClasses;i++)
+   for (int i = 0;i<numberClasses;i++)
    {
       score += - weight     *  entropy_funct (double( Ai[i] ) / sumAi )
                - (1-weight) *  entropy_funct (double( Bi[i] ) / sumBi );

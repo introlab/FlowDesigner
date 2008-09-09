@@ -69,7 +69,7 @@ public:
       if (parameters.exist("NB_CHANNELS"))
       {
          inputID.resize(dereference_cast<int> (parameters.get("NB_CHANNELS")));
-         for (int i=0;i<inputID.size();i++)
+         for (size_t i=0;i<inputID.size();i++)
          {
             char inStr[9] = "CHANNELX";
             inStr[7] = '1'+i;
@@ -92,11 +92,11 @@ public:
    {
       vector<ObjectRef> inputValues(inputID.size());
       
-      for (int i=0;i<inputID.size();i++)
+      for (size_t i=0;i<inputID.size();i++)
          inputValues[i] = getInput(inputID[i], count);
       
       vector<const Vector<float> *> in (inputID.size());
-      for (int i=0;i<inputID.size();i++)
+      for (size_t i=0;i<inputID.size();i++)
       {
          in[i] = &object_cast<Vector<float> > (inputValues[i]);
          if (in[i]->size() != in[0]->size())
@@ -117,13 +117,13 @@ public:
       {
          for (int i=0;i<inputLength;i++)
             output[i] = 0;
-         for (int j=0;j<inputID.size();j++)
+         for (size_t j=0;j<inputID.size();j++)
          {
             for (int i=0;i<inputLength;i++)
                output[i] += (*(in[j]))[i];
          }         
       } else {
-         for (int j=0;j<inputID.size();j++)
+         for (size_t j=0;j<inputID.size();j++)
          {
             for (int i=0;i<inputLength;i++)
                output[inputID.size()*i+j] = (*(in[j]))[i];

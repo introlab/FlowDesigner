@@ -35,7 +35,7 @@ void FFNet::init(const Vector<string> &functions)
 {
    nbNeurons = 0;
    nbWeights = 0;
-   for (int i=0;i<topo.size()-1;i++)
+   for (size_t i=0;i<topo.size()-1;i++)
    {
       nbWeights += (topo[i]+1)*topo[i+1];
       nbNeurons += topo[i+1];
@@ -44,7 +44,7 @@ void FFNet::init(const Vector<string> &functions)
 
    int weightOffset = 0;
    int neuronOffset = 0;
-   for (int i=0;i<topo.size()-1;i++)
+   for (size_t i=0;i<topo.size()-1;i++)
    {
       layers[i]=new FFLayer(topo[i+1], topo[i], weights, weightOffset, neuronOffset, functions[i]);
       //layers[i]->init(1.0);
@@ -66,7 +66,7 @@ FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<f
    vector<double> inputStd(topo[0], 0);
    vector<double> outputStd(topo[topo.size()-1], 0);
    
-   for (int i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
       for (int j=0;j<topo[0];j++)
 	 inputMeans[j] += tin[i][j];
 
@@ -74,7 +74,7 @@ FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<f
    for (int j=0;j<topo[0];j++)
       inputMeans[j] /= tin.size();
 
-   for (int i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
       for (int j=0;j<topo[0];j++)
 	 inputStd[j] += sqr(tin[i][j]-inputMeans[j]);
 
@@ -82,14 +82,14 @@ FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<f
    for (int j=0;j<topo[0];j++)
        inputStd[j] = sqrt(inputStd[j]/tin.size());
    
-   for (int i=0;i<tout.size();i++)
+   for (size_t i=0;i<tout.size();i++)
       for (int j=0;j<topo[topo.size()-1];j++)
 	 outputMeans[j] += tout[i][j];
 
    for (int j=0;j<topo[topo.size()-1];j++)
       outputMeans[j] /= tout.size();
 
-   for (int i=0;i<tout.size();i++)
+   for (size_t i=0;i<tout.size();i++)
       for (int j=0;j<topo[topo.size()-1];j++)
 	 outputStd[j] += (tout[i][j]-outputMeans[j]);
    
@@ -98,7 +98,7 @@ FFNet::FFNet(const Vector<int> &_topo, const Vector<string> &functions, vector<f
       outputStd[j] = sqrt(outputStd[j]/tout.size());
    
    
-   for (int i=0;i<topo.size()-1;i++)
+   for (size_t i=0;i<topo.size()-1;i++)
    {
       //layers[i]=new FFLayer(topo[i+1],topo[i], functions[i]);
       if (i==0)
@@ -127,7 +127,7 @@ void FFNet::setupLayersAfterRead()
 {
    nbNeurons = 0;
    nbWeights = 0;
-   for (int i=0;i<topo.size()-1;i++)
+   for (size_t i=0;i<topo.size()-1;i++)
    {
       nbWeights += (topo[i]+1)*topo[i+1];
       nbNeurons += topo[i+1];
@@ -136,7 +136,7 @@ void FFNet::setupLayersAfterRead()
    
    int weightOffset = 0;
    int neuronOffset = 0;
-   for (int i=0;i<topo.size()-1;i++)
+   for (size_t i=0;i<topo.size()-1;i++)
    {
       //layers[i]=new FFLayer(topo[i+1], topo[i], weights, weightOffset, neuronOffset, functions[i]);
       //layers[i]->init(1.0);
@@ -227,7 +227,6 @@ void FFNet::learn(float *input, float *output, double *gradient, double *err, fl
 
 void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<float> eval_weights, Array<double> &gradient, double &err)
 {
-   int i,j;
 
    //float tmp[nbWeights];
    DYN_VEC(float, nbWeights, tmp);
@@ -241,10 +240,10 @@ void FFNet::calcGradient(vector<float *> &tin, vector<float *> &tout, Array<floa
    //weights = &eval_weights[0];
    
    err=0;
-   for (i=0;i<nbWeights;i++)
+   for (int i=0;i<nbWeights;i++)
       gradient[i] = 0;
 
-   for (i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
    {
       learn (tin[i], tout[i], &gradient[0], &err);
    }
@@ -344,7 +343,6 @@ void FFNet::weightedLearn(float *input, float *output, float *learnWeights, doub
 void FFNet::weightedCalcGradient(vector<float *> &tin, vector<float *> &tout, vector<float *> &learnWeights, 
 				 Array<float> eval_weights, Array<double> &gradient, double &err)
 {
-   int i,j;
 
    //float tmp[nbWeights];
    DYN_VEC(float, nbWeights, tmp);
@@ -358,10 +356,10 @@ void FFNet::weightedCalcGradient(vector<float *> &tin, vector<float *> &tout, ve
    //weights = &eval_weights[0];
    
    err=0;
-   for (i=0;i<nbWeights;i++)
+   for (int i=0;i<nbWeights;i++)
       gradient[i] = 0;
 
-   for (i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
    {
       weightedLearn (tin[i], tout[i], learnWeights[i], &gradient[0], &err);
    }
@@ -397,7 +395,7 @@ float FFNet::totalError(vector<float *> tin, vector<float *> tout)
 
 void FFNet::setDerivOffset(float d)
 {
-   for (int i=0;i<layers.size();i++)
+   for (size_t i=0;i<layers.size();i++)
       layers[i]->setDerivOffset(d);
 }
 

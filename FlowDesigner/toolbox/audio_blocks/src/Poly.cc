@@ -64,7 +64,7 @@ public:
       {
 	 float x_n = 1;
 	 output[i] = 0;
-	 for (int j=0;j<in2.size();j++)
+	 for (size_t j=0;j<in2.size();j++)
 	 {
 	    output[i] += in2[j] * x_n;
 	    x_n *= in1[i];

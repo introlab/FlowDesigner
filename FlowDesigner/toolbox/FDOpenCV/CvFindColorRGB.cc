@@ -89,11 +89,11 @@ namespace FD {
          RCPtr<CvColor> findColorPtr = getInput(m_findColorID,count);         
          CvImage* image = new CvImage( cvGetSize(imagePtr->getImage()), IPL_DEPTH_8U, 1 );          
          unsigned char B,G,R;
-         unsigned int x,y;
-         int d=20;            
-         for (x=0; x<(imagePtr->getImage())->width ; x++)
+
+             
+         for (int x=0; x<(imagePtr->getImage())->width ; x++)
          {
-            for (y=0; y<(imagePtr->getImage())->height ; y++)
+            for (int y=0; y<(imagePtr->getImage())->height ; y++)
             {
                B = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3];
                G = ((uchar*)((imagePtr->getImage())->imageData + (imagePtr->getImage())->widthStep*y))[x*3+1];

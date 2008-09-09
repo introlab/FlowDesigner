@@ -20,7 +20,7 @@ CodebookMap::CodebookMap(const RCPtr<VQ> &_mapIn, const vector<float *> dataIn, 
    int mapSize = mapIn->nbClasses();
    vector<int> counts(mapSize,0);
    
-   for (int i=0;i<dataIn.size();i++)
+   for (size_t i=0;i<dataIn.size();i++)
    {
       int id = mapIn->getClassID(dataIn[i]);
       for (int j=0;j<length;j++)
@@ -35,7 +35,7 @@ CodebookMap::CodebookMap(const RCPtr<VQ> &_mapIn, const vector<float *> dataIn, 
    }
 
    double dist=0;
-   for (int i=0;i<dataIn.size();i++)
+   for (size_t i=0;i<dataIn.size();i++)
    {
       int id = mapIn->getClassID(dataIn[i]);
       for (int j=0;j<length;j++)

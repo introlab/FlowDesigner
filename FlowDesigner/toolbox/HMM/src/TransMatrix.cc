@@ -71,7 +71,7 @@ public:
       for (int i=0;i<nbStates;i++)
 	 sums[i] = 0;
       
-      for (int i=0;i<states.size()-1;i++)
+      for (size_t i=0;i<states.size()-1;i++)
       {
 	 Vector<float> &from = object_cast<Vector<float> > (states[i]);
 	 Vector<float> &to = object_cast<Vector<float> > (states[i+1]);

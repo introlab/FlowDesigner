@@ -32,7 +32,7 @@ namespace FD
 	using namespace std;
 
 	QtNote::QtNote(QtNetwork *parent, UINote *note)
-		: m_qtNetwork(parent), m_uiNote(note), m_textItem(NULL)
+		: m_uiNote(note),  m_textItem(NULL), m_qtNetwork(parent)
 	{
 		
 		if (m_uiNote)

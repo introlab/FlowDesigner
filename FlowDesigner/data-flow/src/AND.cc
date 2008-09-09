@@ -72,7 +72,7 @@ public:
    {
       bool outValue = true;
 
-      for (int j = 0; j < inputs.size(); j++)
+      for (size_t j = 0; j < inputs.size(); j++)
       {
          ObjectRef inputValue = getInput(j, count);
          if (!dereference_cast<bool> (inputValue) && outValue)

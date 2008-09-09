@@ -32,7 +32,7 @@ namespace FD
 
 	
 	FlowDesignerTCPServerClient::FlowDesignerTCPServerClient(FlowDesignerTCPServer *server, int socketDescriptor)
-	: m_server(server), m_socketDescriptor(socketDescriptor), m_tcpSocket(NULL) 
+	: m_socketDescriptor(socketDescriptor), m_server(server), m_tcpSocket(NULL) 
 	{			
 	}
 	
@@ -233,7 +233,7 @@ namespace FD
 		cerr<<"FlowDesignerTCPServer starting on port : "<<this->serverPort()<<endl;
 		
 		//Start broadcasting the process ip
-		QtFlowIpBroadcaster* qtFlowIpBroadcaster = new QtFlowIpBroadcaster(this, QString(m_manager->getContext()->getDocument()->getName().c_str()), this->serverPort());
+		m_qtFlowIpBroadcaster = new QtFlowIpBroadcaster(this, QString(m_manager->getContext()->getDocument()->getName().c_str()), this->serverPort());
 	}
 	
 

@@ -56,7 +56,7 @@ public:
       and for the 'count' iteration */
    virtual void calculate(int output_id, int count, Buffer &out)
    {
-      int i,j;
+
       NodeInput framesInput = inputs[framesInputID];
       
       ObjectRef matRef = getInput(framesInputID,count);
@@ -66,11 +66,11 @@ public:
       int dimensions = object_cast<Vector<float> >((object_cast <Vector<ObjectRef> > (mat[0])[0])).size();
       Cell *mmi = new Cell(dimensions, mat.size()); 
       vector <pair<int, float *> > data;
-      for (i=0;i< mat.size();i++)
+      for (size_t i=0;i< mat.size();i++)
       {
          cerr << i << endl;
          Vector<ObjectRef>  &speaker = object_cast <Vector<ObjectRef> > (mat[i]);
-         for (j=0;j<speaker.size(); j++)
+         for (size_t j=0;j<speaker.size(); j++)
          {
             data.insert (data.end(), 
                          make_pair<int, float *> (i, &object_cast <Vector<float> > (speaker[j])[0]));

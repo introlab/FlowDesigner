@@ -81,7 +81,7 @@ namespace FD {
          out[count] = ObjectRef(new JitterMatrix(matrix));
       }
       
-      long setType(int type)
+      long setType(unsigned long type)
       {
          if( type==IPL_DEPTH_16U || type==IPL_DEPTH_16S || type==IPL_DEPTH_32S )
          {

@@ -58,7 +58,7 @@ public:
        
       DiagGMM &gmm = object_cast<DiagGMM> (gmmValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
+      size_t inputLength = in.size();
       if (inputLength != gmm.getDim())
 	 throw new NodeException(this, "Dimension mismatch", __FILE__, __LINE__);
 

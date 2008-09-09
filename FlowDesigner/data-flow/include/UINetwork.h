@@ -1,10 +1,9 @@
-// Copyright (C) 2001 Jean-Marc Valin
+// Copyright (C) 2001 Jean-Marc Valin, Dominic Létourneau
 
 #ifndef UINETWORK_H
 #define UINETWORK_H
 
-//#include <gnome.h>
-//#include "UIDocument.h"
+
 #include <vector>
 #include <string>
 #include <libxml/tree.h>
@@ -76,6 +75,8 @@ class UINetwork {
 		
 		//Destroyed
 		virtual void notifyDestroyed(const UINetwork *net) {notifyChanged(net);}
+		
+		virtual ~UINetworkObserverIF() {;}
 	};
 	  
 	  

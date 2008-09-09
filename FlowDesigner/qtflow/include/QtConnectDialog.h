@@ -39,6 +39,9 @@
 
 #include <iostream>
 
+namespace FD
+{
+
 /**
  * This dialog is used to show FlowDesigner processes 
  * running on the network. When accepted, it returns the 
@@ -175,5 +178,5 @@ private:
     QString m_host;
     int m_port;
 };
-
+}//namespace FD
 #endif /*QTCONNECTDIALOG_H_*/

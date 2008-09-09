@@ -44,7 +44,7 @@ public:
 
    void accumFrame(const std::vector<float> &v)
    {
-      for (int i=0;i<v.size();i++)
+      for (size_t i=0;i<v.size();i++)
          this->operator[] (i) += v[i];
       accum_count++;
    }

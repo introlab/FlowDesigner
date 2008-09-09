@@ -60,7 +60,7 @@ public:
    {
       ObjectRef ReturnObject = getInput(m_input1ID,count);
 
-      for (int j = 1; j < inputs.size(); j++)
+      for (size_t j = 1; j < inputs.size(); j++)
       {
          ObjectRef InputValue = getInput(j,count);
          ReturnObject = max(ReturnObject, InputValue);

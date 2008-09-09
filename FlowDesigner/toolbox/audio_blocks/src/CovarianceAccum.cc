@@ -56,15 +56,15 @@ public:
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       Matrix<float> &mat = object_cast<Matrix<float> > (matrixValue);
-      int length = in.size();
+      size_t length = in.size();
       if (length != mat.ncols() || length != mat.nrows())
 	 throw new NodeException(this, "Covariance matrix must be square and have same size as input vector", 
 				 __FILE__, __LINE__);
 
       out[count] = matrixValue;
-      for (int i=0;i<length;i++)
+      for (size_t i=0;i<length;i++)
       {
-	 for (int j=i+1;j<length;j++)
+	 for (size_t j=i+1;j<length;j++)
 	 {
 	    mat[i][j] += in[i]*in[j];
 	    mat[j][i] += in[i]*in[j];

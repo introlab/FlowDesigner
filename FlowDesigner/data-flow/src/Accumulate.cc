@@ -44,7 +44,7 @@ public:
 
    virtual int translateInput (string inputName)
    {
-      for (unsigned int i=0; i< inputs.size(); i++)
+      for (size_t i=0; i< inputs.size(); i++)
       {
          if (inputs[i].name == inputName)
          {
@@ -59,7 +59,7 @@ public:
       ObjectRef accumValue = getInput(accumID,count);
       Vector<ObjectRef> &accum = object_cast<Vector<ObjectRef> > (accumValue);
 
-      for (int j = 1; j < inputs.size(); j++)
+      for (size_t j = 1; j < inputs.size(); j++)
       {
          ObjectRef inputValue = getInput(j,count);
          accum.push_back(inputValue);

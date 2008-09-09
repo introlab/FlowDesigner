@@ -107,7 +107,7 @@ public:
    virtual void calculate(int output_id, int count, Buffer &out)
    {
       cerr << "getOutput in NNetSetTrainDBD\n";
-      int i,j;
+   
       NodeInput trainInInput = inputs[trainInID];
       ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
 
@@ -127,15 +127,15 @@ public:
 
       cerr << "inputs casted\n";
       vector <float *> in(inBuff.size());
-      for (i=0;i<inBuff.size();i++)
+      for (size_t i=0;i<inBuff.size();i++)
          in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
 
       vector <float *> vout(outBuff.size());
-      for (i=0;i<outBuff.size();i++)
+      for (size_t i=0;i<outBuff.size();i++)
          vout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
       vector <int> id(idBuff.size());
-      for (i=0;i<idBuff.size();i++)
+      for (size_t i=0;i<idBuff.size();i++)
          id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
 
       cerr << "vectors filled\n";

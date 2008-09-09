@@ -43,7 +43,7 @@ namespace FD
     using namespace std;
     
     QtDocument::QtDocument(QtFlowDesigner *parent, const std::string &name)
-    : QDialog(parent), m_uiDoc(NULL), m_name(name), m_flowdesigner(parent)
+    : QDialog(parent), m_name(name), m_flowdesigner(parent), m_uiDoc(NULL)
     {
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
@@ -125,7 +125,7 @@ namespace FD
     
     void QtDocument::open(const std::string &fname) {
         
-        int pos = fname.rfind("/");
+        size_t pos = fname.rfind("/");
         
         string doc_name;
         

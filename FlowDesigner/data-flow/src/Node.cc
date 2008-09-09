@@ -69,7 +69,7 @@ void Node::connectToNode(unsigned int in, Node *inputNode, unsigned int out)
 {
    if (inputs.size() <= in) {
      char message[256];
-     sprintf(message,"Input %i doesn't exist",in,getName().c_str());
+     sprintf(message,"Input %i doesn't exist in node : %s",in,getName().c_str());
      throw new NodeException(this,message, __FILE__, __LINE__);
    }
    else {

@@ -103,7 +103,7 @@ public:
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       
-      if (in.size() != length)
+      if (in.size() != (size_t) length)
       {
 	 cerr << in.size() << " != " << length << endl;
 	 throw new NodeException(this, "Size of input != size of window", __FILE__, __LINE__);

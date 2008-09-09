@@ -59,10 +59,10 @@ class DTMF : public BufferedNode {
 public:
    DTMF(string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
-      , lineFreq(4)
-      , colFreq(4)
-      , phase(2,0)
       , last(2)
+	  , phase(2,0)
+	  , lineFreq(4)
+	  , colFreq(4)
    {
       inputID = addInput("INPUT");
       outputID = addOutput("OUTPUT");

@@ -71,7 +71,7 @@ template <class T, class U>
 ObjectRef VectorVectorConversion (ObjectRef in) {
   RCPtr<T> FromVector = in;
   RCPtr<U> ToVector(U::alloc(FromVector->size()));
-  for (int i = 0; i < ToVector->size(); i++) {
+  for (size_t i = 0; i < ToVector->size(); i++) {
     (*ToVector)[i] = static_cast<typename U::basicType>((*FromVector)[i]);
   }
   return ToVector;
@@ -81,8 +81,8 @@ template <class T, class U>
 ObjectRef MatrixMatrixConversion (ObjectRef in) {
   RCPtr<T> FromMatrix = in;
   RCPtr<U> ToMatrix( new U(FromMatrix->nrows(), FromMatrix->ncols()));
-  for (int i = 0; i < ToMatrix->nrows(); i++) {
-    for (int j = 0; j < ToMatrix->ncols(); j++) {
+  for (size_t i = 0; i < ToMatrix->nrows(); i++) {
+    for (size_t j = 0; j < ToMatrix->ncols(); j++) {
       (*ToMatrix)(i,j) = static_cast<typename U::basicType>((*FromMatrix)(i,j));
     }
   }
@@ -94,7 +94,7 @@ template <class T, class U>
 ObjectRef VectorMatrixConversion (ObjectRef in) {
   RCPtr<T> FromVector = in;
   RCPtr<U> ToMatrix( new U(1,FromVector->size()));
-  for (int i = 0; i < FromVector->size(); i++) {
+  for (size_t i = 0; i < FromVector->size(); i++) {
     (*ToMatrix)(0,i) = static_cast<typename U::basicType>((*FromVector)[i]);
   }
   return ToMatrix;

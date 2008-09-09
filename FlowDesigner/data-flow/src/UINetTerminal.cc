@@ -13,10 +13,10 @@ namespace FD {
 UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name, 
 			     const string &_objType, const string &_description)
    : name(_name)
-   , terminal(_terminal)
-   , type(_type)
    , m_objectType(_objType)
    , m_description (_description)
+   , terminal(_terminal)
+   , type(_type)
 {
    terminal->getNode()->getNetwork()->addTerminal(this);
    terminal->connectNetTerminal (this);

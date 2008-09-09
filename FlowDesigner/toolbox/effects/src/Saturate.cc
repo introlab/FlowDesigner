@@ -100,6 +100,10 @@ public:
 	       output[i] = threshold * tanh(in[i]/threshold);
 	    }
 	    break;
+		
+	  //TODO Handle this case		  
+	  case SOFT4:
+		break;
       }
    }
 

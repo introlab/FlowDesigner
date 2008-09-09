@@ -57,18 +57,18 @@ public:
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
       const Matrix<float> &mat = object_cast<Matrix<float> > (matrixValue);
-      int inputLength = in.size();
-      int outputLength = mat.nrows();
+      size_t inputLength = in.size();
+      size_t outputLength = mat.nrows();
       if (mat.ncols() != inputLength)
 	 throw new NodeException(this, "matrix columns doesn't match vector length", __FILE__, __LINE__);
 
       Vector<float> &output = *Vector<float>::alloc(inputLength);
       out[count] = &output;
 
-      for (int i=0;i<outputLength;i++)
+      for (size_t i=0;i<outputLength;i++)
       {
 	 output[i] = 0;
-	 for (int j=0;j<inputLength;j++)
+	 for (size_t j=0;j<inputLength;j++)
 	    output[i] += mat[i][j] * in[j];
       }
       

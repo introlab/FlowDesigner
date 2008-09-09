@@ -89,7 +89,7 @@ float GenericModel::conjunction(Vector<float> &c_values) {
   float value = c_values[0];
   
   //min operator
-  for (int i = 0; i < c_values.size(); i++) {
+  for (size_t i = 0; i < c_values.size(); i++) {
     if (c_values[i] < value) {
       value = c_values[i];
     }
@@ -110,7 +110,7 @@ float GenericModel::disjunction(Vector<float> &d_values) {
   float value = d_values[0];
   
   //max operator
-  for (int i = 0; i < d_values.size(); i++) {
+  for (size_t i = 0; i < d_values.size(); i++) {
     
     if (d_values[i] > value) {
       value = d_values[i];
@@ -134,14 +134,14 @@ Vector<float>& GenericModel::defuzzification() {
   //using Larsen (product) and the centroid method
   
   
-  for (int i = 0; i < m_output_set.size(); i++) {
+  for (size_t i = 0; i < m_output_set.size(); i++) {
     
     area_cumul = 0;
     defuzz_value = 0;
     
     Vector<ObjectRef> & functions = object_cast<FuzzySet>(m_output_set[i]).get_member_functions();
     
-    for (int j = 0;j < functions.size(); j++) {
+    for (size_t j = 0;j < functions.size(); j++) {
       
       tmp_area = object_cast<FuzzyFunction>(functions[j]).get_area();
       tmp_cog = object_cast<FuzzyFunction>(functions[j]).get_center_of_gravity();
@@ -179,17 +179,17 @@ void GenericModel::printOn(ostream &out) const {
   out << "<GenericModel "<<endl; 
 
   //inputset
-  for (int i = 0; i < m_input_set.size(); i++) {
+  for (size_t i = 0; i < m_input_set.size(); i++) {
     out<<"<InputSet "<<m_input_set[i]<<" >"<<endl;
   }
   
   //outputset
-  for (int i = 0; i < m_output_set.size(); i++) {
+  for (size_t i = 0; i < m_output_set.size(); i++) {
     out<<"<OutputSet "<<m_output_set[i]<<" >"<<endl;
   }
 
   //rules
-  for (int i = 0; i < m_rules.size(); i++) {
+  for (size_t i = 0; i < m_rules.size(); i++) {
     out<<"<Rule "<<m_rules[i]<<" >"<<endl;    
   }
 
@@ -199,9 +199,6 @@ void GenericModel::printOn(ostream &out) const {
 void GenericModel::readFrom(istream &in) {
 
    string tag;
-   int rule_size;
-   int input_set_size;
-   int output_set_size;
 
    while (1)
    {

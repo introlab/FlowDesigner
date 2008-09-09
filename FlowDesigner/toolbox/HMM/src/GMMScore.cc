@@ -60,7 +60,7 @@ ObjectRef GMMScore::getOutput(int output_id, int count)
    {
       if (count != processCount)
       {
-         int i;
+ 
          NodeInput framesInput = inputs[framesInputID];
          NodeInput gmmInput = inputs[gmmInputID];
          

@@ -88,7 +88,7 @@ ObjectRef tcp_url_handler(const string& url, int flags) {
 
   //FORMAT tcp:hostname:port
 
-  int _pos = url.find(":");
+  size_t _pos = url.find(":");
 
   string stripped_url = url.substr(_pos + 1, url.size());
 

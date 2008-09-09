@@ -36,7 +36,7 @@ ObjectRef mulVectorFunction(ObjectRef op1, ObjectRef op2) {
   //creating new vector
   RCPtr<Z> resultValue(Z::alloc(op1Value->size()));
 
-  for (int i = 0; i < resultValue->size(); i++) {    
+  for (size_t i = 0; i < resultValue->size(); i++) {    
     (*resultValue)[i] = static_cast<typename Z::basicType> ((*op1Value)[i]) * static_cast<typename Z::basicType> ((*op2Value)[i]);
   }
 
@@ -58,8 +58,8 @@ ObjectRef mulMatrixFunction(ObjectRef op1, ObjectRef op2) {
   
   RCPtr<Z> resultValue(new Z(op1Value->nrows(), op1Value->ncols()));
   
-  for (int i = 0; i < resultValue->nrows(); i++) {    
-    for (int j = 0; j < resultValue->ncols(); j++) {      
+  for (size_t i = 0; i < resultValue->nrows(); i++) {    
+    for (size_t j = 0; j < resultValue->ncols(); j++) {      
       (*resultValue)(i,j) = static_cast<typename Z::basicType> ((*op1Value)(i,j)) * static_cast<typename Z::basicType> ((*op2Value)(i,j));    
      }
   }
@@ -80,7 +80,7 @@ ObjectRef mulVectorObjectRef(ObjectRef op1, ObjectRef op2) {
   //creating new vector
   RCPtr<Vector<ObjectRef> > resultValue(new Vector<ObjectRef>(op1Value->size()));
 
-  for (int i = 0; i < resultValue->size(); i++) {    
+  for (size_t i = 0; i < resultValue->size(); i++) {    
     (*resultValue)[i] = (*op1Value)[i] * (*op2Value)[i];
   }
 
@@ -100,8 +100,8 @@ ObjectRef mulMatrixObjectRef(ObjectRef op1, ObjectRef op2) {
   //creating new Matrix
   RCPtr<Matrix<ObjectRef> > resultValue(new Matrix<ObjectRef>(op1Value->nrows(), op1Value->ncols()));
 
-  for (int i = 0; i < resultValue->nrows(); i++) {    
-    for (int j = 0; j < resultValue->ncols(); j++) {      
+  for (size_t i = 0; i < resultValue->nrows(); i++) {    
+    for (size_t j = 0; j < resultValue->ncols(); j++) {      
       (*resultValue)(i,j) = (*op1Value)(i,j) * (*op2Value)(i,j);    
     }
   }
@@ -118,7 +118,7 @@ ObjectRef mulVectorScalarFunction(ObjectRef op1, ObjectRef op2) {
   //creating new vector
   RCPtr<Z> resultValue(Z::alloc(op1Value->size()));
 
-  for (int i = 0; i < resultValue->size(); i++) {    
+  for (size_t i = 0; i < resultValue->size(); i++) {    
     (*resultValue)[i] = static_cast<typename Z::basicType> ((*op1Value)[i]) * static_cast<typename Z::basicType> (op2Value->val());
   }
 
@@ -138,8 +138,8 @@ ObjectRef mulMatrixScalarFunction(ObjectRef op1, ObjectRef op2) {
   
   RCPtr<Z> resultValue(new Z(op1Value->nrows(), op1Value->ncols()));
   
-  for (int i = 0; i < resultValue->nrows(); i++) {    
-    for (int j = 0; j < resultValue->ncols(); j++) {      
+  for (size_t i = 0; i < resultValue->nrows(); i++) {    
+    for (size_t j = 0; j < resultValue->ncols(); j++) {      
       (*resultValue)(i,j) = static_cast<typename Z::basicType> ((*op1Value)(i,j)) * static_cast<typename Z::basicType> (op2Value->val());    
      }
   }

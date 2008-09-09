@@ -22,7 +22,7 @@ protected:
    enum Mode {accum, real, rotated, inverted};
    
    /**Size of the covariance matrix*/
-   int   dimension;
+   size_t   dimension;
    
    /**Log of the determinant*/
    mutable double determinant;
@@ -79,10 +79,10 @@ public:
    virtual double mahalanobisDistance(const float *x1, const double *x2) const =0;
 
    /**Virtual indexing operator 1D (for diagonal covariance)*/
-   virtual double&      operator[](int )=0;
+   virtual double&      operator[](size_t )=0;
 
    /**Virtual indexing operator 2D*/
-   virtual double&      operator()(int,int)=0;
+   virtual double&      operator()(size_t,size_t)=0;
 
    /**Resets accumulation to zero*/
    virtual void reset()=0;
@@ -130,13 +130,13 @@ public:
    double mahalanobisDistance(const float *x1, const double *x2) const;
 
    /**virtual, should not be used*/
-   double&      operator[](int i) {return data[i];}
+   double&      operator[](size_t i) {return data[i];}
 
    /**virtual, should not be used*/
-   double&      operator()(int i) {return data[i];}
+   double&      operator()(size_t i) {return data[i];}
 
    /**virtual, should not be used*/
-   double&      operator()(int i,int) {return data[i];}
+   double&      operator()(size_t i,size_t) {return data[i];}
 
    /**Computes the determinant*/
    void compute_determinant() const;
@@ -145,7 +145,7 @@ public:
    /**accumulates a frame to the covariance*/
    void accumFrame(const float *v)
    {
-      for (int i=0;i<dimension;i++)
+      for (size_t i=0;i<dimension;i++)
          data[i] += v[i]*v[i];
       accum_count++;
    }
@@ -153,7 +153,7 @@ public:
    /**accumulates a frame to the covariance*/
    void accumFrame(const std::vector<float> &v)
    {
-      for (int i=0;i<dimension;i++)
+      for (size_t i=0;i<dimension;i++)
          data[i] += v[i]*v[i];
       accum_count++;
    }

@@ -28,7 +28,7 @@ public:
    inline static float mmi (std::vector<int> Nij, int Nj, std::vector<int> Ai)
    {
       float ent = 0;
-      for (int i = 0; i < Nij.size(); i++)
+      for (size_t i = 0; i < Nij.size(); i++)
       {
          float Pc = float(Nij[i]) / Nj;
          float Pa = float(Ai[i])  / Nij[i];

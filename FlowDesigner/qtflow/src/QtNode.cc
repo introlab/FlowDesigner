@@ -52,7 +52,7 @@ namespace FD
    }
     
     QtNode::QtNode(QtNetwork *graphWidget, UINode *uiNode)
-    :  graph(graphWidget), m_uiNode(uiNode), m_linking(false), m_internalItem(NULL)
+    :  m_uiNode(uiNode), graph(graphWidget), m_internalItem(NULL), m_linking(false)
     {
         if (m_uiNode)
         {

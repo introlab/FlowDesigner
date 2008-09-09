@@ -302,7 +302,7 @@ void DiagGMM::train (const vector<float *> &frames, int nb_dim, int nb_gaussians
    for (i=0;i<dim;i++)
       amean[0][i] = acov[0][i] = 0;
    accum[0] = 0;
-   for (i=0;i<frames.size();i++)
+   for (size_t i=0;i<frames.size();i++)
    {
       for (j=0;j<dim;j++)
          amean[0][j] += frames[i][j];
@@ -379,7 +379,7 @@ void DiagGMM::train (const vector<float *> &frames, int nb_dim, int nb_gaussians
                //cov[j][k] = 1;
             }
          }
-         for (i=0;i<frames.size();i++)
+         for (size_t i=0;i<frames.size();i++)
          {
             double prob[max_gauss], sum_prob=0;
             for (j=0;j<max_gauss;j++)

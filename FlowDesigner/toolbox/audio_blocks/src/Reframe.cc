@@ -90,7 +90,7 @@ public:
       for (int i=0;i<lastPos;i++)
 	 buff[i] = buff[i+advance];
 
-      while (fill != output.size())
+      while (fill != (int) output.size())
       {
 	 ObjectRef inputValue = getInput(inputID, currentCount++);
 	 const Vector<float> &in = object_cast<Vector<float> > (inputValue);
@@ -99,7 +99,7 @@ public:
 
 	 //cerr << newPos << endl;
 
-	 if (newPos > buff.size())
+	 if (newPos > (int) buff.size())
 	    buff.resize(newPos);
 	 int buffDiscard=0;
 	 if (lastPos < 0)

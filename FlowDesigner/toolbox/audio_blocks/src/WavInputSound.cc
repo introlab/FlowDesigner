@@ -49,7 +49,7 @@ END*/
 class WavStreambuf : public std::streambuf {
    protected:
       virtual int overflow(int = EOF) {std::cerr << "Don't call wav_streambuf::overflow()" << std::endl;return 1;}
-      virtual std::streamsize xsputn(const char *s, std::streamsize n){std::cerr << "Don't call wav_streambuf::xsputn()" << std::endl;}
+	virtual std::streamsize xsputn(const char *s, std::streamsize n){std::cerr << "Don't call wav_streambuf::xsputn()" << std::endl; return -1;}
 
       virtual int uflow()  {std::cerr << "Don't call wav_streambuf::uflow()" << std::endl;return 1;}
       virtual int underflow()  {std::cerr << "Don't call wav_streambuf::underflow()" << std::endl;return 1;}
@@ -126,7 +126,6 @@ bool WavStreambuf::readWavHeader()
     std::ifstream in;
     
     char buf4[5] = {0}; //Size 5 for holding 0 value at end for string comparison
-    char buf2[2] = {0};
 
     in.open(_fileName.c_str(), std::ios::in | std::ios::binary);
     if(!in.fail())

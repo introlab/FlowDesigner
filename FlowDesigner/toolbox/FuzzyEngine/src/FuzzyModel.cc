@@ -34,19 +34,19 @@ FuzzyModel::FuzzyModel(const FuzzyModel &model)
 
   //inserting input set
   //cerr<<"copying input set"<<endl;
-  for (int i = 0; i < model.m_input_set.size(); i++) {
+  for (size_t i = 0; i < model.m_input_set.size(); i++) {
     m_input_set.push_back(model.m_input_set[i]->clone());
   }
 
   //inserting output set
   //cerr<<"copying output set"<<endl;
-  for (int i = 0; i < model.m_output_set.size(); i++) {
+  for (size_t i = 0; i < model.m_output_set.size(); i++) {
     m_output_set.push_back(model.m_output_set[i]->clone());
   }
   
   //readding rules
   //cerr<<"copying rules"<<endl;
-  for (int i = 0; i < model.m_rules.size(); i++) {
+  for (size_t i = 0; i < model.m_rules.size(); i++) {
     add_fuzzy_rule(model.m_rules[i]->clone());
   }
 
@@ -68,8 +68,6 @@ FuzzyModel::FuzzyModel(string nodeName, ParameterSet params)
 // Destruction
 //////////////////////////////////////////////////////////////////////
 FuzzyModel::~FuzzyModel() {
-
-  int i;
  
   //resizing vectors
   m_rules.resize(0);
@@ -86,10 +84,8 @@ void FuzzyModel::add_fuzzy_rule(ObjectRef ruleValue) {
   FuzzyFunction *function = NULL;
   FuzzyRule &rule = object_cast<FuzzyRule>(ruleValue);  
   
-  int i;
-  
   //int rule_number = rule->get_rule_number();
-  int rule_number = m_rules.size() + 1;
+  size_t rule_number = m_rules.size() + 1;
 
   rule.set_rule_number(rule_number);
   
@@ -108,7 +104,7 @@ void FuzzyModel::add_fuzzy_rule(ObjectRef ruleValue) {
   else {
     if (!m_input_functions[rule_number -1].empty()) {
       char message[256];	
-      sprintf(message,"RULE %i ALREADY EXISTS",rule_number);
+      sprintf(message,"RULE %u ALREADY EXISTS",(unsigned int) rule_number);
       throw new GeneralException(message,__FILE__,__LINE__);
     }
   }
@@ -119,14 +115,14 @@ void FuzzyModel::add_fuzzy_rule(ObjectRef ruleValue) {
   else {
     if (!m_output_functions[rule_number -1].empty()) {
       char message[256];	
-      sprintf(message,"RULE %i ALREADY EXISTS",rule_number);
+      sprintf(message,"RULE %u ALREADY EXISTS",(unsigned int) rule_number);
       throw new GeneralException(message,__FILE__,__LINE__);
     }
   }
   
   
   //antecedant verification
-  for (i = 0; i < antecedant.size(); i++) {
+  for (size_t i = 0; i < antecedant.size(); i++) {
     
     set = find_set_named(antecedant[i].first, FuzzyModel::FUZZY_INPUT_SET);
     
@@ -157,7 +153,7 @@ void FuzzyModel::add_fuzzy_rule(ObjectRef ruleValue) {
   
   
   //consequent verification
-  for (i = 0; i < consequent.size(); i++) {
+  for (size_t i = 0; i < consequent.size(); i++) {
     
     set = find_set_named(consequent[i].first, FuzzyModel::FUZZY_OUTPUT_SET);
     
@@ -219,7 +215,7 @@ void FuzzyModel::add_fuzzy_set(ObjectRef setValue, int type) {
 //////////////////////////////////////////////////////////////////////
 void FuzzyModel::print_rules(ostream &out) {
   
-  for (int i = 0; i < m_rules.size(); i++) {
+  for (size_t i = 0; i < m_rules.size(); i++) {
     object_cast<FuzzyRule>(m_rules[i]).print_rule(out);
   }
   
@@ -233,15 +229,15 @@ void FuzzyModel::verify_rules() {
   //verification of the number of rules
   //and the antecedant/consequent part of the rules
   //to be implemented 
-  int count = 1;
+  size_t count = 1;
   
-  for (int i = 0; i < m_input_set.size(); i++) {
+  for (size_t i = 0; i < m_input_set.size(); i++) {
     count *= object_cast<FuzzySet>(m_input_set[i]).get_function_count();
   }
   
   if (count != m_rules.size()) {
     char message[256];
-    sprintf(message,"NUMBER OF RULES INCORRECT %i INSTEAD OF %i",m_rules.size(),count);
+    sprintf(message,"NUMBER OF RULES INCORRECT %u INSTEAD OF %u",(unsigned int) m_rules.size(),(unsigned int) count);
     throw new GeneralException(message,__FILE__,__LINE__);
   }
   
@@ -252,12 +248,9 @@ void FuzzyModel::verify_rules() {
 //////////////////////////////////////////////////////////////////////
 FuzzySet* FuzzyModel::find_set_named(const string &name, int type) {
   
-  
-  int i;
-  
   switch(type) {
   case FUZZY_INPUT_SET:
-    for (i =0; i < m_input_set.size(); i++) {
+    for (size_t i =0; i < m_input_set.size(); i++) {
       if (object_cast<FuzzySet>(m_input_set[i]).get_name() == name) {
 	return dynamic_cast<FuzzySet*>(m_input_set[i].get());
       }
@@ -266,7 +259,7 @@ FuzzySet* FuzzyModel::find_set_named(const string &name, int type) {
     
   case FUZZY_OUTPUT_SET:
     
-    for (i =0; i < m_output_set.size(); i++) {
+    for (size_t i =0; i < m_output_set.size(); i++) {
       if (object_cast<FuzzySet>(m_output_set[i]).get_name() == name) {
 	return dynamic_cast<FuzzySet*>(m_output_set[i].get());
       }
@@ -292,20 +285,17 @@ Vector<float>& FuzzyModel::evaluate(Vector<float>  &input_values) {
   if (input_values.size() != m_input_set.size()) {		
     throw new GeneralException("NOT ENOUGH INPUT VARIABLES",__FILE__,__LINE__);	
   }
-    
-  //we must reset every output and input set
-  int i;
-  
-  for (i = 0; i < m_input_set.size(); i++) {
+      
+  for (size_t i = 0; i < m_input_set.size(); i++) {
     object_cast<FuzzySet>(m_input_set[i]).reset();
   }
   
-  for (i =0; i < m_output_set.size(); i++) {
+  for (size_t i =0; i < m_output_set.size(); i++) {
     object_cast<FuzzySet>(m_output_set[i]).reset();
   }
   
   //assuming that values are ordered like the rules
-  for (int i = 0; i < m_input_set.size(); i++) {
+  for (size_t i = 0; i < m_input_set.size(); i++) {
     inputs.push_back(input_values[i]);
     //m_input_set[i]->get_all_membership_evaluation(input_values[i]);
   }
@@ -314,7 +304,7 @@ Vector<float>& FuzzyModel::evaluate(Vector<float>  &input_values) {
   Vector<float> conjunction_values(m_input_set.size());
   
   
-  for (int x = 0; x < m_rules.size(); x++) {
+  for (size_t x = 0; x < m_rules.size(); x++) {
     
     list<FuzzyFunction*>::iterator iter_input;
     
@@ -357,11 +347,11 @@ Vector<float>& FuzzyModel::evaluate(Vector<float>  &input_values) {
   float disjunction_value;
   
   
-  for (i = 0; i < m_output_set.size(); i++) {
+  for (size_t i = 0; i < m_output_set.size(); i++) {
     
     Vector<ObjectRef> &funct = object_cast<FuzzySet>(m_output_set[i]).get_member_functions();
     
-    for (int j = 0; j < funct.size(); j++) {
+    for (size_t j = 0; j < funct.size(); j++) {
       disjunction_value = disjunction(object_cast<FuzzyFunction>(funct[j]).get_inference_values());
       object_cast<FuzzyFunction>(funct[j]).reset_inference_values();
       object_cast<FuzzyFunction>(funct[j]).push_inference_value(disjunction_value);
@@ -383,13 +373,13 @@ void FuzzyModel::print_sets(ostream &out) {
   
   out<<"INPUT SETS"<<endl;
   
-  for (int i = 0; i < m_input_set.size(); i++) {
+  for (size_t i = 0; i < m_input_set.size(); i++) {
     out<<m_input_set[i]<<endl;
   }
     
   out<<"OUTPUT SETS"<<endl;
   
-  for (int j = 0; j < m_output_set.size(); j++) {
+  for (size_t j = 0; j < m_output_set.size(); j++) {
     out<<m_output_set[j]<<endl;
   }
   
@@ -432,21 +422,21 @@ void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
         
     //First add antecedant sets
     Vector<ObjectRef> &vect_sets1 = object_cast<Vector<ObjectRef> >(ASets);
-    for (int i = 0; i < vect_sets1.size(); i++) {
+    for (size_t i = 0; i < vect_sets1.size(); i++) {
       //vect_sets1[i]->printOn(cerr);
       add_fuzzy_set(vect_sets1[i]->clone(),FuzzyModel::FUZZY_INPUT_SET);
     }
     
     //Then add consequent sets
     Vector<ObjectRef> &vect_sets2 = object_cast<Vector<ObjectRef> >(CSets);
-    for (int i = 0; i < vect_sets2.size(); i++) {
+    for (size_t i = 0; i < vect_sets2.size(); i++) {
       //vect_sets2[i]->printOn(cerr);
       add_fuzzy_set(vect_sets2[i]->clone(),FuzzyModel::FUZZY_OUTPUT_SET);
     }
     
     //Finally add rules
     Vector<ObjectRef> &vect_rules = object_cast<Vector<ObjectRef> >(Rules);
-    for (int i = 0; i < vect_rules.size(); i++) {
+    for (size_t i = 0; i < vect_rules.size(); i++) {
       //vect_rules[i]->printOn(cerr);
       add_fuzzy_rule(vect_rules[i]->clone());
     }
@@ -461,7 +451,7 @@ void FuzzyModel::calculate(int output_id, int count, Buffer &out) {
     
     Vector<float> *my_output = new Vector<float>(calc_output.size());
     
-    for (int i = 0; i < calc_output.size(); i++) {
+    for (size_t i = 0; i < calc_output.size(); i++) {
       (*my_output)[i] = calc_output[i];
     }
     

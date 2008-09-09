@@ -31,7 +31,7 @@ namespace FD
 	using namespace std;
 
 	QtRunContext::QtRunContext(UIDocument *doc, ParameterSet &params)
-		: m_document(doc), m_parameters(params), m_network(NULL)
+		: m_document(doc),  m_network(NULL), m_parameters(params)
 	{
 
 		//THIS WILL CREATE A SOCKET SERVER

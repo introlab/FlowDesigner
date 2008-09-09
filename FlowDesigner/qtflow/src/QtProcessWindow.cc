@@ -35,8 +35,8 @@ namespace FD
 	QtProcessWindow::QtProcessWindow(QtFlowDesigner *parent, UIDocument *doc)
 	 : QMainWindow(parent), 
 	   m_flowdesigner(parent), 
-	   m_uiDocView(NULL), 
 	   m_process(NULL),
+	   m_uiDocView(NULL), 
 	   m_processHost("localhost"), // default
 	   m_processPort(0) // default
 	{
@@ -97,8 +97,8 @@ namespace FD
 	QtProcessWindow::QtProcessWindow(QtFlowDesigner *parent, QString host, int port)
 	 : QMainWindow(parent), 
 	   m_flowdesigner(parent), 
-	   m_uiDocView(NULL), 
 	   m_process(NULL),
+	   m_uiDocView(NULL), 
 	   m_processHost(host),
 	   m_processPort(port)
 	{
@@ -124,7 +124,7 @@ namespace FD
 					//TODO
 					return;
 				}
-				unsigned int dataSize;
+				int dataSize;
 				socket->read((char*)(&dataSize), 4);
 				
 				while(data.size() < dataSize) {

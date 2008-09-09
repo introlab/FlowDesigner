@@ -665,7 +665,7 @@ Network *UIDocument::build(const string &_name, const ParameterSet &params)
       ParameterSet myParams = params;
 
       //adding document params            
-      for (int i = 0; i < textParams.size(); i++) 
+      for (size_t i = 0; i < textParams.size(); i++) 
       {		
 	if (!myParams.exist(textParams[i]->name)) {
 	  //create object
@@ -845,7 +845,7 @@ void UIDocument::updateNetInfo(UINetwork *net) {
   subnetInfo.updateNetInfo(net);
 
   //update "networks parameters that included this net as a node"
-  for (int i = 0; i < networks.size(); i++) {  
+  for (size_t i = 0; i < networks.size(); i++) {  
     if (networks[i]) {
       networks[i]->updateAllSubnetParameters(net->getName(), subnetInfo.findNode(net->getName()));
     }

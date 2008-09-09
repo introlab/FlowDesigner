@@ -33,6 +33,7 @@ namespace FD
 
 	class FlowDesignerTCPServer;
 	class QtRunContext;
+	
 
 	class FlowDesignerTCPServerClient : public QThread, public UIObserverIF
 	{
@@ -55,7 +56,7 @@ namespace FD
 	class ClientEvent : public QEvent
 	{
 		public:
-			ClientEvent(FlowDesignerTCPServerClient *client) : m_client(client), QEvent(QEvent::User) {};
+			ClientEvent(FlowDesignerTCPServerClient *client) : QEvent(QEvent::User),  m_client(client) {};
 		
 		public:
 			FlowDesignerTCPServerClient* getClient() {return m_client;}	
@@ -66,6 +67,7 @@ namespace FD
 
 	
 	class QtProbeManager;
+	class QtFlowIpBroadcaster;
 	
 	class FlowDesignerTCPServer : public QTcpServer
 	{
@@ -86,6 +88,7 @@ namespace FD
 		virtual void incomingConnection ( int socketDescriptor );
 		bool m_running;
 		QList<FlowDesignerTCPServerClient*> m_clients;
+		QtFlowIpBroadcaster* m_qtFlowIpBroadcaster;
 	};
 
 

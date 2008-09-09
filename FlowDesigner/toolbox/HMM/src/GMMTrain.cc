@@ -57,7 +57,7 @@ public:
       and for the 'count' iteration */
    virtual void calculate(int output_id, int count, Buffer &out)
    {
-      int i;
+      
       NodeInput framesInput = inputs[framesInputID];
 
       ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
@@ -67,11 +67,11 @@ public:
       GMM *gmm = new GMM(1, object_cast <Vector<float> > (mat[0]).size(), NewDiagonalCovariance);
       //cerr << "mat.size(): " << mat.getCurrentPos() << endl;
       vector <float *> data(mat.size());
-      for (i=0;i<mat.size();i++)
+      for (size_t i=0;i<mat.size();i++)
          data[i]=&object_cast <Vector<float> > (mat[i])[0];
       gmm->init(data);
       gmm->to_real();
-      for (i=0;i<splitLevels;i++)
+      for (int i=0;i<splitLevels;i++)
       {
          //gmm->split1();
          gmm->binary_split();

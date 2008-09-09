@@ -14,8 +14,8 @@ DECLARE_TYPE(MSVQ)
 //@require VQ
    
 MSVQ::MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const float*, int))
-   : stagesSizes(_stagesSizes)
-   , VQ(_dist)
+   : VQ(_dist)
+   , stagesSizes(_stagesSizes)
    , stages(stagesSizes.size())
 {
 }
@@ -23,7 +23,7 @@ MSVQ::MSVQ(const vector<int> &_stagesSizes, float (*_dist)(const float *, const 
 int MSVQ::ID2Vec(const vector<int> &vec) const
 {
    int id=0;
-   for (int i=0;i<stagesSizes.size();i++)
+   for (size_t i=0;i<stagesSizes.size();i++)
       id = id*stagesSizes[i] + vec[i];
    return id;
 }
@@ -33,8 +33,7 @@ vector<int> MSVQ::Vec2ID(int ID) const
    vector<int> vec(stagesSizes.size());
    
    int curr = ID;
-   int next;
-   for (int i=stagesSizes.size()-1;i>=0;i--)
+   for (size_t i=stagesSizes.size()-1;i>=0;i--)
    {
       int next = curr/stagesSizes[i];
       vec[i] = curr - next*stagesSizes[i];
@@ -48,7 +47,7 @@ vector<int> MSVQ::Vec2ID(int ID) const
 int MSVQ::nbClasses() const
 {
    int ret = 1;
-   for (int i=0;i<stagesSizes.size();i++)
+   for (size_t i=0;i<stagesSizes.size();i++)
       ret *= stagesSizes[i];
    return ret;
 }
@@ -64,18 +63,18 @@ void MSVQ::train (const vector<float *> &data, int len, bool binary)
    length = len;
    vector<float *> train(data.size());
    float *training_data = new float [len*data.size()];
-   for (int i=0;i<data.size();i++)
+   for (size_t i=0;i<data.size();i++)
       train[i]=training_data+len*i;
 
-   for (int i=0;i<data.size();i++)
+   for (size_t i=0;i<data.size();i++)
       for (int j=0;j<len;j++)
 	 train[i][j] = data[i][j];
 
-   for (int i=0;i<stagesSizes.size();i++)
+   for (size_t i=0;i<stagesSizes.size();i++)
    {
       stages[i].train(stagesSizes[i], train, length, binary);
       
-      for (int j=0;j<data.size();j++)
+      for (size_t j=0;j<data.size();j++)
       {
 	 const vector<float> &mean = stages[i][stages[i].getClassID(train[j])];
 	 for (int k=0;k<len;k++)
@@ -94,7 +93,7 @@ int MSVQ::getClassID (const float *v, float *dist_return) const
       remaining[i] = v[i];
 
    int globalID = 0;
-   for (int i=0;i<stagesSizes.size();i++)
+   for (size_t i=0;i<stagesSizes.size();i++)
    {
       int id = stages[i].getClassID(&remaining[0],dist_return);
       globalID = globalID*stagesSizes[i] + id;

@@ -97,7 +97,7 @@ public:
       if (dereference_cast<bool> (speechValue) || count==0)
       {
 	 accumCount++;
-	 float inv_accum=1.0/accumCount;
+	 
 	 for (i=0;i<length;i++)
 	    output[i] = in[i]-sum[i];	    
       }

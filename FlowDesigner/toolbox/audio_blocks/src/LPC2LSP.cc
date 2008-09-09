@@ -51,7 +51,7 @@ public:
       Vector<float> &output = *Vector<float>::alloc(inputLength-1);
       out[count] = &output;
 
-      float x[3*inputLength];
+
       float tmp[2*inputLength+10];
       lpc_to_lsp (const_cast<float*>(&in[0]), inputLength-1, &output[0], 7, .001, tmp);
       for (int i=0;i<inputLength-1;i++)

@@ -19,9 +19,9 @@ void RBF::train (int codeSize, const vector<float *> &data/*, const vector<float
    covar.resize(nbClasses());
 
    vector<int> counts(covar.size(), 0);
-   for (int i=0;i<covar.size();i++)
+   for (size_t i=0;i<covar.size();i++)
       covar[i].resize(len,0);
-   for (int i=0;i<data.size();i++)
+   for (size_t i=0;i<data.size();i++)
    {
       int id = getClassID(data[i]);
       counts[id]++;
@@ -29,7 +29,7 @@ void RBF::train (int codeSize, const vector<float *> &data/*, const vector<float
 	 covar[id][j] += sqr(data[i][j] - means[id][j]);
    }
 
-   for (int i=0;i<covar.size();i++)
+   for (size_t i=0;i<covar.size();i++)
    {
       float scale = 1.0/counts[i];
       for (int j=0;j<len;j++)
@@ -43,7 +43,7 @@ void RBF::train (int codeSize, const vector<float *> &data/*, const vector<float
 
 void RBF::calcDist (const float *v, float *dist_return) const
 {
-   for (int i=0;i<means.size();i++)
+   for (size_t i=0;i<means.size();i++)
    {
       dist_return[i] = mahalanobis(&means[i][0], &covar[i][0], v, length);
    }

@@ -91,7 +91,7 @@ public:
       bool binary = false;
       if (parameters.exist("BINARY"))
          binary = dereference_cast<bool> (parameters.get("BINARY"));
-      int i;
+   
       NodeInput framesInput = inputs[framesInputID];
 	    
       cerr << "getting frames..." << endl;
@@ -102,7 +102,7 @@ public:
       MSVQ *vq = new MSVQ(stages);
 	    
       vector <float *> data(mat.size());
-      for (i=0;i<mat.size();i++)
+      for (size_t i=0;i<mat.size();i++)
          data[i]= &object_cast <Vector<float> > (mat[i])[0];
       int length =  object_cast <Vector<float> > (mat[0]).size();
 	    

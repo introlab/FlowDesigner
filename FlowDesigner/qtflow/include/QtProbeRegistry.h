@@ -86,6 +86,8 @@ namespace FD
 			 * @param linkId the link ID used to probe it
 			 */
 			virtual QtProbe* create(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId) = 0;
+		
+			virtual ~QtProbeBaseFactory(){;}
 
 		private:
 			QVector<QString> m_dataTypes;

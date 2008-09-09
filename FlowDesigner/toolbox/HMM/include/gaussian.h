@@ -32,7 +32,7 @@ protected:
    int            accum_count;
 
    /**Dimension (same as the mean and covariance dimension)*/
-   int            dimension;
+   size_t            dimension;
 
    /**Was the gaussian loaded using indexes for mean*/
    bool using_meanID;
@@ -122,7 +122,7 @@ public:
    double euclidian(const float * fr) const
    {
       double dist=0;
-      for (unsigned int i=0;i<dimension;i++)
+      for (size_t i=0;i<dimension;i++)
       {
          dist+=FD::sqr<double>(fr[i]-(*mean)[i]);
       }

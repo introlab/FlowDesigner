@@ -8,8 +8,8 @@ namespace FD {
 	DECLARE_TYPE(CvContours);
    
 	CvContours::CvContours() :
-   m_nbContours(0)
-   , m_firstContours(0)
+   
+    m_firstContours(0) , m_nbContours(0)
 	{
       
 	}

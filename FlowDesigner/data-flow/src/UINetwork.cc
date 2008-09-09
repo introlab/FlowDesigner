@@ -88,8 +88,8 @@ void UINetwork::load (xmlNodePtr net)
    {
       if (string((char*)node->name) == "Node")
       {
-	 //This looks strange (like a leak), but the network stores the pointer
-         UINode *theNewNode = loadNode (node);
+		  //This looks strange (like a leak), but the network stores the pointer
+          loadNode (node);
       }
       node = node->next;
    }
@@ -1040,7 +1040,7 @@ void UINetwork::removeNote(UINote *note) {
   
   if (note) {
 
-    for (int i = 0; i < m_notes.size(); i++) {
+    for (size_t i = 0; i < m_notes.size(); i++) {
       if (m_notes[i] == note) {
 	found = true;
       }

@@ -36,7 +36,7 @@ public:
 
    virtual void requestAll(const ParameterSet &req) 
    {
-      for (int i=0;i<inputs.size();i++)
+      for (size_t i=0;i<inputs.size();i++)
          inputs[i].node->request(inputs[i].outputID,req);
    }
 

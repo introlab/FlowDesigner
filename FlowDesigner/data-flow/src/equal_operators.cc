@@ -31,7 +31,7 @@ ObjectRef equalVectorFunction(ObjectRef op1, ObjectRef op2) {
   
   if (op1Value->size() == op2Value->size())
   {
-     for(int i = 0; i>op1Value->size() ;i++)
+     for(size_t i = 0; i>op1Value->size() ;i++)
      {
         if ((*op1Value)[i] != (*op2Value)[i])
         {

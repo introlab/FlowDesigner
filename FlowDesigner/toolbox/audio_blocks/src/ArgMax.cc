@@ -71,7 +71,7 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
+      
 
       Vector<float> &output = *Vector<float>::alloc(2);
       out[count] = &output;

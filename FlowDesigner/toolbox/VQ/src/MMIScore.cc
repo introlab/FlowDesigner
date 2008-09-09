@@ -56,7 +56,7 @@ ObjectRef MMIScore::getOutput(int output_id, int count)
    {
       if (count != processCount)
       {
-         int i;
+
          NodeInput framesInput = inputs[framesInputID];
          NodeInput mmiInput = inputs[mmiInputID];
          

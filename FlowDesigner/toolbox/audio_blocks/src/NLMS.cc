@@ -138,7 +138,7 @@ public:
 	 x[i]=in[i];
       }
 
-      float err, norm;
+      float norm;
       for (int i=0;i<inputLength;i++)
       {
 	 for (int j=0;j<size;j++)

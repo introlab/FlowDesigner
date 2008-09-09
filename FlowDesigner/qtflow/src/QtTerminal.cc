@@ -267,11 +267,11 @@ namespace FD
             		{
 		                if (m_uiTerminal->isInputTerminal() && !destinationQtTerminal->getUITerminal()->isInputTerminal())
 		                {
-		                	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),m_uiTerminal,NULL);
+		                	m_uiTerminal->getNode()->getNetwork()->newLink(destinationQtTerminal->getUITerminal(),m_uiTerminal,NULL);
 		                }
 		                else if (!m_uiTerminal->isInputTerminal() && destinationQtTerminal->getUITerminal()->isInputTerminal())
 		                {   
-		                	UILink *link = m_uiTerminal->getNode()->getNetwork()->newLink(m_uiTerminal,destinationQtTerminal->getUITerminal(),NULL);
+		                	m_uiTerminal->getNode()->getNetwork()->newLink(m_uiTerminal,destinationQtTerminal->getUITerminal(),NULL);
 		                }
             		}
             	}    

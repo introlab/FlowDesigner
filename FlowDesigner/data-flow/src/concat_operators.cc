@@ -41,11 +41,11 @@ ObjectRef concatVectorFunction(ObjectRef op1, ObjectRef op2) {
   RCPtr<Z> resultValue(Z::alloc(op1Value->size() + op2Value->size()));
   
   //copy first part
-  for (int i =0; i < op1Value->size(); i++) {
+  for (size_t i =0; i < op1Value->size(); i++) {
     (*resultValue)[i] = static_cast<typename Z::basicType>((*op1Value)[i]);
   }
   //copy last part
-  for (int i =0; i < op2Value->size(); i++) {
+  for (size_t i =0; i < op2Value->size(); i++) {
     (*resultValue)[i + op1Value->size()] = static_cast<typename Z::basicType>((*op2Value)[i]);
   }
   return resultValue;
@@ -62,7 +62,7 @@ ObjectRef concatVectorScalarFunction(ObjectRef op1, ObjectRef op2) {
 
 
   //copying values from vector
-  for (int i = 0; i < op1Value->size(); i++) {    
+  for (size_t i = 0; i < op1Value->size(); i++) {    
     (*resultValue)[i] = static_cast<typename Z::basicType> ((*op1Value)[i]);
   }
 
@@ -83,7 +83,7 @@ ObjectRef concatScalarVectorFunction(ObjectRef op1, ObjectRef op2) {
   RCPtr<Z> resultValue(Z::alloc(op2Value->size() + 1));
 
   //copying values from vector
-  for (int i = 1; i < op2Value->size(); i++) {    
+  for (size_t i = 1; i < op2Value->size(); i++) {    
     (*resultValue)[i] = static_cast<typename Z::basicType> ((*op2Value)[i - 1]);
   }
 
@@ -107,12 +107,12 @@ ObjectRef concatVectorObjectRef(ObjectRef op1, ObjectRef op2) {
   RCPtr<Vector<ObjectRef> > resultValue(new Vector<ObjectRef>(op1Value->size() + op2Value->size()));
 
   //copying first part of the vector
-  for (int i = 0; i < op1Value->size(); i++) {        
+  for (size_t i = 0; i < op1Value->size(); i++) {        
     (*resultValue)[i] = (*op1Value)[i]->clone();
   }
   
   //copying last part of the vector
-  for (int i = 0; i < op2Value->size(); i++) {    
+  for (size_t i = 0; i < op2Value->size(); i++) {    
     (*resultValue)[i + op1Value->size()] = (*op2Value)[i]->clone();
   }
 

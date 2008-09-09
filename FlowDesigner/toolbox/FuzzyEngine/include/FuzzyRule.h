@@ -81,7 +81,7 @@ public:
 
 template<>
 inline void Vector<FuzzyRule*>::printOn(std::ostream &out) const {
-  for (int i = 0; i < size(); i++) {
+  for (size_t i = 0; i < size(); i++) {
     operator[](i)->printOn(out);
   }
 }

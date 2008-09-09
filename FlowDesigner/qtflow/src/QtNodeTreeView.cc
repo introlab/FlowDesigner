@@ -63,7 +63,7 @@ namespace FD
                 if (child->text(0).toStdString() == path[level])
                 {
                     found = true;
-                    if (level + 1 < path.size())
+                    if (level + 1 < (int) path.size())
                     {                                                
                         insert(child,path,level + 1);
                     }                  
@@ -76,7 +76,7 @@ namespace FD
                 QTreeWidgetItem *newroot = const_cast<QTreeWidgetItem *>(root);
 				
                                           
-                for (int i = level; i < path.size(); i++)
+                for (int i = level; i < (int) path.size(); i++)
                 {
                     QTreeWidgetItem *item = new QTreeWidgetItem(newroot);
                     item->setText(0,path[i].c_str());
@@ -149,7 +149,7 @@ namespace FD
 
         while (!my_string.empty())
         {
-            int colonPos = my_string.find(":");
+            size_t colonPos = my_string.find(":");
             if (colonPos == string::npos)
             {
                 catLevels.push_back(my_string);
@@ -187,6 +187,7 @@ namespace FD
 	{
 	
 		//cerr<<"QtNodeTreeView::dropMimeData"<<endl;
+		return false;
 	}
 	
 	QStringList QtNodeTreeView::mimeTypes () const

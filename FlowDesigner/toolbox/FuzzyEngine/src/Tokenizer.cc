@@ -17,7 +17,7 @@ void string_to_token(Vector<string> &outputVector, const string &inputString, Ve
   Vector<char> tempVector(inputString.size());
 
   //Place the string in a vector to manipulate it
-  for (int i = 0; i <inputString.size(); i++) {
+  for (size_t i = 0; i <inputString.size(); i++) {
     tempVector[i] = inputString[i];
   }
 

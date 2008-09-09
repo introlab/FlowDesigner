@@ -17,7 +17,7 @@ NNetSet::NNetSet(int nbNets, const Vector<int> &topo, const Vector<string> &func
 
    vector<vector <float *> > in(nbNets);
    vector<vector <float *> > out(nbNets);
-   for (int i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
    {
       in[id[i]].insert(in[id[i]].end(), tin[i]);
       out[id[i]].insert(out[id[i]].end(), tout[i]);
@@ -39,7 +39,7 @@ NNetSet::NNetSet(vector<int> id, vector<float *> &tin, vector<float *> &tout, NN
    vector<vector <float *> > in(nbNets);
    vector<vector <float *> > out(nbNets);
    cerr << "separating...\n";
-   for (int i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
    {
       in[id[i]].insert(in[id[i]].end(), tin[i]);
       out[id[i]].insert(out[id[i]].end(), tout[i]);
@@ -97,7 +97,7 @@ void NNetSet::trainDeltaBar(vector<int> id, vector<float *> tin, vector<float *>
    cerr << "tata\n";
    vector<vector <float *> > out(nbNets);
    cerr << "classification...\n";
-   for (int i=0;i<tin.size();i++)
+   for (size_t i=0;i<tin.size();i++)
    {
       in[id[i]].insert(in[id[i]].end(), tin[i]);
       out[id[i]].insert(out[id[i]].end(), tout[i]);

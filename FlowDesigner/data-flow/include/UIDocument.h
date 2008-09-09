@@ -57,7 +57,9 @@ public:
 			virtual void notifyCommentsChanged(const UIDocument *doc, const std::string &comments){notifyChanged(doc);}
 						
 			//Destroyed
-			virtual void notifyDestroyed(const UIDocument *doc) {notifyChanged(doc);}			
+			virtual void notifyDestroyed(const UIDocument *doc) {notifyChanged(doc);}	
+		
+			virtual ~UIDocumentObserverIF(){;}
 	};
 	
    

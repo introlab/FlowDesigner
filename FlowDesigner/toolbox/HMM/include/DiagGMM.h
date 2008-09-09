@@ -40,7 +40,7 @@ public:
    float score(const float *vec);
 
    /**Number of dimensions*/
-   int getDim() {return dim;}
+   size_t getDim() {return dim;}
 
    /** print function used for operator << */
    virtual void printOn(std::ostream &out=std::cout) const;

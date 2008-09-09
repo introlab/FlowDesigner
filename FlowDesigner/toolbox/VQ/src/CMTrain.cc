@@ -93,8 +93,7 @@ public:
    /**Ask for the node's output which ID (number) is output_id 
       and for the 'count' iteration */
    virtual void calculate(int output_id, int count, Buffer &out)
-   {
-      int i,j;
+   {   
       NodeInput trainInInput = inputs[trainInID];
       ObjectRef trainInValue = trainInInput.node->getOutput(trainInInput.outputID,count);
 
@@ -110,11 +109,11 @@ public:
 
       //cerr << "inputs converted\n";
       vector <float *> in(inBuff.size());
-      for (i=0;i<inBuff.size();i++)
+      for (size_t i=0;i<inBuff.size();i++)
          in[i]=&object_cast <Vector<float> > (inBuff[i])[0];
 
       vector <float *> vout(outBuff.size());
-      for (i=0;i<outBuff.size();i++)
+      for (size_t i=0;i<outBuff.size();i++)
          vout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
 

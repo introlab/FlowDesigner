@@ -61,7 +61,7 @@ public:
       ObjectRef inputValue = input.node->getOutput(input.outputID, count);
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
+      
       const KMeans &vq = object_cast<KMeans> (VQValue);
 
       int outputLength = vq.nbClasses();
@@ -72,7 +72,7 @@ public:
       vq.calcDist(&in[0], &output[0]);
 
       float sum = 10*FLT_MIN;
-      float epsilon = 100*FLT_MIN;
+     
       for (int i=0;i<outputLength;i++)
       {
 	 //float tmp = 1/((output[i]*output[i]*output[i]*output[i])+epsilon);

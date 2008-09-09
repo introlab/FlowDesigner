@@ -336,7 +336,7 @@ namespace FD {
     {
  
         //Valid Types
-        for (unsigned int i = 0; i < m_typesWidge.size(); i++)
+        for (int i = 0; i < m_typesWidge.size(); i++)
         {
             int paramsIndex = m_typesWidge[i]->accessibleName().toInt();
             m_params[paramsIndex]->type = m_typesWidge[i]->currentText().toStdString();
@@ -405,7 +405,7 @@ namespace FD {
     {
         cerr<<"QtDocumentParameters::setView()"<<endl;
         //set type
-        for (unsigned int i = 0; i < m_typesWidge.size(); i++)
+        for (int i = 0; i < m_typesWidge.size(); i++)
         {
             int paramsIndex = m_typesWidge[i]->accessibleName().toInt();
             int index = m_typesWidge[i]->findText( textParams[paramsIndex]->type.c_str() );
@@ -448,7 +448,7 @@ namespace FD {
     void QtDocumentParameters::typeChanged()
     {
         cerr<<"QtDocumentParameters::typeChanged()"<<endl;
-        for (unsigned int i = 0; i < m_typesWidge.size(); i++)
+        for (int i = 0; i < m_typesWidge.size(); i++)
         {
             int paramsIndex = m_typesWidge[i]->accessibleName().toInt();
             addValues(paramsIndex, m_typesWidge[i]->currentText().toStdString());

@@ -24,6 +24,8 @@ namespace FD {
 		public:
 
 		virtual void notify (ObjectRef object, int count) = 0;
+		
+		virtual ~UIObserverIF() {;}
 	};
 
 	

@@ -150,7 +150,7 @@ public:
    virtual void calculate(int output_id, int count, Buffer &out)
    {
       cerr << "getOutput in NNetTrainDBD\n";
-      int i,j;
+    
 
       ObjectRef trainInValue = getInput(trainInID, count);
       ObjectRef trainOutValue = getInput(trainOutID, count);
@@ -164,7 +164,7 @@ public:
       //cerr << "inputs converted\n";
       
       int nbSamples = inBuff.size();
-      if (nbSamples != outBuff.size())
+      if (nbSamples != (int) outBuff.size())
 	 throw new NodeException(this, "Input buffer sizes don't fit", __FILE__, __LINE__);
       int inLength = object_cast <Vector<float> > (inBuff[0]).size();
       int outLength = object_cast <Vector<float> > (outBuff[0]).size();
@@ -176,13 +176,13 @@ public:
       if (allocChunk)
       {
 	 buff = new float [nbSamples*(inLength+outLength)];
-	 for (i=0;i<nbSamples;i++)
+	 for (int i=0;i<nbSamples;i++)
 	 {
 	    tin[i] = buff+i*(inLength+outLength);
 	    tout[i] = buff+i*(inLength+outLength)+inLength;
 	    Vector<float> &vin = object_cast <Vector<float> > (inBuff[i]);
 	    Vector<float> &vout = object_cast <Vector<float> > (outBuff[i]);
-	    if (inLength != vin.size() || outLength != vout.size())
+	    if (inLength != (int) vin.size() || outLength != (int) vout.size())
 	       throw new NodeException(this, "Vectors in buffers have different sizes", __FILE__, __LINE__);
 	    for (int j=0;j<inLength;j++)
 	       tin[i][j] = vin[j];
@@ -193,7 +193,7 @@ public:
 	 }
 	 
       } else {
-	 for (i=0;i<nbSamples;i++)
+	 for (int i=0;i<nbSamples;i++)
 	 {
 	    tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
 	    tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];

@@ -28,10 +28,11 @@ int probe_id_count = 0;
 		
 QtProbe::QtProbe(QWidget *parent, const QString &processHost, const int &processPort, const int &linkId) : 
 	QMainWindow(parent), 
-	m_processHost(processHost), 
-	m_processPort(processPort), 
 	m_socket(NULL), 
-	m_linkId(linkId)
+	m_linkId(linkId) ,
+	m_processHost(processHost),
+	m_processPort(processPort)
+	
 {
 }
 

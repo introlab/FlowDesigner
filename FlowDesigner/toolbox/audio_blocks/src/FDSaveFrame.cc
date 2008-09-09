@@ -85,14 +85,14 @@ public:
       if (count == 0)
       {
 	 
-	 for (int i=0;i<vec.size();i++)
+	 for (size_t i=0;i<vec.size();i++)
 	    buff[i]=0;
 	 for (int i=0;i<lead;i++)
 	    write(stream, (const char *) buff, sizeof(short)*vec.size());
 	 
       }
       
-      for (int i=0;i<vec.size();i++)
+      for (size_t i=0;i<vec.size();i++)
 	 buff[i]= short(rint(vec[i]));
       write(stream, (const char *) buff, sizeof(short)*vec.size());
 

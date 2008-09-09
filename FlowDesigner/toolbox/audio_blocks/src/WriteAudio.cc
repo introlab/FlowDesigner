@@ -97,7 +97,7 @@ public:
       if (count == 0)
       {
 	 
-	 for (int i=0;i<sampleSize*vec.size();i++)
+	 for (size_t i=0;i<sampleSize*vec.size();i++)
 	    buff[i]=0;
 	 for (int i=0;i<lead;i++)
 	    stream.write((const char *)buff, sampleSize*vec.size());
@@ -106,7 +106,7 @@ public:
      char cVal;
      short sVal;
      int iVal;        
-     for (int i=0;i<vec.size();i++) {
+     for (size_t i=0;i<vec.size();i++) {
         iVal = rint(vec[i]);
         if(sampleSize == 1) {
             cVal = char(iVal);

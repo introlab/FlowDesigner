@@ -24,7 +24,7 @@ template <class T>
 inline std::ostream &operator << (std::ostream &out, const std::vector<T> &v)
 {
    out << "<Vector ";
-   for (int i=0; i < v.size(); i++)
+   for (size_t i=0; i < v.size(); i++)
    {
       out << " " << v[i];
    }
@@ -48,7 +48,7 @@ inline std::ostream &operator << (std::ostream &out, const std::vector<T*> &v)
 template <class T>
 inline std::istream &operator >> (std::istream &in, std::vector<T> &v)
 {
-   int items_found=0;
+   
 
    if (!isValidType(in,"Vector"))
       return in;

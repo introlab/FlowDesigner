@@ -54,7 +54,7 @@ public:
   
   //reset all functions inference stacks
   void reset() {
-    for (int i = 0 ; i < m_functions.size(); i++) {
+    for (size_t i = 0 ; i < m_functions.size(); i++) {
       object_cast<FuzzyFunction>(m_functions[i]).reset_inference_values();
     }
   }

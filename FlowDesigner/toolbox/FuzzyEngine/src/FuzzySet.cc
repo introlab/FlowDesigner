@@ -113,7 +113,7 @@ Vector<float> & FuzzySet::get_all_membership_evaluation(float x) {
   m_evaluation.resize(m_functions.size());
   
   
-  for (int i = 0; i < m_functions.size(); i++) {
+  for (size_t i = 0; i < m_functions.size(); i++) {
     m_evaluation[i] = object_cast<FuzzyFunction>(m_functions[i]).evaluate(x);
 
   }
@@ -143,7 +143,7 @@ float FuzzySet::get_membership_evaluation(const string &name, float x) {
 
 int FuzzySet::find_function_by_index(const string &name) {
   
-  for (int i = 0; i < m_functions.size(); i++) {
+  for (size_t i = 0; i < m_functions.size(); i++) {
     
     if (object_cast<FuzzyFunction>(m_functions[i]).get_name() == name) return i;
     
@@ -164,7 +164,7 @@ int FuzzySet::find_function_by_index(const string &name) {
 
 FuzzyFunction* FuzzySet::find_function_by_name (const string &name) {
   
-  for (int i = 0; i < m_functions.size(); i++) {
+  for (size_t i = 0; i < m_functions.size(); i++) {
     
     if (object_cast<FuzzyFunction>(m_functions[i]).get_name() == name) 
       return dynamic_cast<FuzzyFunction*>(m_functions[i].get());
@@ -189,10 +189,10 @@ void FuzzySet::print_functions(ostream &out) {
   if (m_functions.size() > 0) {
     float min = object_cast<FuzzyFunction>(m_functions[0]).get_lower_bound(); 
     float max = object_cast<FuzzyFunction>(m_functions[0]).get_upper_bound();
-    int i;
+    
     
     //finding limits
-    for (i = 0; i < m_functions.size(); i++) {
+    for (size_t i = 0; i < m_functions.size(); i++) {
       
       if (min > object_cast<FuzzyFunction>(m_functions[i]).get_lower_bound()) {
 	min = object_cast<FuzzyFunction>(m_functions[i]).get_lower_bound();
@@ -209,7 +209,7 @@ void FuzzySet::print_functions(ostream &out) {
     for (float index = min; index <= max; index++) {
       
       //printing membership function names
-      for (i = 0; i < m_functions.size(); i++) {
+      for (size_t i = 0; i < m_functions.size(); i++) {
 	out<<object_cast<FuzzyFunction>(m_functions[i]).get_name()<<"\t";	
       }
       
@@ -217,7 +217,7 @@ void FuzzySet::print_functions(ostream &out) {
       
       
       //printing membership function values
-      for (i = 0; i < m_functions.size(); i++) {
+      for (size_t i = 0; i < m_functions.size(); i++) {
 	out<<object_cast<FuzzyFunction>(m_functions[i]).evaluate(index)<<"\t";
       }
       
@@ -244,7 +244,7 @@ void FuzzySet::calculate(int output_id, int count, Buffer &out) {
   Vector<ObjectRef> &funct_vect = object_cast<Vector<ObjectRef> >(Functions);
 
   
-  for (int i = 0 ; i < funct_vect.size(); i++) {
+  for (size_t i = 0 ; i < funct_vect.size(); i++) {
     m_functions.push_back(funct_vect[i]->clone());
   }
 
@@ -256,7 +256,7 @@ ObjectRef FuzzySet::clone() {
 
   FuzzySet* my_set = new FuzzySet(m_name);
 
-  for (int i = 0; i < m_functions.size(); i++) {
+  for (size_t i = 0; i < m_functions.size(); i++) {
     my_set->m_functions.push_back(m_functions[i]->clone());
   }
 
@@ -269,7 +269,7 @@ void FuzzySet::printOn(ostream &out) const {
   out << "<Name "<<m_name<<" >"<<endl;
   out << "<Size "<<m_functions.size()<<" >"<<endl;
 
-  for (int i = 0; i < m_functions.size(); i++) {
+  for (size_t i = 0; i < m_functions.size(); i++) {
     out<<"<Function "<<m_functions[i]<<" >"<<endl;
   }
   out <<" >\n";

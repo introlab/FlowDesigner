@@ -86,7 +86,7 @@ public:
    virtual void requestForIterator(const ParameterSet &req) 
    {
       //request propagation to nodes before the iterator
-      for (int i=0;i<inputs.size();i++) 
+      for (size_t i=0;i<inputs.size();i++) 
       {
          inputs[i].node->request(inputs[i].outputID,req);
       }

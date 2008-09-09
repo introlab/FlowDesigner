@@ -57,7 +57,7 @@ public:
       and for the 'count' iteration */
    virtual void calculate(int output_id, int count, Buffer &out)
    {
-      int i;
+    
       NodeInput framesInput = inputs[framesInputID];
 
       ObjectRef matRef = framesInput.node->getOutput(framesInput.outputID,count);
@@ -67,7 +67,7 @@ public:
       DiagGMM *gmm = new DiagGMM;
       //cerr << "mat.size(): " << mat.getCurrentPos() << endl;
       vector <float *> data(mat.size());
-      for (i=0;i<mat.size();i++)
+      for (size_t i=0;i<mat.size();i++)
          data[i]=&object_cast <Vector<float> > (mat[i])[0];
 
       gmm->train(data, object_cast <Vector<float> > (mat[0]).size(), 1<<splitLevels, splitLevels);

@@ -37,7 +37,7 @@ void GMM::init(vector<float *> frames)
 void GMM::reset_to_accum_mode()
 {
    nb_frames_aligned=0;
-   for(int i=0;i<nb_gaussians;i++)
+   for(size_t i=0;i<nb_gaussians;i++)
    {
       gaussians[i]->reset_to_accum_mode();
       apriori[i]=0;
@@ -86,22 +86,22 @@ void GMM::adaptMAP(vector<float *> frames, GMM *gmm)
    scores = gmm->score(frames);
    //reset_to_accum_mode();
    
-   for (int i=0;i<nb_gaussians;i++)
+   for (size_t i=0;i<nb_gaussians;i++)
    {
       int adaptCount=0;
       vector<float> adaptMean(dimensions, 0);
-      for (int j=0;j<frames.size();j++)
+      for (size_t j=0;j<frames.size();j++)
       {
-	 if (scores[j].gaussian_id == i)
+	 if (scores[j].gaussian_id == (int) i)
 	 {
-	    for (int k=0;k<dimensions;k++)
+	    for (size_t k=0;k<dimensions;k++)
 	       adaptMean[k] += frames[j][k];
 	    adaptCount++;
 	 }
       }
       if (adaptCount)
       {
-	 for (int j=0;j<dimensions;j++)
+	 for (size_t j=0;j<dimensions;j++)
 	    adaptMean[j] /= adaptCount;
       } else {
          cerr << "no data for gaussian " << i << endl;
@@ -118,7 +118,7 @@ void GMM::adaptMAP(vector<float *> frames, GMM *gmm)
 #endif
       //weight=0;
       Vector<double> &mean = *gaussians[i]->mean;
-      for (int j=0;j<mean.size();j++)
+      for (size_t j=0;j<mean.size();j++)
 	 mean[j] = weight*adaptMean[j] + (1-weight)*mean[j];
       //gaussians[i+old_size]= RCPtr<Gaussian> (new Gaussian(*(gaussians[i])));
       //gaussians[i].
@@ -137,7 +137,7 @@ void GMM::split1()
    int max_gauss=0, max_accum=gaussians[0]->get_accum_count();
    gaussians.resize(nb_gaussians+1);
    apriori.resize(nb_gaussians+1);
-   for (int i=1;i<nb_gaussians;i++)
+   for (size_t i=1;i<nb_gaussians;i++)
    {
       int accum=gaussians[i]->get_accum_count();
       if (accum>max_accum)
@@ -175,14 +175,14 @@ void GMM::binary_split()
 void GMM::to_real()
 {
    if (mode==real) return;
-   for (int i=0;i<nb_gaussians;i++)
+   for (size_t i=0;i<nb_gaussians;i++)
    {
       apriori[i]=log(apriori[i]/nb_frames_aligned);
       gaussians[i]->to_real();
    }
 
 
-   for (int j=0;j<nb_gaussians;j++)
+   for (size_t j=0;j<nb_gaussians;j++)
    {
       Gaussian &gauss = *gaussians[j];
       Covariance &_cov = *gauss.covariance;
@@ -252,11 +252,11 @@ vector<Score> GMM::score(vector <float * > fr) const
 
 Score GMM::minDistance(float * fr,Covariance *cov) const
 {
-   int i,j;
+   
    float min_dist = FLT_MAX ;
    int min_gauss = 0;
    Score frame_score;
-   for (j=0;j<nb_gaussians;j++)
+   for (size_t j=0;j<nb_gaussians;j++)
    {
       
       //float dist = gaussians[j]->euclidian(fr);
@@ -281,7 +281,7 @@ Score GMM::score(float * fr) const
    int min_gauss = 0;
    Score frame_score;
 
-   for (int j=0;j<nb_gaussians;j++)
+   for (size_t j=0;j<nb_gaussians;j++)
    {
 
 /* Covariance normalization 
@@ -321,7 +321,7 @@ void GMM::toIDsUsing (GaussianSet &gauss)
       return;
    gaussianIDs.resize(nb_gaussians);
    using_gaussianIDs=true;
-   for (int i=0;i<nb_gaussians;i++)
+   for (size_t i=0;i<nb_gaussians;i++)
       gaussianIDs[i]=gauss.getIDFor(gaussians[i]);
 
 }
@@ -331,7 +331,7 @@ void GMM::toPtrsUsing (const GaussianSet &gauss)
    if (!using_gaussianIDs)
       return;
    using_gaussianIDs=false;
-   for (int i=0;i<nb_gaussians;i++)
+   for (size_t i=0;i<nb_gaussians;i++)
      gaussians[i]=gauss.getPtrFor(gaussianIDs[i]);
 }
 
@@ -347,7 +347,7 @@ DiagGMM *GMM::createDiagGMM()
    dg->ptr = new char [allocSize];
    dg->base = (float *) (((unsigned long)(dg->ptr) + (CACHE_LINES-1))&CACHE_MASK);
    float *ptr = dg->base;
-   for (int k=0;k<nb_gaussians;k++)
+   for (size_t k=0;k<nb_gaussians;k++)
    {
       Gaussian &gauss = *gaussians[k];
       Mean &mean = *gauss.mean;
@@ -356,13 +356,13 @@ DiagGMM *GMM::createDiagGMM()
       if (!cov)
 	 throw new GeneralException("Covariance not diagonal in GMM::createDiagGMM()", 
 				    __FILE__, __LINE__);
-      for (int i=0;i<dimensions;i++)
+      for (size_t i=0;i<dimensions;i++)
 	 ptr[i] = mean[i];
       for (int i=dimensions;i<dg->augDim;i++)
 	 ptr[i]=0;
       ptr += dg->augDim;
       float norm = 0;
-      for (int i=0;i<dimensions;i++)
+      for (size_t i=0;i<dimensions;i++)
       {
 	 norm += .5*log((*cov).data[i]);
 	 ptr[i] = -(*cov).data[i];

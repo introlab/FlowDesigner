@@ -281,7 +281,7 @@ namespace FD {
 		{
             std::vector<ItemInfo *> &textParams = m_params->get_textParams();
             //Valid Types
-            for (unsigned int i = 0; i < m_typesWidge.size(); i++)
+            for (int i = 0; i < m_typesWidge.size(); i++)
             {
                 int paramsIndex = m_typesWidge[i]->accessibleName().toInt();
                 textParams[paramsIndex]->type = m_typesWidge[i]->currentText().toStdString();
@@ -343,7 +343,7 @@ namespace FD {
     {
         cerr<<"QtNodeParameters::setView()"<<endl;
         //set type
-        for (unsigned int i = 0; i < m_typesWidge.size(); i++)
+        for (int i = 0; i < m_typesWidge.size(); i++)
         {
             int paramsIndex = m_typesWidge[i]->accessibleName().toInt();
             int index = m_typesWidge[i]->findText( textParams[paramsIndex]->type.c_str() );
@@ -387,8 +387,8 @@ namespace FD {
     void QtNodeParameters::typeChanged()
     {
         cerr<<"QtNodeParameters::typeChanged()"<<endl;
-        std::vector<ItemInfo *> &textParams = m_params->get_textParams();
-        for (unsigned int i = 0; i < m_typesWidge.size(); i++)
+
+        for (int i = 0; i < m_typesWidge.size(); i++)
         {
             int paramsIndex = m_typesWidge[i]->accessibleName().toInt();
             addValues(paramsIndex, m_typesWidge[i]->currentText().toStdString());

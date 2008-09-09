@@ -103,7 +103,7 @@ public:
    virtual void calculate(int output_id, int count, Buffer &out)
    {
       cerr << "getOutput in NNetTrainSCG\n";
-      int i,j;
+ 
 
       ObjectRef trainInValue = getInput(trainInID, count);
       ObjectRef trainOutValue = getInput(trainOutID, count);
@@ -116,11 +116,11 @@ public:
 
       //cerr << "inputs converted\n";
       vector <float *> tin(inBuff.size());
-      for (i=0;i<inBuff.size();i++)
+      for (size_t i=0;i<inBuff.size();i++)
 	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
       
       vector <float *> tout(outBuff.size());
-      for (i=0;i<outBuff.size();i++)
+      for (size_t i=0;i<outBuff.size();i++)
 	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
       
       

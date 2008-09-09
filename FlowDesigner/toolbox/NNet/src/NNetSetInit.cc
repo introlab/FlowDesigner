@@ -108,7 +108,7 @@ public:
       ObjectRef trainOutValue = getInput(trainOutID, count);
       ObjectRef trainIDValue = getInput(trainIDID, count);
 
-      int i,j;
+ 
 
       Vector<ObjectRef>  &inBuff = object_cast<Vector<ObjectRef> > (trainInValue);
       Vector<ObjectRef>  &outBuff = object_cast<Vector<ObjectRef> > (trainOutValue);
@@ -116,15 +116,15 @@ public:
       
       //cerr << "inputs converted\n";
       vector <float *> tin(inBuff.size());
-      for (i=0;i<inBuff.size();i++)
+      for (size_t i=0;i<inBuff.size();i++)
 	 tin[i]=&object_cast <Vector<float> > (inBuff[i])[0];
       
       vector <float *> tout(outBuff.size());
-      for (i=0;i<outBuff.size();i++)
+      for (size_t i=0;i<outBuff.size();i++)
 	 tout[i]=&object_cast <Vector<float> > (outBuff[i])[0];
 
       vector <int> id(idBuff.size());
-      for (i=0;i<idBuff.size();i++)
+      for (size_t i=0;i<idBuff.size();i++)
 	 id[i]=int(floor(object_cast <Vector<float> > (idBuff[i])[0]+.5));
       
       //srand(6827375);

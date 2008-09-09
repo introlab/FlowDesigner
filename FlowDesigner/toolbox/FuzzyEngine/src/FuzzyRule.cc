@@ -58,11 +58,11 @@ FuzzyRule::FuzzyRule(int rule_number)
 FuzzyRule::FuzzyRule(const FuzzyRule& cpy) 
   :BufferedNode(cpy.name, ParameterSet()), m_rule_number(cpy.m_rule_number) {
 
-  for (int i = 0; i < cpy.m_antecedant.size(); i++) {
+  for (size_t i = 0; i < cpy.m_antecedant.size(); i++) {
     m_antecedant.push_back(cpy.m_antecedant[i]);
   }
 
-  for (int i = 0; i < cpy.m_consequent.size(); i++) {
+  for (size_t i = 0; i < cpy.m_consequent.size(); i++) {
     m_consequent.push_back(cpy.m_consequent[i]);
   }
 
@@ -91,7 +91,7 @@ FuzzyRule::FuzzyRule(string nodeName, ParameterSet params)
 
 
   if (tokens.size() %2 == 0 && tokens.size() != 0) { 
-    for (int i = 0; i < tokens.size(); i+= 2) {
+    for (size_t i = 0; i < tokens.size(); i+= 2) {
       m_antecedant.push_back(make_pair(tokens[i],tokens[i+1]));
     }
   }
@@ -102,7 +102,7 @@ FuzzyRule::FuzzyRule(string nodeName, ParameterSet params)
   string_to_token(tokens,consequent,keepToken,discardToken);
   
   if (tokens.size() %2 == 0 && tokens.size() != 0) { 
-    for (int i = 0; i < tokens.size(); i+=2) {
+    for (size_t i = 0; i < tokens.size(); i+=2) {
       m_consequent.push_back(make_pair(tokens[i],tokens[i+1]));
     }
   }
@@ -146,7 +146,7 @@ void FuzzyRule::print_rule(ostream &out) {
 
   out<<"Rule #"<<m_rule_number<<" IF ";
   
-  for (int i = 0; i < m_antecedant.size(); i++) {
+  for (size_t i = 0; i < m_antecedant.size(); i++) {
     out<<m_antecedant[i].first<< " IS " << m_antecedant[i].second;
     if (i < m_antecedant.size() - 1) {
       out <<" AND ";
@@ -155,7 +155,7 @@ void FuzzyRule::print_rule(ostream &out) {
   
   out<<" THEN ";
   
-  for (int j = 0; j < m_consequent.size(); j++) {
+  for (size_t j = 0; j < m_consequent.size(); j++) {
     out<<m_consequent[j].first<< " IS " << m_consequent[j].second;
     if (j < m_consequent.size() - 1) {
       out <<" AND ";
@@ -181,11 +181,11 @@ ObjectRef FuzzyRule::clone() {
 
   FuzzyRule *my_clone = new FuzzyRule(m_rule_number);
 
-  for (int i = 0; i < m_antecedant.size(); i++) {
+  for (size_t i = 0; i < m_antecedant.size(); i++) {
     my_clone->m_antecedant.push_back(m_antecedant[i]);
   }
 
-  for (int i = 0; i < m_consequent.size(); i++) {
+  for (size_t i = 0; i < m_consequent.size(); i++) {
     my_clone->m_consequent.push_back(m_consequent[i]);
   }
 
@@ -196,10 +196,10 @@ void FuzzyRule::printOn(ostream &out) const {
 
   out <<"<FuzzyRule "<<endl; 
   out <<"<Number "<<m_rule_number<<" >"<<endl;
-  for (int i = 0; i < m_antecedant.size(); i++) {
+  for (size_t i = 0; i < m_antecedant.size(); i++) {
     out<<"<Antecedant "<<m_antecedant[i].first<<" "<<m_antecedant[i].second<<" >"<<endl;
   }
-  for (int i = 0; i < m_consequent.size(); i++) {
+  for (size_t i = 0; i < m_consequent.size(); i++) {
     out<<"<Consequent "<<m_consequent[i].first<<" "<<m_consequent[i].second<<" >"<<endl;
   }
   out <<" >\n";
@@ -209,9 +209,7 @@ void FuzzyRule::readFrom(istream &in) {
 
 
    string tag;
-   int antecedant_size;
-   int consequent_size;
-
+	
    while (1)
    {
       char ch;

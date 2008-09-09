@@ -39,7 +39,7 @@ namespace FD
     static double TwoPi = 2.0 * Pi;
     
     QtLink::QtLink(QtTerminal * source, QtTerminal * dest, UILink* uiLink)
-    : m_source(source), m_dest(dest), arrowSize(10), m_uiLink(uiLink)
+    : m_source(source), m_dest(dest), m_uiLink(uiLink), arrowSize(10)
     {
         //setAcceptedMouseButtons(0);
         setFlag(ItemIsSelectable);

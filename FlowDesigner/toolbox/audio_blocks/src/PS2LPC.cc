@@ -110,7 +110,7 @@ public:
       ObjectRef inputValue = getInput(inputID, count);
 
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      if (inputLength != in.size())
+      if (inputLength != (int) in.size())
 	 throw new NodeException(this, "Input length mismatch", __FILE__, __LINE__);
 
       Vector<float> &output = *Vector<float>::alloc(outputLength);
@@ -126,7 +126,6 @@ public:
       for (int i=0;i<SAMP_SIZE;i++)
 	 response[i] *= lag_window[i];
       
-      float er=0;
 
       response[0] *= 1.0001;
       wld(&output[0], response, rc, outputLength-1);

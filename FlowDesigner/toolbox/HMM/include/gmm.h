@@ -47,7 +47,7 @@ protected:
    std::vector<float>       apriori;
 
    /**Number of gaussians in the GMM*/
-   int                 nb_gaussians;
+   size_t                 nb_gaussians;
 
    /**Whether of not the GMM trained (like real/accum mode) (GMM_Mode)*/
    int                 mode;
@@ -56,7 +56,7 @@ protected:
    int                 nb_frames_aligned;
 
    /**Number of dimensions*/
-   int dimensions;
+   size_t dimensions;
 
    /**Was the gaussian loaded using indexes for mean*/
    bool using_gaussianIDs;
@@ -67,7 +67,7 @@ protected:
 public:
    /**Construct a GMM with nb_gauss gaussians, dim dimensions and a
       covariance pseudo-factory*/
-   GMM(int nb_gauss, int dim, Covariance *(*cov_new)(int)) 
+   GMM(size_t nb_gauss, size_t dim, Covariance *(*cov_new)(int)) 
       : gaussians(std::vector<RCPtr<Gaussian> >(nb_gauss))
       //: gaussians(std::vector<Gaussian *>(nb_gauss,(Gaussian *)NULL))
       , apriori (std::vector<float>(nb_gauss,0.0)) 
@@ -77,7 +77,7 @@ public:
       , dimensions (dim)
       , using_gaussianIDs(false)
    {
-      for (int i=0;i<nb_gauss;i++)
+      for (size_t i=0;i<nb_gauss;i++)
          gaussians[i] = RCPtr<Gaussian> (new Gaussian (dim, cov_new));
    }
 
@@ -96,13 +96,13 @@ public:
    void save(std::string file);
 
    /**Returns the number of gaussians in the GMM*/
-   int get_nb_gaussians() const {return nb_gaussians;}
+   size_t get_nb_gaussians() const {return nb_gaussians;}
 
    /**Returns the i'th gaussian*/
    Gaussian &gaussian (int i) const {return *(gaussians[i]);}
 
    /**Accumulates (adds) the frame to the i'th gaussian*/
-   void accum_to_gaussian(int i, const float * fr)
+   void accum_to_gaussian(size_t i, const float * fr)
    {
       gaussians[i]->accum_frame(fr);
       apriori[i]+=1.0;

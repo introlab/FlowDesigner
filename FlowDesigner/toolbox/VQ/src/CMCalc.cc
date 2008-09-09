@@ -59,7 +59,6 @@ public:
 
       const CodebookMap &cmap = object_cast<CodebookMap> (CMValue);
       const Vector<float> &in = object_cast<Vector<float> > (inputValue);
-      int inputLength = in.size();
 
       Vector<float> &output = *Vector<float>::alloc(outputLength);
       out[count] = &output;

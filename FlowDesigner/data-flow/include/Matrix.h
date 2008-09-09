@@ -30,7 +30,7 @@ public:
 	\param _col the col of the element
 	\return ObjectRef the newly created Object
    */
-   virtual ObjectRef getIndex(int _row, int _col) {
+   virtual ObjectRef getIndex(size_t _row, size_t _col) {
    	throw new GeneralException(std::string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 	
@@ -40,7 +40,7 @@ public:
 	\param _col the col of the element
 	\param val the new value of the element
    */
-   virtual void setIndex(int _row, int _col, ObjectRef val) {
+   virtual void setIndex(size_t _row, size_t _col, ObjectRef val) {
    	throw new GeneralException(std::string("Matrix index not implemented for object : ") + className(),__FILE__,__LINE__);
    }
 
@@ -67,10 +67,10 @@ class Matrix : public BaseMatrix
 protected:
 
   ///number of rows in the Matrix
-  int rows;
+  size_t rows;
   
   ///number of cols in the Matrix
-  int cols;
+  size_t cols;
     
   //data pointer
   T *data;
@@ -101,11 +101,11 @@ public:
       {
 	 rows=mat.cols;
 	 cols=mat.rows;
-	 for (int i=0;i<rows;i++)
-	    for (int j=0;j<cols;j++)
+	 for (size_t i=0;i<rows;i++)
+	    for (size_t j=0;j<cols;j++)
 	       data[i*cols+j] = mat.data[j*mat.cols+i];
       } else {
-	 for (int i=0;i<rows*cols;i++)
+	 for (size_t i=0;i<rows*cols;i++)
 	    data[i] = mat.data[i];
       }
    }
@@ -115,7 +115,7 @@ public:
       \param _rows number of rows in the matrix
       \param _cols number of cols in the matrix
    */
-   Matrix(int _rows, int _cols) 
+   Matrix(size_t _rows, size_t _cols) 
       : rows(_rows)
       , cols(_cols)
       , data(new T [_rows*_cols])
@@ -131,13 +131,13 @@ public:
       \param _rows new number of rows of the matrix
       \param _cols new number of cols of the matrix
    */
-   void resize(int _rows, int _cols)
+   void resize(size_t _rows, size_t _cols)
    {
       T *new_data = new T [_rows*_cols];
-      int min_rows = _rows < rows ? _rows : rows;
-      int min_cols = _cols < cols ? _cols : cols;
-      for (int i=0;i<min_rows;i++)
-	 for (int j=0;j<min_cols;j++)
+      size_t min_rows = _rows < rows ? _rows : rows;
+      size_t min_cols = _cols < cols ? _cols : cols;
+      for (size_t i=0;i<min_rows;i++)
+	 for (size_t j=0;j<min_cols;j++)
 	    new_data[i*_cols+j] = data[i*cols+j];
       if (data)
 	 delete [] data;
@@ -151,7 +151,7 @@ public:
       \param i the row number
       \return T* The data pointer to the first element of the row i   
    */
-   T *operator [] (int i)
+   T *operator [] (size_t i)
    {
       return data+i*cols;
    }
@@ -161,7 +161,7 @@ public:
       \param i the row number
       \return T* The data pointer to the first element of the row i   
    */
-   const T *operator [] (int i) const
+   const T *operator [] (size_t i) const
    {
       return data+i*cols;
    }
@@ -173,7 +173,7 @@ public:
       \param j the col number
       \return T The element at position (i,j)
    */
-   T &operator () (int i, int j)
+   T &operator () (size_t i, size_t j)
    {
       return data[i*cols+j];
    }
@@ -184,16 +184,16 @@ public:
       \param j the col number
       \return T The element at position (i,j)
    */
-   const T &operator () (int i, int j) const
+   const T &operator () (size_t i, size_t j) const
    {
       return data[i*cols+j];
    }
 
    ///returns the number of rows
-   int nrows() const {return rows;} 
+   size_t nrows() const {return rows;} 
 
    ///returns the number of cols
-   int ncols() const {return cols;}
+   size_t ncols() const {return cols;}
    
    
 
@@ -202,8 +202,8 @@ public:
    {
       if (rows==cols)
       {
-	 for (int i=0;i<rows;i++)
-	    for (int j=0;j<i+1;j++)
+	 for (size_t i=0;i<rows;i++)
+	    for (size_t j=0;j<i+1;j++)
 	    {
 	       float tmp=data[i*cols+j];
 	       data[i*cols+j] = data[j*cols+i];
@@ -211,8 +211,8 @@ public:
 	    }
       } else {
 	 Matrix mat(*this);
-	 for (int i=0;i<rows;i++)
-	    for (int j=0;j<cols;j++)
+	 for (size_t i=0;i<rows;i++)
+	    for (size_t j=0;j<cols;j++)
 	       data[i*cols+j] = mat.data[j*mat.cols+i];
       }
    }
@@ -228,9 +228,9 @@ public:
       out << "<rows " << rows << ">" << std::endl;
       out << "<cols " << cols << ">" << std::endl;
       out << "<data " << std::endl;
-      for (int i=0;i<rows;i++)
+      for (size_t i=0;i<rows;i++)
       {
-	 for (int j=0;j<cols;j++)
+	 for (size_t j=0;j<cols;j++)
 	    out << data[i*cols + j] << " ";
 	 out << std::endl;
       }
@@ -256,9 +256,9 @@ public:
    //(DL) 11/02/2004
    /** 
        Returns the size of the matrix 
-       \return int size (cols * rows)
+       \return size_t size (cols * rows)
    */
-   int size() const {
+   size_t size() const {
      return (cols * rows);
    }
 
@@ -300,7 +300,7 @@ public:
 	\param _col the col of the element
 	\return ObjectRef the newly created Object
    */
-   virtual ObjectRef getIndex(int _row, int _col);
+   virtual ObjectRef getIndex(size_t _row, size_t _col);
    
    
    /**
@@ -309,7 +309,7 @@ public:
 	\param _col the col of the element
 	\param val the new value of the element
    */
-   virtual void setIndex(int _row, int _col, ObjectRef val);
+   virtual void setIndex(size_t _row, size_t _col, ObjectRef val);
 
 
    /**
@@ -325,8 +325,8 @@ inline ObjectRef Matrix<T>::clone() {
   
   Matrix<T> *cpy = new Matrix<T>(this->nrows(), this->ncols());
   
-  for (int i = 0; i < this->nrows(); i++) {
-    for (int j = 0; j < this->ncols(); j++) {
+  for (size_t i = 0; i < this->nrows(); i++) {
+    for (size_t j = 0; j < this->ncols(); j++) {
       (*cpy)(i,j) = (*this)(i,j);
     }
   }
@@ -340,8 +340,8 @@ inline ObjectRef Matrix<ObjectRef>::clone() {
   
   Matrix<ObjectRef> *cpy = new Matrix<ObjectRef>(this->nrows(), this->ncols());
   
-  for (int i = 0; i < this->nrows(); i++) {
-    for (int j = 0; j < this->ncols(); j++) {
+  for (size_t i = 0; i < this->nrows(); i++) {
+    for (size_t j = 0; j < this->ncols(); j++) {
       //cloning every Object in the matrix
       (*cpy)(i,j) = (*this)(i,j)->clone();
     }
@@ -354,7 +354,7 @@ template <class T>
 inline void Matrix<T>::readFrom(std::istream &in)
 {
    std::string tag;
-   int new_cols, new_rows;
+   size_t new_cols, new_rows;
    while (1)
    {
       char ch;
@@ -370,7 +370,7 @@ inline void Matrix<T>::readFrom(std::istream &in)
       else if (tag == "data")
       {
 	 resize(new_rows,new_cols);
-         for (int i=0;i<rows*cols;i++)
+         for (size_t i=0;i<rows*cols;i++)
 	    in >> data[i];
       } else
          throw new ParsingException ("Matrix<T>::readFrom : unknown argument: " + tag);
@@ -395,11 +395,11 @@ struct MatrixMethod {
    {
       throw new GeneralException("MatrixMethod default unserialize should never be called", __FILE__, __LINE__);
    }
-   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   static inline ObjectRef getIndex(Matrix<T> &m, size_t _row, size_t _col) 
    {
      throw new GeneralException("MatrixMethod getIndex should never be called", __FILE__, __LINE__);   				
    }   
-   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   static inline void setIndex(Matrix<T> &m, size_t _row, size_t _col, ObjectRef val) 
    {
      throw new GeneralException("MatrixMethod setIndex should never be called", __FILE__, __LINE__);   				
    }
@@ -413,7 +413,7 @@ struct MatrixMethod<T,TTraits::Object> {
     out << "|";
 
     //writing nb rows
-    int tmp = m.nrows();
+    size_t tmp = m.nrows();
     BinIO::write(out, &tmp, 1);
    
     //writing nb cols
@@ -431,7 +431,7 @@ struct MatrixMethod<T,TTraits::Object> {
   
   static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
-     int ncols, nrows;
+     size_t ncols, nrows;
      std::string expected = Matrix<T>::GetClassName();
      
      //reading matrix dimensions
@@ -455,7 +455,7 @@ struct MatrixMethod<T,TTraits::Object> {
      in >> ch;
    }
 
-   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   static inline ObjectRef getIndex(Matrix<T> &m, size_t _row, size_t _col) 
    {
      if (_row < 0 || _row >= m.nrows() ||
 	 _col < 0 || _col >= m.ncols() ) {
@@ -464,7 +464,7 @@ struct MatrixMethod<T,TTraits::Object> {
 
      return ObjectRef(m(_row,_col).clone());
    }   
-   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   static inline void setIndex(Matrix<T> &m, size_t _row, size_t _col, ObjectRef val) 
    {
 
      if (_row < 0 || _row >= m.nrows() ||
@@ -486,7 +486,7 @@ struct MatrixMethod<T,TTraits::ObjectPointer> {
       out << "|";
      
       //writing nb rows
-      int tmp = m.nrows();
+      size_t tmp = m.nrows();
       BinIO::write(out, &tmp, 1);
       
       //writing nb cols
@@ -505,7 +505,7 @@ struct MatrixMethod<T,TTraits::ObjectPointer> {
 
    static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
-     int nrows,ncols;
+     size_t nrows,ncols;
      
      //reading matrix dimensions
      BinIO::read(in, &nrows, 1);
@@ -524,7 +524,7 @@ struct MatrixMethod<T,TTraits::ObjectPointer> {
      in >> ch;
    }
 
-   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col)        
+   static inline ObjectRef getIndex(Matrix<T> &m, size_t _row, size_t _col)        
    {
      if (_row < 0 || _row >= m.nrows() ||
 	 _col < 0 || _col >= m.ncols() ) {
@@ -533,7 +533,7 @@ struct MatrixMethod<T,TTraits::ObjectPointer> {
      return m(_row,_col);
 
    }   
-   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   static inline void setIndex(Matrix<T> &m, size_t _row, size_t _col, ObjectRef val) 
    {
      
      if (_row < 0 || _row >= m.nrows() ||
@@ -554,7 +554,7 @@ struct MatrixMethod<T,TTraits::Basic> {
       out << "|";
 
       //writing nb rows
-      int tmp = m.nrows();
+      size_t tmp = m.nrows();
       BinIO::write(out, &tmp, 1);
       
       //writing nb cols
@@ -568,7 +568,7 @@ struct MatrixMethod<T,TTraits::Basic> {
    }
    static inline void unserialize(Matrix<T> &m, std::istream &in)
    {
-     int nrows,ncols;
+     size_t nrows,ncols;
 
      //reading matrix dimensions
      BinIO::read(in, &nrows, 1);
@@ -582,7 +582,7 @@ struct MatrixMethod<T,TTraits::Basic> {
      char ch;
      in >> ch;
    }
-   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   static inline ObjectRef getIndex(Matrix<T> &m, size_t _row, size_t _col) 
    {
      if (_row < 0 || _row >= m.nrows() ||
 	 _col < 0 || _col >= m.ncols() ) {
@@ -591,7 +591,7 @@ struct MatrixMethod<T,TTraits::Basic> {
 
      return ObjectRef(NetCType<T>::alloc(m(_row,_col)));
    }   
-   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   static inline void setIndex(Matrix<T> &m, size_t _row, size_t _col, ObjectRef val) 
    {
 
      if (_row < 0 || _row >= m.nrows() ||
@@ -618,12 +618,12 @@ struct MatrixMethod<T,TTraits::Unknown> {
       throw new GeneralException(std::string("Sorry, can't unserialize this kind of object (") + typeid(T).name()
 				 + ")", __FILE__, __LINE__);
    }
-   static inline ObjectRef getIndex(Matrix<T> &m, int _row, int _col) 
+   static inline ObjectRef getIndex(Matrix<T> &m, size_t _row, size_t _col) 
    {
      throw new GeneralException(std::string("Sorry, can't getIndex this kind of object (") + typeid(T).name()
 			       + ")", __FILE__, __LINE__);
    }   
-   static inline void setIndex(Matrix<T> &m, int _row, int _col, ObjectRef val) 
+   static inline void setIndex(Matrix<T> &m, size_t _row, size_t _col, ObjectRef val) 
    {
      throw new GeneralException(std::string("Sorry, can't setIndex this kind of object (") + typeid(T).name()
 				+ ")", __FILE__, __LINE__);
@@ -644,13 +644,13 @@ inline void Matrix<T>::unserialize(std::istream &in)
 }
 
 template <class T>
-inline ObjectRef Matrix<T>::getIndex(int _row, int _col)
+inline ObjectRef Matrix<T>::getIndex(size_t _row, size_t _col)
 {
   return MatrixMethod<T, TypeTraits<T>::kind>::getIndex(*this,_row,_col);
 }
 
 template <class T>
-inline void Matrix<T>::setIndex(int _row, int _col, ObjectRef val)
+inline void Matrix<T>::setIndex(size_t _row, size_t _col, ObjectRef val)
 {
   MatrixMethod<T,TypeTraits<T>::kind>::setIndex(*this,_row,_col,val);
 }

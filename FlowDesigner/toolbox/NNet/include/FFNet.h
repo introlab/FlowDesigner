@@ -52,7 +52,7 @@ class FFNet : public Object {
    float *calc(const float *input, float *value, float *deriv=NULL)
    {
       layers[0]->update(input, value, deriv);
-      for (int i=1;i<layers.size();i++)
+      for (size_t i=1;i<layers.size();i++)
       {
 	 if (deriv)
 	 {
