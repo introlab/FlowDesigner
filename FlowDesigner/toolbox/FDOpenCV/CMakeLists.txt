@@ -1,4 +1,6 @@
 find_package(OpenCV REQUIRED)
+find_package(JPEG REQUIRED)
+
 
 SET(FDOPENCV_DLL
  "C:/Program Files/OpenCV/bin/highgui100.dll"
@@ -102,15 +104,18 @@ SET(ADDITIONAL_INCLUDES
 	"C:/Dev-Cpp/include"
 )
 
+IF (WIN32)
 SET(ADDITIONAL_LIBS
 	"-LC:/Dev-Cpp/lib -ljpeg"
 )
+ENDIF(WIN32)
 
 INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include
 	./
 	${LIBXML2_INCLUDE} 
 	${OpenCV_INCLUDE_DIRS}
 	${ADDITIONAL_INCLUDES}
+	${JPEG_INCLUDE_DIR}
 )
 	
 add_library(libopencv-dynamic SHARED ${FDOPENCV_SRCS} ${RFOPENCV_SRCS})
@@ -120,7 +125,7 @@ set_target_properties(libopencv-dynamic PROPERTIES OUTPUT_NAME opencv.tlb)
 #target_link_libraries(libopencv-dynamic libflow-dynamic ${LIBXML2_LIBRARIES}
 #	-LC:/PROGRA~1/OpenCV/bin -lcv100 -lcvaux100 -lcvcam100 -lcxcore100 -lcxts001 -lhighgui100 -lml100
 
-target_link_libraries(libopencv-dynamic libflow-dynamic ${LIBXML2_LIBRARIES} ${OpenCV_LIBRARIES} ${ADDITIONAL_LIBS})
+target_link_libraries(libopencv-dynamic libflow-dynamic ${LIBXML2_LIBRARIES} ${OpenCV_LIBRARIES} ${ADDITIONAL_LIBS} ${JPEG_LIBRARIES})
 
 
 install(TARGETS libopencv-dynamic DESTINATION ${FD_TOOLBOX_DIR}/FDOPENCV/lib)
