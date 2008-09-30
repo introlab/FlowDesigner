@@ -5,6 +5,8 @@ INCLUDE_DIRECTORIES(/opt/local/include ${LIBXML2_INCLUDE_DIR} ../include)
 #ADD ALL TESTS HERE
 SET(TEST_SRCS
 	t_UIDocument.cc
+	t_Vector.cc
+	t_Matrix.cc
 )
 
 
