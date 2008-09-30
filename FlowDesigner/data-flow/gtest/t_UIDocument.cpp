@@ -1,13 +1,9 @@
 #include <limits.h>
 #include <gtest/gtest.h>
+#include "UIDocument.h"
 
-
-TEST(UIDocumentTest,GTEST_TEST) 
+TEST(UIDocumentTest,NAME_TEST)
 {
-	EXPECT_EQ(1,1);
-}
-
-TEST(UIDocumentTest,NEW_TEST)
-{
-	
+	FD::UIDocument *doc = new FD::UIDocument("untitled");
+	EXPECT_EQ(doc->getName(),"untitled");
 }
