@@ -182,6 +182,9 @@ TEST_F(TestUINode,ADD_TERMINAL_TEST)
 
 	node->addTerminal("TERM1",FD::UINetTerminal::INPUT,"any","No description available");
 
+	//TEST WRONG TYPE
+	EXPECT_EQ(node->getOutputNamed("TERM1"),(FD::UITerminal*)(NULL));
+
 	//TEST VALUES
 	FD::UITerminal *term = node->getInputNamed("TERM1");
 	EXPECT_NE(term,(FD::UITerminal*)(NULL));
@@ -221,3 +224,4 @@ TEST_F(TestUINode,REMOVE_TERMINAL_TEST)
 	delete node;
 
 }
+
