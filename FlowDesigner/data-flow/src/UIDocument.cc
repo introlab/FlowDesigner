@@ -37,6 +37,7 @@ UIDocument::UIDocument(string _name)
    , destroyed(false)
    , m_connectionPort(DEFAULT_CONNECTION_PORT)
 {
+	setFullPath(_name);
 }
 
 UIDocument::~UIDocument()
@@ -546,7 +547,7 @@ char *UIDocument::saveToMemory(int &size)
    int incId = 1;
    for (unsigned int i=0;i<networks.size();i++)
    {
-      networks[i]->saveXML(doc->children, incId);
+      networks[i]->saveXML(doc->children, incId); 
    }
 
    for (unsigned int i=0;i<textParams.size();i++)
@@ -823,10 +824,13 @@ void UIDocument::setFullPath(const string &fullpath)
    //cerr << "fullpath is: \"" << fullpath << "\"" << endl;
    int slashpos = fullpath.rfind("/");
    //cerr << "slashpos = " << slashpos << endl;
-   path="";
-   path.append(fullpath,0,slashpos+1);
-   docName=fullpath;
-   docName.erase(0,slashpos+1);
+	if (slashpos != string::npos)
+	{	
+		path="";
+		path.append(fullpath,0,slashpos+1);
+		docName=fullpath;
+		docName.erase(0,slashpos+1);
+	}	
    //cerr << "path is: \"" << path << "\"" << endl;
    //cerr << "name is: \"" << name << "\"" << endl;
    untitled=false; 
