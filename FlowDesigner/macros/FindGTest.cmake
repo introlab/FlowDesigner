@@ -8,9 +8,9 @@
 #  GTEST_LIBRARY, where to find the GTEST library.
 
 FIND_PATH(GTEST_INCLUDE_DIR gtest.h 
-    /usr/include/
-    /opt/local/include/
-    /usr/local/include/
+    /usr/include/gtest
+    /opt/local/include/gtest
+    /usr/local/include/gtest
 )
 
 FIND_LIBRARY(GTEST_LIBRARY NAMES "gtest" PATH /usr/lib /usr/local/lib /opt/local/lib)
