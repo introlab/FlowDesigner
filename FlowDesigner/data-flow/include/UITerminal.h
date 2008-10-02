@@ -20,10 +20,10 @@ protected:
 
    /**The terminal name*/
    std::string name;
-   
+
    /**The terminal type*/
    std::string type;
-  
+
    /**The description of the terminal */
    std::string description;
 
@@ -43,7 +43,7 @@ protected:
    UINetTerminal *netTerminal;
 
 public:
-	
+
    UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 
    virtual ~UITerminal();
@@ -61,26 +61,9 @@ public:
 
    /**connect to a link*/
    void connect(UILink *link) {connections.insert(connections.end(), link);}
-   
+
    /**disconnect from a link*/
-   void disconnect(UILink *link) 
-   {
-      //Now, this should comply to ANSI C++
-      std::vector<UILink *>::iterator i=connections.begin();
-      while (i != connections.end())
-      {
-	 if (*i == link)
-	 {
-	    connections.erase(i);
-	    break;
-	 }
-	 ++i;
-      }
-      /*for (int i=0;i<connections.size();i++)
-         if (connections[i]==link)
-            connections.erase(&connections[i]);
-      */
-   }
+   void disconnect(UILink *link);
 
    /**connect to a network terminal*/
    void connectNetTerminal(UINetTerminal *term);
@@ -92,9 +75,9 @@ public:
    const std::string &getType() const {return type;}
    const std::string &getDescription() const {return description;}
    bool isInputTerminal() const {return isInput;}
-   
+
    bool isConnected() const {return connections.size()!=0 || netTerminal;}
-   
+
    std::vector<UILink *> getConnections() const {return connections;}
 
    UINetTerminal* getNetTerminal() {return netTerminal;}

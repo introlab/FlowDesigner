@@ -14,7 +14,7 @@ namespace FD {
 
 //@implements UIClasses
 
-UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, 
+UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 						double _x, double _y)
    : node(_node)
    , x(_x)
@@ -27,12 +27,21 @@ UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 	description = terminalInfo->description;
 }
 
-UITerminal::~UITerminal() 
+UITerminal::~UITerminal()
 {
-   //although this is wierd, it has to be like that since the destroyed link removes 
+   //although this is weird, it has to be like that since the destroyed link removes
    //itself from the connection list
    while (connections.size()) {
-   	  node->getNetwork()->removeLink(connections[0]);
+	  if (node && node->getNetwork())
+	  {
+		  node->getNetwork()->removeLink(connections[0]);
+	  }
+	  else
+	  {
+		  //This is a strange case where we are not part of a network
+		  //or a Node : Testing only terminal functionalities
+		  break;
+	  }
    }
 
    //Remove the net terminal
@@ -40,14 +49,14 @@ UITerminal::~UITerminal()
 }
 
 
-void UITerminal::connectNetTerminal(UINetTerminal *term) 
+void UITerminal::connectNetTerminal(UINetTerminal *term)
 {
    netTerminal = term;
    node->getNetwork()->setModified();
 }
 
 /**connect to a network terminal*/
-void UITerminal::disconnectNetTerminal() 
+void UITerminal::disconnectNetTerminal()
 {
    netTerminal = NULL;
    node->getNetwork()->setModified();
@@ -59,6 +68,22 @@ void UITerminal::removeNetTerminal()
       delete netTerminal;
       netTerminal = NULL;
    	}
+}
+
+
+void UITerminal::disconnect(UILink *link)
+{
+   //Now, this should comply to ANSI C++
+   std::vector<UILink *>::iterator i=connections.begin();
+   while (i != connections.end())
+   {
+	 if (*i == link)
+	 {
+	    connections.erase(i);
+	    break;
+	 }
+	 ++i;
+   }
 }
 
 }//namespace FD

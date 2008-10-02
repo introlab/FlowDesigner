@@ -30,12 +30,12 @@ class GUILinkPoint {
     : x(cpy.x), y(cpy.y) {}
 
   GUILinkPoint & operator= (const GUILinkPoint &eq) {
-    
-    x = eq.x; 
+
+    x = eq.x;
     y = eq.y;
     return *this;
   }
-  
+
   void setxy(double _x, double _y) {
     x = _x;
     y = _y;
@@ -44,18 +44,18 @@ class GUILinkPoint {
   double dist (const GUILinkPoint &p) {
     return sqrt(sqr(p.x - x) + sqr(p.y -y));
   }
-  
+
   bool between (const GUILinkPoint &p1, const GUILinkPoint &p2) {
      //Maximum offset allowed
      const float moff=2;
      //If x is between p1.x and p2.x, within a margin of moff
      if ( ! ((x-moff < p1.x && x+moff > p2.x) || (x+moff > p1.x && x-moff < p2.x)))
 	return false;
-     
+
      //If y is between p1.y and p2.y, within a margin of moff
      if ( ! ((y-moff < p1.y && y+moff > p2.y) || (y+moff > p1.y && y-moff < p2.y)))
 	return false;
-     
+
      //Just some geometry
      double dx, dy, rx, ry;
      dx=x-p1.x; dy=y-p1.y;
@@ -70,7 +70,7 @@ class GUILinkPoint {
      //projection of d on r
      double px,py;
      px=rx*prod*normR_2; py=ry*prod*normR_2;
-     
+
      //distance:
      double dist = sqrt(sqr(px-dx) + sqr(py-dy));
      //cerr << "dist = " << dist << endl << endl;
@@ -90,7 +90,7 @@ protected:
    UITerminal *from;
    UITerminal *to;
    bool complete;
-   UINetwork *net;
+   //UINetwork *net;
    std::list<GUILinkPoint*> m_points;
    int id;
 
@@ -107,14 +107,14 @@ public:
    virtual void genCode(std::ostream &out);
 
    std::list<GUILinkPoint*> & get_link_points() {return m_points;}
- 
+
    friend class UITerminal;
-   
+
    UITerminal *getFromTerminal() {return from;}
    UITerminal *getToTerminal() {return to;}
-   
+
    UINetwork *getNetwork();
-   
+
    int getId() const {return id;}
 };
 
