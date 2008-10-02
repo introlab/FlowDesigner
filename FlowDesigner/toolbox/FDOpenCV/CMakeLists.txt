@@ -82,7 +82,6 @@ SET(RFOPENCV_SRCS
 	IntegralColorExtraction.cc
 	IntegralEdgesOriExtraction.cc
 	IntegralLBPExtraction.cc
-	Makefile.am
 	MeanShiftTracker.cc
 	MultiIntegralCuesPFTracker.cc
 	PFGenericParticle.cc
