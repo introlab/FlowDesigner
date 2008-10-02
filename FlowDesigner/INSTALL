@@ -4,6 +4,10 @@ Since Version 0.10.0... for older version, see README
 What tou need :
    cmake - minimum version 2.6.0
    fftw - optional
+   gtest - optional
+   lapack - optional
+   opencv - optional
+   octave - optional
 
 If you want to change the default install directory :
    Edit CMakeLists.txt in the root directory of FlowDesigner and change the path...
@@ -23,3 +27,7 @@ To compile :
    % cmake .
    % make
    % make install
+
+Please visite our web site for more information :
+
+http://flowdesigner.sourceforge.net
