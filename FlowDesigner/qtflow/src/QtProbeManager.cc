@@ -195,7 +195,7 @@ namespace FD
 						UITerminal *from = link->getFromTerminal();
 						UITerminal *to = link->getToTerminal();
 						
-						output << (unsigned int)link << " " << link->getId() << " "<<from->getName()<<" "<<from->getType()
+						output << (unsigned long)link << " " << link->getId() << " "<<from->getName()<<" "<<from->getType()
 							   <<" "<<to->getName()<<" "<<to->getType()<<endl;
 						
 					}
