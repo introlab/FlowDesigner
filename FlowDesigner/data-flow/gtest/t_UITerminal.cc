@@ -86,6 +86,11 @@ TEST(UITerminal,NET_TERMINAL_TEST)
 	FD::UINetTerminal *netTerm = new FD::UINetTerminal(term,FD::UINetTerminal::INPUT,"name","type","description");
 	EXPECT_EQ(term->getNetTerminal(),netTerm);
 
+	EXPECT_EQ(netTerm->getName(),"name");
+	EXPECT_EQ(netTerm->getType(),FD::UINetTerminal::INPUT);
+	EXPECT_EQ(netTerm->getObjectType(),"type");
+	EXPECT_EQ(netTerm->getDescription(),"description");
+
 	delete netTerm;
 
 	EXPECT_EQ(term->getNetTerminal(),(FD::UINetTerminal*) NULL);
