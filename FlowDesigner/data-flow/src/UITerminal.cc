@@ -52,14 +52,20 @@ UITerminal::~UITerminal()
 void UITerminal::connectNetTerminal(UINetTerminal *term)
 {
    netTerminal = term;
-   node->getNetwork()->setModified();
+   if (node && node->getNetwork())
+   {
+	   node->getNetwork()->setModified();
+   }
 }
 
 /**connect to a network terminal*/
 void UITerminal::disconnectNetTerminal()
 {
    netTerminal = NULL;
-   node->getNetwork()->setModified();
+   if (node && node->getNetwork())
+   {
+	   node->getNetwork()->setModified();
+   }
 }
 
 void UITerminal::removeNetTerminal()

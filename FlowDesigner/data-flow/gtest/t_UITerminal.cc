@@ -14,7 +14,6 @@ TEST(UITerminal,ALLOC_TEST)
 	info.value = "";
 	info.description = "Integer value";
 
-	//UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput, double _x, double _y);
 	FD::UITerminal *term = new FD::UITerminal(&info,NULL,true,11.0,10.0);
 
 	EXPECT_EQ(term->getName(),"NONAME");
@@ -52,6 +51,11 @@ TEST(UITerminal,LINK_TEST)
 	//CREATE OUTPUT TERMINAL
 	FD::UITerminal *outputTerm = new FD::UITerminal(&info,NULL,false,0,0);
 
+	EXPECT_EQ(inputTerm->getConnections().size(),0);
+	EXPECT_EQ(inputTerm->isInputTerminal(), true);
+	EXPECT_EQ(outputTerm->getConnections().size(),0);
+	EXPECT_EQ(outputTerm->isInputTerminal(), false);
+
 	//CREATE LINK
 	FD::UILink *link = new FD::UILink(outputTerm,inputTerm,NULL,1);
 
@@ -66,4 +70,25 @@ TEST(UITerminal,LINK_TEST)
 
 	delete inputTerm;
 	delete outputTerm;
+}
+
+TEST(UITerminal,NET_TERMINAL_TEST)
+{
+	FD::ItemInfo info;
+
+	info.name = "NONAME";
+	info.type = "Int";
+	info.value = "";
+	info.description = "Integer value";
+
+	FD::UITerminal *term = new FD::UITerminal(&info,NULL,true,0,0);
+
+	FD::UINetTerminal *netTerm = new FD::UINetTerminal(term,FD::UINetTerminal::INPUT,"name","type","description");
+	EXPECT_EQ(term->getNetTerminal(),netTerm);
+
+	delete netTerm;
+
+	EXPECT_EQ(term->getNetTerminal(),(FD::UINetTerminal*) NULL);
+
+	delete term;
 }

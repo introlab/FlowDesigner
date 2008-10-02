@@ -10,7 +10,7 @@ using namespace std;
 
 namespace FD {
 
-UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name, 
+UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const string &_name,
 			     const string &_objType, const string &_description)
    : name(_name)
    , m_objectType(_objType)
@@ -18,16 +18,28 @@ UINetTerminal::UINetTerminal(UITerminal *_terminal, NetTermType _type, const str
    , terminal(_terminal)
    , type(_type)
 {
-   terminal->getNode()->getNetwork()->addTerminal(this);
-   terminal->connectNetTerminal (this);
+   if (terminal)
+   {
+	   if (terminal->getNode() && terminal->getNode()->getNetwork())
+	   {
+		   terminal->getNode()->getNetwork()->addTerminal(this);
+	   }
+
+	   terminal->connectNetTerminal (this);
+   }
 }
 
 UINetTerminal::~UINetTerminal()
 {
-  terminal->getNode()->getNetwork()->removeTerminal(this);
-  terminal->disconnectNetTerminal();
+  if (terminal)
+  {
+	  if (terminal->getNode() && terminal->getNode()->getNetwork())
+	  {
+		  terminal->getNode()->getNetwork()->removeTerminal(this);
+	  }
+	  terminal->disconnectNetTerminal();
+  }
 }
-
 
 void UINetTerminal::saveXML(xmlNode *root)
 {
@@ -43,7 +55,7 @@ void UINetTerminal::saveXML(xmlNode *root)
    xmlSetProp(tree, (xmlChar *)"name", (xmlChar *)name.c_str());
    xmlSetProp(tree, (xmlChar *)"node", (xmlChar *)terminal->getNode()->getName().c_str());
    xmlSetProp(tree, (xmlChar *)"terminal", (xmlChar *)terminal->getName().c_str());
-   
+
    //(DL 12/12/2003) Input & Output ObjectType & Description
    if (type == INPUT || type == OUTPUT) {
      xmlSetProp(tree, (xmlChar *)"object_type", (xmlChar *)m_objectType.c_str());
