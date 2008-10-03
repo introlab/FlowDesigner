@@ -14,6 +14,8 @@
 #include "UserException.h"
 #include <libxml/globals.h>
 
+#include <string.h>
+
 using namespace std;
 using namespace FD;
 

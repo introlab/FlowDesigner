@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "JitterMatrix.h"
+
 namespace FD {
    
 	using namespace std;

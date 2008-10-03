@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <fstream>
 #include "Stream.h"
 
+#include <string.h>
 
 using namespace FD;
 

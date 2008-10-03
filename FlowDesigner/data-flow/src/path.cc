@@ -6,6 +6,9 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 #ifndef WIN32
 #include "DLManager.h"
 #else

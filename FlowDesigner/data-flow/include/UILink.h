@@ -10,6 +10,8 @@
 //#include <gnome.h>
 #include <libxml/tree.h>
 
+#include <ostream>
+
 namespace FD {
 
 class UINode;

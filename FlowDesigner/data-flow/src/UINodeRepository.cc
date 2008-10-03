@@ -1,6 +1,5 @@
 // Copyright (C) 2001 Jean-Marc Valin
 
-
 #include "UINodeRepository.h"
 #include "path.h"
 #include <libxml/tree.h>
@@ -21,7 +20,7 @@
 #include <unistd.h>
 #include "Node.h"
 
-
+#include <string.h>
 
 //@implements UIClasses
 

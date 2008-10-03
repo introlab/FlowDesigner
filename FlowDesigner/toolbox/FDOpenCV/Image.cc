@@ -23,6 +23,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <string.h>
+
 extern "C" {
   #include <jpeglib.h>
 }

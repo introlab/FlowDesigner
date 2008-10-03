@@ -1,6 +1,8 @@
 
 // Copyright (C) 2004 Dominic Letourneau
 
+#include <string.h>
+
 #include "URLHandler.h"
 #include <string>
 #include <map>

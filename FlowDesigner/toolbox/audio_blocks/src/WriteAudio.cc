@@ -8,6 +8,8 @@
 #include <math.h>
 #include "Stream.h"
 
+#include <string.h>
+
 using namespace std;
 
 namespace FD {
