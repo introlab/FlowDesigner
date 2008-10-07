@@ -5,7 +5,7 @@ typedef GenericUIFixture<FD::UINode> TestUINode;
 
 TEST_F(TestUINode,ALLOC_TEST)
 {
-	TestUINode::EventReceiver eventReceiver;
+	TestUINode::UINodeEventReceiver UINodeEventReceiver;
 
 	//CREATE NODE
 	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
@@ -15,7 +15,7 @@ TEST_F(TestUINode,ALLOC_TEST)
 	EXPECT_EQ(node->getType(),"Constant");
 	EXPECT_EQ(node->getNetwork(),m_UINetwork);
 
-	node->registerEvents(&eventReceiver);
+	node->registerEvents(&UINodeEventReceiver);
 
 	//ADD NODE TO THE NETWORK
 	m_UINetwork->addNode(node);
@@ -31,34 +31,34 @@ TEST_F(TestUINode,ALLOC_TEST)
 	EXPECT_EQ(n2,(FD::UINode*)(NULL));
 
 	//VERIFY IF WE RECEIVED THE DESTROYED EVENT
-	EXPECT_EQ(eventReceiver.m_notifyDestroyedCount,1);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyDestroyedVector.size(),1);
 
 }
 
 TEST_F(TestUINode,MOVE_TEST)
 {
-	TestUINode::EventReceiver eventReceiver;
+	TestUINode::UINodeEventReceiver UINodeEventReceiver;
 
 	//CREATE NODE
 	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
-	node->registerEvents(&eventReceiver);
+	node->registerEvents(&UINodeEventReceiver);
 
 	//MOVE THE NODE
 	node->setPos(10,10);
 
 	//VERIFY IF WE RECEIVED THE DESTROYED EVENT
-	EXPECT_EQ(eventReceiver.m_notifyPositionChangedCount,1);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyPositionChangedVector.size(),1);
 
 	delete node;
 }
 
 TEST_F(TestUINode,RENAME_TEST)
 {
-	TestUINode::EventReceiver eventReceiver;
+	TestUINode::UINodeEventReceiver UINodeEventReceiver;
 
 	//CREATE NODE
 	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
-	node->registerEvents(&eventReceiver);
+	node->registerEvents(&UINodeEventReceiver);
 	EXPECT_EQ(node->getName(),"TESTNODE");
 
 	//TEST RENAME
@@ -66,18 +66,18 @@ TEST_F(TestUINode,RENAME_TEST)
 	EXPECT_EQ(node->getName(),"TESTNODE2");
 
 	//TEST RENAME EVENT
-	EXPECT_EQ(eventReceiver.m_notifyNameChangedCount,1);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyNameChangedVector.size(),1);
 	delete node;
 
 }
 
 TEST_F(TestUINode,ADD_TERMINAL_TEST)
 {
-	TestUINode::EventReceiver eventReceiver;
+	TestUINode::UINodeEventReceiver UINodeEventReceiver;
 
 	//CREATE NODE
 	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
-	node->registerEvents(&eventReceiver);
+	node->registerEvents(&UINodeEventReceiver);
 
 	node->addTerminal("TERM1",FD::UINetTerminal::INPUT,"any","No description available");
 
@@ -93,32 +93,32 @@ TEST_F(TestUINode,ADD_TERMINAL_TEST)
 	EXPECT_EQ(term->getDescription(),"No description available");
 
 	//TEST ADD EVENT
-	EXPECT_EQ(eventReceiver.m_notifyTerminalAddedCount,1);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyTerminalAddedVector.size(),1);
 
 	delete node;
 }
 
 TEST_F(TestUINode,REMOVE_TERMINAL_TEST)
 {
-	TestUINode::EventReceiver eventReceiver;
+	TestUINode::UINodeEventReceiver UINodeEventReceiver;
 
 	//CREATE NODE
 	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
-	node->registerEvents(&eventReceiver);
+	node->registerEvents(&UINodeEventReceiver);
 
 	node->addTerminal("TERM1",FD::UINetTerminal::INPUT,"any","No description available");
 
 	//REMOVING NON EXISTING
 	node->removeTerminal("TERM2",FD::UINetTerminal::INPUT);
-	EXPECT_EQ(eventReceiver.m_notifyTerminalRemovedCount,0);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyTerminalRemovedVector.size(),0);
 
 	//REMOVING WRONG TYPE
 	node->removeTerminal("TERM1",FD::UINetTerminal::OUTPUT);
-	EXPECT_EQ(eventReceiver.m_notifyTerminalRemovedCount,0);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyTerminalRemovedVector.size(),0);
 
 	//REMOVING RIGHT TYPE
 	node->removeTerminal("TERM1",FD::UINetTerminal::INPUT);
-	EXPECT_EQ(eventReceiver.m_notifyTerminalRemovedCount,1);
+	EXPECT_EQ(UINodeEventReceiver.m_notifyTerminalRemovedVector.size(),1);
 
 	delete node;
 
