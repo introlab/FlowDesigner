@@ -18,9 +18,12 @@ SET(TEST_SRCS
     t_UIProbeLink.cc
 )
 
+SET (TEST_HEADERS
+	t_GenericUIFixture.h
+)
 
 #This is the single executable that will run all tests
-add_executable(allTests ${TEST_SRCS})
+add_executable(allTests ${TEST_SRCS} ${TEST_HEADERS})
 target_link_libraries(allTests libflow-dynamic ${GTEST_LIBRARIES})
 
 
