@@ -4,6 +4,7 @@
 #include "UIDocument.h"
 #include "UITerminal.h"
 #include "UILink.h"
+#include "UINote.h"
 #include <vector>
 
 // To use a test fixture, derive a class from testing::Test.

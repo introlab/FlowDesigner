@@ -28,7 +28,23 @@ TEST_F(TestUINetwork,ADD_REMOVE_NODE_TEST)
 
 TEST_F(TestUINetwork,ADD_REMOVE_NOTE_TEST)
 {
+	UINetworkEventReceiver eventReceiver(m_UINetwork);
 
+	//CREATE NOTE
+	FD::UINote *note = new FD::UINote(m_UINetwork,"Label","This is a note.", 0, 0 , true);	
+	EXPECT_NE((FD::UINote*)NULL,note);
+	EXPECT_EQ(eventReceiver.m_notifyNoteAddedVector.size(),1);
+	
+	//DUPLICATED ADD
+	EXPECT_FALSE(m_UINetwork->addNote(note));
+	
+	//DELETE NOTE
+	delete note;
+	EXPECT_EQ(eventReceiver.m_notifyNoteRemovedVector.size(),1);
+	
+	//DUPLICATED REMOVE
+	EXPECT_FALSE(m_UINetwork->removeNote(note));
+	
 }
 
 

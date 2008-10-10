@@ -7,7 +7,7 @@ TEST_F(TestUINode,ALLOC_TEST)
 {
 	
 	//CREATE NODE
-	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
+	FD::UINode *node = m_UINetwork->createNode("TESTNODE","Constant",0,0);
 	ASSERT_NE(node,(FD::UINode*)(NULL));
 	
 	TestUINode::UINodeEventReceiver UINodeEventReceiver(node);
@@ -37,7 +37,7 @@ TEST_F(TestUINode,ALLOC_TEST)
 TEST_F(TestUINode,MOVE_TEST)
 {
 	//CREATE NODE
-	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
+	FD::UINode *node = m_UINetwork->createNode("TESTNODE","Constant",0,0);
 	TestUINode::UINodeEventReceiver UINodeEventReceiver(node);
 
 
@@ -53,7 +53,7 @@ TEST_F(TestUINode,MOVE_TEST)
 TEST_F(TestUINode,RENAME_TEST)
 {
 	//CREATE NODE
-	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
+	FD::UINode *node = m_UINetwork->createNode("TESTNODE","Constant",0,0);
 	TestUINode::UINodeEventReceiver UINodeEventReceiver(node);
 
 	EXPECT_EQ(node->getName(),"TESTNODE");
@@ -71,7 +71,7 @@ TEST_F(TestUINode,RENAME_TEST)
 TEST_F(TestUINode,ADD_TERMINAL_TEST)
 {
 	//CREATE NODE
-	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
+	FD::UINode *node = m_UINetwork->createNode("TESTNODE","Constant",0,0);
 	TestUINode::UINodeEventReceiver UINodeEventReceiver(node);
 
 
@@ -99,7 +99,7 @@ TEST_F(TestUINode,REMOVE_TERMINAL_TEST)
 	
 
 	//CREATE NODE
-	FD::UINode *node = m_UINetwork->newNode(m_UINetwork,"TESTNODE","Constant",0,0,true);
+	FD::UINode *node = m_UINetwork->createNode("TESTNODE","Constant",0,0);
 	TestUINode::UINodeEventReceiver UINodeEventReceiver(node);
 
 
@@ -130,7 +130,7 @@ TEST_F(TestUINode,LINK_TEST_TWO_NODES)
 {
 
 	//CREATE NODE 1
-	FD::UINode *node1 = m_UINetwork->newNode(m_UINetwork,"NODE1","TYPE1",0,0,true);
+	FD::UINode *node1 = m_UINetwork->createNode("NODE1","TYPE1",0,0);
 	m_UINetwork->addNode(node1);
 	EXPECT_EQ(node1,m_UINetwork->getNodeNamed("NODE1"));
 	TestUINode::UINodeEventReceiver UINodeEventReceiver1(node1);
@@ -145,7 +145,7 @@ TEST_F(TestUINode,LINK_TEST_TWO_NODES)
 
 
 	//CREATE NODE 2
-	FD::UINode *node2 = m_UINetwork->newNode(m_UINetwork,"NODE2","TYPE2",0,0,true);
+	FD::UINode *node2 = m_UINetwork->createNode("NODE2","TYPE2",0,0);
 	m_UINetwork->addNode(node2);
 	EXPECT_EQ(node2,m_UINetwork->getNodeNamed("NODE2"));
 	TestUINode::UINodeEventReceiver UINodeEventReceiver2(node2);
@@ -160,7 +160,7 @@ TEST_F(TestUINode,LINK_TEST_TWO_NODES)
 
 
 	//LINK NODES
-	FD::UILink *link = m_UINetwork->newLink(outputTerminal,inputTerminal);
+	FD::UILink *link = m_UINetwork->createLink(outputTerminal,inputTerminal);
 	EXPECT_NE(link,(FD::UILink*)NULL);
 	EXPECT_EQ(link->getFromTerminal(),outputTerminal);
 	EXPECT_EQ(link->getToTerminal(),inputTerminal);
@@ -189,7 +189,7 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 	
 
 	//CREATE NODE 1
-	FD::UINode *node1 = m_UINetwork->newNode(m_UINetwork,"NODE1","TYPE1",0,0,true);
+	FD::UINode *node1 = m_UINetwork->createNode("NODE1","TYPE1",0,0);
 	m_UINetwork->addNode(node1);
 	EXPECT_EQ(node1,m_UINetwork->getNodeNamed("NODE1"));
 	TestUINode::UINodeEventReceiver UINodeEventReceiver1(node1);
@@ -203,7 +203,7 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 	EXPECT_EQ(outputTerminal_1->getNode(),node1);
 
 	//CREATE NODE 2
-	FD::UINode *node2 = m_UINetwork->newNode(m_UINetwork,"NODE2","TYPE2",0,0,true);
+	FD::UINode *node2 = m_UINetwork->createNode("NODE2","TYPE2",0,0);
 	m_UINetwork->addNode(node2);
 	EXPECT_EQ(node2,m_UINetwork->getNodeNamed("NODE2"));
 	TestUINode::UINodeEventReceiver UINodeEventReceiver2(node2);
@@ -223,7 +223,7 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 	EXPECT_EQ(outputTerminal_2->getNode(),node2);
 
 	//CREATE NODE 3
-	FD::UINode *node3 = m_UINetwork->newNode(m_UINetwork,"NODE3","TYPE3",0,0,true);
+	FD::UINode *node3 = m_UINetwork->createNode("NODE3","TYPE3",0,0);
 	m_UINetwork->addNode(node3);
 	EXPECT_EQ(node3,m_UINetwork->getNodeNamed("NODE3"));
 	TestUINode::UINodeEventReceiver UINodeEventReceiver3(node3);
@@ -238,7 +238,7 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 
 
 	//LINK NODE 1 & NODE2
-	FD::UILink *link1 = m_UINetwork->newLink(outputTerminal_1,inputTerminal_2);
+	FD::UILink *link1 = m_UINetwork->createLink(outputTerminal_1,inputTerminal_2);
 	EXPECT_NE(link1,(FD::UILink*)NULL);
 	EXPECT_EQ(link1->getFromTerminal(),outputTerminal_1);
 	EXPECT_EQ(link1->getToTerminal(),inputTerminal_2);
@@ -248,7 +248,7 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 	EXPECT_EQ(true,outputTerminal_1->haveLink(link1));
 
 	//LINK NODE 2 & NODE3
-	FD::UILink *link2 = m_UINetwork->newLink(outputTerminal_2,inputTerminal_3);
+	FD::UILink *link2 = m_UINetwork->createLink(outputTerminal_2,inputTerminal_3);
 	EXPECT_NE(link2,(FD::UILink*)NULL);
 	EXPECT_EQ(link2->getFromTerminal(),outputTerminal_2);
 	EXPECT_EQ(link2->getToTerminal(),inputTerminal_3);
