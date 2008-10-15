@@ -244,8 +244,8 @@ namespace FD
 						double x = sceneRect.topLeft().x();
 						double y = sceneRect.topLeft().y();
 						
-						UINote* note = net->newNote("New Note","Type description here",x,y,true);
-						net->addNote(note);
+						net->createNote("New Note","Type description here",x,y,true);
+						
 					}
 				}
 			}

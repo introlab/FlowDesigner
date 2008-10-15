@@ -33,31 +33,31 @@ public:
 	{
 		public:
 			//Global event for changes
-			virtual void notifyChanged(const UIDocument* doc) {}
+			virtual void notifyChanged(const FD::UIDocument* doc) {}
 			
 			//Network removed
-			virtual void notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net) {notifyChanged(doc);}
+			virtual void notifyNetworkRemoved(const FD::UIDocument *doc, const FD::UINetwork* net) {notifyChanged(doc);}
 			
 			//Network Added
-			virtual void notifyNetworkAdded(const UIDocument *doc, const UINetwork* net) {notifyChanged(doc);}
+			virtual void notifyNetworkAdded(const FD::UIDocument *doc, const FD::UINetwork* net) {notifyChanged(doc);}
 						
 			//Parameters changed
-			virtual void notifyParametersChanged(const UIDocument *doc, const ItemInfo *param) {notifyChanged(doc);}
+			virtual void notifyParametersChanged(const FD::UIDocument *doc, const FD::ItemInfo *param) {notifyChanged(doc);}
 			
 			//Name changed
-			virtual void notifyNameChanged(const UIDocument *doc, const std::string &name){notifyChanged(doc);}
+			virtual void notifyNameChanged(const FD::UIDocument *doc, const std::string &name){notifyChanged(doc);}
 			
 			//Path changed
-			virtual void notifyPathChanged(const UIDocument *doc, const std::string path){notifyChanged(doc);}
+			virtual void notifyPathChanged(const FD::UIDocument *doc, const std::string path){notifyChanged(doc);}
 			
 			//Category changed
-			virtual void notifyCategoryChanged(const UIDocument *doc, const std::string &category){notifyChanged(doc);}
+			virtual void notifyCategoryChanged(const FD::UIDocument *doc, const std::string &category){notifyChanged(doc);}
 			
 			//Comments changed
-			virtual void notifyCommentsChanged(const UIDocument *doc, const std::string &comments){notifyChanged(doc);}
+			virtual void notifyCommentsChanged(const FD::UIDocument *doc, const std::string &comments){notifyChanged(doc);}
 						
 			//Destroyed
-			virtual void notifyDestroyed(const UIDocument *doc) {notifyChanged(doc);}	
+			virtual void notifyDestroyed(const FD::UIDocument *doc) {notifyChanged(doc);}	
 		
 			virtual ~UIDocumentObserverIF(){;}
 	};
@@ -165,7 +165,7 @@ public:
    UINetwork *addNetwork(xmlNodePtr xmlNet);
    
    /**Remove and destroy network from the document*/
-   void removeNetwork(UINetwork *toRemove);
+   void removeNetwork(UINetwork *toRemove, bool deleteNetwork=true);
    
    /**Is the document untitled?*/
    bool isUntitled() {return untitled;}
@@ -201,9 +201,7 @@ public:
 
    std::vector<ItemInfo *> get_textParams();
 
-   virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
-   
-   virtual UINetwork *newNetwork(xmlNodePtr _net);
+
    
    Network *build(const std::string &_name, const ParameterSet &params);
 
@@ -256,6 +254,10 @@ public:
  protected:
    
    virtual void error(const char *err);
+	
+   virtual UINetwork *newNetwork(const std::string &_name, UINetwork::Type type);
+	
+   virtual UINetwork *newNetwork(xmlNodePtr _net);
 
  private:
 

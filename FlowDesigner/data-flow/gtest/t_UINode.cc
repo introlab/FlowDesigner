@@ -184,7 +184,7 @@ TEST_F(TestUINode,LINK_TEST_TWO_NODES)
 	EXPECT_EQ((FD::UINode*)NULL,m_UINetwork->getNodeNamed("NODE2"));
 }
 
-TEST_F(TestUINode,LINK_TEST_THREE_NODES)
+TEST_F(TestUINode,LINK_TEST_THREE_NODES_SEQUENCE)
 {
 	
 
@@ -262,11 +262,10 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 
 	//LOOK FOR TERMINAL REMOVED
 	EXPECT_EQ(UINodeEventReceiver2.m_notifyTerminalRemovedVector.size(),2);
+	EXPECT_EQ(UINodeEventReceiver2.m_notifyDestroyedVector.size(),1);
 
 	//MAKE SURE LINKS WERE REMOVED FROM TERMINALS
 	EXPECT_EQ(false,inputTerminal_3->haveLink(link2));
-	EXPECT_EQ(false,outputTerminal_2->haveLink(link2));
-	EXPECT_EQ(false,inputTerminal_2->haveLink(link1));
 	EXPECT_EQ(false,outputTerminal_1->haveLink(link1));
 
 	//VERIFY IF LINKS WERE REMOVED FROM THE NETWORK
@@ -277,3 +276,163 @@ TEST_F(TestUINode,LINK_TEST_THREE_NODES)
 	delete node3;
 
 }
+
+
+TEST_F(TestUINode,LINK_TEST_THREE_NODES_SPLIT)
+{
+	
+	
+	//CREATE NODE 1
+	FD::UINode *node1 = m_UINetwork->createNode("NODE1","TYPE1",0,0);
+	m_UINetwork->addNode(node1);
+	EXPECT_EQ(node1,m_UINetwork->getNodeNamed("NODE1"));
+	TestUINode::UINodeEventReceiver UINodeEventReceiver1(node1);
+	
+	
+	//ADD OUTPUT TERMINAL TO NODE1
+	FD::UITerminal* outputTerminal_1 = node1->addTerminal("TERM1",FD::UINetTerminal::OUTPUT,"any","No description available");
+	EXPECT_EQ(UINodeEventReceiver1.m_notifyTerminalAddedVector.size(),1);
+	EXPECT_NE(outputTerminal_1,(FD::UITerminal*)NULL);
+	EXPECT_EQ(outputTerminal_1,node1->getOutputNamed("TERM1"));
+	EXPECT_EQ(outputTerminal_1->getNode(),node1);
+	
+	//CREATE NODE 2
+	FD::UINode *node2 = m_UINetwork->createNode("NODE2","TYPE2",0,0);
+	m_UINetwork->addNode(node2);
+	EXPECT_EQ(node2,m_UINetwork->getNodeNamed("NODE2"));
+	TestUINode::UINodeEventReceiver UINodeEventReceiver2(node2);
+	
+	
+	//ADD INPUT &  OUTPUT TERMINAL TO NODE 2
+	FD::UITerminal* inputTerminal_2 = node2->addTerminal("TERM2",FD::UINetTerminal::INPUT,"any","No description available");
+	EXPECT_EQ(UINodeEventReceiver2.m_notifyTerminalAddedVector.size(),1);
+	EXPECT_NE(inputTerminal_2,(FD::UITerminal*)NULL);
+	EXPECT_EQ(inputTerminal_2,node2->getInputNamed("TERM2"));
+	EXPECT_EQ(inputTerminal_2->getNode(),node2);
+
+	
+	//CREATE NODE 3
+	FD::UINode *node3 = m_UINetwork->createNode("NODE3","TYPE3",0,0);
+	m_UINetwork->addNode(node3);
+	EXPECT_EQ(node3,m_UINetwork->getNodeNamed("NODE3"));
+	TestUINode::UINodeEventReceiver UINodeEventReceiver3(node3);
+	
+	
+	//ADD INPUT TERMINAL TO NODE 3
+	FD::UITerminal* inputTerminal_3 = node3->addTerminal("TERM3",FD::UINetTerminal::INPUT,"any","No description available");
+	EXPECT_EQ(UINodeEventReceiver3.m_notifyTerminalAddedVector.size(),1);
+	EXPECT_NE(inputTerminal_3,(FD::UITerminal*)NULL);
+	EXPECT_EQ(inputTerminal_3,node3->getInputNamed("TERM3"));
+	EXPECT_EQ(inputTerminal_3->getNode(),node3);
+	
+	
+	//LINK NODE 1 & NODE2
+	FD::UILink *link1 = m_UINetwork->createLink(outputTerminal_1,inputTerminal_2);
+	EXPECT_NE(link1,(FD::UILink*)NULL);
+	EXPECT_EQ(link1->getFromTerminal(),outputTerminal_1);
+	EXPECT_EQ(link1->getToTerminal(),inputTerminal_2);
+	
+	//MAKE SURE NODES ARE AWARE OF THE NEW LINK
+	EXPECT_EQ(true,inputTerminal_2->haveLink(link1));
+	EXPECT_EQ(true,outputTerminal_1->haveLink(link1));
+	
+	//LINK NODE 1 & NODE3
+	FD::UILink *link2 = m_UINetwork->createLink(outputTerminal_1,inputTerminal_3);
+	EXPECT_NE(link2,(FD::UILink*)NULL);
+	EXPECT_EQ(link2->getFromTerminal(),outputTerminal_1);
+	EXPECT_EQ(link2->getToTerminal(),inputTerminal_3);
+	
+	//MAKE SURE NODES ARE AWARE OF THE NEW LINK
+	EXPECT_EQ(true,inputTerminal_3->haveLink(link2));
+	EXPECT_EQ(true,outputTerminal_1->haveLink(link2));
+	
+	//DELETE NODE1 (START)
+	delete node1;
+	
+	//LOOK FOR TERMINAL REMOVED
+	EXPECT_EQ(UINodeEventReceiver1.m_notifyTerminalRemovedVector.size(),1);
+	
+	
+	//MAKE SURE LINKS WERE REMOVED FROM TERMINALS
+	EXPECT_EQ(false,inputTerminal_3->haveLink(link2));
+	EXPECT_EQ(false,inputTerminal_2->haveLink(link1));
+	
+	//VERIFY IF LINKS WERE REMOVED FROM THE NETWORK
+	EXPECT_EQ(false,m_UINetwork->haveLink(link1));
+	EXPECT_EQ(false,m_UINetwork->haveLink(link2));
+	
+	delete node2;
+	delete node3;
+	
+}
+
+
+TEST_F(TestUINode,LINK_TEST_ILLEGAL_INPUT)
+{
+	//CREATE NODE 1
+	FD::UINode *node1 = m_UINetwork->createNode("NODE1","TYPE1",0,0);
+	m_UINetwork->addNode(node1);
+	EXPECT_EQ(node1,m_UINetwork->getNodeNamed("NODE1"));
+	TestUINode::UINodeEventReceiver UINodeEventReceiver1(node1);
+	
+	
+	//ADD OUTPUT TERMINAL TO NODE1
+	FD::UITerminal* outputTerminal_1 = node1->addTerminal("TERM1",FD::UINetTerminal::OUTPUT,"any","No description available");
+	EXPECT_EQ(UINodeEventReceiver1.m_notifyTerminalAddedVector.size(),1);
+	EXPECT_NE(outputTerminal_1,(FD::UITerminal*)NULL);
+	EXPECT_EQ(outputTerminal_1,node1->getOutputNamed("TERM1"));
+	EXPECT_EQ(outputTerminal_1->getNode(),node1);
+	
+	//CREATE NODE 2
+	FD::UINode *node2 = m_UINetwork->createNode("NODE2","TYPE2",0,0);
+	m_UINetwork->addNode(node2);
+	EXPECT_EQ(node2,m_UINetwork->getNodeNamed("NODE2"));
+	TestUINode::UINodeEventReceiver UINodeEventReceiver2(node2);
+	
+	
+	//ADD INPUT &  OUTPUT TERMINAL TO NODE 2
+	FD::UITerminal* outputTerminal_2 = node2->addTerminal("TERM2",FD::UINetTerminal::OUTPUT,"any","No description available");
+	EXPECT_EQ(UINodeEventReceiver2.m_notifyTerminalAddedVector.size(),1);
+	EXPECT_NE(outputTerminal_2,(FD::UITerminal*)NULL);
+	EXPECT_EQ(outputTerminal_2,node2->getOutputNamed("TERM2"));
+	EXPECT_EQ(outputTerminal_2->getNode(),node2);
+	
+	
+	//CREATE NODE 3
+	FD::UINode *node3 = m_UINetwork->createNode("NODE3","TYPE3",0,0);
+	m_UINetwork->addNode(node3);
+	EXPECT_EQ(node3,m_UINetwork->getNodeNamed("NODE3"));
+	TestUINode::UINodeEventReceiver UINodeEventReceiver3(node3);
+	
+	
+	//ADD INPUT TERMINAL TO NODE 3
+	FD::UITerminal* inputTerminal_3 = node3->addTerminal("TERM3",FD::UINetTerminal::INPUT,"any","No description available");
+	EXPECT_EQ(UINodeEventReceiver3.m_notifyTerminalAddedVector.size(),1);
+	EXPECT_NE(inputTerminal_3,(FD::UITerminal*)NULL);
+	EXPECT_EQ(inputTerminal_3,node3->getInputNamed("TERM3"));
+	EXPECT_EQ(inputTerminal_3->getNode(),node3);
+	
+	
+	//LINK NODE 1 & NODE2
+	FD::UILink *link1 = m_UINetwork->createLink(outputTerminal_1,inputTerminal_3);
+	EXPECT_NE(link1,(FD::UILink*)NULL);
+	EXPECT_EQ(link1->getFromTerminal(),outputTerminal_1);
+	EXPECT_EQ(link1->getToTerminal(),inputTerminal_3);
+	
+	//MAKE SURE NODES ARE AWARE OF THE NEW LINK
+	EXPECT_EQ(true,inputTerminal_3->haveLink(link1));
+	EXPECT_EQ(true,outputTerminal_1->haveLink(link1));
+	
+	//LINK NODE 2 & NODE3
+	FD::UILink *link2 = m_UINetwork->createLink(outputTerminal_2,inputTerminal_3);
+	EXPECT_EQ(link2,(FD::UILink*)NULL);
+	
+	//DELETE NODES
+	delete node1;	
+	delete node2;
+	delete node3;
+	
+}
+
+
+

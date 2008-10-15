@@ -67,8 +67,7 @@ public:
 
 
 protected:
-   /**Not too sure what I was thinking when I wrote that*/
-   bool destroyed;
+
 
    /**Node name*/
    std::string name;
@@ -85,9 +84,6 @@ protected:
    /**Position on the canvas*/
    double x,y;
 
-   /**Temporary position used in move operations*/
-   double xtmp,ytmp;
-
    /**Pointers to all the inputs*/
    std::vector <UITerminal *> inputs;
 
@@ -103,10 +99,10 @@ protected:
 public:
 
    /**"Normal" constructor*/
-   UINode(UINetwork* _net, std::string _name, std::string _type, double x, double y, bool doInit=1);
+   UINode(UINetwork* _net, std::string _name, std::string _type, double x, double y);
 
    /**Constructor from XML parse tree*/
-   UINode(UINetwork* _net, xmlNodePtr def, bool doInit=1);
+   UINode(UINetwork* _net, xmlNodePtr def);
 
    /**Destructor*/
    virtual ~UINode();
@@ -130,11 +126,15 @@ public:
    virtual void rename (const std::string &newName);
 
    /**Adds a new terminal to a node*/
-   virtual void addTerminal(const std::string &_name, UINetTerminal::NetTermType _type,
+   FD::UITerminal* addTerminal(const std::string &_name, UINetTerminal::NetTermType _type,
 			    const std::string &_objType="any", const std::string &_description="No description available");
+	
+	bool addTerminal(UITerminal *terminal);
 
    /**Removes a terminal from a node*/
    virtual void removeTerminal(const std::string &_name, UINetTerminal::NetTermType _type);
+
+   virtual bool removeTerminal(UITerminal* terminal, bool deleteTerminal = true);
 
    /**Save to an XML parse tree*/
    void saveXML(xmlNode *root);
@@ -160,17 +160,9 @@ public:
 
    void updateNetParams(std::vector<ItemInfo *> &params);
 
-   //virtual UILink *newLink (UITerminal *_from, UITerminal *_to);
+   UITerminal* createTerminal(ItemInfo *_info, bool _isInput, double _x, double _y);
 
-   virtual UITerminal* newTerminal(ItemInfo *_info, UINode *_node, bool _isInput, double _x, double _y);
-
-   virtual UINetTerminal *newNetTerminal (UITerminal *_terminal, UINetTerminal::NetTermType _type, const std::string &_name,
-   				  const std::string &_objType="any", const std::string &_description="No description available");
-
-   virtual UINodeParameters *newNodeParameters (UINode *_node, std::string type);
-
-   //TODO : This should not be here, keeping it temporarily for the GNOME GUI
-   virtual void redraw() {}
+   virtual UINodeParameters *createNodeParameters (std::string type);
 
    Node *build(const ParameterSet &params);
 

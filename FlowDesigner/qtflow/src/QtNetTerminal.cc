@@ -1,6 +1,6 @@
 /***********************************************************************************
-** Copyright (C) 2006-2008 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca). 
-** All rights reserved. 
+** Copyright (C) 2006-2008 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca).
+** All rights reserved.
 **
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU General Public License
@@ -32,55 +32,52 @@ namespace FD
     {
 
         if (m_uiNetTerminal)
-        {		
+        {
             setPlainText(m_uiNetTerminal->getName().c_str());
             //QFont myfont(font());
-                        
+
             QRectF boundaries = boundingRect();
-            
+
             float width = boundaries.width();
-			
+
 			//cerr <<"width :  "<<boundaries.width()<<" height : "<<boundaries.height()<<endl;
-            
-			
+
+
 			//QGraphicsRectItem *item = new QGraphicsRectItem(QRectF(0,0,500.0,500.0),parent);
 			//item->setBrush(QBrush(QColor(255,0,0,128)));
-			
+
 			//cerr << "QtNetTerminal Scene pos x :"<<scenePos ().x() << " y:"<< scenePos().y() <<endl;
-			
-			
+
+
             switch(m_uiNetTerminal->getType())
             {
                 case UINetTerminal::INPUT :
                     setDefaultTextColor( QColor(255,0,0,255));
                     setPos(-width -15,-5);
                     break;
-                                                           
+
                 case UINetTerminal::OUTPUT :
                     setDefaultTextColor( QColor(255,0,0,255));
                     setPos(15,-5);
                     break;
-                                                     
+
                 case UINetTerminal::CONDITION :
                     setDefaultTextColor( QColor(0,0,0));
-                    setPos(15,-5);               
-                    break;                              
+                    setPos(15,-5);
+                    break;
             }
-			
-            //setFont(myfont);     
-             
-        }         
+
+            //setFont(myfont);
+
+        }
 
     }
-    
+
     QtNetTerminal::~QtNetTerminal()
     {
-    	/*if (m_uiNetTerminal)
-    	{
-    		delete m_uiNetTerminal;
-    	}*///Already deleted, see destructor of UITerminal
+
     }
-    
+
 	void QtNetTerminal::mousePressEvent ( QGraphicsSceneMouseEvent *event )
 	{
 		if ( event->button() == Qt::LeftButton)
@@ -88,7 +85,7 @@ namespace FD
 			if ( event->modifiers() == Qt::ShiftModifier )
 			{
 				event->accept();
-				delete this;	
+				delete this;
 			}
 		}
 	}

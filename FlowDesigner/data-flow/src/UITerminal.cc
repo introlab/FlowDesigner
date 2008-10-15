@@ -25,16 +25,30 @@ UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 	name = terminalInfo->name;
 	type = terminalInfo->type;
 	description = terminalInfo->description;
+	
+	//Add ourself to the node's terminal
+	if (node)
+	{
+		node->addTerminal(this);
+	}
+	
 }
 
 UITerminal::~UITerminal()
 {
    //although this is weird, it has to be like that since the destroyed link removes
    //itself from the connection list
-   while (connections.size()) {
-	  if (node && node->getNetwork())
+   while (connections.size())
+   {
+	  if (node)
 	  {
-		  node->getNetwork()->removeLink(connections[0]);
+		  //Make sure we are removed from the node's terminal list
+		  node->removeTerminal(this,false);
+
+		  if (node->getNetwork())
+		  {
+			  node->getNetwork()->removeLink(connections[0]);
+		  }
 	  }
 	  else
 	  {
@@ -74,6 +88,19 @@ void UITerminal::removeNetTerminal()
       delete netTerminal;
       netTerminal = NULL;
    	}
+}
+
+bool UITerminal::haveLink(const UILink *link)
+{
+	for(size_t i = 0; i < connections.size(); i++)
+	{
+		if (link == connections[i])
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 

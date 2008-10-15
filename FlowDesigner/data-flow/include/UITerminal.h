@@ -62,6 +62,13 @@ public:
    /**connect to a link*/
    void connect(UILink *link) {connections.insert(connections.end(), link);}
 
+   /**
+    *  Verify if we have a specified link
+    *  \param link The link to verify
+    *  \return true if link exists, false otherwise
+    */
+   bool haveLink(const UILink *link);
+
    /**disconnect from a link*/
    void disconnect(UILink *link);
 

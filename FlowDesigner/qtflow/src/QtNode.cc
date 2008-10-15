@@ -45,6 +45,10 @@ namespace FD
     
    QtNode::~QtNode()
    {
+	   //Remove edges
+	   
+	   
+	   
 	   if (m_uiNode)
 	   {
 		   m_uiNode->unregisterEvents(this);
@@ -381,15 +385,14 @@ namespace FD
     	
     	if ((iter = m_inputTerminalsMap.find(terminal)) != m_inputTerminalsMap.end())
     	{
+			m_inputTerminalsMap.erase(iter);
     		delete iter->second;
-    		m_inputTerminalsMap.erase(iter);
-    		
     	}
     	else if ((iter = m_outputTerminalsMap.find(terminal)) != m_outputTerminalsMap.end())
     	{
+			m_outputTerminalsMap.erase(iter);
     		delete iter->second;
-    		m_outputTerminalsMap.erase(iter);
-    	}
+		}
     	
     }  
     

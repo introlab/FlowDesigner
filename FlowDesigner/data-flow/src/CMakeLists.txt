@@ -1,4 +1,84 @@
-	
+SET (HEADERS
+../include/Array.h
+../include/BaseException.h
+../include/BinaryAND.h
+../include/BinaryOR.h
+../include/Buffer.h
+../include/BufferedNode.h
+../include/Collector.h
+../include/Complex.h
+../include/CompositeType.h
+../include/Constant.h
+../include/DLManager.h
+../include/DoubleDispatch.h
+../include/Exception.h
+../include/ExceptionObject.h
+../include/ExternalApp.h
+../include/FlowException.h
+../include/IntfNode.h
+../include/Iterator.h
+../include/JitterMatrix.h
+../include/Matrix.h
+../include/Network.h
+../include/Node.h
+../include/NodeFactory.h
+../include/Object.h
+../include/ObjectParser.h
+../include/ObjectPool.h
+../include/ObjectRef.h
+../include/Pack.h
+../include/ParameterSet.h
+../include/PosixMutexLocker.h
+../include/Power.h
+../include/SocketStream.h
+../include/Stream.h
+../include/ThreadedIterator.h
+../include/Timer.h
+../include/UIDocument.h
+../include/UILink.h
+../include/UINetTerminal.h
+../include/UINetwork.h
+../include/UINode.h
+../include/UINodeParameters.h
+../include/UINodeRepository.h
+../include/UINote.h
+../include/UIProbeLink.h
+../include/UITerminal.h
+../include/URLHandler.h
+../include/UnPack.h
+../include/UserException.h
+../include/Vector.h
+../include/VectorPool.h
+../include/binio.h
+../include/compile_object.h
+../include/conversion.h
+../include/cwrapper.h
+../include/flow_pref.h
+../include/flow_version.h
+../include/fmath.h
+../include/iextensions.h
+../include/misc.h
+../include/multithread.h
+../include/net_types.h
+../include/object_param.h
+../include/operators.h
+../include/path.h
+../include/pseudosem.h
+../include/rc_ptrs.h
+../include/rtc.h
+../include/stream_io.h
+../include/stream_wrap.h
+../include/sync.h
+../include/typemap.h
+../include/typetraits.h
+../include/variables.h
+../include/vec.h
+../include/vec_3dnow.h
+../include/vec_sse.h
+../include/vmethod.h
+../include/wrapper.h
+)	
+
 SET(DATATYPES_SRCS
 	Object.cc
 	Vector.cc
@@ -183,7 +263,7 @@ ENDIF (WIN32)
 
 INCLUDE_DIRECTORIES(../include ${LIBXML2_INCLUDE_DIR})
 	
-set(FULL_SRCS ${DATATYPES_SRCS} ${NODES_SRCS} ${NETWORK_SRCS} ${UI_SRCS} ${UTILS_SRCS} )
+set(FULL_SRCS ${DATATYPES_SRCS} ${NODES_SRCS} ${NETWORK_SRCS} ${UI_SRCS} ${UTILS_SRCS} ${HEADERS})
 
 add_library(libflow-dynamic SHARED ${FULL_SRCS} )
 	
