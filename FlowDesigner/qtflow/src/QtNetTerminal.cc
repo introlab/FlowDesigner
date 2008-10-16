@@ -84,8 +84,10 @@ namespace FD
 		{
 			if ( event->modifiers() == Qt::ShiftModifier )
 			{
-				event->accept();
+				delete m_uiNetTerminal;
+				m_uiNetTerminal = NULL;
 				delete this;
+				event->accept();
 			}
 		}
 	}

@@ -550,14 +550,6 @@ namespace FD
 	{
         cerr<<"QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
 
-		m_uiNetwork->interfaceChangeNotify();
-
-		vector<UINetwork*> allNets = m_uiNetwork->getDocument()->get_networks();
-
-		for (unsigned int i = 0; i < allNets.size(); i++)
-		{
-			allNets[i]->updateAllSubnetTerminals(m_uiNetwork->getName(), terminal->getName(), terminal->getType(),true);
-		}
 	}
 
 	//NetTerminal added
@@ -565,14 +557,6 @@ namespace FD
 	{
         cerr<<"QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
 
-		m_uiNetwork->interfaceChangeNotify();
-
-		vector<UINetwork*> allNets = m_uiNetwork->getDocument()->get_networks();
-
-		for (unsigned int i = 0; i < allNets.size(); i++)
-		{
-			allNets[i]->updateAllSubnetTerminals(m_uiNetwork->getName(), terminal->getName(), terminal->getType(),false);
-		}
 	}
 
 	//Name changed
