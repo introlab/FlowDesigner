@@ -434,22 +434,20 @@ namespace FD {
 
 			links.erase(i);
 			
+			if (deleteLink)
+				delete link;
+			
 			//send signal
 			for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 			{
 				(*iter)->notifyLinkRemoved(this,link);
 			}
-			
-			if (deleteLink)
-				delete link;
-
+		
 			doc->setModified(true);
 		}
 		
 		return false;
 	}
-	
-	
 	
 	void UINetwork::saveXML(xmlNode *root, int &incId)
 	{
@@ -952,7 +950,8 @@ namespace FD {
 	
 	void UINetwork::interfaceChangeNotify()
 	{
-		doc->updateNetInfo(this);
+		//TODO remove this function
+		//doc->updateNetInfo(this);
 	}
 	
 	void UINetwork::rename(string newName)

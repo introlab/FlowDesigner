@@ -36,6 +36,7 @@ namespace FD {
 	, untitled(true)
 	, destroyed(false)
 	, m_connectionPort(DEFAULT_CONNECTION_PORT)
+	, m_networkEventReceiver(this)
 	{
 		setFullPath(_name);
 	}
@@ -372,13 +373,25 @@ namespace FD {
 	UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)
 	{
 		//cerr << "UIDocument::newNetwork\n";
-		return new UINetwork(this, _name, type);
+		UINetwork *newNet =  new UINetwork(this, _name, type);
+		if (newNet)
+		{	
+			updateNetInfo(newNet);
+			newNet->registerEvents(&m_networkEventReceiver);
+		}
+		return newNet;
 	}
 	
 	UINetwork *UIDocument::newNetwork(xmlNodePtr _net)
 	{
 		//cerr << "UIDocument::newNetwork\n";
-		return new UINetwork(this, _net);
+		UINetwork *newNet =  new UINetwork(this, _net);
+		if (newNet)
+		{	
+			updateNetInfo(newNet);
+			newNet->registerEvents(&m_networkEventReceiver);
+		}
+		return newNet;
 	}
 	
 	
@@ -402,6 +415,7 @@ namespace FD {
 		}
 		
 		UINetwork *newNet = newNetwork(name, type);
+
 		
 		/*
 		for (unsigned int i=0;i<networks.size();i++)
