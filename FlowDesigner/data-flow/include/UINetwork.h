@@ -10,13 +10,13 @@
 #include "UINetTerminal.h"
 #include "UINodeParameters.h"
 #include "UINodeRepository.h"
+#include "UINode.h"
 #include <set>
 #include <list>
 
 namespace FD {
 	//struct xmlNode;
 	class ItemInfo;
-	class UINode;
 	class UITerminal;
 	class UILink;
 	class UINodeMenu;
@@ -116,6 +116,35 @@ namespace FD {
 		
 		/**Used to determine infinite recursion in build*/
 		bool buildRecurs;
+		
+		/**
+		 This class will receive all events from nodes created in this network.
+		 According to the event, the UINetwork will take action.
+		 */
+		class NodeEventReceiver : public UINode::UINodeObserverIF
+		{
+		public:
+			NodeEventReceiver(UINetwork *net)
+			: m_network(net)
+			{
+				
+			}
+			//The events that we are interested in are :
+			
+			//Parameters changed
+			virtual void notifyParametersChanged(const FD::UINode *node, const FD::UINodeParameters *params)
+			{
+				m_network->interfaceChangeNotify();
+			}
+
+			
+		protected:
+			UINetwork *m_network;
+		};
+		
+		NodeEventReceiver m_nodeEventReceiver;
+		
+		
 		
 	public:
 		

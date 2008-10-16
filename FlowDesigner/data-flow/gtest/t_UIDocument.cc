@@ -1,3 +1,4 @@
+
 #include "t_GenericUIFixture.h"
 
 typedef GenericUIFixture<FD::UIDocument> TestUIDocument;
@@ -46,11 +47,7 @@ TEST_F(TestUIDocument,ADD_REMOVE_NETWORK_TEST)
 	delete net;
 	EXPECT_NE(net,m_UIDocument->getNetworkNamed("SUBNET"));
 	EXPECT_EQ(eventReceiver.m_notifyNetworkRemovedVector.size(),1);
-	
-	
 }
-
-
 
 TEST_F(TestUIDocument,DOCUMENT_UIREPOSITORY_UPDATE_TEST)
 {

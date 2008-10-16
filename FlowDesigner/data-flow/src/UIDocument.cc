@@ -870,14 +870,17 @@ namespace FD {
 		}
 	}
 	
-	void UIDocument::updateNetInfo(UINetwork *net) {
+	void UIDocument::updateNetInfo(UINetwork *net) 
+	{
 		
 		//change our net information
 		subnetInfo.updateNetInfo(net);
 		
 		//update "networks parameters that included this net as a node"
-		for (size_t i = 0; i < networks.size(); i++) {
-			if (networks[i]) {
+		for (size_t i = 0; i < networks.size(); i++)
+		{
+			if (networks[i] && networks[i] != net) 
+			{
 				networks[i]->updateAllSubnetParameters(net->getName(), subnetInfo.findNode(net->getName()));
 			}
 		}

@@ -34,7 +34,7 @@ class UINodeParameters
       
       void insertNetParams(std::vector<ItemInfo *> &par);
 
-      void updateNetParams(std::vector<ItemInfo *> &par);
+      bool updateNetParams(std::vector<ItemInfo *> &par);
 
       virtual void insertLoadedParam(ItemInfo *param, std::string type, std::string value);
       

@@ -27,7 +27,7 @@ namespace FD
 	, y(_y)
 	{
 		
-	
+	    //This will create (default) parameters according to repository information
 		parameters = createNodeParameters(type);
 		
 		vector<ItemInfo *> inputname;
@@ -163,39 +163,25 @@ namespace FD
 				return outputs[i];
 		return NULL;
 	}
-	
-	void UINode::setNodeParameters(UINodeParameters *params)
-	{
-		parameters = params;
-		
-		//Notify observers
-		for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
-		{
-			(*iter)->notifyParametersChanged(this,parameters);
-		}
-	}
-	
+
 	void UINode::insertNetParams(vector<ItemInfo *> &params)
 	{
+		//This will not modify parameters, but report
+		//to the caller what are our parameters
 		parameters->insertNetParams(params);
-		
-		//Notify observers
-		for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
-		{
-			(*iter)->notifyParametersChanged(this,parameters);
-		}
 	}
-	
-	void UINode::updateNetParams(vector<ItemInfo *> &params) {
-		
-		parameters->updateNetParams(params);
-		
-		//Notify observers
-		for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
-		{
-			(*iter)->notifyParametersChanged(this,parameters);
-		}
-		
+
+	 
+	void UINode::updateNetParams(vector<ItemInfo *> &params) 
+	{
+		if (parameters->updateNetParams(params))
+		{			
+			//Notify observers only if we have updated the parameters
+			for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+			{
+				(*iter)->notifyParametersChanged(this,parameters);
+			}
+		}	
 	}
 	
 	UINodeParameters *UINode::createNodeParameters (string type)

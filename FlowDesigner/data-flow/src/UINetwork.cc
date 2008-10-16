@@ -28,7 +28,7 @@ using namespace std;
 namespace FD {
 	
 	UINetwork::UINetwork(UIDocument *_doc, string _name, Type _type)
-	: doc(_doc), name(_name), type (_type), buildRecurs(false)
+	: doc(_doc), name(_name), type (_type), buildRecurs(false),  m_nodeEventReceiver(this)
 	{		
 		//(DL 04/08/2004)
 		//Adding version to newly created network, could be improved
@@ -37,7 +37,7 @@ namespace FD {
 	}
 	
 	UINetwork::UINetwork(UIDocument *_doc, xmlNodePtr net)
-	: doc(_doc), buildRecurs(false)
+	: doc(_doc), buildRecurs(false),  m_nodeEventReceiver(this)
 	{
 		load(net);
 	}
@@ -499,8 +499,6 @@ namespace FD {
 	void UINetwork::setModified()
 	{
 		doc->setModified(true);
-		//Not a good idea at all...
-		//interfaceChangeNotify();
 	}
 	
 	vector<string> UINetwork::getTerminals(UINetTerminal::NetTermType termType)
@@ -522,7 +520,7 @@ namespace FD {
 		//   popup->addType(cat,type);
 	}
 	*/
-	 
+	
 	void UINetwork::insertNetParams(vector<ItemInfo *> &params)
 	{
 		for (unsigned int i=0;i<nodes.size();i++)
@@ -548,16 +546,21 @@ namespace FD {
 		// params.insert(params.end(), "RATE_PER_SECOND");
 	}
 	
+	 
 	UINode *UINetwork::createNode(string _name, string _type, double _x, double _y)
 	{
 		//The node will add itself in the curent network
-		return new UINode(this,_name, _type, _x, _y);
+		UINode* node =  new UINode(this,_name, _type, _x, _y);
+		node->registerEvents(&m_nodeEventReceiver);
+		return node;
 	}
 	
 	UINode *UINetwork::loadNode(xmlNodePtr def)
 	{
 		//The node will add itself in the current network
-		return new UINode(this, def);
+		UINode* node = new UINode(this, def);
+		node->registerEvents(&m_nodeEventReceiver);
+		return node;
 	}
 	
 	/*UITerminal *UINetwork::newTerminal (string _name, UINode *_node, bool _isInput, double _x, double _y)
@@ -936,12 +939,6 @@ namespace FD {
 				(*iter)->notifyNetTerminalRemoved(this,term);
 			}
 			
-			//Document modified
-			doc->setModified(true);
-			
-			//Interface changed
-			interfaceChangeNotify();
-			
 			return true;
 		}
 		
@@ -950,8 +947,7 @@ namespace FD {
 	
 	void UINetwork::interfaceChangeNotify()
 	{
-		//TODO remove this function
-		//doc->updateNetInfo(this);
+		doc->updateNetInfo(this);
 	}
 	
 	void UINetwork::rename(string newName)
@@ -970,16 +966,12 @@ namespace FD {
 		{
 			(*iter)->notifyNameChanged(this,oldName,newName);
 		}
-		doc->setModified(true);
-		
 	}
 	
 	
 	void UINetwork::updateAllSubnetTerminals(const string _nettype, const string _terminalname,
 											 UINetTerminal::NetTermType _terminaltype, bool _remove) {
-		
-		
-		
+
 		for (unsigned int i = 0; i < nodes.size(); i++) {
 			
 			if (nodes[i]->getType() == _nettype) {
@@ -1024,9 +1016,9 @@ namespace FD {
 	}
 	
 	
-	void UINetwork::updateAllSubnetParameters(const string _nettype, NodeInfo * _info) {
-		
-		
+	void UINetwork::updateAllSubnetParameters(const string _nettype, NodeInfo * _info)
+	{
+	
 		//cerr<<"UINetwork::updateAllSubnetParameters"<<endl;
 		for (unsigned int i = 0; i < nodes.size(); i++) {
 			
@@ -1036,14 +1028,8 @@ namespace FD {
 				if (_info) {
 					nodes[i]->updateNetParams(_info->params);
 				}
-				
-				//our interface may have changed.
-				interfaceChangeNotify();
 			}
 		}//for all nodes
-		
-		
-		
 	}
 	
 	bool UINetwork::addNote(UINote *note) 
@@ -1054,7 +1040,6 @@ namespace FD {
 			{	
 				//insert note
 				m_notes.push_back(note);
-				doc->setModified(true);
 				
 				//send signal
 				for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -1090,10 +1075,6 @@ namespace FD {
 					(*iter)->notifyNoteRemoved(this,note);
 				}
 				
-
-
-				doc->setModified(true);
-				
 				return true;
 			}
 		}
@@ -1114,7 +1095,6 @@ namespace FD {
 	void UINetwork::setDescription(const std::string & description)
 	{
 		m_description = description;
-		doc->setModified(true);
 		
 		//send signal
 		for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)

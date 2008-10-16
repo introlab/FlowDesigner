@@ -224,15 +224,18 @@ namespace FD {
 	
 	//Update node parameters when the node is in fact a subnet and the subnet was modified
 	//Must be careful not to erase what the user entered (things that are still valid)
-	void UINodeParameters::updateNetParams(vector<ItemInfo *> &par) {
-		
+	bool UINodeParameters::updateNetParams(vector<ItemInfo *> &par) 
+	{
+		bool updated = false;
 		//cerr<<"UINodeParameters::updateNetParams called"<<endl;
 		
 		//add new parameters	
 		for (size_t i = 0; i < par.size(); i++) {
-			if (!getParamNamed(par[i]->name)) {
+			if (!getParamNamed(par[i]->name)) 
+			{
 				//cerr<<"adding a parameter : "<<par[i]->name<<endl;
 				addParameterText(par[i]->name, par[i]->type, par[i]->value, par[i]->description);
+				updated = true;
 			}
 		}
 		
@@ -252,8 +255,11 @@ namespace FD {
 				//delete this parameter
 				//cerr<<"removing parameter : "<<textParams[i]->name<<endl;
 				removeParameterText(textParams[i]->name);
+				updated = true;
 			}
 		}
+		
+		return updated;
 	}
 	
 	

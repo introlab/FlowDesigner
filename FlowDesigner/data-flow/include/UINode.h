@@ -163,8 +163,6 @@ namespace FD {
 		/**Changes the position (not too sure it should be used*/
 		void setPos (double new_x, double new_y);
 		
-		void setNodeParameters(UINodeParameters *params);
-		
 		void insertNetParams(std::vector<ItemInfo *> &params);
 		
 		void updateNetParams(std::vector<ItemInfo *> &params);

@@ -1,3 +1,6 @@
+#ifndef _GENERIC_UI_FIXTURE_H_
+#define _GENERIC_UI_FIXTURE_H_
+
 #include <gtest/gtest.h>
 #include "UINode.h"
 #include "UINetwork.h"
@@ -11,15 +14,15 @@
 template <class T>
 class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::UIDocumentObserverIF, public virtual FD::UINetwork::UINetworkObserverIF
 {
-
+	
 	// You should make the members protected s.t. they can be
 	// accessed from sub-classes.
-	protected:
-
+protected:
+	
 	class UINodeEventReceiver :  public FD::UINode::UINodeObserverIF
 	{
-		public:
-
+	public:
+		
 		//Those vectors will record every event received
 		std::vector<std::pair<const FD::UINode*,const FD::UITerminal*> > m_notifyTerminalRemovedVector;
 		std::vector<std::pair<const FD::UINode*,const FD::UITerminal*> > m_notifyTerminalAddedVector;
@@ -52,17 +55,17 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		{
 			m_notifyTerminalRemovedVector.push_back(std::make_pair(node,terminal));
 		}
-
+		
 		virtual void notifyTerminalAdded(const FD::UINode *node, const FD::UITerminal* terminal)
 		{
 			m_notifyTerminalAddedVector.push_back(std::make_pair(node,terminal));
 		}
-
+		
 		virtual void notifyParametersChanged(const FD::UINode *node, const FD::UINodeParameters *params)
 		{
 			m_notifyParametersChangedVector.push_back(std::make_pair(node,params));
 		}
-
+		
 		virtual void notifyDestroyed(const FD::UINode *node)
 		{
 			m_notifyDestroyedVector.push_back(node);
@@ -72,12 +75,12 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 				m_node = NULL;
 			}
 		}
-
+		
 		virtual void notifyPositionChanged(const FD::UINode* node, double x, double y)
 		{
 			m_notifyPositionChangedVector.push_back(std::make_pair(node,std::make_pair(x,y)));
 		}
-
+		
 		virtual void notifyNameChanged(const FD::UINode* node, const std::string &name)
 		{
 			m_notifyNameChangedVector.push_back(std::make_pair(node,name));
@@ -89,13 +92,13 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		}
 		
 	};
-
+	
 	class UINetworkEventReceiver : public FD::UINetwork::UINetworkObserverIF
 	{
-		public:
+	public:
 		
 		FD::UINetwork *m_network;
-
+		
 		//Those vectors will record every event received
 		std::vector<std::pair<const FD::UINetwork*,const FD::UINode*> > m_notifyNodeRemovedVector;
 		std::vector<std::pair<const FD::UINetwork*,const FD::UINode*> > m_notifyNodeAddedVector;
@@ -117,7 +120,7 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 				m_network->registerEvents(this);
 			}
 		}
-
+		
 		~UINetworkEventReceiver()
 		{
 			if (m_network)
@@ -131,61 +134,61 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		{
 			m_notifyNodeRemovedVector.push_back(std::make_pair(net,node));
 		}
-
+		
 		//Node added
 		virtual void notifyNodeAdded(const FD::UINetwork *net, const FD::UINode* node)
 		{
 			m_notifyNodeAddedVector.push_back(std::make_pair(net,node));
 		}
-
+		
 		//Link removed
 		virtual void notifyLinkRemoved(const FD::UINetwork *net, const FD::UILink* link)
 		{
 			m_notifyLinkRemovedVector.push_back(std::make_pair(net,link));
 		}
-
+		
 		//Link added
 		virtual void notifyLinkAdded(const FD::UINetwork *net, const FD::UILink* link)
 		{
 			m_notifyLinkAddedVector.push_back(std::make_pair(net,link));
 		}
-
+		
 		//Note removed
 		virtual void notifyNoteRemoved(const FD::UINetwork *net, const FD::UINote* note)
 		{
 			m_notifyNoteRemovedVector.push_back(std::make_pair(net,note));
 		}
-
+		
 		//Note added
 		virtual void notifyNoteAdded(const FD::UINetwork *net, const FD::UINote* note)
 		{
 			m_notifyNoteAddedVector.push_back(std::make_pair(net,note));
 		}
-
+		
 		//NetTerminal removed
 		virtual void notifyNetTerminalRemoved(const FD::UINetwork *net, const FD::UINetTerminal* terminal)
 		{
 			m_notifyNetTerminalRemovedVector.push_back(std::make_pair(net,terminal));
 		}
-
+		
 		//NetTerminal added
 		virtual void notifyNetTerminalAdded(const FD::UINetwork *net, const FD::UINetTerminal* terminal)
 		{
 			m_notifyNetTerminalAddedVector.push_back(std::make_pair(net,terminal));
 		}
-
+		
 		//Name changed
 		virtual void notifyNameChanged(const FD::UINetwork *net, const std::string &oldName, const std::string &newName)
 		{
 			m_notifyNameChangedVector.push_back(std::make_pair(net,newName));
 		}
-
+		
 		//Description changed
 		virtual void notifyDescriptionChanged(const FD::UINetwork *net, const std::string &description)
 		{
 			m_notifyDescriptionChangedVector.push_back(std::make_pair(net,description));
 		}
-
+		
 		//Destroyed
 		virtual void notifyDestroyed(const FD::UINetwork *net)
 		{
@@ -197,10 +200,10 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 			}
 		}
 	};
-
+	
 	class UIDocumentEventReceiver : public FD::UIDocument::UIDocumentObserverIF
 	{		
-		public:
+	public:
 		
 		FD::UIDocument *m_doc;
 		
@@ -213,7 +216,7 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		std::vector<std::pair<const FD::UIDocument*,std::string> > m_notifyCategoryChangedVector;
 		std::vector<std::pair<const FD::UIDocument*,std::string> > m_notifyCommentsChangedVector;
 		std::vector<const FD::UIDocument*> m_notifyDestroyedVector;
-
+		
 		UIDocumentEventReceiver(FD::UIDocument* doc)
 		:	m_doc(doc)
 		{
@@ -242,7 +245,7 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		{
 			m_notifyNetworkAddedVector.push_back(std::make_pair(doc,net));
 		}
-				
+		
 		//Parameters changed
 		virtual void notifyParametersChanged(const FD::UIDocument *doc, const FD::ItemInfo *param) 
 		{
@@ -254,7 +257,7 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		{
 			m_notifyNameChangedVector.push_back(std::make_pair(doc,name));
 		}
-				
+		
 		//Path changed
 		virtual void notifyPathChanged(const FD::UIDocument *doc, const std::string path)
 		{
@@ -284,21 +287,21 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 			}	
 		}
 	};
-
+	
     FD::UIDocument *m_UIDocument;
     FD::UINetwork  *m_UINetwork;
-
-
+	
+	
 	virtual void notifyDestroyed(const FD::UINetwork *net)
 	{
 		m_UINetwork = NULL;
 	}
-
+	
 	virtual void notifyDestroyed(const FD::UIDocument *doc)
 	{
 		m_UIDocument = NULL;
 	}
-
+	
 	// virtual void SetUp() will be called before each test is run.  You
 	// should define it if you need to initialize the varaibles.
     // Otherwise, this can be skipped.
@@ -311,7 +314,7 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		ASSERT_NE(m_UINetwork,(FD::UINetwork*)(NULL));
 		m_UINetwork->registerEvents(this);
 	}
-
+	
     // virtual void TearDown() will be called after each test is run.
     // You should define it if there is cleanup work to do.  Otherwise,
     // you don't have to provide it.
@@ -322,6 +325,9 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 			delete m_UIDocument;
 		}
 	}
-
-
+	
+	
 };
+
+#endif
+
