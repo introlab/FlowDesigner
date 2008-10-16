@@ -123,4 +123,29 @@ TEST_F(TestUIDocument,DOCUMENT_UIREPOSITORY_UPDATE_TEST)
 	
 }	
 
-
+TEST_F(TestUIDocument,DOCUMENT_INCLUDED_SUBNET_RENAMED)
+{
+	UIDocumentEventReceiver eventReceiver(m_UIDocument);
+	
+	//CREATE SUBNET
+	FD::UINetwork* net = m_UIDocument->addNetwork("SUBNET",FD::UINetwork::subnet);
+	EXPECT_NE(net,(FD::UINetwork*)NULL);
+	EXPECT_EQ(net,m_UIDocument->getNetworkNamed("SUBNET"));
+	EXPECT_EQ(eventReceiver.m_notifyNetworkAddedVector.size(),1);
+	
+	//ADD SUBNET AS A NODE IN MAIN NETWORK
+	FD::UINode *node = m_UINetwork->createNode("NAME","SUBNET",0,0);
+	UINodeEventReceiver nodeEventReceiver(node);
+	
+	ASSERT_NE(node,(FD::UINode*)NULL);
+	FD::UINodeRepository &repository = m_UIDocument->getRepository();	
+	EXPECT_NE(repository.findNode("SUBNET"),(FD::NodeInfo*)NULL);
+	
+	//CHANGE SUBNET NAME
+	net->rename("SUBNET_NEWNAME");
+	EXPECT_EQ(repository.findNode("SUBNET"),(FD::NodeInfo*)NULL);
+	EXPECT_NE(repository.findNode("SUBNET_NEWNAME"),(FD::NodeInfo*)NULL);
+	
+	EXPECT_EQ(node->getType(),"SUBNET_NEWNAME");
+	EXPECT_EQ(nodeEventReceiver.m_notifyTypeChangedVector.size(),1);
+}	

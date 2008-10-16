@@ -203,6 +203,7 @@ namespace FD {
 		std::vector<ItemInfo *> get_textParams();
 		
 		
+		void handleSubnetNameChanged(UINetwork *net, const std::string &oldName, const std::string &newName);
 		
 		Network *build(const std::string &_name, const ParameterSet &params);
 		
@@ -290,9 +291,9 @@ namespace FD {
 			}
 			
 			//Name changed
-			virtual void notifyNameChanged(const FD::UINetwork *net, const std::string &name) 
+			virtual void notifyNameChanged(const FD::UINetwork *net, const std::string &oldName, const std::string &newName) 
 			{
-				m_doc->updateNetInfo(const_cast<FD::UINetwork*>(net));
+				 m_doc->handleSubnetNameChanged(const_cast<FD::UINetwork*>(net), oldName, newName);
 			}
 			
 			//Description changed

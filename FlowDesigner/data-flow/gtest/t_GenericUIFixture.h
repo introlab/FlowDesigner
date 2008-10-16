@@ -27,7 +27,8 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		std::vector<const FD::UINode*> m_notifyDestroyedVector;
 		std::vector<std::pair<const FD::UINode*,std::pair<double,double> > > m_notifyPositionChangedVector;
 		std::vector<std::pair<const FD::UINode*,std::string> > m_notifyNameChangedVector;
-
+		std::vector<std::pair<const FD::UINode*,std::string> > m_notifyTypeChangedVector;
+		
 		FD::UINode* m_node;
 		
 		UINodeEventReceiver(FD::UINode *node)
@@ -81,6 +82,12 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		{
 			m_notifyNameChangedVector.push_back(std::make_pair(node,name));
 		}
+		
+		virtual void notifyTypeChanged(const FD::UINode* node, const std::string &type)
+		{
+			m_notifyTypeChangedVector.push_back(std::make_pair(node,type));
+		}
+		
 	};
 
 	class UINetworkEventReceiver : public FD::UINetwork::UINetworkObserverIF
@@ -168,9 +175,9 @@ class  GenericUIFixture : public testing::Test, public virtual  FD::UIDocument::
 		}
 
 		//Name changed
-		virtual void notifyNameChanged(const FD::UINetwork *net, const std::string &name)
+		virtual void notifyNameChanged(const FD::UINetwork *net, const std::string &oldName, const std::string &newName)
 		{
-			m_notifyNameChangedVector.push_back(std::make_pair(net,name));
+			m_notifyNameChangedVector.push_back(std::make_pair(net,newName));
 		}
 
 		//Description changed

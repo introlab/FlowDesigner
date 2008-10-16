@@ -958,43 +958,17 @@ namespace FD {
 	{
 		
 		if (doc->getNetworkNamed(newName)) {
-			throw new GeneralException(string("Network name already exist : ")+ newName, __FILE__,__LINE__);
+			throw new GeneralException(string("Network name already exist : ") + newName, __FILE__,__LINE__);
 		}
-		
-		
-		//FIXME: We should update the subnet list and rename the node that
-		//correspond to this subnet
+
 		string oldName = name;
-		
-		
-		
 		name = newName;
-		doc->updateAllNetworks();
-		
-		
-		//update node information (type changed (subnet name))
-		//best way to do that?
-		
-		vector<UINetwork*> my_nets = doc->get_networks();
-		
-		for (unsigned int i = 0; i < my_nets.size(); i++) {
-			
-			vector<UINode *> my_nodes = my_nets[i]->getNodes();
-			
-			for (unsigned int j = 0; j < my_nodes.size(); j++) {
-				
-				if (my_nodes[j]->getType() == oldName) {
-					
-					my_nodes[j]->rename(newName);
-					
-				}
-			}
-		}
+
 		
 		//send signal
 		for (std::list<UINetworkObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
-			(*iter)->notifyNameChanged(this,newName);
+			(*iter)->notifyNameChanged(this,oldName,newName);
 		}
 		doc->setModified(true);
 		

@@ -113,6 +113,8 @@ namespace FD
 		
 		NodeInfo *findNode(const std::string &name);
 		
+		bool removeNode(const std::string &name);
+		
 		void loadDocInfo(xmlDocPtr doc, const std::string &basename);
 		
 		void loadAllSubnetInfo(xmlNodePtr net);

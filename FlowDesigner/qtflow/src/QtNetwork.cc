@@ -576,7 +576,7 @@ namespace FD
 	}
 
 	//Name changed
-	void QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &name)
+	void QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &oldName, const std::string &newName)
 	{
 		cerr<<"QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &name)"<<endl;
 	}

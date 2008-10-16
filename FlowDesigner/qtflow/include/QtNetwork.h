@@ -94,7 +94,7 @@ namespace FD
 		virtual void notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal) ;
 		
 		//Name changed
-		virtual void notifyNameChanged(const UINetwork *net, const std::string &name);
+		virtual void notifyNameChanged(const UINetwork *net, const std::string &oldName, const std::string &newName);
 		
 		//Description changed
 		virtual void notifyDescriptionChanged(const UINetwork *net, const std::string &description);

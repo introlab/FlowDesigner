@@ -546,5 +546,16 @@ namespace FD
 	{
 		return description;
 	}
+	
+	void UINode::setType(const std::string &newType)
+	{
+		type = newType;
+		
+		//Notify observers for type change
+		for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+		{
+			(*iter)->notifyTypeChanged(this,type);
+		}
+	}	
 		
 }//namespace FD

@@ -1160,6 +1160,28 @@ namespace FD {
 		}
 	}
 	
+	void UIDocument::handleSubnetNameChanged(UINetwork *net, const std::string &oldName, const std::string &newName)
+	{
+		//First, update local repository with new info.
+		updateNetInfo(net);
+		
+		//Remove old info
+		subnetInfo.removeNode(oldName);
+		
+		//Type of inserted subnet (as nodes) must be changed to new name
+		for(size_t i = 0; i < networks.size(); i++)
+		{
+			vector<UINode*> allNodes = networks[i]->getNodes();
+			for (size_t j = 0; j < allNodes.size(); j++)
+			{
+				if (allNodes[j]->getType() == oldName)
+				{
+					allNodes[j]->setType(newName);
+				}
+			}
+		}
+		
+	}
 	
 	
 	
