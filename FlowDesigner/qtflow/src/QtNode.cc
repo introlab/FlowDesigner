@@ -37,6 +37,7 @@
 #include "UIDocument.h"
 #include <QGraphicsSvgItem>
 #include <QGraphicsRectItem>
+#include <QInputDialog>
 
 namespace FD
 {
@@ -435,6 +436,19 @@ namespace FD
 		}		
 	}
 	
+	//Name changed
+	void QtNode::notifyNameChanged(const FD::UINode* node, const std::string &name) 
+	{
+		redrawNode();
+	}
+	
+	//Type changed
+	void QtNode::notifyTypeChanged(const FD::UINode* node, const std::string &type) 
+	{
+		redrawNode();
+	}
+	
+	
     QtTerminal* QtNode::getQtTerminal(UITerminal *term)
     {
     	if(term)
@@ -463,6 +477,7 @@ namespace FD
 	    	QMenu popupMenu(tr("Node edit"));
 	    	QAction* editProperties = popupMenu.addAction(QString(tr("Edit properties")));
 	    	QAction* editIcon = popupMenu.addAction(QString(tr("Edit icon")));
+			QAction* changeName = popupMenu.addAction(QString(tr("Rename")));
 	        
 	        QAction* action = popupMenu.exec(QCursor::pos());
 	        if(action) {
@@ -489,6 +504,20 @@ namespace FD
         			connect(iconEditor, SIGNAL(iconSaved(QString)), this, SLOT(iconSaved(QString)));
         			iconEditor->show();
         		}
+				else if (action == changeName)
+				{
+					bool ok;
+					QString name = QInputDialog::getText ( NULL,QString ( "Enter new Node Name" ),
+														  QString ( "Terminal Name : " ),QLineEdit::Normal,
+														  QString ( m_uiNode->getName().c_str() ),&ok );
+					
+					if ( ok && !name.isEmpty() )
+					{  
+						//TODO LOOK FOR DUPLICATED NAMES
+						m_uiNode->rename(name.toStdString());
+					}
+					
+				}	
         	}
 	        
 	        event->accept();

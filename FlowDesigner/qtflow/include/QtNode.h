@@ -66,7 +66,12 @@ namespace FD
 		
 		//Position changed
 		virtual void notifyPositionChanged(const UINode* node, double x, double y);
-        
+		
+		//Name changed
+		virtual void notifyNameChanged(const FD::UINode* node, const std::string &name);
+		
+		//Type changed
+		virtual void notifyTypeChanged(const FD::UINode* node, const std::string &type);        
         
         void addQtLink(QtLink *edge);
         void removeQtLink(QtLink *edge);
