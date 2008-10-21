@@ -28,7 +28,7 @@ namespace FD
 	using namespace std;
 
     QtNetTerminal::QtNetTerminal(QtTerminal* parent, UINetTerminal *uiNetTerminal)
-    : QGraphicsTextItem(parent), m_uiNetTerminal(uiNetTerminal)
+    : QGraphicsTextItem(parent), m_uiNetTerminal(uiNetTerminal), m_QtTerminal(parent)
     {
 
         if (m_uiNetTerminal)
@@ -84,9 +84,7 @@ namespace FD
 		{
 			if ( event->modifiers() == Qt::ShiftModifier )
 			{
-				delete m_uiNetTerminal;
-				m_uiNetTerminal = NULL;
-				delete this;
+				m_QtTerminal->removeNetTerminal();
 				event->accept();
 			}
 		}

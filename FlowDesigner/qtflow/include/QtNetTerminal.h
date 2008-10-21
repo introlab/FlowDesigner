@@ -40,6 +40,7 @@ namespace FD
         
         	virtual void mousePressEvent ( QGraphicsSceneMouseEvent *event );
             UINetTerminal *m_uiNetTerminal;
+		QtTerminal *m_QtTerminal;
     };    
 
 

@@ -68,8 +68,10 @@ namespace FD
         //signals:
         
         //void positionChanged(float x, float y);
-        //void newLinkCreated(UITerminal* from, UITerminal* to);
-        
+        //void newLinkCreated(UITerminal* fro
+		
+		void removeNetTerminal();
+		
         protected:
         
 		//QT events
@@ -81,7 +83,7 @@ namespace FD
     
         void createIONetTerminal();
         void createCondNetTerminal();
-        void removeNetTerminal();
+        
         
         //QGraphicsTextItem *m_label;
         QtNode *m_node;            
