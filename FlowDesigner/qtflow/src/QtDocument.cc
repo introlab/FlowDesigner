@@ -88,8 +88,8 @@ namespace FD
         m_tabWidget = new QTabWidget(NULL);
         m_tabWidget->setObjectName(QString::fromUtf8("tabWidget"));        
         connect(m_tabWidget, SIGNAL(currentChanged(int)),this, SLOT(tabWidgetChanged(int)));   
-        	
-        m_vboxLayout->addWidget(m_tabWidget);
+        		
+        m_vboxLayout->addWidget(m_tabWidget);		
         
         setLayout(m_vboxLayout);
         
@@ -104,7 +104,19 @@ namespace FD
         m_uiDoc->registerEvents(this);
                
     }      
-    
+    	
+	void QtDocument::onNetworkNameChange()
+	{
+		//GET CURRENT NETWORK
+		QtNetwork *currentNetwork = dynamic_cast<QtNetwork*>(m_tabWidget->currentWidget()); 
+		
+		if (currentNetwork)
+		{
+			currentNetwork->networkRenameTriggered();
+		}
+		
+	}
+	
     bool QtDocument::isNetworkExist(const QString &name)
     {
     
@@ -166,6 +178,10 @@ namespace FD
 		}
 	}
 	
+	void QtDocument::networkNameChanged(QtNetwork *net, const QString &name)
+	{
+		 m_tabWidget->setTabText( m_tabWidget->indexOf(net),name);
+	}
 	
 	void QtDocument::onRunDocument()
 	{

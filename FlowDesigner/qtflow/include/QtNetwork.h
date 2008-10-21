@@ -51,7 +51,7 @@ namespace FD
         const std::string getName() const;
         
         //Network
-        UINetwork* getUINetWork() {return m_uiNetwork;}
+        UINetwork* getUINetwork() {return m_uiNetwork;}
 
         //Node
         QtNode* addNode(UINode* node);
@@ -155,8 +155,11 @@ namespace FD
     	 * @param probeType the probe type
     	 */
         void linkProbed(int linkId, const QString &probeType) {emit signalLinkProbed(linkId, probeType);}
+		
+		
         void menuTriggered(QAction* action, const QPointF &pos);
         
+		void networkRenameTriggered();
         
 		
 		

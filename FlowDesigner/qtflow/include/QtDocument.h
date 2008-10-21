@@ -59,7 +59,9 @@ namespace FD
 		
 		
         QtNetwork* addNetwork(UINetwork* net);
-
+		
+		void networkNameChanged(QtNetwork *net, const QString &name);
+		
         void addNetwork(const QString &name, UINetwork::Type type);   
         
         bool isNetworkExist(const QString &name);
@@ -70,6 +72,7 @@ namespace FD
 		void onViewSourceDocument();
 		void onAddNoteDocument();
 		void onDocumentProperties();
+		void onNetworkNameChange();
         
         void tabWidgetChanged(int index);
         

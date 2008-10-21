@@ -35,24 +35,28 @@ void QtNetworkScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		return;
 	}
 	
-    if(!m_networkView->getUINetWork()->getDocument()->isEditable()) {
+    if(!m_networkView->getUINetwork()->getDocument()->isEditable()) {
     	event->ignore();
     }
     else {
-        std::vector<UINetwork *> network = m_networkView->getUINetWork()->getDocument()->get_networks();
+        std::vector<UINetwork *> network = m_networkView->getUINetwork()->getDocument()->get_networks();
         QMenu* menu = new QMenu(m_networkView);
         menu->setTitle(tr("SubNetwork")); 
         for( unsigned int i=0; i < network.size(); i++ )            
         {
-        	if (network[i]->getName() != m_networkView->getUINetWork()->getName())
+			//TODO CHECK FOR RECURSIVE INCLUDES IN NETWORKS
+        	if (network[i]->getName() != m_networkView->getUINetwork()->getName() && network[i]->getName() != "MAIN")
         	{
         		menu->addAction( new QAction(network[i]->getName().c_str(), this) );
         	}
         }
-        
+		
+		//Execute menu
         QAction *action = menu->exec(event->screenPos());
-        if(action) {
-        	m_networkView->menuTriggered(action, event->scenePos());
+		
+        if(action) 
+		{
+			m_networkView->menuTriggered(action, event->scenePos());
         }
         
         //QtNode* newQtNode = new QtNode(this);

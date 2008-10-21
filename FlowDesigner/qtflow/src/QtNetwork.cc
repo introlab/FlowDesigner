@@ -549,20 +549,19 @@ namespace FD
 	void QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)
 	{
         cerr<<"QtNetwork::notifyNetTerminalRemoved(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
-
 	}
 
 	//NetTerminal added
 	void QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)
 	{
         cerr<<"QtNetwork::notifyNetTerminalAdded(const UINetwork *net, const UINetTerminal* terminal)"<<endl;
-
 	}
 
 	//Name changed
 	void QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &oldName, const std::string &newName)
 	{
 		cerr<<"QtNetwork::notifyNameChanged(const UINetwork *net, const std::string &name)"<<endl;
+		m_doc->networkNameChanged(this, QString(newName.c_str()));
 	}
 
 	//Description changed
@@ -603,5 +602,24 @@ namespace FD
     	}
         QGraphicsView::mouseDoubleClickEvent(e);
     }
+	
+	void QtNetwork::networkRenameTriggered()
+	{
+		if (m_uiNetwork->getName() != "MAIN")
+		{
+			bool ok;
+			QString name = QInputDialog::getText ( NULL,QString ( "Enter New Network Name" ),
+												  QString ( "Network Name : " ),QLineEdit::Normal,
+												  QString ( m_uiNetwork->getName().c_str() ),&ok );
+			
+			if ( ok && !name.isEmpty() )
+			{  
+				//TODO LOOK FOR DUPLICATED NAMES
+				m_uiNetwork->rename(name.toStdString());
+			}
+			
+		}	
+	}
+	
 
 } //namespace FD
