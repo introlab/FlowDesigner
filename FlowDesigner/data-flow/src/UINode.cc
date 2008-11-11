@@ -61,6 +61,12 @@ namespace FD
 	{
 		
 		loadXML(def);		
+
+		//Add ourself in the network
+		if (net)
+		{
+			net->addNode(this);
+		}	
 	}
 	
 	void UINode::loadXML(xmlNodePtr def)
