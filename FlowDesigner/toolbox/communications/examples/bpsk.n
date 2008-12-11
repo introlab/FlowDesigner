@@ -1,0 +1,65 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="bpsk.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_0" type="loop" x="-176.000000" y="21.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="BER" node="loop_0" terminal="BER" object_type="any" description="No description available"/>
+    <NetOutput name="NBITS" node="loop_0" terminal="NBITS" object_type="any" description="No description available"/>
+    <NetOutput name="NBERS" node="loop_0" terminal="NBERS" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="DiscreteSource_0" type="DiscreteSource" x="-555.000000" y="-143.000000">
+      <Parameter name="LENGTH" type="int" value="100000" description="Number of generated symbols."/>
+      <Parameter name="ALPHABETSIZE" type="int" value="2" description="Number of symbols in the source alphabet."/>
+      <Parameter name="SEED" type="int" value="-1" description="RNG seed."/>
+    </Node>
+    <Node name="Constellation_1" type="Constellation" x="-391.000000" y="-178.000000">
+      <Parameter name="TYPE" type="string" value="PAM" description="Modulation type (PAM, PSK, QAM, FILE)"/>
+      <Parameter name="NBITS" type="int" value="1" description="Number of bits per symbol. For QAM, number of bits per dimension."/>
+      <Parameter name="ENERGY" type="float" value="1.00" description="Average symbol energy per complex dimension."/>
+      <Parameter name="FILENAME" type="string" value="Xi.txt" description="Name of file containing the constellation."/>
+    </Node>
+    <Node name="LLRComputer_3" type="LLRComputer" x="-143.000000" y="-179.000000">
+      <Parameter name="TYPE" type="string" value="PAM" description="Modulation type (PAM, PSK, QAM, FILE)"/>
+      <Parameter name="NBITS" type="int" value="1" description="Number of bits per symbol. For QAM, number of bits per dimension."/>
+      <Parameter name="ENERGY" type="float" value="1.00" description="Average symbol energy per complex dimension."/>
+      <Parameter name="FILENAME" type="string" value="Xi.txt" description="Name of file containing the constellation."/>
+      <Parameter name="SIGMA" type="float" value="1." description="Standard deviation of noise."/>
+    </Node>
+    <Node name="MLDetector_4" type="MLDetector" x="-19.000000" y="-179.000000">
+      <Parameter name="NSIGNALS" type="int" value="2" description="Number of signals of constellation."/>
+    </Node>
+    <Node name="BitErrors_5" type="BitErrors" x="17.000000" y="-62.000000">
+      <Parameter name="MIN_NBERS" type="int" value="100" description="Number of bit errors to count."/>
+    </Node>
+    <Node name="Add_6" type="Add" x="-255.000000" y="-184.000000"/>
+    <Node name="ComplexGaussian_7" type="ComplexGaussian" x="-388.000000" y="-303.000000">
+      <Parameter name="LENGTH" type="int" value="100000" description="Number of generated samples"/>
+      <Parameter name="MEAN" type="float" value="0.00" description="Mean"/>
+      <Parameter name="VAR" type="float" value="0.05" description="Variance"/>
+      <Parameter name="SEED" type="int" value="-1" description="Generator seed (negative integer)"/>
+    </Node>
+    <Node name="Print_8" type="Print" x="116.000000" y="-131.000000"/>
+    <Node name="Print_9" type="Print" x="147.000000" y="-46.000000"/>
+    <Node name="Print_10" type="Print" x="134.000000" y="58.000000"/>
+    <ProbeLink id="1" from="DiscreteSource_0" output="OUTPUT" to="Constellation_1" input="INPUT"/>
+    <ProbeLink id="2" from="LLRComputer_3" output="OUTPUT" to="MLDetector_4" input="INPUT"/>
+    <ProbeLink id="3" from="MLDetector_4" output="OUTPUT" to="BitErrors_5" input="INPUT"/>
+    <ProbeLink id="4" from="DiscreteSource_0" output="OUTPUT" to="BitErrors_5" input="INPUT_REF"/>
+    <ProbeLink id="5" from="Add_6" output="OUTPUT" to="LLRComputer_3" input="INPUT"/>
+    <ProbeLink id="6" from="Constellation_1" output="OUTPUT" to="Add_6" input="INPUT1"/>
+    <ProbeLink id="7" from="ComplexGaussian_7" output="OUTPUT" to="Add_6" input="INPUT2"/>
+    <ProbeLink id="8" from="BitErrors_5" output="BER" to="Print_8" input="INPUT"/>
+    <ProbeLink id="9" from="BitErrors_5" output="NBERS" to="Print_9" input="INPUT"/>
+    <ProbeLink id="10" from="BitErrors_5" output="NBITS" to="Print_10" input="INPUT"/>
+    <NetOutput name="BER" node="Print_8" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="NBERS" node="Print_9" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="NBITS" node="Print_10" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetCondition name="CONDITION" node="BitErrors_5" terminal="NOT_FINISHED"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

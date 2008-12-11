@@ -1,0 +1,7 @@
+This package is released under the version 2.1 of the GNU Lesser General
+Public License.
+Note that FlowDesigner also links with the GPL library FFTW. If you ship a 
+binary-only FlowDesigner module, it is up to you to make sure you don't infringe 
+the FFTW license, or the license of any other library that's linked by 
+FlowDesigner. If you cannot do that, then you cannot distribute your binary-only
+module.
