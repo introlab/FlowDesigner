@@ -74,6 +74,7 @@ Known values for LIBRARY are:
     nnet           (NNet toolkit)
     vq             (VQ toolkit)
     config         (Stuff found by autoconf)
+    communications (Communications toolkit)
 
 EOF
     exit $exit_code
@@ -179,6 +180,10 @@ while test $# -gt 0; do
     config)
 	the_libs="$the_libs $LD_FLAGS $LIBS"
 	the_flags="$the_flags $DEFS"
+	;;
+    communications)
+	the_libs="$the_libs -L$libdir -L$toolboxdir/communications -lflow -lcommunications"
+	the_flags="$the_flags -I$includedir -I$toolboxdir/communications "
 	;;
     *)
         error=true
