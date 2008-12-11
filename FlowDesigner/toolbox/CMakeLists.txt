@@ -40,3 +40,7 @@ IF (HAVE_OCTAVE)
 ELSE (HAVE_OCTAVE)
     MESSAGE (STATUS "OCTAVE library wasn't found, it won't be compiled.")
 ENDIF (HAVE_OCTAVE)
+
+### communications toolbox ###
+ADD_SUBDIRECTORY(communications)
+
