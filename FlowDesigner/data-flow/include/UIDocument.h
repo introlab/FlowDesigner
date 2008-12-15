@@ -282,12 +282,16 @@ namespace FD {
 			virtual void notifyNetTerminalRemoved(const FD::UINetwork *net, const FD::UINetTerminal* terminal) 
 			{
 				m_doc->updateNetInfo(const_cast<FD::UINetwork*>(net));
+		
+				m_doc->updateAllSubnetTerminals(net->getName(), terminal->getName(), terminal->getType(),true);
 			}
 			
 			//NetTerminal added
 			virtual void notifyNetTerminalAdded(const FD::UINetwork *net, const FD::UINetTerminal* terminal)
 			{
 				m_doc->updateNetInfo(const_cast<FD::UINetwork*>(net));
+
+				m_doc->updateAllSubnetTerminals(net->getName(), terminal->getName(), terminal->getType(),false);
 			}
 			
 			//Name changed
@@ -306,7 +310,7 @@ namespace FD {
 			virtual void notifyDestroyed(const FD::UINetwork *net) 
 			{
 				//TODO BETTER HANDLING HERE OF DELETION
-				m_doc->updateNetInfo(const_cast<FD::UINetwork*>(net));
+				//m_doc->updateNetInfo(const_cast<FD::UINetwork*>(net));
 			}
 			
 		protected:
