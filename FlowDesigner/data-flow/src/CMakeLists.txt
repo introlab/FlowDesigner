@@ -175,7 +175,6 @@ SET(NODES_SRCS
 	BinaryAND.cc
 	BinaryOR.cc
 	Power.cc
-	XPMTest.cc	
 )
 
 
