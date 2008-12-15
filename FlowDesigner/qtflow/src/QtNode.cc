@@ -395,6 +395,8 @@ namespace FD
     		delete iter->second;
 		}
     	
+	//redraw node
+        redrawNode();
     }  
     
 	//Terminal removed
