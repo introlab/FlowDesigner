@@ -36,19 +36,17 @@ UITerminal::UITerminal (ItemInfo *terminalInfo, UINode *_node, bool _isInput,
 
 UITerminal::~UITerminal()
 {
+
+
+
    //although this is weird, it has to be like that since the destroyed link removes
    //itself from the connection list
    while (connections.size())
    {
-	  if (node)
+	  if (node && node->getNetwork())
 	  {
-		  //Make sure we are removed from the node's terminal list
-		  node->removeTerminal(this,false);
-
-		  if (node->getNetwork())
-		  {
-			  node->getNetwork()->removeLink(connections[0]);
-		  }
+		//cerr<<"~UITerminal() Remove link"<<endl;
+		node->getNetwork()->removeLink(connections[0]);	  
 	  }
 	  else
 	  {
@@ -58,7 +56,16 @@ UITerminal::~UITerminal()
 	  }
    }
 
+   //Make sure we are removed from the node's terminal list
+   if (node)
+   {
+	//cerr<<"~UITerminal() Remove Terminal from node"<<endl;
+   	node->removeTerminal(this,false);
+   }
+
+
    //Remove the net terminal
+   //cerr<<"~UITerminal() RemoveNetTerminal"<<endl;
    removeNetTerminal();
 }
 

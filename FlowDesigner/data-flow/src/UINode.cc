@@ -117,21 +117,28 @@ namespace FD
 	{
 	
 		// Remove inputs
-		for (unsigned int i=0;i<inputs.size();i++) {
-			delete inputs[i];
+		//cerr<<"Remove inputs"<<endl;
+		while (inputs.size()) 
+		{
+			delete inputs[0];
 		}
 		
 		// Remove outputs
-		for (unsigned int i=0;i<outputs.size();i++) {
-			delete outputs[i];
+		//cerr<<"Remove outputs"<<endl;
+		while (outputs.size()) 
+		{
+			delete outputs[0];
 		}
 		
+		//cerr<<"Delete parameters"<<endl;
 		delete parameters;
 		
 		//Make sure we are removed from the network
+		//cerr<<"RemoveNode from network"<<endl;
 		net->removeNode(this,false);
 		
 		//Notify observers
+		//cerr<<"Notify observers"<<endl;
 		for (std::list<UINodeObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyDestroyed(this);

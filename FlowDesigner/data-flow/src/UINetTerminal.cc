@@ -37,6 +37,8 @@ namespace FD {
 			{
 				terminal->getNode()->getNetwork()->removeNetTerminal(this,false);
 			}
+
+			//cerr<<"disconnectNetTerminal()"<<endl;
 			terminal->disconnectNetTerminal();
 		}
 	}
