@@ -99,9 +99,6 @@ namespace FD {
 		/**True if document has no real name yet*/
 		bool untitled;
 		
-		/**True if the object has already been destroyed (by superclass destructor)*/
-		bool destroyed;
-		
 		/**Category of the document, used when the document's MAIN network is to be inserted as a node */
 		std::string category;
 		

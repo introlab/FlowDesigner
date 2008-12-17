@@ -34,7 +34,6 @@ namespace FD {
 	, editable(true)
 	, docName(_name)
 	, untitled(true)
-	, destroyed(false)
 	, m_connectionPort(DEFAULT_CONNECTION_PORT)
 	, m_networkEventReceiver(this)
 	{
@@ -43,36 +42,34 @@ namespace FD {
 	
 	UIDocument::~UIDocument()
 	{
-		if (!destroyed)
+		
+		//cerr << "destroying UIDocument " << name << endl;	
+		while(networks.size() > 0)
 		{
-			//cerr << "destroying UIDocument " << name << endl;	
-			while(networks.size() > 0)
-			{
-				//This will notify observers that we
-				//are removing networks
-				removeNetwork(networks[0], true);
-			}
-			
-			//TODO : should we notify observers for this?
-			for (unsigned int i=0;i<textParams.size();i++)
-				delete textParams[i];
-			
-			for (unsigned int i=0;i<docInputs.size();i++)
-				delete docInputs[i];
-			
-			for (unsigned int i=0;i<docOutputs.size();i++)
-				delete docOutputs[i];
-			
-			for (unsigned int i=0;i<docParams.size();i++)
-				delete docParams[i];
-			destroyed=true;
-			
-			//Notify observers that we are destroyed
-			for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
-			{
-				(*iter)->notifyDestroyed(this);
-			}
+			//This will notify observers that we
+			//are removing networks
+			removeNetwork(networks[0], true);
 		}
+		
+		//TODO : should we notify observers for this?
+		for (unsigned int i=0;i<textParams.size();i++)
+			delete textParams[i];
+		
+		for (unsigned int i=0;i<docInputs.size();i++)
+			delete docInputs[i];
+		
+		for (unsigned int i=0;i<docOutputs.size();i++)
+			delete docOutputs[i];
+		
+		for (unsigned int i=0;i<docParams.size();i++)
+			delete docParams[i];
+		
+		//Notify observers that we are destroyed
+		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
+		{
+			(*iter)->notifyDestroyed(this);
+		}
+		
 	}
 	
 	
@@ -413,15 +410,15 @@ namespace FD {
 		}
 		
 		UINetwork *newNet = newNetwork(name, type);
-
+		
 		
 		/*
-		for (unsigned int i=0;i<networks.size();i++)
-		{
-			networks[i]->newNetNotify("Subnet",name);
-			newNet->newNetNotify("Subnet",networks[i]->getName());
-		}
-		*/
+		 for (unsigned int i=0;i<networks.size();i++)
+		 {
+		 networks[i]->newNetNotify("Subnet",name);
+		 newNet->newNetNotify("Subnet",networks[i]->getName());
+		 }
+		 */
 		
 		networks.insert(networks.end(), newNet);
 		
@@ -455,13 +452,13 @@ namespace FD {
 		//cerr << "newNet = " << newNet << endl;
 		//cerr << "network created in UIDocument::addNetwork\n";
 		/*
-		for (unsigned int i=0;i<networks.size();i++)
-		{
-			networks[i]->newNetNotify("Subnet",newNet->getName());
-			newNet->newNetNotify("Subnet",networks[i]->getName());
-		}
-		*/ 
-		 
+		 for (unsigned int i=0;i<networks.size();i++)
+		 {
+		 networks[i]->newNetNotify("Subnet",newNet->getName());
+		 newNet->newNetNotify("Subnet",networks[i]->getName());
+		 }
+		 */ 
+		
 		//cerr << "newNet = " << newNet << endl;
 		networks.insert(networks.end(), newNet);
 		
