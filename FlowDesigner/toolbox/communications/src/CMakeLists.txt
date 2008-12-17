@@ -7,6 +7,7 @@ SET(COMMUNICATIONS_SRCS
 	LLRComputer.cc
 	MLDetector.cc
 	BitErrors.cc
+	MutualInf.cc
 	Histogram.cc
 )	
 
