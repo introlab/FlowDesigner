@@ -104,6 +104,18 @@ namespace FD
         m_uiDoc->registerEvents(this);
                
     }      
+	
+	QtDocument::~QtDocument()
+	{
+		if (m_uiDoc)
+		{
+			m_uiDoc->unregisterEvents(this);
+			delete m_uiDoc;
+			m_uiDoc = NULL;
+		}	
+		
+	}	
+	
     	
 	void QtDocument::onNetworkNameChange()
 	{
@@ -116,6 +128,20 @@ namespace FD
 		}
 		
 	}
+	
+	void QtDocument::onNetworkRemove()
+	{
+		//Get current network
+		QtNetwork *currentNetwork =  dynamic_cast<QtNetwork*>(m_tabWidget->currentWidget()); 
+		
+		if (currentNetwork && currentNetwork->getUINetwork())
+		{
+			//Removing network
+			m_uiDoc->removeNetwork(currentNetwork->getUINetwork(),true);
+		}	
+		
+	}	
+	
 	
     bool QtDocument::isNetworkExist(const QString &name)
     {

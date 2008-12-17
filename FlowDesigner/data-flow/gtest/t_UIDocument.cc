@@ -146,3 +146,29 @@ TEST_F(TestUIDocument,DOCUMENT_INCLUDED_SUBNET_RENAMED)
 	EXPECT_EQ(node->getType(),"SUBNET_NEWNAME");
 	EXPECT_EQ(nodeEventReceiver.m_notifyTypeChangedVector.size(),1);
 }	
+
+TEST_F(TestUIDocument,DOCUMENT_XML_LOAD)
+{
+	FD::UIDocument *testDocument = new FD::UIDocument(std::string(TEST_DOCUMENT_DIR) + "t_Network1.n");
+	UIDocumentEventReceiver eventReceiver(testDocument);
+	testDocument->load();
+	
+	FD::UINetwork *MAIN = testDocument->getNetworkNamed("MAIN");
+	ASSERT_NE(MAIN, (FD::UINetwork*) (NULL) );
+	
+	FD::UINetwork *subnet1 = testDocument->getNetworkNamed("subnet1");
+	ASSERT_NE(subnet1, (FD::UINetwork*) (NULL) );
+			  
+	FD::UINetwork *subnet2 = testDocument->getNetworkNamed("subnet2");
+	ASSERT_NE(subnet2, (FD::UINetwork*) (NULL) );
+	
+	//We should have created 3 networks (MAIN, subnet1, subnet2)
+	EXPECT_EQ(eventReceiver.m_notifyNetworkAddedVector.size(),3);
+	
+	delete testDocument;
+	
+	//We should have deleted 3 networks (MAIN, subnet1, subnet2)
+	EXPECT_EQ(eventReceiver.m_notifyNetworkRemovedVector.size(),3);
+	
+	
+}	

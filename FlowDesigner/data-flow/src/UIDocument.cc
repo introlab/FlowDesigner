@@ -45,15 +45,15 @@ namespace FD {
 	{
 		if (!destroyed)
 		{
-			//cerr << "destroying UIDocument " << name << endl;
-			std::vector<UINetwork *>::iterator netIt = networks.begin();
-			while(netIt != networks.end())
+			//cerr << "destroying UIDocument " << name << endl;	
+			while(networks.size() > 0)
 			{
-				networks.erase(netIt);
-				delete (*netIt);
-				netIt = networks.begin();
+				//This will notify observers that we
+				//are removing networks
+				removeNetwork(networks[0], true);
 			}
 			
+			//TODO : should we notify observers for this?
 			for (unsigned int i=0;i<textParams.size();i++)
 				delete textParams[i];
 			
@@ -67,13 +67,11 @@ namespace FD {
 				delete docParams[i];
 			destroyed=true;
 			
-			//Notify observers
+			//Notify observers that we are destroyed
 			for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 			{
 				(*iter)->notifyDestroyed(this);
 			}
-			
-			
 		}
 	}
 	

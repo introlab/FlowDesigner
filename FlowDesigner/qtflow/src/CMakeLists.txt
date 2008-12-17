@@ -42,7 +42,7 @@ SET(QTFLOW_SRCS
 SET(QTFLOW_HEADERS 
 	../include/QtLink.h
 	../include/QtNetwork.h
-    ../include/QtNetworkScene.h
+	../include/QtNetworkScene.h
 	../include/QtNode.h
 	../include/QtTerminal.h
 	../include/QtFlowDesigner.h
@@ -103,7 +103,7 @@ QT4_WRAP_CPP(QTFLOWLIB_MOC_SRCS ${QTFLOWLIB_HEADERS})
 INCLUDE_DIRECTORIES(../include ${FLOWDESIGNER_SOURCE_DIR}/data-flow/include ${QT_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 # Add QTFLOW library, used for Qt Probes
-add_library(libqtflow-dynamic SHARED ${QTFLOWLIB_SRCS} ${QTFLOWLIB_MOC_SRCS})
+add_library(libqtflow-dynamic SHARED ${QTFLOWLIB_SRCS} ${QTFLOWLIB_MOC_SRCS} ${QTFLOW_HEADERS})
 set_target_properties(libqtflow-dynamic PROPERTIES VERSION ${CPACK_PACKAGE_VERSION} SOVERSION ${CPACK_PACKAGE_VERSION} OUTPUT_NAME qtflow)
 target_link_libraries(libqtflow-dynamic ${QT_LIBRARIES})
 install(TARGETS libqtflow-dynamic DESTINATION lib
@@ -124,14 +124,14 @@ IF(APPLE)
      SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}")
      SET(MACOSX_BUNDLE_BUNDLE_VERSION "${VERSION}")
      SET(MACOSX_BUNDLE_COPYRIGHT "Dominic Letourneau, Jean-Marc Valin") 
-     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS})
+     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
     #install( FILES ../icons/FlowDesignerIcon.icns DESTINATION /Applications/flowdesigner.app/Contents/Resources)
 ELSE(APPLE)
-    add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS})
+    add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
 ENDIF(APPLE)
 
 # create an executable file named "qtflow" from the source files 
-add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS})
+add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_HEADERS}) 
 
 # Linking with libflow and Qt libraries
 target_link_libraries(flowdesigner  ${QT_LIBRARIES} libflow-dynamic ${LIBXML2_LIBRARIES} libqtflow-dynamic)

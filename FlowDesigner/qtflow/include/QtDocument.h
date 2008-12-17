@@ -48,6 +48,8 @@ namespace FD
         public:
 		
         QtDocument(QtFlowDesigner *parent, const std::string &name = "Untitled");
+		
+		~QtDocument();
         
         void open(const std::string &file);       
         
@@ -73,6 +75,7 @@ namespace FD
 		void onAddNoteDocument();
 		void onDocumentProperties();
 		void onNetworkNameChange();
+		void onNetworkRemove();
         
         void tabWidgetChanged(int index);
         

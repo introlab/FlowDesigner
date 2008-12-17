@@ -66,6 +66,7 @@ namespace FD
         public slots:
         void newNetworkClicked();
 		void renameNetworkClicked();
+		void removeNetworkClicked();
         void newIteratorNetworkClicked();
         void newStderrOutput(const char * s, std::streamsize n );
         void newStdoutOutput(const char * s, std::streamsize n );
@@ -112,6 +113,7 @@ namespace FD
 
         QAction *actionNewNetwork;
 		QAction *actionRenameNetwork;
+		QAction *actionRemoveNetwork;
         QAction *actionNewIteratorNetwork;
 
         QAction *actionFlowDesignerInfo;

@@ -39,6 +39,7 @@ namespace FD
 
         connect(actionNewNetwork, SIGNAL(triggered()),this,SLOT(newNetworkClicked()));
 		connect(actionRenameNetwork, SIGNAL(triggered()),SLOT(renameNetworkClicked()));
+		connect(actionRemoveNetwork, SIGNAL(triggered()),SLOT(removeNetworkClicked()));
         connect(actionNewIteratorNetwork, SIGNAL(triggered()),this,SLOT(newIteratorNetworkClicked()));
         connect(actionNew_Document, SIGNAL(triggered()), this, SLOT(newDocumentClicked()));
         connect(actionLoad_Document, SIGNAL(triggered()),this,SLOT(openDocumentClicked()));
@@ -86,6 +87,8 @@ namespace FD
 		actionRenameNetwork = new QAction(this);
 		actionRenameNetwork->setObjectName(QString::fromUtf8("actionRenameNetwork"));
 
+		actionRemoveNetwork = new QAction(this);
+		actionRemoveNetwork->setObjectName(QString::fromUtf8("actionRemoveNetwork"));
 
 
         //Workspace
@@ -230,6 +233,7 @@ namespace FD
         menuNetwork->addAction(actionNewIteratorNetwork);
         menuNetwork->addSeparator();
 		menuNetwork->addAction(actionRenameNetwork);
+		menuNetwork->addAction(actionRemoveNetwork);
 
         menuAbout->addAction(actionFlowDesignerInfo);
         menuAbout->addAction(actionFlowDesignerAuthors);
@@ -258,6 +262,7 @@ namespace FD
 		actionConnect_Document->setText(QApplication::translate("QtFlowDesigner", "Connect to a remote process", 0, QApplication::UnicodeUTF8));
 		actionNewNetwork->setText(QApplication::translate("QtFlowDesigner", "newNetwork", 0, QApplication::UnicodeUTF8));
 		actionRenameNetwork->setText(QApplication::translate("QtFlowDesigner", "renameNetwork", 0, QApplication::UnicodeUTF8));
+		actionRemoveNetwork->setText(QApplication::translate("QtFlowDesigner", "removeNetwork", 0, QApplication::UnicodeUTF8));
         actionNewIteratorNetwork->setText(QApplication::translate("QtFlowDesigner", "newIteratorNetwork", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("QtFlowDesigner", "Tab 1", 0, QApplication::UnicodeUTF8));
         //tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("QtFlowDesigner", "Tab 2", 0, QApplication::UnicodeUTF8));
@@ -339,6 +344,15 @@ namespace FD
 		}
 	}
 	
+	void QtFlowDesigner::removeNetworkClicked()
+    {
+		QtDocument* activeDoc = activeDocument();
+		
+		if (activeDoc)
+		{
+			activeDoc->onNetworkRemove();
+		}	
+	}
 
     void QtFlowDesigner::newNetworkClicked()
     {
