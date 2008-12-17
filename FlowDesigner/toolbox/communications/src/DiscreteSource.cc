@@ -43,7 +43,7 @@ DECLARE_NODE(DiscreteSource)
 END*/
 
 
-class DiscreteSource : public BufferedNode
+class DiscreteSource : public BufferedNode	// TODO: add nonuniform distribution
 {
    
 	int outputID;

@@ -36,7 +36,7 @@ DECLARE_NODE(LLRComputer)
  *
  * @parameter_name NBITS
  * @parameter_type int
- * @parameter_description Number of bits per symbol. For QAM, number of bits per dimension.
+ * @parameter_description Number of bits per symbol.
  * @parameter_value 1
  *
  * @parameter_name ENERGY
@@ -49,9 +49,9 @@ DECLARE_NODE(LLRComputer)
  * @parameter_description Name of file containing the constellation.
  * @parameter_value Xi.txt
  *
- * @parameter_name SIGMA
+ * @parameter_name VARIANCE
  * @parameter_type float
- * @parameter_description Standard deviation of noise.
+ * @parameter_description Variance of Gaussian noise.
  * @parameter_value 1.
  *
 END*/
@@ -64,7 +64,6 @@ class LLRComputer : public BufferedNode {
 	int nbits;
 	int nsignals;
 	float Es;
-	// bool iscomplex;
 	enum modType {PAM, PSK, QAM, FILE_T};
 	modType type;
 	RCPtr<Vector<complex<float> > > Xiptr;
@@ -76,6 +75,7 @@ LLRComputer(string nodeName, ParameterSet params)
 : BufferedNode(nodeName, params)
 {
 	int i, j;
+	int nbh, nbhp;
 	unsigned int k;
 
 	inputID = addInput("INPUT");
@@ -105,8 +105,8 @@ LLRComputer(string nodeName, ParameterSet params)
       else
 	 Es = 1.;
 
-	if (parameters.exist("SIGMA"))
-		sigma = dereference_cast<float> (parameters.get("SIGMA"));
+	if (parameters.exist("VARIANCE"))
+		sigma = sqrt(dereference_cast<float> (parameters.get("VARIANCE")));
 	else sigma = 1.;
 
 
@@ -115,7 +115,7 @@ LLRComputer(string nodeName, ParameterSet params)
 		filename = object_cast<String> (parameters.get("FILENAME"));
 	}
 
-	Xiptr = Vector<complex<float> >::alloc(1 << (nbits * ((type == QAM) ? 2 : 1)));
+	Xiptr = Vector<complex<float> >::alloc(1 << nbits);
 	Vector<complex<float> > &Xi = *Xiptr;
 
 	complex<float>  tmpc;
@@ -129,35 +129,39 @@ LLRComputer(string nodeName, ParameterSet params)
 			{
 				Xi[BIN2GRAY(i)] = complex<float>(nsignals - 1 - 2 * i, 0.);
 				Xi[BIN2GRAY(i)] *= sqrt((3. * Es) / float(nsignals * nsignals - 1.));
-				// ofs << BIN2GRAY(i) << Xi[BIN2GRAY(i)] << endl;
 			}
 			break;
 		case PSK:
 			nsignals = 1 << nbits;
 			for (i = 0; i < nsignals; i++)
 			{
-				Xi[BIN2GRAY(i)] = complex<float>(cos((1 + 2 * i) * PI / float(nsignals)), sin((1 + 2 * i) * PI / float(nsignals)));
+				Xi[BIN2GRAY(i)] = complex<float>(cos((1 + 2 * i) * PI / float(nsignals)),
+						sin((1 + 2 * i) * PI / float(nsignals)));
 				Xi[BIN2GRAY(i)] *= sqrt(Es);
-				// ofs << BIN2GRAY(i) << " " << Xi[BIN2GRAY(i)] << endl;
 			}
 			break;
 		case QAM:
-			nsignals = 1 << (nbits << 1);
-			for(i = 0; i < (1 << nbits); i++)
+			nsignals = 1 << nbits;
+			nbh = 1 << (nbits >> 1);
+			nbhp = 1 << ((nbits + 1) >> 1);
+			for(i = 0; i < nbhp; i++)
 			{
-				for(j = 0; j < (1 << nbits); j++)
+				for(j = 0; j < nbh; j++)
 				{
-					Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)] = complex<float>((1 << nbits) - 1 - 2 * i, (1 << nbits) - 1 - 2 * j);
-					Es0 += Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].real() * Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].real();
-					Es0 += Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].imag() * Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].imag();
+					Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)] =
+						complex<float>(nbhp - 1 - 2 * i, nbh - 1 - 2 * j);
+					Es0 += Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].real() *
+						Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].real();
+					Es0 += Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].imag() *
+						Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].imag();
 				}
 			}
 			Es0 /= float(nsignals);
-			for(i = 0; i < (1 << nbits); i++)
+			for(i = 0; i < nbhp; i++)
 			{
-				for(j = 0; j < (1 << nbits); j++)
+				for(j = 0; j < nbh; j++)
 				{
-					Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)] *= sqrt(Es / Es0);
+					Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)] *= sqrt(Es / Es0);
 				}
 			}
 			break;
@@ -173,7 +177,6 @@ LLRComputer(string nodeName, ParameterSet params)
 			}
 			nsignals = Xi.size();
 			nbits = floor(log2(nsignals));
-			// iscomplex = true;
 			if(nsignals > (1 << nbits))
 				throw new NodeException(this, "Constellation loaded from file has non power of 2 size", __FILE__, __LINE__);
 			Es0 /= float(nsignals);

@@ -104,7 +104,7 @@ ObjectRef getOutput(int output_id, int count)
 	{
 		if(inputrefVec.size() != length)
 		{
-			throw new NodeException(this, "Reference symbol sequence and received symbol sequence hve different lengths", __FILE__, __LINE__);
+			throw new NodeException(this, "Reference symbol sequence and received symbol sequence have different lengths", __FILE__, __LINE__);
 		}
 	
 		for (i = 0; i < length; i++)

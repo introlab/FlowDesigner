@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include "macros_math.h"
-#include "bin2gray.h"
 
 using namespace std;
 
@@ -32,12 +31,12 @@ DECLARE_NODE(Constellation)
  *
  * @parameter_name TYPE
  * @parameter_type string
- * @parameter_description Modulation type (PAM, PSK, QAM, FILE)
+ * @parameter_description Modulation type (PAM, PSK, QAM, FILE).
  * @parameter_value PSK
  *
  * @parameter_name NBITS
  * @parameter_type int
- * @parameter_description Number of bits per symbol. For QAM, number of bits per dimension.
+ * @parameter_description Number of bits per symbol.
  * @parameter_value 1
  *
  * @parameter_name ENERGY
@@ -59,7 +58,6 @@ class Constellation : public BufferedNode {
 	int nbits;
 	int nsignals;
 	float Es;
-	bool iscomplex;
 	enum modType {PAM, PSK, QAM, FILE_T};
 	modType type;
 	RCPtr<Vector<complex<float> > > Xiptr;
@@ -70,6 +68,7 @@ Constellation(string nodeName, ParameterSet params)
 : BufferedNode(nodeName, params)
 {
 	int i, j;
+	int nbh, nbhp;
 	unsigned int ui;
 
 	inputID = addInput("INPUT");
@@ -94,6 +93,8 @@ Constellation(string nodeName, ParameterSet params)
       else
 	 nbits = 1;
 
+      nsignals = 1 << nbits;
+
       if (parameters.exist("ENERGY"))
 	 Es = dereference_cast<float> (parameters.get("ENERGY"));
       else
@@ -105,7 +106,7 @@ Constellation(string nodeName, ParameterSet params)
 		filename = object_cast<String> (parameters.get("FILENAME"));
 	}
 
-	Xiptr = Vector<complex<float> >::alloc(1 << (nbits * ((type == QAM) ? 2 : 1)));
+	Xiptr = Vector<complex<float> >::alloc(1 << nbits);
 	Vector<complex<float> > &Xi = *Xiptr;
 
 	complex<float>  tmpc;
@@ -114,7 +115,6 @@ Constellation(string nodeName, ParameterSet params)
 	switch(type)
 	{
 		case PAM:
-			nsignals = 1 << nbits;
 			for (i = 0; i < nsignals; i++)
 			{
 				Xi[BIN2GRAY(i)] = complex<float>(nsignals - 1 - 2 * i, 0.);
@@ -122,32 +122,34 @@ Constellation(string nodeName, ParameterSet params)
 			}
 			break;
 		case PSK:
-			nsignals = 1 << nbits;
 			for (i = 0; i < nsignals; i++)
 			{
-				Xi[BIN2GRAY(i)] = complex<float>(cos((1 + 2 * i) * PI / float(nsignals)), sin((1 + 2 * i) * PI / float(nsignals)));
+				Xi[BIN2GRAY(i)] = complex<float>(cos((1 + 2 * i) * PI / float(nsignals)),
+						sin((1 + 2 * i) * PI / float(nsignals)));
 				Xi[BIN2GRAY(i)] *= sqrt(Es);
 			}
 			break;
 		case QAM:
-			nsignals = 1 << (nbits << 1);
-			for(i = 0; i < (1 << nbits); i++)
+			nbh = 1 << (nbits >> 1);
+			nbhp = 1 << ((nbits + 1) >> 1);
+			for(i = 0; i < nbhp; i++)
 			{
-				for(j = 0; j < (1 << nbits); j++)
+				for(j = 0; j < nbh; j++)
 				{
-					Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)] = complex<float>((1 << nbits) - 1 - 2 * i, (1 << nbits) - 1 - 2 * j);
-					Es0 += Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].real() *
-						Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].real();
-					Es0 += Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].imag() *
-						Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)].imag();
+					Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)] =
+						complex<float>(nbhp - 1 - 2 * i, nbh - 1 - 2 * j);
+					Es0 += Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].real() *
+						Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].real();
+					Es0 += Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].imag() *
+						Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].imag();
 				}
 			}
 			Es0 /= float(nsignals);
-			for(i = 0; i < (1 << nbits); i++)
+			for(i = 0; i < nbhp; i++)
 			{
-				for(j = 0; j < (1 << nbits); j++)
+				for(j = 0; j < nbh; j++)
 				{
-					Xi[BIN2GRAY(j) + (1 << nbits) * BIN2GRAY(i)] *= sqrt(Es / Es0);
+					Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)] *= sqrt(Es / Es0);
 				}
 			}
 			break;
@@ -163,7 +165,6 @@ Constellation(string nodeName, ParameterSet params)
 			}
 			nsignals = Xi.size();
 			nbits = floor(log2(nsignals));
-			iscomplex = true;
 			if(nsignals > (1 << nbits))
 				throw new NodeException(this, "Constellation loaded from file has non power of 2 size.", __FILE__, __LINE__);
 			Es0 /= float(nsignals);
@@ -187,8 +188,7 @@ void calculate(int output_id, int count, Buffer &out)
 	const Vector<int> &inputVec = object_cast<Vector<int> >(inputRef);
 	int length = inputVec.size();
 
-	if(type != FILE_T && !iscomplex && (length % nbits)) throw new NodeException(this, "Constellation: input length % nbits != 0", __FILE__, __LINE__);
-	if(type != FILE_T && iscomplex && (length % (2 * nbits))) throw new NodeException(this, "Constellation: input length % (2 * nbits) != 0", __FILE__, __LINE__);
+	if(type != FILE_T && (length % nbits)) throw new NodeException(this, "Constellation: input length % nbits != 0", __FILE__, __LINE__);
 
 	Vector<complex<float> > &output = *Vector<complex<float> >::alloc(length / nbits);
 

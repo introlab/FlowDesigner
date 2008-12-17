@@ -35,7 +35,7 @@ DECLARE_NODE(ComplexGaussian)
  * @parameter_description Mean
  * @parameter_value 0.
  *
- * @parameter_name VAR
+ * @parameter_name VARIANCE
  * @parameter_type float
  * @parameter_description Variance
  * @parameter_value 1.
@@ -69,8 +69,8 @@ public:
       else
 	 mean = 0.;
 
-      if (parameters.exist("VAR"))
-	 var = dereference_cast<float> (parameters.get("VAR"));
+      if (parameters.exist("VARIANCE"))
+	 var = dereference_cast<float> (parameters.get("VARIANCE"));
       else
 	 var = 1.;
 
