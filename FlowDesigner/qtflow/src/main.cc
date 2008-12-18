@@ -1,6 +1,6 @@
 /***********************************************************************************
-** Copyright (C) 2006-2008 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca). 
-** All rights reserved. 
+** Copyright (C) 2006-2008 Dominic Letourneau (Dominic.Letourneau@USherbrooke.ca).
+** All rights reserved.
 **
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ void FDMsgHandler(QtMsgType type, const char *msg)
 {
 	switch (type) {
 	case QtDebugMsg:
-		//QMessageBox::information(0, "Debug message", msg, QMessageBox::Ok);
+			//QMessageBox::information(0, "Debug message", msg, QMessageBox::Ok);
 			cerr<<msg<<endl;
 		break;
 	case QtWarningMsg:
@@ -62,52 +62,52 @@ int main(int argc, char* argv[])
 {
 	// Init resource
     Q_INIT_RESOURCE(flowdesigner);
-    
-	
-	
+
+
+
 	//Let's redirect stdout and stderr to a new stream
 	//QtIORedirector redirector_cerr;
 	//QtIORedirector redirector_cout;
 
 	//redirect cout
 	//std::cout.rdbuf(&redirector_cout);
-	
+
 	//redirect cerr
 	//std::cerr.rdbuf(&redirector_cerr);
-	
-	try 
+
+	try
 	{
 		//Main application
 		QApplication app(argc, argv);
-            
+
 		//Show splash screen
 		QtFlowDesignerSplash splash;
-		
+
 		//Connect signals
 		QObject::connect(QtDLManager::instance(),SIGNAL(newLoadedLibrary(QString)), &splash, SLOT(displayMessage(QString)));
-		
+
 		splash.show();
 		splash.showMessage("Starting FlowDesigner...");
-				
-		
+
+
 		//IExtensions::detect();
-		
+
 		//Load dynamic libraries
 		QtDLManager::instance()->scanDL();
-		
+
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
-       
-		
+
+
 		//Look for probes
 		QtProbeRegistry reg;
- 
+
 		//Main window
 		QtFlowDesigner fd;
-		
+
 		//QObject::connect(&redirector_cerr,SIGNAL(newOutput(const char*, std::streamsize)),&fd,SLOT(newStderrOutput(const char *, std::streamsize)));
-		
-        
+
+
         for (int i = 1; i < argc; i++)
         {
             fd.loadDocument(argv[i]);
@@ -115,37 +115,37 @@ int main(int argc, char* argv[])
 
         fd.show();
 		splash.finish(&fd);
-		
+
 		//This will popup messages if required
 		qInstallMsgHandler(FDMsgHandler);
-		
+
 		// Enter the main loop of the QApplication
 		int result = app.exec();
-		
+
 		// Destroy the singleton
 		QtDLManager::destroy();
-		
-		return result;      
-   	} 
+
+		return result;
+   	}
 	catch (BaseException *e)
    	{
       		e->print();
       		delete e;
-      		
+
       		// Destroy the singleton
       		QtDLManager::destroy();
-      		
+
       		exit(-1);
    	}
     catch (...)
     {
         std::cerr<<"Unknown exception caught"<<std::endl;
-        
+
         // Destroy the singleton
         QtDLManager::destroy();
-        
-        exit(-1);                     
-    }      
+
+        exit(-1);
+    }
 
 
 

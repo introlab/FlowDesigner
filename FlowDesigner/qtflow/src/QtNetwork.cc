@@ -340,10 +340,9 @@ namespace FD
 					//TODO : Find a better way for node names?
 					nodename << event->mimeData()->text().toStdString() << "_" << number;
 
-					UINode* node = m_uiNetwork->createNode(nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y());
-
 					//This will generate an event, we will then display the node properly
-					m_uiNetwork->addNode(node);
+					//the node adds itself to the network...
+					UINode* node = m_uiNetwork->createNode(nodename.str(),event->mimeData()->text().toStdString(),pos.x(),pos.y());
 				}
 			}
 		}
