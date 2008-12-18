@@ -38,6 +38,7 @@
 #include <QGraphicsSvgItem>
 #include <QGraphicsRectItem>
 #include <QInputDialog>
+#include <QtDebug>
 
 namespace FD
 {
@@ -46,10 +47,6 @@ namespace FD
     
    QtNode::~QtNode()
    {
-	   //Remove edges
-	   
-	   
-	   
 	   if (m_uiNode)
 	   {
 		   m_uiNode->unregisterEvents(this);
@@ -62,9 +59,7 @@ namespace FD
         if (m_uiNode)
         {
         	setHandlesChildEvents(false);
-        	
 
-        	
             double posx, posy;
             m_uiNode->getPos(posx,posy);
             setPos(posx,posy);
@@ -395,21 +390,22 @@ namespace FD
     		delete iter->second;
 		}
     	
-	//redraw node
+		//redraw node
         redrawNode();
     }  
     
 	//Terminal removed
 	void QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)
 	{
-		cerr<<"QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)"<<endl;
+		//cerr<<"QtNode::notifyTerminalRemoved(const UINode *node, const UITerminal* terminal)"<<endl;
+		qDebug("QtNode::notifyTerminalRemoved(const UINode *node = %s, const UITerminal* terminal = %p",node->getName().c_str(),terminal);
 		removeTerminal(const_cast<UITerminal*>(terminal));
 	}
 	
 	//Terminal Added
 	void QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal)
 	{
-		cerr<<"QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal)"<<endl;
+		qDebug("QtNode::notifyTerminalAdded(const UINode *node, const UITerminal* terminal  Node: %s Terminal: %s",node->getName().c_str(),terminal->getName().c_str());
 		addTerminal(const_cast<UITerminal*>(terminal));
 	}
 				
@@ -422,14 +418,14 @@ namespace FD
 	//Destroyed
 	void QtNode::notifyDestroyed(const UINode *node)
 	{
-		cerr<<"QtNode::notifyDestroyed(const UINode *node)"<<endl;
-		m_uiNode = NULL;
+		qDebug("QtNode::notifyDestroyed(const UINode *node) Node: %p",node);
+	    m_uiNode = NULL;
 	}
 	
 	//Position changed
 	void QtNode::notifyPositionChanged(const UINode* node, double x, double y)
 	{
-		cerr<<"QtNode::notifyPositionChanged(const UINode* node, double x, double y)"<<endl;
+		//cerr<<"QtNode::notifyPositionChanged(const UINode* node, double x, double y)"<<endl;
 		
 		//Update Links
 		for (QList<QtLink*>::iterator iter = edgeList.begin(); iter != edgeList.end(); iter++)

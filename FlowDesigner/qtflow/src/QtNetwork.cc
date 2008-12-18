@@ -486,38 +486,37 @@ namespace FD
 
     void QtNetwork::removeLink(QtLink* link)
     {
-       	//Make sure we own this link...resizeSceneView();	
+       	//Make sure we own this link...resizeSceneView();
 		scene()->removeItem(link);
 		delete link;
 		resizeSceneView();
-		
+
     }
 
 	//Node removed
 	void QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)
 	{
-		cerr<<"QtNetwork::notifyNodeRemoved(const UINetwork *net, const UINode* node)"<<endl;
-		
+		qDebug("QtNetwork::notifyNodeRemoved(const UINetwork *net = %s, const UINode* node = %p)",net->getName().c_str(), node);
 		if (m_nodeMap.find(const_cast<UINode*>(node)) != m_nodeMap.end())
-		{	
+		{
 			removeNode( m_nodeMap[const_cast<UINode*>(node)]);
 			m_nodeMap.erase(const_cast<UINode*>(node));
-		}	
+		}
 	}
 
 	//Node added
 	void QtNetwork::notifyNodeAdded(const UINetwork *net, const UINode* node)
 	{
-		cerr<<"QtNetwork::notifyNodeAdded(const UINetwork *net, const UINode* node)"<<endl;
+		qDebug("QtNetwork::notifyNodeAdded(const UINetwork *net = %s, const UINode* node = %s)",net->getName().c_str(), node->getName().c_str());
 		addNode(const_cast<UINode*>(node));
 	}
 
 	//Link removed
 	void QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)
 	{
-		cerr<<"QtNetwork::notifyLinkRemoved(const UINetwork *net, const UILink* link)"<<endl;
+		qDebug("QtNetwork::notifyLinkRemoved(const UINetwork *net = %s, const UILink* link = %p)",net->getName().c_str(), link);
 		if (m_linkMap.find(const_cast<UILink*>(link)) != m_linkMap.end())
-		{	
+		{
 			removeLink(m_linkMap[const_cast<UILink*>(link)]);
 			m_linkMap.erase(const_cast<UILink*>(link));
 		}
@@ -526,7 +525,7 @@ namespace FD
 	//Link added
 	void QtNetwork::notifyLinkAdded(const UINetwork *net, const UILink* link)
 	{
-		cerr<<"QtNetwork::notifyLinkAdded(const UINetwork *net, const UILink* link)"<<endl;
+		qDebug("QtNetwork::notifyLinkAdded(const UINetwork *net = %s, const UILink* link = %i)",net->getName().c_str(), link->getId());
 		addLink(const_cast<UILink*>(link));
 	}
 
@@ -534,8 +533,14 @@ namespace FD
 	void QtNetwork::notifyNoteRemoved(const UINetwork *net, const UINote* note)
 	{
 		cerr<<"QtNetwork::notifyNoteRemoved(const UINetwork *net, const UINote* note)"<<endl;
-		removeNote(m_noteMap[const_cast<UINote*>(note)]);
-		m_noteMap.erase(const_cast<UINote*>(note));
+
+		//Warning, some notes are invisible (no item created)
+		//Make sure we are deleting only visible notes
+		if (m_noteMap.find(const_cast<UINote*>(note))!= m_noteMap.end())
+		{
+			removeNote(m_noteMap[const_cast<UINote*>(note)]);
+			m_noteMap.erase(const_cast<UINote*>(note));
+		}
 	}
 
 	//Note added
@@ -573,7 +578,7 @@ namespace FD
 	//Destroyed
 	void QtNetwork::notifyDestroyed(const UINetwork *net)
 	{
-		cerr<<"QtNetwork::notifyDestroyed(const UINetwork *net)"<<endl;
+		qDebug("QtNetwork::notifyDestroyed(const UINetwork *net = %p)",net);
 		m_uiNetwork = NULL;
 	}
 
@@ -590,9 +595,12 @@ namespace FD
 
     void QtNetwork::removeNote(QtNote *note)
     {
-        scene()->removeItem(note);
-        delete note;
-        resizeSceneView();
+    	if (note)
+    	{
+    		scene()->removeItem(note);
+    		delete note;
+    		resizeSceneView();
+    	}
     }
 
     void QtNetwork::mouseDoubleClickEvent ( QMouseEvent * e )
@@ -602,7 +610,7 @@ namespace FD
     	}
         QGraphicsView::mouseDoubleClickEvent(e);
     }
-	
+
 	void QtNetwork::networkRenameTriggered()
 	{
 		if (m_uiNetwork->getName() != "MAIN")
@@ -611,15 +619,15 @@ namespace FD
 			QString name = QInputDialog::getText ( NULL,QString ( "Enter New Network Name" ),
 												  QString ( "Network Name : " ),QLineEdit::Normal,
 												  QString ( m_uiNetwork->getName().c_str() ),&ok );
-			
+
 			if ( ok && !name.isEmpty() )
-			{  
+			{
 				//TODO LOOK FOR DUPLICATED NAMES
 				m_uiNetwork->rename(name.toStdString());
 			}
-			
-		}	
+
+		}
 	}
-	
+
 
 } //namespace FD

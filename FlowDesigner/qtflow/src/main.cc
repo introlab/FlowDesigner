@@ -41,7 +41,8 @@ void FDMsgHandler(QtMsgType type, const char *msg)
 {
 	switch (type) {
 	case QtDebugMsg:
-		QMessageBox::information(0, "Debug message", msg, QMessageBox::Ok);
+		//QMessageBox::information(0, "Debug message", msg, QMessageBox::Ok);
+			cerr<<msg<<endl;
 		break;
 	case QtWarningMsg:
 		QMessageBox::warning(0, "Warning", msg, QMessageBox::Ok);
@@ -62,8 +63,7 @@ int main(int argc, char* argv[])
 	// Init resource
     Q_INIT_RESOURCE(flowdesigner);
     
-	//This will popup messages if required
-	qInstallMsgHandler(FDMsgHandler);
+	
 	
 	//Let's redirect stdout and stderr to a new stream
 	//QtIORedirector redirector_cerr;
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 		//IExtensions::detect();
 		
 		//Load dynamic libraries
-		QtDLManager::instance()->scanDL();
+		//QtDLManager::instance()->scanDL();
 		
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
@@ -115,6 +115,9 @@ int main(int argc, char* argv[])
 
         fd.show();
 		splash.finish(&fd);
+		
+		//This will popup messages if required
+		qInstallMsgHandler(FDMsgHandler);
 		
 		// Enter the main loop of the QApplication
 		int result = app.exec();

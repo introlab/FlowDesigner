@@ -28,7 +28,7 @@
 using namespace std;
 
 namespace FD {
-	
+
 	UIDocument::UIDocument(string _name)
 	: modified(false)
 	, editable(true)
@@ -39,40 +39,38 @@ namespace FD {
 	{
 		setFullPath(_name);
 	}
-	
+
 	UIDocument::~UIDocument()
 	{
-		
-		//cerr << "destroying UIDocument " << name << endl;	
+
+		//This seems weird, but networks will remove themselves from the network data structure
 		while(networks.size() > 0)
 		{
-			//This will notify observers that we
-			//are removing networks
-			removeNetwork(networks[0], true);
+			removeNetwork(networks[0],true);
 		}
-		
+
 		//TODO : should we notify observers for this?
 		for (unsigned int i=0;i<textParams.size();i++)
 			delete textParams[i];
-		
+
 		for (unsigned int i=0;i<docInputs.size();i++)
 			delete docInputs[i];
-		
+
 		for (unsigned int i=0;i<docOutputs.size();i++)
 			delete docOutputs[i];
-		
+
 		for (unsigned int i=0;i<docParams.size();i++)
 			delete docParams[i];
-		
+
 		//Notify observers that we are destroyed
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyDestroyed(this);
 		}
-		
+
 	}
-	
-	
+
+
 	UINetwork *UIDocument::getNetworkNamed(const string &n)
 	{
 		for (unsigned int i=0;i<networks.size();i++)
@@ -82,37 +80,37 @@ namespace FD {
 		}
 		return NULL;
 	}
-	
+
 	vector<ItemInfo *> UIDocument::getNetInputs(const string &netName)
 	{
 		//updateAllNetworks();
 		vector <ItemInfo *> inputs;
 		if (subnetInfo.findNode(netName))
 			return subnetInfo.findNode(netName)->inputs;
-		
+
 		return inputs;
 	}
-	
+
 	vector<ItemInfo *> UIDocument::getNetOutputs(const string &netName)
 	{
 		//updateAllNetworks();
 		vector <ItemInfo *> outputs;
 		if (subnetInfo.findNode(netName))
 			return subnetInfo.findNode(netName)->outputs;
-		
+
 		return outputs;
 	}
-	
+
 	vector<ItemInfo *> UIDocument::getNetParams(const string &netName)
 	{
 		//updateAllNetworks();
 		vector <ItemInfo *> params;
 		if (subnetInfo.findNode(netName))
 			return subnetInfo.findNode(netName)->params;
-		
+
 		return params;
 	}
-	
+
 	string UIDocument::getDescription(const string &type)
 	{
 		NodeInfo *info = UINodeRepository::Find(type);
@@ -121,8 +119,8 @@ namespace FD {
 		else
 			return "Description not available";
 	}
-	
-	
+
+
 	void UIDocument::addParameterText(const string &name, const string &value, const string &type, const string &description)
 	{
 		ItemInfo *textInfo = new ItemInfo;
@@ -131,29 +129,29 @@ namespace FD {
 		textInfo->type = type;
 		textInfo->description = description;
 		textParams.insert(textParams.end(), textInfo);
-		
+
 		//Notify observers
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyParametersChanged(this,textInfo);
 		}
-		
+
 	}
-	
+
 	void UIDocument::printOn(ostream &out) const
 	{
 		out << "<UIDocument" << endl;
 		out << "<name " << docName << " >" << endl;
 		out << ">" << endl;
 	}
-	
-	
+
+
 	void UIDocument::load()
 	{
 		string fullpath=path+docName;
 		/*  This allows making scripts by ignoring the #! line at the beginning
 		 Unfortunately, it is incompatible with the compression feature of libXML*/
-		
+
 		//ostringstream docText;
 		ifstream docFile(fullpath.c_str());
 		if (docFile.fail())
@@ -216,10 +214,10 @@ namespace FD {
 		//cerr<<"loading XML document from memory"<<endl;
 		loadFromMemory(docStr.c_str(), docStr.size());
 		//cerr<<"done!"<<endl;
-		
+
 		//subnetInfo.Print(cerr);
 	}
-	
+
 	void UIDocument::loadFromMemory(const char *mem, int size)
 	{
 		xmlDocPtr doc = xmlParseMemory (const_cast<char *> (mem), size);
@@ -233,15 +231,15 @@ namespace FD {
 		xmlNodePtr root=doc->children;
 		loadXML(root);
 		xmlFreeDoc(doc);
-		
+
 	}
-	
+
 	void UIDocument::loadXML(xmlNodePtr root)
 	{
 		//loadAllSubnetInfo(root->children);
 		subnetInfo.clean();
 		subnetInfo.loadAllSubnetInfo(root->children);
-		
+
 		//loading category if it exists
 		xmlChar *cat = xmlGetProp(root, (xmlChar *)"category");
 		if (cat)
@@ -249,7 +247,7 @@ namespace FD {
 			category = string((char *)cat);
 			free (cat);
 		}
-		
+
 		//loading name if it exists
 		xmlChar *name = xmlGetProp(root, (xmlChar *)"docName");
 		if (name)
@@ -257,7 +255,7 @@ namespace FD {
 			docName = string((char *)name);
 			free (name);
 		}
-		
+
 		//loading comments if they exists
 		xmlChar *comments = xmlGetProp(root, (xmlChar *)"comments");
 		if (comments)
@@ -265,7 +263,7 @@ namespace FD {
 			m_comments = string((char *)comments);
 			free (comments);
 		}
-		
+
 		//loading port if it exists
 		xmlChar *port = xmlGetProp(root, (xmlChar *)"connectionPort");
 		if (port)
@@ -273,7 +271,7 @@ namespace FD {
 			m_connectionPort = std::atoi((char *)port);
 			free (comments);
 		}
-		
+
 		//loading networks
 		xmlNodePtr net = root->children;
 		//cerr << "parsing...\n";
@@ -287,10 +285,10 @@ namespace FD {
 			//File included (prototype)
 			if (string((char*)net->name) == "IncludeNetwork")
 			{
-				
+
 				cerr<<"Warning, included network is still a prototype, use at your own risk"<<endl;
 				xmlChar *fname = xmlGetProp(net,(xmlChar *)"file");
-				
+
 				if (fname)
 				{
 					cerr<<"Including : "<<(char*) fname<<endl;
@@ -298,7 +296,7 @@ namespace FD {
 					{
 						//let's import the network
 						importNetwork(string((char*) fname));
-						
+
 					}
 					catch(BaseException *e)
 					{
@@ -308,13 +306,13 @@ namespace FD {
 					free(fname);
 				}
 			}
-			
-			
-			
+
+
+
 			net = net->next;
 		}
-		
-		
+
+
 		vector<ItemInfo *> tmp = getNetParams("MAIN");
 		//cerr << "Got " << tmp.size() << " params in GUIDocument::createParamDialog\n";
 		//textParams.resize(tmp.size());
@@ -339,7 +337,7 @@ namespace FD {
 				string type = string (str_type);
 				string value = string (str_value);
 				free(str_name); free(str_type); free(str_value);
-				
+
 				for (unsigned int i=0;i<textParams.size();i++)
 				{
 					if (textParams[i]->name == name)
@@ -352,167 +350,142 @@ namespace FD {
 				//cerr << "<param: " << name << ", " << type << ":" << value << ">\n";
 			}
 			par = par->next;
-			
+
 		}
-		
-		
+
+
 		setModified(false);
-		
+
 		//updating all networks
 		updateAllNetworks();
-		
+
 	}
-	
-	
-	
+
+
+
 	UINetwork *UIDocument::newNetwork(const string &_name, UINetwork::Type type)
 	{
 		//cerr << "UIDocument::newNetwork\n";
 		UINetwork *newNet =  new UINetwork(this, _name, type);
 		if (newNet)
-		{	
+		{
 			updateNetInfo(newNet);
 			newNet->registerEvents(&m_networkEventReceiver);
 		}
 		return newNet;
 	}
-	
+
 	UINetwork *UIDocument::newNetwork(xmlNodePtr _net)
 	{
 		//cerr << "UIDocument::newNetwork\n";
 		UINetwork *newNet =  new UINetwork(this, _net);
 		if (newNet)
-		{	
+		{
 			updateNetInfo(newNet);
 			newNet->registerEvents(&m_networkEventReceiver);
 		}
 		return newNet;
 	}
-	
-	
+
+
 	UINetwork *UIDocument::addNetwork(string name, UINetwork::Type type)
 	{
 		//cerr << "UIDocument::addNetwork (type = " << typeid(this).name() << ")" << endl;
-		
+
 		//UINetwork *newNet = new GUINetwork(this, name, iter);
-		
+
 		bool found = false;
-		
+
 		for (unsigned int i = 0; i < networks.size(); i++) {
 			if (networks[i]->getName() == name) {
 				found = true;
 				break;
 			}
 		}
-		
+
 		if (found) {
 			throw new GeneralException(string("Network already exist : ") + string(name), __FILE__, __LINE__);
 		}
-		
+
 		UINetwork *newNet = newNetwork(name, type);
-		
-		
-		/*
-		 for (unsigned int i=0;i<networks.size();i++)
-		 {
-		 networks[i]->newNetNotify("Subnet",name);
-		 newNet->newNetNotify("Subnet",networks[i]->getName());
-		 }
-		 */
-		
+
+
 		networks.insert(networks.end(), newNet);
-		
+
 		//Notify observers
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyNetworkAdded(this,newNet);
 		}
-		
+
 		setModified(true);
 		return newNet;
 	}
-	
+
 	UINetwork *UIDocument::addNetwork(xmlNodePtr xmlNet)
 	{
-		
+
 		//cerr << "creating...\n";
 		UINetwork *newNet = newNetwork(xmlNet);
-		
+
 		//look for existing network before adding
 		UINetwork *tmp_net = getNetworkNamed(newNet->getName());
-		
+
 		if (tmp_net != NULL) {
 			string netName = newNet->getName();
 			delete newNet;
 			throw new GeneralException(string("Network (") + netName + string(") already exists"),__FILE__,__LINE__);
 		}
-		
-		
-		//cerr << "created\n";
-		//cerr << "newNet = " << newNet << endl;
-		//cerr << "network created in UIDocument::addNetwork\n";
-		/*
-		 for (unsigned int i=0;i<networks.size();i++)
-		 {
-		 networks[i]->newNetNotify("Subnet",newNet->getName());
-		 newNet->newNetNotify("Subnet",networks[i]->getName());
-		 }
-		 */ 
-		
-		//cerr << "newNet = " << newNet << endl;
+
 		networks.insert(networks.end(), newNet);
-		
+
 		//Notify observers
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyNetworkAdded(this,newNet);
 		}
-		
+
 		setModified(true);
 		return newNet;
 	}
-	
+
 	//This function looks useless. Is it?
 	void UIDocument::removeNetwork(UINetwork *toRemove, bool deleteNetwork)
 	{
-		vector<UINetwork *>::iterator i=networks.begin();
-		while (i != networks.end())
+		vector<UINetwork *>::iterator i=find(networks.begin(),networks.end(),toRemove);
+
+		if (i != networks.end())
 		{
-			if (*i == toRemove)
-			{
+
+				//Watch out, must be removed from list before deleting
+				//Be careful not to use iterator after this step
+				networks.erase(i);
+
+				if (deleteNetwork)
+				{
+					delete toRemove;
+				}
+
 				//Notify observers
 				for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 				{
-					(*iter)->notifyNetworkRemoved(this,*i);
+					(*iter)->notifyNetworkRemoved(this,toRemove);
 				}
-				
-				//Watch out, must be removed from list before deleting
-				networks.erase(i);
-				
-				if (deleteNetwork)
-				{	
-					delete (*i);
-				}
-				
-				
-				break;
-			}
-			++i;
+
+				setModified(true);
 		}
-		
-		setModified(true);
 	}
-	
+
 	void UIDocument::error(const char *err)
 	{
 		cerr << err << endl;
 	}
-	
+
 	void UIDocument::save()
 	{
 		string fullname = path+docName;
 		int size;
-		
+
 		int save_fd = open(fullname.c_str(), O_CREAT|O_WRONLY|O_TRUNC, 00755);
 		if (save_fd==-1)
 		{
@@ -525,7 +498,7 @@ namespace FD {
 			error("Error while saving file");
 			return;
 		}
-		
+
 		char *mem = saveToMemory(size);
 		outFile << "#!/usr/bin/env batchflow" << endl;
 		outFile.write(mem, size);
@@ -535,43 +508,43 @@ namespace FD {
 			error("Error while saving file");
 			return;
 		}
-		
+
 		free(mem);
 		setModified(false);
-		
+
 	}
-	
-	
+
+
 	char *UIDocument::saveToMemory(int &size)
 	{
 		xmlDocPtr doc;
 		doc = xmlNewDoc((xmlChar *)"1.0");
 		doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
-		
+
 		//saving the document name
 		xmlSetProp(doc->children, (xmlChar *)"docName", (xmlChar *)docName.c_str());
-		
+
 		//saving category if defined
 		if (category!="") {
 			xmlSetProp(doc->children, (xmlChar *)"category", (xmlChar *)category.c_str());
 		}
-		
+
 		//saving comments if defined
 		if (m_comments!="") {
 			xmlSetProp(doc->children, (xmlChar *)"comments", (xmlChar *)m_comments.c_str());
 		}
-		
+
 		//saving the port
 		char bufPort[6] = {0};
 		sprintf(bufPort, "%d", m_connectionPort);
 		xmlSetProp(doc->children, (xmlChar *)"connectionPort", (xmlChar *)bufPort);
-		
+
 		int incId = 1;
 		for (unsigned int i=0;i<networks.size();i++)
 		{
 			networks[i]->saveXML(doc->children, incId);
 		}
-		
+
 		for (unsigned int i=0;i<textParams.size();i++)
 		{
 			xmlNodePtr tree;
@@ -580,14 +553,14 @@ namespace FD {
 			xmlSetProp(tree, (xmlChar *)"type", (xmlChar *)textParams[i]->type.c_str());
 			xmlSetProp(tree, (xmlChar *)"value", (xmlChar *)textParams[i]->value.c_str());
 		}
-		
+
 		char *mem;
 		xmlDocDumpFormatMemory(doc,(xmlChar **)&mem,&size, 1);
-		
+
 		xmlFreeDoc(doc);
 		return mem;
 	}
-	
+
 	string UIDocument::findExternal(const string &filename, const char *searchPath, bool include_home, bool fullPathOutput)
 	{
 		vector<string> pathlist = envList(searchPath, include_home);
@@ -599,29 +572,29 @@ namespace FD {
 		}
 		return "";
 	}
-	
+
 	bool UIDocument::findExternalRecursive(const string &basePath, const string &path, const string &filename, string &fullname, bool fullPathOutput)
 	{
 		struct stat my_stat;
 		string dirPath = basePath + "/" + path;
 		DIR *my_directory = opendir (dirPath.c_str());
-		
+
 		if (!my_directory) return false;
-		
+
 		struct dirent *current_entry;
-		
+
 		for (current_entry = readdir(my_directory);
 			 current_entry != NULL; current_entry = readdir(my_directory)) {
-			
+
 			string name = current_entry->d_name;
 			string fullpath = basePath + "/" + path + string("/") + name;
-			
+
 			if (stat(fullpath.c_str(), &my_stat) < 0) {
 				//cerr<<"stat error"<<endl;
 				perror(fullpath.c_str());
 				continue;
 			}
-			
+
 			if (S_ISDIR(my_stat.st_mode)) {
 				//it is a directory, let's doing it recursively
 				if (name != string("..") && name != string(".")) {
@@ -644,12 +617,12 @@ namespace FD {
 				}
 			}
 		}
-		
+
 		closedir(my_directory);
 		return false;
-		
+
 	}
-	
+
 	Network *UIDocument::buildExternal(const string &type, const string &_name, const ParameterSet &params)
 	{
 		//cout<<"Building external ... : "<<type<<endl;
@@ -657,10 +630,10 @@ namespace FD {
 		if (fullname == "")
 			return NULL;
 		UIDocument doc(fullname);
-		
+
 		//cout<<"loading : "<<fullpath<<endl;
 		doc.load();
-		
+
 		UINetwork *net = doc.getNetworkNamed("MAIN");
 		if (net)
 		{
@@ -671,37 +644,37 @@ namespace FD {
 			throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
 		}
 	}
-	
-	
+
+
 	Network *UIDocument::build(const string &_name, const ParameterSet &params)
 	{
-		
+
 		//cerr<<"Building network  :"<<_name<<endl;
-		
+
 		Network *net = NULL;
 		try {
 			UINetwork *uinet = getNetworkNamed("MAIN");
 			if (!uinet)
 				throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
-			
+
 			//copy params
 			ParameterSet myParams = params;
-			
+
 			//adding document params
 			for (size_t i = 0; i < textParams.size(); i++)
 			{
 				if (!myParams.exist(textParams[i]->name)) {
 					//create object
 					ObjectRef param_value = ObjectParam::stringParam(textParams[i]->type,textParams[i]->value,myParams);
-					
+
 					//adding default param value if not specified into arguments
 					myParams.add(textParams[i]->name,param_value);
 				}
 			}
-			
-			
+
+
 			net = uinet->build(_name, myParams);
-			
+
 			net->verifyConnect();
 			return net;
 		} catch (BaseException *e)
@@ -723,8 +696,8 @@ namespace FD {
 			throw;
 		}
 	}
-	
-	
+
+
 	void UIDocument::genCodeExternal(const string &type, ostream &out, int &id, set<string> &nodeList)
 	{
 		string fullname = findExternal(type+".n");
@@ -737,7 +710,7 @@ namespace FD {
 			throw new GeneralException("No MAIN network defined", __FILE__, __LINE__);
 		uinet->genCode(out, id, nodeList);
 	}
-	
+
 	set<string> UIDocument::genCode(ostream &out, const string &functName, bool localIncludes)
 	{
 		set<string> nodeList;
@@ -764,10 +737,10 @@ namespace FD {
 		out << "Network *" << functName << "(const string &_name, ParameterSet &params)" << endl;
 		out << "{\n";
 		out << "\tNetwork *net = genNet0(_name, params);\n";
-		
+
 		//Don't verify... in case we need other connections
 		//out << "\tnet->verifyConnect();\n";
-		
+
 		out << "\treturn net;\n";
 		out << "}\n";
 		//cerr << "nodes used:\n";
@@ -775,7 +748,7 @@ namespace FD {
 		//   cerr << *it << endl;
 		return nodeList;
 	}
-	
+
 	//Run without a GUI
 	void UIDocument::run()
 	{
@@ -789,7 +762,7 @@ namespace FD {
 			//cerr << "initializing...\n";
 			net->initialize();
 			//cerr << "running (UIDocument)...\n";
-			
+
 			for (int i = 0; ;i++) {
 				if (!net->hasOutput(i)) break;
 				cout << *net->getOutput(i,0);
@@ -801,14 +774,14 @@ namespace FD {
 		{
 			cerr << "unknown exception caught" << endl;
 		}
-		
+
 		if (net)
 		{
 			net->cleanupNotify();
 			delete net;
 		}
 	}
-	
+
 	void UIDocument::run(ParameterSet &p)
 	{
 		Network *net=NULL;
@@ -840,7 +813,7 @@ namespace FD {
 			delete net;
 		}
 	}
-	
+
 	void UIDocument::setFullPath(const string &fullpath)
 	{
 		//cerr << "fullpath is: \"" << fullpath << "\"" << endl;
@@ -856,7 +829,7 @@ namespace FD {
 		//cerr << "path is: \"" << path << "\"" << endl;
 		//cerr << "name is: \"" << name << "\"" << endl;
 		untitled=false;
-		
+
 		//Notify observers
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
@@ -864,51 +837,51 @@ namespace FD {
 			(*iter)->notifyNameChanged(this,docName);
 		}
 	}
-	
-	void UIDocument::updateNetInfo(UINetwork *net) 
+
+	void UIDocument::updateNetInfo(UINetwork *net)
 	{
-		
+
 		//change our net information
 		subnetInfo.updateNetInfo(net);
-		
+
 		//update "networks parameters that included this net as a node"
 		for (size_t i = 0; i < networks.size(); i++)
 		{
-			if (networks[i] && networks[i] != net) 
+			if (networks[i] && networks[i] != net)
 			{
 				networks[i]->updateAllSubnetParameters(net->getName(), subnetInfo.findNode(net->getName()));
 			}
 		}
 	}
-	
+
 	void UIDocument::updateAllNetworks() {
-		
+
 		//update network information
 		for (unsigned int i=0;i<networks.size();i++) {
 			//subnetInfo.updateNetInfo(networks[i]);
 			updateNetInfo(networks[i]);
 		}
-		
+
 	}
-	
-	
+
+
 	void UIDocument::updateAllSubnetTerminals(const string _nettype, const string _terminalname,
 											  UINetTerminal::NetTermType _terminaltype, bool _remove)
 	{
-		
+
 		for (unsigned int i = 0; i < networks.size(); i++)
 		{
 			if (networks[i])
 				networks[i]->updateAllSubnetTerminals(_nettype, _terminalname, _terminaltype, _remove);
 		}
 	}
-	
+
 	void UIDocument::exportNetwork(const std::string &networkName, const std::string &fileName) {
-		
+
 		UINetwork *net = getNetworkNamed(networkName);
-		
+
 		if (net) {
-			
+
 			int save_fd = open(fileName.c_str(), O_CREAT|O_WRONLY|O_TRUNC, 00755);
 			if (save_fd == -1) {
 				error("UIDocument::exportNetwork : Error while saving file: cannot open");
@@ -919,23 +892,23 @@ namespace FD {
 				error("UIDocument::exportNetwork : Error while saving file");
 				return;
 			}
-			
+
 			xmlDocPtr doc;
 			doc = xmlNewDoc((xmlChar *)"1.0");
 			doc->children = xmlNewDocNode(doc, NULL, (xmlChar *)"Document", NULL);
-			
-			
+
+
 			//Export network
 			int startId = 1;
 			net->saveXML(doc->children, startId);
-			
+
 			char *mem = NULL;
 			int size = 0;
-			
+
 			//Dump to memory
 			xmlDocDumpFormatMemory(doc,(xmlChar **)&mem,&size, 1);
 			xmlFreeDoc(doc);
-			
+
 			//Write to file
 			outFile.write(mem, size);
 			if (outFile.fail()) {
@@ -943,7 +916,7 @@ namespace FD {
 				error("UIDocument::exportNetwork : Error while saving file");
 				return;
 			}
-			
+
 			//Free memory
 			free(mem);
 		}
@@ -952,21 +925,21 @@ namespace FD {
 			throw new GeneralException(string("Network does not exist :") + networkName,__FILE__,__LINE__);
 		}
 	}
-	
-	
-	
+
+
+
 	void UIDocument::importNetwork(const std::string &fileName) {
-		
+
 		//TODO Merge stuff with load to avoid duplication of the code.
 		//The difference is that we do not reset document data before loading
 		//and we do not create a "MAIN" network.
-		
+
 		string docStr;
-		
+
 		ifstream inputFile(fileName.c_str());
-		
+
 		if (!inputFile.fail()) {
-			
+
 			char ch;
 			inputFile >> ch;
 			if (ch=='#')
@@ -996,10 +969,10 @@ namespace FD {
 				setModified(false);
 				return;
 			}
-			
+
 			//put back xml starting string
 			docStr = "<?xml";
-			
+
 			//read all data from file
 			while(1) {
 				char buff[1025];
@@ -1011,39 +984,39 @@ namespace FD {
 				}
 				docStr.append(buff, 1024);
 			}
-			
+
 			try {
 				//loading document
 				xmlDocPtr doc = xmlParseMemory (const_cast<char *> (docStr.c_str()), docStr.size());
-				
+
 				if (!doc || !doc->children || !doc->children->name) {
 					throw new GeneralException(string("Corrupted XML in file ") + fileName,__FILE__,__LINE__);
 				}
-				
+
 				xmlNodePtr net = doc->children->children;
-				
+
 				if (net) {
-					
+
 					//loading all networks
 					while (net != NULL) {
-						
+
 						//Standard network
 						if (string((char*)net->name) == "Network") {
 							addNetwork (net);
 						}
-						
+
 						//File included (prototype)
 						if (string((char*)net->name) == "IncludeNetwork") {
-							
+
 							cerr<<"Warning, included network is still a prototype, use at your own risk"<<endl;
 							xmlChar *fname = xmlGetProp(net,(xmlChar *)"file");
-							
+
 							if (fname) {
 								cerr<<"(Recursive) Including : "<<(char*) fname<<endl;
 								try {
 									//let's import the network
 									importNetwork(string((char*) fname));
-									
+
 								}
 								catch(BaseException *e) {
 									e->print(cerr);
@@ -1055,10 +1028,10 @@ namespace FD {
 						net = net->next;
 					}//while net
 				}
-				
+
 				//free XML data
 				xmlFreeDoc(doc);
-				
+
 				//the network is modified
 				setModified(true);
 			}
@@ -1070,7 +1043,7 @@ namespace FD {
 			throw new GeneralException(string("File does not exist : ") + fileName,__FILE__,__LINE__);
 		}
 	}
-	
+
 	/**Sets the 'modified' flag*/
 	void UIDocument::setModified(bool flag)
 	{
@@ -1084,59 +1057,59 @@ namespace FD {
 			}
 		}
 	}
-	
+
 	/**Set the category of the document in the node menu */
 	void UIDocument::setCategory(const std::string &cat)
 	{
 		category = cat;
-		
+
 		//Notify observers
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyCategoryChanged(this,category);
 		}
 	}
-	
+
 	/**Get the category of the document in the node menu */
 	const std::string& UIDocument::getCategory()
 	{
 		return category;
 	}
-	
+
 	/**Set comments for the document */
 	void UIDocument::setComments(const std::string &comments)
 	{
 		m_comments = comments;
-		
+
 		//Notify observers
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
 		{
 			(*iter)->notifyCommentsChanged(this,m_comments);
 		}
 	}
-	
+
 	/**Get comments from the document */
 	const std::string& UIDocument::getComments()
 	{
 		return m_comments;
 	}
-	
+
 	std::vector<UINetwork *> UIDocument::get_networks()
 	{
 		return networks;
 	}
-	
+
 	std::vector<ItemInfo *> UIDocument::get_textParams()
 	{
 		return textParams;
 	}
-	
+
 	UINodeRepository& UIDocument::getRepository()
 	{
 		return subnetInfo;
 	}
-	
-	
+
+
 	void UIDocument::registerEvents(UIDocumentObserverIF *observer)
 	{
 		if (find(m_observers.begin(),m_observers.end(),observer) == m_observers.end())
@@ -1144,8 +1117,8 @@ namespace FD {
 			m_observers.push_back(observer);
 		}
 	}
-	
-	
+
+
 	void UIDocument::unregisterEvents(UIDocumentObserverIF *observer)
 	{
 		for (std::list<UIDocumentObserverIF*>::iterator iter = m_observers.begin(); iter != m_observers.end(); iter++)
@@ -1157,15 +1130,15 @@ namespace FD {
 			}
 		}
 	}
-	
+
 	void UIDocument::handleSubnetNameChanged(UINetwork *net, const std::string &oldName, const std::string &newName)
 	{
 		//First, update local repository with new info.
 		updateNetInfo(net);
-		
+
 		//Remove old info
 		subnetInfo.removeNode(oldName);
-		
+
 		//Type of inserted subnet (as nodes) must be changed to new name
 		for(size_t i = 0; i < networks.size(); i++)
 		{
@@ -1178,9 +1151,9 @@ namespace FD {
 				}
 			}
 		}
-		
+
 	}
-	
-	
-	
+
+
+
 }

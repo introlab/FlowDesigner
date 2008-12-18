@@ -78,9 +78,9 @@ public:
    /**connect to a network terminal*/
    void disconnectNetTerminal();
 
-   const std::string &getName() const {return name;}
-   const std::string &getType() const {return type;}
-   const std::string &getDescription() const {return description;}
+   std::string getName() const {return name;}
+   std::string getType() const {return type;}
+   std::string getDescription() const {return description;}
    bool isInputTerminal() const {return isInput;}
 
    bool isConnected() const {return connections.size()!=0 || netTerminal;}

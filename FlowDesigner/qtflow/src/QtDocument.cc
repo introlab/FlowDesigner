@@ -37,6 +37,7 @@
 #include <QCloseEvent>
 #include <QString>
 #include "QtDocumentParameters.h"
+#include <QtDebug>
 
 namespace FD
 {
@@ -45,6 +46,9 @@ namespace FD
     QtDocument::QtDocument(QtFlowDesigner *parent, const std::string &name)
     : QDialog(parent), m_name(name), m_flowdesigner(parent), m_uiDoc(NULL)
     {
+		//TODO This should be removed
+		setAttribute(Qt::WA_DeleteOnClose);
+		
         m_vboxLayout = new QVBoxLayout(this);
         m_vboxLayout->setSpacing(6);
         m_vboxLayout->setMargin(0);		
@@ -107,9 +111,11 @@ namespace FD
 	
 	QtDocument::~QtDocument()
 	{
+		
+		qDebug("QtDocument::~QtDocument()");
 		if (m_uiDoc)
 		{
-			m_uiDoc->unregisterEvents(this);
+			qDebug("QtDocument::~QtDocument() - Deleting document");
 			delete m_uiDoc;
 			m_uiDoc = NULL;
 		}	
@@ -314,6 +320,18 @@ namespace FD
 		return qtnet;	
 	}
     
+	void QtDocument::removeNetwork(UINetwork* net)
+	{
+		if (m_networkMap.find(net) != m_networkMap.end())
+		{
+			QtNetwork *qtnet = m_networkMap[net];
+			m_networkMap.erase(net);
+			m_tabWidget->removeTab(m_tabWidget->indexOf(qtnet));
+			delete qtnet;
+		}	
+	}	
+	
+	
 	void QtDocument::addNetwork(const QString &name, UINetwork::Type type)
 	{	
         m_uiDoc->addNetwork(name.toStdString(),type);
@@ -327,20 +345,23 @@ namespace FD
     //Global event for changes
     void QtDocument::notifyChanged(const UIDocument* doc)
     {
-    	cerr<<"QtDocument::notifyChanged(const UIDocument *doc)"<<endl;
+    	qDebug()<<"QtDocument::notifyChanged(const UIDocument *doc)";
     	setWindowModified(m_uiDoc->isModified());
     }
     
     //Network removed
     void QtDocument::notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net)
     {
-    	cerr<<"QtDocument::notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net)"<<endl;
+    	qDebug()<<"QtDocument::notifyNetworkRemoved(const UIDocument *doc, const UINetwork* net)";
+		
+		//remove this network
+		removeNetwork(const_cast<UINetwork*>(net));
     }
 
     //Network Added
     void QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)
     {
-    	cerr<<"QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)"<<endl;
+    	qDebug()<<"QtDocument::notifyNetworkAdded(const UIDocument *doc, const UINetwork* net)";
     	
     	//add this network
     	addNetwork(const_cast<UINetwork*>(net));   	
@@ -388,12 +409,14 @@ namespace FD
     void QtDocument::closeEvent(QCloseEvent *event)
  	{
  		//maybe save...
- 		if(maybeSave()) {
- 			event->accept();
- 		}
- 		else {
- 			event->ignore();	
- 		}
+ 		if(maybeSave())
+		{	
+			event->accept();
+		}	
+		else
+		{	
+			event->ignore();
+		}	
 	}
 	
 	bool QtDocument::maybeSave()
@@ -414,7 +437,7 @@ namespace FD
  		}
  		if(close) {
  			if(m_uiDoc) {
-				m_uiDoc->unregisterEvents(this);
+				qDebug("QtDocument::maybeSave() - Deleting document");
 				delete m_uiDoc;
 				m_uiDoc = NULL;
 			}

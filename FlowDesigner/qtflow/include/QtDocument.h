@@ -62,6 +62,8 @@ namespace FD
 		
         QtNetwork* addNetwork(UINetwork* net);
 		
+		void removeNetwork(UINetwork* net);
+		
 		void networkNameChanged(QtNetwork *net, const QString &name);
 		
         void addNetwork(const QString &name, UINetwork::Type type);   

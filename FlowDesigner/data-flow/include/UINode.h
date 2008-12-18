@@ -111,10 +111,10 @@ namespace FD {
 		virtual ~UINode();
 		
 		/**Returns the node name*/
-		const std::string &getName() {return name;}
+		std::string getName() const {return name;}
 		
 		/**Returns the node type*/
-		const std::string &getType() {return type;}
+		std::string getType() const {return type;}
 		
 		/**
 			Change the type of a node. This will occur when a subnet is inserted as a node.
