@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 		//IExtensions::detect();
 		
 		//Load dynamic libraries
-		//QtDLManager::instance()->scanDL();
+		QtDLManager::instance()->scanDL();
 		
 		//This must be called after we have loaded libraries
 		UINodeRepository::Scan();
