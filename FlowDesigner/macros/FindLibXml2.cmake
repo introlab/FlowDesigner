@@ -30,6 +30,7 @@ ENDIF (NOT WIN32)
 
 FIND_PATH(LIBXML2_INCLUDE_DIR libxml/xpath.h
    PATHS "C:/Dev-Cpp/include"
+   "C:/MinGW/include"
    ${_LibXml2IncDir}
    PATH_SUFFIXES libxml2
    )
