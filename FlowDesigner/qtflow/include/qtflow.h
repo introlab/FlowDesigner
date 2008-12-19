@@ -43,6 +43,29 @@ namespace FD
 
 	};
 
+	class ThreadSignalHandler : public QObject
+	{
+		Q_OBJECT;
+
+		public slots:
+
+		void threadFinished();
+		void threadTerminated();
+
+		public:
+
+		ThreadSignalHandler(QtFlowApp *app, QtFlowProcessingThread *thread);
+		virtual ~ThreadSignalHandler();
+
+		QtFlowProcessingThread* getThread();
+
+		protected:
+
+		QtFlowApp *m_app;
+		QtFlowProcessingThread *m_thread;
+
+	};
+
 	class QtFlowApp : public QApplication
 	{
 
@@ -50,11 +73,11 @@ namespace FD
 
 	public slots:
 
-
+		bool removeThreadHandler(ThreadSignalHandler* handler);
 
 	protected:
 
-		QList<QtFlowProcessingThread*> m_threadList;
+		QList<ThreadSignalHandler*> m_threadHandlers;
 
 
 	public:

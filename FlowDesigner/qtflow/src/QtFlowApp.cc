@@ -19,6 +19,7 @@
 #include "qtflow.h"
 
 #include "iextensions.h"
+#include <QtDebug>
 
 
 using namespace std;
@@ -129,13 +130,10 @@ namespace FD
 					ParameterSet params;
 
 					QtFlowProcessingThread *newThread = new QtFlowProcessingThread(this,doc,params);
-					m_threadList.push_back(newThread);
+					ThreadSignalHandler *handler = new ThreadSignalHandler(this,newThread);
+					m_threadHandlers.push_back(handler);
 
-					//Connect thread signals...
-					//connect(newThread,SIGNAL(finished()), this, SLOT(threadFinished()));
-					//connect(newThread,SIGNAL(terminated()), this SLOT(threadTerminated()));
 
-					newThread->start();
 				}
 
 			}
@@ -155,6 +153,74 @@ namespace FD
 
 
 	}
+
+	bool QtFlowApp::removeThreadHandler(ThreadSignalHandler *handler)
+	{
+		if (m_threadHandlers.contains(handler))
+		{
+			m_threadHandlers.removeAll(handler);
+			delete handler;
+
+			if (m_threadHandlers.empty())
+			{
+				//Application ending...
+				QApplication::exit(0);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/*******************/
+
+	ThreadSignalHandler::ThreadSignalHandler(QtFlowApp *app, QtFlowProcessingThread *thread)
+		: QObject(app), m_app(app), m_thread(thread)
+	{
+		if (m_thread)
+		{
+			//Connect signals
+			connect(thread,SIGNAL(finished()),this,SLOT(threadFinished()));
+			connect(thread,SIGNAL(terminated()), this, SLOT(threadTerminated()));
+			m_thread->start();
+		}
+	}
+
+	ThreadSignalHandler::~ThreadSignalHandler()
+	{
+		//Make sure the handler is removed
+		m_app->removeThreadHandler(this);
+
+		if (m_thread)
+		{
+			if (m_thread->isRunning())
+			{
+				qDebug("ThreadSignalHandler::~ThreadSignalHandler() - killing thread (locked?)");
+				m_thread->terminate();
+			}
+			delete m_thread;
+		}
+	}
+
+	void ThreadSignalHandler::threadFinished()
+	{
+		qDebug("ThreadSignalHandler::threadFinished()");
+		m_thread->wait();
+		m_app->removeThreadHandler(this);
+	}
+
+	void ThreadSignalHandler::threadTerminated()
+	{
+		qDebug("ThreadSignalHandler::threadTerminated()");
+		m_app->removeThreadHandler(this);
+	}
+
+	QtFlowProcessingThread* ThreadSignalHandler::getThread()
+	{
+		return m_thread;
+	}
+
 
 } //namespace FD
 
