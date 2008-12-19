@@ -29,6 +29,7 @@ SET(QTFLOW_SRCS
 	QtDocumentParameters.cc
 	QtFlowDesignerSplash.cc
 	QtConnectDialog.cc
+	QtFlowApp.cc
     ./iconeditor/QtIconEditor.cc
     ./iconeditor/QtIconItem.cc
     ./iconeditor/QtIconScene.cc
@@ -39,7 +40,8 @@ SET(QTFLOW_SRCS
     ./iconeditor/QtVertex.cc
 )
 
-SET(QTFLOW_HEADERS 
+SET(QTFLOW_HEADERS
+	../include/qtflow.h 
 	../include/QtLink.h
 	../include/QtNetwork.h
 	../include/QtNetworkScene.h
@@ -124,10 +126,10 @@ IF(APPLE)
      SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}")
      SET(MACOSX_BUNDLE_BUNDLE_VERSION "${VERSION}")
      SET(MACOSX_BUNDLE_COPYRIGHT "Dominic Letourneau, Jean-Marc Valin") 
-     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
+     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} flowdesigner.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
     #install( FILES ../icons/FlowDesignerIcon.icns DESTINATION /Applications/flowdesigner.app/Contents/Resources)
 ELSE(APPLE)
-    add_executable(flowdesigner ${QTFLOW_SRCS} main.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
+    add_executable(flowdesigner ${QTFLOW_SRCS} flowdesigner.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
 ENDIF(APPLE)
 
 # create an executable file named "qtflow" from the source files 
