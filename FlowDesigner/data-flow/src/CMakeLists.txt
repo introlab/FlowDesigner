@@ -245,7 +245,6 @@ ENDIF(UNIX)
 
 IF (WIN32)
 
-	INCLUDE (  ${FLOWDESIGNER_SOURCE_DIR}/macros/FindQt4.cmake  )
 	find_package(Qt4 REQUIRED)
 
 	SET(QT_USE_QTNETWORK TRUE)
