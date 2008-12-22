@@ -323,21 +323,11 @@ namespace FD
             {
                 terminal = new QtTerminal(this,uiTerminal);
                 m_inputTerminalsMap.insert(make_pair(uiTerminal,terminal));
-
-                if(scene())
-                {
-                	scene()->addItem(terminal);
-                }
             }
             else
             {
                 terminal = new QtTerminal(this,uiTerminal);
                 m_outputTerminalsMap.insert(make_pair(uiTerminal,terminal));
-
-                if(scene())
-                {
-                	scene()->addItem(terminal);
-                }
             }
         }
         redrawNode();

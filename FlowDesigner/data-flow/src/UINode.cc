@@ -283,14 +283,21 @@ namespace FD
 		info.description = _description;
 		UITerminal *terminal = NULL;
 
+
 		switch (_type) {
 
 			case UINetTerminal::INPUT:
-				terminal = createTerminal (&info,true, x1, y1);
+				if (getInputNamed(_name) == NULL)
+				{
+					terminal = createTerminal (&info,true, x1, y1);
+				}
 				break;
 
 			case UINetTerminal::OUTPUT:
-				terminal = createTerminal (&info,false, x2,y2);
+				if (getOutputNamed(_name) == NULL)
+				{
+					terminal = createTerminal (&info,false, x2,y2);
+				}
 				break;
 
 			default:

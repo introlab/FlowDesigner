@@ -33,6 +33,7 @@
 #include <QtWebKit>
 #include <QSplitter>
 #include <QGroupBox>
+#include <QToolBar>
 #include <QHeaderView>
 
 namespace FD {
@@ -76,23 +77,46 @@ namespace FD {
 
 
 		//Create TableView & Model for inputs
-		m_inputOutputModel1 = new InputOutputModel(this,true);
-		m_inputOutputView1 = new QTableView(inputBox);
-		m_inputOutputView1->setModel(m_inputOutputModel1);
-		m_inputOutputView1->setColumnWidth(0,200);
-		m_inputOutputView1->horizontalHeader()->setStretchLastSection(true);
-		m_inputOutputView1->setCornerButtonEnabled(false);
+		m_inputModel = new InputOutputModel(this,true);
+		m_inputModelView = new QTableView(inputBox);
+		m_inputModelView->setModel(m_inputModel);
+		m_inputModelView->setColumnWidth(0,200);
+		m_inputModelView->horizontalHeader()->setStretchLastSection(true);
+		m_inputModelView->setCornerButtonEnabled(false);
 
 		//Create TableView & Model for outputs
-		m_inputOutputModel2 = new InputOutputModel(this,false);
-		m_inputOutputView2 = new QTableView(outputBox);
-		m_inputOutputView2->setModel(m_inputOutputModel2);
-		m_inputOutputView2->setColumnWidth(0,200);
-		m_inputOutputView2->horizontalHeader()->setStretchLastSection(true);
-		m_inputOutputView2->setCornerButtonEnabled(false);
+		m_outputModel = new InputOutputModel(this,false);
+		m_outputModelView = new QTableView(outputBox);
+		m_outputModelView->setModel(m_outputModel);
+		m_outputModelView->setColumnWidth(0,200);
+		m_outputModelView->horizontalHeader()->setStretchLastSection(true);
+		m_outputModelView->setCornerButtonEnabled(false);
+
 		//Add widgets to layout
-		inputLayout->addWidget(m_inputOutputView1);
-		outputLayout->addWidget(m_inputOutputView2);
+		//INPUTS
+		QToolBar *inputToolbar = new QToolBar(this);
+		QPushButton *addInputButton = new QPushButton("Add Input",this);
+		QPushButton *removeInputButton = new QPushButton("Remove Input(s)",this);
+		inputToolbar->addWidget(addInputButton);
+		inputToolbar->addWidget(removeInputButton);
+		connect(addInputButton,SIGNAL(clicked()),this,SLOT(inputAddButtonClicked()));
+		connect(removeInputButton,SIGNAL(clicked()),this,SLOT(inputRemoveButtonClicked()));
+		inputLayout->addWidget(inputToolbar);
+		inputLayout->addWidget(m_inputModelView);
+
+		//OUTPUTS
+		QToolBar *outputToolbar = new QToolBar(this);
+		QPushButton *addOutputButton = new QPushButton("Add Output",this);
+		QPushButton *removeOutputButton = new QPushButton("Remove Output(s)",this);
+		outputToolbar->addWidget(addOutputButton);
+		outputToolbar->addWidget(removeOutputButton);
+		connect(addOutputButton,SIGNAL(clicked()),this,SLOT(outputAddButtonClicked()));
+		connect(removeOutputButton,SIGNAL(clicked()),this,SLOT(outputRemoveButtonClicked()));
+		outputLayout->addWidget(outputToolbar);
+		outputLayout->addWidget(m_outputModelView);
+
+
+
 		//Add tab
 		m_tabWidget->addTab(splitter,"Inputs/Outputs");
 
@@ -374,6 +398,47 @@ namespace FD {
         }
     }
 
+
+    void QtNodeParameters::inputAddButtonClicked()
+    {
+    	AddTerminalDialog dialog;
+
+    	if (dialog.exec() == QDialog::Accepted)
+    	{
+    		//TODO : check for errors (duplicated names for instance)
+    		m_node->addTerminal(dialog.getTerminalName().toStdString(),
+    				UINetTerminal::INPUT,
+    				dialog.getTerminalType().toStdString(),
+    				dialog.getTerminalDescription().toStdString());
+    	}
+    }
+
+    void QtNodeParameters::inputRemoveButtonClicked()
+    {
+
+    }
+
+    void QtNodeParameters::outputAddButtonClicked()
+    {
+    	AddTerminalDialog dialog;
+
+    	if (dialog.exec() == QDialog::Accepted)
+    	{
+    		//TODO : check for errors (duplicated names for instance)
+    		m_node->addTerminal(dialog.getTerminalName().toStdString(),
+    				UINetTerminal::OUTPUT,
+    				dialog.getTerminalType().toStdString(),
+    				dialog.getTerminalDescription().toStdString());
+    	}
+
+    }
+
+    void QtNodeParameters::outputRemoveButtonClicked()
+    {
+
+    }
+
+
     //Set the parameters view with parameters give
     void QtNodeParameters::setView(const std::vector<ItemInfo *> &textParams)
     {
@@ -436,7 +501,18 @@ namespace FD {
 	InputOutputModel::InputOutputModel(QtNodeParameters *params, bool isInput)
 		: QAbstractTableModel(params), m_params(params), m_input(isInput)
 	{
+		if (m_params && m_params->getUINode())
+		{
+			m_params->getUINode()->registerEvents(this);
+		}
+	}
 
+	InputOutputModel::~InputOutputModel()
+	{
+		if (m_params && m_params->getUINode())
+		{
+			m_params->getUINode()->unregisterEvents(this);
+		}
 	}
 
 	int InputOutputModel::rowCount ( const QModelIndex & parent) const
@@ -499,16 +575,49 @@ namespace FD {
 			}
 	}
 
-	QSize InputOutputModel::span ( const QModelIndex & index ) const
+	bool InputOutputModel::setData ( const QModelIndex & index, const QVariant & value, int role)
 	{
+
+		//TODO IMPLEMENTATION OF INPUT/OUTPUT RENAMING & DESCRIPTION CHANGING...
+		/*
 		int row = index.row();
 		int col = index.column();
-		if (col == 0)
+
+		vector<UITerminal*> terminals;
+
+		if (m_input)
 		{
-			return QSize(100,50);
+			terminals = m_params->getUINode()->getInputs();
+		}
+		else
+		{
+			terminals = m_params->getUINode()->getOutputs();
 		}
 
-		return QSize(400,50);
+		switch (col)
+		{
+			case 0:
+				terminals[row]->setName(value.toString().toStdString());
+				break;
+
+			case 1:
+				terminals[row]->setDescription(value.toString().toStdString());
+				break;
+		}
+		*/
+
+		return false;
 	}
+
+	Qt::ItemFlags InputOutputModel::flags ( const QModelIndex & index ) const
+	{
+		return (Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+	}
+
+	void InputOutputModel::notifyChanged(const FD::UINode* node)
+	{
+		reset();
+	}
+
 
 } //namespace FD
