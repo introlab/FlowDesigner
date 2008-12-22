@@ -32,6 +32,8 @@
 #include <sstream>
 #include <QtWebKit>
 #include <QSplitter>
+#include <QGroupBox>
+#include <QHeaderView>
 
 namespace FD {
 
@@ -62,21 +64,36 @@ namespace FD {
   		m_tabWidget->addTab(buildParametersTable(), "Parameters");
 		m_tabWidget->addTab(new QTextEdit(this),"Comments");
 
+
+		//Inputs / Outputs Layout
+		QSplitter *splitter = new QSplitter(Qt::Vertical, this);
+		QGroupBox *inputBox = new QGroupBox("Inputs",splitter);
+		QGroupBox *outputBox = new QGroupBox("Outputs",splitter);
+		QVBoxLayout *inputLayout = new QVBoxLayout(inputBox);
+		inputLayout->setObjectName(QString::fromUtf8("InputsVerticalLayout"));
+		QVBoxLayout *outputLayout = new QVBoxLayout(outputBox);
+		outputLayout->setObjectName(QString::fromUtf8("OutputsVerticalLayout"));
+
+
+		//Create TableView & Model for inputs
 		m_inputOutputModel1 = new InputOutputModel(this,true);
-		m_inputOutputModel2 = new InputOutputModel(this,false);
-		m_inputOutputView1 = new QTableView(this);
-		m_inputOutputView2 = new QTableView(this);
-		m_inputOutputView1->setCornerButtonEnabled(false);
-		m_inputOutputView2->setCornerButtonEnabled(false);
-
+		m_inputOutputView1 = new QTableView(inputBox);
 		m_inputOutputView1->setModel(m_inputOutputModel1);
+		m_inputOutputView1->setColumnWidth(0,200);
+		m_inputOutputView1->horizontalHeader()->setStretchLastSection(true);
+		m_inputOutputView1->setCornerButtonEnabled(false);
+
+		//Create TableView & Model for outputs
+		m_inputOutputModel2 = new InputOutputModel(this,false);
+		m_inputOutputView2 = new QTableView(outputBox);
 		m_inputOutputView2->setModel(m_inputOutputModel2);
-
-		QSplitter *splitter = new QSplitter(this);
-
-		splitter->addWidget(m_inputOutputView1);
-		splitter->addWidget(m_inputOutputView2);
-
+		m_inputOutputView2->setColumnWidth(0,200);
+		m_inputOutputView2->horizontalHeader()->setStretchLastSection(true);
+		m_inputOutputView2->setCornerButtonEnabled(false);
+		//Add widgets to layout
+		inputLayout->addWidget(m_inputOutputView1);
+		outputLayout->addWidget(m_inputOutputView2);
+		//Add tab
 		m_tabWidget->addTab(splitter,"Inputs/Outputs");
 
 		QWebView *view = new QWebView(this);
@@ -467,6 +484,19 @@ namespace FD {
 			}
 		}
 		return QVariant();
+	}
+
+	QVariant InputOutputModel::headerData ( int section, Qt::Orientation orientation, int role) const
+	{
+			if (orientation == Qt::Vertical)
+			{
+				return QVariant(section);
+
+			}
+			else
+			{
+				return QVariant("LABEL");
+			}
 	}
 
 	QSize InputOutputModel::span ( const QModelIndex & index ) const
