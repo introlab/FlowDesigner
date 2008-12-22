@@ -107,11 +107,17 @@ int main(int argc, char* argv[])
 
 		//QObject::connect(&redirector_cerr,SIGNAL(newOutput(const char*, std::streamsize)),&fd,SLOT(newStderrOutput(const char *, std::streamsize)));
 
-
-        for (int i = 1; i < argc; i++)
-        {
-            fd.loadDocument(argv[i]);
-        }
+		if (argc > 1)
+		{	
+			for (int i = 1; i < argc; i++)
+			{
+				fd.loadDocument(argv[i]);
+			}
+		}	
+		else
+		{
+			fd.newDocumentClicked();
+		}
 
         fd.show();
 		splash.finish(&fd);

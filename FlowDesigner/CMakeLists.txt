@@ -33,6 +33,8 @@ SET(PEDANTIC TRUE)
 #enable all warnings
 ADD_DEFINITIONS ( -Wall )
 
+SET (EXECUTABLE_OUTPUT_PATH ${FLOWDESIGNER_SOURCE_DIR}/bin)
+
 
 # skip the full RPATH for the build tree
 #SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
