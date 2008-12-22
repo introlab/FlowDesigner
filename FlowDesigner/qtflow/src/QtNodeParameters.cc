@@ -82,7 +82,7 @@ namespace FD {
 		m_inputModelView->setModel(m_inputModel);
 		m_inputModelView->setColumnWidth(0,200);
 		m_inputModelView->horizontalHeader()->setStretchLastSection(true);
-		m_inputModelView->setCornerButtonEnabled(false);
+		//m_inputModelView->setCornerButtonEnabled(false);
 
 		//Create TableView & Model for outputs
 		m_outputModel = new InputOutputModel(this,false);
@@ -90,7 +90,7 @@ namespace FD {
 		m_outputModelView->setModel(m_outputModel);
 		m_outputModelView->setColumnWidth(0,200);
 		m_outputModelView->horizontalHeader()->setStretchLastSection(true);
-		m_outputModelView->setCornerButtonEnabled(false);
+		//m_outputModelView->setCornerButtonEnabled(false);
 
 		//Add widgets to layout
 		//INPUTS
@@ -415,7 +415,17 @@ namespace FD {
 
     void QtNodeParameters::inputRemoveButtonClicked()
     {
+    	QItemSelectionModel *selectionModel = m_inputModelView->selectionModel();
 
+    	QModelIndexList indexes = selectionModel->selectedRows();
+
+    	QModelIndex index;
+
+    	foreach(index, indexes)   // loop through and remove them
+    	{
+    	        int row = index.row();
+    	        m_inputModel->removeRows(row, 1, QModelIndex());
+    	}
     }
 
     void QtNodeParameters::outputAddButtonClicked()
@@ -435,7 +445,17 @@ namespace FD {
 
     void QtNodeParameters::outputRemoveButtonClicked()
     {
+    	QItemSelectionModel *selectionModel = m_outputModelView->selectionModel();
 
+    	QModelIndexList indexes = selectionModel->selectedRows();
+
+    	QModelIndex index;
+
+    	foreach(index, indexes)   // loop through and remove them
+    	{
+    	        int row = index.row();
+    	        m_outputModel->removeRows(row, 1, QModelIndex());
+    	}
     }
 
 
@@ -520,7 +540,14 @@ namespace FD {
 			UINode* node = m_params->getUINode();
 			int size_input = node->getInputs().size();
 			int size_output = node->getOutputs().size();
-			return std::max(size_input,size_output);
+			if (m_input)
+			{
+				return size_input;
+			}
+			else
+			{
+				return size_output;
+			}
 	}
 
 	int InputOutputModel::columnCount ( const QModelIndex & parent) const
@@ -564,15 +591,27 @@ namespace FD {
 
 	QVariant InputOutputModel::headerData ( int section, Qt::Orientation orientation, int role) const
 	{
+		if (role == Qt::DisplayRole)
+		{
 			if (orientation == Qt::Vertical)
 			{
 				return QVariant(section);
-
 			}
 			else
 			{
-				return QVariant("LABEL");
+				switch(section)
+				{
+				case 0:
+					return QVariant("Name");
+					break;
+				case 1:
+					return QVariant("Description");
+					break;
+				}
+
 			}
+		}
+		return QAbstractTableModel::headerData(section,orientation,role);
 	}
 
 	bool InputOutputModel::setData ( const QModelIndex & index, const QVariant & value, int role)
@@ -619,5 +658,43 @@ namespace FD {
 		reset();
 	}
 
+	bool InputOutputModel::removeRows ( int row, int count, const QModelIndex & parent)
+	{
+		beginRemoveRows (parent, row, row + count);
+
+		for (int currentRow = row; currentRow < row + count; currentRow++)
+		{
+			if (m_input)
+			{
+				vector<UITerminal*> terminals = m_params->getUINode()->getInputs();
+
+				if (currentRow < (int) terminals.size())
+				{
+
+					delete terminals[currentRow];
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				vector<UITerminal*> terminals = m_params->getUINode()->getOutputs();
+				if (currentRow < (int) terminals.size())
+				{
+					delete terminals[currentRow];
+
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+
+		endRemoveRows();
+		return true;
+	}
 
 } //namespace FD
