@@ -4,12 +4,18 @@ SET(COMMUNICATIONS_SRCS
 	DiscreteSource.cc
 	ComplexGaussian.cc
 	Constellation.cc
+	ConstellationMapper.cc
 	LLRComputer.cc
 	MLDetector.cc
 	BitErrors.cc
 	MutualInf.cc
 	Histogram.cc
 )	
+
+find_package(FFTW3)
+IF (FFTW3_FOUND)
+    ADD_DEFINITIONS(-DFFTW3_FOUND)
+ENDIF (FFTW3_FOUND)
 
 INCLUDE_DIRECTORIES(${FLOWDESIGNER_SOURCE_DIR}/data-flow/include 
 	../include 
