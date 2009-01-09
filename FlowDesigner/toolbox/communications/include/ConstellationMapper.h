@@ -1,6 +1,9 @@
 // Copyright (C) 2008 Alberto Perotti
 // Author: Alberto Perotti
 
+#ifndef _CONSTELLATIONMAPPER_H_
+#define _CONSTELLATIONMAPPER_H_
+
 #include "BufferedNode.h"
 #include "Buffer.h"
 #include "Vector.h"
@@ -23,7 +26,7 @@ class ConstellationMapper : public BufferedNode {
 	// enum modType {PAM, PSK, QAM, FILE_T};
 	// modType type;
 	// RCPtr<Vector<complex<float> > > Xiptr;
-	Constellation Xii;
+	Constellation Xi;
 	// string filename;
 
 public:
@@ -34,3 +37,5 @@ public:
 };
 
 }//namespace FD
+
+#endif	// _CONSTELLATIONMAPPER_H_

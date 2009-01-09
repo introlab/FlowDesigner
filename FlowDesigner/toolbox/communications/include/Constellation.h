@@ -1,6 +1,9 @@
 // Copyright (C) 2008 Alberto Perotti
 // Author: Alberto Perotti
 
+#ifndef _CONSTELLATION_H_
+#define _CONSTELLATION_H_
+
 #include "Object.h"
 #include "ParameterSet.h"
 #include "Vector.h"
@@ -14,7 +17,7 @@ namespace FD {
 
 class Constellation : public vector<complex<float> > {
    
-	int nbits;
+	int d_nbits;
 	int nsignals;
 	float Es;
 	enum modType {PAM, PSK, QAM, FILE_T};
@@ -27,17 +30,10 @@ public:
 	Constellation();
 	Constellation(ParameterSet params);
 	virtual ~Constellation(){};
-/*
-	void printOn(ostream &out) const
-	{
-	   out << "<Constellation " << endl;
-	   out << "<nbits " << nbits << ">" << endl;
-	   out << "<nsignals " << nsignals << ">" << endl;
-	   out << "<Es " << Es << ">" << endl;
-	   out << "<modType " << type << ">" << endl;
-	   out << ">\n";
-	}
-*/
+
+	int nbits() const {return d_nbits;}
 };
 
 }	//namespace FD
+
+#endif	// _CONSTELLATION_H_

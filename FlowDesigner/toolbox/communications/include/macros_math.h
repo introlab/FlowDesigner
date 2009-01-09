@@ -1,6 +1,8 @@
 // Copyright (C) 2008 Alberto Perotti
 // Author: Alberto Perotti
 
+#ifndef _MACROS_MATH_H_
+#define _MACROS_MATH_H_
 
 
 // Some useful constants
@@ -17,3 +19,6 @@
 #define BIN2GRAY(a)	(a ^ (a >> 1))
 
 #define MAXSTAR(a, b)	(MAX(a, b) + log(1 + exp(-ABS(a - b))))
+
+
+#endif	// _MACROS_MATH_H_
