@@ -27,7 +27,7 @@ DECLARE_NODE(ConstellationMapper)
  * @parameter_name TYPE
  * @parameter_type string
  * @parameter_description Modulation type (PAM, PSK, QAM, FILE).
- * @parameter_value PSK
+ * @parameter_value PAM;PSK;QAM;FILE
  *
  * @parameter_name NBITS
  * @parameter_type int
@@ -47,15 +47,12 @@ END*/
 
 
 ConstellationMapper::ConstellationMapper(string nodeName, ParameterSet params)
-: BufferedNode(nodeName, params), Xii(params)
+: BufferedNode(nodeName, params), Xi(params)
 {
 	inputID = addInput("INPUT");
 	outputID = addOutput("OUTPUT");
 
-	if (parameters.exist("NBITS"))
-		nbits = dereference_cast<int> (parameters.get("NBITS"));
-	else nbits = 1;
-
+	nbits = Xi.nbits();
 }
 
 
@@ -86,7 +83,7 @@ void ConstellationMapper::calculate(int output_id, int count, Buffer &out)
 		{
 			k += (inputVec[i * nbits + j] & 1) << j;
 		}
-		output[i] = Xii[k];
+		output[i] = Xi[k];
 	}
 
 }

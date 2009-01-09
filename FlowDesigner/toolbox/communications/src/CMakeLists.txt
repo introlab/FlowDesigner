@@ -4,12 +4,19 @@ SET(COMMUNICATIONS_SRCS
 	DiscreteSource.cc
 	ComplexGaussian.cc
 	Constellation.cc
+	Constellation-dvbt.cc
 	ConstellationMapper.cc
+	OFDModulator.cc
 	LLRComputer.cc
 	MLDetector.cc
+	OFDDemodulator.cc
 	BitErrors.cc
+	HardDetector.cc
 	MutualInf.cc
 	Histogram.cc
+	AveragePower.cc
+	Interleaver.cc
+	SpreadInterleaver.cc
 )	
 
 find_package(FFTW3)
@@ -25,7 +32,7 @@ add_library(libcommunications-dynamic SHARED ${COMMUNICATIONS_SRCS})
 	
 set_target_properties(libcommunications-dynamic PROPERTIES OUTPUT_NAME communications.tlb)
 
-target_link_libraries(libcommunications-dynamic libflow-dynamic ${LIBXML2_LIBRARIES})
+target_link_libraries(libcommunications-dynamic libflow-dynamic ${LIBXML2_LIBRARIES} ${FFTW3_LIBRARY})
 
 install(TARGETS libcommunications-dynamic DESTINATION ${FD_TOOLBOX_DIR}/communications)
   

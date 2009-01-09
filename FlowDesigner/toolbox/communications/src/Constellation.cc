@@ -38,11 +38,11 @@ void Constellation::c_initialize(ParameterSet &params)
 	else type = PAM;
 
       if (params.exist("NBITS"))
-	 nbits = dereference_cast<int> (params.get("NBITS"));
+	 d_nbits = dereference_cast<int> (params.get("NBITS"));
       else
-	 nbits = 1;
+	 d_nbits = 1;
 
-      nsignals = 1 << nbits;
+      nsignals = 1 << d_nbits;
 
       if (params.exist("ENERGY"))
 	 Es = dereference_cast<float> (params.get("ENERGY"));
@@ -55,7 +55,7 @@ void Constellation::c_initialize(ParameterSet &params)
 		filename = object_cast<String> (params.get("FILENAME"));
 	}
 
-	resize(1 << nbits);
+	resize(1 << d_nbits);
 
 	complex<float>  tmpc;
 	double Es0 = 0.;
@@ -78,8 +78,8 @@ void Constellation::c_initialize(ParameterSet &params)
 			}
 			break;
 		case QAM:
-			nbh = 1 << (nbits >> 1);
-			nbhp = 1 << ((nbits + 1) >> 1);
+			nbh = 1 << (d_nbits >> 1);
+			nbhp = 1 << ((d_nbits + 1) >> 1);
 			for(i = 0; i < nbhp; i++)
 			{
 				for(j = 0; j < nbh; j++)
@@ -112,7 +112,7 @@ void Constellation::c_initialize(ParameterSet &params)
 				Es0 += this->at(ui).imag() * this->at(ui).imag();
 			}
 			nsignals = this->size();
-			nbits = floor(log2(nsignals));
+			d_nbits = floor(log2(nsignals));
 			Es0 /= float(nsignals);
 			for(i = 0; i < nsignals; i++)
 			{

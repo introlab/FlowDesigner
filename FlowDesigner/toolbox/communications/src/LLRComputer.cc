@@ -7,12 +7,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include "macros_math.h"
+#include "LLRComputer.h"
 
 using namespace std;
 
 namespace FD {
-
-class LLRComputer;
 
 DECLARE_NODE(LLRComputer)
 /*Node
@@ -54,159 +53,52 @@ DECLARE_NODE(LLRComputer)
  * @parameter_description Variance of Gaussian noise.
  * @parameter_value 1.
  *
+ * @parameter_name BIT_LLRS
+ * @parameter_type bool
+ * @parameter_description If true, comupte bit LLRs; if false, compute symbol LLRs.
+ * @parameter_value false; true
 END*/
 
 
-class LLRComputer : public BufferedNode {
-   
-	int inputID;
-	int outputID;
-	int nbits;
-	int nsignals;
-	float Es;
-	enum modType {PAM, PSK, QAM, FILE_T};
-	modType type;
-	RCPtr<Vector<complex<float> > > Xiptr;
-	string filename;
-	float sigma;
-
-public:
-LLRComputer(string nodeName, ParameterSet params)
-: BufferedNode(nodeName, params)
+LLRComputer::LLRComputer(string nodeName, ParameterSet params)
+: BufferedNode(nodeName, params), Xi(params)
 {
-	int i, j;
-	int nbh, nbhp;
-	unsigned int k;
-
 	inputID = addInput("INPUT");
 	outputID = addOutput("OUTPUT");
 
-      if (parameters.exist("TYPE"))
-      {
-	if (object_cast<String> (parameters.get("TYPE")) == "PAM")
-	    type = PAM;
-	else if (object_cast<String> (parameters.get("TYPE")) == "PSK")
-	    type = PSK;
-	else if (object_cast<String> (parameters.get("TYPE")) == "QAM")
-	    type = QAM;
-	else if (object_cast<String> (parameters.get("TYPE")) == "FILE")
-	    type = FILE_T;
-	else
-	    new NodeException(NULL, "Unknown function type", __FILE__, __LINE__);
-      } else type = PAM;
-
-      if (parameters.exist("NBITS"))
-	 nbits = dereference_cast<int> (parameters.get("NBITS"));
-      else
-	 nbits = 1;
-
-      if (parameters.exist("ENERGY"))
-	 Es = dereference_cast<float> (parameters.get("ENERGY"));
-      else
-	 Es = 1.;
+	d_nbits = Xi.nbits();
+	nsignals = 1 << d_nbits;
 
 	if (parameters.exist("VARIANCE"))
 		sigma = sqrt(dereference_cast<float> (parameters.get("VARIANCE")));
 	else sigma = 1.;
 
+	if (parameters.exist("BIT_LLRS"))
+		bit_llrs = sqrt(dereference_cast<bool> (parameters.get("BIT_LLRS")));
+	else bit_llrs = false;
 
-	if(parameters.exist("FILENAME"))
-	{
-		filename = object_cast<String> (parameters.get("FILENAME"));
-	}
-
-	Xiptr = Vector<complex<float> >::alloc(1 << nbits);
-	Vector<complex<float> > &Xi = *Xiptr;
-
-	complex<float>  tmpc;
-	double Es0 = 0.;
-	ifstream ifs;
-	switch(type)
-	{
-		case PAM:
-			nsignals = 1 << nbits;
-			for (i = 0; i < nsignals; i++)
-			{
-				Xi[BIN2GRAY(i)] = complex<float>(nsignals - 1 - 2 * i, 0.);
-				Xi[BIN2GRAY(i)] *= sqrt((3. * Es) / float(nsignals * nsignals - 1.));
-			}
-			break;
-		case PSK:
-			nsignals = 1 << nbits;
-			for (i = 0; i < nsignals; i++)
-			{
-				Xi[BIN2GRAY(i)] = complex<float>(cos((1 + 2 * i) * PI / float(nsignals)),
-						sin((1 + 2 * i) * PI / float(nsignals)));
-				Xi[BIN2GRAY(i)] *= sqrt(Es);
-			}
-			break;
-		case QAM:
-			nsignals = 1 << nbits;
-			nbh = 1 << (nbits >> 1);
-			nbhp = 1 << ((nbits + 1) >> 1);
-			for(i = 0; i < nbhp; i++)
-			{
-				for(j = 0; j < nbh; j++)
-				{
-					Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)] =
-						complex<float>(nbhp - 1 - 2 * i, nbh - 1 - 2 * j);
-					Es0 += Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].real() *
-						Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].real();
-					Es0 += Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].imag() *
-						Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)].imag();
-				}
-			}
-			Es0 /= float(nsignals);
-			for(i = 0; i < nbhp; i++)
-			{
-				for(j = 0; j < nbh; j++)
-				{
-					Xi[BIN2GRAY(j) + nbh * BIN2GRAY(i)] *= sqrt(Es / Es0);
-				}
-			}
-			break;
-		case FILE_T:
-			ifs.open(filename.c_str());
-			ifs >> Xi;
-			ifs.close();
-
-			for(k = 0; k < Xi.size(); k++)
-			{
-				Es0 += Xi[k].real() * Xi[k].real();
-				Es0 += Xi[k].imag() * Xi[k].imag();
-			}
-			nsignals = Xi.size();
-			nbits = floor(log2(nsignals));
-			if(nsignals > (1 << nbits))
-				throw new NodeException(this, "Constellation loaded from file has non power of 2 size", __FILE__, __LINE__);
-			Es0 /= float(nsignals);
-			for(i = 0; i < nsignals; i++)
-			{
-				Xi[i] *= sqrt(Es / Es0);
-			}
-			break;
-		default:
-			;
-	}
+	tllr.resize(nsignals);
 
 }
 
 
 
-void calculate(int output_id, int count, Buffer &out)
+void LLRComputer::calculate(int output_id, int count, Buffer &out)
 {
 
-	int i, j;
+	int i, j, k;
+	float llr0, llr1;
 	
 	ObjectRef inputRef = getInput(inputID, count);
 	const Vector<complex<float> > &inputVec = object_cast<Vector<complex<float> > >(inputRef);
 	int length = inputVec.size();
 
-	Vector<float> &output = *Vector<float>::alloc(length * nsignals);
-
+	Vector<float> &output = *Vector<float>::alloc(length * (bit_llrs ? d_nbits : nsignals));
 	out[count] = &output;
-	Vector<complex<float> > &Xi = *Xiptr;
 
+
+
+	// Compute symbol LLRs
 	float yr, yi, mag;
 	float sigma22 = 2. * sigma * sigma;
 	for (i = 0; i < length; i++)
@@ -216,10 +108,41 @@ void calculate(int output_id, int count, Buffer &out)
 		mag = yr * yr + yi * yi;
 		for(j = 0; j < nsignals; j++)
 		{
-			output[i * nsignals + j] = mag - (yr - Xi[j].real()) * (yr - Xi[j].real()) -
+			tllr[j] = mag - (yr - Xi[j].real()) * (yr - Xi[j].real()) -
 			       (yi - Xi[j].imag()) * (yi - Xi[j].imag());
-			output[i * nsignals + j] /= sigma22;
+			tllr[j] /= sigma22;
+		}
+	}
 
+
+
+	if(bit_llrs)
+	{
+		// Compute bit LLRs
+		for (i = 0; i < length; i++)
+		{
+			llr0 = -1.e9;
+			llr1 = -1.e9;
+			for(j = 0; j < d_nbits; j++)
+			{
+				for(k = 0; k < nsignals; k++)
+				{
+					if((k >> j) & 1) llr1 = MAXSTAR(llr1, tllr[k]);
+					else llr0 = MAXSTAR(llr0, tllr[k]);
+				}
+				output[i * d_nbits + j] = llr1 - llr0;
+			}
+		}
+	}
+	else
+	{
+		// Copy symbol LLRs
+		for (i = 0; i < length; i++)
+		{
+			for(j = 0; j < nsignals; j++)
+			{
+				output[i * nsignals + j] = tllr[j];
+			}
 		}
 	}
 
@@ -227,7 +150,37 @@ void calculate(int output_id, int count, Buffer &out)
 
 
 
+float LLRComputer::calculate(complex<float> x, int b)
+{
 
-};	// class LLRComputer
+	int j, k;
+	float llr0, llr1;
+	
 
+	// Compute symbol LLR
+	float yr, yi, mag;
+	float sigma22 = 2. * sigma * sigma;
+	yr = x.real();
+	yi = x.imag();
+	mag = yr * yr + yi * yi;
+	for(j = 0; j < nsignals; j++)
+	{
+		tllr[j] = mag - (yr - Xi[j].real()) * (yr - Xi[j].real()) -
+		       (yi - Xi[j].imag()) * (yi - Xi[j].imag());
+		tllr[j] /= sigma22;
+	}
+
+
+
+	// Compute bit LLR
+	llr0 = -1.e9;
+	llr1 = -1.e9;
+	for(k = 0; k < nsignals; k++)
+	{
+		if((k >> b) & 1) llr1 = MAXSTAR(llr1, tllr[k]);
+		else llr0 = MAXSTAR(llr0, tllr[k]);
+	}
+	return llr1 - llr0;
+
+}
 }	// namespace FD
