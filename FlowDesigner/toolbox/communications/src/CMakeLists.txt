@@ -4,7 +4,6 @@ SET(COMMUNICATIONS_SRCS
 	DiscreteSource.cc
 	ComplexGaussian.cc
 	Constellation.cc
-	Constellation-dvbt.cc
 	ConstellationMapper.cc
 	OFDModulator.cc
 	LLRComputer.cc
