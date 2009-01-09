@@ -1,0 +1,71 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="ofdm-ber.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_0" type="loop" x="-176.000000" y="23.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="BER" node="loop_0" terminal="BER" object_type="any" description="No description available"/>
+    <NetOutput name="NBITS" node="loop_0" terminal="NBITS" object_type="any" description="No description available"/>
+    <NetOutput name="NBERS" node="loop_0" terminal="NBERS" object_type="any" description="No description available"/>
+    <NetOutput name="TXPOW" node="loop_0" terminal="TXPOW" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="DiscreteSource_0" type="DiscreteSource" x="-555.000000" y="-143.000000">
+      <Parameter name="LENGTH" type="int" value="512" description="Number of generated symbols."/>
+      <Parameter name="ALPHABETSIZE" type="int" value="2" description="Number of symbols in the source alphabet."/>
+      <Parameter name="SEED" type="int" value="-1" description="RNG seed."/>
+    </Node>
+    <Node name="BitErrors_5" type="BitErrors" x="17.000000" y="-62.000000">
+      <Parameter name="MIN_NBERS" type="int" value="1000" description="Number of bit errors to count."/>
+    </Node>
+    <Node name="Add_6" type="Add" x="-255.000000" y="-184.000000"/>
+    <Node name="ComplexGaussian_7" type="ComplexGaussian" x="-388.000000" y="-303.000000">
+      <Parameter name="LENGTH" type="int" value="272" description="Number of generated samples"/>
+      <Parameter name="MEAN" type="float" value="0.00" description="Mean"/>
+      <Parameter name="VARIANCE" type="float" value="0.125" description="Variance"/>
+      <Parameter name="SEED" type="int" value="-1" description="Generator seed (negative integer)"/>
+    </Node>
+    <Node name="Print_8" type="Print" x="116.000000" y="-131.000000"/>
+    <Node name="Print_9" type="Print" x="147.000000" y="-46.000000"/>
+    <Node name="Print_10" type="Print" x="134.000000" y="58.000000"/>
+    <Node name="OFDModulator_9" type="OFDModulator" x="-396.000000" y="-160.000000">
+      <Parameter name="NCARRIERS" type="int" value="256" description="Number of carriers."/>
+      <Parameter name="LPREFIX" type="int" value="16" description="Length of cyclic prefix"/>
+      <Parameter name="FILENAME" type="string" value="Xi.txt" description="Name of file containing the OFDModulator."/>
+    </Node>
+    <Node name="OFDDemodulator_8" type="OFDDemodulator" x="-148.000000" y="-182.000000">
+      <Parameter name="NCARRIERS" type="int" value="256" description="Number of carriers."/>
+      <Parameter name="LPREFIX" type="int" value="16" description="Length of cyclic prefix"/>
+      <Parameter name="FILENAME" type="string" value="Xi.txt" description="Name of file containing the OFDDemodulator."/>
+    </Node>
+    <Node name="HardDetector_9" type="HardDetector" x="-63.000000" y="-198.000000"/>
+    <Node name="AveragePower_10" type="AveragePower" x="-266.000000" y="-41.000000">
+      <Parameter name="MEMORY" type="bool" value="true" description="Perform average across blocks"/>
+    </Node>
+    <Node name="Print_11" type="Print" x="-170.000000" y="-39.000000"/>
+    <ProbeLink id="1" from="DiscreteSource_0" output="OUTPUT" to="BitErrors_5" input="INPUT_REF"/>
+    <ProbeLink id="2" from="ComplexGaussian_7" output="OUTPUT" to="Add_6" input="INPUT2"/>
+    <ProbeLink id="3" from="BitErrors_5" output="BER" to="Print_8" input="INPUT"/>
+    <ProbeLink id="4" from="BitErrors_5" output="NBERS" to="Print_9" input="INPUT"/>
+    <ProbeLink id="5" from="BitErrors_5" output="NBITS" to="Print_10" input="INPUT"/>
+    <ProbeLink id="6" from="DiscreteSource_0" output="OUTPUT" to="OFDModulator_9" input="INPUT"/>
+    <ProbeLink id="7" from="OFDModulator_9" output="OUTPUT" to="Add_6" input="INPUT1"/>
+    <ProbeLink id="8" from="Add_6" output="OUTPUT" to="OFDDemodulator_8" input="INPUT"/>
+    <ProbeLink id="9" from="OFDDemodulator_8" output="OUTPUT" to="HardDetector_9" input="INPUT"/>
+    <ProbeLink id="10" from="HardDetector_9" output="OUTPUT" to="BitErrors_5" input="INPUT"/>
+    <ProbeLink id="11" from="OFDModulator_9" output="OUTPUT" to="AveragePower_10" input="INPUT"/>
+    <ProbeLink id="12" from="AveragePower_10" output="OUTPUT" to="Print_11" input="INPUT"/>
+    <NetOutput name="BER" node="Print_8" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="NBERS" node="Print_9" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="NBITS" node="Print_10" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetCondition name="CONDITION" node="BitErrors_5" terminal="NOT_FINISHED"/>
+    <NetOutput name="TXPOW" node="Print_11" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

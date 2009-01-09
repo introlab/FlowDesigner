@@ -16,7 +16,7 @@
       <Parameter name="SEED" type="int" value="-1" description="RNG seed."/>
     </Node>
 
-    <Node name="Constellation_1" type="Constellation" x="-391.000000" y="-178.000000">
+    <Node name="ConstellationMapper_1" type="ConstellationMapper" x="-391.000000" y="-178.000000">
       <Parameter name="TYPE" type="string" value="PSK" description="Modulation type (PAM, PSK, QAM, FILE)"/>
       <Parameter name="NBITS" type="int" value="2" description="Number of bits per symbol."/>
       <Parameter name="ENERGY" type="float" value="2.00" description="Average symbol energy per complex dimension."/>
@@ -45,9 +45,9 @@
       <Parameter name="NSYMBOLS" type="int" value="4" description="Number of symbols in the source alphabet."/>
     </Node>
 
-    <ProbeLink id="1" from="DiscreteSource_0" output="OUTPUT" to="Constellation_1" input="INPUT"/>
+    <ProbeLink id="1" from="DiscreteSource_0" output="OUTPUT" to="ConstellationMapper_1" input="INPUT"/>
     <ProbeLink id="2" from="Add_6" output="OUTPUT" to="LLRComputer_3" input="INPUT"/>
-    <ProbeLink id="3" from="Constellation_1" output="OUTPUT" to="Add_6" input="INPUT1"/>
+    <ProbeLink id="3" from="ConstellationMapper_1" output="OUTPUT" to="Add_6" input="INPUT1"/>
     <ProbeLink id="4" from="ComplexGaussian_7" output="OUTPUT" to="Add_6" input="INPUT2"/>
     <ProbeLink id="5" from="DiscreteSource_0" output="OUTPUT" to="MutualInf_6" input="INPUT_REF"/>
     <ProbeLink id="6" from="LLRComputer_3" output="OUTPUT" to="MutualInf_6" input="INPUT"/>
