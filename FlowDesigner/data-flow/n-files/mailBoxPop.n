@@ -1,0 +1,26 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="mailBoxPop.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_1" type="loop" x="-16.000000" y="133.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="OUTPUT" node="loop_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="USleep_0" type="USleep" x="-187.000000" y="-88.000000">
+      <Parameter name="MICROSECONDS" type="int" value="10000" description="The time required to sleep"/>
+    </Node>
+    <Node name="PopFromMailBoxNode_1" type="PopFromMailBoxNode" x="-181.000000" y="40.000000">
+      <Parameter name="MailBox_Name" type="string" value="TEST" description="name  "/>
+    </Node>
+    <Node name="Print_2" type="Print" x="2.000000" y="47.000000"/>
+    <ProbeLink id="1" from="PopFromMailBoxNode_1" output="OUTPUT" to="Print_2" input="INPUT"/>
+    <NetCondition name="CONDITION" node="USleep_0" terminal="OUTPUT"/>
+    <NetOutput name="OUTPUT" node="Print_2" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

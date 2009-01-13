@@ -19,6 +19,7 @@ SET (HEADERS
 ../include/Iterator.h
 ../include/JitterMatrix.h
 ../include/Matrix.h
+../include/MailBox.h
 ../include/Network.h
 ../include/Node.h
 ../include/NodeFactory.h
@@ -175,6 +176,11 @@ SET(NODES_SRCS
 	BinaryAND.cc
 	BinaryOR.cc
 	Power.cc
+	GetMessageNode.cc
+	SetMessageNode.cc
+	PushToMailBoxNode.cc
+	PopFromMailBoxNode.cc
+	SetMessageNode.cc
 )
 
 
@@ -213,6 +219,7 @@ SET (UTILS_SRCS
 	flow_version.cc
 	object_param.cc
 	iextensions.cc
+        MailBox.cc
 )
 
 

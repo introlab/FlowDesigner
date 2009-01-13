@@ -1,0 +1,22 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="ImplementationTestMesssageBox" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="Constant_0" type="Constant" x="-366.000000" y="189.000000">
+      <Parameter name="VALUE" type="string" value="test" description="The value"/>
+    </Node>
+    <Node name="SetMessageNode_1" type="SetMessageNode" x="-197.000000" y="189.000000">
+      <Parameter name="MessageBox_Name" type="string" value="aaaa" description="name  "/>
+    </Node>
+    <Node name="GetMessageNode_2" type="GetMessageNode" x="-323.000000" y="95.000000">
+      <Parameter name="MessageBox_Name" type="string" value="aaaa" description="name  "/>
+    </Node>
+    <Node name="Print_3" type="Print" x="-182.000000" y="97.000000"/>
+    <ProbeLink id="1" from="Constant_0" output="VALUE" to="SetMessageNode_1" input="INPUT"/>
+    <ProbeLink id="2" from="GetMessageNode_2" output="OUTPUT" to="Print_3" input="INPUT"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

@@ -1,0 +1,26 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="messageBoxSET2.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_0" type="loop" x="40.000000" y="38.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="OUTPUT" node="loop_0" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="SetMessageNode_0" type="SetMessageNode" x="181.000000" y="123.000000">
+      <Parameter name="MessageBox_Name" type="string" value="TEST2" description="name  "/>
+    </Node>
+    <Node name="Constant_1" type="Constant" x="39.000000" y="122.000000">
+      <Parameter name="VALUE" type="int" value="24" description="The value"/>
+    </Node>
+    <Node name="USleep_2" type="USleep" x="35.000000" y="24.000000">
+      <Parameter name="MICROSECONDS" type="int" value="2000" description="The time required to sleep"/>
+    </Node>
+    <ProbeLink id="1" from="Constant_1" output="VALUE" to="SetMessageNode_0" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="SetMessageNode_0" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetCondition name="CONDITION" node="USleep_2" terminal="OUTPUT"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>
