@@ -1,0 +1,45 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="laser.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_1" type="loop" x="-42.000000" y="120.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="OUTPUT" node="loop_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="PlayerLaser_1" type="PlayerLaser" x="113.152237" y="50.585815">
+      <Parameter name="LASER2_PROXY" type="bool" value="false" description="Start laser proxy if it's true."/>
+    </Node>
+    <Node name="USleep_1" type="USleep" x="-4.000000" y="-62.000000">
+      <Parameter name="MICROSECONDS" type="int" value="1000" description="The time required to sleep"/>
+    </Node>
+    <Node name="GetMessageNode_2" type="GetMessageNode" x="-87.000000" y="75.000000">
+      <Parameter name="MessageBox_Name" type="string" value="CONNECT" description="name  "/>
+    </Node>
+    <Node name="PushToMailBoxNode_3" type="PushToMailBoxNode" x="323.000000" y="-9.000000">
+      <Parameter name="MailBox_Name" type="string" value="LASER" description="name"/>
+    </Node>
+    <ProbeLink id="1" from="GetMessageNode_2" output="OUTPUT" to="PlayerLaser_1" input="CLIENT"/>
+    <ProbeLink id="2" from="PlayerLaser_1" output="RANGE" to="PushToMailBoxNode_3" input="INPUT"/>
+    <NetCondition name="CONDITION" node="USleep_1" terminal="OUTPUT"/>
+    <NetOutput name="OUTPUT" node="PushToMailBoxNode_3" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="RANGE" node="PlayerLaser_1" terminal="RANGE" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

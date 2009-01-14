@@ -1,0 +1,158 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="behavior.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_1" type="loop" x="-42.000000" y="120.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="RANGE" node="loop_1" terminal="RANGE" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="Constant_2" type="Constant" x="32.000000" y="13.000000">
+      <Parameter name="VALUE" type="bool" value="true" description="The value"/>
+    </Node>
+    <Node name="Print_3" type="Print" x="944.203064" y="551.941162"/>
+    <Node name="PlayerVelocity_4" type="PlayerVelocity" x="983.551270" y="328.592926"/>
+    <Node name="SafeVelocity_5" type="SafeVelocity" x="630.195984" y="138.455841">
+      <Parameter name="MAX_FORWARD_VELOCITY" type="int" value="500" description="Maximum velocity allowed (mm/s)."/>
+      <Parameter name="BACKWARD_VELOCITY" type="int" value="100" description="Default value when going backward."/>
+      <Parameter name="FRONT_DISTANCE" type="float" value="300,00" description="Front sonar reading befoir going backward."/>
+      <Parameter name="BACK_DISTANCE" type="float" value="1000,00" description="Back sonar reading before going forward."/>
+    </Node>
+    <Node name="Avoid_6" type="Avoid" x="672.249756" y="337.627411">
+      <Parameter name="DETECTION_RANGE" type="float" value="1200,00" description="No description available"/>
+      <Parameter name="ROTATION_VALUE" type="int" value="120" description="No description available"/>
+    </Node>
+    <Node name="Constant_7" type="Constant" x="400.000000" y="70.000000">
+      <Parameter name="VALUE" type="bool" value="true" description="The value"/>
+    </Node>
+    <Node name="Constant_8" type="Constant" x="483.414215" y="54.941124">
+      <Parameter name="VALUE" type="int" value="400" description="The value"/>
+    </Node>
+    <Node name="VectorGetIndex_9" type="VectorGetIndex" x="409.492432" y="396.414215"/>
+    <Node name="Length_10" type="Length" x="-141.906631" y="324.200989"/>
+    <Node name="Div_12" type="Div" x="125.000000" y="399.000000"/>
+    <Node name="Constant_13" type="Constant" x="32.142136" y="408.473083">
+      <Parameter name="VALUE" type="int" value="3" description="The value"/>
+    </Node>
+    <Node name="Constant_14" type="Constant" x="129.000000" y="284.000000">
+      <Parameter name="VALUE" type="int" value="2" description="The value"/>
+    </Node>
+    <Node name="Mul_15" type="Mul" x="263.000000" y="319.000000"/>
+    <Node name="VectorGetIndex_16" type="VectorGetIndex" x="420.597992" y="317.426422"/>
+    <Node name="Div_17" type="Div" x="270.000000" y="211.000000"/>
+    <Node name="VectorGetIndex_18" type="VectorGetIndex" x="420.485291" y="219.539108"/>
+    <Node name="Constant_18" type="Constant" x="483.661041" y="-28.284271">
+      <Parameter name="VALUE" type="float" value="1000,00" description="The value"/>
+    </Node>
+    <Node name="IF_19" type="IF" x="329.511749" y="500.631592">
+      <Parameter name="PULL_ANYWAY" type="bool" value="" description="If true, the IF statement pulls also on the branch not taken"/>
+    </Node>
+    <Node name="DCVector_20" type="DCVector" x="181.019333" y="560.028564">
+      <Parameter name="LENGTH" type="int" value="3" description="The vector length"/>
+      <Parameter name="VALUE" type="float" value="0,00" description="Value of each element"/>
+    </Node>
+    <Node name="Greater_21" type="Greater" x="45.254833" y="489.317902"/>
+    <Node name="Constant_22" type="Constant" x="-91.923882" y="476.589966">
+      <Parameter name="VALUE" type="int" value="0" description="The value"/>
+    </Node>
+    <Node name="ToFloat_23" type="ToFloat" x="516.187927" y="219.203110"/>
+    <Node name="ToFloat_24" type="ToFloat" x="255.972656" y="557.200134"/>
+    <Node name="ToFloat_25" type="ToFloat" x="524.673218" y="313.955414"/>
+    <Node name="ToFloat_26" type="ToFloat" x="531.744324" y="387.494507"/>
+    <Node name="Sub_27" type="Sub" x="16.970562" y="313.955414"/>
+    <Node name="Constant_28" type="Constant" x="-65.053825" y="144.249786">
+      <Parameter name="VALUE" type="int" value="1" description="The value"/>
+    </Node>
+    <Node name="Constant_30" type="Constant" x="-147.078217" y="227.688385">
+      <Parameter name="VALUE" type="int" value="1" description="The value"/>
+    </Node>
+    <Node name="Max_30" type="Max" x="-65.053825" y="288.499573"/>
+    <Node name="Subsumption_31" type="Subsumption" x="834.000000" y="424.000000"/>
+    <Node name="Constant_32" type="Constant" x="732.000000" y="544.000000">
+      <Parameter name="VALUE" type="int" value="0" description="The value"/>
+    </Node>
+    <Node name="GetMessageNode_32" type="GetMessageNode" x="819.000000" y="315.000000">
+      <Parameter name="MessageBox_Name" type="string" value="CONNECT" description="name  "/>
+    </Node>
+    <Node name="PopFromMailBoxNode_33" type="PopFromMailBoxNode" x="-131.000000" y="575.000000">
+      <Parameter name="MailBox_Name" type="string" value="LASER" description="name  "/>
+    </Node>
+    <ProbeLink id="1" from="SafeVelocity_5" output="VELOCITY" to="PlayerVelocity_4" input="VELOCITY"/>
+    <ProbeLink id="2" from="Constant_7" output="VALUE" to="SafeVelocity_5" input="ACTIVATED"/>
+    <ProbeLink id="3" from="Constant_7" output="VALUE" to="Avoid_6" input="ACTIVATED"/>
+    <ProbeLink id="4" from="Constant_8" output="VALUE" to="SafeVelocity_5" input="FORWARD_VELOCITY"/>
+    <ProbeLink id="5" from="Constant_13" output="VALUE" to="Div_12" input="DEN"/>
+    <ProbeLink id="6" from="Div_12" output="OUTPUT" to="VectorGetIndex_9" input="INDEX"/>
+    <ProbeLink id="7" from="Div_12" output="OUTPUT" to="Mul_15" input="INPUT1"/>
+    <ProbeLink id="8" from="Constant_14" output="VALUE" to="Mul_15" input="INPUT2"/>
+    <ProbeLink id="9" from="Mul_15" output="OUTPUT" to="VectorGetIndex_16" input="INDEX"/>
+    <ProbeLink id="10" from="Constant_14" output="VALUE" to="Div_17" input="DEN"/>
+    <ProbeLink id="11" from="Div_17" output="OUTPUT" to="VectorGetIndex_18" input="INDEX"/>
+    <ProbeLink id="12" from="Constant_18" output="VALUE" to="SafeVelocity_5" input="BACK"/>
+    <ProbeLink id="13" from="IF_19" output="OUTPUT" to="VectorGetIndex_18" input="VECTOR"/>
+    <ProbeLink id="14" from="IF_19" output="OUTPUT" to="VectorGetIndex_16" input="VECTOR"/>
+    <ProbeLink id="15" from="IF_19" output="OUTPUT" to="VectorGetIndex_9" input="VECTOR"/>
+    <ProbeLink id="16" from="Greater_21" output="OUTPUT" to="IF_19" input="COND"/>
+    <ProbeLink id="17" from="VectorGetIndex_18" output="OUTPUT" to="ToFloat_23" input="INPUT"/>
+    <ProbeLink id="18" from="ToFloat_23" output="OUTPUT" to="SafeVelocity_5" input="FRONT"/>
+    <ProbeLink id="19" from="DCVector_20" output="OUTPUT" to="ToFloat_24" input="INPUT"/>
+    <ProbeLink id="20" from="ToFloat_24" output="OUTPUT" to="IF_19" input="ELSE"/>
+    <ProbeLink id="21" from="ToFloat_23" output="OUTPUT" to="Avoid_6" input="FRONT"/>
+    <ProbeLink id="22" from="VectorGetIndex_16" output="OUTPUT" to="ToFloat_25" input="INPUT"/>
+    <ProbeLink id="23" from="ToFloat_25" output="OUTPUT" to="Avoid_6" input="LEFT_FRONT"/>
+    <ProbeLink id="24" from="VectorGetIndex_9" output="OUTPUT" to="ToFloat_26" input="INPUT"/>
+    <ProbeLink id="25" from="ToFloat_26" output="OUTPUT" to="Avoid_6" input="RIGHT_FRONT"/>
+    <ProbeLink id="26" from="Constant_28" output="VALUE" to="Sub_27" input="INPUT2"/>
+    <ProbeLink id="27" from="Sub_27" output="OUTPUT" to="Div_17" input="NUM"/>
+    <ProbeLink id="28" from="Sub_27" output="OUTPUT" to="Div_12" input="NUM"/>
+    <ProbeLink id="29" from="Max_30" output="OUTPUT" to="Sub_27" input="INPUT1"/>
+    <ProbeLink id="30" from="Constant_30" output="VALUE" to="Max_30" input="INPUT1"/>
+    <ProbeLink id="31" from="Length_10" output="OUTPUT" to="Max_30" input="INPUT2"/>
+    <ProbeLink id="32" from="Length_10" output="OUTPUT" to="Greater_21" input="INPUT2"/>
+    <ProbeLink id="33" from="Constant_22" output="VALUE" to="Greater_21" input="INPUT1"/>
+    <ProbeLink id="34" from="Constant_32" output="VALUE" to="Subsumption_31" input="LOW_PRIORITY"/>
+    <ProbeLink id="35" from="Subsumption_31" output="OUTPUT" to="PlayerVelocity_4" input="HEADING"/>
+    <ProbeLink id="36" from="Avoid_6" output="ROTATION" to="Subsumption_31" input="HIGH_PRIORITY"/>
+    <ProbeLink id="37" from="Subsumption_31" output="OUTPUT" to="Print_3" input="INPUT"/>
+    <ProbeLink id="38" from="GetMessageNode_32" output="OUTPUT" to="PlayerVelocity_4" input="CLIENT"/>
+    <ProbeLink id="39" from="PopFromMailBoxNode_33" output="OUTPUT" to="IF_19" input="THEN"/>
+    <ProbeLink id="40" from="PopFromMailBoxNode_33" output="OUTPUT" to="Length_10" input="INPUT"/>
+    <NetCondition name="CONDITION" node="Constant_2" terminal="VALUE"/>
+    <NetOutput name="RANGE" node="PopFromMailBoxNode_33" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="XPOS" node="PlayerVelocity_4" terminal="XPOS" object_type="any" description="No description available"/>
+    <NetOutput name="OUTPUT" node="Print_3" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>

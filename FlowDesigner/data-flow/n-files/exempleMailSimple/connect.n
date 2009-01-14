@@ -1,0 +1,38 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="connect.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="loop_1" type="loop" x="-42.000000" y="120.000000">
+      <Parameter name="DOWHILE" type="bool" value="" description="No description available"/>
+    </Node>
+    <NetOutput name="OUTPUT" node="loop_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+  <Network type="iterator" name="loop">
+    <Node name="PlayerConnect_0" type="PlayerConnect" x="-292.168610" y="-101.923019">
+      <Parameter name="HOST" type="string" value="localhost" description="The host where to connect for sonars readings"/>
+      <Parameter name="FREQUENCY" type="int" value="20" description="The frequency (Hz) of the updates from the Player server."/>
+      <Parameter name="PORT" type="int" value="6665" description="The port where to connect for sonars readings."/>
+      <Parameter name="POSITION_PROXY" type="bool" value="true" description="Start position proxy if it's true."/>
+      <Parameter name="GRIPPER_PROXY" type="bool" value="false" description="Start gripper proxy if it's true."/>
+      <Parameter name="LASER_PROXY" type="bool" value="true" description="Start laser proxy if it's true."/>
+      <Parameter name="PTZ_PROXY" type="bool" value="false" description="Start ptz proxy if it's true."/>
+      <Parameter name="SONAR_PROXY" type="bool" value="false" description="Start sonar proxy if it's true."/>
+      <Parameter name="BLOB_FINDER_PROXY" type="bool" value="false" description="Start blob finder proxy if it's true (in simulation only)."/>
+      <Parameter name="GPS_PROXY" type="bool" value="false" description="Start GPS proxy if it's true."/>
+      <Parameter name="LASER2_PROXY" type="bool" value="false" description="Start laser proxy if it's true."/>
+    </Node>
+    <Node name="SetMessageNode_1" type="SetMessageNode" x="-92.580734" y="-104.308655">
+      <Parameter name="MessageBox_Name" type="string" value="CONNECT" description="name  "/>
+    </Node>
+    <Node name="USleep_2" type="USleep" x="-212.132034" y="0.000000">
+      <Parameter name="MICROSECONDS" type="int" value="10000" description="The time required to sleep"/>
+    </Node>
+    <ProbeLink id="1" from="PlayerConnect_0" output="CLIENT" to="SetMessageNode_1" input="INPUT"/>
+    <NetOutput name="OUTPUT" node="SetMessageNode_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetCondition name="CONDITION" node="USleep_2" terminal="OUTPUT"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>
