@@ -72,7 +72,7 @@ public:
 			pthread_mutex_lock(&pushmodifLock);
 			for (Iter = mailBoxList.begin(); Iter != mailBoxList.end(); Iter++ )
 			{
-				(*Iter)->pushObject(obj);
+				(*Iter)->pushObject(obj->clone());
 			}
 				
 			pthread_mutex_unlock(&pushmodifLock);
@@ -161,7 +161,7 @@ public:
 			pthread_mutex_lock(&mutexLock);
 			if(DEBUG)
 				cout<<'\n'<< "msg Set : "<< name<<" "<< obj <<'\n';
-			mailObject = obj;
+			mailObject = obj->clone();
 			pthread_mutex_unlock(&mutexLock);
 			if(DEBUG)
 				cout<<'\n'<< "Unlock : "<< name<<" "<<mailObject <<'\n';

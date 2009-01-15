@@ -66,7 +66,8 @@ class SetMessageNode : public BufferedNode {
           //Get input data from previous node(s).*/
           ObjectRef input1Value = getInput(input1ID, count);
 		  ObjectRef valueToSend = input1Value;
-			if(DEBUG){
+		  
+		  if(DEBUG){
 				cout<<'\n'<< "input1Value = "<< input1Value<<'\n';
 				cout<<'\n'<< "set "<< valueToSend<<'\n';
 		  }
