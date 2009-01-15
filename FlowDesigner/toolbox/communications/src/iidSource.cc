@@ -34,7 +34,7 @@ DECLARE_NODE(iidSource)
  * @parameter_name TYPE
  * @parameter_type string
  * @parameter_description Generated pdf (UNIFORM, GAUSSIAN)
- * @parameter_value GAUSSIAN
+ * @parameter_value GAUSSIAN;UNIFORM
  *
  * @parameter_name MEAN
  * @parameter_type float

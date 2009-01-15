@@ -3,6 +3,7 @@ SET(COMMUNICATIONS_SRCS
 	iidSource.cc
 	DiscreteSource.cc
 	ComplexGaussian.cc
+	CyclicEncoder.cc
 	Constellation.cc
 	ConstellationMapper.cc
 	OFDModulator.cc
@@ -16,6 +17,7 @@ SET(COMMUNICATIONS_SRCS
 	AveragePower.cc
 	Interleaver.cc
 	SpreadInterleaver.cc
+	GF2Polynomial.cc
 )	
 
 find_package(FFTW3)

@@ -1,0 +1,19 @@
+#!/usr/bin/env batchflow
+<?xml version="1.0"?>
+<Document docName="cyclic-encoder.n" connectionPort="0">
+  <Network type="subnet" name="MAIN">
+    <Node name="DiscreteSource_0" type="DiscreteSource" x="-486.000000" y="-221.000000">
+      <Parameter name="LENGTH" type="int" value="15" description="Number of generated symbols."/>
+      <Parameter name="ALPHABETSIZE" type="int" value="2" description="Number of symbols in the source alphabet."/>
+      <Parameter name="SEED" type="int" value="-1" description="RNG seed."/>
+    </Node>
+    <Node name="CyclicEncoder_1" type="CyclicEncoder" x="-279.000000" y="-216.000000">
+      <Parameter name="GENERATOR" type="string" value="6" description="Generator polynomial in octal"/>
+      <Parameter name="K" type="int" value="15" description="Number of information bits"/>
+    </Node>
+    <ProbeLink id="1" from="DiscreteSource_0" output="OUTPUT" to="CyclicEncoder_1" input="INPUT"/>
+    <NetOutput name="INFO_BITS" node="DiscreteSource_0" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <NetOutput name="CODED_BITS" node="CyclicEncoder_1" terminal="OUTPUT" object_type="any" description="No description available"/>
+    <Note x="0" y="0" visible="0" text="Created with FlowDesigner 0.10.0" label="Automatic-note"/>
+  </Network>
+</Document>
