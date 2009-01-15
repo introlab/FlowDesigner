@@ -210,6 +210,7 @@ namespace FD {
                 combo->addItem("float");
                 combo->addItem("bool");
                 combo->addItem("object");
+				combo->addItem("subnet_param");
                 
                 int index = combo->findText(m_params[i]->type.c_str());
                 if( index != -1)
