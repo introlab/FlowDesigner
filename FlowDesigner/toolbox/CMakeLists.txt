@@ -34,13 +34,16 @@ ELSE (HAVE_LAPACK AND NOT APPLE)
 ENDIF (HAVE_LAPACK AND NOT APPLE)
 
 ### octave toolbox ###
-find_package(Octave)
-IF (HAVE_OCTAVE)
-    ADD_SUBDIRECTORY(octave)
-ELSE (HAVE_OCTAVE)
-    MESSAGE (STATUS "OCTAVE library wasn't found, it won't be compiled.")
-ENDIF (HAVE_OCTAVE)
+#find_package(Octave)
+#IF (HAVE_OCTAVE)
+#    ADD_SUBDIRECTORY(octave)
+#ELSE (HAVE_OCTAVE)
+#    MESSAGE (STATUS "OCTAVE library wasn't found, it won't be compiled.")
+#ENDIF (HAVE_OCTAVE)
 
-### communications toolbox ###
-ADD_SUBDIRECTORY(communications)
+### temp: Player ###
+ADD_SUBDIRECTORY(Player)
+
+### temp: Behaviors ###
+ADD_SUBDIRECTORY(Behaviors)
 
