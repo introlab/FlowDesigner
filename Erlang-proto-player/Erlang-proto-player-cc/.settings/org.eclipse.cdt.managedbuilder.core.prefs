@@ -1,0 +1,4 @@
+#Thu Jan 22 15:36:58 EST 2009
+eclipse.preferences.version=1
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.macosx.exe.debug.1551700752=<?xml version\="1.0" encoding\="UTF-8"?>\n<environment append\="true" appendContributed\="true">\n<variable name\="CPATH" operation\="remove"/>\n<variable name\="C_INCLUDE_PATH" operation\="remove"/>\n<variable name\="CPLUS_INCLUDE_PATH" operation\="remove"/>\n</environment>\n
+environment/buildEnvironmentLibrary/cdt.managedbuild.config.gnu.macosx.exe.debug.1551700752=<?xml version\="1.0" encoding\="UTF-8"?>\n<environment append\="true" appendContributed\="true">\n<variable name\="LIBRARY_PATH" operation\="remove"/>\n</environment>\n
