@@ -177,7 +177,6 @@ SET(NODES_SRCS
 	BinaryOR.cc
 	Power.cc
 	GetMessageNode.cc
-	SetMessageNode.cc
 	PushToMailBoxNode.cc
 	PopFromMailBoxNode.cc
 	SetMessageNode.cc

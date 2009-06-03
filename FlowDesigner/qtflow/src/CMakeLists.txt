@@ -115,22 +115,7 @@ install(TARGETS libqtflow-dynamic DESTINATION lib
 )
 #Install headers
 INSTALL(FILES ${QTFLOWLIB_HEADERS} DESTINATION include/flowdesigner/qtflow)
-
-# create an executable file named "flowdesigner" from the source files
-IF(APPLE)
-     SET(MACOSX_BUNDLE_INFO_STRING "FlowDesigner App")
-     SET(MACOSX_BUNDLE_ICON_FILE "FlowDesignerIcon.icns")
-     SET(MACOSX_BUNDLE_GUI_IDENTIFIER "flowdesigner")
-     SET(MACOSX_BUNDLE_LONG_VERSION_STRING "flowdesigner ${VERSION}")
-     SET(MACOSX_BUNDLE_BUNDLE_NAME "flowdesigner")
-     SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION}")
-     SET(MACOSX_BUNDLE_BUNDLE_VERSION "${VERSION}")
-     SET(MACOSX_BUNDLE_COPYRIGHT "Dominic Letourneau, Jean-Marc Valin") 
-     add_executable(flowdesigner MACOSX_BUNDLE ${QTFLOW_SRCS} flowdesigner.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
-    #install( FILES ../icons/FlowDesignerIcon.icns DESTINATION /Applications/flowdesigner.app/Contents/Resources)
-ELSE(APPLE)
-    add_executable(flowdesigner ${QTFLOW_SRCS} flowdesigner.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
-ENDIF(APPLE)
+add_executable(flowdesigner ${QTFLOW_SRCS} flowdesigner.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_RCC_SRCS} ${QTFLOW_HEADERS})
 
 # create an executable file named "qtflow" from the source files 
 add_executable(qtflow ${QTFLOW_SRCS} qtflow.cc ${QTFLOW_MOC_SRCS} ${QTFLOW_HEADERS}) 
@@ -153,11 +138,5 @@ INSTALL( FILES ${FLOWDESIGNER_SOURCE_DIR}/qtflow/src/libfdqttcp.def DESTINATION 
 
 INSTALL( FILES "FlowDesignerSplashScreen.jpg" DESTINATION "share/flowdesigner")
 
-
-IF(APPLE)
-    install(TARGETS flowdesigner DESTINATION "/Applications")
-ELSE(APPLE)
-    install(TARGETS flowdesigner DESTINATION bin)
-ENDIF(APPLE)
-
+install(TARGETS flowdesigner DESTINATION bin)
 install(TARGETS qtflow DESTINATION bin)

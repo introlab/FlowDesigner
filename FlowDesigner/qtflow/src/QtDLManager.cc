@@ -21,6 +21,7 @@
 #include "path.h"
 #include <iostream>
 #include <QApplication>
+#include <QtDebug>
 
 namespace FD
 {
@@ -85,6 +86,8 @@ namespace FD
 	void QtDLManager::scanDL(std::string path)
 	{
 		vector<string> libs;
+		
+		qDebug() << "scanDL with path: "<< QString(path.c_str());
 		
 		//looking recursively in path for toolboxes
 		recursiveScanDL(path,libs,true);

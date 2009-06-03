@@ -20,7 +20,8 @@
 
 #include "iextensions.h"
 #include <QtDebug>
-
+#include <QProcess>
+#include <QStringList>
 
 using namespace std;
 
@@ -88,6 +89,21 @@ namespace FD
 			//Loading libraries
 			try
 			{
+				
+				QStringList environment = QProcess::systemEnvironment ();
+				
+				for (int index = 0; index < environment.size(); index++)
+				{
+					QString keyvalue = environment[index];
+					if (keyvalue.indexOf("FLOWDESIGNER_PATH") == 0)
+					{
+						QString path = keyvalue.split("=")[1];
+						qDebug() << "Using FLOWDESIGNER_PATH = " << path;
+						QtDLManager::instance()->scanDL(path.toStdString());
+					}
+				}	
+				
+				
 				//Scan for toolboxes (dll)
 				QtDLManager::instance()->scanDL();
 				//Scan for toolboxes (def)

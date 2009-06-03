@@ -29,6 +29,8 @@
 #include "BaseException.h"
 #include "UINodeRepository.h"
 #include "QtProbeRegistry.h"
+#include <QProcess>
+#include <QStringList>
 //#include "iextensions.h"
 
 using namespace FD;
@@ -92,6 +94,20 @@ int main(int argc, char* argv[])
 
 		//IExtensions::detect();
 
+		QStringList environment = QProcess::systemEnvironment ();
+		
+		for (int index = 0; index < environment.size(); index++)
+		{
+			QString keyvalue = environment[index];
+			if (keyvalue.indexOf("FLOWDESIGNER_PATH") == 0)
+			{
+				QString path = keyvalue.split("=")[1];
+				qDebug() << "Using FLOWDESIGNER_PATH = " << path;
+				QtDLManager::instance()->scanDL(path.toStdString());
+			}
+		}		
+		
+		
 		//Load dynamic libraries
 		QtDLManager::instance()->scanDL();
 

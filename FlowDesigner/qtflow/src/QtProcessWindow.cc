@@ -314,7 +314,7 @@ namespace FD
 			args.append("/dev/stdin");
 
 			//Launch qtflow			
-			m_process->start(QString(INSTALL_PREFIX) + "/bin/qtflow",args);
+			m_process->start("qtflow",args);
 			m_process->write(mem,size);
 			
 			//This will close stdin, enabling to exit

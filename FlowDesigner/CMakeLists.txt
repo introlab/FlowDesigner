@@ -142,6 +142,32 @@ ENDIF(WIN32)
 
 IF(APPLE)
 	SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/license.txt")
+
+SET(CPACK_GENERATOR Bundle)
+
+# CPACK_PACKAGE_FILE_NAME - provides the name of the final compressed disk image (the name of the file that is distributed).
+# CPACK_PACKAGE_ICON - provides the icon for the mounted disk image (appears after the user mounts the disk image).
+# CPACK_BUNDLE_NAME - provides the bundle name (displayed in the finder underneath the bundle icon).
+# CPACK_BUNDLE_ICON - provides the bundle icon (displayed in the /Applications folder, on the dock, etc).
+# CPACK_BUNDLE_PLIST - path to a file that will become the bundle plist.
+# CPACK_BUNDLE_STARTUP_COMMAND - path to a file that will be executed when the user opens the bundle. Could be a shell-script or a binary. 
+
+SET(CPACK_PACKAGE_INSTALL_DIRECTORY "/Applications")
+SET(MACOSX_BUNDLE_INFO_STRING "FlowDesigner")
+SET(CPACK_PACKAGE_FILE_NAME "FlowDesigner-${VERSION}")
+SET(CPACK_BUNDLE_NAME "FlowDesigner")
+SET(CPACK_PACKAGE_DEFAULT_LOCATION "/Applications")
+SET(CPACK_BUNDLE_PLIST "FlowDesigner.plist")
+SET(CPACK_BUNDLE_ICON "FlowDesigner.icns")
+SET(CPACK_PACKAGE_ICON "FlowDesigner.icns")
+SET(CPACK_BUNDLE_STARTUP_COMMAND "startup.sh")
+
+
+
+
+
+
+
 ELSE(APPLE)
 	SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/COPYING.LGPL")
 ENDIF(APPLE)
@@ -153,7 +179,7 @@ ENDIF(APPLE)
     SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
     SET(CPACK_PACKAGE_CONTACT "flowdesigner-devel@lists.sourceforge.net")
 
-IF(WIN32 AND NOT UNIX)
+IF(WIN32)
   SET(CPACK_PACKAGE_INSTALL_DIRECTORY "FlowDesigner")
   # There is a bug in NSI that does not handle full unix paths properly. Make
   # sure there is at least one set of four (4) backlasshes.
@@ -164,9 +190,10 @@ IF(WIN32 AND NOT UNIX)
   SET(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\flowdesigner.sourceforge.net")
   SET(CPACK_NSIS_CONTACT "flowdesigner-devel@lists.sourceforge.net")
   SET(CPACK_NSIS_MODIFY_PATH ON)
-ENDIF(WIN32 AND NOT UNIX)
+  SET(CPACK_PACKAGE_EXECUTABLES "flowdesigner" "FlowDesigner" "batchflow" "batchflow" "qtflow" "qtflow")
+ENDIF(WIN32)
 
-SET(CPACK_PACKAGE_EXECUTABLES "flowdesigner" "FlowDesigner" "batchflow" "batchflow" "qtflow" "qtflow")
+
 
 INSTALL( FILES ${INSTALLED_EXAMPLES} DESTINATION share/flowdesigner/examples)
 INSTALL( FILES ${INSTALLED_TUTORIALS} DESTINATION share/flowdesigner/examples/tutorials)
