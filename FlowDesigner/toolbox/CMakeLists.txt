@@ -41,9 +41,4 @@ ENDIF (HAVE_LAPACK AND NOT APPLE)
 #    MESSAGE (STATUS "OCTAVE library wasn't found, it won't be compiled.")
 #ENDIF (HAVE_OCTAVE)
 
-### temp: Player ###
-ADD_SUBDIRECTORY(Player)
-
-### temp: Behaviors ###
-ADD_SUBDIRECTORY(Behaviors)
 
