@@ -176,10 +176,7 @@ SET(NODES_SRCS
 	BinaryAND.cc
 	BinaryOR.cc
 	Power.cc
-	GetMessageNode.cc
-	PushToMailBoxNode.cc
-	PopFromMailBoxNode.cc
-	SetMessageNode.cc
+
 )
 
 
@@ -218,7 +215,7 @@ SET (UTILS_SRCS
 	flow_version.cc
 	object_param.cc
 	iextensions.cc
-        MailBox.cc
+        
 )
 
 
@@ -241,6 +238,11 @@ IF(UNIX)
       SET (UTILS_SRCS
          ${UTILS_SRCS}
          DLManager.cc
+		 GetMessageNode.cc
+		 PushToMailBoxNode.cc
+	     PopFromMailBoxNode.cc
+	     SetMessageNode.cc
+		 MailBox.cc
       )
    
       SET (UNIX_ADDITIONAL_LIBRARIES

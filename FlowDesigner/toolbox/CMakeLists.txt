@@ -19,7 +19,7 @@ ADD_SUBDIRECTORY(effects)
 ### FDOpenCV toolbox ###
 find_package(OpenCV)
 IF (OpenCV_FOUND)
-    ADD_SUBDIRECTORY(FDOpenCV)
+ #   ADD_SUBDIRECTORY(FDOpenCV)
 ELSE (OpenCV_FOUND)
     MESSAGE (STATUS "OpenCV library wasn't found, it won't be compiled.")
 ENDIF (OpenCV_FOUND)

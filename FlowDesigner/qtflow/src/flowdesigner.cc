@@ -123,6 +123,15 @@ int main(int argc, char* argv[])
 
 		//QObject::connect(&redirector_cerr,SIGNAL(newOutput(const char*, std::streamsize)),&fd,SLOT(newStderrOutput(const char *, std::streamsize)));
 
+	
+
+        fd.show();
+		splash.finish(&fd);
+
+		//This will popup messages if required
+		qInstallMsgHandler(FDMsgHandler);
+
+		
 		if (argc > 1)
 		{	
 			for (int i = 1; i < argc; i++)
@@ -134,13 +143,7 @@ int main(int argc, char* argv[])
 		{
 			fd.newDocumentClicked();
 		}
-
-        fd.show();
-		splash.finish(&fd);
-
-		//This will popup messages if required
-		qInstallMsgHandler(FDMsgHandler);
-
+		
 		// Enter the main loop of the QApplication
 		int result = app.exec();
 

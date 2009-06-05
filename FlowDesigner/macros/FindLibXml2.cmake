@@ -29,7 +29,7 @@ IF (NOT WIN32)
 ENDIF (NOT WIN32)
 
 FIND_PATH(LIBXML2_INCLUDE_DIR libxml/xpath.h
-   PATHS "C:/Dev-Cpp/include"
+   PATHS "C:/FlowDesigner/include"
    "C:/MinGW/include"
    ${_LibXml2IncDir}
    PATH_SUFFIXES libxml2
@@ -37,6 +37,7 @@ FIND_PATH(LIBXML2_INCLUDE_DIR libxml/xpath.h
 
 FIND_LIBRARY(LIBXML2_LIBRARIES NAMES xml2 libxml2
    PATHS
+   "C:/FlowDesigner/lib"
    ${_LibXml2LinkDir}
    )
 

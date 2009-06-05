@@ -9,7 +9,7 @@ SET(FLOWDESIGNER_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 
 # compile in debug mode
 IF(NOT CMAKE_BUILD_TYPE)
-  SET(CMAKE_BUILD_TYPE Debug)
+  SET(CMAKE_BUILD_TYPE Release)
 ENDIF(NOT CMAKE_BUILD_TYPE)
 
 IF(WIN32)
@@ -115,10 +115,10 @@ IF (WIN32)
 	SET(QTBIN_DIR ${QT_LIBRARY_DIR}/../bin)
 	
 	SET(DEVCPP_DLL
-	C:/Dev-Cpp/bin/libxml2.dll
- 	C:/Dev-Cpp/bin/iconv.dll
+	C:/FlowDesigner/bin/libxml2.dll
+ 	C:/FlowDesigner/bin/iconv.dll
  	C:/MinGW/bin/mingwm10.dll
- 	C:/Dev-Cpp/bin/zlib1.dll
+ 	C:/FlowDesigner/bin/zlib1.dll
 	${QTBIN_DIR}/Qt3Support4.dll
 	${QTBIN_DIR}/QtAssistantClient4.dll
 	${QTBIN_DIR}/QtCore4.dll
