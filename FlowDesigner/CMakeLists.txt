@@ -1,7 +1,14 @@
 PROJECT (FlowDesigner)
 
+
+
+
 #Look for minimum cmake version
 cmake_minimum_required(VERSION 2.6.0)
+
+SET(CMAKE_OSX_ARCHITECTURES i386)
+
+
 
 # This line will tell CMake to look in the project directory for configure scripts
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/macros)
@@ -16,7 +23,7 @@ IF(WIN32)
 	SET(CMAKE_INSTALL_PREFIX "C:/Progra~1/FlowDesigner")
 ELSE(WIN32)
 	IF(APPLE)
-		SET(CMAKE_INSTALL_PREFIX "/usr/local")
+		SET(CMAKE_INSTALL_PREFIX "/opt/flowdesigner/")
 	ELSE(APPLE)
 		SET(CMAKE_INSTALL_PREFIX "/usr/local")
 	ENDIF(APPLE)
@@ -115,10 +122,10 @@ IF (WIN32)
 	SET(QTBIN_DIR ${QT_LIBRARY_DIR}/../bin)
 	
 	SET(DEVCPP_DLL
-	C:/FlowDesigner/bin/libxml2.dll
- 	C:/FlowDesigner/bin/iconv.dll
+	C:/MinGW/bin/libxml2.dll
+ 	C:/MinGW/bin/iconv.dll
  	C:/MinGW/bin/mingwm10.dll
- 	C:/FlowDesigner/bin/zlib1.dll
+ 	C:/MinGW/bin/zlib1.dll
 	${QTBIN_DIR}/Qt3Support4.dll
 	${QTBIN_DIR}/QtAssistantClient4.dll
 	${QTBIN_DIR}/QtCore4.dll
