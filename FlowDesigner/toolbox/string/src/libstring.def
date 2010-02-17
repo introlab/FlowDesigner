@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Definitions>
+  <NodeClass name="LowerChar" category="string" source="LowerChar.cc">
+    <Input name="INPUT" type="string">String to lower case</Input>
+    <Output name="OUTPUT" type="string">lower case</Output>
+    <Description>none</Description>
+  </NodeClass>
+  <NodeClass name="UpperChar" category="string" source="UpperChar.cc">
+    <Input name="INPUT" type="string">String to upper case</Input>
+    <Output name="OUTPUT" type="string">upper case</Output>
+    <Description>none</Description>
+  </NodeClass>
+  <NodeClass name="StringSplit" category="string" source="StringSplit.cc">
+    <Input name="INPUT" type="string">String to split</Input>
+    <Input name="INPUT_SEP" type="string">Separator</Input>
+    <Output name="OUTPUT" type="vector">vector of strings</Output>
+    <Description>Split a string into a vector using a character.</Description>
+  </NodeClass>
+   <FileDepend file="StringSplit.cc">
+      <RequireHeader header="BufferedNode.h"/>
+   </FileDepend>
+   <FileDepend file="LowerChar.cc">
+      <RequireHeader header="BufferedNode.h"/>
+   </FileDepend>
+   <FileDepend file="UpperChar.cc">
+      <RequireHeader header="BufferedNode.h"/>
+   </FileDepend>
+</Definitions>
