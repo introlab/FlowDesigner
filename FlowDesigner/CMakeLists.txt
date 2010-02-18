@@ -98,7 +98,7 @@ ADD_SUBDIRECTORY(data-flow)
 ADD_SUBDIRECTORY(qtflow)
 ADD_SUBDIRECTORY(toolbox)
 ADD_SUBDIRECTORY(tools)
-ADD_SUBDIRECTORY(examples)
+
 SET(INSTALLED_EXAMPLES
  examples/listenJitterMatrix.n
  examples/listenString.n

@@ -1,6 +1,3 @@
-ADD_SUBDIRECTORY(string)
-
-
 ### FuzzyEngine toolbox ###
 ADD_SUBDIRECTORY(FuzzyEngine)
 
