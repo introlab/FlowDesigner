@@ -4,16 +4,25 @@
 #define _OBJECT_H_
 
 #include "typemap.h"
-#include "rc_ptrs.h"
 #include <string>
 #include <map>
 #include "BaseException.h"
 #include <typeinfo>
 #include "multithread.h"
+#include "rc_ptrs.h"
 
 namespace FD {
 
 class _ObjectFactory;
+
+
+/** Smart pointer to Object called ObjectRef
+    @author Jean-Marc Valin
+    @version 1.0
+ */
+class Object;
+typedef RCPtr<Object> ObjectRef;
+
 
 /** Our Object base class. Everything in the network must have Object as 
     base class.
@@ -21,6 +30,7 @@ class _ObjectFactory;
 */
 class Object
 {
+
    protected:
    
       AtomicCounter ref_count;
@@ -132,6 +142,69 @@ class Object
       static TypeMap<_ObjectFactory*>& TypeidDictionary();
       //static map<const type_info *, _ObjectFactory*>& TypeidDictionary();
 };
+
+///nilObject definition
+extern ObjectRef nilObject;
+
+#include "conversion.h"
+template <class X>
+template <class Z>
+RCPtr<X>& RCPtr<X>::operator= (const RCPtr<Z> &r)
+{
+   if ((void*) this != (void*) (&r))
+   {
+      X *tmp=dynamic_cast<X*> (r.ptr);
+      //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
+      if (!tmp) {
+
+    //calling conversion code
+    RCPtr<Object> conv = Conversion::convertTo<X>(r);
+
+    tmp = dynamic_cast<X*>(conv.ptr);
+
+    if (!tmp) {
+      throw new GeneralException("Something is wrong in RCPtr::operator=, this should not happen.",__FILE__,__LINE__);
+    }
+    //must do that, since conv is local and we don't want the object to be deleted!
+        release();
+    ptr=tmp;
+    acquire();
+      } else {
+    release();
+    ptr=tmp;
+    acquire();
+      }
+   }
+   return *this;
+}
+
+template <class X>
+template <class Z>
+RCPtr<X>::RCPtr (const RCPtr<Z> &r)
+{
+  X *tmp=dynamic_cast<X*> (r.ptr);
+  //if (!tmp) throw "RCPtr<X>: Illegal pointer conversion in operator =";
+  if (!tmp) {
+
+    //calling conversion code
+    RCPtr<Object> conv = Conversion::convertTo<X>(r);
+    tmp = dynamic_cast<X*>(conv.ptr);
+
+    if (!tmp) {
+      throw new GeneralException("Something is wrong in RCPtr::operator=, this should not happen.",__FILE__,__LINE__);
+    }
+    //must do that, since conv is local and we don't want the object to be deleted!
+    ptr=tmp;
+    acquire();
+  } else {
+    ptr=tmp;
+    acquire();
+  }
+}
+
+
+
+
 
 class _ObjectFactory 
 {

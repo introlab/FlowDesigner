@@ -14,8 +14,6 @@
 #include "Stream.h"
 #include <errno.h>
 
-using namespace std;
-
 namespace FD {
 
 class TCPConnect;
@@ -49,17 +47,17 @@ END*/
 class TCPConnect : public BufferedNode {
 
    int outputID;
-   string host;
+   std::string host;
    int port;
    bool blocking;
    
 public:
-   TCPConnect(string nodeName, ParameterSet params) 
+   TCPConnect(std::string nodeName, ParameterSet params)
       : BufferedNode(nodeName, params)
    {
       outputID = addOutput("OUTPUT");
       
-      host = object_cast<String> (parameters.get("HOST"));
+      host = object_cast<std::string> (parameters.get("HOST"));
       
       port = dereference_cast<int> (parameters.get("PORT"));
       
@@ -84,17 +82,17 @@ public:
       addr.sin_port = htons(0);
       
       if (bind (fd, (struct sockaddr *)&addr, sizeof(addr)))
-         throw new NodeException(this, string("bind failed: ") + string(strerror(errno)), __FILE__, __LINE__);
+         throw new NodeException(this, std::string("bind failed: ") + std::string(strerror(errno)), __FILE__, __LINE__);
 
       if((entp = gethostbyname(host.c_str())) == NULL)
-         throw new NodeException(this, string("Can't get host by name: ") + host, __FILE__, __LINE__);
+         throw new NodeException(this, std::string("Can't get host by name: ") + host, __FILE__, __LINE__);
       
       memcpy(&addr.sin_addr, entp->h_addr_list[0], entp->h_length);
    
       addr.sin_port = htons(port);
       
       if (connect (fd, (struct sockaddr *)&addr, sizeof(addr)))
-         throw new NodeException(this, string("connect failed: ") + string(strerror(errno)), __FILE__, __LINE__);
+         throw new NodeException(this, std::string("connect failed: ") + std::string(strerror(errno)), __FILE__, __LINE__);
       
       if (!blocking)
          fcntl(fd, F_SETFL, O_NONBLOCK);

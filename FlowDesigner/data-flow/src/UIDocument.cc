@@ -817,9 +817,9 @@ namespace FD {
 	void UIDocument::setFullPath(const string &fullpath)
 	{
 		//cerr << "fullpath is: \"" << fullpath << "\"" << endl;
-		unsigned int slashpos = fullpath.rfind("/");
+        size_t slashpos = fullpath.rfind("/");
 		//cerr << "slashpos = " << slashpos << endl;
-		if (slashpos != string::npos)
+        if (slashpos != std::string::npos)
 		{
 			path="";
 			path.append(fullpath,0,slashpos+1);

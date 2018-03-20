@@ -79,7 +79,6 @@ inline std::istream &operator >> (std::istream &in, std::vector<T> &v)
 template <class T>
 inline std::istream &operator >> (std::istream &in, std::vector<T*> &v)
 {
-   int items_found=0;
 
    if (!isValidType(in,"Vector"))
       return in;

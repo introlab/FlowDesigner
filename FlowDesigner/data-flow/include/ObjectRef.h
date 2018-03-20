@@ -40,7 +40,7 @@ inline T object_ptr_cast (const ObjectRef &ref)
 {
    T tmp = dynamic_cast<T>(&(*ref));
    if (!tmp) 
-      throw new CastException<T> (typeid ((*ref)).name());
+      throw new CastException<T> (typeid ((ref.get())).name());
    return tmp;
 }
 
@@ -50,7 +50,7 @@ inline T &object_cast (const ObjectRef &ref)
 {
    T *tmp = dynamic_cast<T *>(&(*ref));
    if (!tmp) 
-      throw new CastException<T> (typeid ((*ref)).name());
+      throw new CastException<T> (typeid ((ref.get())).name());
    return *tmp;
 }
 
@@ -60,7 +60,7 @@ inline T &dereference_cast (const ObjectRef &ref)
 {
    GenericType<T> *tmp = (dynamic_cast<GenericType<T> * >(&(*ref)));
    if (!tmp) 
-      throw new CastException<T> (typeid ((*ref)).name());
+      throw new CastException<T> (typeid ((ref.get())).name());
    return tmp->val();
 }
 
@@ -75,9 +75,9 @@ inline bool &object_kind_of (const ObjectRef &ref)
 
 /**Is the object of type T (exact match)*/
 template <class T>
-inline bool &object_has_type (const ObjectRef &ref)
+inline bool object_has_type (const ObjectRef &ref)
 {
-   return typeid(*ref) == typeid(T);
+   return typeid(ref.get()) == typeid(T);
 }
 
 }//end namespace FD

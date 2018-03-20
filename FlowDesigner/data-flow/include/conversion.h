@@ -3,10 +3,14 @@
 #ifndef CONVERSION_H
 #define CONVERSION_H
 
-//#include "ObjectRef.h"
+/**
+  This file is included in the namespace.
+  Tricky...
+**/
 #include "typemap.h"
 
 
+///Conversion function pointer
 typedef ObjectRef (*conv_func)(ObjectRef);
 
 class Conversion {
@@ -22,7 +26,7 @@ class Conversion {
    template <class T>
    static ObjectRef convertTo(ObjectRef x)
    {
-      TypeMap<TypeMap<conv_func> >::iterator it = conv_table().find(&typeid(*x));
+      TypeMap<TypeMap<conv_func> >::iterator it = conv_table().find(&typeid(x.get()));
       if (it != conv_table().end())
       {
          TypeMap<conv_func>::iterator it2 = it->second.find(&typeid(T));

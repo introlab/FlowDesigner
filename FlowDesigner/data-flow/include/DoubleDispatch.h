@@ -55,8 +55,8 @@ class DoubleDispatch {
    
    ObjectRef call(ObjectRef x, ObjectRef y)
    {
-      const std::type_info *t1 = &typeid(*x);
-      const std::type_info *t2 = &typeid(*y);
+      const std::type_info *t1 = &typeid(x.get());
+      const std::type_info *t2 = &typeid(y.get());
       vtable2Type::iterator v1 = vtable.find(t1);
       if (v1!=vtable.end())
       {
